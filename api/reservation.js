@@ -1,10 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
+const { createClient } = require("@supabase/supabase-js");
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.statusCode = 405;
     return res.json({ error: "Méthode non autorisée" });
@@ -33,4 +33,4 @@ export default async function handler(req, res) {
     res.statusCode = 500;
     return res.json({ error: "Erreur serveur" });
   }
-}
+};
