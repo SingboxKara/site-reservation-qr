@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Réservation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <h1>Réserver une session</h1>
+
+  <form id="reservation-form">
+    <label>
+      Nom / Prénom :
+      <input type="text" name="name" required />
+    </label><br />
+
+    <label>
+      Email :
+      <input type="email" name="email" required />
+    </label><br />
+
+    <label>
+      Date et heure :
+      <input type="datetime-local" name="datetime" required />
+    </label><br />
+
+    <button type="submit">Réserver</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
