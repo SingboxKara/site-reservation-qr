@@ -1,0 +1,7 @@
+{
+  "name": "site-reservation-qr",
+  "version": "1.0.0",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.0"
+  }
+}
