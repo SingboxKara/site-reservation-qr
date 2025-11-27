@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox - Nos salles</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1b2550;
+      background-color: #faf7f2;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* HEADER */
+    header {
+      background-color: #0c1633;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo a {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      color:#fff;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    nav a { color:#fff; }
+    .nav-cta {
+      background: linear-gradient(90deg,#ffb74a,#f08b2e);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 50px 24px 30px;
+      background: #faf7f2;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #0c1633;
+    }
+    .hero p {
+      margin-top: 6px;
+      font-size: 16px;
+      color: #4b5563;
+    }
+
+    /* GRID SALLES */
+    .salles-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .salle-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .salle-img {
+      background: #0c1633;
+      height: 180px;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .salle-content {
+      padding: 20px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .capacity {
+      background: #ffb74a;
+      color:#111827;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .salle-content h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color:#0c1633;
+    }
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color:#4b5563;
+    }
+
+    .salle-desc {
+      font-size: 14px;
+      color:#4b5563;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .cta-salle {
+      margin-top: auto;
+      padding: 10px 14px;
+      border: 2px solid #0c1633;
+      background: transparent;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align:center;
+      transition: 0.2s;
+    }
+    .cta-salle:hover {
+      background:#0c1633;
+      color:#fff;
+    }
+
+    /* FOOTER SAME AS OTHER PAGES */
+    footer {
+      background:#05091b;
+      color:#f9fafb;
+      padding:32px 24px 16px;
+    }
+    .newsletter-container {
+      max-width:1100px;
+      margin:0 auto 24px;
+      text-align:center;
+    }
+    .newsletter-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+    }
+    footer input[type=email] {
+      padding:10px 12px;
+      border-radius:4px;
+      border:none;
+      min-width:240px;
+      font-size:14px;
+    }
+    footer button {
+      padding:10px 16px;
+      border:none;
+      border-radius:4px;
+      background:#fbbf24;
+      color:#111827;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .footer-columns {
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:24px;
+      justify-content:space-between;
+      font-size:13px;
+    }
+    .footer-bottom {
+      max-width:1100px;
+      margin:24px auto 0;
+      border-top:1px solid #111827;
+      padding-top:8px;
+      font-size:11px;
+      text-align:center;
+      color:#9ca3af;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo"><a href="index.html">Singbox</a></div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="salles.html">Les salles</a></li>
+      <li class="nav-cta"><a href="reservation.html">Réserver</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>2 salles, 2 ambiances</h1>
+  <p>Découvrez nos box privées insonorisées et climatisées, chacune avec sa personnalité.</p>
+</section>
+
+<div class="salles-grid">
+
+  <!-- 🎤 BOX 1 -->
+  <div class="salle-card">
+    <div class="salle-img">Visuel de la salle 1 (à intégrer plus tard)</div>
+    <div class="salle-content">
+      <span class="capacity">6 pers max</span>
+      <h2>Nuit étoilée</h2>
+
+      <div class="features">
+        <span>✨ Commande via tablette</span>
+        <span>📸 Appareil photo intégré</span>
+        <span>🎤 2 micros</span>
+        <span>♿ Accès PMR</span>
+      </div>
+
+      <p class="salle-desc">
+        Un univers bleu nuit, rempli de LEDs façon ciel étoilé. Parfait pour chanter la voix posée ou crier votre tube préféré.
+      </p>
+
+      <a href="reservation.html" class="cta-salle">Découvrir la salle</a>
+    </div>
+  </div>
+
+  <!-- 🎤 BOX 2 -->
+  <div class="salle-card">
+    <div class="salle-img">Visuel de la salle 2 (à intégrer plus tard)</div>
+    <div class="salle-content">
+      <span class="capacity">6 pers max</span>
+      <h2>Ambiance Sunset</h2>
+
+      <div class="features">
+        <span>📱 Commande via tablette</span>
+        <span>📸 Appareil photo intégré</span>
+        <span>🎤 2 micros</span>
+        <span>🌅 Lumières ambiance coucher de soleil</span>
+      </div>
+
+      <p class="salle-desc">
+        Une ambiance chaude et orangée, parfaite pour des soirées détendues entre amis ou en famille.
+      </p>
+
+      <a href="reservation.html" class="cta-salle">Découvrir la salle</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="newsletter-container">
+    <h3>Inscrivez-vous à notre newsletter</h3>
+    <div class="newsletter-row">
+      <input type="email" placeholder="Entrez votre adresse e-mail" />
+      <button>S'abonner</button>
+    </div>
+  </div>
+
+  <div class="footer-columns">
+    <div>
+      <p style="font-weight:700;font-size:18px;">Singbox</p>
+      <p>Karaoké Box à Toulouse</p>
+    </div>
+    <div>
+      <p><strong>Infos</strong></p>
+      <p>Mentions légales</p>
+      <p>Politique de confidentialité</p>
+      <p>CGV</p>
+    </div>
+    <div>
+      <p><strong>Contact</strong></p>
+      <p>Adresse, Email, Téléphone</p>
+    </div>
+    <div>
+      <p><strong>Réseaux</strong></p>
+      <p>Instagram – TikTok – Facebook</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    Réalisé avec ♥ pour Singbox
+  </div>
+</footer>
+
+</body>
+</html>
