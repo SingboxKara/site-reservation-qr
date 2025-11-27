@@ -1,34 +1,158 @@
-const form = document.getElementById("reservation-form");
+// ===================== CONFIG PLANNING =====================
+const BOXES = [1, 2]; // ajoute 3, 4... si tu as plus de box
+const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
+
+// Éléments du DOM
+const nameInput = document.getElementById("name-input");
+const emailInput = document.getElementById("email-input");
+const dateInput = document.getElementById("date-input");
+const loadButton = document.getElementById("load-button");
+const planningContainer = document.getElementById("planning-container");
 const message = document.getElementById("message");
 const qrContainer = document.getElementById("qrcode");
 
 let qrCode = null;
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  message.textContent = "Envoi en cours...";
+// ===================== INIT =====================
+(function init() {
+  // date du jour par défaut
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth() + 1).padStart(2, "0");
+  const d = String(today.getDate()).padStart(2, "0");
+  dateInput.value = `${y}-${m}-${d}`;
+
+  // bouton "Voir les créneaux"
+  loadButton.addEventListener("click", () => {
+    const date = dateInput.value;
+    if (!date) {
+      alert("Choisis une date d'abord.");
+      return;
+    }
+    loadPlanning(date);
+  });
+
+  // on charge le planning du jour au chargement de la page
+  if (dateInput.value) {
+    loadPlanning(dateInput.value);
+  }
+})();
+
+// ===================== CHARGER LE PLANNING =====================
+async function loadPlanning(date) {
+  planningContainer.innerHTML = "Chargement du planning...";
+  message.textContent = "";
   qrContainer.innerHTML = "";
   qrCode = null;
 
-  const formData = new FormData(form);
+  try {
+    const res = await fetch(`/api/slots?date=${encodeURIComponent(date)}`);
+    const json = await res.json();
 
-  const name = formData.get("name");
-  const email = formData.get("email");
-  const date = formData.get("date");   // ex: 2025-11-27
-  const time = formData.get("time");   // ex: "15:00"
-  const boxId = parseInt(formData.get("box_id"), 10);
+    if (!res.ok) {
+      throw new Error(json.error || "Erreur serveur");
+    }
 
-  if (!date || !time || !boxId) {
-    message.textContent = "Veuillez remplir tous les champs.";
+    const reservations = json.reservations || [];
+
+    // Créneaux occupés, ex: "1-15" = box 1 à 15h
+    const busySlots = new Set();
+    for (const r of reservations) {
+      if (!r.start_time || !r.box_id) continue;
+      const start = new Date(r.start_time);
+      const hour = start.getHours(); // 0..23
+      const key = `${r.box_id}-${hour}`;
+      busySlots.add(key);
+    }
+
+    // ----- Génération du tableau -----
+    const table = document.createElement("table");
+
+    // En-tête
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+
+    const emptyTh = document.createElement("th");
+    emptyTh.textContent = "Heure";
+    headRow.appendChild(emptyTh);
+
+    for (const box of BOXES) {
+      const th = document.createElement("th");
+      th.textContent = `Box ${box}`;
+      headRow.appendChild(th);
+    }
+
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    // Corps
+    const tbody = document.createElement("tbody");
+
+    for (const hour of HOURS) {
+      const row = document.createElement("tr");
+
+      const hourCell = document.createElement("td");
+      hourCell.className = "hour-cell";
+      hourCell.textContent = `${hour.toString().padStart(2, "0")}h`;
+      row.appendChild(hourCell);
+
+      for (const box of BOXES) {
+        const cell = document.createElement("td");
+        const key = `${box}-${hour}`;
+
+        if (busySlots.has(key)) {
+          cell.className = "slot-busy";
+          cell.textContent = "Réservé";
+        } else {
+          cell.className = "slot-free";
+          cell.textContent = "Libre";
+          cell.dataset.boxId = String(box);
+          cell.dataset.hour = String(hour);
+
+          cell.addEventListener("click", () => {
+            handleSlotClick(date, box, hour);
+          });
+        }
+
+        row.appendChild(cell);
+      }
+
+      tbody.appendChild(row);
+    }
+
+    table.appendChild(tbody);
+
+    planningContainer.innerHTML = "";
+    planningContainer.appendChild(table);
+  } catch (err) {
+    console.error(err);
+    planningContainer.innerHTML = "Erreur : " + err.message;
+  }
+}
+
+// ===================== CLIQUE SUR UN CRÉNEAU LIBRE =====================
+async function handleSlotClick(date, boxId, hour) {
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+
+  if (!name || !email) {
+    alert("Entre d'abord ton nom et ton email.");
     return;
   }
 
-  // Durée fixe : 60 minutes
-  const duration = 60;
+  const hourLabel = `${hour.toString().padStart(2, "0")}h - ${((hour + 1) % 24)
+    .toString()
+    .padStart(2, "0")}h`;
 
-  // Construire start_time en ISO
-  const startLocal = new Date(`${date}T${time}:00`); // heure locale
-  const endLocal = new Date(startLocal.getTime() + duration * 60000);
+  const ok = confirm(
+    `Confirmer la réservation ?\n\nDate : ${date}\nCréneau : ${hourLabel}\nBox : ${boxId}\nNom : ${name}\nEmail : ${email}`
+  );
+  if (!ok) return;
+
+  // Créneau d'1h
+  const hourStr = `${hour.toString().padStart(2, "0")}:00`;
+  const startLocal = new Date(`${date}T${hourStr}:00`);
+  const endLocal = new Date(startLocal.getTime() + 60 * 60000);
 
   const start_time = startLocal.toISOString();
   const end_time = endLocal.toISOString();
@@ -41,8 +165,12 @@ form.addEventListener("submit", async (e) => {
     box_id: boxId,
   };
 
+  message.textContent = "Création de la réservation...";
+  qrContainer.innerHTML = "";
+  qrCode = null;
+
   try {
-    // 1) Créer la réservation
+    // 1) Création de la réservation
     const res = await fetch("/api/reservation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,7 +178,6 @@ form.addEventListener("submit", async (e) => {
     });
 
     const json = await res.json();
-
     if (!res.ok) {
       throw new Error(json.error || "Erreur serveur");
     }
@@ -60,33 +187,31 @@ form.addEventListener("submit", async (e) => {
 
     message.textContent = "Réservation enregistrée ✅";
 
-    // 2) Générer le QR sur la page
+    // 2) QR code à l'écran
     if (reservationId) {
-      const qrPayload = reservationId;
-
       qrCode = new QRCode(qrContainer, {
-        text: qrPayload,
+        text: reservationId,
         width: 128,
         height: 128,
       });
-
       message.textContent += "\nQR code généré ci-dessous 👇";
     }
 
-    // 3) Envoi d'email en arrière-plan (si tu as gardé /api/send-email)
+    // 3) Envoi d'email (en arrière-plan)
     if (reservationId) {
       fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ reservationId }),
       }).catch((err) => {
-        console.error("Erreur fetch /api/send-email", err);
+        console.error("Erreur /api/send-email :", err);
       });
     }
 
-    form.reset();
+    // 4) Rafraîchir le planning pour bloquer le créneau
+    loadPlanning(date);
   } catch (err) {
     console.error(err);
     message.textContent = "Erreur : " + err.message;
   }
-});
+}
