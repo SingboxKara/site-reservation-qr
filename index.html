@@ -1,117 +1,230 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <title>Singbox - Accueil</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      margin: 0;
-      background: #faf7f2;
-      font-family: system-ui, sans-serif;
-      color: #1b2550;
-    }
-    header {
-      background: #0c1633;
-      color: #fff;
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-    }
-    header a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 24px;
-      padding: 0;
-      margin: 0;
-    }
-    .nav-cta {
-      background: linear-gradient(90deg,#ffb74a,#f08b2e);
-      padding: 8px 16px;
-      border-radius: 999px;
-    }
+// ===================== CONFIG PLANNING =====================
+const BOXES = [1, 2]; // ajoute 3, 4... si tu as plus de box
+const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
 
-    .hero {
-      text-align: center;
-      padding: 60px 24px;
-      background: #0c1633;
-      color: #fff;
-    }
-    .hero h1 {
-      margin-bottom: 12px;
-      font-size: 32px;
-    }
+// Éléments du DOM (uniquement sur reservation.html)
+const nameInput = document.getElementById("name-input");
+const emailInput = document.getElementById("email-input");
+const dateInput = document.getElementById("date-input");
+const loadButton = document.getElementById("load-button");
+const planningContainer = document.getElementById("planning-container");
+const message = document.getElementById("message");
+const qrContainer = document.getElementById("qrcode");
 
-    .resa-block {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    input, button {
-      padding: 10px 14px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-    }
-    button {
-      border: none;
-      background: linear-gradient(90deg,#ffb74a,#f08b2e);
-      font-weight: 700;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
+let qrCode = null;
 
-<header>
-  <div class="logo"><a href="index.html">Singbox</a></div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html">Concept</a></li>
-      <li class="nav-cta"><a href="reservation.html">Réserver</a></li>
-    </ul>
-  </nav>
-</header>
+// ===================== INIT =====================
+(function initReservationPage() {
+  if (!dateInput || !loadButton) {
+    // On est probablement sur une autre page (ex: index, concept)
+    return;
+  }
 
-<section class="hero">
-  <h1>Bienvenue chez Singbox</h1>
-  <p>Votre karaoké box privé à Toulouse</p>
-</section>
+  // 1) Récupérer une date depuis l'URL si présente
+  const params = new URLSearchParams(window.location.search);
+  const dateFromUrl = params.get("date");
 
-<div class="resa-block">
-  <h2>Réserver votre séance</h2>
-  <p>Choisissez un jour pour voir les disponibilités :</p>
+  if (dateFromUrl) {
+    dateInput.value = dateFromUrl;
+  } else {
+    // sinon, mettre la date du jour
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, "0");
+    const d = String(today.getDate()).padStart(2, "0");
+    dateInput.value = `${y}-${m}-${d}`;
+  }
 
-  <input type="date" id="home-date" />
+  // 2) Charger le planning pour la date actuelle
+  if (dateInput.value) {
+    loadPlanning(dateInput.value);
+  }
 
-  <br><br>
-
-  <button onclick="goReservation()">Voir les créneaux</button>
-</div>
-
-<script>
-  function goReservation() {
-    const date = document.getElementById("home-date").value;
+  // 3) Bouton "Voir les créneaux"
+  loadButton.addEventListener("click", () => {
+    const date = dateInput.value;
     if (!date) {
-      alert("Choisissez une date");
+      alert("Choisis une date d'abord.");
       return;
     }
-    window.location.href = "reservation.html?date=" + date;
-  }
-</script>
+    loadPlanning(date);
+  });
+})();
 
-</body>
-</html>
+// ===================== CHARGER LE PLANNING =====================
+async function loadPlanning(date) {
+  planningContainer.innerHTML = "Chargement du planning...";
+  message.textContent = "";
+  qrContainer.innerHTML = "";
+  qrCode = null;
+
+  try {
+    const res = await fetch(`/api/slots?date=${encodeURIComponent(date)}`);
+    const json = await res.json();
+
+    if (!res.ok) {
+      throw new Error(json.error || "Erreur serveur");
+    }
+
+    const reservations = json.reservations || [];
+
+    // Créneaux occupés, ex: "1-15" = box 1 à 15h
+    const busySlots = new Set();
+    for (const r of reservations) {
+      if (!r.start_time || !r.box_id) continue;
+      const start = new Date(r.start_time);
+      const hour = start.getHours(); // 0..23
+      const key = `${r.box_id}-${hour}`;
+      busySlots.add(key);
+    }
+
+    // ----- Génération du tableau -----
+    const table = document.createElement("table");
+
+    // En-tête
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+
+    const emptyTh = document.createElement("th");
+    emptyTh.textContent = "Heure";
+    headRow.appendChild(emptyTh);
+
+    for (const box of BOXES) {
+      const th = document.createElement("th");
+      th.textContent = `Box ${box}`;
+      headRow.appendChild(th);
+    }
+
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+
+    // Corps
+    const tbody = document.createElement("tbody");
+
+    for (const hour of HOURS) {
+      const row = document.createElement("tr");
+
+      const hourCell = document.createElement("td");
+      hourCell.className = "hour-cell";
+      hourCell.textContent = `${hour.toString().padStart(2, "0")}h`;
+      row.appendChild(hourCell);
+
+      for (const box of BOXES) {
+        const cell = document.createElement("td");
+        const key = `${box}-${hour}`;
+
+        if (busySlots.has(key)) {
+          cell.className = "slot-busy";
+          cell.textContent = "Réservé";
+        } else {
+          cell.className = "slot-free";
+          cell.textContent = "Libre";
+          cell.dataset.boxId = String(box);
+          cell.dataset.hour = String(hour);
+
+          cell.addEventListener("click", () => {
+            handleSlotClick(date, box, hour);
+          });
+        }
+
+        row.appendChild(cell);
+      }
+
+      tbody.appendChild(row);
+    }
+
+    table.appendChild(tbody);
+
+    planningContainer.innerHTML = "";
+    planningContainer.appendChild(table);
+  } catch (err) {
+    console.error(err);
+    planningContainer.innerHTML = "Erreur : " + err.message;
+  }
+}
+
+// ===================== CLIQUE SUR UN CRÉNEAU LIBRE =====================
+async function handleSlotClick(date, boxId, hour) {
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+
+  if (!name || !email) {
+    alert("Entre d'abord ton nom et ton email.");
+    return;
+  }
+
+  const hourLabel = `${hour.toString().padStart(2, "0")}h - ${((hour + 1) % 24)
+    .toString()
+    .padStart(2, "0")}h`;
+
+  const ok = confirm(
+    `Confirmer la réservation ?\n\nDate : ${date}\nCréneau : ${hourLabel}\nBox : ${boxId}\nNom : ${name}\nEmail : ${email}`
+  );
+  if (!ok) return;
+
+  // Créneau d'1h
+  const hourStr = `${hour.toString().padStart(2, "0")}:00`;
+  const startLocal = new Date(`${date}T${hourStr}:00`);
+  const endLocal = new Date(startLocal.getTime() + 60 * 60000);
+
+  const start_time = startLocal.toISOString();
+  const end_time = endLocal.toISOString();
+
+  const payload = {
+    name,
+    email,
+    start_time,
+    end_time,
+    box_id: boxId,
+  };
+
+  message.textContent = "Création de la réservation...";
+  qrContainer.innerHTML = "";
+  qrCode = null;
+
+  try {
+    // 1) Création de la réservation
+    const res = await fetch("/api/reservation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error(json.error || "Erreur serveur");
+    }
+
+    const reservation = json.reservation;
+    const reservationId = reservation && reservation.id;
+
+    message.textContent = "Réservation enregistrée ✅";
+
+    // 2) QR code à l'écran
+    if (reservationId) {
+      qrCode = new QRCode(qrContainer, {
+        text: reservationId,
+        width: 128,
+        height: 128,
+      });
+      message.textContent += "\nQR code généré ci-dessous 👇";
+    }
+
+    // 3) Envoi d'email (en arrière-plan)
+    if (reservationId) {
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservationId }),
+      }).catch((err) => {
+        console.error("Erreur /api/send-email :", err);
+      });
+    }
+
+    // 4) Rafraîchir le planning pour bloquer le créneau
+    loadPlanning(date);
+  } catch (err) {
+    console.error(err);
+    message.textContent = "Erreur : " + err.message;
+  }
+}
