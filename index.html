@@ -31,11 +31,29 @@
       top: 0;
       z-index: 10;
     }
+
+    .logo {
+      flex-shrink: 0;
+    }
+
     .logo a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-weight: 800;
       font-size: 20px;
       letter-spacing: 0.05em;
       color: #fff;
+    }
+
+    .logo img {
+      height: 38px;
+      width: auto;
+      display: block;
+    }
+
+    .logo-text {
+      text-transform: uppercase;
     }
 
     .main-nav {
@@ -314,6 +332,18 @@
     .footer-columns p {
       margin:4px 0;
     }
+
+    .footer-brand {
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .footer-brand img {
+      height:40px;
+      width:auto;
+      display:block;
+    }
+
     .footer-bottom {
       max-width:1100px;
       margin:24px auto 0;
@@ -352,7 +382,12 @@
 <body>
   <!-- HEADER avec logo / nav centrée / CTA + panier à droite -->
   <header>
-    <div class="logo"><a href="index.html">Singbox</a></div>
+    <div class="logo">
+      <a href="index.html">
+        <img src="logo.png" alt="Logo Singbox" />
+        <span class="logo-text">Singbox</span>
+      </a>
+    </div>
 
     <nav class="main-nav">
       <ul>
@@ -504,9 +539,12 @@
     </div>
 
     <div class="footer-columns">
-      <div>
-        <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
-        <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+      <div class="footer-brand">
+        <img src="logo.png" alt="Logo Singbox" />
+        <div>
+          <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+        </div>
       </div>
 
       <div>
