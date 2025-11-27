@@ -2,7 +2,7 @@
 const BOXES = [1, 2]; // ajoute 3, 4... si tu as plus de box
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
 
-// Éléments du DOM
+// Éléments du DOM (uniquement sur reservation.html)
 const nameInput = document.getElementById("name-input");
 const emailInput = document.getElementById("email-input");
 const dateInput = document.getElementById("date-input");
@@ -14,15 +14,33 @@ const qrContainer = document.getElementById("qrcode");
 let qrCode = null;
 
 // ===================== INIT =====================
-(function init() {
-  // date du jour par défaut
-  const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth() + 1).padStart(2, "0");
-  const d = String(today.getDate()).padStart(2, "0");
-  dateInput.value = `${y}-${m}-${d}`;
+(function initReservationPage() {
+  if (!dateInput || !loadButton) {
+    // On est probablement sur une autre page (ex: index, concept)
+    return;
+  }
 
-  // bouton "Voir les créneaux"
+  // 1) Récupérer une date depuis l'URL si présente
+  const params = new URLSearchParams(window.location.search);
+  const dateFromUrl = params.get("date");
+
+  if (dateFromUrl) {
+    dateInput.value = dateFromUrl;
+  } else {
+    // sinon, mettre la date du jour
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, "0");
+    const d = String(today.getDate()).padStart(2, "0");
+    dateInput.value = `${y}-${m}-${d}`;
+  }
+
+  // 2) Charger le planning pour la date actuelle
+  if (dateInput.value) {
+    loadPlanning(dateInput.value);
+  }
+
+  // 3) Bouton "Voir les créneaux"
   loadButton.addEventListener("click", () => {
     const date = dateInput.value;
     if (!date) {
@@ -31,11 +49,6 @@ let qrCode = null;
     }
     loadPlanning(date);
   });
-
-  // on charge le planning du jour au chargement de la page
-  if (dateInput.value) {
-    loadPlanning(dateInput.value);
-  }
 })();
 
 // ===================== CHARGER LE PLANNING =====================
