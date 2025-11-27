@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Blog & Actualités</title>
+  <title>Singbox - Actualités & nouveautés</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -12,12 +12,9 @@
       color: #1b2550;
       background-color: #faf7f2;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { text-decoration: none; color: inherit; }
 
-    /* ---------- HEADER (même que index) ---------- */
+    /* ---------- HEADER ---------- */
     header {
       background-color: #0c1633;
       color: #fff;
@@ -30,10 +27,7 @@
       z-index: 10;
     }
 
-    .logo {
-      flex-shrink: 0;
-    }
-
+    .logo { flex-shrink: 0; }
     .logo a {
       display: flex;
       align-items: center;
@@ -43,16 +37,12 @@
       letter-spacing: 0.05em;
       color: #fff;
     }
-
     .logo img {
-      height: 90px; /* même taille que sur index */
+      height: 90px;
       width: auto;
       display: block;
     }
-
-    .logo-text {
-      text-transform: uppercase;
-    }
+    .logo-text { text-transform: uppercase; }
 
     .main-nav {
       flex: 1;
@@ -98,7 +88,7 @@
       cursor: pointer;
     }
 
-    /* ---------- HERO BLOG ---------- */
+    /* ---------- HERO ACTUALITÉS ---------- */
     .hero-blog {
       background: #0c1633;
       color: #fff;
@@ -119,7 +109,7 @@
       color: #9ca3af;
     }
 
-    /* ---------- CONTENU BLOG ---------- */
+    /* ---------- CONTENU ACTUALITÉS ---------- */
     main {
       max-width: 1000px;
       margin: 0 auto;
@@ -139,7 +129,7 @@
       gap: 24px;
     }
 
-    /* Post "mis en avant" */
+    /* Article mis en avant */
     .post-featured {
       background: #ffffff;
       border-radius: 16px;
@@ -153,7 +143,6 @@
       border-radius: 999px;
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
       background: #0c1633;
       color: #fbbf24;
       margin-bottom: 8px;
@@ -177,12 +166,9 @@
       font-size: 13px;
       font-weight: 600;
       color: #0c1633;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    /* Liste d’articles à côté */
+    /* Liste latérale */
     .post-list {
       display: flex;
       flex-direction: column;
@@ -210,7 +196,7 @@
       margin: 0;
     }
 
-    /* ---------- SECTION CATÉGORIES ---------- */
+    /* Catégories */
     .blog-categories {
       margin-top: 40px;
       padding-top: 16px;
@@ -224,7 +210,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 8px;
     }
     .tag-pill {
       padding: 6px 10px;
@@ -235,17 +220,15 @@
       color: #4b5563;
     }
 
-    /* ---------- FOOTER (même style que index) ---------- */
+    /* ---------- FOOTER ---------- */
     footer {
       background:#05091b;
       color:#f9fafb;
       padding:32px 24px 16px;
       margin-top:40px;
     }
-    footer h3 {
-      margin-bottom:12px;
-      font-size:18px;
-    }
+    footer h3 { margin-bottom:12px;font-size:18px; }
+
     .newsletter-container {
       max-width:1100px;
       margin:0 auto 24px;
@@ -275,6 +258,7 @@
       font-size:14px;
       cursor:pointer;
     }
+
     .footer-columns {
       max-width:1100px;
       margin:0 auto;
@@ -284,9 +268,6 @@
       justify-content:space-between;
       font-size:13px;
     }
-    .footer-columns p {
-      margin:4px 0;
-    }
 
     .footer-brand {
       display:flex;
@@ -294,15 +275,14 @@
       gap:10px;
     }
     .footer-brand img {
-      height:120px;  /* même taille que footer index */
+      height:120px;
       width:auto;
-      display:block;
     }
 
     .footer-bottom {
       max-width:1100px;
       margin:24px auto 0;
-      border-top:1px solid:#111827;
+      border-top:1px solid #111827;
       padding-top:8px;
       font-size:11px;
       text-align:center;
@@ -310,14 +290,12 @@
     }
 
     @media (max-width: 900px) {
-      header { padding: 12px 16px; }
-      .main-nav { display: none; } /* pour l’instant pas de menu mobile */
-      .posts-grid {
-        grid-template-columns: minmax(0,1fr);
-      }
+      .main-nav { display:none; }
+      .posts-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
+
 <body>
   <!-- HEADER -->
   <header>
@@ -333,28 +311,28 @@
         <li><a href="index.html">Accueil</a></li>
         <li><a href="concept.html">Le concept</a></li>
         <li><a href="salles.html">Les salles</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="actualites.html">Actualités</a></li>
       </ul>
     </nav>
 
     <div class="header-right">
       <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="reservation.html" class="cart-icon" aria-label="Panier de réservation">🛒</a>
+      <a href="reservation.html" class="cart-icon">🛒</a>
     </div>
   </header>
 
-  <!-- HERO BLOG -->
+  <!-- HERO -->
   <section class="hero-blog">
-    <h1>Le blog Singbox</h1>
-    <p class="subtitle">Actus du karaoké, nouveautés, coulisses du projet et idées de soirées.</p>
-    <small>Une façon de suivre l’aventure Singbox à Toulouse.</small>
+    <h1>Actualités Singbox</h1>
+    <p class="subtitle">Nouveautés, coulisses, annonces et idées pour vos soirées karaoké.</p>
+    <small>Suivez toute l’aventure du premier karaoké box de Toulouse.</small>
   </section>
 
   <main>
     <p class="blog-intro">
-      Ici, tu pourras publier des articles rapides : ouverture, nouveaux horaires, promo spéciale,
-      ajout de chansons, coulisses des travaux, avis clients, etc.
-      Pour l’instant, tout est statique : tu édites cette page à la main comme un mini magazine.
+      Bienvenue dans l’espace Actualités de Singbox.  
+      Ici, tu pourras poster toi-même les infos importantes : ouverture, avancée des travaux, nouveautés,
+      playlists spéciales, promos, photos d’ambiance, etc.
     </p>
 
     <div class="posts-grid">
@@ -364,51 +342,46 @@
         <h2 class="post-title">Ouverture prochaine de Singbox à Toulouse</h2>
         <p class="post-meta">Publié le 01/01/2026 • Catégorie : Vie du lieu</p>
         <p class="post-excerpt">
-          Après des mois de réflexion, de travaux et de tests de micros, Singbox se prépare à ouvrir
-          ses premières box de karaoké privatif en plein cœur de Toulouse. On vous explique où on en est,
-          ce qui arrive, et comment participer aux premières soirées test.
+          Après des mois de préparation, Singbox s’apprête à ouvrir ses toutes premières box
+          de karaoké privatif au cœur de Toulouse. Découvrez les coulisses et ce qui arrive bientôt.
         </p>
-        <a href="#" class="post-link">
-          Lire l’article complet →
-        </a>
+        <a href="#" class="post-link">Lire l’article complet →</a>
       </article>
 
-      <!-- LISTE D’AUTRES ARTICLES -->
+      <!-- LISTE -->
       <div class="post-list">
         <article class="post-item">
           <h3 class="post-item-title">Les coulisses de la création de Singbox</h3>
-          <p class="post-item-meta">Publié le 15/12/2025 • Dans : Coulisses</p>
+          <p class="post-item-meta">Publié le 15/12/2025 • Coulisses</p>
           <p class="post-item-excerpt">
-            D’une idée de voyage à un concept toulousain : retour sur les étapes qui ont permis
-            de donner vie à Singbox.
+            De l’idée initiale jusqu’au choix du matériel : retour sur tout ce qui a permis
+            de donner vie au projet Singbox.
           </p>
         </article>
 
         <article class="post-item">
-          <h3 class="post-item-title">Pourquoi le karaoké en box, c’est différent d’un karaoké classique</h3>
-          <p class="post-item-meta">Publié le 08/12/2025 • Dans : Inspirations</p>
+          <h3 class="post-item-title">Pourquoi le karaoké en box, c’est différent</h3>
+          <p class="post-item-meta">Publié le 08/12/2025 • Inspirations</p>
           <p class="post-item-excerpt">
-            Intimité, liberté, zéro jugement : on vous explique ce qui change quand on chante
-            uniquement avec son groupe, porte fermée.
+            Plus intime, plus fun, zéro jugement : voici ce qui rend le karaoké en box unique.
           </p>
         </article>
 
         <article class="post-item">
-          <h3 class="post-item-title">Top 10 des chansons pour lancer une soirée Singbox</h3>
-          <p class="post-item-meta">Publié le 01/12/2025 • Dans : Playlists</p>
+          <h3 class="post-item-title">Top 10 des chansons pour démarrer une séance</h3>
+          <p class="post-item-meta">Publié le 01/12/2025 • Playlists</p>
           <p class="post-item-excerpt">
-            Des classiques qui mettent tout le monde d’accord, aux tubes qui font crier la salle :
-            notre sélection pour démarrer fort.
+            Voici notre sélection imparable pour chauffer l’ambiance dès les premières minutes.
           </p>
         </article>
       </div>
     </div>
 
-    <!-- CATÉGORIES / TAGS -->
+    <!-- CATÉGORIES -->
     <section class="blog-categories">
-      <h2>Catégories du blog</h2>
-      <p style="font-size:13px;color:#4b5563;margin:0;">
-        Utilise ces thèmes comme repères pour tes prochains articles (tu pourras les modifier ou en ajouter).
+      <h2>Catégories</h2>
+      <p style="font-size:13px;color:#4b5563;">
+        Choisis une catégorie pour organiser tes prochains articles.
       </p>
       <div class="tags-row">
         <span class="tag-pill">🧱 Coulisses & travaux</span>
@@ -416,12 +389,12 @@
         <span class="tag-pill">🎉 Offres & événements</span>
         <span class="tag-pill">👥 Vie du lieu</span>
         <span class="tag-pill">💡 Idées de soirées</span>
-        <span class="tag-pill">⭐ Avis & retours clients</span>
+        <span class="tag-pill">⭐ Avis clients</span>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER (même que index) -->
+  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -464,5 +437,6 @@
       Réalisé avec ♥ pour Singbox
     </div>
   </footer>
+
 </body>
 </html>
