@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Actualités & nouveautés</title>
+  <title>Singbox - Article</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -14,7 +14,7 @@
     }
     a { text-decoration: none; color: inherit; }
 
-    /* ---------- HEADER ---------- */
+    /* ---------- HEADER (même style que le reste) ---------- */
     header {
       background-color: #0c1633;
       color: #fff;
@@ -88,153 +88,48 @@
       cursor: pointer;
     }
 
-    /* ---------- HERO ACTUALITÉS ---------- */
-    .hero-blog {
+    /* ---------- HERO ARTICLE ---------- */
+    .hero-article {
       background: #0c1633;
       color: #fff;
-      padding: 60px 24px 40px;
+      padding: 40px 24px 32px;
       text-align: center;
     }
-    .hero-blog h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
+    .hero-article h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
     }
-    .hero-blog p.subtitle {
-      font-size: 16px;
-      margin: 0 0 16px;
+    .hero-article .meta {
+      font-size: 13px;
       color: #e5e7eb;
     }
-    .hero-blog small {
-      font-size: 12px;
-      color: #9ca3af;
-    }
 
-    /* ---------- CONTENU ACTUALITÉS ---------- */
+    /* ---------- CONTENU ARTICLE ---------- */
     main {
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 32px 24px 80px;
+      background-color: #faf7f2;
     }
 
-    .blog-intro {
-      margin-bottom: 24px;
-      font-size: 14px;
-      color: #4b5563;
-      line-height: 1.6;
-    }
-
-    .posts-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 24px;
-    }
-
-    /* Article mis en avant */
-    .post-featured {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-      border: 1px solid #e5e7eb;
-    }
-    .post-featured-tag {
+    .back-link {
       display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      text-transform: uppercase;
-      background: #0c1633;
-      color: #fbbf24;
-      margin-bottom: 8px;
-    }
-    .post-title {
-      font-size: 20px;
-      margin: 4px 0 4px;
-    }
-    .post-meta {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 10px;
-    }
-    .post-excerpt {
-      font-size: 14px;
-      color: #4b5563;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .post-link {
+      margin-bottom: 20px;
       font-size: 13px;
-      font-weight: 600;
       color: #0c1633;
     }
+    .back-link span {
+      margin-right: 6px;
+    }
 
-    /* Liste latérale */
-    .post-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .post-item {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 12px 14px;
-      border: 1px solid #e5e7eb;
-    }
-    .post-item-title {
+    .article-content p {
       font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-    .post-item-meta {
-      font-size: 11px;
-      color: #6b7280;
-      margin: 0 0 4px;
-    }
-    .post-item-excerpt {
-      font-size: 13px;
-      color: #4b5563;
-      margin: 0 0 6px;
-    }
-    .post-item a {
-      font-size: 12px;
-      font-weight: 600;
-      color: #0c1633;
+      line-height: 1.7;
+      color: #374151;
+      margin: 0 0 14px;
     }
 
-    /* Catégories */
-    .blog-categories {
-      margin-top: 40px;
-      padding-top: 16px;
-      border-top: 1px solid #e5e7eb;
-    }
-    .blog-categories h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .tag-pill {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      font-size: 12px;
-      color: #4b5563;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
-    .tag-pill.active {
-      background: #ffb74a;
-      border-color: #f08b2e;
-      color: #111827;
-      font-weight: 600;
-    }
-
-    /* ---------- FOOTER ---------- */
+    /* ---------- FOOTER (comme actualités/index) ---------- */
     footer {
       background:#05091b;
       color:#f9fafb;
@@ -296,7 +191,7 @@
     .footer-bottom {
       max-width:1100px;
       margin:24px auto 0;
-      border-top:1px solid #111827;
+      border-top:1px solid:#111827;
       padding-top:8px;
       font-size:11px;
       text-align:center;
@@ -305,7 +200,6 @@
 
     @media (max-width: 900px) {
       .main-nav { display:none; }
-      .posts-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -335,79 +229,20 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero-blog">
-    <h1>Actualités Singbox</h1>
-    <p class="subtitle">Nouveautés, coulisses, annonces et idées pour vos soirées karaoké.</p>
-    <small>Suivez toute l’aventure du premier karaoké box de Toulouse.</small>
+  <!-- HERO ARTICLE -->
+  <section class="hero-article">
+    <h1 id="article-title">Titre de l’article</h1>
+    <div class="meta" id="article-meta">Publié le … • Catégorie …</div>
   </section>
 
   <main>
-    <p class="blog-intro">
-      Bienvenue dans l’espace Actualités de Singbox.  
-      Ici, tu pourras poster toi-même les infos importantes : ouverture, avancée des travaux, nouveautés,
-      playlists spéciales, promos, photos d’ambiance, etc.
-    </p>
+    <a href="actualites.html" class="back-link">
+      <span>←</span>Retour aux actualités
+    </a>
 
-    <div class="posts-grid">
-      <!-- ARTICLE MIS EN AVANT -->
-      <article class="post-featured" data-category="vie-lieu">
-        <div class="post-featured-tag">Actualité</div>
-        <h2 class="post-title">Ouverture prochaine de Singbox à Toulouse</h2>
-        <p class="post-meta">Publié le 01/01/2026 • Catégorie : Vie du lieu</p>
-        <p class="post-excerpt">
-          Après des mois de préparation, Singbox s’apprête à ouvrir ses toutes premières box
-          de karaoké privatif au cœur de Toulouse. Découvrez les coulisses et ce qui arrive bientôt.
-        </p>
-        <a href="article.html?id=1" class="post-link">Lire l’article complet →</a>
-      </article>
-
-      <!-- LISTE -->
-      <div class="post-list">
-        <article class="post-item" data-category="coulisses-travaux">
-          <h3 class="post-item-title">Les coulisses de la création de Singbox</h3>
-          <p class="post-item-meta">Publié le 15/12/2025 • Catégorie : Coulisses & travaux</p>
-          <p class="post-item-excerpt">
-            De l’idée initiale jusqu’au choix du matériel : retour sur tout ce qui a permis
-            de donner vie au projet Singbox.
-          </p>
-          <a href="article.html?id=2">Lire l’article complet →</a>
-        </article>
-
-        <article class="post-item" data-category="idees-soirees">
-          <h3 class="post-item-title">Pourquoi le karaoké en box, c’est différent</h3>
-          <p class="post-item-meta">Publié le 08/12/2025 • Catégorie : Idées de soirées</p>
-          <p class="post-item-excerpt">
-            Plus intime, plus fun, zéro jugement : voici ce qui rend le karaoké en box unique.
-          </p>
-          <a href="article.html?id=3">Lire l’article complet →</a>
-        </article>
-
-        <article class="post-item" data-category="nouvelles-chansons">
-          <h3 class="post-item-title">Top 10 des chansons pour démarrer une séance</h3>
-          <p class="post-item-meta">Publié le 01/12/2025 • Catégorie : Nouvelles chansons</p>
-          <p class="post-item-excerpt">
-            Voici notre sélection imparable pour chauffer l’ambiance dès les premières minutes.
-          </p>
-          <a href="article.html?id=4">Lire l’article complet →</a>
-        </article>
-      </div>
+    <div class="article-content" id="article-content">
+      <p>Chargement de l’article…</p>
     </div>
-
-    <!-- CATÉGORIES -->
-    <section class="blog-categories">
-      <h2>Catégories</h2>
-      <p style="font-size:13px;color:#4b5563;">
-        Choisis une catégorie pour afficher les articles correspondants.
-      </p>
-      <div class="tags-row">
-        <span class="tag-pill active" data-category="all">Toutes les actualités</span>
-        <span class="tag-pill" data-category="coulisses-travaux">🧱 Coulisses & travaux</span>
-        <span class="tag-pill" data-category="nouvelles-chansons">🎤 Nouvelles chansons</span>
-        <span class="tag-pill" data-category="vie-lieu">👥 Vie du lieu</span>
-        <span class="tag-pill" data-category="idees-soirees">💡 Idées de soirées</span>
-      </div>
-    </section>
   </main>
 
   <!-- FOOTER -->
@@ -454,29 +289,76 @@
     </div>
   </footer>
 
-  <!-- SCRIPT : clic catégories -->
+  <!-- SCRIPT : contenu des articles en fonction de ?id= -->
   <script>
-    const tagPills = document.querySelectorAll(".tag-pill");
-    const posts = document.querySelectorAll(".post-featured, .post-item");
+    const articles = {
+      "1": {
+        title: "Ouverture prochaine de Singbox à Toulouse",
+        meta: "Publié le 01/01/2026 • Catégorie : Vie du lieu",
+        paragraphs: [
+          "Après des mois de préparation, Singbox s’apprête à ouvrir ses toutes premières box de karaoké privatif au cœur de Toulouse.",
+          "L’objectif : proposer un lieu simple, chaleureux et fun, où chacun peut chanter sans jugement, entouré uniquement de ses amis, sa famille ou ses collègues.",
+          "Dans les prochaines semaines, nous partagerons davantage de photos des salles, des tests de matériel et des coulisses de l’ouverture."
+        ]
+      },
+      "2": {
+        title: "Les coulisses de la création de Singbox",
+        meta: "Publié le 15/12/2025 • Catégorie : Coulisses & travaux",
+        paragraphs: [
+          "Avant d’accueillir les premières séances, il y a eu des dizaines d’heures de réflexion sur le lieu, le matériel, la déco et l’expérience globale.",
+          "Chaque détail a été pensé : confort des banquettes, qualité du son, ambiance lumineuse, circulation dans l’espace…",
+          "Cet article te raconte les grandes étapes : la première idée, la recherche de local, les travaux et les premiers tests de chant."
+        ]
+      },
+      "3": {
+        title: "Pourquoi le karaoké en box, c’est différent",
+        meta: "Publié le 08/12/2025 • Catégorie : Idées de soirées",
+        paragraphs: [
+          "Le karaoké en box permet de chanter en toute intimité, seulement avec ton groupe. Pas de scène, pas d’inconnus qui regardent : juste vous.",
+          "Résultat : les plus timides se lâchent, les plus extravertis se régalent, et tout le monde participe.",
+          "C’est une activité idéale pour un anniversaire, un EVJF/EVG, un afterwork, ou juste une soirée entre amis."
+        ]
+      },
+      "4": {
+        title: "Top 10 des chansons pour démarrer une séance",
+        meta: "Publié le 01/12/2025 • Catégorie : Nouvelles chansons",
+        paragraphs: [
+          "Le début de la séance donne souvent le ton pour toute la soirée.",
+          "Cet article te propose une sélection de titres parfaits pour lancer l’ambiance : grands classiques, tubes actuels et chansons faciles à chanter à plusieurs.",
+          "L’idée : que tout le monde puisse participer dès les premières minutes, sans pression."
+        ]
+      }
+    };
 
-    tagPills.forEach(pill => {
-      pill.addEventListener("click", () => {
-        // visuel du bouton actif
-        tagPills.forEach(p => p.classList.remove("active"));
-        pill.classList.add("active");
+    function loadArticleFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id") || "1";
 
-        const cat = pill.getAttribute("data-category");
+      const article = articles[id];
 
-        posts.forEach(post => {
-          const postCat = post.getAttribute("data-category");
-          if (cat === "all" || postCat === cat) {
-            post.style.display = "";
-          } else {
-            post.style.display = "none";
-          }
-        });
+      const titleEl = document.getElementById("article-title");
+      const metaEl = document.getElementById("article-meta");
+      const contentEl = document.getElementById("article-content");
+
+      if (!article) {
+        titleEl.textContent = "Article introuvable";
+        metaEl.textContent = "";
+        contentEl.innerHTML = "<p>Cet article n’existe pas (ou plus).</p><p>Retournez aux <a href='actualites.html'>actualités</a>.</p>";
+        return;
+      }
+
+      titleEl.textContent = article.title;
+      metaEl.textContent = article.meta;
+
+      contentEl.innerHTML = "";
+      article.paragraphs.forEach(p => {
+        const el = document.createElement("p");
+        el.textContent = p;
+        contentEl.appendChild(el);
       });
-    });
+    }
+
+    loadArticleFromUrl();
   </script>
 </body>
 </html>
