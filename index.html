@@ -47,7 +47,7 @@
     }
 
     .logo img {
-      height: 80px;   /* <-- taille logo header */
+      height: 90px;   /* <-- LOGO HEADER 90px */
       width: auto;
       display: block;
     }
@@ -339,7 +339,7 @@
       gap:10px;
     }
     .footer-brand img {
-      height:80px;  /* <-- taille logo footer */
+      height:120px;  /* <-- LOGO FOOTER 120px */
       width:auto;
       display:block;
     }
@@ -359,7 +359,7 @@
         padding: 12px 16px;
       }
       .main-nav {
-        display: none; /* menu masqué sur mobile pour l’instant */
+        display: none;
       }
       .concept-grid,
       .map-section {
@@ -380,7 +380,7 @@
   </style>
 </head>
 <body>
-  <!-- HEADER avec logo / nav centrée / CTA + panier à droite -->
+  <!-- HEADER -->
   <header>
     <div class="logo">
       <a href="index.html">
@@ -399,7 +399,7 @@
 
     <div class="header-right">
       <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="reservation.html" class="cart-icon" aria-label="Panier de réservation">🛒</a>
+      <a href="reservation.html" class="cart-icon">🛒</a>
     </div>
   </header>
 
@@ -414,6 +414,7 @@
           <span class="label">Date</span>
           <input type="date" id="date-input" />
         </div>
+
         <div class="resa-field">
           <span class="label">Nombre de personnes</span>
           <select id="people-input">
@@ -424,6 +425,7 @@
             <option value="7+">7 personnes et +</option>
           </select>
         </div>
+
         <div class="resa-button-wrapper">
           <button class="resa-button" onclick="goToReservation()">Voir les créneaux</button>
         </div>
@@ -432,32 +434,22 @@
   </section>
 
   <main>
-    <!-- CONCEPT RAPIDE -->
+    <!-- CONCEPT -->
     <section id="concept">
       <h2 class="section-title">Faites entendre votre voix, avec les personnes de votre choix.</h2>
       <p class="section-subtitle">
         Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
       </p>
+
       <div class="concept-grid">
         <div class="concept-text">
-          <p>
-            Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter. Pas de public, pas de gêne :
-            juste votre groupe et un écran plein de chansons.
-          </p>
-          <p>
-            Que ce soit pour un anniversaire, un EVJF/EVG, une soirée d’entreprise ou simplement pour s’amuser,
-            Singbox est pensé pour vous offrir une expérience simple, ludique et mémorable.
-          </p>
-          <p>
-            Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box,
-            puis de recevoir un QR code d’accès pour ouvrir la porte au moment de votre séance.
-          </p>
+          <p>Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter.</p>
+          <p>Pas de public, pas de gêne : juste votre groupe et un écran plein de chansons.</p>
+          <p>Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box.</p>
         </div>
+
         <div class="concept-card">
-          <p>
-            Ici, imagine une grande image / visuel de ton univers Singbox (photo de salle, groupe qui chante, etc.).
-            On l’intégrera plus tard, le texte reste juste un placeholder pour l’instant.
-          </p>
+          <p>Visuel futur à intégrer ici.</p>
         </div>
       </div>
     </section>
@@ -465,70 +457,34 @@
     <!-- OCCASIONS -->
     <section id="occasions">
       <h2 class="section-title">Pour toutes les occasions !</h2>
-      <p class="section-subtitle">
-        Nos salles peuvent accueillir des groupes de différentes tailles, pour un seul objectif : partager un moment de convivialité.
-      </p>
+      <p class="section-subtitle">Des moments funs pour tous les groupes.</p>
 
       <div class="occasion-grid">
-        <div class="occasion-card">
-          <h3>Entre amis</h3>
-          <p>
-            Juste pour le fun, pour décompresser, rire et chanter (trop) fort avec votre bande. Les playlists sont faites pour ça.
-          </p>
-        </div>
-        <div class="occasion-card">
-          <h3>En famille</h3>
-          <p>
-            Un moment intergénérationnel où tout le monde peut choisir ses titres, des classiques aux derniers hits.
-          </p>
-        </div>
-        <div class="occasion-card">
-          <h3>Team building</h3>
-          <p>
-            Renforcez la cohésion d’équipe autour d’une activité simple, fun et accessible à tous. Parfait après une journée de travail.
-          </p>
-        </div>
-        <div class="occasion-card">
-          <h3>Anniversaire</h3>
-          <p>
-            Marquez le coup avec une box privatisée, des chansons personnalisées et la possibilité d’ajouter vos propres surprises.
-          </p>
-        </div>
-        <div class="occasion-card">
-          <h3>EVJF / EVG</h3>
-          <p>
-            Faites vivre un moment inoubliable aux futur·es marié·es avec une soirée 100% personnalisée autour de leurs tubes préférés.
-          </p>
-        </div>
-        <div class="occasion-card">
-          <h3>Et toutes les autres raisons</h3>
-          <p>
-            Envie de s’entraîner pour un casting, célébrer une victoire, ou juste se faire plaisir ? Toutes les excuses sont bonnes.
-          </p>
-        </div>
+        <div class="occasion-card"><h3>Entre amis</h3><p>Rire, chanter, s'amuser.</p></div>
+        <div class="occasion-card"><h3>En famille</h3><p>Des classiques aux hits du moment.</p></div>
+        <div class="occasion-card"><h3>Team building</h3><p>Renforcez la cohésion.</p></div>
+        <div class="occasion-card"><h3>Anniversaire</h3><p>Une expérience unique.</p></div>
+        <div class="occasion-card"><h3>EVJF / EVG</h3><p>Un moment inoubliable.</p></div>
+        <div class="occasion-card"><h3>Et plus encore</h3><p>Toutes les excuses sont bonnes.</p></div>
       </div>
     </section>
 
     <!-- MAP + CONTACT -->
     <section class="map-section">
       <div class="map-placeholder">
-        Carte Google Maps / plan de Singbox<br />
-        (on intégrera l’API ou une image plus tard)
+        Carte Google Maps à intégrer plus tard.
       </div>
+
       <div class="contact-card">
         <h3>Venez chanter chez Singbox</h3>
-        <p><strong>Adresse :</strong><br />[Ton adresse ici]</p>
-        <p><strong>Horaires :</strong><br />À définir (ex : du mardi au dimanche, 18h – 2h)</p>
-        <p><strong>Contact :</strong><br />Téléphone, email, réseaux sociaux…</p>
-        <p>
-          Cette zone pourra contenir des icônes (Instagram, TikTok, etc.), un bouton
-          “Nous contacter” ou un lien vers une page plus détaillée.
-        </p>
+        <p><strong>Adresse :</strong> [Ton adresse]</p>
+        <p><strong>Horaires :</strong> À définir</p>
+        <p><strong>Contact :</strong> Email / Téléphone / Réseaux</p>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER NEWSLETTER + LIENS + CONTACT + RÉSEAUX -->
+  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -551,7 +507,7 @@
         <p><strong>Infos</strong></p>
         <p>Mentions légales</p>
         <p>Politique de confidentialité</p>
-        <p>Conditions générales de vente</p>
+        <p>CGV</p>
       </div>
 
       <div>
@@ -573,7 +529,6 @@
   </footer>
 
   <script>
-    // Redirection vers la page de réservation avec la date choisie
     function goToReservation() {
       const date = document.getElementById("date-input").value;
       if (!date) {
@@ -583,14 +538,10 @@
       window.location.href = "reservation.html?date=" + date;
     }
 
-    // Mettre la date du jour par défaut
     (function initHomeDate() {
       const input = document.getElementById("date-input");
       const today = new Date();
-      const y = today.getFullYear();
-      const m = String(today.getMonth() + 1).padStart(2, "0");
-      const d = String(today.getDate()).padStart(2, "0");
-      input.value = `${y}-${m}-${d}`;
+      input.value = today.toISOString().split("T")[0];
     })();
   </script>
 </body>
