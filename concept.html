@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox - Le concept</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1b2550;
+      background-color: #faf7f2;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      background-color: #0c1633;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo { font-weight: 800; font-size: 20px; letter-spacing: 0.05em; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    .nav-cta {
+      background: linear-gradient(90deg,#ffb74a,#f08b2e);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    .hero-concept {
+      padding: 40px 24px 32px;
+      text-align: center;
+      background: #fff;
+    }
+    .hero-concept h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .hero-concept p {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+    section { margin-bottom: 56px; }
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .text-muted { color: #4b5563; font-size: 14px; line-height: 1.6; }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .split.reverse {
+      grid-template-columns: minmax(0,1fr) minmax(0,1.1fr);
+    }
+    .img-placeholder {
+      background:#111827;
+      border-radius: 16px;
+      min-height: 220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#e5e7eb;
+      font-size:14px;
+      text-align:center;
+      padding:16px;
+    }
+
+    .memories-hero {
+      background:#0c1633;
+      color:#fff;
+      padding:40px 24px 24px;
+      text-align:center;
+    }
+    .memories-hero h2 {
+      margin:0 0 8px;
+      font-size:26px;
+    }
+    .memories-hero p {
+      margin:0;
+      font-size:14px;
+    }
+
+    .photo-grid {
+      background:#0c1633;
+      color:#fff;
+      padding:24px 24px 40px;
+    }
+    .photos {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .photo-item {
+      background:#111827;
+      border-radius:12px;
+      min-height:120px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      padding:8px;
+      text-align:center;
+    }
+    .photo-caption {
+      font-size:13px;
+      text-align:center;
+      margin:0;
+    }
+
+    .story {
+      background:#fff;
+      padding:32px 24px 40px;
+      text-align:center;
+    }
+    .story h2 {
+      margin-top:0;
+      margin-bottom:8px;
+      font-size:22px;
+    }
+    .story p {
+      margin:4px 0;
+      font-size:14px;
+      color:#4b5563;
+      line-height:1.6;
+    }
+    .story .resa-button {
+      margin-top:16px;
+      border:none;
+      padding:10px 22px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#ffb74a,#f08b2e);
+      color:#111827;
+      font-weight:700;
+      cursor:pointer;
+      font-size:14px;
+    }
+
+    @media (max-width: 900px) {
+      .split, .split.reverse {
+        grid-template-columns:minmax(0,1fr);
+      }
+      nav ul { display:none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER identique -->
+  <header>
+    <div class="logo"><a href="index.html">Singbox</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="concept.html">Le concept</a></li>
+        <li class="nav-cta"><a href="index.html#reservation">Réserver</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO CONCEPT -->
+  <section class="hero-concept">
+    <h1>Un karaoké en toute intimité</h1>
+    <p>
+      Inspiré du concept asiatique, Singbox propose des salons privés de karaoké à Toulouse.
+      Que vous chantiez très juste ou très faux, peu importe : l’objectif est de s’amuser,
+      rire et partager un bon moment entre proches.
+    </p>
+  </section>
+
+  <main>
+    <!-- Des salons privés -->
+    <section>
+      <div class="split">
+        <div>
+          <h2 class="section-title">Des salons privés (& insonorisés)</h2>
+          <p class="text-muted">
+            Chaque box est pensée comme un petit cocon : lumières, banquettes, écran, micros…
+            Vous êtes entre vous, sans regard extérieur, pour chanter à tue-tête et lâcher prise.
+          </p>
+          <p class="text-muted">
+            Les salles peuvent accueillir différents groupes (amis, famille, collègues) et sont
+            conçues pour rester confortables, même pendant plusieurs heures de chant.
+          </p>
+        </div>
+        <div class="img-placeholder">
+          Visuel d’une box Singbox (photo ou illustration) – on l’intégrera plus tard.
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalogue de chansons -->
+    <section>
+      <div class="split reverse">
+        <div class="img-placeholder">
+          Image tablette / interface de sélection de chansons.
+        </div>
+        <div>
+          <h2 class="section-title">Un catalogue de chansons XXL</h2>
+          <p class="text-muted">
+            Des classiques français aux derniers hits internationaux, en passant par le rock,
+            la K-pop ou les dessins animés : l’idée est que chacun trouve ses titres favoris.
+          </p>
+          <p class="text-muted">
+            Notre système vous permet de rechercher rapidement une chanson, créer une file
+            d’attente et enchaîner les titres sans coupure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Matériel -->
+    <section>
+      <div class="split">
+        <div>
+          <h2 class="section-title">Un matériel haut de gamme</h2>
+          <p class="text-muted">
+            Micros, enceintes, écran, lumières : nous sélectionnons du matériel fiable et
+            agréable pour que l’expérience soit confortable du début à la fin.
+          </p>
+          <p class="text-muted">
+            Pas besoin d’être ingénieur son : tout est déjà réglé, il vous suffit d’entrer,
+            de scanner votre QR code d’accès et de lancer la première chanson.
+          </p>
+        </div>
+        <div class="img-placeholder">
+          Image matériel / micros / tablette – placeholder pour l’instant.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Créons des souvenirs -->
+  <section class="memories-hero">
+    <h2>Créons des souvenirs</h2>
+    <p>Chaque séance devient un moment à part. À vous d’écrire la bande-son.</p>
+  </section>
+
+  <section class="photo-grid">
+    <div class="photos">
+      <div class="photo-item">Photo 1<br />(soirée karaoké)</div>
+      <div class="photo-item">Photo 2<br />(groupe qui chante)</div>
+      <div class="photo-item">Photo 3<br />(ambiance salle)</div>
+      <div class="photo-item">Photo 4<br />(souvenir de voyage)</div>
+      <div class="photo-item">Photo 5<br />(rire & micro)</div>
+      <div class="photo-item">Photo 6<br />(moment de groupe)</div>
+    </div>
+    <p class="photo-caption">
+      Plus tard, tu pourras mettre ici des vraies photos de l’origine du projet, de tes voyages, etc.
+    </p>
+  </section>
+
+  <!-- Histoire + call-to-action -->
+  <section class="story">
+    <h2>Mais d’où vient cette idée folle ?</h2>
+    <p>
+      Un voyage, des rencontres, une soirée mémorable dans un karaoké asiatique…
+      Et l’envie de ramener ce concept chez nous, à Toulouse.
+    </p>
+    <p>
+      Singbox est né de cette envie : créer un lieu simple, chaleureux et fun,
+      où il suffit de quelques clics pour réserver sa box privée.
+    </p>
+    <button class="resa-button" onclick="location.href='index.html#reservation'">
+      Réserver ma séance
+    </button>
+  </section>
+
+  <!-- FOOTER identique à index.html -->
+  <footer style="background:#05091b;color:#f9fafb;padding:32px 24px 16px;margin-top:0;">
+    <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:24px;">
+      <h3 style="margin:0 0 12px;font-size:18px;">Inscrivez-vous à notre newsletter</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+        <input
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+          style="padding:10px 12px;border-radius:4px;border:none;min-width:240px;max-width:360px;font-size:14px;"
+        />
+        <button
+          style="padding:10px 16px;border:none;border-radius:4px;background:#fbbf24;color:#111827;font-weight:600;font-size:14px;cursor:pointer;"
+        >
+          S'abonner
+        </button>
+      </div>
+    </div>
+
+    <div style="max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;font-size:13px;">
+      <div>
+        <div style="font-weight:700;font-size:18px;margin-bottom:8px;">Singbox</div>
+        <p style="margin:0 0 4px;">Votre karaoké box à Toulouse</p>
+      </div>
+
+      <div>
+        <p style="margin:0 0 4px;"><strong>Infos</strong></p>
+        <p style="margin:0;">Mentions légales</p>
+        <p style="margin:0;">Politique de confidentialité</p>
+        <p style="margin:0;">Conditions générales de vente</p>
+      </div>
+
+      <div>
+        <p style="margin:0 0 4px;"><strong>Contact</strong></p>
+        <p style="margin:0;">[Ton adresse ici]</p>
+        <p style="margin:0;">[Ton email ici]</p>
+        <p style="margin:0;">[Ton téléphone ici]</p>
+      </div>
+
+      <div>
+        <p style="margin:0 0 4px;"><strong>Réseaux</strong></p>
+        <p style="margin:0;">Instagram / TikTok / Facebook</p>
+      </div>
+    </div>
+
+    <div style="max-width:1100px;margin:24px auto 0;border-top:1px solid #111827;padding-top:8px;font-size:11px;text-align:center;color:#9ca3af;">
+      Réalisé avec ♥ pour Singbox
+    </div>
+  </footer>
+</body>
+</html>
