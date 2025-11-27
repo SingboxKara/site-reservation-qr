@@ -5,69 +5,68 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-  try {
-    const id = req.query.id;
+  if (req.method !== "POST") {
+    res.statusCode = 405;
+    return res.json({ error: "Méthode non autorisée" });
+  }
 
-    if (!id) {
-      res.statusCode = 400;
-      return res.json({ valid: false, error: "Missing id" });
+  const { name, email, start_time, end_time, box_id } = req.body || {};
+
+  if (!name || !email || !start_time || !end_time || !box_id) {
+    res.statusCode = 400;
+    return res.json({ error: "Champs manquants" });
+  }
+
+  try {
+    // 1. Vérifier si la box est déjà occupée sur ce créneau
+    // Condition d'OVERLAP : existing.start < new_end AND existing.end > new_start
+    const { data: conflicts, error: conflictError } = await supabase
+      .from("reservations")
+      .select("id, start_time, end_time, box_id")
+      .eq("box_id", box_id)
+      .lt("start_time", end_time)
+      .gt("end_time", start_time);
+
+    if (conflictError) {
+      console.error("Erreur vérification conflits :", conflictError);
+      res.statusCode = 500;
+      return res.json({ error: "Erreur serveur (conflit)" });
     }
 
+    if (conflicts && conflicts.length > 0) {
+      res.statusCode = 400;
+      return res.json({
+        error:
+          "Ce créneau est déjà réservé pour cette box. Choisissez une autre heure ou une autre box.",
+      });
+    }
+
+    // 2. Insérer la réservation
     const { data, error } = await supabase
       .from("reservations")
-      .select("*")
-      .eq("id", id)
+      .insert([
+        {
+          name,
+          email,
+          start_time,
+          end_time,
+          box_id,
+          status: "confirmed",
+        },
+      ])
+      .select()
       .single();
 
-    if (error || !data) {
-      res.statusCode = 404;
-      return res.json({ valid: false, reason: "Réservation introuvable." });
+    if (error) {
+      console.error("Erreur insertion réservation :", error);
+      throw error;
     }
 
-    // Vérif des créneaux + marges
-    const now = new Date();
-    const start = new Date(data.start_time);
-    const end = new Date(data.end_time);
-
-    const marginBeforeMinutes = 5;   // autoriser 5 min AVANT le début
-    const marginBeforeEndMinutes = 5; // couper 5 min AVANT la fin
-
-    // début d'accès QR
-    const startWithMargin = new Date(
-      start.getTime() - marginBeforeMinutes * 60000
-    );
-
-    // dernière minute où on accepte l'entrée
-    const lastEntryTime = new Date(
-      end.getTime() - marginBeforeEndMinutes * 60000
-    );
-
-    let access = false;
-    let reason = "OK";
-
-    if (now < startWithMargin) {
-      access = false;
-      reason = "Trop tôt pour accéder à la box.";
-    } else if (now > lastEntryTime) {
-      access = false;
-      reason = "Créneau terminé, accès refusé.";
-    } else if (data.status !== "confirmed") {
-      access = false;
-      reason = `Statut invalide : ${data.status}`;
-    } else {
-      access = true;
-      reason = "Créneau valide, accès autorisé.";
-    }
-
-    return res.json({
-      valid: true,
-      access,
-      reason,
-      reservation: data,
-    });
+    res.statusCode = 200;
+    return res.json({ success: true, reservation: data });
   } catch (e) {
-    console.error("Erreur /api/check :", e);
+    console.error("Erreur /api/reservation :", e);
     res.statusCode = 500;
-    return res.json({ valid: false, error: e.message });
+    return res.json({ error: "Erreur serveur" });
   }
 };
