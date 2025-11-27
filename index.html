@@ -2,78 +2,489 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Réserver une session</title>
+  <title>Singbox - Réservez votre séance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1b2550;
+      background-color: #faf7f2;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      background-color: #0c1633;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    nav li {
+      cursor: pointer;
+    }
+    .nav-cta {
+      background: linear-gradient(90deg, #ffb74a, #f08b2e);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      background: #0c1633;
+      color: #fff;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .hero p.subtitle {
+      font-size: 18px;
+      margin: 0 0 24px;
+    }
+
+    /* ---------- BARRE RÉSA ---------- */
+    .resa-bar-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .resa-bar {
+      background: #fff;
+      color: #1b2550;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+    }
+    .resa-field {
+      flex: 1 1 180px;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      text-align: left;
+    }
+    .resa-field span.label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      color: #6b7280;
+    }
+    .resa-field input,
+    .resa-field select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    .resa-button-wrapper {
+      flex: 0 0 auto;
+    }
+    .resa-button {
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffb74a, #f08b2e);
+      color: #1b2550;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ---------- SECTION CONCEPT ---------- */
+    main {
+      padding: 32px 24px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    section {
+      margin-bottom: 56px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      text-align: center;
+      font-size: 15px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .concept-text p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .concept-card {
+      background: #101b3f;
+      color: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+    }
+
+    /* ---------- OCCASIONS ---------- */
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 16px;
+    }
+    .occasion-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .occasion-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .occasion-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4b5563;
+    }
+
+    /* ---------- RÉSA / PLANNING ---------- */
+    .resa-infos {
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: flex-end;
+    }
+    .resa-infos label {
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+    }
+    .resa-infos input {
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 900px;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 12px;
+    }
+    th {
+      background-color: #0c1633;
+      color: #fff;
+    }
+    .hour-cell {
+      background-color: #f3f4f6;
+      font-weight: bold;
+      width: 70px;
+    }
+    .slot-free {
+      background-color: #e9ffe9;
+      cursor: pointer;
+    }
+    .slot-busy {
+      background-color: #ffe1e1;
+      color: #6b7280;
+    }
+    #message {
+      margin-top: 8px;
+      font-size: 13px;
+      white-space: pre-line;
+    }
+    #qrcode {
+      margin-top: 12px;
+    }
+
+    /* ---------- FOOTER / MAP ---------- */
+    .map-section {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    .map-placeholder {
+      background: #d1d5db;
+      border-radius: 16px;
+      position: relative;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 14px;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .contact-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    .contact-card p {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #4b5563;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 800px) {
+      nav ul {
+        display: none;
+      }
+      .concept-grid,
+      .map-section {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .resa-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .resa-button-wrapper {
+        width: 100%;
+      }
+      .resa-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Réserver une session</h1>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Singbox</div>
+    <nav>
+      <ul>
+        <li><a href="#concept">Le concept</a></li>
+        <li><a href="#occasions">Occasions</a></li>
+        <li><a href="#reservation">Réserver</a></li>
+        <li class="nav-cta"><a href="#reservation">Réserver</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <form id="reservation-form">
-    <label>
-      Nom / Prénom :
-      <input type="text" name="name" required />
-    </label><br />
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Réservez votre séance</h1>
+    <p class="subtitle">Choisissez la date et découvrez les créneaux disponibles dans vos box privées.</p>
 
-    <label>
-      Email :
-      <input type="email" name="email" required />
-    </label><br />
+    <div class="resa-bar-wrapper">
+      <div class="resa-bar">
+        <div class="resa-field">
+          <span class="label">Date</span>
+          <input type="date" id="date-input" />
+        </div>
+        <div class="resa-field">
+          <span class="label">Nombre de personnes</span>
+          <select id="people-input">
+            <option value="">Non défini</option>
+            <option value="2">2 personnes</option>
+            <option value="3-4">3-4 personnes</option>
+            <option value="5-6">5-6 personnes</option>
+            <option value="7+">7 personnes et +</option>
+          </select>
+        </div>
+        <div class="resa-button-wrapper">
+          <!-- IMPORTANT : id="load-button" pour le JS -->
+          <button id="load-button" class="resa-button">Voir les créneaux</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <label>
-      Date :
-      <input type="date" name="date" required />
-    </label><br />
+  <main>
+    <!-- CONCEPT -->
+    <section id="concept">
+      <h2 class="section-title">Faites entendre votre voix, avec les personnes de votre choix.</h2>
+      <p class="section-subtitle">
+        Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-text">
+          <p>
+            Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter. Pas de public, pas de gêne :
+            juste votre groupe et un écran plein de chansons.
+          </p>
+          <p>
+            Que ce soit pour un anniversaire, un EVJF/EVG, une soirée d’entreprise ou simplement pour s’amuser,
+            Singbox est pensé pour vous offrir une expérience simple, ludique et mémorable.
+          </p>
+          <p>
+            Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box,
+            puis de recevoir un QR code d’accès pour ouvrir la porte au moment de votre séance.
+          </p>
+        </div>
+        <div class="concept-card">
+          <p>
+            Ici, imagine une grande image / visuel de ton univers Singbox (photo de salle, groupe qui chante, etc.).
+            On l’intègrera plus tard, le texte reste juste un placeholder pour l’instant.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <label>
-      Heure de début (créneau d'1h) :
-      <select name="time" required>
-        <option value="00:00">00h00 - 01h00</option>
-        <option value="01:00">01h00 - 02h00</option>
-        <option value="02:00">02h00 - 03h00</option>
-        <option value="03:00">03h00 - 04h00</option>
-        <option value="04:00">04h00 - 05h00</option>
-        <option value="05:00">05h00 - 06h00</option>
-        <option value="06:00">06h00 - 07h00</option>
-        <option value="07:00">07h00 - 08h00</option>
-        <option value="08:00">08h00 - 09h00</option>
-        <option value="09:00">09h00 - 10h00</option>
-        <option value="10:00">10h00 - 11h00</option>
-        <option value="11:00">11h00 - 12h00</option>
-        <option value="12:00">12h00 - 13h00</option>
-        <option value="13:00">13h00 - 14h00</option>
-        <option value="14:00">14h00 - 15h00</option>
-        <option value="15:00">15h00 - 16h00</option>
-        <option value="16:00">16h00 - 17h00</option>
-        <option value="17:00">17h00 - 18h00</option>
-        <option value="18:00">18h00 - 19h00</option>
-        <option value="19:00">19h00 - 20h00</option>
-        <option value="20:00">20h00 - 21h00</option>
-        <option value="21:00">21h00 - 22h00</option>
-        <option value="22:00">22h00 - 23h00</option>
-        <option value="23:00">23h00 - 00h00</option>
-      </select>
-    </label><br />
+    <!-- OCCASIONS -->
+    <section id="occasions">
+      <h2 class="section-title">Pour toutes les occasions !</h2>
+      <p class="section-subtitle">
+        Nos salles peuvent accueillir des groupes de différentes tailles, pour un seul objectif : partager un moment de convivialité.
+      </p>
 
-    <label>
-      Box :
-      <select name="box_id" required>
-        <option value="1">Box 1</option>
-        <option value="2">Box 2</option>
-        <!-- Tu peux rajouter d'autres box ici -->
-      </select>
-    </label><br />
+      <div class="occasion-grid">
+        <div class="occasion-card">
+          <h3>Entre amis</h3>
+          <p>
+            Juste pour le fun, pour décompresser, rire et chanter (trop) fort avec votre bande. Les playlists sont faites pour ça.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>En famille</h3>
+          <p>
+            Un moment intergénérationnel où tout le monde peut choisir ses titres, des classiques aux derniers hits.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Team building</h3>
+          <p>
+            Renforcez la cohésion d’équipe autour d’une activité simple, fun et accessible à tous. Parfait après une journée de travail.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Anniversaire</h3>
+          <p>
+            Marquez le coup avec une box privatisée, des chansons personnalisées et la possibilité d’ajouter vos propres surprises.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>EVJF / EVG</h3>
+          <p>
+            Faites vivre un moment inoubliable aux futur·es marié·es avec une soirée 100% personnalisée autour de leurs tubes préférés.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Et toutes les autres raisons</h3>
+          <p>
+            Envie de s’entraîner pour un casting, célébrer une victoire, ou juste se faire plaisir ? Toutes les excuses sont bonnes.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <button type="submit">Réserver</button>
-  </form>
+    <!-- RÉSERVATION + PLANNING -->
+    <section id="reservation">
+      <h2 class="section-title">Réservez votre box en ligne</h2>
+      <p class="section-subtitle">
+        Choisissez une date dans la barre en haut, puis cliquez sur un créneau <strong>Libre</strong> pour créer une réservation d’1h.
+      </p>
 
-  <p id="message"></p>
+      <div class="resa-infos">
+        <label>
+          Nom / Prénom
+          <input type="text" id="name-input" placeholder="Votre nom" />
+        </label>
+        <label>
+          Email
+          <input type="email" id="email-input" placeholder="vous@example.com" />
+        </label>
+      </div>
 
-  <!-- Zone où on affichera le QR code -->
-  <div id="qrcode"></div>
+      <div id="planning-container">
+        <!-- Le tableau planning est généré ici par script.js -->
+      </div>
 
-  <!-- Librairie pour générer des QR codes -->
+      <p id="message"></p>
+      <div id="qrcode"></div>
+    </section>
+
+    <!-- MAP + CONTACT -->
+    <section class="map-section">
+      <div class="map-placeholder">
+        Carte Google Maps / plan de Singbox<br />
+        (on intégrera l’API Google Maps ou une image plus tard)
+      </div>
+      <div class="contact-card">
+        <h3>Venez chanter chez Singbox</h3>
+        <p><strong>Adresse :</strong><br />[Ton adresse ici]</p>
+        <p><strong>Horaires :</strong><br />À définir (ex : du mardi au dimanche, 18h – 2h)</p>
+        <p><strong>Contact :</strong><br />Téléphone, email, réseaux sociaux…</p>
+        <p>
+          Cette zone pourra contenir des icônes (Instagram, TikTok, etc.), un bouton
+          “Nous contacter” ou un lien vers une page plus détaillée.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © Singbox – Karaoké box privé. Contenu, visuels et horaires à définir.
+  </footer>
+
+  <!-- QRCode lib -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+  <!-- Ton script de planning / réservation (version que je t'ai déjà donnée) -->
   <script src="script.js"></script>
 </body>
 </html>
