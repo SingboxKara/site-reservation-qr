@@ -14,9 +14,9 @@ form.addEventListener("submit", async (e) => {
 
   const name = formData.get("name");
   const email = formData.get("email");
-  const date = formData.get("date");      // ex: 2025-11-27
-  const time = formData.get("time");      // ex: 20:00
-  const duration = parseInt(formData.get("duration"), 10); // minutes
+  const date = formData.get("date");
+  const time = formData.get("time");
+  const duration = parseInt(formData.get("duration"), 10);
   const boxId = parseInt(formData.get("box_id"), 10);
 
   if (!date || !time || !duration || !boxId) {
@@ -24,8 +24,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Construire start_time en ISO
-  const startLocal = new Date(`${date}T${time}:00`); // heure locale
+  const startLocal = new Date(`${date}T${time}:00`);
   const endLocal = new Date(startLocal.getTime() + duration * 60000);
 
   const start_time = startLocal.toISOString();
@@ -40,6 +39,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
+    // 1) Créer la réservation
     const res = await fetch("/api/reservation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,7 +49,6 @@ form.addEventListener("submit", async (e) => {
     const json = await res.json();
 
     if (!res.ok) {
-      // on montre l'erreur renvoyée par l'API (créneau pris, etc.)
       throw new Error(json.error || "Erreur serveur");
     }
 
@@ -58,8 +57,9 @@ form.addEventListener("submit", async (e) => {
 
     message.textContent = "Réservation enregistrée ✅";
 
+    // 2) Générer le QR sur la page
     if (reservationId) {
-      const qrPayload = reservationId; // ce qu'on met dans le QR
+      const qrPayload = reservationId;
 
       qrCode = new QRCode(qrContainer, {
         text: qrPayload,
@@ -68,6 +68,21 @@ form.addEventListener("submit", async (e) => {
       });
 
       message.textContent += "\nQR code généré ci-dessous 👇";
+    }
+
+    // 3) Appeler l'API d'envoi d'email (en arrière-plan)
+    if (reservationId) {
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservationId }),
+      }).then((r) => {
+        if (!r.ok) {
+          console.error("Erreur envoi email", r.status);
+        }
+      }).catch((err) => {
+        console.error("Erreur fetch /api/send-email", err);
+      });
     }
 
     form.reset();
