@@ -14,6 +14,7 @@
     }
     a { color: inherit; text-decoration: none; }
 
+    /* ---------- HEADER ---------- */
     header {
       background-color: #0c1633;
       color: #fff;
@@ -25,7 +26,15 @@
       top: 0;
       z-index: 10;
     }
-    .logo { font-weight: 800; font-size: 20px; letter-spacing: 0.05em; }
+    .logo {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+    }
+    .logo a {
+      color: #fff;
+      text-decoration: none;
+    }
     nav ul {
       list-style: none;
       display: flex;
@@ -34,6 +43,10 @@
       padding: 0;
       font-size: 14px;
     }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+    }
     .nav-cta {
       background: linear-gradient(90deg,#ffb74a,#f08b2e);
       padding: 8px 16px;
@@ -41,6 +54,7 @@
       font-weight: 600;
     }
 
+    /* ---------- HERO ---------- */
     .hero-concept {
       padding: 40px 24px 32px;
       text-align: center;
@@ -57,6 +71,7 @@
       line-height: 1.5;
     }
 
+    /* ---------- CONTENU ---------- */
     main {
       max-width: 1100px;
       margin: 0 auto;
@@ -92,6 +107,7 @@
       padding:16px;
     }
 
+    /* ---------- BLOC SOUVENIRS ---------- */
     .memories-hero {
       background:#0c1633;
       color:#fff;
@@ -167,12 +183,14 @@
       .split, .split.reverse {
         grid-template-columns:minmax(0,1fr);
       }
+      /* on pourra plus tard mettre un menu burger,
+         pour l'instant on cache le menu sur mobile */
       nav ul { display:none; }
     }
   </style>
 </head>
 <body>
-  <!-- HEADER identique -->
+  <!-- HEADER -->
   <header>
     <div class="logo"><a href="index.html">Singbox</a></div>
     <nav>
