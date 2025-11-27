@@ -166,6 +166,7 @@
       border:1px solid #111827;
       font-size:13px;
       font-family:inherit;
+      box-sizing:border-box;
     }
     .form-field textarea {
       resize:vertical;
@@ -333,7 +334,7 @@
     .footer-bottom {
       max-width:1100px;
       margin:24px auto 0;
-      border-top:1px solid #111827;
+      border-top:1px solid:#111827;
       padding-top:8px;
       font-size:11px;
       text-align:center;
@@ -389,14 +390,22 @@
         <h2>Contactez Singbox</h2>
         <p class="small">Dites-nous en quelques mots votre besoin, on vous répond par e-mail ou téléphone.</p>
 
-        <form action="#" method="post">
+        <!-- FORMULAIRE CONNECTÉ À WEB3FORMS -->
+        <form action="https://api.web3forms.com/submit" method="POST">
+          <!-- Clé API Web3Forms (à remplacer) -->
+          <input type="hidden" name="access_key" value="TON_ACCESS_KEY_WEB3FORMS" />
+          <!-- Pour savoir d'où vient le message -->
+          <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
+          <input type="hidden" name="from_name" value="Site Singbox" />
+
+          <!-- Type de contact -->
           <div class="contact-type">
             <label>
-              <input type="radio" name="type" value="particulier" checked />
+              <input type="radio" name="type" value="Particulier" checked />
               Particulier
             </label>
             <label>
-              <input type="radio" name="type" value="entreprise" />
+              <input type="radio" name="type" value="Entreprise" />
               Entreprise
             </label>
           </div>
@@ -404,7 +413,7 @@
           <div class="form-row">
             <div class="form-field">
               <label for="prenom">Nom / Prénom</label>
-              <input type="text" id="prenom" name="prenom" placeholder="Votre nom complet" />
+              <input type="text" id="prenom" name="nom_prenom" placeholder="Votre nom complet" required />
             </div>
             <div class="form-field">
               <label for="telephone">Téléphone</label>
@@ -415,7 +424,7 @@
           <div class="form-row">
             <div class="form-field">
               <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" placeholder="votre@email.fr" />
+              <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
             </div>
             <div class="form-field">
               <label for="sujet">Objet</label>
@@ -425,22 +434,23 @@
 
           <div class="form-field">
             <label for="message">Votre message</label>
-            <textarea id="message" name="message" placeholder="Expliquez-nous votre demande"></textarea>
+            <textarea id="message" name="message" placeholder="Expliquez-nous votre demande" required></textarea>
           </div>
 
           <div class="consents">
             <label>
-              <input type="checkbox" name="newsletter" />
+              <input type="checkbox" name="newsletter" value="oui" />
               <span>J’autorise Singbox à m’envoyer ponctuellement des informations et offres liées au karaoké.</span>
             </label>
             <label>
-              <input type="checkbox" name="rgpd" />
+              <input type="checkbox" name="rgpd" value="oui" required />
               <span>Je confirme avoir pris connaissance des informations relatives à l’utilisation de mes données.</span>
             </label>
           </div>
 
           <div class="fake-captcha">
-            Zone reCAPTCHA (placeholder – à remplacer plus tard si tu veux le vrai système).
+            Protection anti-spam gérée par Web3Forms.<br />
+            (Tu pourras activer reCAPTCHA côté Web3Forms si tu veux aller plus loin.)
           </div>
 
           <div class="contact-submit">
