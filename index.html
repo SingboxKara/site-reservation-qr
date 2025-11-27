@@ -1,230 +1,523 @@
-// ===================== CONFIG PLANNING =====================
-const BOXES = [1, 2]; // ajoute 3, 4... si tu as plus de box
-const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
-
-// Éléments du DOM (uniquement sur reservation.html)
-const nameInput = document.getElementById("name-input");
-const emailInput = document.getElementById("email-input");
-const dateInput = document.getElementById("date-input");
-const loadButton = document.getElementById("load-button");
-const planningContainer = document.getElementById("planning-container");
-const message = document.getElementById("message");
-const qrContainer = document.getElementById("qrcode");
-
-let qrCode = null;
-
-// ===================== INIT =====================
-(function initReservationPage() {
-  if (!dateInput || !loadButton) {
-    // On est probablement sur une autre page (ex: index, concept)
-    return;
-  }
-
-  // 1) Récupérer une date depuis l'URL si présente
-  const params = new URLSearchParams(window.location.search);
-  const dateFromUrl = params.get("date");
-
-  if (dateFromUrl) {
-    dateInput.value = dateFromUrl;
-  } else {
-    // sinon, mettre la date du jour
-    const today = new Date();
-    const y = today.getFullYear();
-    const m = String(today.getMonth() + 1).padStart(2, "0");
-    const d = String(today.getDate()).padStart(2, "0");
-    dateInput.value = `${y}-${m}-${d}`;
-  }
-
-  // 2) Charger le planning pour la date actuelle
-  if (dateInput.value) {
-    loadPlanning(dateInput.value);
-  }
-
-  // 3) Bouton "Voir les créneaux"
-  loadButton.addEventListener("click", () => {
-    const date = dateInput.value;
-    if (!date) {
-      alert("Choisis une date d'abord.");
-      return;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox - Réservez votre séance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
     }
-    loadPlanning(date);
-  });
-})();
-
-// ===================== CHARGER LE PLANNING =====================
-async function loadPlanning(date) {
-  planningContainer.innerHTML = "Chargement du planning...";
-  message.textContent = "";
-  qrContainer.innerHTML = "";
-  qrCode = null;
-
-  try {
-    const res = await fetch(`/api/slots?date=${encodeURIComponent(date)}`);
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json.error || "Erreur serveur");
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #1b2550;
+      background-color: #faf7f2;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    const reservations = json.reservations || [];
-
-    // Créneaux occupés, ex: "1-15" = box 1 à 15h
-    const busySlots = new Set();
-    for (const r of reservations) {
-      if (!r.start_time || !r.box_id) continue;
-      const start = new Date(r.start_time);
-      const hour = start.getHours(); // 0..23
-      const key = `${r.box_id}-${hour}`;
-      busySlots.add(key);
+    /* ---------- HEADER ---------- */
+    header {
+      background-color: #0c1633;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo a {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    nav li {
+      cursor: pointer;
+    }
+    nav a {
+      color: #fff;
+    }
+    .nav-cta {
+      background: linear-gradient(90deg, #ffb74a, #f08b2e);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
     }
 
-    // ----- Génération du tableau -----
-    const table = document.createElement("table");
-
-    // En-tête
-    const thead = document.createElement("thead");
-    const headRow = document.createElement("tr");
-
-    const emptyTh = document.createElement("th");
-    emptyTh.textContent = "Heure";
-    headRow.appendChild(emptyTh);
-
-    for (const box of BOXES) {
-      const th = document.createElement("th");
-      th.textContent = `Box ${box}`;
-      headRow.appendChild(th);
+    /* ---------- HERO ---------- */
+    .hero {
+      background: #0c1633;
+      color: #fff;
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .hero p.subtitle {
+      font-size: 18px;
+      margin: 0 0 24px;
     }
 
-    thead.appendChild(headRow);
-    table.appendChild(thead);
+    /* ---------- BARRE RÉSA ---------- */
+    .resa-bar-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+    .resa-bar {
+      background: #fff;
+      color: #1b2550;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      padding: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+    }
+    .resa-field {
+      flex: 1 1 180px;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      text-align: left;
+    }
+    .resa-field span.label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      color: #6b7280;
+    }
+    .resa-field input,
+    .resa-field select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    .resa-button-wrapper {
+      flex: 0 0 auto;
+    }
+    .resa-button {
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffb74a, #f08b2e);
+      color: #1b2550;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
-    // Corps
-    const tbody = document.createElement("tbody");
+    /* ---------- SECTIONS GLOBALES ---------- */
+    main {
+      padding: 32px 24px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    section {
+      margin-bottom: 56px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      text-align: center;
+      font-size: 15px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
 
-    for (const hour of HOURS) {
-      const row = document.createElement("tr");
+    /* ---------- CONCEPT ---------- */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .concept-text p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .concept-card {
+      background: #101b3f;
+      color: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+    }
 
-      const hourCell = document.createElement("td");
-      hourCell.className = "hour-cell";
-      hourCell.textContent = `${hour.toString().padStart(2, "0")}h`;
-      row.appendChild(hourCell);
+    /* ---------- OCCASIONS ---------- */
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 16px;
+    }
+    .occasion-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .occasion-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .occasion-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4b5563;
+    }
 
-      for (const box of BOXES) {
-        const cell = document.createElement("td");
-        const key = `${box}-${hour}`;
+    /* ---------- MAP + CONTACT ---------- */
+    .map-section {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    .map-placeholder {
+      background: #d1d5db;
+      border-radius: 16px;
+      position: relative;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 14px;
+      text-align: center;
+      padding: 16px;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .contact-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    .contact-card p {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #4b5563;
+    }
 
-        if (busySlots.has(key)) {
-          cell.className = "slot-busy";
-          cell.textContent = "Réservé";
-        } else {
-          cell.className = "slot-free";
-          cell.textContent = "Libre";
-          cell.dataset.boxId = String(box);
-          cell.dataset.hour = String(hour);
+    /* ---------- FOOTER NEWSLETTER ---------- */
+    footer {
+      background:#05091b;
+      color:#f9fafb;
+      padding:32px 24px 16px;
+      margin-top:40px;
+    }
+    footer h3 {
+      margin-bottom:12px;
+      font-size:18px;
+    }
+    .newsletter-container {
+      max-width:1100px;
+      margin:0 auto 24px;
+      text-align:center;
+    }
+    .newsletter-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+    }
+    footer input[type=email] {
+      padding:10px 12px;
+      border-radius:4px;
+      border:none;
+      min-width:240px;
+      max-width:360px;
+      font-size:14px;
+    }
+    footer button {
+      padding:10px 16px;
+      border:none;
+      border-radius:4px;
+      background:#fbbf24;
+      color:#111827;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .footer-columns {
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:24px;
+      justify-content:space-between;
+      font-size:13px;
+    }
+    .footer-columns p {
+      margin:4px 0;
+    }
+    .footer-bottom {
+      max-width:1100px;
+      margin:24px auto 0;
+      border-top:1px solid:#111827;
+      padding-top:8px;
+      font-size:11px;
+      text-align:center;
+      color:#9ca3af;
+    }
 
-          cell.addEventListener("click", () => {
-            handleSlotClick(date, box, hour);
-          });
-        }
-
-        row.appendChild(cell);
+    @media (max-width: 800px) {
+      nav ul {
+        display: none;
       }
+      .concept-grid,
+      .map-section {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .resa-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .resa-button-wrapper {
+        width: 100%;
+      }
+      .resa-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER avec vraies pages -->
+  <header>
+    <div class="logo"><a href="index.html">Singbox</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="concept.html">Le concept</a></li>
+        <li><a href="reservation.html">Réserver</a></li>
+        <li class="nav-cta"><a href="reservation.html">Réserver</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      tbody.appendChild(row);
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Réservez votre séance</h1>
+    <p class="subtitle">Choisissez la date, puis découvrez les créneaux disponibles dans vos box privées.</p>
+
+    <div class="resa-bar-wrapper">
+      <div class="resa-bar">
+        <div class="resa-field">
+          <span class="label">Date</span>
+          <input type="date" id="date-input" />
+        </div>
+        <div class="resa-field">
+          <span class="label">Nombre de personnes</span>
+          <select id="people-input">
+            <option value="">Non défini</option>
+            <option value="2">2 personnes</option>
+            <option value="3-4">3-4 personnes</option>
+            <option value="5-6">5-6 personnes</option>
+            <option value="7+">7 personnes et +</option>
+          </select>
+        </div>
+        <div class="resa-button-wrapper">
+          <button class="resa-button" onclick="goToReservation()">Voir les créneaux</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- CONCEPT RAPIDE -->
+    <section id="concept">
+      <h2 class="section-title">Faites entendre votre voix, avec les personnes de votre choix.</h2>
+      <p class="section-subtitle">
+        Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-text">
+          <p>
+            Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter. Pas de public, pas de gêne :
+            juste votre groupe et un écran plein de chansons.
+          </p>
+          <p>
+            Que ce soit pour un anniversaire, un EVJF/EVG, une soirée d’entreprise ou simplement pour s’amuser,
+            Singbox est pensé pour vous offrir une expérience simple, ludique et mémorable.
+          </p>
+          <p>
+            Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box,
+            puis de recevoir un QR code d’accès pour ouvrir la porte au moment de votre séance.
+          </p>
+        </div>
+        <div class="concept-card">
+          <p>
+            Ici, imagine une grande image / visuel de ton univers Singbox (photo de salle, groupe qui chante, etc.).
+            On l’intégrera plus tard, le texte reste juste un placeholder pour l’instant.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OCCASIONS -->
+    <section id="occasions">
+      <h2 class="section-title">Pour toutes les occasions !</h2>
+      <p class="section-subtitle">
+        Nos salles peuvent accueillir des groupes de différentes tailles, pour un seul objectif : partager un moment de convivialité.
+      </p>
+
+      <div class="occasion-grid">
+        <div class="occasion-card">
+          <h3>Entre amis</h3>
+          <p>
+            Juste pour le fun, pour décompresser, rire et chanter (trop) fort avec votre bande. Les playlists sont faites pour ça.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>En famille</h3>
+          <p>
+            Un moment intergénérationnel où tout le monde peut choisir ses titres, des classiques aux derniers hits.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Team building</h3>
+          <p>
+            Renforcez la cohésion d’équipe autour d’une activité simple, fun et accessible à tous. Parfait après une journée de travail.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Anniversaire</h3>
+          <p>
+            Marquez le coup avec une box privatisée, des chansons personnalisées et la possibilité d’ajouter vos propres surprises.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>EVJF / EVG</h3>
+          <p>
+            Faites vivre un moment inoubliable aux futur·es marié·es avec une soirée 100% personnalisée autour de leurs tubes préférés.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Et toutes les autres raisons</h3>
+          <p>
+            Envie de s’entraîner pour un casting, célébrer une victoire, ou juste se faire plaisir ? Toutes les excuses sont bonnes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP + CONTACT -->
+    <section class="map-section">
+      <div class="map-placeholder">
+        Carte Google Maps / plan de Singbox<br />
+        (on intégrera l’API ou une image plus tard)
+      </div>
+      <div class="contact-card">
+        <h3>Venez chanter chez Singbox</h3>
+        <p><strong>Adresse :</strong><br />[Ton adresse ici]</p>
+        <p><strong>Horaires :</strong><br />À définir (ex : du mardi au dimanche, 18h – 2h)</p>
+        <p><strong>Contact :</strong><br />Téléphone, email, réseaux sociaux…</p>
+        <p>
+          Cette zone pourra contenir des icônes (Instagram, TikTok, etc.), un bouton
+          “Nous contacter” ou un lien vers une page plus détaillée.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER NEWSLETTER + LIENS + CONTACT + RÉSEAUX -->
+  <footer>
+    <div class="newsletter-container">
+      <h3>Inscrivez-vous à notre newsletter</h3>
+      <div class="newsletter-row">
+        <input type="email" placeholder="Entrez votre adresse e-mail" />
+        <button>S'abonner</button>
+      </div>
+    </div>
+
+    <div class="footer-columns">
+      <div>
+        <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
+        <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+      </div>
+
+      <div>
+        <p><strong>Infos</strong></p>
+        <p>Mentions légales</p>
+        <p>Politique de confidentialité</p>
+        <p>Conditions générales de vente</p>
+      </div>
+
+      <div>
+        <p><strong>Contact</strong></p>
+        <p>Adresse : [à compléter]</p>
+        <p>Email : [à compléter]</p>
+        <p>Téléphone : [à compléter]</p>
+      </div>
+
+      <div>
+        <p><strong>Réseaux</strong></p>
+        <p>Instagram / TikTok / Facebook</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      Réalisé avec ♥ pour Singbox
+    </div>
+  </footer>
+
+  <script>
+    // Redirection vers la page de réservation avec la date choisie
+    function goToReservation() {
+      const date = document.getElementById("date-input").value;
+      if (!date) {
+        alert("Choisissez une date");
+        return;
+      }
+      window.location.href = "reservation.html?date=" + date;
     }
 
-    table.appendChild(tbody);
-
-    planningContainer.innerHTML = "";
-    planningContainer.appendChild(table);
-  } catch (err) {
-    console.error(err);
-    planningContainer.innerHTML = "Erreur : " + err.message;
-  }
-}
-
-// ===================== CLIQUE SUR UN CRÉNEAU LIBRE =====================
-async function handleSlotClick(date, boxId, hour) {
-  const name = nameInput.value.trim();
-  const email = emailInput.value.trim();
-
-  if (!name || !email) {
-    alert("Entre d'abord ton nom et ton email.");
-    return;
-  }
-
-  const hourLabel = `${hour.toString().padStart(2, "0")}h - ${((hour + 1) % 24)
-    .toString()
-    .padStart(2, "0")}h`;
-
-  const ok = confirm(
-    `Confirmer la réservation ?\n\nDate : ${date}\nCréneau : ${hourLabel}\nBox : ${boxId}\nNom : ${name}\nEmail : ${email}`
-  );
-  if (!ok) return;
-
-  // Créneau d'1h
-  const hourStr = `${hour.toString().padStart(2, "0")}:00`;
-  const startLocal = new Date(`${date}T${hourStr}:00`);
-  const endLocal = new Date(startLocal.getTime() + 60 * 60000);
-
-  const start_time = startLocal.toISOString();
-  const end_time = endLocal.toISOString();
-
-  const payload = {
-    name,
-    email,
-    start_time,
-    end_time,
-    box_id: boxId,
-  };
-
-  message.textContent = "Création de la réservation...";
-  qrContainer.innerHTML = "";
-  qrCode = null;
-
-  try {
-    // 1) Création de la réservation
-    const res = await fetch("/api/reservation", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.error || "Erreur serveur");
-    }
-
-    const reservation = json.reservation;
-    const reservationId = reservation && reservation.id;
-
-    message.textContent = "Réservation enregistrée ✅";
-
-    // 2) QR code à l'écran
-    if (reservationId) {
-      qrCode = new QRCode(qrContainer, {
-        text: reservationId,
-        width: 128,
-        height: 128,
-      });
-      message.textContent += "\nQR code généré ci-dessous 👇";
-    }
-
-    // 3) Envoi d'email (en arrière-plan)
-    if (reservationId) {
-      fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reservationId }),
-      }).catch((err) => {
-        console.error("Erreur /api/send-email :", err);
-      });
-    }
-
-    // 4) Rafraîchir le planning pour bloquer le créneau
-    loadPlanning(date);
-  } catch (err) {
-    console.error(err);
-    message.textContent = "Erreur : " + err.message;
-  }
-}
+    // Mettre la date du jour par défaut
+    (function initHomeDate() {
+      const input = document.getElementById("date-input");
+      const today = new Date();
+      const y = today.getFullYear();
+      const m = String(today.getMonth() + 1).padStart(2, "0");
+      const d = String(today.getDate()).padStart(2, "0");
+      input.value = `${y}-${m}-${d}`;
+    })();
+  </script>
+</body>
+</html>
