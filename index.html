@@ -2,22 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <title>Singbox - Réservez votre séance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Singbox - Réservation Karaoke</title>
   <style>
-    * { box-sizing: border-box; }
-
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #faf7f2;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #1b2550;
+      background-color: #faf7f2;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
-    /* ---------------------- HEADER ---------------------- */
+    /* ---------- HEADER ---------- */
     header {
       background-color: #0c1633;
-      color: white;
+      color: #fff;
       padding: 12px 24px;
       display: flex;
       align-items: center;
@@ -26,237 +31,558 @@
       top: 0;
       z-index: 10;
     }
-
     .logo a {
-      color: white;
-      text-decoration: none;
+      font-weight: 800;
       font-size: 20px;
-      font-weight: bold;
       letter-spacing: 0.05em;
+      color: #fff;
     }
-
     nav ul {
       list-style: none;
-      margin: 0;
-      padding: 0;
       display: flex;
       gap: 24px;
-      align-items: center;
-    }
-
-    nav ul li a {
-      color: white;
-      text-decoration: none;
+      margin: 0;
+      padding: 0;
       font-size: 14px;
     }
-
+    nav li {
+      cursor: pointer;
+    }
+    nav a {
+      color: #fff;
+    }
     .nav-cta {
       background: linear-gradient(90deg, #ffb74a, #f08b2e);
       padding: 8px 16px;
       border-radius: 999px;
-      font-weight: bold;
+      font-weight: 600;
     }
 
-    /* ---------------------- RÉSERVATION (TON EXISTANT) ---------------------- */
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    label { font-weight: bold; }
-
-    input, select {
-      padding: 8px;
-      width: 100%;
-      margin-bottom: 12px;
-    }
-
-    button {
-      padding: 10px 18px;
+    /* ---------- HERO ---------- */
+    .hero {
       background: #0c1633;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    /* ---------------------- FOOTER ---------------------- */
-    footer {
-      background: #05091b;
-      color: #f9fafb;
-      padding: 32px 24px 16px;
-      margin-top: 40px;
-    }
-
-    footer h3 {
-      margin-bottom: 12px;
-      font-size: 18px;
-    }
-
-    .newsletter-container {
-      max-width: 1100px;
-      margin: 0 auto 24px;
+      color: #fff;
+      padding: 60px 24px 40px;
       text-align: center;
     }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .hero p.subtitle {
+      font-size: 18px;
+      margin: 0 0 24px;
+    }
 
-    .newsletter-row {
+    /* ---------- BARRE RÉSA ---------- */
+    .resa-bar-wrapper {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      margin-top: 12px;
     }
-
-    footer input[type=email] {
-      padding: 10px 12px;
-      border-radius: 4px;
-      border: none;
-      min-width: 240px;
-      max-width: 360px;
-    }
-
-    footer button {
-      background: #fbbf24;
-      color: #111827;
-      padding: 10px 16px;
-      border-radius: 4px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .footer-columns {
-      max-width: 1100px;
-      margin: 0 auto;
+    .resa-bar {
+      background: #fff;
+      color: #1b2550;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      padding: 12px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 24px;
+      gap: 12px;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+    }
+    .resa-field {
+      flex: 1 1 180px;
+      display: flex;
+      flex-direction: column;
       font-size: 13px;
+      text-align: left;
     }
-
-    .footer-columns p {
-      margin: 4px 0;
-    }
-
-    .footer-bottom {
-      max-width: 1100px;
-      margin: 24px auto 0;
-      border-top: 1px solid #111827;
-      padding-top: 8px;
-      text-align: center;
+    .resa-field span.label {
       font-size: 11px;
-      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      color: #6b7280;
+    }
+    .resa-field input,
+    .resa-field select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    .resa-button-wrapper {
+      flex: 0 0 auto;
+    }
+    .resa-button {
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffb74a, #f08b2e);
+      color: #1b2550;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ---------- SECTIONS GLOBALES ---------- */
+    main {
+      padding: 32px 24px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    section {
+      margin-bottom: 56px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      text-align: center;
+      font-size: 15px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    /* ---------- CONCEPT ---------- */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .concept-text p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .concept-card {
+      background: #101b3f;
+      color: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+    }
+
+    /* ---------- OCCASIONS ---------- */
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 16px;
+    }
+    .occasion-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .occasion-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .occasion-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4b5563;
+    }
+
+    /* ---------- RÉSA / PLANNING ---------- */
+    .resa-infos {
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: flex-end;
+    }
+    .resa-infos label {
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+    }
+    .resa-infos input {
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 900px;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 12px;
+    }
+    th {
+      background-color: #0c1633;
+      color: #fff;
+    }
+    .hour-cell {
+      background-color: #f3f4f6;
+      font-weight: bold;
+      width: 70px;
+    }
+    .slot-free {
+      background-color: #e9ffe9;
+      cursor: pointer;
+    }
+    .slot-busy {
+      background-color: #ffe1e1;
+      color: #6b7280;
+    }
+    #message {
+      margin-top: 8px;
+      font-size: 13px;
+      white-space: pre-line;
+    }
+    #qrcode {
+      margin-top: 12px;
+    }
+
+    /* ---------- MAP + CONTACT ---------- */
+    .map-section {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    .map-placeholder {
+      background: #d1d5db;
+      border-radius: 16px;
+      position: relative;
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 14px;
+      text-align: center;
+      padding: 16px;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .contact-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    .contact-card p {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #4b5563;
+    }
+
+    /* ---------- FOOTER NEWSLETTER ---------- */
+    footer {
+      background:#05091b;
+      color:#f9fafb;
+      padding:32px 24px 16px;
+      margin-top:40px;
+    }
+    footer h3 {
+      margin-bottom:12px;
+      font-size:18px;
+    }
+    .newsletter-container {
+      max-width:1100px;
+      margin:0 auto 24px;
+      text-align:center;
+    }
+    .newsletter-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+    }
+    footer input[type=email] {
+      padding:10px 12px;
+      border-radius:4px;
+      border:none;
+      min-width:240px;
+      max-width:360px;
+      font-size:14px;
+    }
+    footer button {
+      padding:10px 16px;
+      border:none;
+      border-radius:4px;
+      background:#fbbf24;
+      color:#111827;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .footer-columns {
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:24px;
+      justify-content:space-between;
+      font-size:13px;
+    }
+    .footer-columns p {
+      margin:4px 0;
+    }
+    .footer-bottom {
+      max-width:1100px;
+      margin:24px auto 0;
+      border-top:1px solid #111827;
+      padding-top:8px;
+      font-size:11px;
+      text-align:center;
+      color:#9ca3af;
+    }
+
+    @media (max-width: 800px) {
+      nav ul {
+        display: none;
+      }
+      .concept-grid,
+      .map-section {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .resa-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .resa-button-wrapper {
+        width: 100%;
+      }
+      .resa-button {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
-
 <body>
+  <!-- HEADER avec vraies pages -->
+  <header>
+    <div class="logo"><a href="index.html">Singbox</a></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="concept.html">Le concept</a></li>
+        <li><a href="#reservation">Réserver</a></li>
+        <li class="nav-cta"><a href="#reservation">Réserver</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<!-- ========================================================= -->
-<!--                   HEADER NOUVELLE VERSION                 -->
-<!-- ========================================================= -->
-<header>
-  <div class="logo"><a href="index.html">Singbox</a></div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html">Le concept</a></li>
-      <li class="nav-cta"><a href="#reservation">Réserver</a></li>
-    </ul>
-  </nav>
-</header>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Réservez votre séance</h1>
+    <p class="subtitle">Choisissez la date et découvrez les créneaux disponibles dans vos box privées.</p>
 
-<!-- ========================================================= -->
-<!--                   CONTENU EXISTANT (FORM)                 -->
-<!-- ========================================================= -->
-
-<div class="container" id="reservation">
-  <h1>Réserver une session</h1>
-
-  <label>Nom / Prénom :</label>
-  <input id="name" type="text" />
-
-  <label>Email :</label>
-  <input id="email" type="email" />
-
-  <label>Date :</label>
-  <input id="date" type="date" />
-
-  <label>Heure de début :</label>
-  <input id="start_time" type="time" />
-
-  <label>Durée (minutes) :</label>
-  <select id="duration">
-    <option value="60">60</option>
-    <option value="90">90</option>
-    <option value="120">120</option>
-  </select>
-
-  <label>Box :</label>
-  <select id="box_id">
-    <option value="1">Box 1</option>
-    <option value="2">Box 2</option>
-  </select>
-
-  <button onclick="submitReservation()">Réserver</button>
-
-  <p id="response"></p>
-</div>
-
-<script src="script.js"></script>
-
-
-<!-- ========================================================= -->
-<!--                      FOOTER COMPLET                       -->
-<!-- ========================================================= -->
-<footer>
-
-  <!-- Newsletter -->
-  <div class="newsletter-container">
-    <h3>Inscrivez-vous à notre newsletter</h3>
-
-    <div class="newsletter-row">
-      <input type="email" placeholder="Entrez votre adresse e-mail">
-      <button>S'abonner</button>
+    <div class="resa-bar-wrapper">
+      <div class="resa-bar">
+        <div class="resa-field">
+          <span class="label">Date</span>
+          <input type="date" id="date-input" />
+        </div>
+        <div class="resa-field">
+          <span class="label">Nombre de personnes</span>
+          <select id="people-input">
+            <option value="">Non défini</option>
+            <option value="2">2 personnes</option>
+            <option value="3-4">3-4 personnes</option>
+            <option value="5-6">5-6 personnes</option>
+            <option value="7+">7 personnes et +</option>
+          </select>
+        </div>
+        <div class="resa-button-wrapper">
+          <button id="load-button" class="resa-button">Voir les créneaux</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Colonnes -->
-  <div class="footer-columns">
-    <div>
-      <p><strong>Singbox</strong></p>
-      <p>Karaoké Box à Toulouse</p>
+  <main>
+    <!-- CONCEPT RAPIDE -->
+    <section id="concept">
+      <h2 class="section-title">Faites entendre votre voix, avec les personnes de votre choix.</h2>
+      <p class="section-subtitle">
+        Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
+      </p>
+      <div class="concept-grid">
+        <div class="concept-text">
+          <p>
+            Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter. Pas de public, pas de gêne :
+            juste votre groupe et un écran plein de chansons.
+          </p>
+          <p>
+            Que ce soit pour un anniversaire, un EVJF/EVG, une soirée d’entreprise ou simplement pour s’amuser,
+            Singbox est pensé pour vous offrir une expérience simple, ludique et mémorable.
+          </p>
+          <p>
+            Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box,
+            puis de recevoir un QR code d’accès pour ouvrir la porte au moment de votre séance.
+          </p>
+        </div>
+        <div class="concept-card">
+          <p>
+            Ici, imagine une grande image / visuel de ton univers Singbox (photo de salle, groupe qui chante, etc.).
+            On l’intégrera plus tard, le texte reste juste un placeholder pour l’instant.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OCCASIONS -->
+    <section id="occasions">
+      <h2 class="section-title">Pour toutes les occasions !</h2>
+      <p class="section-subtitle">
+        Nos salles peuvent accueillir des groupes de différentes tailles, pour un seul objectif : partager un moment de convivialité.
+      </p>
+
+      <div class="occasion-grid">
+        <div class="occasion-card">
+          <h3>Entre amis</h3>
+          <p>
+            Juste pour le fun, pour décompresser, rire et chanter (trop) fort avec votre bande. Les playlists sont faites pour ça.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>En famille</h3>
+          <p>
+            Un moment intergénérationnel où tout le monde peut choisir ses titres, des classiques aux derniers hits.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Team building</h3>
+          <p>
+            Renforcez la cohésion d’équipe autour d’une activité simple, fun et accessible à tous. Parfait après une journée de travail.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Anniversaire</h3>
+          <p>
+            Marquez le coup avec une box privatisée, des chansons personnalisées et la possibilité d’ajouter vos propres surprises.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>EVJF / EVG</h3>
+          <p>
+            Faites vivre un moment inoubliable aux futur·es marié·es avec une soirée 100% personnalisée autour de leurs tubes préférés.
+          </p>
+        </div>
+        <div class="occasion-card">
+          <h3>Et toutes les autres raisons</h3>
+          <p>
+            Envie de s’entraîner pour un casting, célébrer une victoire, ou juste se faire plaisir ? Toutes les excuses sont bonnes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RÉSERVATION + PLANNING -->
+    <section id="reservation">
+      <h2 class="section-title">Réservez votre box en ligne</h2>
+      <p class="section-subtitle">
+        Choisissez une date dans la barre en haut, puis cliquez sur un créneau <strong>Libre</strong> pour créer une réservation d’1h.
+      </p>
+
+      <div class="resa-infos">
+        <label>
+          Nom / Prénom
+          <input type="text" id="name-input" placeholder="Votre nom" />
+        </label>
+        <label>
+          Email
+          <input type="email" id="email-input" placeholder="vous@example.com" />
+        </label>
+      </div>
+
+      <div id="planning-container">
+        <!-- Le tableau planning est généré ici par script.js -->
+      </div>
+
+      <p id="message"></p>
+      <div id="qrcode"></div>
+    </section>
+
+    <!-- MAP + CONTACT -->
+    <section class="map-section">
+      <div class="map-placeholder">
+        Carte Google Maps / plan de Singbox<br />
+        (on intégrera l’API ou une image plus tard)
+      </div>
+      <div class="contact-card">
+        <h3>Venez chanter chez Singbox</h3>
+        <p><strong>Adresse :</strong><br />[Ton adresse ici]</p>
+        <p><strong>Horaires :</strong><br />À définir (ex : du mardi au dimanche, 18h – 2h)</p>
+        <p><strong>Contact :</strong><br />Téléphone, email, réseaux sociaux…</p>
+        <p>
+          Cette zone pourra contenir des icônes (Instagram, TikTok, etc.), un bouton
+          “Nous contacter” ou un lien vers une page plus détaillée.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER NEWSLETTER + LIENS + CONTACT + RÉSEAUX -->
+  <footer>
+    <div class="newsletter-container">
+      <h3>Inscrivez-vous à notre newsletter</h3>
+      <div class="newsletter-row">
+        <input type="email" placeholder="Entrez votre adresse e-mail" />
+        <!-- plus tard tu pourras ajouter un vrai reCAPTCHA ici -->
+        <button>S'abonner</button>
+      </div>
     </div>
 
-    <div>
-      <p><strong>Infos</strong></p>
-      <p>Mentions légales</p>
-      <p>Politique de confidentialité</p>
-      <p>Conditions générales de vente</p>
+    <div class="footer-columns">
+      <div>
+        <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
+        <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+      </div>
+
+      <div>
+        <p><strong>Infos</strong></p>
+        <p>Mentions légales</p>
+        <p>Politique de confidentialité</p>
+        <p>Conditions générales de vente</p>
+      </div>
+
+      <div>
+        <p><strong>Contact</strong></p>
+        <p>Adresse : [à compléter]</p>
+        <p>Email : [à compléter]</p>
+        <p>Téléphone : [à compléter]</p>
+      </div>
+
+      <div>
+        <p><strong>Réseaux</strong></p>
+        <p>Instagram / TikTok / Facebook</p>
+      </div>
     </div>
 
-    <div>
-      <p><strong>Contact</strong></p>
-      <p>Adresse : [à compléter]</p>
-      <p>Email : [à compléter]</p>
-      <p>Téléphone : [à compléter]</p>
+    <div class="footer-bottom">
+      Réalisé avec ♥ pour Singbox
     </div>
+  </footer>
 
-    <div>
-      <p><strong>Réseaux</strong></p>
-      <p>Instagram / TikTok / Facebook</p>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    Réalisé avec ❤️ pour Singbox
-  </div>
-
-</footer>
-
+  <!-- Librairie QRCode + ton script de planning -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
