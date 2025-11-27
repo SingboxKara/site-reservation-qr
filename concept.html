@@ -19,39 +19,63 @@
       background-color: #0c1633;
       color: #fff;
       padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 10;
     }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
     .logo {
       font-weight: 800;
       font-size: 20px;
       letter-spacing: 0.05em;
+      white-space: nowrap;
     }
     .logo a {
       color: #fff;
       text-decoration: none;
     }
-    nav ul {
+
+    .main-nav {
+      flex: 1;                 /* prend tout l’espace entre logo et bouton */
+    }
+    .main-nav ul {
       list-style: none;
       display: flex;
-      gap: 24px;
+      justify-content: center; /* centre les liens dans la zone centrale */
+      align-items: center;
+      gap: 32px;
       margin: 0;
       padding: 0;
       font-size: 14px;
     }
-    nav a {
+    .main-nav a {
       color: #fff;
       text-decoration: none;
     }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+
     .nav-cta {
       background: linear-gradient(90deg,#ffb74a,#f08b2e);
       padding: 8px 16px;
       border-radius: 999px;
       font-weight: 600;
+      color: #111827;
+      text-decoration: none;
+      font-size: 14px;
     }
 
     /* ---------- HERO ---------- */
@@ -183,23 +207,31 @@
       .split, .split.reverse {
         grid-template-columns:minmax(0,1fr);
       }
-      /* on pourra plus tard mettre un menu burger,
-         pour l'instant on cache le menu sur mobile */
-      nav ul { display:none; }
+      /* menu caché sur mobile pour l’instant */
+      .main-nav ul { display:none; }
     }
   </style>
 </head>
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo"><a href="index.html">Singbox</a></div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="concept.html">Le concept</a></li>
-        <li class="nav-cta"><a href="index.html#reservation">Réserver</a></li>
-      </ul>
-    </nav>
+    <div class="header-inner">
+      <div class="logo"><a href="index.html">SINGBOX</a></div>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="salles.html">Les salles</a></li>
+          <li><a href="actus.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <a href="index.html#reservation" class="nav-cta">Réserver</a>
+      </div>
+    </div>
   </header>
 
   <!-- HERO CONCEPT -->
