@@ -42,7 +42,7 @@
     }
 
     .logo img {
-      height: 90px;   /* même taille que sur les autres pages */
+      height: 90px;
       width: auto;
       display: block;
     }
@@ -97,7 +97,7 @@
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
-      position: relative; /* pour le badge */
+      position: relative;
     }
 
     /* Badge du panier */
@@ -282,7 +282,7 @@
         padding: 12px 16px;
       }
       .main-nav {
-        display:none; /* comme les autres pages pour le moment */
+        display:none;
       }
     }
   </style>
@@ -319,23 +319,15 @@
 
   <section class="hero-resa">
     <h1>Réserver une box</h1>
-    <p>Choisissez votre date, remplissez vos infos, puis cliquez sur un créneau <strong>Libre</strong>.</p>
+    <p>Choisissez votre date, puis cliquez sur un créneau <strong>Libre</strong> pour l'ajouter au panier.</p>
   </section>
 
   <main>
-    <!-- Sélection jour + nom + email -->
+    <!-- Sélection jour -->
     <div class="resa-infos">
       <label>
         Date
         <input type="date" id="date-input" />
-      </label>
-      <label>
-        Nom / Prénom
-        <input type="text" id="name-input" placeholder="Votre nom" />
-      </label>
-      <label>
-        Email
-        <input type="email" id="email-input" placeholder="vous@example.com" />
       </label>
       <button id="load-button">Voir les créneaux</button>
     </div>
@@ -393,8 +385,7 @@
     </div>
   </footer>
 
-  <!-- Scripts : QR (si tu l'utilises encore) + planning (planning.js gère le panier) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- ⚠️ IMPORTANT : on ne charge QUE planning.js ici, pas script.js -->
   <script src="planning.js"></script>
 </body>
 </html>
