@@ -24,7 +24,7 @@
       gap: 32px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
     }
     .logo {
       flex-shrink: 0;
@@ -46,6 +46,7 @@
     .logo-text {
       text-transform: uppercase;
     }
+
     .main-nav {
       flex: 1;
       display: flex;
@@ -60,6 +61,7 @@
       font-size: 14px;
     }
     .main-nav a { color:#fff; }
+
     .header-right {
       display: flex;
       align-items: center;
@@ -97,6 +99,50 @@
       padding: 2px 5px;
       min-width: 18px;
       text-align:center;
+    }
+
+    /* --- BOUTON BURGER (mobile) --- */
+    .burger-button {
+      display: none; /* visible seulement sur mobile */
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid #ffffff33;
+      background: transparent;
+      color:#fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* MENU MOBILE DÉROULANT */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px; /* juste sous le header */
+      left: 0;
+      right: 0;
+      background: #0c1633;
+      padding: 12px 24px 16px;
+      z-index: 15;
+      border-bottom: 1px solid #111827;
+    }
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
+    }
+    .mobile-nav a {
+      color:#fff;
+    }
+    .mobile-nav.open {
+      display: block;
     }
 
     .hero-panier {
@@ -167,7 +213,7 @@
       color:#111827;
     }
 
-    /* SECTION PAIEMENT (même page) */
+    /* SECTION PAIEMENT */
     .payment-section {
       margin-top: 32px;
       background:#fff;
@@ -298,9 +344,28 @@
       color:#9ca3af;
     }
 
+    /* --- RESPONSIVE --- */
     @media (max-width:800px) {
-      .main-nav { display:none; }
-      header { padding:12px 16px; }
+      header {
+        padding: 10px 16px;
+        gap: 12px;
+      }
+
+      .main-nav {
+        display:none; /* on masque le menu horizontal sur mobile */
+      }
+
+      .header-right {
+        gap: 8px;
+      }
+
+      .burger-button {
+        display:flex; /* visible sur mobile */
+      }
+
+      .logo img {
+        height: 64px;
+      }
     }
   </style>
 </head>
@@ -314,6 +379,7 @@
     </a>
   </div>
 
+  <!-- Menu desktop -->
   <nav class="main-nav">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -329,8 +395,25 @@
     <a href="panier.html" class="cart-icon">
       🛒<span id="cart-count"></span>
     </a>
+    <!-- Bouton burger pour mobile -->
+    <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+      ☰
+    </button>
   </div>
 </header>
+
+<!-- MENU MOBILE -->
+<nav class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="concept.html">Le concept</a></li>
+    <li><a href="salles.html">Les salles</a></li>
+    <li><a href="actualites.html">Actualités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="reservation.html">Réserver</a></li>
+    <li><a href="panier.html">Mon panier</a></li>
+  </ul>
+</nav>
 
 <section class="hero-panier">
   <h1>Mon panier</h1>
@@ -429,9 +512,7 @@
   // ⚠️ Clé publique Stripe TEST
   const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
 
-  // Prix par créneau (à adapter)
   const PRICE_PER_SLOT_EUR = 10;
-
   let stripe = null;
   let cardElement = null;
 
@@ -491,6 +572,23 @@
   }
 
   document.addEventListener("DOMContentLoaded", async function () {
+    // --- MENU MOBILE ---
+    const burgerBtn = document.getElementById("burger-button");
+    const mobileNav = document.getElementById("mobile-nav");
+
+    if (burgerBtn && mobileNav) {
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("open");
+      });
+
+      // Fermer le menu mobile quand on clique sur un lien
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          mobileNav.classList.remove("open");
+        }
+      });
+    }
+
     updateCartIcon();
     renderPanier();
 
@@ -562,7 +660,6 @@
       }
 
       try {
-        // 1) Appel backend pour créer un PaymentIntent
         const res = await fetch("http://localhost:3000/api/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -589,7 +686,6 @@
 
         const clientSecret = json.clientSecret;
 
-        // 2) Confirmation du paiement côté client
         const result = await stripe.confirmCardPayment(clientSecret, {
           payment_method: {
             card: cardElement,
@@ -606,7 +702,6 @@
         if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
           okEl.textContent = "Paiement accepté ✔️. Nous enregistrons votre réservation...";
 
-          // 3) Appel backend pour créer les réservations “officielles”
           try {
             await fetch("http://localhost:3000/api/confirm-reservation", {
               method: "POST",
@@ -621,7 +716,6 @@
             console.error("Erreur confirm-reservation :", e);
           }
 
-          // 4) Vider le panier local
           savePanier([]);
           renderPanier();
           updatePaymentTotal();
