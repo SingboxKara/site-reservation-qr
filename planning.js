@@ -1,6 +1,6 @@
 // ===================== CONFIG PLANNING =====================
-const BOXES = [1, 2]; // Tu peux ajouter d'autres box ici
-const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0..23
+const BOXES = [1, 2]; 
+const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 // ===================== PANIER (localStorage) =====================
 function getPanier() {
@@ -15,20 +15,18 @@ function savePanier(panier) {
 function updateCartIcon() {
   const el = document.getElementById("cart-count");
   if (!el) return;
-  const panier = getPanier();
-  el.textContent = panier.length > 0 ? panier.length : "";
+  const p = getPanier();
+  el.textContent = p.length > 0 ? p.length : "";
 }
 
-// Met à jour le badge du panier au chargement de la page
 document.addEventListener("DOMContentLoaded", updateCartIcon);
 
-// ===================== RÉFÉRENCES DOM =====================
+// ===================== DOM =====================
 const dateInput = document.getElementById("date-input");
 const loadButton = document.getElementById("load-button");
 const planningContainer = document.getElementById("planning-container");
 
-// Sécurité au cas où le script est chargé sur une autre page
-if (loadButton && dateInput && planningContainer) {
+if (loadButton) {
   loadButton.addEventListener("click", () => {
     const date = dateInput.value;
     if (!date) {
@@ -39,35 +37,28 @@ if (loadButton && dateInput && planningContainer) {
   });
 }
 
+// ===================== PLANNING =====================
 async function loadPlanning(date) {
   planningContainer.innerHTML = "Chargement...";
   try {
     const res = await fetch(`/api/slots?date=${encodeURIComponent(date)}`);
     const json = await res.json();
 
-    if (!res.ok) {
-      throw new Error(json.error || "Erreur serveur");
-    }
+    if (!res.ok) throw new Error(json.error);
 
     const reservations = json.reservations || [];
 
-    // On construit un set des créneaux occupés, ex: "1-15" = box 1 à 15h
     const busySlots = new Set();
     for (const r of reservations) {
-      if (!r.start_time || !r.box_id) continue;
       const start = new Date(r.start_time);
-      const hour = start.getHours(); // 0..23
-      const key = `${r.box_id}-${hour}`;
-      busySlots.add(key);
+      busySlots.add(`${r.box_id}-${start.getHours()}`);
     }
 
-    // Générer le tableau HTML
     const table = document.createElement("table");
 
-    // Ligne d'entête : vide + Box 1, Box 2, ...
+    // En-tête
     const thead = document.createElement("thead");
     const headRow = document.createElement("tr");
-
     const emptyTh = document.createElement("th");
     emptyTh.textContent = "Heure";
     headRow.appendChild(emptyTh);
@@ -77,24 +68,24 @@ async function loadPlanning(date) {
       th.textContent = `Box ${box}`;
       headRow.appendChild(th);
     }
-
     thead.appendChild(headRow);
     table.appendChild(thead);
 
-    // Corps du tableau
+    // Corps
     const tbody = document.createElement("tbody");
 
     for (const hour of HOURS) {
       const row = document.createElement("tr");
 
       const hourCell = document.createElement("td");
-      hourCell.className = "hour-cell";
       hourCell.textContent = `${hour.toString().padStart(2, "0")}h`;
+      hourCell.className = "hour-cell";
       row.appendChild(hourCell);
 
       for (const box of BOXES) {
         const cell = document.createElement("td");
         const key = `${box}-${hour}`;
+
         if (busySlots.has(key)) {
           cell.className = "slot-busy";
           cell.textContent = "Réservé";
@@ -102,11 +93,12 @@ async function loadPlanning(date) {
           cell.className = "slot-free";
           cell.textContent = "Libre";
 
-          // === AJOUT PANIER : clic sur un créneau libre ===
+          // ========== CLIC → AJOUT PANIER ==========
           cell.addEventListener("click", () => {
-            addToPanier(date, box, hour, cell);
+            addSlotToBasket(date, box, hour, cell);
           });
         }
+
         row.appendChild(cell);
       }
 
@@ -114,41 +106,35 @@ async function loadPlanning(date) {
     }
 
     table.appendChild(tbody);
-
     planningContainer.innerHTML = "";
     planningContainer.appendChild(table);
+
   } catch (err) {
     console.error(err);
-    planningContainer.innerHTML = "Erreur : " + err.message;
+    planningContainer.textContent = "Erreur : " + err.message;
   }
 }
 
-// ===================== AJOUT DANS LE PANIER =====================
-function addToPanier(date, box, hour, cell) {
-  const hourLabel = `${hour.toString().padStart(2, "0")}h - ${((hour + 1) % 24)
-    .toString()
-    .padStart(2, "0")}h`;
+// ===================== AJOUT AU PANIER =====================
+function addSlotToBasket(date, box, hour, cell) {
+  const slot = {
+    date,
+    box,
+    hour,
+    label: `${hour}h - ${hour + 1}h`
+  };
 
   const ok = confirm(
-    `Ajouter ce créneau au panier ?\n\nDate : ${date}\nCréneau : ${hourLabel}\nBox : ${box}`
+    `Ajouter ce créneau au panier ?\n\nDate : ${date}\nBox : ${box}\nHeure : ${slot.label}`
   );
   if (!ok) return;
 
   const panier = getPanier();
-  panier.push({
-    date,
-    box,
-    hour,
-    hourLabel,
-  });
+  panier.push(slot);
   savePanier(panier);
 
-  // Feedback visuel léger (facultatif)
-  if (cell) {
-    cell.textContent = "Ajouté";
-    cell.classList.remove("slot-free");
-    cell.classList.add("slot-selected");
-  }
+  cell.textContent = "Ajouté ✓";
+  cell.classList.add("slot-selected");
 
   alert("Créneau ajouté au panier !");
 }
