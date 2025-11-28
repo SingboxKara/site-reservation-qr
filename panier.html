@@ -105,6 +105,14 @@
       background:#0c1633;
       color:#fff;
     }
+    .hero-panier h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+    .hero-panier p {
+      margin: 0;
+      font-size: 14px;
+    }
 
     main {
       max-width: 1100px;
@@ -117,6 +125,7 @@
       border-radius:16px;
       padding:16px;
       box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      font-size:14px;
     }
     .cart-item {
       display:flex;
@@ -124,7 +133,6 @@
       align-items:center;
       padding:10px 0;
       border-bottom:1px solid #e5e7eb;
-      font-size:14px;
     }
     .cart-item:last-child {
       border-bottom:none;
@@ -322,14 +330,16 @@
 </footer>
 
 <script>
-  // Les mêmes helpers que dans script.js (tu peux les factoriser ensuite)
+  // Helpers panier (même logique que dans planning.js)
   function getPanier() {
     return JSON.parse(localStorage.getItem("panier")) || [];
   }
+
   function savePanier(panier) {
     localStorage.setItem("panier", JSON.stringify(panier));
     updateCartIcon();
   }
+
   function updateCartIcon() {
     const el = document.getElementById("cart-count");
     if (!el) return;
@@ -350,11 +360,15 @@
     panier.forEach((item, index) => {
       const div = document.createElement("div");
       div.className = "cart-item";
+
+      const heureTexte = item.hourLabel || (item.hour !== undefined
+        ? `${item.hour.toString().padStart(2,"0")}h - ${((item.hour+1)%24).toString().padStart(2,"0")}h`
+        : "?");
+
       div.innerHTML = `
         <div>
-          <strong>${item.date}</strong> à <strong>${item.heure || "?"}</strong><br/>
-          Salle : ${item.salle || "Non précisé"}<br/>
-          Au nom de : ${item.nom} (${item.email})
+          <strong>${item.date}</strong> &nbsp;|&nbsp; Box ${item.box}<br/>
+          Créneau : ${heureTexte}
         </div>
         <button data-index="${index}">Supprimer</button>
       `;
@@ -366,6 +380,7 @@
     updateCartIcon();
     renderPanier();
 
+    // Vider le panier
     document.getElementById("clear-cart").addEventListener("click", function () {
       if (confirm("Vider le panier ?")) {
         savePanier([]);
@@ -373,15 +388,18 @@
       }
     });
 
+    // Supprimer un créneau
     document.getElementById("cart-container").addEventListener("click", function (e) {
       if (e.target.tagName === "BUTTON" && e.target.dataset.index !== undefined) {
-        let panier = getPanier();
-        panier.splice(Number(e.target.dataset.index), 1);
+        const index = Number(e.target.dataset.index);
+        const panier = getPanier();
+        panier.splice(index, 1);
         savePanier(panier);
         renderPanier();
       }
     });
 
+    // Confirmer (pour l'instant juste une simulation)
     document.getElementById("confirm-cart").addEventListener("click", function () {
       const panier = getPanier();
       if (panier.length === 0) {
@@ -389,9 +407,10 @@
         return;
       }
 
-      // 👉 Ici tu pourras appeler Supabase pour créer les réservations
-      // pour l’instant on fait juste une simulation :
-      alert("Ici, tu intégreras l’envoi des réservations à Supabase + génération du QR code.");
+      // Ici, plus tard :
+      // - tu demanderas nom / email / téléphone
+      // - tu enverras les créneaux à ton backend / Supabase
+      alert("Étape suivante : connexion à Supabase + paiement / confirmation.\nPour l'instant, le panier est juste stocké en local.");
     });
   });
 </script>
