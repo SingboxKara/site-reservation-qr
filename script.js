@@ -2,6 +2,26 @@
 const BOXES = [1, 2]; // ajoute 3, 4... si tu as plus de box
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
 
+// ===================== PANIER (localStorage) =====================
+function getPanier() {
+  return JSON.parse(localStorage.getItem("panier")) || [];
+}
+
+function savePanier(panier) {
+  localStorage.setItem("panier", JSON.stringify(panier));
+  updateCartIcon();
+}
+
+function updateCartIcon() {
+  const el = document.getElementById("cart-count");
+  if (!el) return;
+  const panier = getPanier();
+  el.textContent = panier.length > 0 ? panier.length : "";
+}
+
+// Mettre à jour l'icône panier au chargement de la page
+document.addEventListener("DOMContentLoaded", updateCartIcon);
+
 // Éléments du DOM (uniquement sur reservation.html)
 const nameInput = document.getElementById("name-input");
 const emailInput = document.getElementById("email-input");
@@ -199,6 +219,24 @@ async function handleSlotClick(date, boxId, hour) {
     const reservationId = reservation && reservation.id;
 
     message.textContent = "Réservation enregistrée ✅";
+
+    // 2bis) Ajouter la réservation dans le panier local
+    if (reservationId) {
+      const slot = {
+        reservationId,
+        date,
+        heure: hourLabel,
+        boxId,
+        name,
+        email,
+        start_time,
+        end_time,
+      };
+
+      const panier = getPanier();
+      panier.push(slot);
+      savePanier(panier);
+    }
 
     // 2) QR code à l'écran
     if (reservationId) {
