@@ -24,7 +24,7 @@
       gap: 32px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
     }
 
     .logo { flex-shrink: 0; }
@@ -87,6 +87,45 @@
       font-size: 18px;
       cursor: pointer;
     }
+
+    /* BOUTON BURGER (mobile) */
+    .burger-button {
+      display:none;
+      width:36px;
+      height:36px;
+      border-radius:999px;
+      border:1px solid #ffffff33;
+      background:transparent;
+      color:#fff;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:20px;
+    }
+
+    /* MENU MOBILE */
+    .mobile-nav {
+      display:none;
+      position:fixed;
+      top:80px;
+      left:0;
+      right:0;
+      background:#0c1633;
+      padding:12px 24px 16px;
+      z-index:15;
+      border-bottom:1px solid #111827;
+    }
+    .mobile-nav ul {
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      font-size:15px;
+    }
+    .mobile-nav a { color:#fff; }
+    .mobile-nav.open { display:block; }
 
     /* ---------- HERO ACTUALITÉS ---------- */
     .hero-blog {
@@ -306,6 +345,9 @@
     @media (max-width: 900px) {
       .main-nav { display:none; }
       .posts-grid { grid-template-columns: 1fr; }
+      header { padding:10px 16px; gap:12px; }
+      .burger-button { display:flex; }
+      .logo img { height:64px; }
     }
   </style>
 </head>
@@ -326,14 +368,30 @@
         <li><a href="concept.html">Le concept</a></li>
         <li><a href="salles.html">Les salles</a></li>
         <li><a href="actualites.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
 
     <div class="header-right">
       <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="reservation.html" class="cart-icon">🛒</a>
+      <a href="panier.html" class="cart-icon">🛒</a>
+      <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        ☰
+      </button>
     </div>
   </header>
+
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="salles.html">Les salles</a></li>
+      <li><a href="actualites.html">Actualités</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <!-- pas de bouton "Réserver" ici, il est déjà en jaune -->
+    </ul>
+  </nav>
 
   <!-- HERO -->
   <section class="hero-blog">
@@ -454,26 +512,44 @@
     </div>
   </footer>
 
-  <!-- SCRIPT : clic catégories -->
+  <!-- SCRIPT : menu mobile + clic catégories -->
   <script>
-    const tagPills = document.querySelectorAll(".tag-pill");
-    const posts = document.querySelectorAll(".post-featured, .post-item");
+    document.addEventListener("DOMContentLoaded", function () {
+      /* --- MENU MOBILE --- */
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
 
-    tagPills.forEach(pill => {
-      pill.addEventListener("click", () => {
-        // visuel du bouton actif
-        tagPills.forEach(p => p.classList.remove("active"));
-        pill.classList.add("active");
+      if (burgerBtn && mobileNav) {
+        burgerBtn.addEventListener("click", () => {
+          mobileNav.classList.toggle("open");
+        });
 
-        const cat = pill.getAttribute("data-category");
-
-        posts.forEach(post => {
-          const postCat = post.getAttribute("data-category");
-          if (cat === "all" || postCat === cat) {
-            post.style.display = "";
-          } else {
-            post.style.display = "none";
+        mobileNav.addEventListener("click", (e) => {
+          if (e.target.tagName === "A") {
+            mobileNav.classList.remove("open");
           }
+        });
+      }
+
+      /* --- FILTRE CATEGORIES --- */
+      const tagPills = document.querySelectorAll(".tag-pill");
+      const posts = document.querySelectorAll(".post-featured, .post-item");
+
+      tagPills.forEach(pill => {
+        pill.addEventListener("click", () => {
+          tagPills.forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+
+          const cat = pill.getAttribute("data-category");
+
+          posts.forEach(post => {
+            const postCat = post.getAttribute("data-category");
+            if (cat === "all" || postCat === cat) {
+              post.style.display = "";
+            } else {
+              post.style.display = "none";
+            }
+          });
         });
       });
     });
