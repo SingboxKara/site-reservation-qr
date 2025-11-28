@@ -426,8 +426,7 @@
 <script src="https://js.stripe.com/v3"></script>
 
 <script>
-  // ⚠️ METS ICI TA CLÉ PUBLIQUE STRIPE (MODE TEST)
-  // Exemple : pk_test_12345...
+  // ⚠️ Clé publique Stripe TEST
   const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
 
   // Prix par créneau (à adapter)
@@ -436,7 +435,7 @@
   let stripe = null;
   let cardElement = null;
 
-  // ====== HELPERS PANIER (même logique que planning.js) ======
+  // ====== HELPERS PANIER ======
   function getPanier() {
     return JSON.parse(localStorage.getItem("panier")) || [];
   }
@@ -496,7 +495,7 @@
     renderPanier();
 
     // Init Stripe
-    if (!STRIPE_PUBLISHABLE_KEY || STRIPE_PUBLISHABLE_KEY.startsWith("pk_test_A_REMPLACER")) {
+    if (!STRIPE_PUBLISHABLE_KEY) {
       console.warn("⚠️ N'oublie pas de mettre ta clé publique Stripe dans STRIPE_PUBLISHABLE_KEY.");
     } else {
       stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
@@ -564,7 +563,7 @@
 
       try {
         // 1) Appel backend pour créer un PaymentIntent
-        const res = await fetch("/api/create-payment-intent", {
+        const res = await fetch("http://localhost:3000/api/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -600,7 +599,7 @@
 
           // 3) Appel backend pour créer les réservations “officielles”
           try {
-            await fetch("/api/confirm-reservation", {
+            await fetch("http://localhost:3000/api/confirm-reservation", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
