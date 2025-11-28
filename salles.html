@@ -103,7 +103,7 @@
       position: relative;
     }
 
-    /* Badge panier */
+    /* Badge panier : caché par défaut (pas de petit trait orange) */
     #cart-count {
       position: absolute;
       top: -6px;
@@ -115,6 +115,7 @@
       padding: 2px 5px;
       min-width: 18px;
       text-align:center;
+      display: none; /* on affiche seulement en JS s'il y a > 0 */
     }
 
     /* Bouton burger (mobile) */
@@ -475,8 +476,31 @@
   </div>
 </footer>
 
-<!-- SCRIPT MENU MOBILE -->
+<!-- SCRIPT MENU MOBILE + BADGE PANIER GLOBAL -->
 <script>
+  // Récupère le panier dans localStorage
+  function getPanier() {
+    try {
+      return JSON.parse(localStorage.getItem("panier")) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Met à jour le badge 🛒 (#cart-count)
+  function updateCartIcon() {
+    const el = document.getElementById("cart-count");
+    if (!el) return;
+    const panier = getPanier();
+    if (!panier.length) {
+      el.textContent = "";
+      el.style.display = "none"; // cache complètement le badge
+    } else {
+      el.textContent = panier.length;
+      el.style.display = "inline-block";
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     const burgerBtn = document.getElementById("burger-button");
     const mobileNav = document.getElementById("mobile-nav");
@@ -492,6 +516,9 @@
         }
       });
     }
+
+    // Met à jour le badge panier au chargement
+    updateCartIcon();
   });
 </script>
 
