@@ -562,8 +562,8 @@
       }
 
       try {
-        // 1) Appel backend pour créer un PaymentIntent
-        const res = await fetch("http://localhost:3000/api/create-payment-intent", {
+        // 1) Appel backend pour créer un PaymentIntent (route renommée)
+        const res = await fetch("http://localhost:3000/api/stripe-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -571,10 +571,10 @@
             customer: { name, email },
           }),
         });
-        const json = await res.json();
-        if (!res.ok || !json.clientSecret) {
-          console.error(json);
-          errEl.textContent = json.error || "Erreur lors de la création du paiement.";
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json || !json.clientSecret) {
+          console.error("Réponse create-intent :", json);
+          errEl.textContent = (json && json.error) || "Erreur lors de la création du paiement.";
           return;
         }
 
@@ -597,9 +597,9 @@
         if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
           okEl.textContent = "Paiement accepté ✔️. Nous enregistrons votre réservation...";
 
-          // 3) Appel backend pour créer les réservations “officielles”
+          // 3) Appel backend pour créer les réservations “officielles” (route renommée)
           try {
-            await fetch("http://localhost:3000/api/confirm-reservation", {
+            await fetch("http://localhost:3000/api/stripe-confirm", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -609,7 +609,7 @@
               }),
             });
           } catch (e) {
-            console.error("Erreur confirm-reservation :", e);
+            console.error("Erreur stripe-confirm :", e);
           }
 
           // 4) Vider le panier local
