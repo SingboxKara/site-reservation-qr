@@ -47,7 +47,7 @@
     }
 
     .logo img {
-      height: 90px;   /* <-- LOGO HEADER 90px */
+      height: 90px;   /* logo header desktop */
       width: auto;
       display: block;
     }
@@ -105,7 +105,7 @@
       position: relative;
     }
 
-    /* Badge du panier : caché par défaut, s'affiche seulement s'il y a au moins 1 article */
+    /* Badge du panier : caché automatiquement si vide */
     #cart-count {
       position: absolute;
       top: -6px;
@@ -117,6 +117,8 @@
       padding: 2px 5px;
       min-width: 18px;
       text-align:center;
+    }
+    #cart-count:empty {
       display: none;
     }
 
@@ -139,7 +141,7 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 80px; /* légèrement sous le header pour ne pas couper "Accueil" */
+      top: 80px; /* légèrement sous le header */
       left: 0;
       right: 0;
       background: #0c1633;
@@ -339,7 +341,7 @@
       color: #4b5563;
     }
 
-    /* ---------- FOOTER NEWSLETTER ---------- */
+    /* ---------- FOOTER ---------- */
     footer {
       background:#05091b;
       color:#f9fafb;
@@ -398,7 +400,7 @@
       gap:10px;
     }
     .footer-brand img {
-      height:120px;  /* <-- LOGO FOOTER 120px */
+      height:120px;  /* logo footer */
       width:auto;
       display:block;
     }
@@ -413,13 +415,21 @@
       color:#9ca3af;
     }
 
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 800px) {
       header {
         padding: 10px 16px;
         gap: 12px;
+        justify-content: space-between; /* logo à gauche, icônes à droite */
       }
       .main-nav {
         display: none; /* menu desktop caché sur mobile */
+      }
+      .hero h1 {
+        font-size: 26px;
+      }
+      .hero p.subtitle {
+        font-size: 15px;
       }
       .concept-grid,
       .map-section {
@@ -442,7 +452,11 @@
       }
 
       .logo img {
-        height: 64px;
+        height: 64px; /* logo plus petit sur mobile */
+      }
+
+      .logo-text {
+        font-size: 16px;
       }
     }
   </style>
@@ -647,11 +661,10 @@
       const panier = getPanier();
       if (!panier.length) {
         el.textContent = "";
-        el.style.display = "none";
       } else {
         el.textContent = panier.length;
-        el.style.display = "inline-block";
       }
+      // l'affichage/masquage est géré par #cart-count:empty en CSS
     }
 
     // --- MENU MOBILE + badge panier ---
