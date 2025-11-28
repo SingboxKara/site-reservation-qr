@@ -562,8 +562,8 @@
       }
 
       try {
-        // 1) Appel backend pour créer un PaymentIntent (route renommée)
-        const res = await fetch("http://localhost:3000/api/stripe-intent", {
+        // 1) Appel backend pour créer un PaymentIntent
+        const res = await fetch("http://localhost:3000/api/create-payment-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -571,10 +571,19 @@
             customer: { name, email },
           }),
         });
-        const json = await res.json().catch(() => null);
-        if (!res.ok || !json || !json.clientSecret) {
+
+        let json;
+        try {
+          json = await res.json();
+        } catch (parseError) {
+          console.error("Erreur en lisant la réponse JSON :", parseError);
+          errEl.textContent = "Réponse invalide du serveur (JSON).";
+          return;
+        }
+
+        if (!res.ok || !json.clientSecret) {
           console.error("Réponse create-intent :", json);
-          errEl.textContent = (json && json.error) || "Erreur lors de la création du paiement.";
+          errEl.textContent = json.error || "Erreur lors de la création du paiement.";
           return;
         }
 
@@ -597,9 +606,9 @@
         if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
           okEl.textContent = "Paiement accepté ✔️. Nous enregistrons votre réservation...";
 
-          // 3) Appel backend pour créer les réservations “officielles” (route renommée)
+          // 3) Appel backend pour créer les réservations “officielles”
           try {
-            await fetch("http://localhost:3000/api/stripe-confirm", {
+            await fetch("http://localhost:3000/api/confirm-reservation", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -609,7 +618,7 @@
               }),
             });
           } catch (e) {
-            console.error("Erreur stripe-confirm :", e);
+            console.error("Erreur confirm-reservation :", e);
           }
 
           // 4) Vider le panier local
@@ -620,8 +629,9 @@
           okEl.textContent += "\nVotre réservation est confirmée 🎉";
         }
       } catch (e) {
-        console.error(e);
-        errEl.textContent = "Erreur inattendue pendant le paiement.";
+        console.error("Erreur globale paiement :", e);
+        const msg = e && e.message ? e.message : e;
+        errEl.textContent = "Erreur inattendue pendant le paiement : " + msg;
       }
     });
   });
