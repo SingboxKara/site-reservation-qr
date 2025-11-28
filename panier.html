@@ -167,6 +167,68 @@
       color:#111827;
     }
 
+    /* SECTION PAIEMENT (même page) */
+    .payment-section {
+      margin-top: 32px;
+      background:#fff;
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    }
+    .payment-section h2 {
+      margin-top:0;
+      margin-bottom:8px;
+      font-size:20px;
+    }
+    .payment-section p.helper {
+      margin-top:0;
+      margin-bottom:16px;
+      font-size:13px;
+      color:#6b7280;
+    }
+    .payment-form {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .payment-form label {
+      font-size:13px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .payment-form input {
+      padding:8px 10px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      font-size:14px;
+    }
+    .field-title {
+      font-size:13px;
+      margin-bottom:4px;
+    }
+    #card-element {
+      padding:10px 12px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      background:#f9fafb;
+    }
+    #payment-total {
+      font-size:14px;
+      font-weight:600;
+      margin-top:8px;
+    }
+    #payment-error {
+      font-size:13px;
+      color:#dc2626;
+      white-space:pre-line;
+    }
+    #payment-success {
+      font-size:13px;
+      color:#16a34a;
+      white-space:pre-line;
+    }
+
     /* FOOTER identique */
     footer {
       background:#05091b;
@@ -276,14 +338,45 @@
 </section>
 
 <main>
+  <!-- LISTE DU PANIER -->
   <div id="cart-container" class="cart-list">
     <!-- Items du panier générés ici en JS -->
   </div>
 
   <div class="cart-actions">
     <button class="btn btn-secondary" id="clear-cart">Vider le panier</button>
-    <button class="btn btn-primary" id="confirm-cart">Confirmer ma réservation</button>
+    <button class="btn btn-primary" id="confirm-cart">Procéder au paiement</button>
   </div>
+
+  <!-- SECTION PAIEMENT SUR LA MÊME PAGE -->
+  <section id="payment-section" class="payment-section" style="display:none;">
+    <h2>Paiement sécurisé (mode test)</h2>
+    <p class="helper">
+      Ce paiement est en mode test Stripe. Utilisez la carte <strong>4242 4242 4242 4242</strong>, une date future, CVC 123.
+    </p>
+
+    <div class="payment-form">
+      <label>
+        Nom complet
+        <input type="text" id="pay-name" placeholder="Votre nom complet" />
+      </label>
+      <label>
+        Email de confirmation
+        <input type="email" id="pay-email" placeholder="vous@example.com" />
+      </label>
+
+      <div>
+        <div class="field-title">Carte bancaire</div>
+        <div id="card-element"></div>
+      </div>
+
+      <p id="payment-total"></p>
+      <p id="payment-error"></p>
+      <p id="payment-success"></p>
+
+      <button class="btn btn-primary" id="pay-button">Payer</button>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -329,17 +422,28 @@
   </div>
 </footer>
 
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3"></script>
+
 <script>
-  // Helpers panier (même logique que dans planning.js)
+  // ⚠️ METS ICI TA CLÉ PUBLIQUE STRIPE (MODE TEST)
+  // Exemple : pk_test_12345...
+  const STRIPE_PUBLISHABLE_KEY = "pk_test_A_REMPLACER_AVEC_TA_CLE";
+
+  // Prix par créneau (à adapter)
+  const PRICE_PER_SLOT_EUR = 10;
+
+  let stripe = null;
+  let cardElement = null;
+
+  // ====== HELPERS PANIER (même logique que planning.js) ======
   function getPanier() {
     return JSON.parse(localStorage.getItem("panier")) || [];
   }
-
   function savePanier(panier) {
     localStorage.setItem("panier", JSON.stringify(panier));
     updateCartIcon();
   }
-
   function updateCartIcon() {
     const el = document.getElementById("cart-count");
     if (!el) return;
@@ -376,15 +480,37 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function updatePaymentTotal() {
+    const totalEl = document.getElementById("payment-total");
+    const panier = getPanier();
+    const total = panier.length * PRICE_PER_SLOT_EUR;
+    if (panier.length === 0) {
+      totalEl.textContent = "Votre panier est vide.";
+    } else {
+      totalEl.textContent = `Total : ${total.toFixed(2)} € (mode test)`;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", async function () {
     updateCartIcon();
     renderPanier();
+
+    // Init Stripe
+    if (!STRIPE_PUBLISHABLE_KEY || STRIPE_PUBLISHABLE_KEY.startsWith("pk_test_A_REMPLACER")) {
+      console.warn("⚠️ N'oublie pas de mettre ta clé publique Stripe dans STRIPE_PUBLISHABLE_KEY.");
+    } else {
+      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      const elements = stripe.elements();
+      cardElement = elements.create("card");
+      cardElement.mount("#card-element");
+    }
 
     // Vider le panier
     document.getElementById("clear-cart").addEventListener("click", function () {
       if (confirm("Vider le panier ?")) {
         savePanier([]);
         renderPanier();
+        updatePaymentTotal();
       }
     });
 
@@ -396,21 +522,108 @@
         panier.splice(index, 1);
         savePanier(panier);
         renderPanier();
+        updatePaymentTotal();
       }
     });
 
-    // Confirmer (pour l'instant juste une simulation)
+    // Afficher la section paiement
     document.getElementById("confirm-cart").addEventListener("click", function () {
       const panier = getPanier();
       if (panier.length === 0) {
         alert("Votre panier est vide.");
         return;
       }
+      if (!stripe || !cardElement) {
+        alert("Stripe n'est pas initialisé. Vérifie ta clé publique.");
+        return;
+      }
+      document.getElementById("payment-section").style.display = "block";
+      updatePaymentTotal();
+      document.getElementById("payment-section").scrollIntoView({ behavior: "smooth" });
+    });
 
-      // Ici, plus tard :
-      // - tu demanderas nom / email / téléphone
-      // - tu enverras les créneaux à ton backend / Supabase
-      alert("Étape suivante : connexion à Supabase + paiement / confirmation.\nPour l'instant, le panier est juste stocké en local.");
+    // Bouton Payer
+    document.getElementById("pay-button").addEventListener("click", async function () {
+      const panier = getPanier();
+      const name = document.getElementById("pay-name").value.trim();
+      const email = document.getElementById("pay-email").value.trim();
+      const errEl = document.getElementById("payment-error");
+      const okEl = document.getElementById("payment-success");
+
+      errEl.textContent = "";
+      okEl.textContent = "";
+
+      if (panier.length === 0) {
+        errEl.textContent = "Votre panier est vide.";
+        return;
+      }
+      if (!name || !email) {
+        errEl.textContent = "Merci de renseigner votre nom et votre email.";
+        return;
+      }
+
+      try {
+        // 1) Appel backend pour créer un PaymentIntent
+        const res = await fetch("/api/create-payment-intent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            panier,
+            customer: { name, email },
+          }),
+        });
+        const json = await res.json();
+        if (!res.ok || !json.clientSecret) {
+          console.error(json);
+          errEl.textContent = json.error || "Erreur lors de la création du paiement.";
+          return;
+        }
+
+        const clientSecret = json.clientSecret;
+
+        // 2) Confirmation du paiement côté client
+        const result = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: { name, email },
+          },
+        });
+
+        if (result.error) {
+          console.error(result.error);
+          errEl.textContent = result.error.message || "Le paiement a été refusé.";
+          return;
+        }
+
+        if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+          okEl.textContent = "Paiement accepté ✔️. Nous enregistrons votre réservation...";
+
+          // 3) Appel backend pour créer les réservations “officielles”
+          try {
+            await fetch("/api/confirm-reservation", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                panier,
+                customer: { name, email },
+                paymentIntentId: result.paymentIntent.id,
+              }),
+            });
+          } catch (e) {
+            console.error("Erreur confirm-reservation :", e);
+          }
+
+          // 4) Vider le panier local
+          savePanier([]);
+          renderPanier();
+          updatePaymentTotal();
+
+          okEl.textContent += "\nVotre réservation est confirmée 🎉";
+        }
+      } catch (e) {
+        console.error(e);
+        errEl.textContent = "Erreur inattendue pendant le paiement.";
+      }
     });
   });
 </script>
