@@ -100,7 +100,7 @@
       position: relative;
     }
 
-    /* Badge du panier */
+    /* Badge du panier : caché par défaut, visible seulement si > 0 */
     #cart-count {
       position: absolute;
       top: -6px;
@@ -112,6 +112,7 @@
       padding: 2px 5px;
       min-width: 18px;
       text-align: center;
+      display: none; /* important pour enlever le trait orange quand vide */
     }
 
     /* BOUTON BURGER (mobile) */
@@ -447,8 +448,29 @@
     </div>
   </footer>
 
-  <!-- SCRIPT MENU MOBILE -->
   <script>
+    // Helpers panier (localStorage)
+    function getPanier() {
+      try {
+        return JSON.parse(localStorage.getItem("panier")) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function updateCartIcon() {
+      const el = document.getElementById("cart-count");
+      if (!el) return;
+      const panier = getPanier();
+      if (!panier.length) {
+        el.textContent = "";
+        el.style.display = "none";
+      } else {
+        el.textContent = panier.length;
+        el.style.display = "inline-block";
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
@@ -464,6 +486,9 @@
           }
         });
       }
+
+      // Met à jour le badge panier au chargement
+      updateCartIcon();
     });
   </script>
 
