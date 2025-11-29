@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Le concept</title>
+  <title>Singbox - Les boxs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Fonts -->
@@ -77,6 +77,7 @@
       justify-content: space-between;
       gap: 2rem;
       height: auto;
+      flex-wrap: nowrap; /* important pour empêcher la nav de passer dessous */
     }
 
     /* Bloc marque */
@@ -265,8 +266,9 @@
         gap: 12px;
       }
 
-      .main-nav {
-        display:none;
+      /* on cache la nav centrale en mobile */
+      nav.main-nav {
+        display: none !important;
       }
 
       .burger-button {
@@ -293,7 +295,7 @@
       }
     }
 
-    /* ================== CONTENU PAGE CONCEPT ================== */
+    /* ================== CONTENU PAGE (tu pourras renommer plus tard) ================== */
 
     /* On compense la hauteur du header fixe */
     #concept-intro {
@@ -351,7 +353,7 @@
       line-height: 1.7;
     }
 
-    /* ---------- SECTION BLOCS CONCEPT ---------- */
+    /* ---------- SECTION BLOCS (à adapter pour les boxs si besoin) ---------- */
     .concept-section {
       padding: 80px 0 80px;
     }
@@ -370,7 +372,7 @@
     }
 
     .concept-grid.reverse {
-      direction: rtl; /* trick pour inverser visuel / texte */
+      direction: rtl;
     }
     .concept-grid.reverse > * {
       direction: ltr;
@@ -494,7 +496,7 @@
     }
 
     .newsletter-container {
-      max-width: var(--sb-container-width);
+      max-width:var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
@@ -563,7 +565,7 @@
       border-top:1px solid #111827;
     }
 
-    /* ---------- RESPONSIVE BLOCS CONCEPT ---------- */
+    /* ---------- RESPONSIVE BLOCS ---------- */
     @media (max-width: 900px) {
       .concept-grid {
         grid-template-columns: minmax(0,1fr);
@@ -631,76 +633,43 @@
     </ul>
   </nav>
 
-  <!-- ---------- SECTION INTRO ---------- -->
+  <!-- ---------- SECTION INTRO (à adapter pour les boxs) ---------- -->
   <section id="concept-intro">
     <div class="concept-intro-inner">
-      <p class="concept-eyebrow">Le concept Singbox</p>
-      <h1 class="concept-title">Un karaoké en toute intimité</h1>
+      <p class="concept-eyebrow">Nos boxs</p>
+      <h1 class="concept-title">Les espaces Singbox</h1>
       <p class="concept-intro-text">
-        Inspiré du concept asiatique, Singbox propose des salons privés de karaoké à Toulouse.
-        Que vous chantiez juste ou totalement faux, l’important est de rire, profiter
-        et partager un moment unique.
+        Présente ici tes différentes boxs (Nuit étoilée, Ambiance Sunset, etc.) avec un texte d’intro.
       </p>
     </div>
   </section>
 
-  <!-- ---------- SECTION BLOCS CONCEPT ---------- -->
+  <!-- ---------- SECTION BLOCS (contenu exemple) ---------- -->
   <section class="concept-section">
-    <!-- Bloc 1 : Salons privés -->
     <div class="concept-block">
       <div class="concept-grid">
         <div class="concept-text">
-          <h2>Des salons privés (& insonorisés)</h2>
+          <h2>Box Nuit étoilée</h2>
           <p>
-            Chaque box est pensée comme un cocon : lumières, banquettes, écran, micros…
-            aucun regard extérieur.
-          </p>
-          <p>
-            Entre amis, en famille ou entre collègues : chantez à tue-tête et vivez une
-            expérience sans stress.
+            Ambiance bleutée, lumières tamisées, idéale pour les soirées entre amis.
           </p>
         </div>
         <div class="concept-card">
-          <span>Visuel de la box Singbox</span>
+          <span>Visuel de la box Nuit étoilée</span>
         </div>
       </div>
     </div>
 
-    <!-- Bloc 2 : Catalogue XXL -->
     <div class="concept-block">
       <div class="concept-grid reverse">
         <div class="concept-card">
-          <span>Interface de sélection des chansons</span>
+          <span>Visuel de la box Ambiance Sunset</span>
         </div>
         <div class="concept-text">
-          <h2>Un catalogue XXL</h2>
+          <h2>Box Ambiance Sunset</h2>
           <p>
-            Des classiques français aux derniers hits internationaux, chacun peut
-            trouver ses titres favoris.
+            Tons orangés, vibes fin de journée et playlists feel good.
           </p>
-          <p>
-            Recherche rapide, file d’attente, enchaînement fluide : tout est pensé pour rendre
-            votre séance fun et sans temps mort.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bloc 3 : Matériel premium -->
-    <div class="concept-block">
-      <div class="concept-grid">
-        <div class="concept-text">
-          <h2>Un matériel premium</h2>
-          <p>
-            Micros de qualité, écran grand format, enceintes puissantes : vivez un vrai moment de concert.
-          </p>
-          <p>
-            Aucun réglage technique : entrez, scannez votre QR code, choisissez votre première
-            chanson et chantez&nbsp;!
-          </p>
-        </div>
-        <div class="concept-card">
-          <span>Visuel matériel / micros</span>
         </div>
       </div>
     </div>
@@ -709,10 +678,9 @@
   <!-- ---------- CTA FINAL ---------- -->
   <section class="concept-cta-section">
     <div class="concept-cta-inner">
-      <h2>Convaincu par le concept&nbsp;?</h2>
+      <h2>Envie de tester une box&nbsp;?</h2>
       <p>
-        Réservez votre séance et découvrez Singbox en vrai : un karaoké box intimiste,
-        fun et pensé pour que tout le monde ose chanter.
+        Réservez votre séance et découvrez Singbox en vrai.
       </p>
       <button
         class="concept-cta-button"
