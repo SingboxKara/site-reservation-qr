@@ -54,176 +54,137 @@
       padding: 0 24px;
     }
 
-    /* ---------- HEADER GLOBAL UNIFIÉ ---------- */
-    .site-header {
+    /* ====================== NAVBAR GLOBAL (UNIQUE) ====================== */
+    .navbar {
+      width: 100%;
+      height: 110px; /* Identique partout */
+      background: #050B1A;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      z-index: 60;
-      background: #050B1A;
-      color: #ffffff;
-      height: 100px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      z-index: 9999;
     }
 
-    .header-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      height: 100%;
-      padding: 0 40px;
+    .navbar-container {
+      width: 92%;
+      max-width: 1550px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 32px;
+      align-items: center;
     }
 
-    /* Logo + texte */
-    .brand {
+    /* LOGO SINGBOX */
+    .navbar-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
       text-decoration: none;
-      flex-shrink: 0;
     }
 
-    .brand-logo {
-      width: 105px;   /* 100–110px comme demandé */
-      height: auto;
-      border-radius: 999px;
+    .navbar-logo img {
+      height: 85px; /* LOGO AGRANDI */
+      margin-right: 14px;
       display: block;
-      object-fit: contain;
-      filter:
-        drop-shadow(0 0 14px rgba(255,255,255,0.15))
-        drop-shadow(0 0 26px rgba(201,76,53,0.6));
     }
 
-    .brand-text {
-      font-family: "Montserrat", system-ui, sans-serif;
-      font-weight: 700;          /* Bold */
-      font-size: 22px;
-      letter-spacing: 2px;
+    .navbar-title {
+      font-size: 28px;
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: white;
       text-transform: uppercase;
-      color: #ffffff;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-    }
-
-    /* NAV */
-    nav.main-nav {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      min-width: 0;
-    }
-
-    .main-nav ul {
-      list-style: none;
-      display: flex;
-      gap: 32px;
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-      align-items: center;
-    }
-
-    .main-nav a {
       font-family: "Montserrat", system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color: #ffffff;
+    }
+
+    /* NAVIGATION LINKS */
+    .navbar-links {
+      display: flex;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .nav-item {
+      color: white;
+      font-size: 17px;
+      font-weight: 600; /* léger gras */
       text-decoration: none;
       position: relative;
-      padding-bottom: 4px;
+      transition: 0.25s ease;
+      font-family: "Montserrat", system-ui, sans-serif;
+      padding-bottom: 2px;
       white-space: nowrap;
     }
 
-    /* Effet underline néon + hover */
-    .main-nav a::after {
+    /* BARRE ACTIVE (soulignement) */
+    .nav-item.active::after {
       content: "";
       position: absolute;
+      bottom: -6px;
       left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: #D85A3A;
-      transition: width 0.3s ease;
+      width: 100%;
+      height: 3px;
+      background: #C64B32;
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
-      width: 100%;
+    /* HOVER */
+    .nav-item:hover {
+      opacity: 0.75;
     }
 
-    .main-nav a:hover {
-      color: #ffffff;
-      transition: 0.25s ease;
-    }
-
-    /* Onglet actif */
-    .main-nav a.active::after {
-      width: 100%;
-    }
-
-    .main-nav a.active {
-      color: #ffffff;
-    }
-
-    /* Actions à droite : Réserver + panier + burger */
-    .header-actions {
+    /* ACTIONS DROITE */
+    .navbar-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
+      gap: 18px;
     }
 
-    .nav-cta {
-      background: linear-gradient(90deg, #F17B39, #C43D2F);
-      padding: 12px 28px;
-      border-radius: 40px;
+    /* BOUTON RESERVER */
+    .btn-reserver {
+      background: #C64B32;
+      padding: 12px 26px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      text-decoration: none;
+      transition: 0.25s ease;
       font-family: "Montserrat", system-ui, sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      color: #F9FAFB;
       white-space: nowrap;
-      border: none;
-      box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
-        0 10px 28px rgba(0,0,0,0.7);
-      cursor: pointer;
-      transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     }
 
-    .nav-cta:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-      box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
-        0 16px 38px rgba(0,0,0,0.9);
+    .btn-reserver:hover {
+      background: #E86141;
     }
 
-    .cart-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1.5px solid #ffffff;
-      display: flex;
+    /* PANIER */
+    .btn-cart {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 1.5px solid #ffffff;
       background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
-      backdrop-filter: blur(6px);
-      flex-shrink: 0;
+      position: relative;
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    .btn-cart img {
+      height: 32px;
+      display: block;
     }
 
     #cart-count {
       position: absolute;
       top: -6px;
       right: -6px;
-      background: #C43D2F;
+      background: #C64B32;
       color:#fff;
       border-radius:999px;
       font-size:10px;
@@ -233,79 +194,52 @@
     }
     #cart-count:empty { display:none; }
 
-    .burger-button {
-      display: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1.5px solid #ffffff;
-      background: transparent;
-      color:#fff;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      flex-shrink: 0;
+    /* Petit responsive simple : on réduit un peu à partir de 900px */
+    @media (max-width: 900px) {
+      .navbar-container {
+        gap: 8px;
+      }
+      .navbar-links {
+        gap: 20px;
+      }
+      .navbar-logo img {
+        height: 70px;
+      }
+      .navbar-title {
+        font-size: 22px;
+        letter-spacing: 2px;
+      }
+      .nav-item {
+        font-size: 15px;
+      }
+      .btn-reserver {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
     }
 
-    /* MENU MOBILE */
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 100px; /* hauteur header */
-      left: 0;
-      right: 0;
-      background: #050B1A;
-      padding: 12px 24px 16px;
-      z-index: 40;
-      border-bottom: 1px solid #111827;
+    @media (max-width: 720px) {
+      .navbar {
+        height: auto;
+        padding: 8px 0;
+      }
+      .navbar-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .navbar-links {
+        flex-wrap: wrap;
+        gap: 12px 20px;
+      }
     }
 
-    .mobile-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-size: 15px;
-    }
+    /* ================== CONTENU PAGE CONCEPT ================== */
 
-    .mobile-nav a {
-      font-family: "Montserrat", system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color:#fff;
-      position: relative;
-      padding-bottom: 4px;
-    }
-
-    .mobile-nav a::after {
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:0;
-      width:0;
-      height:2px;
-      background:#D85A3A;
-      border-radius:6px;
-      transition:width 0.3s ease;
-    }
-
-    .mobile-nav a:hover::after {
-      width:100%;
-    }
-
-    .mobile-nav a.active::after {
-      width:100%;
-    }
-
-    .mobile-nav.open { display:block; }
-
-    /* ---------- SECTION INTRO ---------- */
+    /* Intro compensée pour la navbar fixe */
     #concept-intro {
       position: relative;
-      padding: 140px 0 80px; /* marge pour le header fixe */
+      padding: 150px 0 80px; /* marge top pour la navbar 110px */
       text-align: center;
       background:
         radial-gradient(circle at 30% 0%, rgba(201,76,53,0.35), transparent 55%),
@@ -570,7 +504,7 @@
       border-top:1px solid #111827;
     }
 
-    /* ---------- RESPONSIVE ---------- */
+    /* ---------- RESPONSIVE BLOCS CONCEPT ---------- */
     @media (max-width: 900px) {
       .concept-grid {
         grid-template-columns: minmax(0,1fr);
@@ -581,47 +515,7 @@
       }
 
       #concept-intro {
-        padding: 120px 0 64px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header-inner {
-        padding: 0 16px;
-        position: relative;
-      }
-
-      nav.main-nav {
-        display:none;
-      }
-
-      .burger-button {
-        display:flex;
-      }
-
-      /* Logo + texte centrés */
-      .brand {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .brand-logo {
-        width: 80px;
-      }
-
-      .brand-text {
-        font-size: 18px;
-        letter-spacing: 2px;
-      }
-
-      .header-actions {
-        margin-left: auto;
-        gap: 8px;
-      }
-
-      #concept-intro {
-        padding: 120px 0 64px;
+        padding: 130px 0 64px;
       }
     }
 
@@ -635,51 +529,30 @@
 
 <body>
 
-  <!-- ---------- HEADER UNIFIÉ ---------- -->
-  <header class="site-header">
-    <div class="header-inner">
-      <!-- Logo + texte -->
-      <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
-        <span class="brand-text">Singbox</span>
+  <!-- ============== NAVBAR UNIQUE ============== -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="navbar-logo">
+        <img src="logo.png" alt="Singbox logo" />
+        <span class="navbar-title">SINGBOX</span>
       </a>
 
-      <!-- NAV DESKTOP -->
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="concept.html" class="active">Le concept</a></li>
-          <li><a href="boxs.html">Les boxs</a></li>
-          <li><a href="actualites.html">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
+      <nav class="navbar-links">
+        <a href="index.html" class="nav-item">Accueil</a>
+        <a href="concept.html" class="nav-item active">Le concept</a>
+        <a href="boxs.html" class="nav-item">Les boxs</a>
+        <a href="actualites.html" class="nav-item">Actualités</a>
+        <a href="contact.html" class="nav-item">Contact</a>
       </nav>
 
-      <!-- Actions : Réserver + panier + burger -->
-      <div class="header-actions">
-        <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+      <div class="navbar-actions">
+        <a href="reservation.html" class="btn-reserver">Réserver</a>
+        <a href="panier.html" class="btn-cart">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-          ☰
-        </button>
       </div>
     </div>
   </header>
-
-  <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html" class="active">Le concept</a></li>
-      <li><a href="boxs.html">Les boxs</a></li>
-      <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
-      <li><a href="panier.html">Panier</a></li>
-    </ul>
-  </nav>
 
   <!-- ---------- SECTION INTRO ---------- -->
   <section id="concept-intro">
@@ -838,21 +711,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
-
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
-
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
-      }
-
       updateCartIcon();
     });
   </script>
