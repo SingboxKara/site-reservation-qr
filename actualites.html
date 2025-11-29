@@ -237,11 +237,11 @@
     /* ---------- SECTION INTRO ---------- */
     #news-intro {
       position: relative;
-      padding: 64px 0 72px;
+      padding: 64px 0 40px; /* réduit en bas pour rapprocher les cartes */
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
-        rgba(5,8,20,0.96);
+        #050814;
       overflow: hidden;
     }
 
@@ -294,11 +294,12 @@
     /* ---------- SECTION LISTE ARTICLES ---------- */
     #news-list {
       position: relative;
-      padding: 72px 0 80px;
+      padding: 32px 0 80px; /* padding-top réduit pour réduire le gap */
       background:
-        radial-gradient(circle at 50% -20%, rgba(201,76,53,0.24), transparent 65%),
-        #050814;
+        radial-gradient(circle at 50% 0%, rgba(201,76,53,0.25), transparent 60%),
+        #050814; /* même base que le hero pour continuité */
       overflow: hidden;
+      margin-top: -16px; /* léger overlap avec le hero */
     }
 
     #news-list::before {
@@ -325,6 +326,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: 24px;
+      margin-top: -12px; /* remonte légèrement les cartes sous le hero */
     }
 
     .news-main-column,
@@ -344,7 +346,12 @@
       border: 1px solid rgba(255,255,255,0.05);
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease,
+        filter 0.2s ease;
     }
 
     .news-card::after {
@@ -415,6 +422,21 @@
     .news-link:hover {
       color: #FFE4C4;
       text-shadow: 0 0 12px rgba(248,250,252,0.6);
+    }
+
+    /* --- Highlight / dim pour les filtres --- */
+    .news-card.is-highlighted {
+      opacity: 1;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 60px rgba(255,120,80,0.35);
+      border-color: rgba(255,120,80,0.6);
+      filter: none;
+    }
+
+    .news-card.is-dimmed {
+      opacity: 0.45;
+      filter: grayscale(0.15);
     }
 
     /* ---------- SECTION FILTRES ---------- */
@@ -609,12 +631,14 @@
     @media (max-width: 900px) {
       .news-grid {
         grid-template-columns: minmax(0,1fr);
+        margin-top: -4px;
       }
       #news-intro {
-        padding: 56px 0 64px;
+        padding: 56px 0 32px;
       }
       #news-list {
-        padding: 64px 0 72px;
+        padding: 32px 0 72px;
+        margin-top: -8px;
       }
     }
 
@@ -828,7 +852,7 @@
     </div>
   </footer>
 
-  <!-- SCRIPT : menu mobile + filtres + badge panier -->
+  <!-- SCRIPT : menu mobile + filtres highlight/dim + badge panier -->
   <script>
     // Helpers panier (localStorage)
     function getPanier() {
@@ -863,9 +887,9 @@
         });
       }
 
-      /* --- FILTRE CATEGORIES --- */
+      /* --- FILTRE CATEGORIES : highlight/dim mais ne masque rien --- */
       const filterPills = document.querySelectorAll(".filter-pill");
-      const posts = document.querySelectorAll("[data-category]");
+      const cards = document.querySelectorAll(".news-card");
 
       filterPills.forEach(pill => {
         pill.addEventListener("click", () => {
@@ -874,14 +898,23 @@
 
           const cat = pill.getAttribute("data-category");
 
-          posts.forEach(post => {
-            const postCat = post.getAttribute("data-category");
-            if (cat === "all" || postCat === cat) {
-              post.style.display = "";
-            } else {
-              post.style.display = "none";
-            }
-          });
+          if (cat === "all") {
+            // Reset : aucune carte dimmée ni surlignée
+            cards.forEach(card => {
+              card.classList.remove("is-highlighted", "is-dimmed");
+            });
+          } else {
+            cards.forEach(card => {
+              const postCat = card.getAttribute("data-category");
+              if (postCat === cat) {
+                card.classList.add("is-highlighted");
+                card.classList.remove("is-dimmed");
+              } else {
+                card.classList.add("is-dimmed");
+                card.classList.remove("is-highlighted");
+              }
+            });
+          }
         });
       });
 
