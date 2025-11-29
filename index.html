@@ -70,7 +70,7 @@
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
-      padding: 12px 24px; /* pour supporter le logo plus grand */
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -78,18 +78,18 @@
       height: auto;
     }
 
-    /* Bloc marque : logo + texte côte à côte */
+    /* Bloc marque : logo + texte */
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px; /* espace entre logo et texte SINGBOX */
+      gap: 12px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
     .brand-logo {
-      width: 110px;   /* logo nettement plus grand en desktop */
-      height: auto;   /* conserve les proportions */
+      width: 110px;
+      height: auto;
       border-radius: 999px;
       display: block;
       object-fit: contain;
@@ -102,12 +102,12 @@
       font-family: "League Spartan", system-ui, sans-serif;
       font-weight: 600;
       letter-spacing: 0.15em;
-      font-size: 26px;   /* texte bien visible à côté du logo */
+      font-size: 26px;
       color: #F9FAFB;
       text-transform: uppercase;
       white-space: nowrap;
       display: flex;
-      align-items: center; /* aligné verticalement au centre du logo */
+      align-items: center;
     }
 
     /* NAV */
@@ -127,27 +127,49 @@
       font-size: 14px;
     }
 
+    /* 🌟 Liens premium + effet néon */
+    .navbar a,
+    .nav-links a,
+    .header-nav a,
     .main-nav a {
-      color: #E5E7EB;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      text-decoration: none;
       position: relative;
       padding-bottom: 4px;
-      font-weight: 500;
       white-space: nowrap;
     }
 
+    .navbar a::after,
+    .nav-links a::after,
+    .header-nav a::after,
     .main-nav a::after {
       content: "";
       position: absolute;
       left: 0;
       bottom: 0;
+      width: 0%;
       height: 2px;
-      width: 0;
-      background: var(--sb-red);
-      border-radius: 999px;
-      transition: width 0.2s ease-out;
+      background: linear-gradient(90deg, #ff6930, #ffb96f);
+      transition: width 0.3s ease;
+      border-radius: 6px;
     }
 
-    .main-nav a:hover::after { width: 100%; }
+    .navbar a:hover::after,
+    .nav-links a:hover::after,
+    .header-nav a:hover::after,
+    .main-nav a:hover::after {
+      width: 100%;
+    }
+
+    .navbar a:hover,
+    .nav-links a:hover,
+    .header-nav a:hover,
+    .main-nav a:hover {
+      color: #ffb96f;
+      transition: 0.25s ease;
+    }
 
     /* HEADER ACTIONS */
     .header-actions {
@@ -225,7 +247,7 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 80px; /* légèrement sous le header agrandi */
+      top: 80px;
       left: 0;
       right: 0;
       background: #020617;
@@ -250,7 +272,7 @@
     /* ---------- HERO ---------- */
     .hero {
       position: relative;
-      padding: 8.5rem 0 96px; /* un peu plus de marge pour le header plus grand */
+      padding: 8.5rem 0 96px;
       background:
         radial-gradient(circle at 30% 0%, #6b1220 0, transparent 50%),
         radial-gradient(circle at 80% 0%, rgba(17,24,39,0.8), transparent 60%),
@@ -492,7 +514,6 @@
       border-color: rgba(201,76,53,0.6);
     }
 
-    /* Card étape cliquable (Choisissez votre date) */
     .step-card--clickable {
       cursor: pointer;
     }
@@ -536,7 +557,6 @@
       align-items: flex-start;
     }
 
-    /* Colonne gauche : grille de cartes */
     .occasion-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -555,7 +575,7 @@
         transform 0.2s ease,
         box-shadow 0.2s ease,
         border-color 0.2s ease;
-      cursor: pointer; /* toutes les cartes occasions cliquables */
+      cursor: pointer;
     }
 
     .occasion-card h3 {
@@ -607,8 +627,6 @@
       pointer-events: none;
       mix-blend-mode: screen;
     }
-
-    /* Colonne droite : card contact */
 
     .occasion-contact-card {
       background: rgba(2, 6, 23, 0.96);
@@ -802,11 +820,11 @@
       }
 
       .brand-logo {
-        width: 70px;   /* logo réduit sur mobile pour ne pas casser la navbar */
+        width: 70px;
       }
 
       .brand-text {
-        font-size: 20px;  /* un peu plus petit sur mobile */
+        font-size: 20px;
         letter-spacing: 0.12em;
       }
 
@@ -820,7 +838,7 @@
       }
 
       .hero {
-        padding: 7.5rem 0 80px; /* ajusté pour le header mobile */
+        padding: 7.5rem 0 80px;
       }
 
       .hero h1 { font-size: 34px; }
@@ -930,7 +948,6 @@
 
       <div class="hero-right">
         <div class="hero-image-card">
-          <!-- Remplace par ta vraie image -->
           <img src="hero-karaoke.jpg" alt="Groupe d'amis chantant dans une box Singbox">
         </div>
       </div>
@@ -944,7 +961,6 @@
       <p class="section-subtitle-center">Des moments funs pour tous les groupes.</p>
 
       <div class="steps-grid">
-        <!-- CARD 1 cliquable -> réservation -->
         <div
           class="step-card step-card--clickable"
           onclick="window.location.href='reservation.html'"
@@ -986,7 +1002,6 @@
       </header>
 
       <div class="occasions-layout">
-        <!-- Colonne gauche : cartes -->
         <div class="occasions-left">
           <div class="occasion-grid">
             <article
@@ -1045,7 +1060,6 @@
           </div>
         </div>
 
-        <!-- Colonne droite : contact -->
         <aside class="occasion-contact-card">
           <h3>Venez chanter chez Singbox</h3>
 
@@ -1140,7 +1154,6 @@
       input.value = today.toISOString().split("T")[0];
     })();
 
-    // Helpers panier
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
