@@ -367,6 +367,9 @@
       background: #020617;
       color: #F9FAFB;
       outline: none;
+      /* police harmonisée avec le reste du site */
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight: 500;
     }
 
     .resa-field input:focus,
@@ -375,6 +378,22 @@
       box-shadow:
         0 0 0 1px rgba(201,76,53,0.8),
         0 0 25px rgba(201,76,53,0.5);
+    }
+
+    /* Icône du sélecteur de date en blanc */
+    input[type="date"] {
+      color-scheme: dark;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1) brightness(1.6);
+      cursor: pointer;
+    }
+
+    /* Pour les navigateurs qui ne gèrent pas color-scheme, on garde un fond sombre */
+    input[type="date"] {
+      background-color: #020617;
+      color: #F9FAFB;
     }
 
     .resa-button-wrapper { flex: 0 0 auto; }
@@ -933,9 +952,8 @@
               <select id="people-input">
                 <option value="">Non défini</option>
                 <option value="2">2 personnes</option>
-                <option value="3-4">3-4 personnes</option>
-                <option value="5-6">5-6 personnes</option>
-                <option value="7+">7 personnes et +</option>
+                <option value="3-4">3–4 personnes</option>
+                <option value="5-6">5–6 personnes</option>
               </select>
             </div>
 
