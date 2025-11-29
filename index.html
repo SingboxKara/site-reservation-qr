@@ -474,154 +474,201 @@
       border-color: rgba(201,76,53,0.6);
     }
 
-    /* ---------- SECTION OCCASIONS + CONTACT ---------- */
-    .section-events {
-      padding: 96px 0 110px;
+    /* ---------- SECTION OCCASIONS (cartes + contact) ---------- */
+
+    .section-occasions {
+      padding: 4.5rem 0 4.5rem;
       background: #050814;
-      position: relative;
+      color: #F9FAFB;
     }
 
-    .section-events::before {
-      content: "♫";
-      position: absolute;
-      top: 16%;
-      left: 8%;
-      font-size: 32px;
-      color: rgba(148,163,184,0.08);
+    .occasions-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
     }
 
-    .section-events-inner {
+    .occasions-header {
+      text-align: left;
+      margin-bottom: 2.5rem;
+    }
+
+    .occasions-title {
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+      margin: 0 0 0.5rem;
+    }
+
+    .occasions-subtitle {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #9CA3AF;
+      max-width: 540px;
+    }
+
+    .occasions-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 32px;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 2rem;
       align-items: flex-start;
     }
 
-    .events-left .section-title {
-      font-size: 22px;
-      margin-bottom: 16px;
-    }
-
-    .events-left .section-subtitle {
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      margin-bottom: 20px;
-    }
-
-    .event-grid {
+    /* Colonne gauche : grille de cartes */
+    .occasion-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 1.5rem;
     }
 
-    .event-card {
-      background: var(--sb-card);
-      border-radius: 16px;
-      padding: 16px 16px 18px;
-      border: 1px solid var(--sb-border-soft);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.75);
+    .occasion-card {
       position: relative;
+      background: rgba(2, 6, 23, 0.96);
+      border-radius: 18px;
+      padding: 1.25rem 1.5rem 1.4rem;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
       overflow: hidden;
-    }
-    .event-card::before {
-      content: "♪";
-      position: absolute;
-      right: 10px;
-      top: 8px;
-      font-size: 20px;
-      color: rgba(148,163,184,0.08);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
     }
 
-    .event-card h3 {
-      margin: 0 0 6px;
-      font-size: 15px;
+    .occasion-card h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
     }
-    .event-card p {
+
+    .occasion-card p {
       margin: 0;
-      font-size: 13px;
-      color: var(--sb-text-muted);
+      font-size: 0.9rem;
+      color: #E5E7EB;
     }
 
-    .contact-card {
-      background: var(--sb-card);
+    .occasion-card::after {
+      content: attr(data-icon);
+      position: absolute;
+      top: 0.7rem;
+      right: 0.9rem;
+      font-size: 1.4rem;
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .occasion-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.9);
+      border-color: rgba(201, 76, 53, 0.55);
+    }
+
+    .occasion-card--large {
+      grid-column: span 2;
+    }
+
+    .occasion-card--friends {
+      border-color: rgba(201, 76, 53, 0.5);
+      box-shadow:
+        0 0 0 1px rgba(201, 76, 53, 0.24),
+        0 24px 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .occasion-card--friends::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background:
+        radial-gradient(circle at 0 0, rgba(201, 76, 53, 0.35), transparent 55%);
+      opacity: 0.5;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    /* Colonne droite : card contact */
+
+    .occasion-contact-card {
+      background: rgba(2, 6, 23, 0.96);
       border-radius: 24px;
-      padding: 22px 22px 24px;
-      border: 1px solid var(--sb-border-soft);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+      padding: 1.5rem 1.75rem 1.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.85);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.75rem;
     }
 
-    .contact-card h3 {
-      font-size: 20px;
-      margin-bottom: 4px;
+    .occasion-contact-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
     }
 
     .mini-map {
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(56,189,248,0.22), transparent 60%),
-        radial-gradient(circle at 80% 70%, rgba(201,76,53,0.35), transparent 65%),
-        #020617;
+      margin: 0.25rem 0 0.85rem;
       height: 160px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.22), transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(201, 76, 53, 0.35), transparent 65%),
+        #020617;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
       position: relative;
-      margin: 4px 0 10px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     }
+
     .mini-map::after {
       content: "📍";
       position: absolute;
-      font-size: 28px;
-      color: #F97316;
       left: 50%;
       top: 45%;
       transform: translate(-50%, -50%);
-      text-shadow: 0 0 15px rgba(249,115,22,0.8);
+      font-size: 1.8rem;
+      text-shadow: 0 0 18px rgba(249, 115, 22, 0.9);
     }
 
     .contact-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 13px;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #E5E7EB;
     }
 
     .contact-icon {
       width: 24px;
       height: 24px;
       border-radius: 999px;
-      background: rgba(148,163,184,0.25);
+      background: rgba(148, 163, 184, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 0.8rem;
       flex-shrink: 0;
     }
 
     .contact-cta {
-      margin-top: 8px;
+      margin-top: 0.75rem;
       align-self: flex-start;
-      padding: 10px 24px;
-      border-radius: 999px;
       border: none;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      border-radius: 999px;
+      padding: 0.65rem 1.6rem;
+      background: linear-gradient(90deg, #C94C35, #F97316);
       color: #F9FAFB;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 0.95rem;
       cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+        0 0 0 1px rgba(248, 250, 251, 0.15),
+        0 18px 42px rgba(0, 0, 0, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
     .contact-cta:hover {
       transform: translateY(-1px);
+      filter: brightness(1.05);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 22px 60px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.2),
+        0 24px 60px rgba(0, 0, 0, 1);
     }
 
     /* ---------- FOOTER ---------- */
@@ -713,11 +760,8 @@
       .steps-grid {
         grid-template-columns: minmax(0,1fr);
       }
-      .section-events-inner {
-        grid-template-columns:minmax(0,1fr);
-      }
-      .event-grid {
-        grid-template-columns:minmax(0,1fr);
+      .occasions-layout {
+        grid-template-columns: minmax(0,1fr);
       }
     }
 
@@ -741,6 +785,18 @@
       .resa-button {
         width: 100%;
         text-align: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .occasion-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .occasion-card--large {
+        grid-column: span 1;
+      }
+      .occasions-title {
+        font-size: 1.6rem;
       }
     }
   </style>
@@ -868,69 +924,82 @@
     </div>
   </section>
 
-  <!-- SECTION OCCASIONS + CONTACT -->
-  <section class="section-events">
-    <div class="container section-events-inner">
-      <!-- Colonne gauche -->
-      <div class="events-left">
-        <h2 class="section-title">Pour toutes les occasions !</h2>
-        <p class="section-subtitle">
+  <!-- SECTION OCCASIONS + CONTACT REFAITE -->
+  <section id="occasions" class="section-occasions">
+    <div class="occasions-container">
+      <header class="occasions-header">
+        <h2 class="occasions-title">Pour toutes les occasions&nbsp;!</h2>
+        <p class="occasions-subtitle">
           Entre amis, en famille ou entre collègues, Singbox s’adapte à toutes vos envies.
         </p>
+      </header>
 
-        <div class="event-grid">
-          <div class="event-card">
-            <h3>Entre amis</h3>
-            <p>Blind tests, défis, hits des années 2000… votre nouvelle QG de soirée.</p>
-          </div>
-          <div class="event-card">
-            <h3>En famille</h3>
-            <p>Des classiques français aux dessins animés, pour toutes les générations.</p>
-          </div>
-          <div class="event-card">
-            <h3>Anniversaire</h3>
-            <p>Une box privatisée pour souffler vos bougies en musique.</p>
-          </div>
-          <div class="event-card">
-            <h3>Team building</h3>
-            <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
-          </div>
-          <div class="event-card">
-            <h3>EVJF / EVG</h3>
-            <p>Une parenthèse 100% fun avant le grand jour.</p>
-          </div>
-          <div class="event-card">
-            <h3>Et plus encore…</h3>
-            <p>Afterworks, sorties d’école, lendemains de match : toutes les excuses sont bonnes.</p>
-          </div>
-        </div>
-      </div>
+      <div class="occasions-layout">
+        <!-- Colonne gauche : cartes -->
+        <div class="occasions-left">
+          <div class="occasion-grid">
+            <article
+              class="occasion-card occasion-card--large occasion-card--friends"
+              data-icon="🎧"
+            >
+              <h3>Entre amis</h3>
+              <p>Blind tests, défis, hits des années 2000… votre QG de soirée.</p>
+            </article>
 
-      <!-- Colonne droite -->
-      <div class="contact-card">
-        <h3>Venez chanter chez Singbox</h3>
-        <div class="mini-map"></div>
+            <article class="occasion-card" data-icon="👨‍👩‍👧">
+              <h3>En famille</h3>
+              <p>Des classiques pour toutes les générations.</p>
+            </article>
 
-        <div class="contact-row">
-          <div class="contact-icon">📍</div>
-          <p><strong>Adresse :</strong> [à compléter]</p>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">🕒</div>
-          <p><strong>Horaires :</strong> À définir (soir, week-end…)</p>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">📧</div>
-          <p><strong>Email :</strong> contact@singbox.fr</p>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">📞</div>
-          <p><strong>Téléphone :</strong> 06 00 00 00 00</p>
+            <article class="occasion-card" data-icon="🎂">
+              <h3>Anniversaire</h3>
+              <p>Une box privatisée pour souffler vos bougies en musique.</p>
+            </article>
+
+            <article class="occasion-card" data-icon="🏢">
+              <h3>Team building</h3>
+              <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
+            </article>
+
+            <article class="occasion-card" data-icon="💍">
+              <h3>EVJF / EVG</h3>
+              <p>Une parenthèse 100&nbsp;% fun avant le grand jour.</p>
+            </article>
+
+            <article class="occasion-card" data-icon="✨">
+              <h3>Et plus encore…</h3>
+              <p>Afterworks, lendemains de match… toutes les excuses sont bonnes.</p>
+            </article>
+          </div>
         </div>
 
-        <button class="contact-cta" onclick="window.location.href='reservation.html'">
-          Réserver maintenant
-        </button>
+        <!-- Colonne droite : contact -->
+        <aside class="occasion-contact-card">
+          <h3>Venez chanter chez Singbox</h3>
+
+          <div class="mini-map"></div>
+
+          <div class="contact-row">
+            <div class="contact-icon">📍</div>
+            <p><strong>Adresse&nbsp;:</strong> [à compléter]</p>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">🕒</div>
+            <p><strong>Horaires&nbsp;:</strong> À définir (soir, week-end…)</p>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📧</div>
+            <p><strong>Email&nbsp;:</strong> contact@singbox.fr</p>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📞</div>
+            <p><strong>Téléphone&nbsp;:</strong> 06 00 00 00 00</p>
+          </div>
+
+          <button class="contact-cta" onclick="window.location.href='reservation.html'">
+            Réserver maintenant
+          </button>
+        </aside>
       </div>
     </div>
   </section>
