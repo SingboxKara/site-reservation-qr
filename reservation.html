@@ -297,7 +297,7 @@
     /* ---------- HERO RÉSERVATION ---------- */
     .hero-resa {
       position: relative;
-      padding: 8.5rem 0 2.5rem; /* compensé pour le header fixe */
+      padding: 10rem 0 2.5rem; /* + espace sous le header fixe */
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
@@ -756,7 +756,7 @@
   <!-- HERO -->
   <section class="hero-resa">
     <div class="hero-inner">
-      <p class="hero-eyebrow">Réservation</p>
+      <p class="hero-eyebrow">RÉSERVATION</p>
       <h1>Réserver une box</h1>
       <p>Choisissez votre date, puis cliquez sur un créneau libre pour l’ajouter au panier.</p>
     </div>
@@ -1026,15 +1026,16 @@
       function refreshPlanning() {
         if (!dateInput.value) return;
         const parts = dateInput.value.split("-");
-        const selectedDate = new Date(
+        theSelectedDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
         );
-        buildPlanningTable(selectedDate);
+        buildPlanningTable(theSelectedDate);
         document.getElementById("message").textContent = "";
       }
 
+      let theSelectedDate;
       loadButton.addEventListener("click", refreshPlanning);
       refreshPlanning();
     });
