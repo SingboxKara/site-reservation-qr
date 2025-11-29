@@ -294,7 +294,7 @@
     /* ---------- HERO PANIER ---------- */
     .hero-panier {
       position: relative;
-      padding: 8.5rem 0 2.5rem; /* compensé pour header fixe */
+      padding: 12rem 0 3.25rem; /* même écart que la page Réservation */
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
@@ -735,6 +735,12 @@
         flex-wrap: wrap;
       }
     }
+
+    @media (max-width: 600px) {
+      .hero-panier {
+        padding-top: 9rem; /* un peu moins sur mobile mais toujours bien aéré */
+      }
+    }
   </style>
 </head>
 <body>
@@ -942,7 +948,7 @@
     const totalEl = document.getElementById("cart-total");
     const actionsEl = document.getElementById("cart-actions");
     const paymentSection = document.getElementById("payment-section");
-    const panier = getPanier();
+       const panier = getPanier();
 
     container.innerHTML = "";
 
