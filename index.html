@@ -64,33 +64,35 @@
       background: #020617;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      height: auto;
     }
 
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
-      padding: 0.75rem 1.5rem;
+      padding: 12px 24px; /* pour supporter le logo plus grand */
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 2rem;
+      height: auto;
     }
 
     /* Bloc marque : logo + texte côte à côte */
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 12px; /* espace entre logo et texte SINGBOX */
       text-decoration: none;
       flex-shrink: 0;
     }
 
     .brand-logo {
-      width: 48px;   /* taille augmentée */
-      height: 48px;
+      width: 110px;   /* logo nettement plus grand en desktop */
+      height: auto;   /* conserve les proportions */
       border-radius: 999px;
       display: block;
-      object-fit: cover;
+      object-fit: contain;
       filter:
         drop-shadow(0 0 12px rgba(255,255,255,0.16))
         drop-shadow(0 0 20px rgba(201,76,53,0.6));
@@ -98,12 +100,14 @@
 
     .brand-text {
       font-family: "League Spartan", system-ui, sans-serif;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.15em;
-      font-size: 1rem;
+      font-size: 26px;   /* texte bien visible à côté du logo */
       color: #F9FAFB;
       text-transform: uppercase;
       white-space: nowrap;
+      display: flex;
+      align-items: center; /* aligné verticalement au centre du logo */
     }
 
     /* NAV */
@@ -221,7 +225,7 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 60px; /* légèrement sous le header fixe */
+      top: 80px; /* légèrement sous le header agrandi */
       left: 0;
       right: 0;
       background: #020617;
@@ -246,7 +250,7 @@
     /* ---------- HERO ---------- */
     .hero {
       position: relative;
-      padding: 7rem 0 96px; /* décalé pour laisser passer le header fixe */
+      padding: 8.5rem 0 96px; /* un peu plus de marge pour le header plus grand */
       background:
         radial-gradient(circle at 30% 0%, #6b1220 0, transparent 50%),
         radial-gradient(circle at 80% 0%, rgba(17,24,39,0.8), transparent 60%),
@@ -787,7 +791,7 @@
 
     @media (max-width: 768px) {
       .header-inner {
-        padding: 0.75rem 1rem;
+        padding: 12px 16px;
         gap: 1rem;
       }
 
@@ -797,8 +801,12 @@
         display:flex;
       }
 
+      .brand-logo {
+        width: 70px;   /* logo réduit sur mobile pour ne pas casser la navbar */
+      }
+
       .brand-text {
-        font-size: 0.9rem;
+        font-size: 20px;  /* un peu plus petit sur mobile */
         letter-spacing: 0.12em;
       }
 
@@ -812,7 +820,7 @@
       }
 
       .hero {
-        padding: 6.5rem 0 80px; /* légèrement plus bas que le header */
+        padding: 7.5rem 0 80px; /* ajusté pour le header mobile */
       }
 
       .hero h1 { font-size: 34px; }
@@ -948,7 +956,6 @@
           </div>
         </div>
 
-        <!-- Les autres cards restent non-cliquables (ou tu peux aussi les rendre cliquables si tu veux) -->
         <div class="step-card">
           <div class="step-icon">📦</div>
           <div class="step-content">
