@@ -15,15 +15,16 @@
 
   <style>
     :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-bg-soft: #030712;
+      --sb-card: rgba(2, 6, 23, 0.96);
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
       --sb-red: #C94C35;
-      --sb-dark: #050816;
-      --sb-dark-2: #0B1120;
-      --sb-dark-3: #10172A;
-      --sb-text-main: #FDF2E9;
-      --sb-text-muted: #C7D2FE;
-      --sb-turquoise: #38BDF8;
-      --sb-bg-light: #EAEFF5;
-      --sb-border-light: #E0E6F0;
+      --sb-orange: #F97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.25);
+      --sb-container-width: 1180px;
     }
 
     * { box-sizing: border-box; }
@@ -33,9 +34,9 @@
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 60%),
-        radial-gradient(circle at 100% 0%, rgba(201,76,53,0.26), transparent 60%),
-        linear-gradient(135deg, #020617, #050816 45%, #111827 100%);
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
     }
 
@@ -43,48 +44,60 @@
 
     h1, h2, h3 {
       font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
     /* ---------- HEADER ---------- */
     header {
-      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+      width: 100%;
+      background: #020617;
       color: #fff;
-      padding: 12px 32px;
-      display: flex;
-      align-items: center;
-      gap: 32px;
+      padding: 10px 24px;
       position: sticky;
       top: 0;
       z-index: 50;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
     }
 
-    .logo { flex-shrink: 0; }
+    .header-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
 
-    .logo a {
+    .logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: 0.18em;
-      color: #fff;
-      text-transform: uppercase;
+      flex-shrink: 0;
     }
 
     .logo img {
-      height: 76px;
+      height: 70px;
       width: auto;
       display: block;
       filter:
-        drop-shadow(0 0 18px rgba(255,255,255,0.18))
-        drop-shadow(0 0 30px rgba(201,76,53,0.6));
+        drop-shadow(0 0 14px rgba(255,255,255,0.16))
+        drop-shadow(0 0 26px rgba(201,76,53,0.6));
     }
 
-    .logo-text { text-transform: uppercase; }
+    .logo-text {
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.18em;
+    }
 
-    .main-nav {
+    nav.main-nav {
       flex: 1;
       display: flex;
       justify-content: center;
@@ -93,7 +106,7 @@
     .main-nav ul {
       list-style: none;
       display: flex;
-      gap: 40px;
+      gap: 32px;
       margin: 0;
       padding: 0;
       font-size: 14px;
@@ -115,7 +128,7 @@
       width: 0;
       background: var(--sb-red);
       border-radius: 999px;
-      transition: width 0.22s ease-out;
+      transition: width 0.2s ease-out;
     }
 
     .main-nav a:hover::after { width: 100%; }
@@ -128,22 +141,24 @@
 
     .nav-cta {
       background: var(--sb-red);
-      padding: 9px 22px;
+      padding: 8px 22px;
       border-radius: 999px;
       font-weight: 600;
-      color: #F9FAFB;
       font-size: 14px;
+      color: #F9FAFB;
       white-space: nowrap;
-      box-shadow: 0 0 0 1px rgba(249, 250, 251, 0.08),
-                  0 10px 25px rgba(0, 0, 0, 0.7);
-      transition: transform 0.15s ease, box-shadow 0.15s ease,
-                  background 0.15s ease;
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.08),
+        0 10px 28px rgba(0,0,0,0.7);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
+
     .nav-cta:hover {
+      background: #d55a40;
       transform: translateY(-1px);
-      background: #d65a40;
-      box-shadow: 0 0 0 1px rgba(249, 250, 251, 0.18),
-                  0 16px 36px rgba(0, 0, 0, 0.9);
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.18),
+        0 16px 38px rgba(0,0,0,0.9);
     }
 
     .cart-icon {
@@ -157,9 +172,10 @@
       font-size: 18px;
       cursor: pointer;
       position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.18), rgba(15,23,42,0.7));
+      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
       backdrop-filter: blur(6px);
     }
+
     #cart-count {
       position: absolute;
       top: -6px;
@@ -175,46 +191,52 @@
     #cart-count:empty { display:none; }
 
     .burger-button {
-      display:none;
+      display: none;
       width: 36px;
       height: 36px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.25);
       background: transparent;
       color:#fff;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:20px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
     }
 
     .mobile-nav {
-      display:none;
-      position:fixed;
-      top:80px;
-      left:0;
-      right:0;
-      background:#020617;
-      padding:12px 24px 16px;
-      z-index:40;
-      border-bottom:1px solid #111827;
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
     }
-    .mobile-nav ul{
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      font-size:15px;
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
     }
-    .mobile-nav a{color:#fff;}
-    .mobile-nav.open{display:block;}
+
+    .mobile-nav a { color:#fff; }
+    .mobile-nav.open { display:block; }
 
     /* ---------- HERO ---------- */
     .hero {
       position: relative;
-      padding: 72px 24px 80px;
+      padding: 80px 0 96px;
+      background:
+        radial-gradient(circle at 30% 0%, #6b1220 0, transparent 50%),
+        radial-gradient(circle at 80% 0%, rgba(17,24,39,0.8), transparent 60%),
+        #050814;
       overflow: hidden;
     }
 
@@ -222,12 +244,12 @@
     .hero::after {
       content: "♪ ✦";
       position: absolute;
-      font-size: 30px;
-      color: rgba(148,163,184,0.16);
+      font-size: 32px;
+      color: rgba(148,163,184,0.08);
       pointer-events: none;
     }
     .hero::before {
-      top: 18%;
+      top: 16%;
       right: 8%;
     }
     .hero::after {
@@ -236,8 +258,6 @@
     }
 
     .hero-inner {
-      max-width: 1200px;
-      margin: 0 auto;
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
       gap: 40px;
@@ -246,74 +266,75 @@
 
     .hero-eyebrow {
       font-size: 14px;
-      color: var(--sb-turquoise);
-      margin-bottom: 12px;
+      color: #38BDF8;
+      margin-bottom: 10px;
     }
 
     .hero h1 {
       font-size: 46px;
-      margin: 0 0 12px;
+      line-height: 1.05;
       color: var(--sb-text-main);
+      margin-bottom: 12px;
     }
 
-    .hero p.subtitle {
-      margin: 0 0 28px;
+    .hero .subtitle {
       font-size: 17px;
-      color: rgba(249,250,251,0.78);
+      color: rgba(249,250,251,0.8);
+      margin-bottom: 28px;
       max-width: 520px;
     }
 
-    /* Form bar */
-    .resa-bar-wrapper {
-      margin-top: 6px;
-      max-width: 620px;
-    }
+    .resa-bar-wrapper { max-width: 640px; }
 
     .resa-bar {
-      background: radial-gradient(circle at 0% 0%, rgba(249,250,251,0.06), transparent 70%),
-                  rgba(15,23,42,0.95);
-      border-radius: 22px;
-      padding: 18px 18px;
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 20px 20px;
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
       align-items: center;
-      border: 1px solid rgba(248,113,113,0.65);
+      border: 1px solid rgba(148,163,184,0.2);
       box-shadow:
-        0 0 0 1px rgba(239,68,68,0.35),
+        0 0 0 1px rgba(148,163,184,0.18),
         0 0 40px rgba(201,76,53,0.55),
-        0 26px 70px rgba(0,0,0,0.85);
-      backdrop-filter: blur(16px);
+        0 26px 70px rgba(0,0,0,0.9);
+      backdrop-filter: blur(18px);
     }
 
     .resa-field {
       flex: 1 1 200px;
       display: flex;
       flex-direction: column;
-      font-size: 13px;
       text-align: left;
+      font-size: 13px;
     }
-    .resa-field span.label {
+
+    .resa-field .label {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #93C5FD;
+      color: #9CA3AF;
       margin-bottom: 4px;
     }
+
     .resa-field input,
     .resa-field select {
       padding: 9px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.75);
+      border: 1px solid rgba(148,163,184,0.45);
       font-size: 14px;
       background: #020617;
       color: #F9FAFB;
       outline: none;
     }
+
     .resa-field input:focus,
     .resa-field select:focus {
       border-color: var(--sb-red);
-      box-shadow: 0 0 0 1px rgba(201,76,53,0.9), 0 0 30px rgba(201,76,53,0.5);
+      box-shadow:
+        0 0 0 1px rgba(201,76,53,0.8),
+        0 0 25px rgba(201,76,53,0.5);
     }
 
     .resa-button-wrapper { flex: 0 0 auto; }
@@ -322,7 +343,7 @@
       border: none;
       padding: 11px 28px;
       border-radius: 999px;
-      background: var(--sb-red);
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       font-weight: 700;
       font-size: 15px;
@@ -330,343 +351,325 @@
       white-space: nowrap;
       box-shadow:
         0 0 0 1px rgba(248,250,252,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        0 18px 40px rgba(0,0,0,0.9);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
     .resa-button:hover {
       transform: translateY(-1px);
-      background: #d75a3f;
       box-shadow:
         0 0 0 1px rgba(248,250,252,0.18),
-        0 22px 55px rgba(0,0,0,1);
+        0 24px 55px rgba(0,0,0,1);
     }
 
-    /* Hero image side */
     .hero-image-card {
-      border-radius: 28px;
+      border-radius: 24px;
       overflow: hidden;
-      position: relative;
-      box-shadow:
-        0 30px 80px rgba(0,0,0,0.95),
-        0 0 0 1px rgba(148,163,184,0.45);
-      background: radial-gradient(circle at 20% 0%, rgba(248,250,252,0.08), transparent 60%),
+      background: radial-gradient(circle at 50% 0%, rgba(248,250,252,0.06), transparent 60%),
                   #020617;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(148,163,184,0.4);
       min-height: 260px;
+      position: relative;
     }
 
     .hero-image-card img {
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: cover;
+      display: block;
       transform: scale(1.03);
     }
 
-    .hero-image-badge {
+    /* ---------- SECTION 3 ÉTAPES ---------- */
+    .section-steps {
+      padding: 96px 0 96px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(201,76,53,0.22), transparent 55%),
+        #030712;
+      position: relative;
+    }
+
+    .section-steps::after {
+      content: "✦";
       position: absolute;
-      bottom: 16px;
-      left: 16px;
-      border-radius: 999px;
-      padding: 8px 16px;
-      background: rgba(15,23,42,0.9);
-      color: #F9FAFB;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.8);
-    }
-    .hero-image-badge span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--sb-red);
-      box-shadow: 0 0 14px rgba(201,76,53,0.85);
+      bottom: 18%;
+      right: 8%;
+      font-size: 32px;
+      color: rgba(148,163,184,0.08);
+      pointer-events: none;
     }
 
-    /* ---------- SECTION 3 ÉTAPES (cards centrales) ---------- */
-    .steps-section {
-      padding: 32px 24px 40px;
-      margin-bottom: 120px;
-      background: radial-gradient(circle at 0% 0%, rgba(56,189,248,0.08), transparent 55%),
-                  radial-gradient(circle at 100% 0%, rgba(201,76,53,0.16), transparent 55%),
-                  #020617;
-    }
-
-    .steps-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+    .section-title-center {
       text-align: center;
+      font-size: 26px;
+      margin-bottom: 6px;
     }
 
-    .steps-title {
-      font-size: 24px;
-      margin: 0 0 6px;
-    }
-    .steps-subtitle {
-      margin: 0 0 28px;
+    .section-subtitle-center {
+      text-align: center;
       font-size: 14px;
       color: var(--sb-text-muted);
+      margin-bottom: 32px;
     }
 
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 16px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .step-card {
-      background: radial-gradient(circle at 0% 0%, rgba(148,163,184,0.18), transparent 60%),
-                  rgba(15,23,42,0.98);
-      border-radius: 22px;
-      padding: 26px 28px;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.7);
-      border: 1px solid rgba(148,163,184,0.4);
-      text-align: left;
-      display:flex;
-      flex-direction:column;
-      gap: 6px;
+      background: var(--sb-card);
+      border-radius: 20px;
+      padding: 20px 22px;
+      border: 1px solid var(--sb-border-soft);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.75);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
       position: relative;
       overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .step-card::after {
+      content: "♪";
+      position: absolute;
+      right: 12px;
+      bottom: 8px;
+      font-size: 24px;
+      color: rgba(148,163,184,0.08);
     }
 
     .step-icon {
       width: 40px;
       height: 40px;
-      border-radius: 14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 20px;
+      border-radius: 50%;
       background: rgba(201,76,53,0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
       color: var(--sb-red);
-      margin-bottom: 6px;
+      flex-shrink: 0;
     }
 
-    .step-title {
+    .step-content h3 {
+      margin: 0 0 6px;
       font-size: 16px;
-      font-weight: 600;
     }
 
-    .step-text {
+    .step-content p {
+      margin: 0;
       font-size: 13px;
       color: var(--sb-text-muted);
       line-height: 1.5;
     }
 
-    /* ---------- ZONE CLAIRE (contenu bas) ---------- */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: var(--sb-bg-light);
-      border-radius: 40px 40px 0 0;
-      padding: 48px 24px 80px;
-      box-shadow: 0 -40px 80px rgba(15,23,42,0.8);
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.95);
+      border-color: rgba(201,76,53,0.6);
     }
 
-    section { margin-bottom: 120px; }
+    /* ---------- SECTION OCCASIONS + CONTACT ---------- */
+    .section-events {
+      padding: 96px 0 110px;
+      background: #050814;
+      position: relative;
+    }
 
-    .section-title {
+    .section-events::before {
+      content: "♫";
+      position: absolute;
+      top: 16%;
+      left: 8%;
+      font-size: 32px;
+      color: rgba(148,163,184,0.08);
+    }
+
+    .section-events-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    .events-left .section-title {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .events-left .section-subtitle {
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      margin-bottom: 20px;
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .event-card {
+      background: var(--sb-card);
+      border-radius: 16px;
+      padding: 16px 16px 18px;
+      border: 1px solid var(--sb-border-soft);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.75);
+      position: relative;
+      overflow: hidden;
+    }
+    .event-card::before {
+      content: "♪";
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      font-size: 20px;
+      color: rgba(148,163,184,0.08);
+    }
+
+    .event-card h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+    .event-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
+    .contact-card {
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 22px 22px 24px;
+      border: 1px solid var(--sb-border-soft);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-card h3 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .mini-map {
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56,189,248,0.22), transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(201,76,53,0.35), transparent 65%),
+        #020617;
+      height: 160px;
+      position: relative;
+      margin: 4px 0 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+    .mini-map::after {
+      content: "📍";
+      position: absolute;
+      font-size: 28px;
+      color: #F97316;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+      text-shadow: 0 0 15px rgba(249,115,22,0.8);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .contact-cta {
+      margin-top: 8px;
+      align-self: flex-start;
+      padding: 10px 24px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .contact-cta:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 22px 60px rgba(0,0,0,1);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background:#020617;
+      color:#e5e7eb;
+      padding:32px 24px 18px;
+      border-top: 1px solid #111827;
+    }
+
+    .newsletter-container {
+      max-width: var(--sb-container-width);
+      margin:0 auto 24px;
       text-align:center;
-      font-size:24px;
-      margin-bottom:8px;
-      color:#020617;
-    }
-    .section-subtitle {
-      text-align:center;
-      font-size:15px;
-      color:#6b7280;
-      margin-bottom:24px;
     }
 
-    /* Concept bloc */
-    .concept-grid {
-      display:grid;
-      grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
-      gap:32px;
-      align-items:center;
-    }
-    .concept-text p{
-      margin-bottom:12px;
-      line-height:1.5;
-      font-size:14px;
-      color:#111827;
-    }
-    .concept-card{
-      background:#10172A;
-      color:#fff;
-      padding:28px 26px;
-      border-radius:20px;
-      min-height:220px;
+    .newsletter-row {
       display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 12px 35px rgba(15,23,42,0.65);
-    }
-
-    /* Occasions cards */
-    .occasion-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:12px;
-    }
-    .occasion-card{
-      background:#FFFFFF;
-      border-radius:20px;
-      padding:24px 24px 26px;
-      box-shadow:0 4px 14px rgba(15,23,42,0.06);
-      border:1px solid var(--sb-border-light);
-      position:relative;
-      overflow:hidden;
-      transition:box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-    }
-    .occasion-card::before{
-      content:"🎵";
-      position:absolute;
-      right:14px;
-      top:10px;
-      font-size:26px;
-      opacity:0.08;
-    }
-    .occasion-card:nth-child(2)::before{content:"🎤";}
-    .occasion-card:nth-child(3)::before{content:"✦";}
-    .occasion-card:nth-child(4)::before{content:"♪";}
-    .occasion-card:nth-child(5)::before{content:"📀";}
-    .occasion-card:nth-child(6)::before{content:"⭐";}
-
-    .occasion-card:hover{
-      box-shadow:0 16px 40px rgba(15,23,42,0.18);
-      transform:translateY(-4px);
-      border-color:#cdd5e4;
-    }
-
-    .occasion-card h3{
-      margin:0 0 8px;
-      font-size:16px;
-      color:#111827;
-    }
-    .occasion-card p{
-      margin:0;
-      font-size:13px;
-      color:#4b5563;
-    }
-
-    /* Map + contact bloc */
-    .map-section{
-      display:grid;
-      grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);
-      gap:24px;
-      align-items:stretch;
-      margin-top:40px;
-    }
-    .map-placeholder{
-      background:#d1d5db;
-      border-radius:20px;
-      height:300px;
-      max-height:320px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#374151;
-      font-size:14px;
-      text-align:center;
-      padding:24px;
-      box-shadow:0 10px 28px rgba(15,23,42,0.35);
-    }
-    .contact-card{
-      background:#F4F7FC;
-      border-radius:20px;
-      padding:26px 24px 28px;
-      border:1px solid #DCE3EE;
-      box-shadow:0 8px 24px rgba(15,23,42,0.12);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .contact-card h3{
-      margin:0 0 8px;
-      color:#111827;
-    }
-    .contact-card p{
-      margin:2px 0;
-      font-size:13px;
-      color:#4b5563;
-    }
-    .contact-row{
-      display:flex;
-      align-items:center;
+      flex-wrap:wrap;
       gap:8px;
-      font-size:13px;
-    }
-    .contact-icon{
-      width:24px;
-      height:24px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
       justify-content:center;
-      background:#E0E7F5;
-      color:#111827;
-      font-size:14px;
+      margin-top: 8px;
     }
 
-    .contact-cta{
-      margin-top:14px;
-      align-self:flex-start;
-      padding:10px 24px;
+    footer input[type=email] {
+      padding:10px 12px;
       border-radius:999px;
+      border:1px solid rgba(148,163,184,0.4);
+      min-width:240px;
+      max-width:360px;
+      font-size:14px;
+      background:#020617;
+      color:#F9FAFB;
+    }
+
+    footer button {
+      padding:10px 18px;
       border:none;
+      border-radius:999px;
       background:var(--sb-red);
       color:#F9FAFB;
       font-weight:600;
       font-size:14px;
       cursor:pointer;
-      box-shadow:0 12px 32px rgba(15,23,42,0.5);
-      transition:background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .contact-cta:hover{
-      background:#d75a3f;
-      transform:translateY(-1px);
-      box-shadow:0 18px 40px rgba(15,23,42,0.6);
     }
 
-    /* ---------- FOOTER ---------- */
-    footer{
-      background:#05091b;
-      color:#f9fafb;
-      padding:32px 24px 16px;
-    }
-    .newsletter-container{
-      max-width:1200px;
-      margin:0 auto 24px;
-      text-align:center;
-    }
-    .newsletter-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:center;
-    }
-    footer input[type=email]{
-      padding:10px 12px;
-      border-radius:4px;
-      border:none;
-      min-width:240px;
-      max-width:360px;
-      font-size:14px;
-    }
-    footer button{
-      padding:10px 16px;
-      border:none;
-      border-radius:4px;
-      background:var(--sb-red);
-      color:#111827;
-      font-weight:600;
-      font-size:14px;
-      cursor:pointer;
-    }
-    .footer-columns{
-      max-width:1200px;
+    .footer-columns {
+      max-width:var(--sb-container-width);
       margin:0 auto;
       display:flex;
       flex-wrap:wrap;
@@ -674,85 +677,70 @@
       justify-content:space-between;
       font-size:13px;
     }
-    .footer-columns p{margin:4px 0;}
-    .footer-brand{
+
+    .footer-brand {
       display:flex;
       align-items:center;
       gap:10px;
     }
-    .footer-brand img{
-      height:120px;
+
+    .footer-brand img {
+      height:80px;
       width:auto;
       display:block;
     }
-    .footer-bottom{
-      max-width:1200px;
-      margin:24px auto 0;
-      border-top:1px solid #111827;
+
+    .footer-columns p { margin:4px 0; }
+
+    .footer-bottom {
+      max-width:var(--sb-container-width);
+      margin:20px auto 0;
       padding-top:8px;
       font-size:11px;
       text-align:center;
-      color:#9ca3af;
+      color:#9CA3AF;
+      border-top:1px solid #111827;
     }
 
-    /* ---------- Animations reveal ---------- */
-    @media (prefers-reduced-motion: no-preference){
-      .reveal{
-        opacity:0;
-        transform:translateY(18px);
-        transition:opacity 0.6s ease, transform 0.6s ease;
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
       }
-      .reveal-visible{
-        opacity:1;
-        transform:translateY(0);
+      .hero-image-card {
+        margin-top: 18px;
       }
-      .reveal-zoom{
-        transform:translateY(18px) scale(1.04);
+      .steps-grid {
+        grid-template-columns: minmax(0,1fr);
       }
-      .reveal-zoom.reveal-visible{
-        transform:translateY(0) scale(1);
-      }
-    }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 900px){
-      .hero-inner{
+      .section-events-inner {
         grid-template-columns:minmax(0,1fr);
       }
-      .hero-image-card{
-        max-width:420px;
-        margin:16px auto 0;
-      }
-      .steps-grid{
-        grid-template-columns:minmax(0,1fr);
-      }
-      .map-section{
+      .event-grid {
         grid-template-columns:minmax(0,1fr);
       }
     }
 
-    @media (max-width: 800px){
-      header{
-        padding:10px 16px;
-        gap:12px;
-        justify-content:space-between;
+    @media (max-width: 800px) {
+      .header-inner {
+        gap: 12px;
+        justify-content: space-between;
       }
-      .main-nav{display:none;}
-      .burger-button{display:flex;}
-      .logo img{height:60px;}
-      .hero{
-        padding:54px 18px 60px;
+      nav.main-nav { display:none; }
+      .burger-button { display:flex; }
+      .logo img { height:60px; }
+      .logo-text { font-size:16px; }
+      .hero {
+        padding: 64px 0 80px;
       }
-      .hero h1{font-size:34px;}
-      .hero p.subtitle{font-size:15px;}
-      .resa-bar{
-        flex-direction:column;
-        align-items:stretch;
+      .hero h1 { font-size: 34px; }
+      .hero .subtitle { font-size: 15px; }
+      .resa-bar {
+        flex-direction: column;
       }
-      .resa-button{width:100%; text-align:center;}
-      main{
-        border-radius:32px 32px 0 0;
-        padding:40px 18px 70px;
+      .resa-button {
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
@@ -760,31 +748,33 @@
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo">
-      <a href="index.html">
-        <img src="logo.png" alt="Logo Singbox" />
-        <span class="logo-text">Singbox</span>
-      </a>
-    </div>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html">
+          <img src="logo.png" alt="Logo Singbox">
+          <span class="logo-text">Singbox</span>
+        </a>
+      </div>
 
-    <nav class="main-nav">
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="concept.html">Le concept</a></li>
-        <li><a href="salles.html">Les salles</a></li>
-        <li><a href="actualites.html">Actualités</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="salles.html">Les salles</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
 
-    <div class="header-right">
-      <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="panier.html" class="cart-icon">
-        🛒<span id="cart-count"></span>
-      </a>
-      <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-        ☰
-      </button>
+      <div class="header-right">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+          ☰
+        </button>
+      </div>
     </div>
   </header>
 
@@ -801,19 +791,20 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-left reveal">
+    <div class="container hero-inner">
+      <div class="hero-left">
         <p class="hero-eyebrow">Le karaoké box nouvelle génération</p>
         <h1>Réservez votre séance</h1>
         <p class="subtitle">
-          Choisissez la date, puis découvrez les créneaux disponibles dans vos box privées.
+          Choisissez la date, puis découvrez les créneaux disponibles dans nos box privées.
+          24/7, zéro gêne, juste du fun.
         </p>
 
         <div class="resa-bar-wrapper">
           <div class="resa-bar">
             <div class="resa-field">
               <span class="label">Date</span>
-              <input type="date" id="date-input" />
+              <input type="date" id="date-input">
             </div>
 
             <div class="resa-field">
@@ -835,137 +826,120 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-image-card reveal reveal-zoom">
-          <!-- remplace par ta vraie image -->
-          <img src="hero-karaoke.jpg" alt="Groupe d'amis en train de chanter dans une box Singbox" />
-          <div class="hero-image-badge">
-            <span class="dot"></span>
-            <span>Ambiance néon, playlist XXL, box privative.</span>
-          </div>
+        <div class="hero-image-card">
+          <!-- Remplace par ta vraie image -->
+          <img src="hero-karaoke.jpg" alt="Groupe d'amis chantant dans une box Singbox">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 3 ÉTAPES -->
-  <section class="steps-section">
-    <div class="steps-inner">
-      <h2 class="steps-title reveal">Pour toutes les occasions !</h2>
-      <p class="steps-subtitle reveal">Des moments funs pour tous les groupes.</p>
+  <!-- SECTION ÉTAPES -->
+  <section class="section-steps">
+    <div class="container">
+      <h2 class="section-title-center">Pour toutes les occasions !</h2>
+      <p class="section-subtitle-center">Des moments funs pour tous les groupes.</p>
 
       <div class="steps-grid">
-        <div class="step-card reveal">
+        <div class="step-card">
           <div class="step-icon">📅</div>
-          <div class="step-title">Choisissez votre date</div>
-          <div class="step-text">
-            Sélectionnez le jour et l’horaire qui vous arrangent dans le planning en ligne.
+          <div class="step-content">
+            <h3>Choisissez votre date</h3>
+            <p>Sélectionnez le jour et le créneau qui vous arrangent directement en ligne.</p>
           </div>
         </div>
-        <div class="step-card reveal">
+
+        <div class="step-card">
           <div class="step-icon">📦</div>
-          <div class="step-title">Sélectionnez votre box</div>
-          <div class="step-text">
-            Choisissez la taille, l’ambiance et la durée de votre box privée.
+          <div class="step-content">
+            <h3>Sélectionnez votre box</h3>
+            <p>Choisissez la box adaptée à votre groupe et à l’ambiance souhaitée.</p>
           </div>
         </div>
-        <div class="step-card reveal">
+
+        <div class="step-card">
           <div class="step-icon">🎤</div>
-          <div class="step-title">Chantez entre vous</div>
-          <div class="step-text">
-            Vous arrivez, vous scannez, vous chantez. On s’occupe du reste : son, lumière, playlist.
+          <div class="step-content">
+            <h3>Chantez</h3>
+            <p>Vous arrivez, vous scannez, vous chantez. Le reste ? On s’en occupe.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTENU BAS CLAIR -->
-  <main>
-    <!-- CONCEPT -->
-    <section id="concept">
-      <h2 class="section-title reveal">Faites entendre votre voix, avec les personnes de votre choix.</h2>
-      <p class="section-subtitle reveal">
-        Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
-      </p>
+  <!-- SECTION OCCASIONS + CONTACT -->
+  <section class="section-events">
+    <div class="container section-events-inner">
+      <!-- Colonne gauche -->
+      <div class="events-left">
+        <h2 class="section-title">Pour toutes les occasions !</h2>
+        <p class="section-subtitle">
+          Entre amis, en famille ou entre collègues, Singbox s’adapte à toutes vos envies.
+        </p>
 
-      <div class="concept-grid">
-        <div class="concept-text reveal">
-          <p>Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter.</p>
-          <p>Pas de public, pas de gêne : juste votre groupe et un écran plein de chansons.</p>
-          <p>Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box.</p>
-        </div>
-
-        <div class="concept-card reveal">
-          <p>Visuel ou mockup d’interface Singbox à intégrer ici.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- OCCASIONS (petites cards + contact) -->
-    <section id="occasions">
-      <h2 class="section-title reveal">Pour toutes les occasions !</h2>
-      <p class="section-subtitle reveal">Des moments funs pour les groupes.</p>
-
-      <div class="occasion-grid">
-        <div class="occasion-card reveal">
-          <h3>Entre amis</h3>
-          <p>Soirées improvisées, blind tests, défis… le QG de vos soirées.</p>
-        </div>
-        <div class="occasion-card reveal">
-          <h3>En famille</h3>
-          <p>Des classiques aux hits du moment, pour toutes les générations.</p>
-        </div>
-        <div class="occasion-card reveal">
-          <h3>Team building</h3>
-          <p>Brisez la glace, soudez vos équipes autour de titres cultes.</p>
-        </div>
-        <div class="occasion-card reveal">
-          <h3>Anniversaire</h3>
-          <p>Une box rien que pour vous, pour souffler vos bougies en musique.</p>
-        </div>
-        <div class="occasion-card reveal">
-          <h3>EVJF / EVG</h3>
-          <p>Un moment inoubliable avant le grand jour, ambiance garantie.</p>
-        </div>
-        <div class="occasion-card reveal">
-          <h3>Et plus encore</h3>
-          <p>Afterwork, sorties d’école, lendemains de match… toutes les excuses sont bonnes.</p>
+        <div class="event-grid">
+          <div class="event-card">
+            <h3>Entre amis</h3>
+            <p>Blind tests, défis, hits des années 2000… votre nouvelle QG de soirée.</p>
+          </div>
+          <div class="event-card">
+            <h3>En famille</h3>
+            <p>Des classiques français aux dessins animés, pour toutes les générations.</p>
+          </div>
+          <div class="event-card">
+            <h3>Anniversaire</h3>
+            <p>Une box privatisée pour souffler vos bougies en musique.</p>
+          </div>
+          <div class="event-card">
+            <h3>Team building</h3>
+            <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
+          </div>
+          <div class="event-card">
+            <h3>EVJF / EVG</h3>
+            <p>Une parenthèse 100% fun avant le grand jour.</p>
+          </div>
+          <div class="event-card">
+            <h3>Et plus encore…</h3>
+            <p>Afterworks, sorties d’école, lendemains de match : toutes les excuses sont bonnes.</p>
+          </div>
         </div>
       </div>
 
-      <div class="map-section">
-        <div class="map-placeholder reveal">
-          Carte Google Maps à intégrer ici.
+      <!-- Colonne droite -->
+      <div class="contact-card">
+        <h3>Venez chanter chez Singbox</h3>
+        <div class="mini-map"></div>
+
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <p><strong>Adresse :</strong> [à compléter]</p>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🕒</div>
+          <p><strong>Horaires :</strong> À définir (soir, week-end…)</p>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <p><strong>Email :</strong> contact@singbox.fr</p>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <p><strong>Téléphone :</strong> 06 00 00 00 00</p>
         </div>
 
-        <div class="contact-card reveal">
-          <h3>Venez chanter chez Singbox</h3>
-
-          <div class="contact-row">
-            <span class="contact-icon">📍</span>
-            <p><strong>Adresse :</strong> [À compléter]</p>
-          </div>
-          <div class="contact-row">
-            <span class="contact-icon">📧</span>
-            <p><strong>Email :</strong> contact@singbox.fr</p>
-          </div>
-          <div class="contact-row">
-            <span class="contact-icon">📞</span>
-            <p><strong>Téléphone :</strong> 06 00 00 00 00</p>
-          </div>
-
-          <button class="contact-cta" onclick="window.location.href='reservation.html'">
-            Réserver maintenant
-          </button>
-        </div>
+        <button class="contact-cta" onclick="window.location.href='reservation.html'">
+          Réserver maintenant
+        </button>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
+      <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <div class="newsletter-row">
         <input type="email" placeholder="Entrez votre adresse e-mail" />
         <button>S'abonner</button>
@@ -976,8 +950,8 @@
       <div class="footer-brand">
         <img src="logo.png" alt="Logo Singbox" />
         <div>
-          <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
-          <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0;">Karaoké Box à Toulouse</p>
         </div>
       </div>
 
@@ -997,7 +971,9 @@
 
       <div>
         <p><strong>Réseaux</strong></p>
-        <p>Instagram / TikTok / Facebook</p>
+        <p>Instagram</p>
+        <p>TikTok</p>
+        <p>Facebook</p>
       </div>
     </div>
 
@@ -1018,6 +994,7 @@
 
     (function initHomeDate() {
       const input = document.getElementById("date-input");
+      if (!input) return;
       const today = new Date();
       input.value = today.toISOString().split("T")[0];
     })();
@@ -1030,6 +1007,7 @@
         return [];
       }
     }
+
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
       if (!el) return;
@@ -1037,7 +1015,7 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
@@ -1045,32 +1023,15 @@
         burgerBtn.addEventListener("click", () => {
           mobileNav.classList.toggle("open");
         });
+
         mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") mobileNav.classList.remove("open");
+          if (e.target.tagName === "A") {
+            mobileNav.classList.remove("open");
+          }
         });
       }
 
       updateCartIcon();
-
-      // Animations scroll
-      if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-        const els = Array.from(document.querySelectorAll(".reveal"));
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("reveal-visible");
-              obs.unobserve(entry.target);
-            }
-          });
-        },{
-          threshold:0.15
-        });
-
-        els.forEach((el, i) => {
-          el.style.transitionDelay = (0.15 + (i % 6) * 0.06) + "s";
-          obs.observe(el);
-        });
-      }
     });
   </script>
 </body>
