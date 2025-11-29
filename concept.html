@@ -77,6 +77,7 @@
       justify-content: space-between;
       gap: 2rem;
       height: auto;
+      flex-wrap: nowrap; /* empêche les éléments de passer à la ligne */
     }
 
     /* Bloc marque */
@@ -265,8 +266,9 @@
         gap: 12px;
       }
 
-      .main-nav {
-        display:none;
+      /* on cache FORCÉMENT la nav centrale en mobile */
+      nav.main-nav {
+        display: none !important;
       }
 
       .burger-button {
