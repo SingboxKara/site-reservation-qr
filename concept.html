@@ -77,7 +77,7 @@
       justify-content: space-between;
       gap: 2rem;
       height: auto;
-      flex-wrap: nowrap; /* empêche les éléments de passer à la ligne */
+      flex-wrap: nowrap;
     }
 
     /* Bloc marque */
@@ -129,7 +129,6 @@
       font-size: 14px;
     }
 
-    /* Liens premium + effet néon */
     .main-nav a {
       font-weight: 600;
       letter-spacing: 0.3px;
@@ -266,7 +265,6 @@
         gap: 12px;
       }
 
-      /* on cache FORCÉMENT la nav centrale en mobile */
       nav.main-nav {
         display: none !important;
       }
@@ -297,10 +295,9 @@
 
     /* ================== CONTENU PAGE CONCEPT ================== */
 
-    /* On compense la hauteur du header fixe */
     #concept-intro {
       position: relative;
-      padding: 12rem 0 80px; /* plus d’espace sous le header */
+      padding: 12rem 0 80px;
       text-align: center;
       background:
         radial-gradient(circle at 30% 0%, rgba(201,76,53,0.35), transparent 55%),
@@ -353,7 +350,6 @@
       line-height: 1.7;
     }
 
-    /* ---------- SECTION BLOCS CONCEPT ---------- */
     .concept-section {
       padding: 80px 0 80px;
     }
@@ -372,7 +368,7 @@
     }
 
     .concept-grid.reverse {
-      direction: rtl; /* trick pour inverser visuel / texte */
+      direction: rtl;
     }
     .concept-grid.reverse > * {
       direction: ltr;
@@ -437,7 +433,6 @@
       opacity: 0.85;
     }
 
-    /* ---------- CTA FINAL ---------- */
     .concept-cta-section {
       padding: 72px 0 96px;
       background:
@@ -496,7 +491,7 @@
     }
 
     .newsletter-container {
-      max-width: var(--sb-container-width);
+      max-width:var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
@@ -576,7 +571,7 @@
       }
 
       #concept-intro {
-        padding: 9rem 0 64px; /* plus d’espace aussi sur mobile */
+        padding: 9rem 0 64px;
       }
     }
 
@@ -593,7 +588,6 @@
   <!-- ================= HEADER IDENTIQUE INDEX ================= -->
   <header class="site-header">
     <div class="header-inner">
-      <!-- Bloc marque : logo + texte -->
       <a href="index.html" class="brand">
         <img src="logo.png" alt="Logo Singbox" class="brand-logo">
         <span class="brand-text">Singbox</span>
@@ -761,9 +755,28 @@
 
       <div>
         <p><strong>Réseaux</strong></p>
-        <p>Instagram</p>
-        <p>TikTok</p>
-        <p>Facebook</p>
+
+        <!-- Instagram -->
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
+            Instagram
+          </a>
+        </p>
+
+        <!-- TikTok -->
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
+            TikTok
+          </a>
+        </p>
       </div>
     </div>
 
