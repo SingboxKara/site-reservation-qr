@@ -17,10 +17,8 @@
     :root {
       --sb-red: #C94C35;
       --sb-red-soft: rgba(201, 76, 53, 0.6);
-      --sb-dark: #10182A;
-      --sb-hero-dark: #060B16;
-      --sb-hero-mid: #151C35;
-      --sb-hero-accent: #3B1425;
+      --sb-dark: #0B1120;
+      --sb-dark-2: #0F1A32;
       --sb-text-main: #F9FAFB;
       --sb-text-muted: #9CA3AF;
       --sb-bg-page: #EAEFF5;
@@ -34,7 +32,30 @@
       margin: 0;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: #E5E7EB;
-      background: var(--sb-bg-page);
+      background: radial-gradient(circle at 0% 0%, rgba(148,163,184,0.16), transparent 55%),
+                  radial-gradient(circle at 100% 0%, rgba(201,76,53,0.18), transparent 60%),
+                  linear-gradient(135deg, var(--sb-dark), var(--sb-dark-2));
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Décor global */
+    body::before,
+    body::after {
+      content: "♪ ✦";
+      position: fixed;
+      z-index: 0;
+      font-size: 34px;
+      color: rgba(148,163,184,0.12);
+      pointer-events: none;
+    }
+    body::before {
+      top: 14%;
+      left: 6%;
+    }
+    body::after {
+      bottom: 10%;
+      right: 8%;
     }
 
     a {
@@ -93,6 +114,8 @@
       flex: 1;
       display: flex;
       justify-content: center;
+      position: relative;
+      z-index: 2;
     }
 
     .main-nav ul {
@@ -135,6 +158,8 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      position: relative;
+      z-index: 2;
     }
 
     .nav-cta {
@@ -189,9 +214,8 @@
       display: none;
     }
 
-    /* --- BOUTON BURGER (mobile) --- */
     .burger-button {
-      display: none; /* visible seulement sur mobile */
+      display: none;
       width: 36px;
       height: 36px;
       border-radius: 999px;
@@ -204,7 +228,6 @@
       font-size: 20px;
     }
 
-    /* MENU MOBILE DÉROULANT */
     .mobile-nav {
       display: none;
       position: fixed;
@@ -235,15 +258,23 @@
     /* ---------- HERO ---------- */
     .hero {
       position: relative;
-      background: radial-gradient(circle at 0% 0%, rgba(88, 28, 135, 0.45), transparent 55%),
-                  radial-gradient(circle at 100% 0%, rgba(201, 76, 53, 0.45), transparent 55%),
-                  linear-gradient(135deg, var(--sb-hero-dark), var(--sb-hero-mid) 45%, var(--sb-hero-accent) 100%);
       color: var(--sb-text-main);
       padding: 72px 24px 60px;
       overflow: hidden;
+      z-index: 1;
     }
 
-    /* filigranes */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(148,163,184,0.22), transparent 60%),
+        radial-gradient(circle at 100% 0%, rgba(201,76,53,0.28), transparent 60%),
+        linear-gradient(135deg, var(--sb-dark), var(--sb-dark-2));
+      opacity: 1;
+      z-index: -1;
+    }
+
     .hero::before,
     .hero::after {
       content: "♫ ♪ ✦";
@@ -262,7 +293,7 @@
     }
 
     .hero-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -297,7 +328,6 @@
       max-width: 480px;
     }
 
-    /* ---------- BARRE RÉSA ---------- */
     .resa-bar-wrapper {
       margin-top: 10px;
       max-width: 560px;
@@ -372,7 +402,6 @@
                   0 0 0 1px rgba(249, 250, 251, 0.2);
     }
 
-    /* Hero image */
     .hero-image-card {
       position: relative;
       border-radius: 26px;
@@ -417,13 +446,14 @@
 
     /* ---------- SECTION COMMENT ÇA MARCHE ---------- */
     .steps-section {
-      background: var(--sb-dark);
+      background: var(--sb-dark-2);
       color: #E5E7EB;
-      padding: 32px 24px 40px;
+      padding: 40px 24px 48px;
+      margin-bottom: 120px;
     }
 
     .steps-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -448,13 +478,15 @@
     .step-card {
       background: radial-gradient(circle at 0% 0%, rgba(148, 163, 184, 0.18), transparent 55%),
                   #020617;
-      border-radius: 18px;
-      padding: 16px 16px 18px;
+      border-radius: 20px;
+      padding: 24px 22px;
       box-shadow: 0 14px 40px rgba(0,0,0,0.7);
       border: 1px solid rgba(148, 163, 184, 0.4);
       display: flex;
       flex-direction: column;
       gap: 6px;
+      position: relative;
+      overflow: hidden;
     }
 
     .step-icon {
@@ -481,15 +513,22 @@
       line-height: 1.5;
     }
 
-    /* ---------- SECTIONS GLOBALES (sous le dark) ---------- */
+    /* ---------- ZONE CLAIRE ---------- */
     main {
-      padding: 32px 24px 80px;
-      max-width: 1100px;
+      padding: 0 24px 80px;
+      max-width: 1200px;
       margin: 0 auto;
+      background: var(--sb-bg-page);
+      box-shadow: 0 -40px 80px rgba(15,23,42,0.7);
+      border-radius: 40px 40px 0 0;
+      position: relative;
+      z-index: 1;
     }
+
     section {
-      margin-bottom: 56px;
+      margin-bottom: 120px;
     }
+
     .section-title {
       text-align: center;
       font-size: 24px;
@@ -519,9 +558,9 @@
     .concept-card {
       background: #101b3f;
       color: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      min-height: 200px;
+      padding: 28px 26px;
+      border-radius: 20px;
+      min-height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -533,14 +572,38 @@
     .occasion-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 16px;
+      gap: 12px;
     }
     .occasion-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 18px 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 24px 24px 26px;
+      box-shadow: 0 4px 14px rgba(15,23,42,0.06);
+      border: 1px solid #E0E6F0;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
+    .occasion-card::before {
+      content: "🎵";
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      font-size: 26px;
+      opacity: 0.08;
+    }
+    .occasion-card:nth-child(2)::before { content: "🎤"; }
+    .occasion-card:nth-child(3)::before { content: "✦"; }
+    .occasion-card:nth-child(4)::before { content: "♪"; }
+    .occasion-card:nth-child(5)::before { content: "📀"; }
+    .occasion-card:nth-child(6)::before { content: "⭐"; }
+
+    .occasion-card:hover {
+      box-shadow: 0 16px 40px rgba(15,23,42,0.18);
+      transform: translateY(-4px);
+      border-color: #CCD4E4;
+    }
+
     .occasion-card h3 {
       margin-top: 0;
       margin-bottom: 8px;
@@ -558,28 +621,35 @@
     .map-section {
       margin-top: 40px;
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
       gap: 24px;
       align-items: stretch;
     }
     .map-placeholder {
       background: #d1d5db;
-      border-radius: 16px;
+      border-radius: 20px;
       position: relative;
-      min-height: 260px;
+      height: 300px;
+      max-height: 320px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #374151;
       font-size: 14px;
       text-align: center;
-      padding: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 28px rgba(15,23,42,0.35);
     }
+
     .contact-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      background: #F4F7FC;
+      border-radius: 20px;
+      padding: 26px 24px 28px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+      border: 1px solid #DCE3EE;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .contact-card h3 {
       margin-top: 0;
@@ -592,19 +662,57 @@
       color: #4b5563;
     }
 
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: #E0E7F5;
+      color: #111827;
+    }
+
+    .contact-cta {
+      margin-top: 12px;
+      align-self: flex-start;
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: none;
+      background: var(--sb-red);
+      color: #F9FAFB;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.4);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .contact-cta:hover {
+      background: #D85A40;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(15,23,42,0.5);
+    }
+
     /* ---------- FOOTER ---------- */
     footer {
       background:#05091b;
       color:#f9fafb;
       padding:32px 24px 16px;
-      margin-top:40px;
+      margin-top:0;
     }
     footer h3 {
       margin-bottom:12px;
       font-size:18px;
     }
     .newsletter-container {
-      max-width:1100px;
+      max-width:1200px;
       margin:0 auto 24px;
       text-align:center;
     }
@@ -633,7 +741,7 @@
       cursor:pointer;
     }
     .footer-columns {
-      max-width:1100px;
+      max-width:1200px;
       margin:0 auto;
       display:flex;
       flex-wrap:wrap;
@@ -657,13 +765,29 @@
     }
 
     .footer-bottom {
-      max-width:1100px;
+      max-width:1200px;
       margin:24px auto 0;
       border-top:1px solid:#111827;
       padding-top:8px;
       font-size:11px;
       text-align:center;
       color:#9ca3af;
+    }
+
+    /* ---------- ANIMATIONS REVEAL ---------- */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .reveal-zoom {
+        transform: translateY(18px) scale(1.04);
+      }
+      .reveal.reveal-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     /* ---------- RESPONSIVE ---------- */
@@ -683,6 +807,9 @@
       }
       .steps-subtitle {
         text-align: center;
+      }
+      .map-section {
+        grid-template-columns: minmax(0,1fr);
       }
     }
 
@@ -731,6 +858,10 @@
         width: 100%;
         text-align: center;
       }
+
+      main {
+        border-radius: 32px 32px 0 0;
+      }
     }
   </style>
 </head>
@@ -759,7 +890,6 @@
       <a href="panier.html" class="cart-icon">
         🛒<span id="cart-count"></span>
       </a>
-      <!-- bouton burger mobile -->
       <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
         ☰
       </button>
@@ -779,8 +909,10 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-bg"></div>
+
     <div class="hero-inner">
-      <div class="hero-left">
+      <div class="hero-left reveal">
         <div class="hero-eyebrow">
           <span class="icon">🎙️</span>
           <span>Le karaoké box nouvelle génération</span>
@@ -816,8 +948,7 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-image-card">
-          <!-- Remplace l'image par ta vraie photo de box -->
+        <div class="hero-image-card reveal reveal-zoom">
           <img src="hero-karaoke.jpg" alt="Groupe d'amis en train de chanter dans une box Singbox" />
           <div class="hero-image-badge">
             <span class="dot"></span>
@@ -831,11 +962,11 @@
   <!-- COMMENT ÇA MARCHE -->
   <section class="steps-section">
     <div class="steps-inner">
-      <h2 class="steps-title">Comment ça marche ?</h2>
-      <p class="steps-subtitle">3 étapes simples pour passer de l'idée à la chanson qui reste en tête.</p>
+      <h2 class="steps-title reveal">Comment ça marche ?</h2>
+      <p class="steps-subtitle reveal">3 étapes simples pour passer de l'idée à la chanson qui reste en tête.</p>
 
       <div class="steps-grid">
-        <div class="step-card">
+        <div class="step-card reveal">
           <div class="step-icon">📅</div>
           <div class="step-title">1. Je choisis ma date</div>
           <div class="step-text">
@@ -843,7 +974,7 @@
           </div>
         </div>
 
-        <div class="step-card">
+        <div class="step-card reveal">
           <div class="step-icon">📦</div>
           <div class="step-title">2. Je sélectionne ma box</div>
           <div class="step-text">
@@ -851,7 +982,7 @@
           </div>
         </div>
 
-        <div class="step-card">
+        <div class="step-card reveal">
           <div class="step-icon">🎤</div>
           <div class="step-title">3. Je chante</div>
           <div class="step-text">
@@ -866,19 +997,19 @@
   <main>
     <!-- CONCEPT -->
     <section id="concept">
-      <h2 class="section-title">Faites entendre votre voix, avec les personnes de votre choix.</h2>
-      <p class="section-subtitle">
+      <h2 class="section-title reveal">Faites entendre votre voix, avec les personnes de votre choix.</h2>
+      <p class="section-subtitle reveal">
         Singbox est un concept de karaoké box privatif : un salon rien que pour vous, vos amis, votre famille ou vos collègues.
       </p>
 
       <div class="concept-grid">
-        <div class="concept-text">
+        <div class="concept-text reveal">
           <p>Réservez une box, fermez la porte, choisissez vos titres et laissez-vous porter.</p>
           <p>Pas de public, pas de gêne : juste votre groupe et un écran plein de chansons.</p>
           <p>Notre système de réservation en ligne vous permet de choisir facilement la date, l’horaire et la box.</p>
         </div>
 
-        <div class="concept-card">
+        <div class="concept-card reveal">
           <p>Visuel futur à intégrer ici.</p>
         </div>
       </div>
@@ -886,30 +1017,44 @@
 
     <!-- OCCASIONS -->
     <section id="occasions">
-      <h2 class="section-title">Pour toutes les occasions !</h2>
-      <p class="section-subtitle">Des moments funs pour tous les groupes.</p>
+      <h2 class="section-title reveal">Pour toutes les occasions !</h2>
+      <p class="section-subtitle reveal">Des moments funs pour tous les groupes.</p>
 
       <div class="occasion-grid">
-        <div class="occasion-card"><h3>Entre amis</h3><p>Rire, chanter, s'amuser.</p></div>
-        <div class="occasion-card"><h3>En famille</h3><p>Des classiques aux hits du moment.</p></div>
-        <div class="occasion-card"><h3>Team building</h3><p>Renforcez la cohésion.</p></div>
-        <div class="occasion-card"><h3>Anniversaire</h3><p>Une expérience unique.</p></div>
-        <div class="occasion-card"><h3>EVJF / EVG</h3><p>Un moment inoubliable.</p></div>
-        <div class="occasion-card"><h3>Et plus encore</h3><p>Toutes les excuses sont bonnes.</p></div>
+        <div class="occasion-card reveal"><h3>Entre amis</h3><p>Rire, chanter, s'amuser.</p></div>
+        <div class="occasion-card reveal"><h3>En famille</h3><p>Des classiques aux hits du moment.</p></div>
+        <div class="occasion-card reveal"><h3>Team building</h3><p>Renforcez la cohésion.</p></div>
+        <div class="occasion-card reveal"><h3>Anniversaire</h3><p>Une expérience unique.</p></div>
+        <div class="occasion-card reveal"><h3>EVJF / EVG</h3><p>Un moment inoubliable.</p></div>
+        <div class="occasion-card reveal"><h3>Et plus encore</h3><p>Toutes les excuses sont bonnes.</p></div>
       </div>
     </section>
 
     <!-- MAP + CONTACT -->
     <section class="map-section">
-      <div class="map-placeholder">
+      <div class="map-placeholder reveal">
         Carte Google Maps à intégrer plus tard.
       </div>
 
-      <div class="contact-card">
+      <div class="contact-card reveal">
         <h3>Venez chanter chez Singbox</h3>
-        <p><strong>Adresse :</strong> [Ton adresse]</p>
-        <p><strong>Horaires :</strong> À définir</p>
-        <p><strong>Contact :</strong> Email / Téléphone / Réseaux</p>
+
+        <div class="contact-row">
+          <span class="contact-icon">📍</span>
+          <p><strong>Adresse :</strong> [Ton adresse]</p>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">📧</span>
+          <p><strong>Email :</strong> contact@singbox.fr</p>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">📞</span>
+          <p><strong>Téléphone :</strong> 06 00 00 00 00</p>
+        </div>
+
+        <button class="contact-cta" onclick="window.location.href='reservation.html'">
+          Réserver maintenant
+        </button>
       </div>
     </section>
   </main>
@@ -992,10 +1137,8 @@
       } else {
         el.textContent = panier.length;
       }
-      // affichage/masquage géré par #cart-count:empty en CSS
     }
 
-    // --- MENU MOBILE + badge panier ---
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
@@ -1013,6 +1156,25 @@
       }
 
       updateCartIcon();
+
+      // Animations au scroll
+      if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+        const reveals = Array.from(document.querySelectorAll(".reveal"));
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("reveal-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        reveals.forEach((el, index) => {
+          const delay = 0.15 + (index % 6) * 0.06; // léger stagger
+          el.style.transitionDelay = delay + "s";
+          observer.observe(el);
+        });
+      }
     });
   </script>
 </body>
