@@ -879,9 +879,20 @@
 
     <div>
       <p><strong>Réseaux</strong></p>
-      <p>Instagram</p>
-      <p>TikTok</p>
-      <p>Facebook</p>
+
+      <p style="display:flex;align-items:center;gap:8px;">
+        <img src="icons/instagram.svg" alt="Instagram" style="width:22px;height:22px;">
+        <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      </p>
+
+      <p style="display:flex;align-items:center;gap:8px;">
+        <img src="icons/tiktok.svg" alt="TikTok" style="width:22px;height:22px;">
+        <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
+          TikTok
+        </a>
+      </p>
     </div>
   </div>
 
@@ -948,7 +959,7 @@
     const totalEl = document.getElementById("cart-total");
     const actionsEl = document.getElementById("cart-actions");
     const paymentSection = document.getElementById("payment-section");
-       const panier = getPanier();
+    const panier = getPanier();
 
     container.innerHTML = "";
 
