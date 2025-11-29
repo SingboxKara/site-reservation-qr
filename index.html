@@ -54,53 +54,64 @@
       padding: 0 24px;
     }
 
-    /* ---------- HEADER ---------- */
-    header {
-      width: 100%;
+    /* ---------- HEADER GLOBAL ---------- */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
       background: #020617;
       color: #fff;
-      padding: 10px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
     }
 
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
+      padding: 0.75rem 1.5rem;
       display: flex;
       align-items: center;
-      gap: 24px;
+      justify-content: space-between;
+      gap: 2rem;
     }
 
-    .logo {
+    /* Bloc marque : logo + texte côte à côte */
+    .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.75rem;
+      text-decoration: none;
       flex-shrink: 0;
     }
 
-    .logo img {
-      height: 70px;
-      width: auto;
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
       display: block;
+      object-fit: cover;
       filter:
-        drop-shadow(0 0 14px rgba(255,255,255,0.16))
-        drop-shadow(0 0 26px rgba(201,76,53,0.6));
+        drop-shadow(0 0 12px rgba(255,255,255,0.16))
+        drop-shadow(0 0 20px rgba(201,76,53,0.6));
     }
 
-    .logo-text {
+    .brand-text {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      font-size: 1rem;
+      color: #F9FAFB;
       text-transform: uppercase;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: 0.18em;
+      white-space: nowrap;
     }
 
+    /* NAV */
     nav.main-nav {
       flex: 1;
       display: flex;
       justify-content: center;
+      min-width: 0;
     }
 
     .main-nav ul {
@@ -117,6 +128,7 @@
       position: relative;
       padding-bottom: 4px;
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .main-nav a::after {
@@ -133,10 +145,12 @@
 
     .main-nav a:hover::after { width: 100%; }
 
-    .header-right {
+    /* HEADER ACTIONS */
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-shrink: 0;
     }
 
     .nav-cta {
@@ -207,7 +221,7 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 80px;
+      top: 60px; /* un peu sous le header fixe */
       left: 0;
       right: 0;
       background: #020617;
@@ -232,7 +246,7 @@
     /* ---------- HERO ---------- */
     .hero {
       position: relative;
-      padding: 80px 0 96px;
+      padding: 7rem 0 96px; /* décalé pour laisser passer le header fixe */
       background:
         radial-gradient(circle at 30% 0%, #6b1220 0, transparent 50%),
         radial-gradient(circle at 80% 0%, rgba(17,24,39,0.8), transparent 60%),
@@ -350,14 +364,14 @@
       cursor: pointer;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(248,250,252,0.12),
+        0 0 0 1px rgba(248,250,251,0.12),
         0 18px 40px rgba(0,0,0,0.9);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
     .resa-button:hover {
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(248,250,252,0.18),
+        0 0 0 1px rgba(248,250,251,0.18),
         0 24px 55px rgba(0,0,0,1);
     }
 
@@ -765,20 +779,39 @@
       }
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 768px) {
       .header-inner {
-        gap: 12px;
-        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        gap: 1rem;
       }
+
       nav.main-nav { display:none; }
-      .burger-button { display:flex; }
-      .logo img { height:60px; }
-      .logo-text { font-size:16px; }
-      .hero {
-        padding: 64px 0 80px;
+
+      .burger-button {
+        display:flex;
       }
+
+      .brand-text {
+        font-size: 0.9rem;
+        letter-spacing: 0.12em;
+      }
+
+      .header-actions {
+        gap: 0.75rem;
+      }
+
+      .nav-cta {
+        padding-inline: 14px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 6.5rem 0 80px; /* légèrement plus bas que le header */
+      }
+
       .hero h1 { font-size: 34px; }
       .hero .subtitle { font-size: 15px; }
+
       .resa-bar {
         flex-direction: column;
       }
@@ -803,26 +836,25 @@
 </head>
 <body>
   <!-- HEADER -->
-  <header>
+  <header class="site-header">
     <div class="header-inner">
-      <div class="logo">
-        <a href="index.html">
-          <img src="logo.png" alt="Logo Singbox">
-          <span class="logo-text">Singbox</span>
-        </a>
-      </div>
+      <!-- Bloc marque : logo + texte -->
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <span class="brand-text">Singbox</span>
+      </a>
 
       <nav class="main-nav">
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
-          <li><a href="salles.html">Les salles</a></li>
+          <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
 
-      <div class="header-right">
+      <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
         <a href="panier.html" class="cart-icon">
           🛒<span id="cart-count"></span>
@@ -839,9 +871,10 @@
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
-      <li><a href="salles.html">Les salles</a></li>
+      <li><a href="boxs.html">Les boxs</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li><a href="reservation.html">Réserver</a></li>
     </ul>
   </nav>
 
@@ -924,7 +957,7 @@
     </div>
   </section>
 
-  <!-- SECTION OCCASIONS + CONTACT REFAITE -->
+  <!-- SECTION OCCASIONS + CONTACT -->
   <section id="occasions" class="section-occasions">
     <div class="occasions-container">
       <header class="occasions-header">
