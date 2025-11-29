@@ -4,370 +4,706 @@
   <meta charset="UTF-8" />
   <title>Singbox - Contact</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
-    * { box-sizing:border-box; }
-    body {
-      margin:0;
-      font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color:#1b2550;
-      background:#faf7f2;
+    :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-bg-soft: #030712;
+      --sb-card: #050b18;
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
+      --sb-red: #C94C35;
+      --sb-orange: #F97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.35);
+      --sb-container-width: 1180px;
     }
-    a { text-decoration:none; color:inherit; }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--sb-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2, h3 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
     /* ---------- HEADER ---------- */
     header {
-      background-color:#0c1633;
-      color:#fff;
-      padding:12px 32px;
-      display:flex;
-      align-items:center;
-      gap:32px;
-      position:sticky;
-      top:0;
-      z-index:20;
+      width: 100%;
+      background: #020617;
+      color: #fff;
+      padding: 10px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
     }
-    .logo { flex-shrink:0; }
-    .logo a {
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight:800;
-      font-size:20px;
-      letter-spacing:0.05em;
-      color:#fff;
-    }
-    .logo img {
-      height:90px;
-      width:auto;
-      display:block;
-    }
-    .logo-text { text-transform:uppercase; }
 
-    .main-nav {
-      flex:1;
-      display:flex;
-      justify-content:center;
+    .header-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .logo img {
+      height: 70px;
+      width: auto;
+      display: block;
+      filter:
+        drop-shadow(0 0 14px rgba(255,255,255,0.16))
+        drop-shadow(0 0 26px rgba(201,76,53,0.6));
+    }
+
+    .logo-text {
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.18em;
+    }
+
+    nav.main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
     .main-nav ul {
-      list-style:none;
-      display:flex;
-      gap:32px;
-      margin:0;
-      padding:0;
-      font-size:14px;
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
     }
-    .main-nav li { cursor:pointer; }
-    .main-nav a { color:#fff; }
+
+    .main-nav a {
+      color: #E5E7EB;
+      position: relative;
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: var(--sb-red);
+      border-radius: 999px;
+      transition: width 0.2s ease-out;
+    }
+
+    .main-nav a:hover::after { width: 100%; }
+
+    /* lien actif pour la page Contact */
+    .main-nav a[href="contact.html"]::after {
+      width: 100%;
+    }
 
     .header-right {
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    .nav-cta {
-      background:linear-gradient(90deg,#ffb74a,#f08b2e);
-      padding:8px 20px;
-      border-radius:999px;
-      font-weight:600;
-      color:#111827;
-      font-size:14px;
-      white-space:nowrap;
-    }
-    .cart-icon {
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      border:1px solid #ffffff33;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:18px;
-      cursor:pointer;
-      position:relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* Badge du panier : caché quand vide */
+    .nav-cta {
+      background: var(--sb-red);
+      padding: 8px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #F9FAFB;
+      white-space: nowrap;
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.08),
+        0 10px 28px rgba(0,0,0,0.7);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .nav-cta:hover {
+      background: #d55a40;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.18),
+        0 16px 38px rgba(0,0,0,0.9);
+    }
+
+    .cart-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      backdrop-filter: blur(6px);
+    }
+
     #cart-count {
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      background:#f97316;
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--sb-red);
       color:#fff;
       border-radius:999px;
       font-size:10px;
-      padding:2px 5px;
-      min-width:18px;
+      padding: 2px 5px;
+      min-width: 18px;
       text-align:center;
-      display:none;
     }
+    #cart-count:empty { display:none; }
 
-    /* --- BOUTON BURGER (mobile) --- */
     .burger-button {
-      display:none; /* visible seulement sur mobile */
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      border:1px solid #ffffff33;
-      background:transparent;
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: transparent;
       color:#fff;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:20px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
     }
 
-    /* MENU MOBILE DÉROULANT */
     .mobile-nav {
-      display:none;
-      position:fixed;
-      top:80px; /* légèrement sous le header */
-      left:0;
-      right:0;
-      background:#0c1633;
-      padding:12px 24px 16px;
-      z-index:15;
-      border-bottom:1px solid #111827;
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
     }
+
     .mobile-nav ul {
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      font-size:15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
     }
+
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* ---------- HERO / FORM SECTION ---------- */
-    .contact-hero {
-      background:#0c1633;
-      color:#fff;
-      padding:40px 24px 32px;
-      text-align:center;
-    }
-    .contact-hero h1 {
-      margin:0 0 8px;
-      font-size:28px;
-    }
-    .contact-hero p {
-      margin:0;
-      font-size:15px;
-      color:#e5e7eb;
+    /* ---------- SECTION INTRO ---------- */
+    #contact-intro {
+      position: relative;
+      padding: 64px 0 40px;
+      background:
+        radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
+        #050814;
+      overflow: hidden;
+      text-align: center;
     }
 
-    .contact-main {
-      max-width:1200px;
-      margin:0 auto 60px;
-      padding:32px 24px 0;
+    #contact-intro::before {
+      content: "♪";
+      position: absolute;
+      top: 18%;
+      left: 10%;
+      font-size: 32px;
+      color: rgba(148,163,184,0.08);
+      pointer-events: none;
     }
 
-    .contact-grid {
-      display:grid;
-      grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
-      gap:32px;
+    #contact-intro::after {
+      content: "✦";
+      position: absolute;
+      bottom: 14%;
+      right: 12%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.08);
+      pointer-events: none;
     }
 
-    /* Form bloc à gauche */
-    .contact-form-block {
-      background:#050b26;
-      color:#f9fafb;
-      border-radius:16px;
-      padding:24px 24px 28px;
-    }
-    .contact-form-block h2 {
-      margin:0 0 4px;
-      font-size:22px;
-    }
-    .contact-form-block p.small {
-      margin:0 0 16px;
-      font-size:13px;
-      color:#cbd5f5;
+    .contact-intro-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
-    .contact-type {
-      display:flex;
-      gap:24px;
-      margin-bottom:14px;
-      font-size:13px;
-    }
-    .contact-type label {
-      display:flex;
-      align-items:center;
-      gap:6px;
-      cursor:pointer;
+    .contact-eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9CA3AF;
+      margin-bottom: 10px;
     }
 
-    .form-row {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-bottom:10px;
+    .contact-title-main {
+      font-size: 32px;
+      margin-bottom: 12px;
     }
+
+    .contact-intro-text {
+      font-size: 15px;
+      color: rgba(249,250,251,0.85);
+      line-height: 1.7;
+    }
+
+    /* ---------- SECTION PRINCIPALE : FORM + VISUEL ---------- */
+    #contact-main {
+      position: relative;
+      padding: 40px 0 64px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(201,76,53,0.25), transparent 60%),
+        #050814;
+      overflow: hidden;
+    }
+
+    #contact-main::before {
+      content: "♫";
+      position: absolute;
+      top: 20%;
+      left: 6%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.07);
+      pointer-events: none;
+    }
+
+    #contact-main::after {
+      content: "✺";
+      position: absolute;
+      bottom: 12%;
+      right: 8%;
+      font-size: 42px;
+      color: rgba(148,163,184,0.06);
+      pointer-events: none;
+    }
+
+    .contact-main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    /* Colonne gauche : formulaire */
+    .contact-card {
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 2rem 2.25rem;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #F9FAFB;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::after {
+      content: "♪";
+      position: absolute;
+      right: 18px;
+      bottom: 14px;
+      font-size: 26px;
+      color: rgba(148,163,184,0.1);
+      pointer-events: none;
+    }
+
+    .contact-card h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .contact-card .form-subtext {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 16px;
+    }
+
+    .contact-type-toggle {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.35);
+      margin-bottom: 18px;
+      font-size: 12px;
+    }
+
+    .contact-type-option {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      color: #E5E7EB;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .contact-type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .contact-type-option span {
+      position: relative;
+    }
+
+    .contact-type-option input:checked + span {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      border-radius: 999px;
+      padding: 6px 14px;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.16),
+        0 12px 28px rgba(0,0,0,0.9);
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
     .form-field {
-      margin-bottom:10px;
-      font-size:13px;
+      margin-bottom: 0.85rem;
+      font-size: 13px;
     }
+
     .form-field label {
-      display:block;
-      margin-bottom:4px;
+      display: block;
+      margin-bottom: 4px;
+      color: #E5E7EB;
     }
+
     .form-field input,
     .form-field textarea {
-      width:100%;
-      padding:8px 10px;
-      border-radius:4px;
-      border:1px solid #111827;
-      font-size:13px;
-      font-family:inherit;
-      box-sizing:border-box;
+      width: 100%;
+      font-family: inherit;
+      font-size: 13px;
+      color: #F9FAFB;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      padding: 0.6rem 0.9rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
+
     .form-field textarea {
-      resize:vertical;
-      min-height:90px;
+      border-radius: 16px;
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(156,163,175,0.85);
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: var(--sb-red);
+      box-shadow:
+        0 0 0 1px rgba(201,76,53,0.9),
+        0 0 30px rgba(201,76,53,0.45);
+      background: #020617;
     }
 
     .consents {
-      margin:8px 0 14px;
-      font-size:11px;
-      color:#e5e7eb;
+      margin: 10px 0 16px;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
+
     .consents label {
-      display:flex;
-      align-items:flex-start;
-      gap:6px;
-      margin-bottom:4px;
-      cursor:pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      cursor: pointer;
     }
+
     .consents input[type="checkbox"] {
-      margin-top:2px;
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      accent-color: var(--sb-red);
+      flex-shrink: 0;
     }
 
     .fake-captcha {
-      margin-top:4px;
-      margin-bottom:14px;
-      border-radius:4px;
-      border:1px solid #9ca3af;
-      padding:8px;
-      font-size:11px;
-      background:#0c1633;
-      color:#e5e7eb;
-      text-align:center;
+      border-radius: 999px;
+      border: 1px dashed rgba(148,163,184,0.5);
+      padding: 7px 12px;
+      font-size: 11px;
+      background: rgba(15,23,42,0.7);
+      color: var(--sb-text-muted);
+      text-align: center;
+      margin-bottom: 14px;
     }
 
     .contact-submit {
-      display:flex;
-      justify-content:flex-start;
+      display: flex;
+      justify-content: flex-end;
     }
+
     .contact-submit button {
-      border:none;
-      padding:10px 24px;
-      border-radius:4px;
-      background:#fbbf24;
-      color:#111827;
-      font-weight:600;
-      font-size:14px;
-      cursor:pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 1.9rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 18px 40px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    /* Image bloc à droite */
-    .contact-image-block {
-      border-radius:16px;
-      overflow:hidden;
-      background:#111827;
-      position:relative;
-      min-height:260px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:#e5e7eb;
-      text-align:center;
-      padding:16px;
-    }
-    .contact-image-block p {
-      font-size:14px;
-      max-width:260px;
+    .contact-submit button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 60px rgba(0,0,0,1);
     }
 
-    /* ---------- MAP + ADRESSE ---------- */
-    .map-wrapper {
-      margin-top:40px;
-      display:grid;
-      grid-template-columns:minmax(0,1.4fr) minmax(0,0.9fr);
-      gap:24px;
-      align-items:stretch;
-    }
-    .map-placeholder {
-      background:#d1d5db;
-      border-radius:16px;
-      min-height:260px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:14px;
-      color:#374151;
-      text-align:center;
-      padding:16px;
-    }
-    .address-card {
-      background:#fff;
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.08);
-    }
-    .address-card h3 {
-      margin:0 0 8px;
-      font-size:18px;
-      color:#0c1633;
-    }
-    .address-card p {
-      margin:4px 0;
-      font-size:13px;
-      color:#4b5563;
+    /* Colonne droite : visuel ambiance */
+    .contact-visual-card {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(148,163,184,0.25), transparent 55%),
+        radial-gradient(circle at 80% 70%, rgba(201,76,53,0.35), transparent 65%),
+        #020617;
+      border-radius: 24px;
+      box-shadow:
+        0 22px 60px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(148,163,184,0.4);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.75rem;
+      color: #E5E7EB;
+      font-size: 14px;
+      line-height: 1.7;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ---------- FOOTER ---------- */
+    .contact-visual-card::after {
+      content: "🎤";
+      position: absolute;
+      font-size: 42px;
+      color: rgba(248,250,252,0.06);
+      top: 18%;
+      right: 16%;
+      pointer-events: none;
+    }
+
+    /* ---------- SECTION LOCALISATION ---------- */
+    #contact-location {
+      padding: 40px 0 72px;
+      background: #050814;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #contact-location::before {
+      content: "📍";
+      position: absolute;
+      top: 18%;
+      left: 6%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.09);
+    }
+
+    .contact-location-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .map-card {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56,189,248,0.22), transparent 60%),
+        radial-gradient(circle at 80% 70%, rgba(201,76,53,0.35), transparent 65%),
+        #020617;
+      border-radius: 24px;
+      min-height: 260px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 14px;
+      color: #E5E7EB;
+    }
+
+    .visit-card {
+      background: #050b18;
+      border-radius: 24px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #F9FAFB;
+      font-size: 13px;
+    }
+
+    .visit-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .visit-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .visit-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .visit-text strong {
+      display: block;
+      margin-bottom: 2px;
+      color: #E5E7EB;
+    }
+
+    .visit-text p {
+      margin: 0;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
+    /* ---------- FOOTER / NEWSLETTER ---------- */
     footer {
-      background:#05091b;
-      color:#f9fafb;
-      padding:32px 24px 16px;
-      margin-top:40px;
+      background:#020617;
+      color:#e5e7eb;
+      padding:32px 24px 18px;
+      border-top: 1px solid #111827;
     }
-    footer h3 { margin-bottom:12px;font-size:18px; }
 
     .newsletter-container {
-      max-width:1100px;
+      max-width: var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
+
+    .newsletter-container h3 {
+      margin-bottom: 6px;
+    }
+
+    .newsletter-container p {
+      margin-top: 0;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
     .newsletter-row {
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       justify-content:center;
+      margin-top: 8px;
     }
+
     footer input[type=email] {
       padding:10px 12px;
-      border-radius:4px;
-      border:none;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.4);
       min-width:240px;
       max-width:360px;
       font-size:14px;
+      background:#020617;
+      color:#F9FAFB;
+      outline: none;
     }
+
+    footer input[type=email]::placeholder {
+      color: rgba(156,163,175,0.9);
+    }
+
     footer button {
-      padding:10px 16px;
+      padding:10px 18px;
       border:none;
-      border-radius:4px;
-      background:#fbbf24;
-      color:#111827;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
       font-weight:600;
       font-size:14px;
       cursor:pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
     }
 
     .footer-columns {
-      max-width:1100px;
+      max-width:var(--sb-container-width);
       margin:0 auto;
       display:flex;
       flex-wrap:wrap;
@@ -381,36 +717,55 @@
       align-items:center;
       gap:10px;
     }
+
     .footer-brand img {
-      height:120px;
+      height:80px;
       width:auto;
+      display:block;
     }
 
+    .footer-columns p { margin:4px 0; }
+
     .footer-bottom {
-      max-width:1100px;
-      margin:24px auto 0;
-      border-top:1px solid:#111827;
+      max-width:var(--sb-container-width);
+      margin:20px auto 0;
       padding-top:8px;
       font-size:11px;
       text-align:center;
-      color:#9ca3af;
+      color:#9CA3AF;
+      border-top:1px solid #111827;
     }
 
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
-      header {
-        padding:10px 16px;
-        gap:12px;
+      .header-inner {
+        gap: 12px;
+        justify-content: space-between;
       }
-      .main-nav { display:none; }
-      .contact-grid,
-      .map-wrapper {
-        grid-template-columns:1fr;
+      nav.main-nav { display:none; }
+      .burger-button { display:flex; }
+      .logo img { height:60px; }
+      .logo-text { font-size:16px; }
+
+      .contact-main-grid {
+        grid-template-columns: minmax(0,1fr);
       }
-      .burger-button {
-        display:flex;
+
+      .contact-location-grid {
+        grid-template-columns: minmax(0,1fr);
       }
-      .logo img {
-        height:64px;
+
+      .form-grid-2 {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .contact-card {
+        padding: 1.6rem 1.5rem;
+      }
+      .contact-visual-card {
+        min-height: 260px;
       }
     }
   </style>
@@ -418,32 +773,33 @@
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo">
-      <a href="index.html">
-        <img src="logo.png" alt="Logo Singbox" />
-        <span class="logo-text">Singbox</span>
-      </a>
-    </div>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html">
+          <img src="logo.png" alt="Logo Singbox" />
+          <span class="logo-text">Singbox</span>
+        </a>
+      </div>
 
-    <nav class="main-nav">
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="concept.html">Le concept</a></li>
-        <li><a href="salles.html">Les salles</a></li>
-        <li><a href="actualites.html">Actualités</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="boxs.html">Les boxs</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
 
-    <div class="header-right">
-      <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="panier.html" class="cart-icon">
-        🛒<span id="cart-count"></span>
-      </a>
-      <!-- bouton burger mobile -->
-      <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-        ☰
-      </button>
+      <div class="header-right">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+          ☰
+        </button>
+      </div>
     </div>
   </header>
 
@@ -452,130 +808,183 @@
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
-      <li><a href="salles.html">Les salles</a></li>
+      <li><a href="boxs.html">Les boxs</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <!-- pas de "Réserver" ici -->
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="contact-hero">
-    <h1>Une question ? On vous répond !</h1>
-    <p>Particulier ou entreprise, écrivez-nous et on revient vers vous rapidement.</p>
+  <!-- INTRO -->
+  <section id="contact-intro">
+    <div class="contact-intro-inner">
+      <p class="contact-eyebrow">Contact</p>
+      <h1 class="contact-title-main">Une question ? On vous répond !</h1>
+      <p class="contact-intro-text">
+        Particulier ou entreprise, écrivez-nous et on revient vers vous rapidement.
+      </p>
+    </div>
   </section>
 
-  <div class="contact-main">
-    <!-- FORM + IMAGE -->
-    <section class="contact-grid">
-      <!-- Bloc formulaire -->
-      <div class="contact-form-block">
-        <h2>Contactez Singbox</h2>
-        <p class="small">Dites-nous en quelques mots votre besoin, on vous répond par e-mail ou téléphone.</p>
+  <main>
+    <!-- SECTION PRINCIPALE : FORM + VISUEL -->
+    <section id="contact-main">
+      <div class="container">
+        <div class="contact-main-grid">
+          <!-- Colonne gauche : formulaire -->
+          <div class="contact-card">
+            <h2>Contactez Singbox</h2>
+            <p class="form-subtext">
+              Dites-nous en quelques mots votre besoin, on vous répond par e-mail ou téléphone.
+            </p>
 
-        <!-- FORMULAIRE CONNECTÉ À WEB3FORMS -->
-        <form action="https://api.web3forms.com/submit" method="POST">
-          <!-- Clé API Web3Forms (à remplacer) -->
-          <input type="hidden" name="access_key" value="TON_ACCESS_KEY_WEB3FORMS" />
-          <!-- Pour savoir d'où vient le message -->
-          <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
-          <input type="hidden" name="from_name" value="Site Singbox" />
+            <form action="https://api.web3forms.com/submit" method="POST">
+              <!-- Clé API Web3Forms (à remplacer par la tienne) -->
+              <input type="hidden" name="access_key" value="TON_ACCESS_KEY_WEB3FORMS" />
+              <input type="hidden" name="from_name" value="Site Singbox" />
+              <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
 
-          <!-- Type de contact -->
-          <div class="contact-type">
-            <label>
-              <input type="radio" name="type" value="Particulier" checked />
-              Particulier
-            </label>
-            <label>
-              <input type="radio" name="type" value="Entreprise" />
-              Entreprise
-            </label>
+              <!-- Type Particulier / Entreprise -->
+              <div class="contact-type-toggle">
+                <label class="contact-type-option">
+                  <input type="radio" name="type" value="Particulier" checked />
+                  <span>Particulier</span>
+                </label>
+                <label class="contact-type-option">
+                  <input type="radio" name="type" value="Entreprise" />
+                  <span>Entreprise</span>
+                </label>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="nom_prenom">Nom / Prénom</label>
+                  <input type="text" id="nom_prenom" name="nom_prenom" placeholder="Votre nom complet" required />
+                </div>
+                <div class="form-field">
+                  <label for="telephone">Téléphone</label>
+                  <input type="tel" id="telephone" name="telephone" placeholder="Votre téléphone" />
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="email">E-mail</label>
+                  <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
+                </div>
+                <div class="form-field">
+                  <label for="sujet">Objet</label>
+                  <input type="text" id="sujet" name="sujet" placeholder="Réservation, devis, question..." />
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="message">Votre message</label>
+                <textarea id="message" name="message" placeholder="Expliquez-nous votre demande" required></textarea>
+              </div>
+
+              <div class="consents">
+                <label>
+                  <input type="checkbox" name="newsletter" value="oui" />
+                  <span>J’autorise Singbox à m’envoyer ponctuellement des informations et offres liées au karaoké.</span>
+                </label>
+                <label>
+                  <input type="checkbox" name="rgpd" value="oui" required />
+                  <span>Je confirme avoir pris connaissance des informations relatives à l’utilisation de mes données.</span>
+                </label>
+              </div>
+
+              <div class="fake-captcha">
+                Protection anti-spam gérée par Web3Forms.<br />
+                (Tu pourras activer reCAPTCHA côté Web3Forms si tu veux aller plus loin.)
+              </div>
+
+              <div class="contact-submit">
+                <button type="submit">Envoyer</button>
+              </div>
+            </form>
           </div>
 
-          <div class="form-row">
-            <div class="form-field">
-              <label for="prenom">Nom / Prénom</label>
-              <input type="text" id="prenom" name="nom_prenom" placeholder="Votre nom complet" required />
-            </div>
-            <div class="form-field">
-              <label for="telephone">Téléphone</label>
-              <input type="tel" id="telephone" name="telephone" placeholder="Votre téléphone" />
-            </div>
+          <!-- Colonne droite : visuel ambiance -->
+          <div class="contact-visual-card">
+            <p>
+              Futur visuel d’ambiance Singbox : groupe qui chante, lumières, bonne humeur…<br />
+              On intégrera une vraie photo ici quand tu l’auras.
+            </p>
           </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label for="email">E-mail</label>
-              <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
-            </div>
-            <div class="form-field">
-              <label for="sujet">Objet</label>
-              <input type="text" id="sujet" name="sujet" placeholder="Réservation, devis, question..." />
-            </div>
-          </div>
-
-          <div class="form-field">
-            <label for="message">Votre message</label>
-            <textarea id="message" name="message" placeholder="Expliquez-nous votre demande" required></textarea>
-          </div>
-
-          <div class="consents">
-            <label>
-              <input type="checkbox" name="newsletter" value="oui" />
-              <span>J’autorise Singbox à m’envoyer ponctuellement des informations et offres liées au karaoké.</span>
-            </label>
-            <label>
-              <input type="checkbox" name="rgpd" value="oui" required />
-              <span>Je confirme avoir pris connaissance des informations relatives à l’utilisation de mes données.</span>
-            </label>
-          </div>
-
-          <div class="fake-captcha">
-            Protection anti-spam gérée par Web3Forms.<br />
-            (Tu pourras activer reCAPTCHA côté Web3Forms si tu veux aller plus loin.)
-          </div>
-
-          <div class="contact-submit">
-            <button type="submit">Envoyer</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Bloc image / ambiance -->
-      <div class="contact-image-block">
-        <!-- Ici tu pourras mettre une vraie image en background plus tard -->
-        <p>
-          Futur visuel d’ambiance Singbox : groupe qui chante, lumières, bonne humeur…  
-          On intégrera une vraie photo ici quand tu l’auras.
-        </p>
-      </div>
-    </section>
-
-    <!-- MAP + ADRESSE -->
-    <section class="map-wrapper">
-      <div class="map-placeholder">
-        Carte Google Maps / plan de Singbox  
-        (on branchera l’API ou une image de carte plus tard).
-      </div>
-
-      <div class="address-card">
-        <h3>Nous retrouver</h3>
-        <p><strong>Adresse :</strong><br />[Ton adresse complète ici]<br />31000 Toulouse</p>
-        <p><strong>Accès :</strong><br />Métro [à préciser]<br />Parkings à proximité [à préciser]</p>
-        <p><strong>Horaires (exemple) :</strong><br />Mardi – Dimanche : 18h – 2h</p>
-        <p><strong>Contact :</strong><br />Email : [à compléter]<br />Téléphone : [à compléter]</p>
+        </div>
       </div>
     </section>
-  </div>
+
+    <!-- SECTION LOCALISATION -->
+    <section id="contact-location">
+      <div class="container">
+        <div class="contact-location-grid">
+          <!-- Carte / plan -->
+          <div class="map-card">
+            Carte Google Maps / plan de Singbox<br />
+            (API ou image de carte à intégrer plus tard).
+          </div>
+
+          <!-- Infos pratiques -->
+          <div class="visit-card">
+            <h3>Nous retrouver</h3>
+
+            <div class="visit-row">
+              <div class="visit-icon">📍</div>
+              <div class="visit-text">
+                <strong>Adresse</strong>
+                <p>
+                  [Ton adresse complète ici]<br />
+                  31000 Toulouse – France
+                </p>
+              </div>
+            </div>
+
+            <div class="visit-row">
+              <div class="visit-icon">🚇</div>
+              <div class="visit-text">
+                <strong>Accès</strong>
+                <p>
+                  Métro : [à préciser]<br />
+                  Parkings à proximité : [à préciser]
+                </p>
+              </div>
+            </div>
+
+            <div class="visit-row">
+              <div class="visit-icon">🕒</div>
+              <div class="visit-text">
+                <strong>Horaires d'ouverture</strong>
+                <p>
+                  Mardi – Dimanche : 18h – 2h
+                </p>
+              </div>
+            </div>
+
+            <div class="visit-row">
+              <div class="visit-icon">✉️</div>
+              <div class="visit-text">
+                <strong>Contact</strong>
+                <p>
+                  Email : contactsingbox@gmail.com<br />
+                  Téléphone : 06 00 00 00 00
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
+      <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <input type="email" placeholder="Entrez votre adresse e-mail" />
-        <button>S'abonner</button>
+        <button>S'abonner aux actualités</button>
       </div>
     </div>
 
@@ -583,8 +992,8 @@
       <div class="footer-brand">
         <img src="logo.png" alt="Logo Singbox" />
         <div>
-          <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
-          <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0;">Karaoké Box à Toulouse</p>
         </div>
       </div>
 
@@ -598,13 +1007,15 @@
       <div>
         <p><strong>Contact</strong></p>
         <p>Adresse : [à compléter]</p>
-        <p>Email : [à compléter]</p>
-        <p>Téléphone : [à compléter]</p>
+        <p>Email : contactsingbox@gmail.com</p>
+        <p>Téléphone : 06 00 00 00 00</p>
       </div>
 
       <div>
         <p><strong>Réseaux</strong></p>
-        <p>Instagram / TikTok / Facebook</p>
+        <p>Instagram</p>
+        <p>TikTok</p>
+        <p>Facebook</p>
       </div>
     </div>
 
@@ -614,7 +1025,7 @@
   </footer>
 
   <script>
-    // Helpers panier (localStorage)
+    // Helpers panier
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -627,16 +1038,9 @@
       const el = document.getElementById("cart-count");
       if (!el) return;
       const panier = getPanier();
-      if (!panier.length) {
-        el.textContent = "";
-        el.style.display = "none";
-      } else {
-        el.textContent = panier.length;
-        el.style.display = "inline-block";
-      }
+      el.textContent = panier.length ? panier.length : "";
     }
 
-    // --- MENU MOBILE + badge panier ---
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
@@ -653,7 +1057,6 @@
         });
       }
 
-      // Mettre à jour l'icône de panier au chargement
       updateCartIcon();
     });
   </script>
