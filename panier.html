@@ -53,53 +53,70 @@
       padding: 0 1.5rem;
     }
 
-    /* ---------- HEADER ---------- */
-    header {
-      width: 100%;
+    /* ======================= HEADER GLOBAL ======================= */
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
       background: #020617;
       color: #fff;
-      padding: 10px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 50;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      height: auto;
     }
 
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
-      gap: 24px;
+      justify-content: space-between;
+      gap: 2rem;
+      height: auto;
+      flex-wrap: nowrap;
     }
 
-    .logo {
+    /* Bloc marque */
+    .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      text-decoration: none;
       flex-shrink: 0;
     }
 
-    .logo img {
-      height: 70px;
-      width: auto;
+    .brand-logo {
+      width: 110px;
+      height: auto;
+      border-radius: 999px;
       display: block;
+      object-fit: contain;
       filter:
-        drop-shadow(0 0 14px rgba(255,255,255,0.16))
-        drop-shadow(0 0 26px rgba(201,76,53,0.6));
+        drop-shadow(0 0 12px rgba(255,255,255,0.16))
+        drop-shadow(0 0 20px rgba(201,76,53,0.6));
     }
 
-    .logo-text {
+    .brand-text {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 26px;
+      color: #F9FAFB;
       text-transform: uppercase;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: 0.18em;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
+    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
       justify-content: center;
+      min-width: 0;
     }
 
     .main-nav ul {
@@ -112,10 +129,13 @@
     }
 
     .main-nav a {
-      color: #E5E7EB;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      text-decoration: none;
       position: relative;
       padding-bottom: 4px;
-      font-weight: 500;
+      white-space: nowrap;
     }
 
     .main-nav a::after {
@@ -123,24 +143,28 @@
       position: absolute;
       left: 0;
       bottom: 0;
+      width: 0%;
       height: 2px;
-      width: 0;
-      background: var(--sb-red);
-      border-radius: 999px;
-      transition: width 0.2s ease-out;
+      background: linear-gradient(90deg, #ff6930, #ffb96f);
+      transition: width 0.3s ease;
+      border-radius: 6px;
     }
 
-    .main-nav a:hover::after { width: 100%; }
-
-    /* lien actif hypothétique */
-    .main-nav a[href="panier.html"]::after {
+    .main-nav a:hover::after {
       width: 100%;
     }
 
-    .header-right {
+    .main-nav a:hover {
+      color: #ffb96f;
+      transition: 0.25s ease;
+    }
+
+    /* Actions à droite */
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-shrink: 0;
     }
 
     .nav-cta {
@@ -195,6 +219,7 @@
 
     #cart-count:empty { display:none; }
 
+    /* Burger + menu mobile */
     .burger-button {
       display: none;
       width:36px;
@@ -232,10 +257,44 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
+    @media (max-width: 900px) {
+      .header-inner {
+        padding: 10px 16px;
+        gap: 12px;
+      }
+
+      .main-nav {
+        display:none !important;
+      }
+
+      .burger-button {
+        display:flex;
+      }
+
+      .brand-logo {
+        width: 90px;
+      }
+
+      .brand-text {
+        font-size: 20px;
+        letter-spacing: 0.12em;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand-logo {
+        width: 72px;
+      }
+      .brand-text {
+        font-size: 18px;
+        letter-spacing: 0.1em;
+      }
+    }
+
     /* ---------- HERO PANIER ---------- */
     .hero-panier {
       position: relative;
-      padding: 3.5rem 0 2.5rem;
+      padding: 8.5rem 0 2.5rem; /* compensé pour header fixe */
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
@@ -659,15 +718,6 @@
 
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
-      .header-inner {
-        gap: 12px;
-        justify-content: space-between;
-      }
-      nav.main-nav { display:none; }
-      .burger-button { display:flex; }
-      .logo img { height:60px; }
-      .logo-text { font-size:16px; }
-
       .cart-item-card {
         flex-direction: column;
         align-items: flex-start;
@@ -690,14 +740,12 @@
 <body>
 
 <!-- HEADER -->
-<header>
+<header class="site-header">
   <div class="header-inner">
-    <div class="logo">
-      <a href="index.html">
-        <img src="logo.png" alt="Logo Singbox" />
-        <span class="logo-text">Singbox</span>
-      </a>
-    </div>
+    <a href="index.html" class="brand">
+      <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
+      <span class="brand-text">Singbox</span>
+    </a>
 
     <nav class="main-nav">
       <ul>
@@ -710,7 +758,7 @@
       </ul>
     </nav>
 
-    <div class="header-right">
+    <div class="header-actions">
       <a href="reservation.html" class="nav-cta">Réserver</a>
       <a href="panier.html" class="cart-icon">
         🛒<span id="cart-count"></span>
@@ -914,7 +962,6 @@
       return;
     }
 
-    // sinon : panier rempli
     actionsEl.style.display = "flex";
     summaryEl.style.display = "flex";
 
@@ -922,11 +969,9 @@
       const card = document.createElement("div");
       card.className = "cart-item-card";
 
-      // date lisible
       const dateLabel = item.date ? formatDateFr(item.date) : (item.dateLabel || "");
       const boxName = item.boxName || item.box || item.boxId || "Box";
 
-      // heure
       let hourText = "?";
       if (typeof item.hour === "number") {
         const start = item.hour;
