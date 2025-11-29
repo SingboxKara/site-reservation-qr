@@ -379,6 +379,35 @@
 
     .footer-columns p { margin:4px 0; }
 
+    /* Liens réseaux sociaux */
+    .footer-social .social-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin: 4px 0;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer-social .social-link:hover {
+      color: #f97316;
+    }
+
+    .footer-social .social-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-social .social-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+
     .footer-bottom {
       max-width:var(--sb-container-width);
       margin:20px auto 0;
@@ -669,15 +698,46 @@
       <div>
         <p><strong>Contact</strong></p>
         <p>Adresse : [à compléter]</p>
-        <p>Email : contact@singbox.fr</p>
+        <p>Email : contactsingbox@gmail.com</p>
         <p>Téléphone : 06 00 00 00 00</p>
       </div>
 
-      <div>
+      <div class="footer-social">
         <p><strong>Réseaux</strong></p>
-        <p>Instagram</p>
-        <p>TikTok</p>
-        <p>Facebook</p>
+
+        <a
+          href="https://www.instagram.com/singboxtoulouse/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+        >
+          <span class="social-icon">
+            <!-- Logo Instagram contour -->
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5"
+                    fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+              <circle cx="12" cy="12" r="4.2"
+                      fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+              <circle cx="17" cy="7" r="1.2" fill="currentColor"></circle>
+            </svg>
+          </span>
+          <span>Instagram</span>
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@singbox.toulouse/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+        >
+          <span class="social-icon">
+            <!-- Logo TikTok -->
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-0.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
+            </svg>
+          </span>
+          <span>TikTok</span>
+        </a>
       </div>
     </div>
 
