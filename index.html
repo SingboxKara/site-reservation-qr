@@ -86,8 +86,8 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 48px;   /* taille augmentée */
+      height: 48px;
       border-radius: 999px;
       display: block;
       object-fit: cover;
@@ -221,7 +221,7 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 60px; /* un peu sous le header fixe */
+      top: 60px; /* légèrement sous le header fixe */
       left: 0;
       right: 0;
       background: #020617;
@@ -488,6 +488,11 @@
       border-color: rgba(201,76,53,0.6);
     }
 
+    /* Card étape cliquable (Choisissez votre date) */
+    .step-card--clickable {
+      cursor: pointer;
+    }
+
     /* ---------- SECTION OCCASIONS (cartes + contact) ---------- */
 
     .section-occasions {
@@ -546,6 +551,7 @@
         transform 0.2s ease,
         box-shadow 0.2s ease,
         border-color 0.2s ease;
+      cursor: pointer; /* toutes les cartes occasions cliquables */
     }
 
     .occasion-card h3 {
@@ -930,7 +936,11 @@
       <p class="section-subtitle-center">Des moments funs pour tous les groupes.</p>
 
       <div class="steps-grid">
-        <div class="step-card">
+        <!-- CARD 1 cliquable -> réservation -->
+        <div
+          class="step-card step-card--clickable"
+          onclick="window.location.href='reservation.html'"
+        >
           <div class="step-icon">📅</div>
           <div class="step-content">
             <h3>Choisissez votre date</h3>
@@ -938,6 +948,7 @@
           </div>
         </div>
 
+        <!-- Les autres cards restent non-cliquables (ou tu peux aussi les rendre cliquables si tu veux) -->
         <div class="step-card">
           <div class="step-icon">📦</div>
           <div class="step-content">
@@ -974,32 +985,53 @@
             <article
               class="occasion-card occasion-card--large occasion-card--friends"
               data-icon="🎧"
+              onclick="window.location.href='reservation.html'"
             >
               <h3>Entre amis</h3>
               <p>Blind tests, défis, hits des années 2000… votre QG de soirée.</p>
             </article>
 
-            <article class="occasion-card" data-icon="👨‍👩‍👧">
+            <article
+              class="occasion-card"
+              data-icon="👨‍👩‍👧"
+              onclick="window.location.href='reservation.html'"
+            >
               <h3>En famille</h3>
               <p>Des classiques pour toutes les générations.</p>
             </article>
 
-            <article class="occasion-card" data-icon="🎂">
+            <article
+              class="occasion-card"
+              data-icon="🎂"
+              onclick="window.location.href='reservation.html'"
+            >
               <h3>Anniversaire</h3>
               <p>Une box privatisée pour souffler vos bougies en musique.</p>
             </article>
 
-            <article class="occasion-card" data-icon="🏢">
+            <article
+              class="occasion-card"
+              data-icon="🏢"
+              onclick="window.location.href='reservation.html'"
+            >
               <h3>Team building</h3>
               <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
             </article>
 
-            <article class="occasion-card" data-icon="💍">
+            <article
+              class="occasion-card"
+              data-icon="💍"
+              onclick="window.location.href='reservation.html'"
+            >
               <h3>EVJF / EVG</h3>
               <p>Une parenthèse 100&nbsp;% fun avant le grand jour.</p>
             </article>
 
-            <article class="occasion-card" data-icon="✨">
+            <article
+              class="occasion-card"
+              data-icon="✨"
+              onclick="window.location.href='reservation.html'"
+            >
               <h3>Et plus encore…</h3>
               <p>Afterworks, lendemains de match… toutes les excuses sont bonnes.</p>
             </article>
