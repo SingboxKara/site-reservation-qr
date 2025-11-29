@@ -2,63 +2,107 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Nos salles</title>
+  <title>Singbox - Les boxs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #1b2550;
-      background-color: #faf7f2;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
+    :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-bg-soft: #030712;
+      --sb-card: rgba(2, 6, 23, 0.96);
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
+      --sb-red: #C94C35;
+      --sb-orange: #F97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.25);
+      --sb-container-width: 1180px;
     }
 
-    /* ---------- HEADER (même que les autres pages) ---------- */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--sb-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2, h3 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- HEADER (identique à la home) ---------- */
     header {
-      background-color: #0c1633;
+      width: 100%;
+      background: #020617;
       color: #fff;
-      padding: 12px 32px;
-      display: flex;
-      align-items: center;
-      gap: 32px;
+      padding: 10px 24px;
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 50;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+    }
+
+    .header-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       flex-shrink: 0;
     }
 
-    .logo a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: 0.05em;
-      color: #fff;
-    }
-
     .logo img {
-      height: 90px;   /* LOGO HEADER 90px comme sur index */
+      height: 70px;
       width: auto;
       display: block;
+      filter:
+        drop-shadow(0 0 14px rgba(255,255,255,0.16))
+        drop-shadow(0 0 26px rgba(201,76,53,0.6));
     }
 
     .logo-text {
       text-transform: uppercase;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.18em;
     }
 
-    .main-nav {
+    nav.main-nav {
       flex: 1;
       display: flex;
       justify-content: center;
     }
+
     .main-nav ul {
       list-style: none;
       display: flex;
@@ -67,11 +111,31 @@
       padding: 0;
       font-size: 14px;
     }
-    .main-nav li {
-      cursor: pointer;
-    }
+
     .main-nav a {
-      color: #fff;
+      color: #E5E7EB;
+      position: relative;
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: var(--sb-red);
+      border-radius: 999px;
+      transition: width 0.2s ease-out;
+    }
+
+    .main-nav a:hover::after { width: 100%; }
+
+    /* Lien actif pour cette page */
+    .main-nav a[href="boxs.html"]::after {
+      width: 100%;
     }
 
     .header-right {
@@ -81,220 +145,398 @@
     }
 
     .nav-cta {
-      background: linear-gradient(90deg, #ffb74a, #f08b2e);
-      padding: 8px 20px;
+      background: var(--sb-red);
+      padding: 8px 22px;
       border-radius: 999px;
       font-weight: 600;
-      color: #111827;
       font-size: 14px;
+      color: #F9FAFB;
       white-space: nowrap;
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.08),
+        0 10px 28px rgba(0,0,0,0.7);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .nav-cta:hover {
+      background: #d55a40;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.18),
+        0 16px 38px rgba(0,0,0,0.9);
     }
 
     .cart-icon {
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid #ffffff33;
+      border: 1px solid rgba(255,255,255,0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
       position: relative;
+      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      backdrop-filter: blur(6px);
     }
 
-    /* Badge panier : caché par défaut (pas de petit trait orange) */
     #cart-count {
       position: absolute;
       top: -6px;
       right: -6px;
-      background: #f97316;
+      background: var(--sb-red);
       color:#fff;
       border-radius:999px;
       font-size:10px;
       padding: 2px 5px;
       min-width: 18px;
       text-align:center;
-      display: none; /* on affiche seulement en JS s'il y a > 0 */
     }
+    #cart-count:empty { display:none; }
 
-    /* Bouton burger (mobile) */
     .burger-button {
-      display:none;
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      border:1px solid #ffffff33;
-      background:transparent;
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: transparent;
       color:#fff;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:20px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
     }
 
-    /* Menu mobile */
     .mobile-nav {
-      display:none;
-      position:fixed;
-      top:80px;
-      left:0;
-      right:0;
-      background:#0c1633;
-      padding:12px 24px 16px;
-      z-index:15;
-      border-bottom:1px solid #111827;
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
     }
+
     .mobile-nav ul {
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      font-size:15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
     }
+
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* HERO */
-    .hero {
+    /* ---------- SECTION INTRO BOXES ---------- */
+    #boxes-intro {
+      position: relative;
+      padding: 64px 0 72px;
+      background:
+        radial-gradient(circle at 30% 0%, rgba(201,76,53,0.28), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(30,64,175,0.5), transparent 55%),
+        rgba(5,8,20,0.96);
       text-align: center;
-      padding: 50px 24px 30px;
-      background: #faf7f2;
-    }
-    .hero h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #0c1633;
-    }
-    .hero p {
-      margin-top: 6px;
-      font-size: 16px;
-      color: #4b5563;
-    }
-
-    /* GRID SALLES */
-    .salles-grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 32px;
-    }
-
-    .salle-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       overflow: hidden;
+    }
+
+    #boxes-intro::before {
+      content: "♪";
+      position: absolute;
+      top: 18%;
+      left: 11%;
+      font-size: 32px;
+      color: rgba(148,163,184,0.12);
+    }
+
+    #boxes-intro::after {
+      content: "✦";
+      position: absolute;
+      bottom: 14%;
+      right: 10%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.1);
+    }
+
+    .boxes-intro-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .boxes-eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9CA3AF;
+      margin-bottom: 10px;
+    }
+
+    .boxes-title {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .boxes-intro-text {
+      font-size: 15px;
+      color: rgba(249,250,251,0.85);
+      line-height: 1.7;
+    }
+
+    /* ---------- SECTION LISTE DES BOXS ---------- */
+    #boxes-list {
+      position: relative;
+      padding: 80px 0 88px;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(201,76,53,0.24), transparent 65%),
+        #050814;
+      overflow: hidden;
+    }
+
+    #boxes-list::before {
+      content: "♫";
+      position: absolute;
+      top: 16%;
+      left: 7%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.1);
+      pointer-events: none;
+    }
+    #boxes-list::after {
+      content: "✺";
+      position: absolute;
+      bottom: 10%;
+      right: 12%;
+      font-size: 40px;
+      color: rgba(148,163,184,0.08);
+      pointer-events: none;
+    }
+
+    .boxes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    /* ---------- CARD BOXS ---------- */
+    .box-card {
+      background: #020617;
+      border-radius: 24px;
+      overflow: hidden;
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,0.9),
+        0 20px 50px rgba(0, 0, 0, 0.9);
       display: flex;
       flex-direction: column;
-    }
-    .salle-img {
-      background: #0c1633;
-      height: 180px;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-      text-align:center;
-      padding:12px;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .salle-content {
-      padding: 20px 18px;
-      flex: 1;
+    .box-card::after {
+      content: "♪";
+      position: absolute;
+      right: 18px;
+      bottom: 14px;
+      font-size: 24px;
+      color: rgba(148,163,184,0.09);
+      pointer-events: none;
+    }
+
+    .box-card:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.45),
+        0 26px 60px rgba(0,0,0,1);
+    }
+
+    .box-visual {
+      background:
+        radial-gradient(circle at 15% 0%, rgba(56,189,248,0.26), transparent 60%),
+        radial-gradient(circle at 85% 100%, rgba(201,76,53,0.4), transparent 55%),
+        #020617;
+      border-radius: 24px 24px 0 0;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #E5E7EB;
+      font-size: 14px;
+      text-align: center;
+      padding: 16px 18px;
+    }
+
+    .box-body {
+      padding: 1.5rem 1.75rem 1.75rem;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .capacity {
-      background: #ffb74a;
-      color:#111827;
-      font-weight: 700;
+    .box-badge {
+      align-self: flex-start;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
       padding: 4px 10px;
-      border-radius: 8px;
-      display: inline-block;
-      font-size: 13px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      box-shadow: 0 0 18px rgba(201,76,53,0.6);
     }
 
-    .salle-content h2 {
-      margin: 0;
+    .box-body h2 {
       font-size: 20px;
-      color:#0c1633;
+      margin-top: 2px;
+      margin-bottom: 4px;
     }
 
-    .features {
+    .box-desc {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin: 0 0 4px;
+    }
+
+    .box-features {
+      list-style: none;
+      padding: 0;
+      margin: 6px 0 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      font-size: 14px;
-      color:#4b5563;
+      font-size: 13px;
+      color: rgba(249,250,251,0.9);
     }
 
-    .cta-salle {
-      margin-top: auto;
-      padding: 10px 14px;
-      border: 2px solid #0c1633;
-      background: transparent;
-      border-radius: 8px;
-      font-weight: 600;
+    .box-features li span.icon {
+      margin-right: 6px;
+      opacity: 0.85;
+    }
+
+    .box-cta {
+      margin-top: 8px;
+      align-self: flex-start;
+      border-radius: 999px;
+      padding: 0.7rem 1.6rem;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.7);
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      text-align:center;
-      transition: 0.2s;
-      display:block;
-    }
-    .cta-salle:hover {
-      background:#0c1633;
-      color:#fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
     }
 
-    /* ---------- FOOTER identique à l'accueil ---------- */
+    .box-cta:hover {
+      background: radial-gradient(circle at 30% 0%, rgba(201,76,53,0.35), rgba(15,23,42,0.95));
+      border-color: rgba(248,250,252,0.9);
+      box-shadow:
+        0 0 0 1px rgba(248,250,252,0.18),
+        0 18px 45px rgba(0,0,0,0.95);
+      transform: translateY(-1px);
+    }
+
+    .box-cta span.arrow {
+      font-size: 14px;
+    }
+
+    /* ---------- CTA BAS DE PAGE ---------- */
+    .boxes-cta-section {
+      padding: 16px 0 0;
+      background: #050814;
+    }
+
+    .boxes-cta-inner {
+      max-width: 640px;
+      margin: 0 auto 72px;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .boxes-cta-inner p {
+      margin: 0 0 18px;
+      font-size: 14px;
+      color: var(--sb-text-muted);
+    }
+
+    .boxes-cta-button {
+      border: none;
+      border-radius: 999px;
+      padding: 11px 28px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 18px 40px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .boxes-cta-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 60px rgba(0,0,0,1);
+    }
+
+    /* ---------- FOOTER (identique à la home) ---------- */
     footer {
-      background:#05091b;
-      color:#f9fafb;
-      padding:32px 24px 16px;
-      margin-top:40px;
+      background:#020617;
+      color:#e5e7eb;
+      padding:32px 24px 18px;
+      border-top: 1px solid #111827;
     }
-    footer h3 {
-      margin-bottom:12px;
-      font-size:18px;
-    }
+
     .newsletter-container {
-      max-width:1100px;
+      max-width: var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
+
     .newsletter-row {
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       justify-content:center;
+      margin-top: 8px;
     }
+
     footer input[type=email] {
       padding:10px 12px;
-      border-radius:4px;
-      border:none;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.4);
       min-width:240px;
       max-width:360px;
       font-size:14px;
+      background:#020617;
+      color:#F9FAFB;
     }
+
     footer button {
-      padding:10px 16px;
+      padding:10px 18px;
       border:none;
-      border-radius:4px;
-      background:#fbbf24;
-      color:#111827;
+      border-radius:999px;
+      background:var(--sb-red);
+      color:#F9FAFB;
       font-weight:600;
       font-size:14px;
       cursor:pointer;
     }
+
     .footer-columns {
-      max-width:1100px;
+      max-width:var(--sb-container-width);
       margin:0 auto;
       display:flex;
       flex-wrap:wrap;
@@ -302,44 +544,59 @@
       justify-content:space-between;
       font-size:13px;
     }
-    .footer-columns p {
-      margin:4px 0;
-    }
 
     .footer-brand {
       display:flex;
       align-items:center;
       gap:10px;
     }
+
     .footer-brand img {
-      height:120px;  /* LOGO FOOTER 120px comme sur index */
+      height:80px;
       width:auto;
       display:block;
     }
 
+    .footer-columns p { margin:4px 0; }
+
     .footer-bottom {
-      max-width:1100px;
-      margin:24px auto 0;
-      border-top:1px solid:#111827;
+      max-width:var(--sb-container-width);
+      margin:20px auto 0;
       padding-top:8px;
       font-size:11px;
       text-align:center;
-      color:#9ca3af;
+      color:#9CA3AF;
+      border-top:1px solid #111827;
     }
 
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
-      header {
-        padding: 10px 16px;
-        gap:12px;
+      .boxes-grid {
+        grid-template-columns: minmax(0,1fr);
       }
-      .main-nav {
-        display: none;
+      #boxes-intro {
+        padding: 56px 0 60px;
       }
-      .burger-button {
-        display:flex;
+      #boxes-list {
+        padding: 64px 0 72px;
       }
-      .logo img {
-        height:64px;
+    }
+
+    @media (max-width: 800px) {
+      .header-inner {
+        gap: 12px;
+        justify-content: space-between;
+      }
+      nav.main-nav { display:none; }
+      .burger-button { display:flex; }
+      .logo img { height:60px; }
+      .logo-text { font-size:16px; }
+      .boxes-title { font-size: 26px; }
+    }
+
+    @media (max-width: 480px) {
+      .box-body {
+        padding: 1.4rem 1.4rem 1.6rem;
       }
     }
   </style>
@@ -347,180 +604,213 @@
 
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <a href="index.html">
-      <img src="logo.png" alt="Logo Singbox" />
-      <span class="logo-text">Singbox</span>
-    </a>
-  </div>
+  <!-- ---------- HEADER ---------- -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <a href="index.html">
+          <img src="logo.png" alt="Logo Singbox">
+          <span class="logo-text">Singbox</span>
+        </a>
+      </div>
 
-  <nav class="main-nav">
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="boxs.html">Les boxs</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav">
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
-      <li><a href="salles.html">Les salles</a></li>
+      <li><a href="boxs.html">Les boxs</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 
-  <div class="header-right">
-    <a href="reservation.html" class="nav-cta">Réserver</a>
-    <a href="panier.html" class="cart-icon">
-      🛒<span id="cart-count"></span>
-    </a>
-    <!-- Bouton burger mobile -->
-    <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-      ☰
-    </button>
-  </div>
-</header>
+  <!-- ---------- INTRO BOXS ---------- -->
+  <section id="boxes-intro">
+    <div class="boxes-intro-inner">
+      <p class="boxes-eyebrow">Nos boxs privées</p>
+      <h1 class="boxes-title">2 boxs</h1>
+      <p class="boxes-intro-text">
+        Découvrez nos box privées insonorisées et climatisées.
+        Choisissez l’ambiance qui vous ressemble, le reste se fait micro en main.
+      </p>
+    </div>
+  </section>
 
-<!-- MENU MOBILE -->
-<nav class="mobile-nav" id="mobile-nav">
-  <ul>
-    <li><a href="index.html">Accueil</a></li>
-    <li><a href="concept.html">Le concept</a></li>
-    <li><a href="salles.html">Les salles</a></li>
-    <li><a href="actualites.html">Actualités</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <!-- pas de "Réserver" ni "Panier" ici -->
-  </ul>
-</nav>
+  <!-- ---------- LISTE DES BOXS ---------- -->
+  <section id="boxes-list">
+    <div class="container">
+      <div class="boxes-grid">
 
-<section class="hero">
-  <h1>2 salles</h1>
-  <p>Découvrez nos box privées insonorisées et climatisées.</p>
-</section>
+        <!-- BOX 1 : NUIT ÉTOILÉE -->
+        <article class="box-card">
+          <div class="box-visual">
+            Visuel de la box Nuit étoilée (à intégrer plus tard)
+          </div>
+          <div class="box-body">
+            <span class="box-badge">6 pers max</span>
+            <h2>Nuit étoilée</h2>
+            <p class="box-desc">
+              Un cocon bleu nuit, parfait pour les blind tests, les hits 2000 et les soirées qui finissent en after.
+            </p>
+            <ul class="box-features">
+              <li><span class="icon">📱</span>Commande via tablette</li>
+              <li><span class="icon">🎤</span>2 micros</li>
+              <li><span class="icon">♿</span>Accès PMR</li>
+              <li><span class="icon">💡</span>Lumières d’ambiance</li>
+            </ul>
+            <button class="box-cta" onclick="window.location.href='reservation.html'">
+              Découvrir la box <span class="arrow">→</span>
+            </button>
+          </div>
+        </article>
 
-<div class="salles-grid">
+        <!-- BOX 2 : AMBIANCE SUNSET -->
+        <article class="box-card">
+          <div class="box-visual">
+            Visuel de la box Ambiance Sunset (à intégrer plus tard)
+          </div>
+          <div class="box-body">
+            <span class="box-badge">6 pers max</span>
+            <h2>Ambiance Sunset</h2>
+            <p class="box-desc">
+              Tons orangés, vibes fin de journée et playlists feel good pour des souvenirs jusqu’au bout de la nuit.
+            </p>
+            <ul class="box-features">
+              <li><span class="icon">📱</span>Commande via tablette</li>
+              <li><span class="icon">🎤</span>2 micros</li>
+              <li><span class="icon">♿</span>Accès PMR</li>
+              <li><span class="icon">💡</span>Lumières d’ambiance</li>
+            </ul>
+            <button class="box-cta" onclick="window.location.href='reservation.html'">
+              Découvrir la box <span class="arrow">→</span>
+            </button>
+          </div>
+        </article>
 
-  <!-- 🎤 BOX 1 -->
-  <div class="salle-card">
-    <div class="salle-img">Visuel de la salle 1 (à intégrer plus tard)</div>
-    <div class="salle-content">
-      <span class="capacity">6 pers max</span>
-      <h2>Nuit étoilée</h2>
+      </div>
+    </div>
+  </section>
 
-      <div class="features">
-        <span>📱 Commande via tablette</span>
-        <span>🎤 2 micros</span>
-        <span>♿ Accès PMR</span>
-        <span>💡 Lumières d'ambiance</span>
+  <!-- ---------- CTA BAS DE PAGE ---------- -->
+  <section class="boxes-cta-section">
+    <div class="boxes-cta-inner">
+      <p>
+        Vous avez trouvé votre box ? Réservez votre séance en quelques clics et vivez l’expérience Singbox.
+      </p>
+      <button
+        class="boxes-cta-button"
+        onclick="window.location.href='reservation.html'"
+      >
+        Réserver maintenant
+      </button>
+    </div>
+  </section>
+
+  <!-- ---------- FOOTER ---------- -->
+  <footer>
+    <div class="newsletter-container">
+      <h3>Inscrivez-vous à notre newsletter</h3>
+      <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
+      <div class="newsletter-row">
+        <input type="email" placeholder="Entrez votre adresse e-mail" />
+        <button>S'abonner</button>
+      </div>
+    </div>
+
+    <div class="footer-columns">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Logo Singbox" />
+        <div>
+          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0;">Karaoké Box à Toulouse</p>
+        </div>
       </div>
 
-      <a href="reservation.html" class="cta-salle">Découvrir la salle</a>
-    </div>
-  </div>
-
-  <!-- 🎤 BOX 2 -->
-  <div class="salle-card">
-    <div class="salle-img">Visuel de la salle 2 (à intégrer plus tard)</div>
-    <div class="salle-content">
-      <span class="capacity">6 pers max</span>
-      <h2>Ambiance Sunset</h2>
-
-      <div class="features">
-        <span>📱 Commande via tablette</span>
-        <span>🎤 2 micros</span>
-        <span>♿ Accès PMR</span>
-        <span>💡 Lumières d'ambiance</span>
-      </div>
-
-      <a href="reservation.html" class="cta-salle">Découvrir la salle</a>
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  <div class="newsletter-container">
-    <h3>Inscrivez-vous à notre newsletter</h3>
-    <div class="newsletter-row">
-      <input type="email" placeholder="Entrez votre adresse e-mail" />
-      <button>S'abonner</button>
-    </div>
-  </div>
-
-  <div class="footer-columns">
-    <div class="footer-brand">
-      <img src="logo.png" alt="Logo Singbox" />
       <div>
-        <p style="font-weight:700;font-size:18px;margin-bottom:4px;">Singbox</p>
-        <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
+        <p><strong>Infos</strong></p>
+        <p>Mentions légales</p>
+        <p>Politique de confidentialité</p>
+        <p>CGV</p>
+      </div>
+
+      <div>
+        <p><strong>Contact</strong></p>
+        <p>Adresse : [à compléter]</p>
+        <p>Email : contact@singbox.fr</p>
+        <p>Téléphone : 06 00 00 00 00</p>
+      </div>
+
+      <div>
+        <p><strong>Réseaux</strong></p>
+        <p>Instagram</p>
+        <p>TikTok</p>
+        <p>Facebook</p>
       </div>
     </div>
 
-    <div>
-      <p><strong>Infos</strong></p>
-      <p>Mentions légales</p>
-      <p>Politique de confidentialité</p>
-      <p>CGV</p>
+    <div class="footer-bottom">
+      Réalisé avec ♥ pour Singbox
     </div>
-    <div>
-      <p><strong>Contact</strong></p>
-      <p>Adresse : [à compléter]</p>
-      <p>Email : [à compléter]</p>
-      <p>Téléphone : [à compléter]</p>
-    </div>
-    <div>
-      <p><strong>Réseaux</strong></p>
-      <p>Instagram – TikTok – Facebook</p>
-    </div>
-  </div>
+  </footer>
 
-  <div class="footer-bottom">
-    Réalisé avec ♥ pour Singbox
-  </div>
-</footer>
-
-<!-- SCRIPT MENU MOBILE + BADGE PANIER GLOBAL -->
-<script>
-  // Récupère le panier dans localStorage
-  function getPanier() {
-    try {
-      return JSON.parse(localStorage.getItem("panier")) || [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Met à jour le badge 🛒 (#cart-count)
-  function updateCartIcon() {
-    const el = document.getElementById("cart-count");
-    if (!el) return;
-    const panier = getPanier();
-    if (!panier.length) {
-      el.textContent = "";
-      el.style.display = "none"; // cache complètement le badge
-    } else {
-      el.textContent = panier.length;
-      el.style.display = "inline-block";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const burgerBtn = document.getElementById("burger-button");
-    const mobileNav = document.getElementById("mobile-nav");
-
-    if (burgerBtn && mobileNav) {
-      burgerBtn.addEventListener("click", () => {
-        mobileNav.classList.toggle("open");
-      });
-
-      mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
-          mobileNav.classList.remove("open");
-        }
-      });
+  <script>
+    // Helpers panier
+    function getPanier() {
+      try {
+        return JSON.parse(localStorage.getItem("panier")) || [];
+      } catch (e) {
+        return [];
+      }
     }
 
-    // Met à jour le badge panier au chargement
-    updateCartIcon();
-  });
-</script>
+    function updateCartIcon() {
+      const el = document.getElementById("cart-count");
+      if (!el) return;
+      const panier = getPanier();
+      el.textContent = panier.length ? panier.length : "";
+    }
 
+    document.addEventListener("DOMContentLoaded", function () {
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
+
+      if (burgerBtn && mobileNav) {
+        burgerBtn.addEventListener("click", () => {
+          mobileNav.classList.toggle("open");
+        });
+
+        mobileNav.addEventListener("click", (e) => {
+          if (e.target.tagName === "A") {
+            mobileNav.classList.remove("open");
+          }
+        });
+      }
+
+      updateCartIcon();
+    });
+  </script>
 </body>
 </html>
