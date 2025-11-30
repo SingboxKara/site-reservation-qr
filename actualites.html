@@ -350,15 +350,75 @@
       line-height: 1.7;
     }
 
+    /* ---------- FILTRES (PLACÉS AU-DESSUS DES ARTICLES) ---------- */
+    #news-filters {
+      padding: 40px 0 24px;
+      background: #050814;
+      border-top: 1px solid rgba(15,23,42,0.9);
+    }
+
+    .news-filters-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .news-filters-inner h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .news-filters-inner p {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 14px;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-pill {
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #0f1628;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
+      color: #E5E7EB;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-pill:hover {
+      background: #111827;
+      border-color: rgba(248,250,251,0.5);
+      box-shadow: 0 0 18px rgba(201,76,53,0.35);
+      transform: translateY(-1px);
+    }
+
+    .filter-pill.active {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      border-color: transparent;
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 18px 45px rgba(0,0,0,0.9);
+    }
+
     /* ---------- LISTE ARTICLES ---------- */
     #news-list {
       position: relative;
-      padding: 32px 0 80px;
+      padding: 24px 0 80px;
       background:
         radial-gradient(circle at 50% 0%, rgba(201,76,53,0.25), transparent 60%),
         #050814;
       overflow: hidden;
-      margin-top: -16px;
+      margin-top: 0;
     }
 
     #news-list::before {
@@ -494,66 +554,6 @@
     .news-card.is-dimmed {
       opacity: 0.45;
       filter: grayscale(0.15);
-    }
-
-    /* ---------- FILTRES ---------- */
-    #news-filters {
-      padding: 40px 0 64px;
-      background: #050814;
-      border-top: 1px solid rgba(15,23,42,0.9);
-    }
-
-    .news-filters-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .news-filters-inner h2 {
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .news-filters-inner p {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 14px;
-    }
-
-    .filters-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .filter-pill {
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: #0f1628;
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 12px;
-      color: #E5E7EB;
-      cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .filter-pill:hover {
-      background: #111827;
-      border-color: rgba(248,250,251,0.5);
-      box-shadow: 0 0 18px rgba(201,76,53,0.35);
-      transform: translateY(-1px);
-    }
-
-    .filter-pill.active {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      border-color: transparent;
-      color: #F9FAFB;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 18px 45px rgba(0,0,0,0.9);
     }
 
     /* ---------- CTA FINAL ---------- */
@@ -694,8 +694,7 @@
         padding: 9rem 0 32px;
       }
       #news-list {
-        padding: 32px 0 72px;
-        margin-top: -8px;
+        padding: 24px 0 72px;
       }
     }
 
@@ -761,6 +760,21 @@
   </section>
 
   <main>
+    <!-- FILTRES (désormais au-dessus des annonces) -->
+    <section id="news-filters">
+      <div class="news-filters-inner">
+        <h2>Catégories</h2>
+        <p>Choisis une catégorie pour afficher les articles correspondants.</p>
+        <div class="filters-row">
+          <span class="filter-pill active" data-category="all">Toutes les actualités</span>
+          <span class="filter-pill" data-category="coulisses-travaux">🧱 Coulisses &amp; travaux</span>
+          <span class="filter-pill" data-category="nouvelles-chansons">🎤 Nouvelles chansons</span>
+          <span class="filter-pill" data-category="vie-lieu">👥 Vie du lieu</span>
+          <span class="filter-pill" data-category="idees-soirees">💡 Idées de soirées</span>
+        </div>
+      </div>
+    </section>
+
     <!-- LISTE DES ARTICLES -->
     <section id="news-list">
       <div class="container">
@@ -818,21 +832,6 @@
               </a>
             </article>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FILTRES -->
-    <section id="news-filters">
-      <div class="news-filters-inner">
-        <h2>Catégories</h2>
-        <p>Choisis une catégorie pour afficher les articles correspondants.</p>
-        <div class="filters-row">
-          <span class="filter-pill active" data-category="all">Toutes les actualités</span>
-          <span class="filter-pill" data-category="coulisses-travaux">🧱 Coulisses &amp; travaux</span>
-          <span class="filter-pill" data-category="nouvelles-chansons">🎤 Nouvelles chansons</span>
-          <span class="filter-pill" data-category="vie-lieu">👥 Vie du lieu</span>
-          <span class="filter-pill" data-category="idees-soirees">💡 Idées de soirées</span>
         </div>
       </div>
     </section>
