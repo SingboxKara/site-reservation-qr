@@ -54,7 +54,7 @@
       padding: 0 24px;
     }
 
-    /* ======================= HEADER GLOBAL (identique site) ======================= */
+    /* ======================= HEADER GLOBAL ======================= */
 
     .site-header {
       position: fixed;
@@ -158,7 +158,6 @@
       transition: 0.25s ease;
     }
 
-    /* lien actif éventuel pour la page panier */
     .main-nav a[href="panier.html"]::after {
       width: 100%;
     }
@@ -1014,7 +1013,6 @@
         <div class="billing-card card">
           <h2>Détails de facturation</h2>
 
-          <!-- Type de client -->
           <div class="billing-type-toggle" role="radiogroup" aria-label="Type de client">
             <label class="billing-type-option">
               <input type="radio" name="client_type" value="particulier" checked />
@@ -1088,7 +1086,6 @@
 
         <!-- COLONNE DROITE : RÉCAP + PAIEMENT -->
         <div class="summary-column">
-          <!-- Récap commande (rempli en JS) -->
           <div class="order-card card">
             <h2>Votre commande</h2>
 
@@ -1118,7 +1115,6 @@
             </div>
           </div>
 
-          <!-- Code promo -->
           <div class="promo-card card">
             <div class="promo-header">
               <span>Code promo</span>
@@ -1136,11 +1132,8 @@
             </div>
           </div>
 
-          <!-- Paiement -->
           <div class="payment-card card">
-            <h3>
-              💳 Paiement sécurisé
-            </h3>
+            <h3>💳 Paiement sécurisé</h3>
 
             <div class="payment-logos">
               <span class="payment-logo visa">VISA</span>
@@ -1151,9 +1144,8 @@
               Vos données personnelles seront utilisées pour le traitement de votre commande, pour le suivi de votre visite sur notre site, et pour d’autres raisons décrites dans notre politique de confidentialité.
             </p>
 
-            <!-- Stripe Card Element -->
             <div class="card-element-wrapper">
-              <div id="card-element"><!-- Stripe injecte la carte ici --></div>
+              <div id="card-element"></div>
               <div id="card-errors"></div>
             </div>
 
@@ -1256,12 +1248,11 @@
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
-    const PRICE_FALLBACK = 10; // au cas où un item n’ait pas de price
+    const PRICE_FALLBACK = 10;
 
     let stripe = null;
     let cardElement = null;
 
-    // Helpers panier
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -1353,7 +1344,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
-      // Menu mobile
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
@@ -1372,12 +1362,20 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
-      // Stripe init
+      // Stripe init avec texte en blanc
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
         const elements = stripe.elements({
           appearance: {
-            theme: "night"
+            theme: "night",
+            variables: {
+              colorText: "#F9FAFB",
+              colorIcon: "#F9FAFB",
+              colorBackground: "#020617",
+              colorPrimary: "#F97316",
+              colorDanger: "#f97373",
+              fontFamily: '"Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            }
           }
         });
         cardElement = elements.create("card", {
@@ -1392,7 +1390,7 @@
         });
       }
 
-      // Code promo : toggle
+      // Code promo
       const promoToggle = document.getElementById("promo-toggle");
       const promoBody   = document.getElementById("promo-body");
       const promoInput  = document.getElementById("promo-code");
@@ -1449,7 +1447,7 @@
         }
       }
 
-      // Validation + paiement Stripe
+      // Validation + paiement
       const submitBtn    = document.getElementById("checkout-submit-btn");
       const cgvCheckbox  = document.getElementById("cgv-checkbox");
       const rulesCheckbox= document.getElementById("rules-checkbox");
@@ -1490,7 +1488,6 @@
           if (errorEl) errorEl.textContent = "";
           if (successEl) successEl.textContent = "";
 
-          // Récup infos facturation
           const prenom     = document.getElementById("prenom").value.trim();
           const nom        = document.getElementById("nom").value.trim();
           const email      = document.getElementById("email").value.trim();
@@ -1501,7 +1498,6 @@
           const cp         = document.getElementById("cp").value.trim();
           const ville      = document.getElementById("ville").value.trim();
           const naissance  = document.getElementById("naissance").value;
-
           const promoCode  = localStorage.getItem("promoCode") || null;
 
           const customer = {
@@ -1514,7 +1510,6 @@
           submitBtn.textContent = "Paiement en cours...";
 
           try {
-            // 1) Créer un PaymentIntent côté backend
             const res = await fetch("http://localhost:3000/api/create-payment-intent", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -1537,7 +1532,6 @@
 
             const clientSecret = json.clientSecret;
 
-            // 2) Confirmer le paiement avec Stripe.js
             const result = await stripe.confirmCardPayment(clientSecret, {
               payment_method: {
                 card: cardElement,
@@ -1560,7 +1554,6 @@
                 successEl.textContent = "Paiement accepté ✔️ Votre réservation va être confirmée.";
               }
 
-              // 3) Confirmer la réservation côté backend
               try {
                 await fetch("http://localhost:3000/api/confirm-reservation", {
                   method: "POST",
@@ -1573,10 +1566,9 @@
                   })
                 });
               } catch (e) {
-                // si ça échoue on ne bloque pas l'affichage côté client
+                // on ne bloque pas côté client
               }
 
-              // 4) Nettoyer le panier et récap
               savePanier([]);
               localStorage.removeItem("promoCode");
               updateCartIcon();
