@@ -430,12 +430,12 @@
       position: relative;
     }
 
-    .hero-image-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transform: scale(1.03);
+    /* 👉 Fond avec ta photo */
+    .hero-image-groupe {
+      background-image: url("hero-groupe-karaoke.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     /* ---------- SECTION 3 ÉTAPES ---------- */
@@ -963,9 +963,7 @@
       </div>
 
       <div class="hero-right">
-        <div class="hero-image-card">
-          <img src="hero-groupe-karaoke.jpg" alt="Groupe d'amis chantant au karaoké dans une box Singbox">
-        </div>
+        <div class="hero-image-card hero-image-groupe"></div>
       </div>
     </div>
   </section>
