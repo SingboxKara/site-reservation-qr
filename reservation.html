@@ -1015,6 +1015,14 @@
   </footer>
 
   <script>
+    /* ---------- utils date locale ---------- */
+    function toLocalYMD(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
     /* ---------- PANIER (localStorage) ---------- */
     function getPanier() {
       try {
@@ -1036,7 +1044,7 @@
     }
 
     function addSlotToCart(boxId, boxName, dateObj, hour, price) {
-      const isoDate = dateObj.toISOString().split("T")[0];
+      const isoDate = toLocalYMD(dateObj); // 🔥 corrigé : plus de toISOString()
       const panier = getPanier();
 
       // éviter les doublons exacts
@@ -1147,7 +1155,7 @@
       const table = document.getElementById("planning-table");
       if (!table) return;
 
-      const isoDate = date.toISOString().split("T")[0];
+      const isoDate = toLocalYMD(date); // 🔥 corrigé
       currentPlanningDateIso = isoDate;
 
       const panier = getPanier();
@@ -1271,7 +1279,7 @@
       const loadButton = document.getElementById("load-button");
 
       const today = new Date();
-      const isoToday = today.toISOString().split("T")[0];
+      const isoToday = toLocalYMD(today); // 🔥 corrigé
       dateInput.value = isoToday;
 
       function refreshPlanning() {
