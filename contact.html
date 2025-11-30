@@ -887,7 +887,8 @@
               Dites-nous en quelques mots votre besoin, on vous répond par e-mail ou téléphone.
             </p>
 
-            <form action="https://api.web3forms.com/submit" method="POST">
+            <!-- FORMULAIRE AVEC ID POUR LA VALIDATION -->
+            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
               <!-- Clé API Web3Forms -->
               <input type="hidden" name="access_key" value="6dc5cb1e-a12d-42e2-8647-2c80a1a3fdf1" />
               <input type="hidden" name="from_name" value="Site Singbox" />
@@ -945,8 +946,11 @@
 
               <div class="fake-captcha">
                 Protection anti-spam gérée par Web3Forms.<br />
-                (Tu pourras activer reCAPTCHA côté Web3Forms si tu veux aller plus loin.)
+                (Tu peux activer hCaptcha dans ton dashboard Web3Forms.)
               </div>
+
+              <!-- hCaptcha (Web3Forms proxy) -->
+              <div class="h-captcha" data-captcha="true"></div>
 
               <div class="contact-submit">
                 <button type="submit">Envoyer</button>
@@ -1088,6 +1092,9 @@
     </div>
   </footer>
 
+  <!-- Script hCaptcha/Web3Forms -->
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+
   <script>
     // Helpers panier
     function getPanier() {
@@ -1123,6 +1130,18 @@
 
       updateCartIcon();
     });
+
+    // Validation côté client pour hCaptcha (Web3Forms)
+    const form = document.getElementById('contact-form');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        const hCaptcha = form.querySelector('textarea[name="h-captcha-response"]');
+        if (!hCaptcha || !hCaptcha.value) {
+          e.preventDefault();
+          alert("Merci de valider le captcha avant d'envoyer le formulaire.");
+        }
+      });
+    }
   </script>
 </body>
 </html>
