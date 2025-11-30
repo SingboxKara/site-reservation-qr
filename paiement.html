@@ -574,7 +574,7 @@
       margin-top: 2px;
     }
 
-    /* Code promo bloc (dans la colonne droite) */
+    /* Code promo bloc */
 
     .promo-card {
       font-size: 12px;
@@ -599,6 +599,9 @@
       text-decoration: underline;
       cursor: pointer;
       white-space: nowrap;
+      background: transparent;
+      border: none;
+      padding: 0;
     }
 
     .promo-toggle:hover {
@@ -711,11 +714,30 @@
       margin-bottom: 10px;
     }
 
+    .card-element-wrapper {
+      margin-bottom: 10px;
+    }
+
+    #card-element {
+      padding: 0.65rem 0.8rem;
+      border-radius: 14px;
+      border: 1px solid var(--sb-border-soft);
+      background:#020617;
+    }
+
+    #card-errors {
+      font-size: 11px;
+      color:#FCA5A5;
+      margin-top:4px;
+      min-height:1em;
+    }
+
     .payment-consents {
       display: flex;
       flex-direction: column;
       gap: 6px;
       font-size: 12px;
+      margin-top: 8px;
       margin-bottom: 10px;
     }
 
@@ -770,6 +792,13 @@
       min-height: 1em;
     }
 
+    .checkout-success {
+      font-size: 11px;
+      color: #BBF7D0;
+      margin-top: 4px;
+      min-height: 1em;
+    }
+
     .checkout-submit {
       display: flex;
       justify-content: stretch;
@@ -794,12 +823,17 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .checkout-submit button:hover {
+    .checkout-submit button:hover:not([disabled]) {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
         0 26px 65px rgba(0,0,0,1);
+    }
+
+    .checkout-submit button[disabled] {
+      opacity: 0.6;
+      cursor: progress;
     }
 
     /* ======================= FOOTER ======================= */
@@ -811,7 +845,7 @@
     }
 
     .newsletter-container {
-      max-width: var(--sb-container-width);
+      max-width:var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
@@ -1054,33 +1088,31 @@
 
         <!-- COLONNE DROITE : RÉCAP + PAIEMENT -->
         <div class="summary-column">
-          <!-- Récap commande -->
+          <!-- Récap commande (rempli en JS) -->
           <div class="order-card card">
             <h2>Votre commande</h2>
 
             <div class="order-lines">
-              <!-- Tu pourras remplacer ces infos par les données du panier en JS -->
-              <div class="order-product-name">Box "Nuit étoilée" ×1</div>
-              <p class="order-meta">
-                Du : 30 novembre 2025 – 18h50<br />
-                Au : 30 novembre 2025 – 20h20<br />
-                Durée : 90 minutes<br />
-                Personnes : 4
+              <div class="order-product-name" id="order-product-name">
+                Votre sélection Singbox
+              </div>
+              <p class="order-meta" id="order-meta">
+                Les détails de vos créneaux apparaîtront ici.
               </p>
             </div>
 
             <div class="order-totals">
               <div class="order-row">
                 <span>Sous-total</span>
-                <span>36€</span>
+                <span id="order-subtotal">0€</span>
               </div>
               <div class="order-row">
                 <span>TVA (20&nbsp;%) incluse</span>
-                <span>6€</span>
+                <span id="order-tva">0€</span>
               </div>
               <div class="order-row total">
                 <span>Total</span>
-                <span>36€</span>
+                <span id="order-total">0€</span>
               </div>
               <p class="order-note">Prix TTC, TVA incluse. Réglable en une seule fois.</p>
             </div>
@@ -1119,6 +1151,12 @@
               Vos données personnelles seront utilisées pour le traitement de votre commande, pour le suivi de votre visite sur notre site, et pour d’autres raisons décrites dans notre politique de confidentialité.
             </p>
 
+            <!-- Stripe Card Element -->
+            <div class="card-element-wrapper">
+              <div id="card-element"><!-- Stripe injecte la carte ici --></div>
+              <div id="card-errors"></div>
+            </div>
+
             <div class="payment-consents">
               <label>
                 <input type="checkbox" id="cgv-checkbox">
@@ -1136,6 +1174,7 @@
             </div>
 
             <div id="checkout-error" class="checkout-error"></div>
+            <div id="checkout-success" class="checkout-success"></div>
 
             <div class="checkout-submit">
               <button id="checkout-submit-btn" type="button">
@@ -1212,14 +1251,27 @@
     </div>
   </footer>
 
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3"></script>
+
   <script>
-    // Helpers panier (compteur)
+    const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
+    const PRICE_FALLBACK = 10; // au cas où un item n’ait pas de price
+
+    let stripe = null;
+    let cardElement = null;
+
+    // Helpers panier
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
       } catch (e) {
         return [];
       }
+    }
+
+    function savePanier(panier) {
+      localStorage.setItem("panier", JSON.stringify(panier));
     }
 
     function updateCartIcon() {
@@ -1229,7 +1281,78 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function computeTotal(panier) {
+      return panier.reduce((sum, item) => {
+        const p = typeof item.price === "number" ? item.price : PRICE_FALLBACK;
+        return sum + p;
+      }, 0);
+    }
+
+    function formatDateFr(iso) {
+      if (!iso) return "";
+      try {
+        const [y,m,d] = iso.split("-");
+        const date = new Date(parseInt(y,10), parseInt(m,10)-1, parseInt(d,10));
+        return date.toLocaleDateString("fr-FR", {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric"
+        });
+      } catch {
+        return iso;
+      }
+    }
+
+    function updateOrderSummaryFromPanier() {
+      const panier = getPanier();
+      const nameEl = document.getElementById("order-product-name");
+      const metaEl = document.getElementById("order-meta");
+      const subEl = document.getElementById("order-subtotal");
+      const tvaEl = document.getElementById("order-tva");
+      const totalEl = document.getElementById("order-total");
+
+      if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
+
+      if (panier.length === 0) {
+        nameEl.textContent = "Aucune réservation";
+        metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+        subEl.textContent = "0€";
+        tvaEl.textContent = "0€";
+        totalEl.textContent = "0€";
+        return;
+      }
+
+      const total = computeTotal(panier);
+      const tva = total - total / 1.2;
+
+      const first = panier[0];
+      const dateLabel = first.date ? formatDateFr(first.date) : "";
+      const boxName = first.boxName || first.box || first.boxId || "Box privée";
+      let hourText = "";
+      if (typeof first.hour === "number") {
+        const start = first.hour;
+        const end = (first.hour + 1) % 24;
+        hourText = String(start).padStart(2,"0") + "h – " + String(end).padStart(2,"0") + "h";
+      }
+
+      const extraCount = panier.length - 1;
+
+      nameEl.textContent = extraCount > 0
+        ? `Box ${boxName} + ${extraCount} autre(s) créneau(x)`
+        : `Box ${boxName}`;
+
+      metaEl.innerHTML =
+        (dateLabel ? `Date : ${dateLabel}<br>` : "") +
+        (hourText ? `Créneau : ${hourText}<br>` : "") +
+        `Nombre de créneaux : ${panier.length}`;
+
+      subEl.textContent = total.toFixed(2).replace(".", ",") + "€";
+      tvaEl.textContent = tva.toFixed(2).replace(".", ",") + "€";
+      totalEl.textContent = total.toFixed(2).replace(".", ",") + "€";
+    }
+
+    document.addEventListener("DOMContentLoaded", async function () {
       // Menu mobile
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
@@ -1247,13 +1370,34 @@
       }
 
       updateCartIcon();
+      updateOrderSummaryFromPanier();
+
+      // Stripe init
+      if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
+        stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+        const elements = stripe.elements({
+          appearance: {
+            theme: "night"
+          }
+        });
+        cardElement = elements.create("card", {
+          hidePostalCode: true
+        });
+        cardElement.mount("#card-element");
+        cardElement.on("change", function (event) {
+          const displayError = document.getElementById("card-errors");
+          if (displayError) {
+            displayError.textContent = event.error ? event.error.message : "";
+          }
+        });
+      }
 
       // Code promo : toggle
       const promoToggle = document.getElementById("promo-toggle");
-      const promoBody = document.getElementById("promo-body");
-      const promoInput = document.getElementById("promo-code");
-      const promoBtn = document.getElementById("apply-promo");
-      const promoMsg = document.getElementById("promo-message");
+      const promoBody   = document.getElementById("promo-body");
+      const promoInput  = document.getElementById("promo-code");
+      const promoBtn    = document.getElementById("apply-promo");
+      const promoMsg    = document.getElementById("promo-message");
 
       if (promoToggle && promoBody) {
         promoToggle.addEventListener("click", () => {
@@ -1273,9 +1417,8 @@
           return;
         }
 
-        // Logique simple de démo : à adapter plus tard
         if (code === "SINGBOX10") {
-          promoMsg.textContent = "Code appliqué : la remise sera calculée lors du paiement.";
+          promoMsg.textContent = "Code appliqué : la remise sera prise en compte lors du paiement.";
           promoMsg.classList.add("ok");
           localStorage.setItem("promoCode", code);
         } else {
@@ -1296,7 +1439,6 @@
           }
         });
 
-        // Recharge éventuel code depuis localStorage
         const stored = localStorage.getItem("promoCode");
         if (stored) {
           promoInput.value = stored;
@@ -1307,46 +1449,146 @@
         }
       }
 
-      // Validation simple avant "Commander"
-      const submitBtn = document.getElementById("checkout-submit-btn");
-      const cgvCheckbox = document.getElementById("cgv-checkbox");
-      const rulesCheckbox = document.getElementById("rules-checkbox");
-      const errorEl = document.getElementById("checkout-error");
-      const billingForm = document.getElementById("billing-form");
+      // Validation + paiement Stripe
+      const submitBtn    = document.getElementById("checkout-submit-btn");
+      const cgvCheckbox  = document.getElementById("cgv-checkbox");
+      const rulesCheckbox= document.getElementById("rules-checkbox");
+      const errorEl      = document.getElementById("checkout-error");
+      const successEl    = document.getElementById("checkout-success");
+      const billingForm  = document.getElementById("billing-form");
 
       if (submitBtn) {
-        submitBtn.addEventListener("click", () => {
+        submitBtn.addEventListener("click", async () => {
           if (!billingForm) return;
+          if (!stripe || !cardElement) {
+            if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
+            return;
+          }
 
-          // Validation HTML5 native des champs requis
+          const panier = getPanier();
+          if (!panier || panier.length === 0) {
+            if (errorEl) errorEl.textContent = "Votre panier est vide.";
+            return;
+          }
+
           const valid = billingForm.reportValidity();
           if (!valid) {
-            if (errorEl) {
-              errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
-            }
+            if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
             return;
           }
 
           if (!cgvCheckbox || !cgvCheckbox.checked) {
-            if (errorEl) {
-              errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
-            }
+            if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
             return;
           }
 
           if (!rulesCheckbox || !rulesCheckbox.checked) {
-            if (errorEl) {
-              errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
-            }
+            if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
             return;
           }
 
-          if (errorEl) {
-            errorEl.textContent = "";
-          }
+          if (errorEl) errorEl.textContent = "";
+          if (successEl) successEl.textContent = "";
 
-          // Ici tu pourras brancher ton vrai paiement
-          alert("Simulation de commande : données prêtes à être envoyées au module de paiement.");
+          // Récup infos facturation
+          const prenom     = document.getElementById("prenom").value.trim();
+          const nom        = document.getElementById("nom").value.trim();
+          const email      = document.getElementById("email").value.trim();
+          const telephone  = document.getElementById("telephone").value.trim();
+          const pays       = document.getElementById("pays").value;
+          const adresse    = document.getElementById("adresse").value.trim();
+          const complement = document.getElementById("complement").value.trim();
+          const cp         = document.getElementById("cp").value.trim();
+          const ville      = document.getElementById("ville").value.trim();
+          const naissance  = document.getElementById("naissance").value;
+
+          const promoCode  = localStorage.getItem("promoCode") || null;
+
+          const customer = {
+            prenom, nom, email, telephone,
+            pays, adresse, complement, cp, ville, naissance,
+          };
+
+          submitBtn.disabled = true;
+          const originalLabel = submitBtn.textContent;
+          submitBtn.textContent = "Paiement en cours...";
+
+          try {
+            // 1) Créer un PaymentIntent côté backend
+            const res = await fetch("http://localhost:3000/api/create-payment-intent", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                panier,
+                customer,
+                promoCode
+              })
+            });
+
+            const json = await res.json();
+            if (!res.ok || !json.clientSecret) {
+              if (errorEl) {
+                errorEl.textContent = json.error || "Erreur lors de la création du paiement.";
+              }
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalLabel;
+              return;
+            }
+
+            const clientSecret = json.clientSecret;
+
+            // 2) Confirmer le paiement avec Stripe.js
+            const result = await stripe.confirmCardPayment(clientSecret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: {
+                  name: prenom + " " + nom,
+                  email: email,
+                }
+              }
+            });
+
+            if (result.error) {
+              if (errorEl) errorEl.textContent = result.error.message;
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalLabel;
+              return;
+            }
+
+            if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+              if (successEl) {
+                successEl.textContent = "Paiement accepté ✔️ Votre réservation va être confirmée.";
+              }
+
+              // 3) Confirmer la réservation côté backend
+              try {
+                await fetch("http://localhost:3000/api/confirm-reservation", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    panier,
+                    customer,
+                    promoCode,
+                    paymentIntentId: result.paymentIntent.id
+                  })
+                });
+              } catch (e) {
+                // si ça échoue on ne bloque pas l'affichage côté client
+              }
+
+              // 4) Nettoyer le panier et récap
+              savePanier([]);
+              localStorage.removeItem("promoCode");
+              updateCartIcon();
+              updateOrderSummaryFromPanier();
+            }
+
+          } catch (err) {
+            if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+          }
         });
       }
     });
