@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Réserver une box</title>
+  <title>Singbox - Panier & Paiement</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Fonts -->
@@ -17,6 +17,7 @@
     :root {
       --sb-bg-main: #050814;
       --sb-bg-deep: #020617;
+      --sb-bg-soft: #030712;
       --sb-card: #050b18;
       --sb-text-main: #F9FAFB;
       --sb-text-muted: #9CA3AF;
@@ -41,7 +42,7 @@
 
     a { text-decoration: none; color: inherit; }
 
-    h1, h2, h3 {
+    h1, h2, h3, h4 {
       font-family: "League Spartan", system-ui, sans-serif;
       letter-spacing: 0.03em;
       margin: 0;
@@ -50,10 +51,10 @@
     .container {
       max-width: var(--sb-container-width);
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 24px;
     }
 
-    /* ======================= HEADER GLOBAL ======================= */
+    /* ======================= HEADER GLOBAL (identique site) ======================= */
 
     .site-header {
       position: fixed;
@@ -79,7 +80,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Bloc marque */
     .brand {
       display: flex;
       align-items: center;
@@ -111,7 +111,6 @@
       align-items: center;
     }
 
-    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -143,11 +142,11 @@
       position: absolute;
       left: 0;
       bottom: 0;
+      width: 0%;
       height: 2px;
-      width: 0;
       background: linear-gradient(90deg, #ff6930, #ffb96f);
-      border-radius: 6px;
       transition: width 0.3s ease;
+      border-radius: 6px;
     }
 
     .main-nav a:hover::after {
@@ -159,12 +158,11 @@
       transition: 0.25s ease;
     }
 
-    /* lien actif pour la page Réserver */
-    .main-nav a[href="reservation.html"]::after {
+    /* lien actif éventuel pour la page panier */
+    .main-nav a[href="panier.html"]::after {
       width: 100%;
     }
 
-    /* Actions à droite */
     .header-actions {
       display: flex;
       align-items: center;
@@ -213,7 +211,7 @@
       position: absolute;
       top: -6px;
       right: -6px;
-      background: var(--sb-orange);
+      background: var(--sb-red);
       color:#fff;
       border-radius:999px;
       font-size:10px;
@@ -225,38 +223,40 @@
 
     .burger-button {
       display: none;
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      border:1px solid #ffffff33;
-      background:transparent;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: transparent;
       color:#fff;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:20px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
     }
 
     .mobile-nav {
-      display:none;
-      position:fixed;
-      top:80px;
-      left:0;
-      right:0;
-      background:#020617;
-      padding:12px 24px 16px;
-      z-index:40;
-      border-bottom:1px solid #111827;
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
     }
+
     .mobile-nav ul {
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      font-size:15px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
     }
+
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
@@ -294,396 +294,515 @@
       }
     }
 
-    /* ---------- HERO RÉSERVATION ---------- */
-    .hero-resa {
+    /* ======================= SECTION PANIER / PAIEMENT ======================= */
+
+    #checkout {
       position: relative;
-      padding: 12rem 0 3.25rem;
+      padding: 12rem 0 64px;
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
         #050814;
-      text-align: center;
+      color: var(--sb-text-main);
       overflow: hidden;
     }
 
-    .hero-resa::before {
+    #checkout::before {
       content: "♪";
       position: absolute;
-      top: 18%;
-      left: 12%;
+      top: 16%;
+      left: 8%;
       font-size: 32px;
       color: rgba(148,163,184,0.08);
+      pointer-events: none;
     }
 
-    .hero-resa::after {
+    #checkout::after {
       content: "✦";
       position: absolute;
-      bottom: 16%;
+      bottom: 14%;
       right: 10%;
       font-size: 30px;
       color: rgba(148,163,184,0.08);
+      pointer-events: none;
     }
 
-    .hero-inner {
+    .checkout-header {
       max-width: 640px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      color: var(--sb-text-main);
+      margin: 0 auto 32px;
+      text-align: center;
     }
 
-    .hero-eyebrow {
+    .checkout-header-eyebrow {
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
       color: #9CA3AF;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .hero-resa h1 {
-      margin:0 0 10px;
+    .checkout-header h1 {
       font-size: 30px;
+      margin-bottom: 8px;
     }
 
-    .hero-resa p {
-      margin:0;
-      font-size:14px;
+    .checkout-header p {
+      margin: 0;
+      font-size: 14px;
       color: rgba(249,250,251,0.85);
     }
 
-    /* ---------- MAIN / CARD RÉSERVATION ---------- */
-    main {
-      padding: 0 0 4rem;
-      background: #050814;
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1.75rem;
+      align-items: flex-start;
     }
 
-    .resa-wrapper {
-      padding-top: 2.5rem;
-    }
-
-    .resa-card {
+    .card {
       background: var(--sb-card);
       border-radius: 24px;
-      padding: 2rem 2rem 2.25rem;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
-      border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.75rem 1.9rem;
+      box-shadow:
+        0 24px 60px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(148,163,184,0.3);
+      border: 1px solid rgba(255,255,255,0.04);
       position: relative;
       overflow: hidden;
     }
 
-    .resa-card::after {
-      content: "🎤";
+    .card::after {
+      content: "";
       position: absolute;
-      right: 18px;
-      bottom: 16px;
-      font-size: 30px;
-      color: rgba(148,163,184,0.1);
+      inset: 0;
       pointer-events: none;
+      background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      opacity: 0.6;
+      mix-blend-mode: soft-light;
     }
 
-    .resa-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem 1.5rem;
-      align-items: flex-end;
-      margin-bottom: 1.4rem;
+    .card > * {
+      position: relative;
+      z-index: 1;
     }
 
-    .resa-dates label {
+    .billing-card h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .billing-form-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 0.9rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .billing-field {
+      margin-bottom: 0.9rem;
       font-size: 13px;
-      color: #E5E7EB;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
     }
 
-    .resa-dates input[type="date"] {
-      padding: 0.55rem 0.8rem;
+    .billing-field label {
+      display: block;
+      margin-bottom: 4px;
+      color: #E5E7EB;
+    }
+
+    .billing-field input,
+    .billing-field select {
+      width: 100%;
+      font-family: inherit;
+      font-size: 13px;
+      color: #F9FAFB;
+      background: #020617;
       border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .billing-field select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #9CA3AF 50%),
+        linear-gradient(135deg, #9CA3AF 50%, transparent 50%);
+      background-position:
+        calc(100% - 14px) calc(50% - 3px),
+        calc(100% - 8px) calc(50% - 3px);
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .billing-field input::placeholder {
+      color: rgba(156,163,175,0.9);
+    }
+
+    .billing-field input:focus,
+    .billing-field select:focus {
+      border-color: var(--sb-orange);
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,0.9),
+        0 0 28px rgba(249,115,22,0.35);
+    }
+
+    .billing-field textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      border-radius: 16px;
       border: 1px solid var(--sb-border-soft);
       background: #020617;
       color: #F9FAFB;
+      padding: 0.7rem 0.9rem;
       font-size: 13px;
+      font-family: inherit;
       outline: none;
-      min-width: 180px;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
     }
 
-    .resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
+    .billing-field textarea::placeholder {
+      color: rgba(156,163,175,0.9);
     }
 
-    .resa-header button {
-      border: none;
-      border-radius: 999px;
-      padding: 0.65rem 1.4rem;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
+    .billing-field textarea:focus {
+      border-color: var(--sb-orange);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 14px 30px rgba(0,0,0,0.85);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        0 0 0 1px rgba(249,115,22,0.9),
+        0 0 28px rgba(249,115,22,0.35);
+    }
+
+    .billing-type-toggle {
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.35);
+      margin-bottom: 14px;
+      font-size: 12px;
+      gap: 4px;
+    }
+
+    .billing-type-option {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      color: #E5E7EB;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .billing-type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .billing-type-option span {
+      position: relative;
+    }
+
+    .billing-type-option input:checked + span {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      border-radius: 999px;
+      padding: 6px 14px;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 12px 30px rgba(0,0,0,0.9);
+    }
+
+    /* ======================= COLONNE DROITE ======================= */
+
+    .summary-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .order-card h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .order-lines {
+      font-size: 13px;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .order-product-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .order-meta {
+      margin: 0;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
+    .order-totals {
+      font-size: 13px;
+      margin-top: 0.5rem;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .order-row.total {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(31,41,55,0.9);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .order-note {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Code promo bloc (dans la colonne droite) */
+
+    .promo-card {
+      font-size: 12px;
+    }
+
+    .promo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .promo-header span {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .promo-toggle {
+      font-size: 12px;
+      color: #F97316;
+      text-decoration: underline;
+      cursor: pointer;
       white-space: nowrap;
     }
 
-    .resa-header button:hover {
+    .promo-toggle:hover {
+      text-decoration: none;
+    }
+
+    .promo-body {
+      margin-top: 6px;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease;
+    }
+
+    .promo-body.open {
+      max-height: 200px;
+    }
+
+    .promo-input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .promo-input-group input[type="text"] {
+      flex: 1 1 130px;
+      min-width: 0;
+      padding: 0.5rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background:#020617;
+      color:#F9FAFB;
+      font-size: 13px;
+      outline:none;
+    }
+
+    .promo-input-group input::placeholder {
+      color: rgba(156,163,175,0.9);
+    }
+
+    .promo-input-group button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      font-size: 12px;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.08),
+        0 12px 30px rgba(0,0,0,0.8);
+    }
+
+    .promo-message {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
+
+    .promo-message.ok { color:#BBF7D0; }
+    .promo-message.error { color:#FCA5A5; }
+
+    /* Paiement */
+
+    .payment-card h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-logos {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .payment-logo {
+      width: 30px;
+      height: 20px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #020617;
+      background: #FACC15;
+    }
+
+    .payment-logo.visa {
+      background: #1D4ED8;
+      color: #F9FAFB;
+    }
+
+    .payment-logo.mc {
+      background: linear-gradient(90deg,#F97316,#EF4444);
+      color:#F9FAFB;
+    }
+
+    .payment-info {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .payment-consents {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .payment-consents label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .payment-consents input[type="checkbox"] {
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      accent-color: var(--sb-red);
+      flex-shrink: 0;
+    }
+
+    .payment-consents a {
+      color: #F97316;
+      text-decoration: underline;
+    }
+
+    .payment-consents a:hover {
+      text-decoration: none;
+    }
+
+    .payment-warning {
+      font-size: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(248,113,113,0.8);
+      background: rgba(127,29,29,0.65);
+      padding: 6px 10px;
+      color: #FEE2E2;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .payment-warning span:first-child {
+      font-size: 16px;
+    }
+
+    .checkout-error {
+      font-size: 11px;
+      color: #FCA5A5;
+      margin-top: 4px;
+      min-height: 1em;
+    }
+
+    .checkout-submit {
+      display: flex;
+      justify-content: stretch;
+      margin-top: 8px;
+    }
+
+    .checkout-submit button {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 1.4rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.14),
+        0 20px 50px rgba(0,0,0,0.95);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .checkout-submit button:hover {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
-        0 20px 50px rgba(0,0,0,1);
+        0 26px 65px rgba(0,0,0,1);
     }
 
-    .resa-note {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 4px;
-    }
-
-    .table-wrapper {
-      margin-top: 1rem;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.35);
-      background: #020617;
-      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.8);
-      overflow-x: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 540px;
-      color: #F9FAFB;
-    }
-
-    thead {
-      background: #020617;
-    }
-
-    th, td {
-      padding: 0.45rem 0.5rem;
-      text-align: center;
-      font-size: 12px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      border-right: 1px solid rgba(31,41,55,0.9);
-      white-space: nowrap;
-    }
-
-    th:last-child,
-    td:last-child {
-      border-right: none;
-    }
-
-    th {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #E5E7EB;
-      background: linear-gradient(to right, rgba(15,23,42,1), rgba(30,64,175,0.35));
-    }
-
-    .hour-cell {
-      background: #020617;
-      font-weight: 600;
-      font-size: 12px;
-      color: #E5E7EB;
-      position: sticky;
-      left: 0;
-      z-index: 1;
-    }
-
-    .slot-cell {
-      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
-      cursor: default;
-    }
-
-    /* ÉTATS LIBRE / RÉSERVÉ / SÉLECTIONNÉ */
-    .slot-free {
-      background-color: #022c22;
-      color: #ECFDF5;
-      cursor: pointer;
-    }
-
-    .slot-free:hover {
-      background-color: #065f46;
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.5);
-      transform: translateY(-1px);
-    }
-
-    .slot-booked {
-      background-color: #7f1d1d;
-      color: #FEE2E2;
-      cursor: not-allowed;
-    }
-
-    .slot-selected {
-      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
-      cursor: default;
-      box-shadow: 0 0 0 1px rgba(129,140,248,0.7);
-    }
-
-    .slot-label {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.2;
-    }
-
-    .slot-price {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .slot-status {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.9;
-    }
-
-    /* LÉGENDE */
-    .resa-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
-      align-items: center;
-      margin-top: 0.85rem;
-      font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .legend-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
-      border: 1px solid rgba(15,23,42,0.9);
-    }
-
-    .legend-dot.free {
-      background-color: #022c22;
-    }
-
-    .legend-dot.booked {
-      background-color: #7f1d1d;
-    }
-
-    .legend-dot.selected {
-      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-    }
-
-    .resa-pricing-rules {
-      margin-top: 0.4rem;
-      font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    /* Messages */
-    #message {
-      margin-top: 1rem;
-      font-size: 12px;
-      color: #F9FAFB;
-      white-space: pre-line;
-      min-height: 1em;
-    }
-
-    #message span {
-      opacity: 0.9;
-    }
-
-    #qrcode {
-      margin-top: 0.5rem;
-    }
-
-    /* ---------- MODAL DE CONFIRMATION ---------- */
-    #slot-modal[hidden] {
-      display: none;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 60;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-dialog {
-      background: #020617;
-      border-radius: 20px;
-      padding: 1.5rem 1.75rem 1.4rem;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
-      border: 1px solid rgba(248,250,251,0.12);
-    }
-
-    .modal-dialog h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .modal-dialog p {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 14px;
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-
-    .modal-actions button {
-      border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1.2rem;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    #modal-cart {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
-    }
-
-    #modal-continue {
-      background: transparent;
-      color: #E5E7EB;
-      border: 1px solid rgba(148,163,184,0.6);
-    }
-
-    #modal-double {
-      background: #111827;
-      color: #F9FAFB;
-      border: 1px solid rgba(96,165,250,0.6);
-    }
-
-    #modal-double:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* ---------- FOOTER ---------- */
+    /* ======================= FOOTER ======================= */
     footer {
       background:#020617;
       color:#e5e7eb;
@@ -692,11 +811,15 @@
     }
 
     .newsletter-container {
-      max-width:var(--sb-container-width);
+      max-width: var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
-    .newsletter-container h3 { margin-bottom:6px; }
+
+    .newsletter-container h3 {
+      margin-bottom: 6px;
+    }
+
     .newsletter-container p {
       margin-top: 0;
       font-size: 13px;
@@ -765,34 +888,6 @@
 
     .footer-columns p { margin:4px 0; }
 
-    .footer-social .social-link {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      margin: 4px 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .footer-social .social-link:hover {
-      color: #f97316;
-    }
-
-    .footer-social .social-icon {
-      width: 24px;
-      height: 24px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .footer-social .social-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: currentColor;
-    }
-
     .footer-bottom {
       max-width:var(--sb-container-width);
       margin:20px auto 0;
@@ -803,27 +898,25 @@
       border-top:1px solid #111827;
     }
 
-    /* ---------- RESPONSIVE ---------- */
+    /* ======================= RESPONSIVE ======================= */
+
     @media (max-width: 900px) {
-      .resa-card {
-        padding: 1.75rem 1.5rem 2rem;
+      #checkout {
+        padding-top: 9.5rem;
+      }
+
+      .checkout-layout {
+        grid-template-columns: minmax(0,1fr);
       }
     }
 
-    @media (max-width: 600px) {
-      .hero-resa {
-        padding-top: 9rem;
+    @media (max-width: 640px) {
+      .billing-form-grid-2 {
+        grid-template-columns: minmax(0,1fr);
       }
-      .hero-resa h1 {
-        font-size: 26px;
-      }
-      .resa-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .resa-header button {
-        width: 100%;
-        text-align: center;
+
+      .card {
+        padding: 1.55rem 1.45rem;
       }
     }
   </style>
@@ -834,7 +927,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
         <span class="brand-text">Singbox</span>
       </a>
 
@@ -873,70 +966,187 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero-resa">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">RÉSERVATION</p>
-      <h1>Réserver une box</h1>
-      <p>Choisissez votre date, puis cliquez sur un créneau libre pour l’ajouter au panier.</p>
-    </div>
-  </section>
+  <!-- MAIN CHECKOUT -->
+  <section id="checkout">
+    <div class="container">
+      <div class="checkout-header">
+        <p class="checkout-header-eyebrow">Panier & paiement</p>
+        <h1>Finalisez votre réservation</h1>
+        <p>Vérifiez vos informations et votre commande avant de chanter chez Singbox.</p>
+      </div>
 
-  <main>
-    <div class="container resa-wrapper">
-      <section class="resa-card">
-        <div class="resa-header">
-          <div class="resa-dates">
-            <label for="date-input">
-              Date de votre séance
-              <input type="date" id="date-input" />
+      <div class="checkout-layout">
+        <!-- COLONNE GAUCHE : FACTURATION -->
+        <div class="billing-card card">
+          <h2>Détails de facturation</h2>
+
+          <!-- Type de client -->
+          <div class="billing-type-toggle" role="radiogroup" aria-label="Type de client">
+            <label class="billing-type-option">
+              <input type="radio" name="client_type" value="particulier" checked />
+              <span>Un particulier</span>
             </label>
-            <p class="resa-note">
-              Tarifs dynamiques selon le jour et l’horaire.
+            <label class="billing-type-option">
+              <input type="radio" name="client_type" value="entreprise" />
+              <span>Une entreprise</span>
+            </label>
+          </div>
+
+          <form id="billing-form" novalidate>
+            <div class="billing-form-grid-2">
+              <div class="billing-field">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" placeholder="Prénom" required />
+              </div>
+              <div class="billing-field">
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" name="nom" placeholder="Nom" required />
+              </div>
+            </div>
+
+            <div class="billing-field">
+              <label for="pays">Pays / région *</label>
+              <select id="pays" name="pays" required>
+                <option value="FR" selected>France</option>
+                <option value="BE">Belgique</option>
+                <option value="CH">Suisse</option>
+                <option value="other">Autre pays</option>
+              </select>
+            </div>
+
+            <div class="billing-field">
+              <label for="adresse">Numéro et nom de rue *</label>
+              <input type="text" id="adresse" name="adresse" placeholder="Numéro de voie et nom de la rue" required />
+            </div>
+
+            <div class="billing-field">
+              <label for="complement">Bâtiment, appartement, etc. (facultatif)</label>
+              <input type="text" id="complement" name="complement" placeholder="Bâtiment, appartement, lot, etc." />
+            </div>
+
+            <div class="billing-form-grid-2">
+              <div class="billing-field">
+                <label for="cp">Code postal *</label>
+                <input type="text" id="cp" name="cp" placeholder="Code postal" required />
+              </div>
+              <div class="billing-field">
+                <label for="ville">Ville *</label>
+                <input type="text" id="ville" name="ville" placeholder="Ville" required />
+              </div>
+            </div>
+
+            <div class="billing-field">
+              <label for="telephone">Téléphone *</label>
+              <input type="tel" id="telephone" name="telephone" placeholder="Téléphone" required />
+            </div>
+
+            <div class="billing-field">
+              <label for="email">Adresse e-mail *</label>
+              <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
+            </div>
+
+            <div class="billing-field">
+              <label for="naissance">Date de naissance *</label>
+              <input type="date" id="naissance" name="naissance" required />
+            </div>
+          </form>
+        </div>
+
+        <!-- COLONNE DROITE : RÉCAP + PAIEMENT -->
+        <div class="summary-column">
+          <!-- Récap commande -->
+          <div class="order-card card">
+            <h2>Votre commande</h2>
+
+            <div class="order-lines">
+              <!-- Tu pourras remplacer ces infos par les données du panier en JS -->
+              <div class="order-product-name">Box "Nuit étoilée" ×1</div>
+              <p class="order-meta">
+                Du : 30 novembre 2025 – 18h50<br />
+                Au : 30 novembre 2025 – 20h20<br />
+                Durée : 90 minutes<br />
+                Personnes : 4
+              </p>
+            </div>
+
+            <div class="order-totals">
+              <div class="order-row">
+                <span>Sous-total</span>
+                <span>36€</span>
+              </div>
+              <div class="order-row">
+                <span>TVA (20&nbsp;%) incluse</span>
+                <span>6€</span>
+              </div>
+              <div class="order-row total">
+                <span>Total</span>
+                <span>36€</span>
+              </div>
+              <p class="order-note">Prix TTC, TVA incluse. Réglable en une seule fois.</p>
+            </div>
+          </div>
+
+          <!-- Code promo -->
+          <div class="promo-card card">
+            <div class="promo-header">
+              <span>Code promo</span>
+              <button type="button" class="promo-toggle" id="promo-toggle">
+                Vous avez un code promo ?
+              </button>
+            </div>
+
+            <div class="promo-body" id="promo-body">
+              <div class="promo-input-group">
+                <input type="text" id="promo-code" placeholder="SINGBOX10, NOEL..." autocomplete="off" />
+                <button type="button" id="apply-promo">Appliquer</button>
+              </div>
+              <p id="promo-message" class="promo-message"></p>
+            </div>
+          </div>
+
+          <!-- Paiement -->
+          <div class="payment-card card">
+            <h3>
+              💳 Paiement sécurisé
+            </h3>
+
+            <div class="payment-logos">
+              <span class="payment-logo visa">VISA</span>
+              <span class="payment-logo mc">MC</span>
+            </div>
+
+            <p class="payment-info">
+              Vos données personnelles seront utilisées pour le traitement de votre commande, pour le suivi de votre visite sur notre site, et pour d’autres raisons décrites dans notre politique de confidentialité.
             </p>
+
+            <div class="payment-consents">
+              <label>
+                <input type="checkbox" id="cgv-checkbox">
+                <span>J’ai lu et j’accepte les conditions générales de vente.</span>
+              </label>
+              <label>
+                <input type="checkbox" id="rules-checkbox">
+                <span>Il est interdit de ramener des boissons ou aliments dans les box.</span>
+              </label>
+            </div>
+
+            <div class="payment-warning">
+              <span>⚠️</span>
+              <span>Merci de respecter cette règle pour garantir la propreté et la sécurité de toutes les box.</span>
+            </div>
+
+            <div id="checkout-error" class="checkout-error"></div>
+
+            <div class="checkout-submit">
+              <button id="checkout-submit-btn" type="button">
+                Commander
+              </button>
+            </div>
           </div>
-          <button id="load-button">Voir les créneaux</button>
         </div>
-
-        <div class="table-wrapper">
-          <table id="planning-table">
-            <!-- Table générée en JS -->
-          </table>
-        </div>
-
-        <div class="resa-legend">
-          <div class="legend-item">
-            <span class="legend-dot free"></span> <span>Libre</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot booked"></span> <span>Réservé</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot selected"></span> <span>Dans ton panier</span>
-          </div>
-        </div>
-        <p class="resa-pricing-rules">
-          25€ de 4h à 14h – 30€ en fin d’après-midi – 35€ en soirée et nuit les jeudis / vendredis / samedis / dimanches.
-        </p>
-
-        <p id="message"></p>
-        <div id="qrcode"></div>
-      </section>
-    </div>
-  </main>
-
-  <!-- MODAL CONFIRMATION CRÉNEAU -->
-  <div id="slot-modal" class="modal-backdrop" hidden>
-    <div class="modal-dialog">
-      <h2>Créneau ajouté au panier</h2>
-      <p id="modal-slot-info"></p>
-      <div class="modal-actions">
-        <button id="modal-double">Réserver 2 heures</button>
-        <button id="modal-continue">Continuer ma réservation</button>
-        <button id="modal-cart">Valider mon panier</button>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- FOOTER -->
   <footer>
@@ -972,40 +1182,28 @@
         <p>Téléphone : 06 00 00 00 00</p>
       </div>
 
-      <div class="footer-social">
+      <div>
         <p><strong>Réseaux</strong></p>
 
-        <a
-          href="https://www.instagram.com/singboxtoulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
-          <span class="social-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" ry="5"
-                    fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-              <circle cx="12" cy="12" r="4.2"
-                      fill="none" stroke="currentColor" stroke-width="1.8"></circle>
-              <circle cx="17" cy="7" r="1.2" fill="currentColor"></circle>
-            </svg>
-          </span>
-          <span>Instagram</span>
-        </a>
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
+            Instagram
+          </a>
+        </p>
 
-        <a
-          href="https://www.tiktok.com/@singbox.toulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
-          <span class="social-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-0.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
-            </svg>
-          </span>
-          <span>TikTok</span>
-        </a>
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
+            TikTok
+          </a>
+        </p>
       </div>
     </div>
 
@@ -1015,17 +1213,13 @@
   </footer>
 
   <script>
-    /* ---------- PANIER (localStorage) ---------- */
+    // Helpers panier (compteur)
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
       } catch (e) {
         return [];
       }
-    }
-
-    function savePanier(panier) {
-      localStorage.setItem("panier", JSON.stringify(panier));
     }
 
     function updateCartIcon() {
@@ -1035,229 +1229,16 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    function addSlotToCart(boxId, boxName, dateObj, hour, price) {
-      const isoDate = dateObj.toISOString().split("T")[0];
-      const panier = getPanier();
-
-      // éviter les doublons exacts
-      const exists = panier.some(item =>
-        item.type === "reservation" &&
-        item.boxId === boxId &&
-        item.date === isoDate &&
-        item.hour === hour
-      );
-      if (exists) {
-        return;
-      }
-
-      panier.push({
-        type: "reservation",
-        boxId,
-        boxName,
-        date: isoDate,
-        hour,
-        price
-      });
-      savePanier(panier);
-      updateCartIcon();
-
-      const msgEl = document.getElementById("message");
-      const heureLabel = String(hour).padStart(2, "0") + "h–" + String((hour + 1) % 24).padStart(2, "0") + "h";
-      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" + boxName + "</strong> – " +
-        heureLabel + " – " + price + "€</span>";
-    }
-
-    /* ---------- TARIFICATION DYNAMIQUE ---------- */
-    function getSlotPrice(date, hour) {
-      const day = date.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
-      const isWeekendPlus = (day === 0 || day === 4 || day === 5 || day === 6);
-      if (hour >= 4 && hour <= 14) {
-        return 25;
-      }
-      if (!isWeekendPlus) {
-        return 30;
-      }
-      if (hour >= 15 && hour <= 19) {
-        return 30;
-      }
-      return 35;
-    }
-
-    /* ---------- MOCK / ÉTAT RÉSERVÉ ---------- */
-    function isSlotBooked(boxId, hour, date) {
-      return false; // à remplacer par ta vraie logique
-    }
-
-    /* ---------- GÉNÉRATION DU TABLEAU ---------- */
-    const BOXES = [
-      { id: "box1", name: "Nuit étoilée" },
-      { id: "box2", name: "Ambiance Sunset" }
-    ];
-
-    let currentPlanningDateIso = null;
-    let lastSelectedSlot = null;
-
-    function markCellSelected(td) {
-      td.classList.remove("slot-free");
-      td.classList.add("slot-selected");
-      const statusSpan = td.querySelector(".slot-status");
-      if (statusSpan) {
-        statusSpan.textContent = "Dans ton panier";
-      }
-      td.onclick = null;
-    }
-
-    function openSlotModal(slot) {
-      lastSelectedSlot = slot;
-      const modal = document.getElementById("slot-modal");
-      const infoEl = document.getElementById("modal-slot-info");
-
-      if (infoEl) {
-        const parts = slot.date.split("-");
-        const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-        const h1 = String(slot.hour).padStart(2, "0");
-        const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
-        infoEl.textContent = slot.boxName + " – " + dateStr + " – " + h1 + "h–" + h2 + "h";
-      }
-
-      const doubleBtn = document.getElementById("modal-double");
-      if (doubleBtn) {
-        if (slot.hour >= 23) {
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Réserver 2 heures (indisponible)";
-        } else {
-          doubleBtn.disabled = false;
-          doubleBtn.textContent = "Réserver 2 heures";
-        }
-      }
-
-      if (modal) {
-        modal.removeAttribute("hidden");
-      }
-    }
-
-    function closeSlotModal() {
-      const modal = document.getElementById("slot-modal");
-      if (modal) {
-        modal.setAttribute("hidden", "true");
-      }
-    }
-
-    function buildPlanningTable(date) {
-      const table = document.getElementById("planning-table");
-      if (!table) return;
-
-      const isoDate = date.toISOString().split("T")[0];
-      currentPlanningDateIso = isoDate;
-
-      const panier = getPanier();
-      const hours = Array.from({ length: 24 }, (_, h) => h);
-      table.innerHTML = "";
-
-      const thead = document.createElement("thead");
-      const headRow = document.createElement("tr");
-
-      const hourTh = document.createElement("th");
-      hourTh.textContent = "Heure";
-      hourTh.className = "hour-cell";
-      headRow.appendChild(hourTh);
-
-      BOXES.forEach(box => {
-        const th = document.createElement("th");
-        th.textContent = box.name;
-        headRow.appendChild(th);
-      });
-
-      thead.appendChild(headRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-
-      hours.forEach(hour => {
-        const tr = document.createElement("tr");
-
-        const hourTd = document.createElement("td");
-        hourTd.className = "hour-cell";
-        const endHour = (hour + 1) % 24;
-        hourTd.textContent = String(hour).padStart(2, "0") + "h–" + String(endHour).padStart(2, "0") + "h";
-        tr.appendChild(hourTd);
-
-        BOXES.forEach(box => {
-          const td = document.createElement("td");
-          td.classList.add("slot-cell");
-          td.dataset.boxId = box.id;
-          td.dataset.hour = String(hour);
-          td.dataset.date = isoDate;
-
-          const price = getSlotPrice(date, hour);
-          const booked = isSlotBooked(box.id, hour, date);
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "slot-label";
-
-          if (booked) {
-            td.classList.add("slot-booked");
-            const statusSpan = document.createElement("span");
-            statusSpan.className = "slot-status";
-            statusSpan.textContent = "Réservé";
-            wrapper.appendChild(statusSpan);
-          } else {
-            const alreadyInCart = panier.some(item =>
-              item.type === "reservation" &&
-              item.boxId === box.id &&
-              item.date === isoDate &&
-              item.hour === hour
-            );
-
-            const priceSpan = document.createElement("span");
-            priceSpan.className = "slot-price";
-            priceSpan.textContent = price + "€";
-            wrapper.appendChild(priceSpan);
-
-            const statusSpan = document.createElement("span");
-            statusSpan.className = "slot-status";
-            statusSpan.textContent = alreadyInCart ? "Dans ton panier" : "Libre";
-            wrapper.appendChild(statusSpan);
-
-            if (alreadyInCart) {
-              td.classList.add("slot-selected");
-            } else {
-              td.classList.add("slot-free");
-              td.onclick = function () {
-                const slotInfo = {
-                  boxId: box.id,
-                  boxName: box.name,
-                  date: isoDate,
-                  dateObj: date,
-                  hour,
-                  price
-                };
-                addSlotToCart(box.id, box.name, date, hour, price);
-                markCellSelected(td);
-                openSlotModal(slotInfo);
-              };
-            }
-          }
-
-          td.appendChild(wrapper);
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
-
-      table.appendChild(tbody);
-    }
-
-    /* ---------- INIT PAGE ---------- */
     document.addEventListener("DOMContentLoaded", function () {
-      // MENU MOBILE
+      // Menu mobile
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
+
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", () => {
           mobileNav.classList.toggle("open");
         });
+
         mobileNav.addEventListener("click", (e) => {
           if (e.target.tagName === "A") {
             mobileNav.classList.remove("open");
@@ -1267,86 +1248,105 @@
 
       updateCartIcon();
 
-      const dateInput = document.getElementById("date-input");
-      const loadButton = document.getElementById("load-button");
+      // Code promo : toggle
+      const promoToggle = document.getElementById("promo-toggle");
+      const promoBody = document.getElementById("promo-body");
+      const promoInput = document.getElementById("promo-code");
+      const promoBtn = document.getElementById("apply-promo");
+      const promoMsg = document.getElementById("promo-message");
 
-      const today = new Date();
-      const isoToday = today.toISOString().split("T")[0];
-      dateInput.value = isoToday;
-
-      function refreshPlanning() {
-        if (!dateInput.value) return;
-        const parts = dateInput.value.split("-");
-        const selectedDate = new Date(
-          parseInt(parts[0], 10),
-          parseInt(parts[1], 10) - 1,
-          parseInt(parts[2], 10)
-        );
-        buildPlanningTable(selectedDate);
-        document.getElementById("message").textContent = "";
-      }
-
-      loadButton.addEventListener("click", refreshPlanning);
-      refreshPlanning();
-
-      // Boutons du modal
-      const continueBtn = document.getElementById("modal-continue");
-      const cartBtn = document.getElementById("modal-cart");
-      const doubleBtn = document.getElementById("modal-double");
-
-      if (continueBtn) {
-        continueBtn.addEventListener("click", () => {
-          closeSlotModal();
+      if (promoToggle && promoBody) {
+        promoToggle.addEventListener("click", () => {
+          promoBody.classList.toggle("open");
         });
       }
 
-      if (cartBtn) {
-        cartBtn.addEventListener("click", () => {
-          window.location.href = "panier.html";
-        });
+      function applyPromo() {
+        if (!promoInput || !promoMsg) return;
+        const code = promoInput.value.trim().toUpperCase();
+        promoMsg.classList.remove("ok","error");
+
+        if (!code) {
+          promoMsg.textContent = "Saisissez un code promo.";
+          promoMsg.classList.add("error");
+          localStorage.removeItem("promoCode");
+          return;
+        }
+
+        // Logique simple de démo : à adapter plus tard
+        if (code === "SINGBOX10") {
+          promoMsg.textContent = "Code appliqué : la remise sera calculée lors du paiement.";
+          promoMsg.classList.add("ok");
+          localStorage.setItem("promoCode", code);
+        } else {
+          promoMsg.textContent = "Code promo invalide ou expiré.";
+          promoMsg.classList.add("error");
+          localStorage.removeItem("promoCode");
+        }
       }
 
-      if (doubleBtn) {
-        doubleBtn.addEventListener("click", () => {
-          if (!lastSelectedSlot) return;
-          const nextHour = lastSelectedSlot.hour + 1;
-          if (nextHour >= 24) return;
+      if (promoBtn) {
+        promoBtn.addEventListener("click", applyPromo);
+      }
+      if (promoInput) {
+        promoInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            applyPromo();
+          }
+        });
 
-          const dateObj = lastSelectedSlot.dateObj;
-          const price2 = getSlotPrice(dateObj, nextHour);
+        // Recharge éventuel code depuis localStorage
+        const stored = localStorage.getItem("promoCode");
+        if (stored) {
+          promoInput.value = stored;
+          if (promoMsg) {
+            promoMsg.textContent = "Code promo mémorisé : " + stored;
+            promoMsg.classList.add("ok");
+          }
+        }
+      }
 
-          // vérifier si déjà dans panier
-          const panier = getPanier();
-          const exists = panier.some(item =>
-            item.type === "reservation" &&
-            item.boxId === lastSelectedSlot.boxId &&
-            item.date === lastSelectedSlot.date &&
-            item.hour === nextHour
-          );
-          if (exists) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Déjà dans ton panier";
+      // Validation simple avant "Commander"
+      const submitBtn = document.getElementById("checkout-submit-btn");
+      const cgvCheckbox = document.getElementById("cgv-checkbox");
+      const rulesCheckbox = document.getElementById("rules-checkbox");
+      const errorEl = document.getElementById("checkout-error");
+      const billingForm = document.getElementById("billing-form");
+
+      if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+          if (!billingForm) return;
+
+          // Validation HTML5 native des champs requis
+          const valid = billingForm.reportValidity();
+          if (!valid) {
+            if (errorEl) {
+              errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
+            }
             return;
           }
 
-          if (isSlotBooked(lastSelectedSlot.boxId, nextHour, dateObj)) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Créneau suivant réservé";
+          if (!cgvCheckbox || !cgvCheckbox.checked) {
+            if (errorEl) {
+              errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
+            }
             return;
           }
 
-          addSlotToCart(lastSelectedSlot.boxId, lastSelectedSlot.boxName, dateObj, nextHour, price2);
-
-          // marquer la case suivante comme sélectionnée si elle est visible
-          const selector =
-            '.slot-cell[data-box-id="' + lastSelectedSlot.boxId + '"][data-hour="' + nextHour + '"][data-date="' + lastSelectedSlot.date + '"]';
-          const cell2 = document.querySelector(selector);
-          if (cell2) {
-            markCellSelected(cell2);
+          if (!rulesCheckbox || !rulesCheckbox.checked) {
+            if (errorEl) {
+              errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
+            }
+            return;
           }
 
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Deuxième heure ajoutée ✓";
+          if (errorEl) {
+            errorEl.textContent = "";
+          }
+
+          // Ici tu pourras brancher ton vrai paiement
+          alert("Simulation de commande : données prêtes à être envoyées au module de paiement.");
         });
       }
     });
