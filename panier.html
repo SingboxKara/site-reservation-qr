@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Réserver une box</title>
+  <title>Singbox - Mon panier</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Fonts -->
@@ -143,11 +143,11 @@
       position: absolute;
       left: 0;
       bottom: 0;
+      width: 0%;
       height: 2px;
-      width: 0;
       background: linear-gradient(90deg, #ff6930, #ffb96f);
-      border-radius: 6px;
       transition: width 0.3s ease;
+      border-radius: 6px;
     }
 
     .main-nav a:hover::after {
@@ -157,11 +157,6 @@
     .main-nav a:hover {
       color: #ffb96f;
       transition: 0.25s ease;
-    }
-
-    /* lien actif pour la page Réserver */
-    .main-nav a[href="reservation.html"]::after {
-      width: 100%;
     }
 
     /* Actions à droite */
@@ -221,8 +216,10 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
+    /* Burger + menu mobile */
     .burger-button {
       display: none;
       width:36px;
@@ -267,7 +264,7 @@
       }
 
       .main-nav {
-        display:none;
+        display:none !important;
       }
 
       .burger-button {
@@ -294,19 +291,20 @@
       }
     }
 
-    /* ---------- HERO RÉSERVATION ---------- */
-    .hero-resa {
+    /* ---------- HERO PANIER ---------- */
+    .hero-panier {
       position: relative;
-      padding: 12rem 0 3.25rem;
+      padding: 12rem 0 3.25rem; /* même écart que la page Réservation */
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
         #050814;
       text-align: center;
       overflow: hidden;
+      color: var(--sb-text-main);
     }
 
-    .hero-resa::before {
+    .hero-panier::before {
       content: "♪";
       position: absolute;
       top: 18%;
@@ -315,7 +313,7 @@
       color: rgba(148,163,184,0.08);
     }
 
-    .hero-resa::after {
+    .hero-panier::after {
       content: "✦";
       position: absolute;
       bottom: 16%;
@@ -328,453 +326,303 @@
       max-width: 640px;
       margin: 0 auto;
       padding: 0 1.5rem;
-      color: var(--sb-text-main);
     }
 
-    .hero-eyebrow {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: #9CA3AF;
-      margin-bottom: 10px;
-    }
-
-    .hero-resa h1 {
-      margin:0 0 10px;
+    .hero-panier h1 {
+      margin: 0 0 8px;
       font-size: 30px;
     }
 
-    .hero-resa p {
-      margin:0;
-      font-size:14px;
-      color: rgba(249,250,251,0.85);
+    .hero-panier p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(249,250,251,0.9);
     }
 
-    /* ---------- MAIN / CARD RÉSERVATION ---------- */
+    /* ---------- MAIN / PANIER ---------- */
     main {
       padding: 0 0 4rem;
       background: #050814;
     }
 
-    .resa-wrapper {
-      padding-top: 2.5rem;
+    .cart-wrapper {
+      padding-top: 2.75rem;
     }
 
-    .resa-card {
-      background: var(--sb-card);
-      border-radius: 24px;
-      padding: 2rem 2rem 2.25rem;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
-      border: 1px solid rgba(255,255,255,0.06);
-      position: relative;
-      overflow: hidden;
+    #cart-items {
+      margin-bottom: 1.75rem;
     }
 
-    .resa-card::after {
-      content: "🎤";
-      position: absolute;
-      right: 18px;
-      bottom: 16px;
-      font-size: 30px;
-      color: rgba(148,163,184,0.1);
-      pointer-events: none;
-    }
-
-    .resa-header {
+    .cart-item-card {
+      background: #050b18;
+      border-radius: 20px;
+      padding: 1.25rem 1.75rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #F9FAFB;
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem 1.5rem;
-      align-items: flex-end;
-      margin-bottom: 1.4rem;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
     }
 
-    .resa-dates label {
-      font-size: 13px;
-      color: #E5E7EB;
+    .cart-item-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-
-    .resa-dates input[type="date"] {
-      padding: 0.55rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: #F9FAFB;
+      gap: 0.25rem;
       font-size: 13px;
-      outline: none;
-      min-width: 180px;
     }
 
-    .resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
-    }
-
-    .resa-header button {
-      border: none;
-      border-radius: 999px;
-      padding: 0.65rem 1.4rem;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      font-weight: 600;
+    .cart-main-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: baseline;
       font-size: 14px;
-      cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 14px 30px rgba(0,0,0,0.85);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      white-space: nowrap;
     }
 
-    .resa-header button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 20px 50px rgba(0,0,0,1);
-    }
-
-    .resa-note {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 4px;
-    }
-
-    .table-wrapper {
-      margin-top: 1rem;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.35);
-      background: #020617;
-      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.8);
-      overflow-x: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 540px;
-      color: #F9FAFB;
-    }
-
-    thead {
-      background: #020617;
-    }
-
-    th, td {
-      padding: 0.45rem 0.5rem;
-      text-align: center;
-      font-size: 12px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      border-right: 1px solid rgba(31,41,55,0.9);
-      white-space: nowrap;
-    }
-
-    th:last-child,
-    td:last-child {
-      border-right: none;
-    }
-
-    th {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #E5E7EB;
-      background: linear-gradient(to right, rgba(15,23,42,1), rgba(30,64,175,0.35));
-    }
-
-    .hour-cell {
-      background: #020617;
+    .cart-date {
       font-weight: 600;
-      font-size: 12px;
+    }
+
+    .cart-box {
+      font-weight: 600;
+      color: #F97316;
+    }
+
+    .cart-dot {
+      opacity: 0.7;
+    }
+
+    .cart-slot-line {
       color: #E5E7EB;
-      position: sticky;
-      left: 0;
-      z-index: 1;
     }
 
-    .slot-cell {
-      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
-      cursor: default;
+    .cart-extra {
+      color: var(--sb-text-muted);
+      font-size: 12px;
     }
 
-    /* ÉTATS LIBRE / RÉSERVÉ / SÉLECTIONNÉ */
-    .slot-free {
-      background-color: #022c22;
-      color: #ECFDF5;
-      cursor: pointer;
-    }
-
-    .slot-free:hover {
-      background-color: #065f46;
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.5);
-      transform: translateY(-1px);
-    }
-
-    .slot-booked {
-      background-color: #7f1d1d;
-      color: #FEE2E2;
-      cursor: not-allowed;
-    }
-
-    .slot-selected {
-      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
-      cursor: default;
-      box-shadow: 0 0 0 1px rgba(129,140,248,0.7);
-    }
-
-    .slot-label {
+    .cart-item-right {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.2;
-    }
-
-    .slot-price {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .slot-status {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.9;
-    }
-
-    /* LÉGENDE */
-    .resa-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
-      align-items: center;
-      margin-top: 0.85rem;
-      font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    .legend-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .legend-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
-      border: 1px solid rgba(15,23,42,0.9);
-    }
-
-    .legend-dot.free {
-      background-color: #022c22;
-    }
-
-    .legend-dot.booked {
-      background-color: #7f1d1d;
-    }
-
-    .legend-dot.selected {
-      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-    }
-
-    .resa-pricing-rules {
-      margin-top: 0.4rem;
-      font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    /* ----------- CODE PROMO + CGV ----------- */
-    .promo-and-cgv {
-      margin-top: 1.4rem;
-      padding-top: 1.1rem;
-      border-top: 1px solid rgba(15,23,42,0.9);
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      font-size: 12px;
-    }
-
-    .promo-row label {
-      display: block;
-      margin-bottom: 4px;
-      color: #E5E7EB;
-    }
-
-    .promo-input-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .promo-input-group input[type="text"] {
-      flex: 1 1 140px;
-      min-width: 0;
-      padding: 0.5rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: #F9FAFB;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .promo-input-group button {
-      border-radius: 999px;
-      border: none;
-      padding: 0.5rem 1.1rem;
-      font-size: 12px;
-      cursor: pointer;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      font-weight: 600;
-      white-space: nowrap;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.08),
-        0 12px 30px rgba(0,0,0,0.8);
-    }
-
-    .promo-message {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    .promo-message.ok {
-      color: #BBF7D0;
-    }
-
-    .promo-message.error {
-      color: #FCA5A5;
-    }
-
-    .cgv-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      color: var(--sb-text-muted);
-    }
-
-    .cgv-row input[type="checkbox"] {
-      margin-top: 2px;
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      accent-color: var(--sb-red);
+      align-items: flex-end;
+      gap: 0.4rem;
       flex-shrink: 0;
     }
 
-    .cgv-row a {
-      color: #f97316;
-      text-decoration: underline;
+    .cart-price-amount {
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .cgv-row a:hover {
-      text-decoration: none;
-    }
-
-    /* Messages */
-    #message {
-      margin-top: 1rem;
-      font-size: 12px;
-      color: #F9FAFB;
-      white-space: pre-line;
-      min-height: 1em;
-    }
-
-    #message span {
-      opacity: 0.9;
-    }
-
-    #qrcode {
-      margin-top: 0.5rem;
-    }
-
-    /* ---------- MODAL DE CONFIRMATION ---------- */
-    #slot-modal[hidden] {
-      display: none;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 60;
-      backdrop-filter: blur(4px);
-    }
-
-    .modal-dialog {
-      background: #020617;
-      border-radius: 20px;
-      padding: 1.5rem 1.75rem 1.4rem;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
-      border: 1px solid rgba(248,250,251,0.12);
-    }
-
-    .modal-dialog h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .modal-dialog p {
-      font-size: 13px;
+    .cart-price-sub {
+      font-size: 11px;
       color: var(--sb-text-muted);
-      margin-bottom: 14px;
     }
 
-    .modal-actions {
+    .cart-remove {
+      border: none;
+      background: transparent;
+      color: #fb7185;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .cart-summary-card {
+      background: #050b18;
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #E5E7EB;
+    }
+
+    .cart-summary-label {
+      font-weight: 500;
+    }
+
+    .cart-summary-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .cart-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 1rem;
       justify-content: flex-end;
     }
 
-    .modal-actions button {
+    .btn {
       border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1.2rem;
-      font-size: 13px;
+      padding: 0.6rem 1.4rem;
+      font-size: 14px;
       cursor: pointer;
-      white-space: nowrap;
+      font-weight: 600;
+      border: none;
     }
 
-    #modal-cart {
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(148,163,184,0.6);
+      color: #E5E7EB;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15,23,42,0.9);
+    }
+
+    .btn-primary {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.12),
         0 16px 40px rgba(0,0,0,0.9);
+      padding: 0.75rem 1.75rem;
     }
 
-    #modal-continue {
-      background: transparent;
-      color: #E5E7EB;
-      border: 1px solid rgba(148,163,184,0.6);
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 22px 50px rgba(0,0,0,1);
     }
 
-    #modal-double {
-      background: #111827;
+    /* ÉTAT PANIER VIDE */
+    .cart-empty {
+      background: #050b18;
+      border-radius: 20px;
+      padding: 2.5rem 1.75rem;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.85);
+      border: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+    }
+
+    .cart-empty h2 {
+      font-size: 22px;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-empty p {
+      margin: 0 0 1.5rem;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
+    .btn-empty-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.7rem 1.7rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
-      border: 1px solid rgba(96,165,250,0.6);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
     }
 
-    #modal-double:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    /* ---------- SECTION PAIEMENT ---------- */
+    .payment-section {
+      max-width: var(--sb-container-width);
+      margin: 2.5rem auto 0;
+      padding: 0 1.5rem;
+      display: none;
     }
 
-    /* ---------- FOOTER ---------- */
+    .payment-card {
+      background: #050b18;
+      border-radius: 20px;
+      padding: 1.75rem 1.75rem 2rem;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      color: #E5E7EB;
+    }
+
+    .payment-card h2 {
+      font-size: 20px;
+      margin-bottom: 0.35rem;
+    }
+
+    .payment-card p.helper {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .payment-form {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .payment-form label {
+      font-size:13px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .payment-form input {
+      padding:0.55rem 0.8rem;
+      border-radius:999px;
+      border:1px solid var(--sb-border-soft);
+      font-size:14px;
+      background:#020617;
+      color:#F9FAFB;
+      outline:none;
+    }
+
+    .payment-form input::placeholder {
+      color:rgba(156,163,175,0.85);
+    }
+
+    .field-title {
+      font-size:13px;
+      margin-bottom:4px;
+    }
+
+    #card-element {
+      padding:0.65rem 0.8rem;
+      border-radius:12px;
+      border:1px solid var(--sb-border-soft);
+      background:#020617;
+    }
+
+    #payment-total {
+      font-size:13px;
+      font-weight:600;
+      margin-top:8px;
+      color:#F9FAFB;
+    }
+
+    #payment-error {
+      font-size:12px;
+      color:#fca5a5;
+      white-space:pre-line;
+    }
+
+    #payment-success {
+      font-size:12px;
+      color:#4ade80;
+      white-space:pre-line;
+    }
+
+    /* FOOTER */
     footer {
       background:#020617;
       color:#e5e7eb;
@@ -787,11 +635,13 @@
       margin:0 auto 24px;
       text-align:center;
     }
+
     .newsletter-container h3 { margin-bottom:6px; }
+
     .newsletter-container p {
-      margin-top: 0;
-      font-size: 13px;
-      color: var(--sb-text-muted);
+      margin-top:0;
+      font-size:13px;
+      color:var(--sb-text-muted);
     }
 
     .newsletter-row {
@@ -811,11 +661,11 @@
       font-size:14px;
       background:#020617;
       color:#F9FAFB;
-      outline: none;
+      outline:none;
     }
 
     footer input[type=email]::placeholder {
-      color: rgba(156,163,175,0.9);
+      color:rgba(156,163,175,0.9);
     }
 
     footer button {
@@ -856,34 +706,6 @@
 
     .footer-columns p { margin:4px 0; }
 
-    .footer-social .social-link {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      margin: 4px 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .footer-social .social-link:hover {
-      color: #f97316;
-    }
-
-    .footer-social .social-icon {
-      width: 24px;
-      height: 24px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .footer-social .social-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: currentColor;
-    }
-
     .footer-bottom {
       max-width:var(--sb-container-width);
       margin:20px auto 0;
@@ -896,635 +718,463 @@
 
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
-      .resa-card {
-        padding: 1.75rem 1.5rem 2rem;
+      .cart-item-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .cart-item-right {
+        align-items: flex-start;
+      }
+      .cart-summary-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+      .cart-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
       }
     }
 
     @media (max-width: 600px) {
-      .hero-resa {
-        padding-top: 9rem;
-      }
-      .hero-resa h1 {
-        font-size: 26px;
-      }
-      .resa-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .resa-header button {
-        width: 100%;
-        text-align: center;
+      .hero-panier {
+        padding-top: 9rem; /* un peu moins sur mobile mais toujours bien aéré */
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
-        <span class="brand-text">Singbox</span>
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
+      <span class="brand-text">Singbox</span>
+    </a>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="concept.html">Le concept</a></li>
+        <li><a href="boxs.html">Les boxs</a></li>
+        <li><a href="actualites.html">Actualités</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="reservation.html">Réserver</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="reservation.html" class="nav-cta">Réserver</a>
+      <a href="panier.html" class="cart-icon">
+        🛒<span id="cart-count"></span>
       </a>
-
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="concept.html">Le concept</a></li>
-          <li><a href="boxs.html">Les boxs</a></li>
-          <li><a href="actualites.html">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="reservation.html">Réserver</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
-          🛒<span id="cart-count"></span>
-        </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-          ☰
-        </button>
-      </div>
+      <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        ☰
+      </button>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html">Le concept</a></li>
-      <li><a href="boxs.html">Les boxs</a></li>
-      <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
-    </ul>
-  </nav>
+<!-- MENU MOBILE -->
+<nav class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="concept.html">Le concept</a></li>
+    <li><a href="boxs.html">Les boxs</a></li>
+    <li><a href="actualites.html">Actualités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="reservation.html">Réserver</a></li>
+  </ul>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero-resa">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">RÉSERVATION</p>
-      <h1>Réserver une box</h1>
-      <p>Choisissez votre date, puis cliquez sur un créneau libre pour l’ajouter au panier.</p>
+<!-- HERO -->
+<section class="hero-panier">
+  <div class="hero-inner">
+    <h1>Mon panier</h1>
+    <p>Retrouvez ici les créneaux que vous avez ajoutés avant de confirmer votre réservation.</p>
+  </div>
+</section>
+
+<main>
+  <section class="container cart-wrapper">
+    <div id="cart-items"></div>
+
+    <div id="cart-summary" class="cart-summary-card" style="display:none;">
+      <span class="cart-summary-label">Total des réservations</span>
+      <span class="cart-summary-value" id="cart-total">0 €</span>
+    </div>
+
+    <div class="cart-actions" id="cart-actions" style="display:none;">
+      <button class="btn btn-ghost" id="clear-cart">Vider le panier</button>
+      <button class="btn btn-primary" id="confirm-cart">Procéder au paiement</button>
     </div>
   </section>
 
-  <main>
-    <div class="container resa-wrapper">
-      <section class="resa-card">
-        <div class="resa-header">
-          <div class="resa-dates">
-            <label for="date-input">
-              Date de votre séance
-              <input type="date" id="date-input" />
-            </label>
-            <p class="resa-note">
-              Tarifs dynamiques selon le jour et l’horaire.
-            </p>
-          </div>
-          <button id="load-button">Voir les créneaux</button>
+  <!-- PAIEMENT -->
+  <section id="payment-section" class="payment-section">
+    <div class="payment-card">
+      <h2>Paiement sécurisé (mode test)</h2>
+      <p class="helper">
+        Ce paiement est en mode test Stripe. Utilisez la carte <strong>4242 4242 4242 4242</strong>.
+      </p>
+
+      <div class="payment-form">
+        <label>
+          Nom complet
+          <input type="text" id="pay-name" placeholder="Votre nom complet" />
+        </label>
+        <label>
+          Email de confirmation
+          <input type="email" id="pay-email" placeholder="vous@example.com" />
+        </label>
+
+        <div>
+          <div class="field-title">Carte bancaire</div>
+          <div id="card-element"></div>
         </div>
 
-        <div class="table-wrapper">
-          <table id="planning-table">
-            <!-- Table générée en JS -->
-          </table>
-        </div>
+        <p id="payment-total"></p>
+        <p id="payment-error"></p>
+        <p id="payment-success"></p>
 
-        <div class="resa-legend">
-          <div class="legend-item">
-            <span class="legend-dot free"></span> <span>Libre</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot booked"></span> <span>Réservé</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot selected"></span> <span>Dans ton panier</span>
-          </div>
-        </div>
-        <p class="resa-pricing-rules">
-          25€ de 4h à 14h – 30€ en fin d’après-midi – 35€ en soirée et nuit les jeudis / vendredis / samedis / dimanches.
-        </p>
-
-        <!-- CODE PROMO + CGV -->
-        <div class="promo-and-cgv">
-          <div class="promo-row">
-            <label for="promo-code">Code promo</label>
-            <div class="promo-input-group">
-              <input
-                type="text"
-                id="promo-code"
-                placeholder="SINGBOX10, NOEL..."
-                autocomplete="off"
-              />
-              <button type="button" id="apply-promo">Appliquer</button>
-            </div>
-            <p id="promo-message" class="promo-message"></p>
-          </div>
-
-          <label class="cgv-row">
-            <input type="checkbox" id="cgv-checkbox" />
-            <span>
-              J’ai lu et j’accepte les
-              <a href="cgv.html" target="_blank" rel="noopener noreferrer">
-                conditions générales de vente (CGV)
-              </a>.
-            </span>
-          </label>
-        </div>
-
-        <p id="message"></p>
-        <div id="qrcode"></div>
-      </section>
-    </div>
-  </main>
-
-  <!-- MODAL CONFIRMATION CRÉNEAU -->
-  <div id="slot-modal" class="modal-backdrop" hidden>
-    <div class="modal-dialog">
-      <h2>Créneau ajouté au panier</h2>
-      <p id="modal-slot-info"></p>
-      <div class="modal-actions">
-        <button id="modal-double">Réserver 2 heures</button>
-        <button id="modal-continue">Continuer ma réservation</button>
-        <button id="modal-cart">Valider mon panier</button>
+        <button class="btn btn-primary" id="pay-button" type="button">Payer</button>
       </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="newsletter-container">
+    <h3>Inscrivez-vous à notre newsletter</h3>
+    <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
+    <div class="newsletter-row">
+      <input type="email" placeholder="Entrez votre adresse e-mail" />
+      <button>S'abonner aux actualités</button>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="newsletter-container">
-      <h3>Inscrivez-vous à notre newsletter</h3>
-      <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
-      <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" />
-        <button>S'abonner aux actualités</button>
-      </div>
-    </div>
-
-    <div class="footer-columns">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Logo Singbox" />
-        <div>
-          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
-          <p style="margin:0;">Karaoké Box à Toulouse</p>
-        </div>
-      </div>
-
+  <div class="footer-columns">
+    <div class="footer-brand">
+      <img src="logo.png" alt="Logo Singbox" />
       <div>
-        <p><strong>Infos</strong></p>
-        <p><a href="mentions-legales.html">Mentions légales</a></p>
-        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
-        <p><a href="cgv.html">CGV</a></p>
-      </div>
-
-      <div>
-        <p><strong>Contact</strong></p>
-        <p>Adresse : [à compléter]</p>
-        <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
-      </div>
-
-      <div class="footer-social">
-        <p><strong>Réseaux</strong></p>
-
-        <a
-          href="https://www.instagram.com/singboxtoulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
-          <span class="social-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" ry="5"
-                    fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-              <circle cx="12" cy="12" r="4.2"
-                      fill="none" stroke="currentColor" stroke-width="1.8"></circle>
-              <circle cx="17" cy="7" r="1.2" fill="currentColor"></circle>
-            </svg>
-          </span>
-          <span>Instagram</span>
-        </a>
-
-        <a
-          href="https://www.tiktok.com/@singbox.toulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
-          <span class="social-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-0.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
-            </svg>
-          </span>
-          <span>TikTok</span>
-        </a>
+        <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+        <p style="margin:0 0 4px;">Karaoké Box à Toulouse</p>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
+    <div>
+      <p><strong>Infos</strong></p>
+      <p><a href="mentions-legales.html">Mentions légales</a></p>
+      <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
+      <p><a href="cgv.html">CGV</a></p>
     </div>
-  </footer>
 
-  <script>
-    /* ---------- PANIER (localStorage) ---------- */
-    function getPanier() {
-      try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
-        return [];
+    <div>
+      <p><strong>Contact</strong></p>
+      <p>Adresse : [à compléter]</p>
+      <p>Email : contactsingbox@gmail.com</p>
+      <p>Téléphone : 06 00 00 00 00</p>
+    </div>
+
+    <div>
+      <p><strong>Réseaux</strong></p>
+
+      <!-- Instagram -->
+      <p style="display:flex;align-items:center;gap:8px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+          <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+          <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+        </svg>
+        <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
+          Instagram
+        </a>
+      </p>
+
+      <!-- TikTok -->
+      <p style="display:flex;align-items:center;gap:8px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+        </svg>
+        <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
+          TikTok
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    Réalisé avec ♥ pour Singbox
+  </div>
+</footer>
+
+<script src="https://js.stripe.com/v3"></script>
+
+<script>
+  const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
+  const PRICE_PER_SLOT_EUR = 10; // fallback si un item n'a pas de propriété price
+
+  let stripe = null;
+  let cardElement = null;
+
+  function getPanier() {
+    try {
+      return JSON.parse(localStorage.getItem("panier")) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function savePanier(panier) {
+    localStorage.setItem("panier", JSON.stringify(panier));
+    updateCartIcon();
+  }
+
+  function updateCartIcon() {
+    const el = document.getElementById("cart-count");
+    if (!el) return;
+    const panier = getPanier();
+    el.textContent = panier.length ? String(panier.length) : "";
+  }
+
+  function formatDateFr(isoDate) {
+    if (!isoDate) return "";
+    try {
+      const [y,m,d] = isoDate.split("-");
+      const date = new Date(parseInt(y,10), parseInt(m,10)-1, parseInt(d,10));
+      return date.toLocaleDateString("fr-FR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    } catch {
+      return isoDate;
+    }
+  }
+
+  function computeCartTotal(panier) {
+    return panier.reduce((sum, item) => {
+      const price = typeof item.price === "number" ? item.price : PRICE_PER_SLOT_EUR;
+      return sum + price;
+    }, 0);
+  }
+
+  function renderPanier() {
+    const container = document.getElementById("cart-items");
+    const summaryEl = document.getElementById("cart-summary");
+    const totalEl = document.getElementById("cart-total");
+    const actionsEl = document.getElementById("cart-actions");
+    const paymentSection = document.getElementById("payment-section");
+    const panier = getPanier();
+
+    container.innerHTML = "";
+
+    if (panier.length === 0) {
+      summaryEl.style.display = "none";
+      actionsEl.style.display = "none";
+      paymentSection.style.display = "none";
+
+      const emptyDiv = document.createElement("div");
+      emptyDiv.className = "cart-empty";
+      emptyDiv.innerHTML = `
+        <h2>Votre panier est vide</h2>
+        <p>Ajoutez des créneaux depuis la page "Réserver une box" pour les retrouver ici.</p>
+        <a href="reservation.html" class="btn-empty-primary">Voir les créneaux</a>
+      `;
+      container.appendChild(emptyDiv);
+      return;
+    }
+
+    actionsEl.style.display = "flex";
+    summaryEl.style.display = "flex";
+
+    panier.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "cart-item-card";
+
+      const dateLabel = item.date ? formatDateFr(item.date) : (item.dateLabel || "");
+      const boxName = item.boxName || item.box || item.boxId || "Box";
+
+      let hourText = "?";
+      if (typeof item.hour === "number") {
+        const start = item.hour;
+        const end = (item.hour + 1) % 24;
+        const s = String(start).padStart(2,"0") + "h";
+        const e = String(end).padStart(2,"0") + "h";
+        hourText = `${s} – ${e}`;
+      } else if (item.hourLabel) {
+        hourText = item.hourLabel;
       }
+
+      const price = (typeof item.price === "number" ? item.price : PRICE_PER_SLOT_EUR);
+
+      card.innerHTML = `
+        <div class="cart-item-info">
+          <div class="cart-main-line">
+            <span class="cart-date">${dateLabel}</span>
+            <span class="cart-dot">·</span>
+            <span class="cart-box">Box ${boxName}</span>
+          </div>
+          <div class="cart-slot-line">
+            Créneau : ${hourText}
+          </div>
+          <div class="cart-extra">
+            2 à 6 personnes – consommations en supplément.
+          </div>
+        </div>
+        <div class="cart-item-right">
+          <div>
+            <div class="cart-price-amount">${price.toFixed(0)} €</div>
+            <div class="cart-price-sub">TTC / par box</div>
+          </div>
+          <button class="cart-remove" data-index="${index}">Supprimer</button>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+
+    const total = computeCartTotal(panier);
+    totalEl.textContent = `${total.toFixed(2)} €`;
+  }
+
+  function updatePaymentTotal() {
+    const totalEl = document.getElementById("payment-total");
+    const panier = getPanier();
+    const total = computeCartTotal(panier);
+    totalEl.textContent = panier.length === 0
+      ? "Votre panier est vide."
+      : `Total : ${total.toFixed(2)} € (mode test)`;
+  }
+
+  document.addEventListener("DOMContentLoaded", async function () {
+    // MENU MOBILE
+    const burgerBtn = document.getElementById("burger-button");
+    const mobileNav = document.getElementById("mobile-nav");
+    if (burgerBtn && mobileNav) {
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("open");
+      });
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          mobileNav.classList.remove("open");
+        }
+      });
     }
 
-    function savePanier(panier) {
-      localStorage.setItem("panier", JSON.stringify(panier));
+    updateCartIcon();
+    renderPanier();
+
+    // Stripe init
+    if (STRIPE_PUBLISHABLE_KEY) {
+      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      const elements = stripe.elements();
+      cardElement = elements.create("card");
+      cardElement.mount("#card-element");
     }
 
-    function updateCartIcon() {
-      const el = document.getElementById("cart-count");
-      if (!el) return;
+    // Vider le panier
+    document.getElementById("clear-cart").addEventListener("click", function () {
+      if (confirm("Vider le panier ?")) {
+        savePanier([]);
+        renderPanier();
+        updatePaymentTotal();
+      }
+    });
+
+    // Supprimer un item
+    document.getElementById("cart-items").addEventListener("click", function (e) {
+      if (e.target.classList.contains("cart-remove")) {
+        const index = Number(e.target.dataset.index);
+        const panier = getPanier();
+        panier.splice(index, 1);
+        savePanier(panier);
+        renderPanier();
+        updatePaymentTotal();
+      }
+    });
+
+    // Ouvrir la section paiement
+    document.getElementById("confirm-cart").addEventListener("click", function () {
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
-    }
+      if (panier.length === 0) return alert("Votre panier est vide.");
+      if (!stripe || !cardElement) return alert("Stripe non initialisé.");
 
-    function addSlotToCart(boxId, boxName, dateObj, hour, price) {
-      const isoDate = dateObj.toISOString().split("T")[0];
+      const paymentSection = document.getElementById("payment-section");
+      paymentSection.style.display = "block";
+      updatePaymentTotal();
+      paymentSection.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Payer
+    document.getElementById("pay-button").addEventListener("click", async function () {
       const panier = getPanier();
+      const name = document.getElementById("pay-name").value.trim();
+      const email = document.getElementById("pay-email").value.trim();
+      const errEl = document.getElementById("payment-error");
+      const okEl = document.getElementById("payment-success");
 
-      // éviter les doublons exacts
-      const exists = panier.some(item =>
-        item.type === "reservation" &&
-        item.boxId === boxId &&
-        item.date === isoDate &&
-        item.hour === hour
-      );
-      if (exists) {
+      errEl.textContent = "";
+      okEl.textContent = "";
+
+      if (panier.length === 0) {
+        errEl.textContent = "Votre panier est vide.";
+        return;
+      }
+      if (!name || !email) {
+        errEl.textContent = "Nom + email obligatoires.";
         return;
       }
 
-      panier.push({
-        type: "reservation",
-        boxId,
-        boxName,
-        date: isoDate,
-        hour,
-        price
-      });
-      savePanier(panier);
-      updateCartIcon();
-
-      const msgEl = document.getElementById("message");
-      const heureLabel = String(hour).padStart(2, "0") + "h–" + String((hour + 1) % 24).padStart(2, "0") + "h";
-      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" + boxName + "</strong> – " +
-        heureLabel + " – " + price + "€</span>";
-    }
-
-    /* ---------- TARIFICATION DYNAMIQUE ---------- */
-    function getSlotPrice(date, hour) {
-      const day = date.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
-      const isWeekendPlus = (day === 0 || day === 4 || day === 5 || day === 6);
-      if (hour >= 4 && hour <= 14) {
-        return 25;
-      }
-      if (!isWeekendPlus) {
-        return 30;
-      }
-      if (hour >= 15 && hour <= 19) {
-        return 30;
-      }
-      return 35;
-    }
-
-    /* ---------- MOCK / ÉTAT RÉSERVÉ ---------- */
-    function isSlotBooked(boxId, hour, date) {
-      return false; // à remplacer par ta vraie logique
-    }
-
-    /* ---------- GÉNÉRATION DU TABLEAU ---------- */
-    const BOXES = [
-      { id: "box1", name: "Nuit étoilée" },
-      { id: "box2", name: "Ambiance Sunset" }
-    ];
-
-    let currentPlanningDateIso = null;
-    let lastSelectedSlot = null;
-
-    function markCellSelected(td) {
-      td.classList.remove("slot-free");
-      td.classList.add("slot-selected");
-      const statusSpan = td.querySelector(".slot-status");
-      if (statusSpan) {
-        statusSpan.textContent = "Dans ton panier";
-      }
-      td.onclick = null;
-    }
-
-    function openSlotModal(slot) {
-      lastSelectedSlot = slot;
-      const modal = document.getElementById("slot-modal");
-      const infoEl = document.getElementById("modal-slot-info");
-
-      if (infoEl) {
-        const parts = slot.date.split("-");
-        const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-        const h1 = String(slot.hour).padStart(2, "0");
-        const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
-        infoEl.textContent = slot.boxName + " – " + dateStr + " – " + h1 + "h–" + h2 + "h";
-      }
-
-      const doubleBtn = document.getElementById("modal-double");
-      if (doubleBtn) {
-        if (slot.hour >= 23) {
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Réserver 2 heures (indisponible)";
-        } else {
-          doubleBtn.disabled = false;
-          doubleBtn.textContent = "Réserver 2 heures";
-        }
-      }
-
-      if (modal) {
-        modal.removeAttribute("hidden");
-      }
-    }
-
-    function closeSlotModal() {
-      const modal = document.getElementById("slot-modal");
-      if (modal) {
-        modal.setAttribute("hidden", "true");
-      }
-    }
-
-    function buildPlanningTable(date) {
-      const table = document.getElementById("planning-table");
-      if (!table) return;
-
-      const isoDate = date.toISOString().split("T")[0];
-      currentPlanningDateIso = isoDate;
-
-      const panier = getPanier();
-      const hours = Array.from({ length: 24 }, (_, h) => h);
-      table.innerHTML = "";
-
-      const thead = document.createElement("thead");
-      const headRow = document.createElement("tr");
-
-      const hourTh = document.createElement("th");
-      hourTh.textContent = "Heure";
-      hourTh.className = "hour-cell";
-      headRow.appendChild(hourTh);
-
-      BOXES.forEach(box => {
-        const th = document.createElement("th");
-        th.textContent = box.name;
-        headRow.appendChild(th);
-      });
-
-      thead.appendChild(headRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-
-      hours.forEach(hour => {
-        const tr = document.createElement("tr");
-
-        const hourTd = document.createElement("td");
-        hourTd.className = "hour-cell";
-        const endHour = (hour + 1) % 24;
-        hourTd.textContent = String(hour).padStart(2, "0") + "h–" + String(endHour).padStart(2, "0") + "h";
-        tr.appendChild(hourTd);
-
-        BOXES.forEach(box => {
-          const td = document.createElement("td");
-          td.classList.add("slot-cell");
-          td.dataset.boxId = box.id;
-          td.dataset.hour = String(hour);
-          td.dataset.date = isoDate;
-
-          const price = getSlotPrice(date, hour);
-          const booked = isSlotBooked(box.id, hour, date);
-
-          const wrapper = document.createElement("div");
-          wrapper.className = "slot-label";
-
-          if (booked) {
-            td.classList.add("slot-booked");
-            const statusSpan = document.createElement("span");
-            statusSpan.className = "slot-status";
-            statusSpan.textContent = "Réservé";
-            wrapper.appendChild(statusSpan);
-          } else {
-            const alreadyInCart = panier.some(item =>
-              item.type === "reservation" &&
-              item.boxId === box.id &&
-              item.date === isoDate &&
-              item.hour === hour
-            );
-
-            const priceSpan = document.createElement("span");
-            priceSpan.className = "slot-price";
-            priceSpan.textContent = price + "€";
-            wrapper.appendChild(priceSpan);
-
-            const statusSpan = document.createElement("span");
-            statusSpan.className = "slot-status";
-            statusSpan.textContent = alreadyInCart ? "Dans ton panier" : "Libre";
-            wrapper.appendChild(statusSpan);
-
-            if (alreadyInCart) {
-              td.classList.add("slot-selected");
-            } else {
-              td.classList.add("slot-free");
-              td.onclick = function () {
-                const slotInfo = {
-                  boxId: box.id,
-                  boxName: box.name,
-                  date: isoDate,
-                  dateObj: date,
-                  hour,
-                  price
-                };
-                addSlotToCart(box.id, box.name, date, hour, price);
-                markCellSelected(td);
-                openSlotModal(slotInfo);
-              };
-            }
-          }
-
-          td.appendChild(wrapper);
-          tr.appendChild(td);
+      try {
+        const res = await fetch("http://localhost:3000/api/create-payment-intent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ panier, customer: { name, email } }),
         });
 
-        tbody.appendChild(tr);
-      });
-
-      table.appendChild(tbody);
-    }
-
-    /* ---------- INIT PAGE ---------- */
-    document.addEventListener("DOMContentLoaded", function () {
-      // MENU MOBILE
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
-      }
-
-      updateCartIcon();
-
-      const dateInput = document.getElementById("date-input");
-      const loadButton = document.getElementById("load-button");
-
-      const today = new Date();
-      const isoToday = today.toISOString().split("T")[0];
-      dateInput.value = isoToday;
-
-      function refreshPlanning() {
-        if (!dateInput.value) return;
-        const parts = dateInput.value.split("-");
-        const selectedDate = new Date(
-          parseInt(parts[0], 10),
-          parseInt(parts[1], 10) - 1,
-          parseInt(parts[2], 10)
-        );
-        buildPlanningTable(selectedDate);
-        document.getElementById("message").textContent = "";
-      }
-
-      loadButton.addEventListener("click", refreshPlanning);
-      refreshPlanning();
-
-      // Boutons du modal
-      const continueBtn = document.getElementById("modal-continue");
-      const cartBtn = document.getElementById("modal-cart");
-      const doubleBtn = document.getElementById("modal-double");
-
-      if (continueBtn) {
-        continueBtn.addEventListener("click", () => {
-          closeSlotModal();
-        });
-      }
-
-      if (cartBtn) {
-        cartBtn.addEventListener("click", () => {
-          const cgvCheckbox = document.getElementById("cgv-checkbox");
-          if (cgvCheckbox && !cgvCheckbox.checked) {
-            alert("Merci de cocher la case pour accepter les CGV avant de valider votre panier.");
-            return;
-          }
-          window.location.href = "panier.html";
-        });
-      }
-
-      if (doubleBtn) {
-        doubleBtn.addEventListener("click", () => {
-          if (!lastSelectedSlot) return;
-          const nextHour = lastSelectedSlot.hour + 1;
-          if (nextHour >= 24) return;
-
-          const dateObj = lastSelectedSlot.dateObj;
-          const price2 = getSlotPrice(dateObj, nextHour);
-
-          // vérifier si déjà dans panier
-          const panier = getPanier();
-          const exists = panier.some(item =>
-            item.type === "reservation" &&
-            item.boxId === lastSelectedSlot.boxId &&
-            item.date === lastSelectedSlot.date &&
-            item.hour === nextHour
-          );
-          if (exists) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Déjà dans ton panier";
-            return;
-          }
-
-          if (isSlotBooked(lastSelectedSlot.boxId, nextHour, dateObj)) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Créneau suivant réservé";
-            return;
-          }
-
-          addSlotToCart(lastSelectedSlot.boxId, lastSelectedSlot.boxName, dateObj, nextHour, price2);
-
-          // marquer la case suivante comme sélectionnée si elle est visible
-          const selector =
-            '.slot-cell[data-box-id="' + lastSelectedSlot.boxId + '"][data-hour="' + nextHour + '"][data-date="' + lastSelectedSlot.date + '"]';
-          const cell2 = document.querySelector(selector);
-          if (cell2) {
-            markCellSelected(cell2);
-          }
-
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Deuxième heure ajoutée ✓";
-        });
-      }
-
-      // --------- CODE PROMO ----------
-      const promoInput = document.getElementById("promo-code");
-      const promoBtn = document.getElementById("apply-promo");
-      const promoMsg = document.getElementById("promo-message");
-
-      // Recharge éventuel code promo depuis le localStorage
-      const storedPromo = localStorage.getItem("promoCode");
-      if (storedPromo && promoInput) {
-        promoInput.value = storedPromo;
-        if (promoMsg) {
-          promoMsg.textContent = "Code promo mémorisé : " + storedPromo;
-          promoMsg.classList.add("ok");
-        }
-      }
-
-      function applyPromo() {
-        if (!promoInput || !promoMsg) return;
-        const code = promoInput.value.trim().toUpperCase();
-        promoMsg.classList.remove("ok", "error");
-
-        if (!code) {
-          promoMsg.textContent = "Saisis un code promo.";
-          promoMsg.classList.add("error");
-          localStorage.removeItem("promoCode");
+        const json = await res.json();
+        if (!res.ok || !json.clientSecret) {
+          errEl.textContent = json.error || "Erreur lors de la création du paiement.";
           return;
         }
 
-        // Ici tu pourras pluger ta vraie logique de validation
-        if (code === "SINGBOX10") {
-          promoMsg.textContent = "Code appliqué : réduction à gérer au paiement.";
-          promoMsg.classList.add("ok");
-          localStorage.setItem("promoCode", code);
-        } else {
-          promoMsg.textContent = "Code promo invalide ou expiré.";
-          promoMsg.classList.add("error");
-          localStorage.removeItem("promoCode");
-        }
-      }
-
-      if (promoBtn) {
-        promoBtn.addEventListener("click", applyPromo);
-      }
-      if (promoInput) {
-        promoInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            applyPromo();
-          }
+        const result = await stripe.confirmCardPayment(json.clientSecret, {
+          payment_method: { card: cardElement, billing_details: { name, email } },
         });
+
+        if (result.error) {
+          errEl.textContent = result.error.message;
+          return;
+        }
+
+        if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+          okEl.textContent = "Paiement accepté ✔️";
+
+          await fetch("http://localhost:3000/api/confirm-reservation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              panier,
+              customer: { name, email },
+              paymentIntentId: result.paymentIntent.id
+            }),
+          });
+
+          savePanier([]);
+          renderPanier();
+          updatePaymentTotal();
+
+          okEl.textContent += "\nRéservation confirmée 🎉";
+        }
+      } catch (e) {
+        errEl.textContent = "Erreur inattendue : " + e.message;
       }
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>
