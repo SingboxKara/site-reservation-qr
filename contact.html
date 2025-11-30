@@ -585,36 +585,28 @@
         0 24px 60px rgba(0,0,0,1);
     }
 
-    /* Colonne droite : visuel ambiance */
+    /* Colonne droite : visuel ambiance avec image */
     .contact-visual-card {
-      background:
-        radial-gradient(circle at 20% 0%, rgba(148,163,184,0.25), transparent 55%),
-        radial-gradient(circle at 80% 70%, rgba(201,76,53,0.35), transparent 65%),
-        #020617;
       border-radius: 24px;
       box-shadow:
         0 22px 60px rgba(0,0,0,0.9),
         0 0 0 1px rgba(148,163,184,0.4);
       min-height: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 1.75rem;
-      color: #E5E7EB;
-      font-size: 14px;
-      line-height: 1.7;
       position: relative;
       overflow: hidden;
+
+      /* Image hero */
+      background-image: url("hero-groupe-karaoke.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
     .contact-visual-card::after {
-      content: "🎤";
+      content: "";
       position: absolute;
-      font-size: 42px;
-      color: rgba(248,250,252,0.06);
-      top: 18%;
-      right: 16%;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(15,23,42,0.35), transparent 55%);
       pointer-events: none;
     }
 
@@ -896,8 +888,8 @@
             </p>
 
             <form action="https://api.web3forms.com/submit" method="POST">
-              <!-- Clé API Web3Forms (à remplacer par la tienne) -->
-              <input type="hidden" name="access_key" value="TON_ACCESS_KEY_WEB3FORMS" />
+              <!-- Clé API Web3Forms -->
+              <input type="hidden" name="access_key" value="6dc5cb1e-a12d-42e2-8647-2c80a1a3fdf1" />
               <input type="hidden" name="from_name" value="Site Singbox" />
               <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
 
@@ -962,13 +954,8 @@
             </form>
           </div>
 
-          <!-- Colonne droite : visuel ambiance -->
-          <div class="contact-visual-card">
-            <p>
-              Futur visuel d’ambiance Singbox : groupe qui chante, lumières, bonne humeur…<br />
-              On intégrera une vraie photo ici quand tu l’auras.
-            </p>
-          </div>
+          <!-- Colonne droite : visuel ambiance (image en fond) -->
+          <div class="contact-visual-card"></div>
         </div>
       </div>
     </section>
