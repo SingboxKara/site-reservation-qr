@@ -1015,6 +1015,10 @@
   </footer>
 
   <script>
+    /* ---------- CONFIG BACKEND ---------- */
+    // Ton backend Node local
+    const API_BASE = "http://localhost:3000";
+
     /* ---------- utils date locale ---------- */
     function toLocalYMD(dateObj) {
       const y = dateObj.getFullYear();
@@ -1044,7 +1048,7 @@
     }
 
     function addSlotToCart(boxId, boxName, dateObj, hour, price) {
-      const isoDate = toLocalYMD(dateObj); // 🔥 corrigé : plus de toISOString()
+      const isoDate = toLocalYMD(dateObj); // date locale
       const panier = getPanier();
 
       // éviter les doublons exacts
@@ -1071,8 +1075,13 @@
 
       const msgEl = document.getElementById("message");
       const heureLabel = String(hour).padStart(2, "0") + "h–" + String((hour + 1) % 24).padStart(2, "0") + "h";
-      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" + boxName + "</strong> – " +
-        heureLabel + " – " + price + "€</span>";
+      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" +
+        boxName +
+        "</strong> – " +
+        heureLabel +
+        " – " +
+        price +
+        "€</span>";
     }
 
     /* ---------- TARIFICATION DYNAMIQUE ---------- */
@@ -1091,15 +1100,45 @@
       return 35;
     }
 
-    /* ---------- MOCK / ÉTAT RÉSERVÉ ---------- */
-    function isSlotBooked(boxId, hour, date) {
-      return false; // à remplacer par ta vraie logique
+    /* ---------- RÉSERVATIONS EXISTANTES (depuis le backend) ---------- */
+
+    // index des créneaux réservés : clé = "boxId-hour"
+    let bookedIndex = {};
+
+    async function fetchReservationsForDate(isoDate) {
+      bookedIndex = {}; // reset
+      try {
+        const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
+        if (!res.ok) {
+          console.error("Erreur HTTP /api/slots :", res.status);
+          return;
+        }
+        const json = await res.json();
+        const reservations = json.reservations || [];
+
+        reservations.forEach(r => {
+          const start = new Date(r.start_time);
+          const h = start.getHours(); // heure locale
+          const boxId = r.box_id;     // int en base
+          const key = `${boxId}-${h}`;
+          bookedIndex[key] = true;
+        });
+
+        console.log("Créneaux réservés pour", isoDate, bookedIndex);
+      } catch (e) {
+        console.error("Erreur fetchReservationsForDate :", e);
+      }
+    }
+
+    function isSlotBooked(boxId, hour) {
+      const key = `${boxId}-${hour}`; // boxId est déjà un nombre (1,2...)
+      return !!bookedIndex[key];
     }
 
     /* ---------- GÉNÉRATION DU TABLEAU ---------- */
     const BOXES = [
-      { id: "box1", name: "Nuit étoilée" },
-      { id: "box2", name: "Ambiance Sunset" }
+      { id: 1, name: "Nuit étoilée" },
+      { id: 2, name: "Ambiance Sunset" }
     ];
 
     let currentPlanningDateIso = null;
@@ -1125,7 +1164,8 @@
         const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
         const h1 = String(slot.hour).padStart(2, "0");
         const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
-        infoEl.textContent = slot.boxName + " – " + dateStr + " – " + h1 + "h–" + h2 + "h";
+        infoEl.textContent =
+          slot.boxName + " – " + dateStr + " – " + h1 + "h–" + h2 + "h";
       }
 
       const doubleBtn = document.getElementById("modal-double");
@@ -1155,7 +1195,7 @@
       const table = document.getElementById("planning-table");
       if (!table) return;
 
-      const isoDate = toLocalYMD(date); // 🔥 corrigé
+      const isoDate = toLocalYMD(date);
       currentPlanningDateIso = isoDate;
 
       const panier = getPanier();
@@ -1187,18 +1227,22 @@
         const hourTd = document.createElement("td");
         hourTd.className = "hour-cell";
         const endHour = (hour + 1) % 24;
-        hourTd.textContent = String(hour).padStart(2, "0") + "h–" + String(endHour).padStart(2, "0") + "h";
+        hourTd.textContent =
+          String(hour).padStart(2, "0") +
+          "h–" +
+          String(endHour).padStart(2, "0") +
+          "h";
         tr.appendChild(hourTd);
 
         BOXES.forEach(box => {
           const td = document.createElement("td");
           td.classList.add("slot-cell");
-          td.dataset.boxId = box.id;
+          td.dataset.boxId = String(box.id);
           td.dataset.hour = String(hour);
           td.dataset.date = isoDate;
 
           const price = getSlotPrice(date, hour);
-          const booked = isSlotBooked(box.id, hour, date);
+          const booked = isSlotBooked(box.id, hour);
 
           const wrapper = document.createElement("div");
           wrapper.className = "slot-label";
@@ -1224,7 +1268,9 @@
 
             const statusSpan = document.createElement("span");
             statusSpan.className = "slot-status";
-            statusSpan.textContent = alreadyInCart ? "Dans ton panier" : "Libre";
+            statusSpan.textContent = alreadyInCart
+              ? "Dans ton panier"
+              : "Libre";
             wrapper.appendChild(statusSpan);
 
             if (alreadyInCart) {
@@ -1279,22 +1325,32 @@
       const loadButton = document.getElementById("load-button");
 
       const today = new Date();
-      const isoToday = toLocalYMD(today); // 🔥 corrigé
+      const isoToday = toLocalYMD(today);
       dateInput.value = isoToday;
 
-      function refreshPlanning() {
+      async function refreshPlanning() {
         if (!dateInput.value) return;
-        const parts = dateInput.value.split("-");
+
+        const iso = dateInput.value; // "YYYY-MM-DD"
+        const parts = iso.split("-");
         const selectedDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
         );
+
+        // 1) aller chercher les réservations pour cette date
+        await fetchReservationsForDate(iso);
+        // 2) construire le planning avec les cases rouges
         buildPlanningTable(selectedDate);
         document.getElementById("message").textContent = "";
       }
 
-      loadButton.addEventListener("click", refreshPlanning);
+      loadButton.addEventListener("click", () => {
+        refreshPlanning();
+      });
+
+      // premier affichage
       refreshPlanning();
 
       // Boutons du modal
@@ -1337,17 +1393,29 @@
             return;
           }
 
-          if (isSlotBooked(lastSelectedSlot.boxId, nextHour, dateObj)) {
+          if (isSlotBooked(lastSelectedSlot.boxId, nextHour)) {
             doubleBtn.disabled = true;
             doubleBtn.textContent = "Créneau suivant réservé";
             return;
           }
 
-          addSlotToCart(lastSelectedSlot.boxId, lastSelectedSlot.boxName, dateObj, nextHour, price2);
+          addSlotToCart(
+            lastSelectedSlot.boxId,
+            lastSelectedSlot.boxName,
+            dateObj,
+            nextHour,
+            price2
+          );
 
           // marquer la case suivante comme sélectionnée si elle est visible
           const selector =
-            '.slot-cell[data-box-id="' + lastSelectedSlot.boxId + '"][data-hour="' + nextHour + '"][data-date="' + lastSelectedSlot.date + '"]';
+            '.slot-cell[data-box-id="' +
+            lastSelectedSlot.boxId +
+            '"][data-hour="' +
+            nextHour +
+            '"][data-date="' +
+            lastSelectedSlot.date +
+            '"]';
           const cell2 = document.querySelector(selector);
           if (cell2) {
             markCellSelected(cell2);
