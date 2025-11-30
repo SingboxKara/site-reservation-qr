@@ -293,7 +293,7 @@
       }
     }
 
-    /* ================== CONTENU PAGE (section intro) ================== */
+    /* ================== HERO / INTRO LES BOXS ================== */
 
     #concept-intro {
       position: relative;
@@ -350,135 +350,156 @@
       line-height: 1.7;
     }
 
-    .concept-section {
-      padding: 80px 0 80px;
+    /* ----------- SECTION BOXS (cartes) ----------- */
+    .boxes-section {
+      padding: 5rem 0 5rem;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(201,76,53,0.22), transparent 55%),
+        #030712;
     }
 
-    .concept-block {
-      max-width: var(--sb-container-width);
-      margin: 0 auto 72px;
-      padding: 0 24px;
+    .boxes-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3rem;
     }
 
-    .concept-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 3rem;
-      align-items: center;
+    .boxes-title {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #F9FAFB;
+      margin-bottom: 0.5rem;
     }
 
-    .concept-grid.reverse {
-      direction: rtl;
-    }
-    .concept-grid.reverse > * {
-      direction: ltr;
-    }
-
-    .concept-text h2 {
-      font-size: 30px;
-      margin-bottom: 12px;
-      position: relative;
-      display: inline-block;
-    }
-
-    .concept-text h2::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -6px;
-      height: 3px;
-      width: 46px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      opacity: 0.85;
-    }
-
-    .concept-text p {
-      margin: 0 0 10px;
+    .boxes-subtitle {
+      margin: 0;
       font-size: 14px;
       color: var(--sb-text-muted);
-      line-height: 1.7;
     }
 
-    .concept-card {
-      background: #020617;
+    .boxes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .box-card {
+      background: var(--sb-card);
       border-radius: 24px;
-      padding: 2rem;
-      min-height: 220px;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.25);
+      box-shadow: 0 20px 55px rgba(0,0,0,0.85);
       display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #E5E7EB;
-      font-size: 15px;
-      border: 1px solid var(--sb-border-soft);
-      box-shadow:
-        0 0 0 1px rgba(15,23,42,0.8),
-        0 18px 45px rgba(0, 0, 0, 0.85),
-        0 0 50px rgba(201,76,53,0.25);
+      flex-direction: column;
+    }
+
+    .box-card-media {
       position: relative;
       overflow: hidden;
+      max-height: 220px;
     }
 
-    .concept-card::before {
-      content: "♪";
+    .box-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+    }
+
+    .box-card-badge {
       position: absolute;
-      right: 18px;
       top: 14px;
-      font-size: 26px;
-      color: rgba(148,163,184,0.12);
+      left: 14px;
+      background: rgba(2, 6, 23, 0.88);
+      border-radius: 999px;
+      padding: 6px 12px;
+      border: 1px solid rgba(249,250,251,0.16);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
     }
 
-    .concept-card span {
-      opacity: 0.85;
+    .box-badge-capacity {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #F9FAFB;
     }
 
-    .concept-cta-section {
-      padding: 72px 0 96px;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(56,189,248,0.22), transparent 55%),
-        radial-gradient(circle at 90% 10%, rgba(201,76,53,0.25), transparent 55%),
-        #020617;
+    .box-card-body {
+      padding: 1.4rem 1.6rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .concept-cta-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-      padding: 0 24px;
+    .box-card-title {
+      margin: 0;
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.06em;
     }
 
-    .concept-cta-inner h2 {
-      font-size: 26px;
-      margin-bottom: 10px;
+    .box-card-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.5rem;
+      font-size: 13px;
     }
 
-    .concept-cta-inner p {
-      margin: 0 0 22px;
-      font-size: 14px;
+    .box-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #E5E7EB;
+    }
+
+    .box-feature-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .box-feature-text {
+      white-space: nowrap;
+    }
+
+    .box-card-description {
+      margin: 0;
+      font-size: 13px;
       color: var(--sb-text-muted);
+      line-height: 1.5;
     }
 
-    .concept-cta-button {
+    .box-card-button {
+      align-self: flex-start;
       border: none;
       border-radius: 999px;
-      padding: 11px 28px;
+      padding: 0.7rem 1.8rem;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 18px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248,250,251,0.15),
+        0 18px 42px rgba(0,0,0,0.95);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .concept-cta-button:hover {
+    .box-card-button:hover {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
+        0 0 0 1px rgba(248,250,251,0.22),
         0 24px 60px rgba(0,0,0,1);
     }
 
@@ -562,22 +583,12 @@
 
     /* ---------- RESPONSIVE BLOCS ---------- */
     @media (max-width: 900px) {
-      .concept-grid {
-        grid-template-columns: minmax(0,1fr);
-      }
-
-      .concept-block {
-        margin-bottom: 56px;
-      }
-
       #concept-intro {
         padding: 9rem 0 64px;
       }
-    }
 
-    @media (max-width: 480px) {
-      .concept-card {
-        padding: 1.5rem;
+      .boxes-grid {
+        grid-template-columns: minmax(0,1fr);
       }
     }
   </style>
@@ -628,61 +639,110 @@
     </ul>
   </nav>
 
-  <!-- ---------- SECTION INTRO (à adapter pour les boxs) ---------- -->
+  <!-- ---------- HERO / INTRO LES BOXS ---------- -->
   <section id="concept-intro">
     <div class="concept-intro-inner">
       <p class="concept-eyebrow">Nos boxs</p>
       <h1 class="concept-title">Les espaces Singbox</h1>
       <p class="concept-intro-text">
-        Présente ici tes différentes boxs (Nuit étoilée, Ambiance Sunset, etc.) avec un texte d’intro.
+        Deux boxs privatives, climatisées et insonorisées, chacune avec sa propre ambiance.
+        Choisis l’univers qui colle le plus à ta soirée.
       </p>
     </div>
   </section>
 
-  <!-- ---------- SECTION BLOCS (contenu exemple) ---------- -->
-  <section class="concept-section">
-    <div class="concept-block">
-      <div class="concept-grid">
-        <div class="concept-text">
-          <h2>Box Nuit étoilée</h2>
-          <p>
-            Ambiance bleutée, lumières tamisées, idéale pour les soirées entre amis.
-          </p>
-        </div>
-        <div class="concept-card">
-          <span>Visuel de la box Nuit étoilée</span>
-        </div>
-      </div>
-    </div>
+  <!-- ---------- SECTION LISTE DES BOXS (cartes) ---------- -->
+  <section class="boxes-section">
+    <div class="container">
+      <header class="boxes-header">
+        <h2 class="boxes-title">Les espaces Singbox</h2>
+        <p class="boxes-subtitle">
+          Deux boxs privatives, climatisées et insonorisées, chacune avec sa propre ambiance.
+          Choisis l’univers qui colle le plus à ta soirée.
+        </p>
+      </header>
 
-    <div class="concept-block">
-      <div class="concept-grid reverse">
-        <div class="concept-card">
-          <span>Visuel de la box Ambiance Sunset</span>
-        </div>
-        <div class="concept-text">
-          <h2>Box Ambiance Sunset</h2>
-          <p>
-            Tons orangés, vibes fin de journée et playlists feel good.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="boxes-grid">
+        <!-- Box 1 : Nuit étoilée -->
+        <article class="box-card">
+          <div class="box-card-media">
+            <img src="box-nuit-etoilee.jpg" alt="Box Nuit étoilée">
+            <div class="box-card-badge">
+              <span class="box-badge-capacity">6 pers max</span>
+            </div>
+          </div>
+          <div class="box-card-body">
+            <h3 class="box-card-title">Nuit étoilée</h3>
 
-  <!-- ---------- CTA FINAL ---------- -->
-  <section class="concept-cta-section">
-    <div class="concept-cta-inner">
-      <h2>Envie de tester une box&nbsp;?</h2>
-      <p>
-        Réservez votre séance et découvrez Singbox en vrai.
-      </p>
-      <button
-        class="concept-cta-button"
-        onclick="window.location.href='reservation.html'"
-      >
-        Réserver maintenant
-      </button>
+            <div class="box-card-features">
+              <div class="box-feature">
+                <span class="box-feature-icon">📱</span>
+                <span class="box-feature-text">Commande via tablette</span>
+              </div>
+              <div class="box-feature">
+                <span class="box-feature-icon">🎤</span>
+                <span class="box-feature-text">2 micros</span>
+              </div>
+              <div class="box-feature">
+                <span class="box-feature-icon">♿</span>
+                <span class="box-feature-text">Accès PMR</span>
+              </div>
+            </div>
+
+            <p class="box-card-description">
+              Ambiance bleutée, lumières tamisées et plafond étoilé : la box parfaite pour
+              chanter toute la nuit entre amis, comme sous un ciel rempli de constellations.
+            </p>
+
+            <button
+              class="box-card-button"
+              onclick="window.location.href='reservation.html?box=nuit-etoilee'"
+            >
+              Découvrir la box
+            </button>
+          </div>
+        </article>
+
+        <!-- Box 2 : Ambiance Sunset -->
+        <article class="box-card">
+          <div class="box-card-media">
+            <img src="box-ambiance-sunset.jpg" alt="Box Ambiance Sunset">
+            <div class="box-card-badge">
+              <span class="box-badge-capacity">6 pers max</span>
+            </div>
+          </div>
+          <div class="box-card-body">
+            <h3 class="box-card-title">Ambiance Sunset</h3>
+
+            <div class="box-card-features">
+              <div class="box-feature">
+                <span class="box-feature-icon">📱</span>
+                <span class="box-feature-text">Commande via tablette</span>
+              </div>
+              <div class="box-feature">
+                <span class="box-feature-icon">🎤</span>
+                <span class="box-feature-text">2 micros</span>
+              </div>
+              <div class="box-feature">
+                <span class="box-feature-icon">♿</span>
+                <span class="box-feature-text">Accès PMR</span>
+              </div>
+            </div>
+
+            <p class="box-card-description">
+              Dégradés orangés, ambiance coucher de soleil et mood chaleureux : une box idéale
+              pour les afterworks, les anniversaires et les soirées feel good.
+            </p>
+
+            <button
+              class="box-card-button"
+              onclick="window.location.href='reservation.html?box=ambiance-sunset'"
+            >
+              Découvrir la box
+            </button>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
