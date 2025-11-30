@@ -1290,8 +1290,12 @@
         return;
       }
 
-      const total = computeTotal(panier);
-      const tva = total - total / 1.2;
+      // total TTC (ce que tu factures au client)
+      const totalTTC = computeTotal(panier);
+      // montant HT
+      const totalHT = totalTTC / 1.2;
+      // TVA à 20 %
+      const tva = totalTTC - totalHT;
 
       const first = panier[0];
       const dateLabel = first.date ? formatDateFr(first.date) : "";
@@ -1314,9 +1318,9 @@
         (hourText ? `Créneau : ${hourText}<br>` : "") +
         `Nombre de créneaux : ${panier.length}`;
 
-      subEl.textContent = total.toFixed(2).replace(".", ",") + "€";
-      tvaEl.textContent = tva.toFixed(2).replace(".", ",") + "€";
-      totalEl.textContent = total.toFixed(2).replace(".", ",") + "€";
+      subEl.textContent   = totalHT.toFixed(2).replace(".", ",") + "€";
+      tvaEl.textContent   = tva.toFixed(2).replace(".", ",") + "€";
+      totalEl.textContent = totalTTC.toFixed(2).replace(".", ",") + "€";
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
