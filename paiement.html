@@ -449,32 +449,6 @@
         0 0 28px rgba(249,115,22,0.35);
     }
 
-    .billing-field textarea {
-      width: 100%;
-      min-height: 90px;
-      resize: vertical;
-      border-radius: 16px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: #F9FAFB;
-      padding: 0.7rem 0.9rem;
-      font-size: 13px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-    }
-
-    .billing-field textarea::placeholder {
-      color: rgba(156,163,175,0.9);
-    }
-
-    .billing-field textarea:focus {
-      border-color: var(--sb-orange);
-      box-shadow:
-        0 0 0 1px rgba(249,115,22,0.9),
-        0 0 28px rgba(249,115,22,0.35);
-    }
-
     .billing-type-toggle {
       display: inline-flex;
       padding: 3px;
@@ -1115,6 +1089,7 @@
             </div>
           </div>
 
+          <!-- Code promo -->
           <div class="promo-card card">
             <div class="promo-header">
               <span>Code promo</span>
@@ -1132,6 +1107,7 @@
             </div>
           </div>
 
+          <!-- Paiement -->
           <div class="payment-card card">
             <h3>💳 Paiement sécurisé</h3>
 
@@ -1362,30 +1338,52 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
-      /* ----- Stripe Elements : texte en blanc ----- */
+      // ========= STRIPE ELEMENTS (carte en blanc) =========
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-        const elements = stripe.elements();
 
-        const style = {
-          base: {
-            color: "#F9FAFB",
-            fontFamily: '"Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-            fontSize: "14px",
-            "::placeholder": {
-              color: "#9CA3AF"
+        const elements = stripe.elements({
+          appearance: {
+            theme: "night",
+            variables: {
+              colorPrimary: "#F97316",
+              colorBackground: "#020617",
+              colorText: "#F9FAFB",
+              colorTextSecondary: "#E5E7EB",
+              colorTextPlaceholder: "#9CA3AF",
+              colorIcon: "#F9FAFB",
+              colorDanger: "#FCA5A5",
+              borderRadius: "14px"
             },
-            iconColor: "#F9FAFB"
-          },
-          invalid: {
-            color: "#f97373",
-            iconColor: "#f97373"
+            rules: {
+              ".Input": {
+                color: "#F9FAFB"
+              },
+              ".Input::placeholder": {
+                color: "#9CA3AF"
+              },
+              ".Label": {
+                color: "#E5E7EB"
+              }
+            }
           }
-        };
+        });
 
         cardElement = elements.create("card", {
           hidePostalCode: true,
-          style
+          style: {
+            base: {
+              color: "#F9FAFB",
+              iconColor: "#F9FAFB",
+              "::placeholder": {
+                color: "#9CA3AF"
+              }
+            },
+            invalid: {
+              color: "#FCA5A5",
+              iconColor: "#FCA5A5"
+            }
+          }
         });
 
         cardElement.mount("#card-element");
@@ -1397,7 +1395,7 @@
         });
       }
 
-      // Code promo
+      // ========= CODE PROMO =========
       const promoToggle = document.getElementById("promo-toggle");
       const promoBody   = document.getElementById("promo-body");
       const promoInput  = document.getElementById("promo-code");
@@ -1454,13 +1452,13 @@
         }
       }
 
-      // Validation + paiement
-      const submitBtn    = document.getElementById("checkout-submit-btn");
-      const cgvCheckbox  = document.getElementById("cgv-checkbox");
-      const rulesCheckbox= document.getElementById("rules-checkbox");
-      const errorEl      = document.getElementById("checkout-error");
-      const successEl    = document.getElementById("checkout-success");
-      const billingForm  = document.getElementById("billing-form");
+      // ========= VALIDATION + PAIEMENT =========
+      const submitBtn     = document.getElementById("checkout-submit-btn");
+      const cgvCheckbox   = document.getElementById("cgv-checkbox");
+      const rulesCheckbox = document.getElementById("rules-checkbox");
+      const errorEl       = document.getElementById("checkout-error");
+      const successEl     = document.getElementById("checkout-success");
+      const billingForm   = document.getElementById("billing-form");
 
       if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
@@ -1505,6 +1503,7 @@
           const cp         = document.getElementById("cp").value.trim();
           const ville      = document.getElementById("ville").value.trim();
           const naissance  = document.getElementById("naissance").value;
+
           const promoCode  = localStorage.getItem("promoCode") || null;
 
           const customer = {
@@ -1573,7 +1572,7 @@
                   })
                 });
               } catch (e) {
-                // on ne bloque pas côté client
+                // on ne bloque pas l'affichage client si la notif backend échoue
               }
 
               savePanier([]);
