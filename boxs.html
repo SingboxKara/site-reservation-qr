@@ -526,6 +526,13 @@
       cursor:pointer;
     }
 
+    .newsletter-message {
+      font-size:13px;
+      margin-top:6px;
+      color:#9CA3AF;
+      min-height:1.2em;
+    }
+
     .footer-columns {
       max-width:var(--sb-container-width);
       margin:0 auto;
@@ -634,13 +641,10 @@
   <section class="boxes-section">
     <div class="container">
 
-      <!-- (TEXTE EN DOUBLE SUPPRIMÉ : ancien <header class="boxes-header"> ... </header>) -->
-
       <div class="boxes-grid">
         <!-- Box 1 : Nuit étoilée -->
         <article class="box-card">
           <div class="box-card-media">
-            <!-- Photo 1 : Nuit étoilée -->
             <img src="box-nuit-etoilee.png" alt="Box Nuit étoilée">
             <div class="box-card-badge">
               <span class="box-badge-capacity">6 pers max</span>
@@ -681,7 +685,6 @@
         <!-- Box 2 : Ambiance Sunset -->
         <article class="box-card">
           <div class="box-card-media">
-            <!-- Photo 2 : Ambiance Sunset -->
             <img src="box-ambiance-sunset.png" alt="Box Ambiance Sunset">
             <div class="box-card-badge">
               <span class="box-badge-capacity">6 pers max</span>
@@ -727,10 +730,18 @@
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
-      <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" />
-        <button>S'abonner</button>
-      </div>
+      <!-- FORMULAIRE NEWSLETTER -->
+      <form class="newsletter-row" id="newsletter-form">
+        <input
+          type="email"
+          id="newsletter-email"
+          name="email"
+          placeholder="Entrez votre adresse e-mail"
+          required
+        />
+        <button type="submit" id="newsletter-submit">S'abonner</button>
+      </form>
+      <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
     <div class="footer-columns">
@@ -759,7 +770,7 @@
       <div>
         <p><strong>Réseaux</strong></p>
 
-       <!-- Instagram -->
+        <!-- Instagram -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -788,7 +799,14 @@
     </div>
   </footer>
 
+  <!-- Supabase JS -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
+    const supabaseUrl = "https://sfckofydfqbllkxhhxwnt.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
     // Helpers panier
     function getPanier() {
       try {
@@ -822,6 +840,61 @@
       }
 
       updateCartIcon();
+
+      // ----- Newsletter -----
+      const newsletterForm = document.getElementById("newsletter-form");
+      const emailInput = document.getElementById("newsletter-email");
+      const messageEl = document.getElementById("newsletter-message");
+      const submitBtn = document.getElementById("newsletter-submit");
+
+      if (newsletterForm && emailInput && messageEl && submitBtn) {
+        newsletterForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const email = emailInput.value.trim();
+
+          // validation simple
+          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
+            messageEl.style.color = "#f97373";
+            return;
+          }
+
+          submitBtn.disabled = true;
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = "Envoi...";
+          messageEl.textContent = "";
+
+          try {
+            const { data, error } = await supabaseClient
+              .from("newsletter_subscriptions")
+              .insert([{ email }]);
+
+            if (error) {
+              console.error(error);
+              if (error.code === "23505") {
+                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
+              } else {
+                messageEl.textContent =
+                  "Oups, une erreur est survenue. Réessaie dans quelques instants.";
+              }
+              messageEl.style.color = "#f97373";
+            } else {
+              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
+              messageEl.style.color = "#4ade80";
+              newsletterForm.reset();
+            }
+          } catch (err) {
+            console.error(err);
+            messageEl.textContent =
+              "Erreur réseau, vérifie ta connexion et réessaie.";
+            messageEl.style.color = "#f97373";
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
+      }
     });
   </script>
 </body>
