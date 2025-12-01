@@ -1108,30 +1108,30 @@
     let bookedIndex = {};
 
     async function fetchReservationsForDate(isoDate) {
-      bookedIndex = {}; // reset
-      try {
-        const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
-        if (!res.ok) {
-          console.error("Erreur HTTP /api/slots :", res.status);
-          return;
-        }
-        const json = await res.json();
-        const reservations = json.reservations || [];
-
-        reservations.forEach(r => {
-          const start = new Date(r.start_time);
-          // IMPORTANT : on lit l'heure en UTC pour éviter le +1h (Supabase stocke en UTC)
-          const h = start.getUTCHours();
-          const boxId = r.box_id;     // int en base
-          const key = `${boxId}-${h}`;
-          bookedIndex[key] = true;
-        });
-
-        console.log("Créneaux réservés pour", isoDate, bookedIndex);
-      } catch (e) {
-        console.error("Erreur fetchReservationsForDate :", e);
-      }
+  bookedIndex = {}; // reset
+  try {
+    const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
+    if (!res.ok) {
+      console.error("Erreur HTTP /api/slots :", res.status);
+      return;
     }
+    const json = await res.json();
+    const reservations = json.reservations || [];
+
+    reservations.forEach(r => {
+      const start = new Date(r.start_time);
+      const h = start.getHours(); // heure locale
+      const boxId = r.box_id;     // int en base
+      const key = `${boxId}-${h}`;
+      bookedIndex[key] = true;
+    });
+
+    console.log("Créneaux réservés pour", isoDate, bookedIndex);
+  } catch (e) {
+    console.error("Erreur fetchReservationsForDate :", e);
+  }
+}
+
 
     function isSlotBooked(boxId, hour) {
       const key = `${boxId}-${hour}`; // boxId est déjà un nombre (1,2...)
