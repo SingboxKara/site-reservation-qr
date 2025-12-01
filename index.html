@@ -38,7 +38,7 @@
         radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
-      overflow-x: hidden; /* ⇐ pour éviter qu’un élément dépasse sur le côté */
+      overflow-x: hidden; /* évite que ça déborde sur le côté */
     }
 
     a { text-decoration: none; color: inherit; }
@@ -71,7 +71,7 @@
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
-      padding: 10px 20px; /* léger ajustement */
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -128,7 +128,6 @@
       font-size: 14px;
     }
 
-    /* 🌟 Liens premium + effet néon */
     .navbar a,
     .nav-links a,
     .header-nav a,
@@ -332,7 +331,7 @@
       border-radius: 24px;
       padding: 20px 20px;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap;   /* ← important pour gérer les petites largeurs */
       gap: 16px;
       align-items: center;
       border: 1px solid rgba(148,163,184,0.2);
@@ -344,7 +343,8 @@
     }
 
     .resa-field {
-      flex: 1 1 200px;
+      flex: 0 1 210px;   /* champ compact, ne prend pas toute la largeur */
+      max-width: 230px;
       display: flex;
       flex-direction: column;
       text-align: left;
@@ -391,7 +391,9 @@
       cursor: pointer;
     }
 
-    .resa-button-wrapper { flex: 0 0 auto; }
+    .resa-button-wrapper {
+      flex: 0 0 auto;
+    }
 
     .resa-button {
       border: none;
@@ -852,17 +854,8 @@
 
       .hero h1 { font-size: 34px; }
       .hero .subtitle { font-size: 15px; }
-
-      .resa-bar {
-        flex-direction: column;
-      }
-      .resa-button {
-        width: 100%;
-        text-align: center;
-      }
     }
 
-    /* très petits écrans : on allège le header pour que le burger ne soit pas coupé */
     @media (max-width: 420px) {
       .header-inner {
         padding: 8px 14px;
@@ -878,7 +871,16 @@
       }
 
       .nav-cta {
-        display: none; /* on garde la réservation dans le menu mobile */
+        display: none; /* le bouton réserver reste dans le menu mobile */
+      }
+
+      /* sur les tout petits écrans, on met simplement le bouton sur une ligne à part */
+      .resa-button-wrapper {
+        width: 100%;
+      }
+      .resa-button {
+        width: 100%;
+        text-align: center;
       }
     }
 
