@@ -1120,7 +1120,16 @@
 
     reservations.forEach(r => {
       const start = new Date(r.start_time);
-      const h = start.getHours(); // heure locale
+
+      // On force l'interprétation en heure française, peu importe le serveur
+      const h = Number(
+        new Intl.DateTimeFormat("fr-FR", {
+          hour: "numeric",
+          hour12: false,
+          timeZone: "Europe/Paris",
+        }).format(start)
+      );
+
       const boxId = r.box_id;     // int en base
       const key = `${boxId}-${h}`;
       bookedIndex[key] = true;
