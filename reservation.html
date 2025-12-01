@@ -160,7 +160,6 @@
       transition: 0.25s ease;
     }
 
-    /* lien actif pour la page Réserver */
     .main-nav a[href="reservation.html"]::after {
       width: 100%;
     }
@@ -261,6 +260,7 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
+    /* ----------- header responsive ----------- */
     @media (max-width: 900px) {
       .header-inner {
         padding: 10px 16px;
@@ -271,27 +271,26 @@
         display:none;
       }
 
+      .nav-cta {
+        display:none;
+      }
+
+      .brand-text {
+        display:none;
+      }
+
       .burger-button {
         display:flex;
       }
 
       .brand-logo {
-        width: 90px;
-      }
-
-      .brand-text {
-        font-size: 20px;
-        letter-spacing: 0.12em;
+        width: 72px;
       }
     }
 
     @media (max-width: 640px) {
       .brand-logo {
-        width: 72px;
-      }
-      .brand-text {
-        font-size: 18px;
-        letter-spacing: 0.1em;
+        width: 64px;
       }
     }
 
@@ -442,6 +441,18 @@
       margin-top: 4px;
     }
 
+    /* Alignement PC : bouton aligné sur le champ date */
+    @media (min-width: 901px) {
+      .resa-header {
+        align-items: flex-start;
+      }
+
+      .resa-header button {
+        align-self: flex-start;
+        margin-top: 1.55rem; /* ajuste la hauteur au niveau du champ date */
+      }
+    }
+
     .table-wrapper {
       margin-top: 1rem;
       border-radius: 18px;
@@ -500,7 +511,6 @@
       cursor: default;
     }
 
-    /* ÉTATS LIBRE / RÉSERVÉ / SÉLECTIONNÉ */
     .slot-free {
       background-color: #022c22;
       color: #ECFDF5;
@@ -547,7 +557,6 @@
       opacity: 0.9;
     }
 
-    /* LÉGENDE */
     .resa-legend {
       display: flex;
       flex-wrap: wrap;
@@ -589,7 +598,6 @@
       color: var(--sb-text-muted);
     }
 
-    /* Messages */
     #message {
       margin-top: 1rem;
       font-size: 12px;
@@ -825,6 +833,7 @@
       .resa-header button {
         width: 100%;
         text-align: center;
+        margin-top: 0.75rem;
       }
     }
   </style>
@@ -1016,10 +1025,8 @@
   </footer>
 
   <script>
-    /* ---------- CONFIG BACKEND ---------- */
     const API_BASE = "https://singbox-backend.onrender.com";
 
-    /* ---------- utils date locale ---------- */
     function toLocalYMD(dateObj) {
       const y = dateObj.getFullYear();
       const m = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -1027,7 +1034,6 @@
       return `${y}-${m}-${d}`;
     }
 
-    /* ---------- PANIER (localStorage) ---------- */
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -1048,10 +1054,9 @@
     }
 
     function addSlotToCart(boxId, boxName, dateObj, hour, price) {
-      const isoDate = toLocalYMD(dateObj); // date locale
+      const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
 
-      // éviter les doublons exacts
       const exists = panier.some(item =>
         item.type === "reservation" &&
         item.boxId === boxId &&
@@ -1084,9 +1089,8 @@
         "€</span>";
     }
 
-    /* ---------- TARIFICATION DYNAMIQUE ---------- */
     function getSlotPrice(date, hour) {
-      const day = date.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
+      const day = date.getDay(); // 0 dimanche
       const isWeekendPlus = (day === 0 || day === 4 || day === 5 || day === 6);
       if (hour >= 4 && hour <= 14) {
         return 25;
@@ -1100,13 +1104,10 @@
       return 35;
     }
 
-    /* ---------- RÉSERVATIONS EXISTANTES (depuis le backend) ---------- */
-
-    // index des créneaux réservés : clé = "boxId-hour"
     let bookedIndex = {};
 
     async function fetchReservationsForDate(isoDate) {
-      bookedIndex = {}; // reset
+      bookedIndex = {};
       try {
         const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
         if (!res.ok) {
@@ -1117,14 +1118,12 @@
         const reservations = json.reservations || [];
 
         reservations.forEach(r => {
-          const start = new Date(r.start_time);  // interprété en local (Europe/Paris)
-          const h = start.getHours();           // heure locale (0-23)
+          const start = new Date(r.start_time);
+          const h = start.getHours();
           const boxId = r.box_id;
           const key = `${boxId}-${h}`;
           bookedIndex[key] = true;
         });
-
-        console.log("Créneaux réservés pour", isoDate, bookedIndex);
       } catch (e) {
         console.error("Erreur fetchReservationsForDate :", e);
       }
@@ -1135,7 +1134,6 @@
       return !!bookedIndex[key];
     }
 
-    /* ---------- GÉNÉRATION DU TABLEAU ---------- */
     const BOXES = [
       { id: 1, name: "Nuit étoilée" },
       { id: 2, name: "Ambiance Sunset" }
@@ -1303,9 +1301,7 @@
       table.appendChild(tbody);
     }
 
-    /* ---------- INIT PAGE ---------- */
     document.addEventListener("DOMContentLoaded", function () {
-      // MENU MOBILE
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
       if (burgerBtn && mobileNav) {
@@ -1331,7 +1327,7 @@
       async function refreshPlanning() {
         if (!dateInput.value) return;
 
-        const iso = dateInput.value; // "YYYY-MM-DD"
+        const iso = dateInput.value;
         const parts = iso.split("-");
         const selectedDate = new Date(
           parseInt(parts[0], 10),
@@ -1348,10 +1344,8 @@
         refreshPlanning();
       });
 
-      // premier affichage
       refreshPlanning();
 
-      // Boutons du modal
       const continueBtn = document.getElementById("modal-continue");
       const cartBtn = document.getElementById("modal-cart");
       const doubleBtn = document.getElementById("modal-double");
