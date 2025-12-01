@@ -1069,7 +1069,8 @@
         boxName,
         date: isoDate,
         hour,
-        price
+        price,
+        tzOffsetMinutes: new Date().getTimezoneOffset()
       });
       savePanier(panier);
       updateCartIcon();
