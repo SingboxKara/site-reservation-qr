@@ -1017,7 +1017,7 @@
 
   <script>
     /* ---------- CONFIG BACKEND ---------- */
-    // Backend Node sur Render
+    // Backend déployé sur Render
     const API_BASE = "https://singbox-backend.onrender.com";
 
     /* ---------- utils date locale ---------- */
@@ -1119,7 +1119,8 @@
 
         reservations.forEach(r => {
           const start = new Date(r.start_time);
-          const h = start.getHours(); // heure locale
+          // IMPORTANT : on lit l'heure en UTC pour éviter le +1h (Supabase stocke en UTC)
+          const h = start.getUTCHours();
           const boxId = r.box_id;     // int en base
           const key = `${boxId}-${h}`;
           bookedIndex[key] = true;
