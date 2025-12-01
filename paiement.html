@@ -1226,6 +1226,12 @@
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
     const PRICE_FALLBACK = 10;
 
+    // 🔗 URL du backend (local ou Render)
+    const API_BASE_URL =
+      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://singbox-backend.onrender.com";
+
     let stripe = null;
     let cardElement = null;
 
@@ -1290,11 +1296,8 @@
         return;
       }
 
-      // total TTC (ce que tu factures au client)
       const totalTTC = computeTotal(panier);
-      // montant HT
       const totalHT = totalTTC / 1.2;
-      // TVA à 20 %
       const tva = totalTTC - totalHT;
 
       const first = panier[0];
@@ -1342,7 +1345,7 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
-      // ========= STRIPE ELEMENTS (carte en blanc) =========
+      // ========= STRIPE ELEMENTS =========
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -1520,7 +1523,7 @@
           submitBtn.textContent = "Paiement en cours...";
 
           try {
-            const res = await fetch("http://localhost:3000/api/create-payment-intent", {
+            const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -1565,7 +1568,7 @@
               }
 
               try {
-                await fetch("http://localhost:3000/api/confirm-reservation", {
+                await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
