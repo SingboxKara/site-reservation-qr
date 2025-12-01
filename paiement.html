@@ -38,7 +38,7 @@
         radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
-      overflow-x: hidden; /* évite les débordements horizontaux */
+      overflow-x: hidden;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -260,37 +260,68 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* --------- HEADER RESPONSIVE : TÉLÉPHONE = LOGO + PANIER + BURGER SEULEMENT --------- */
+    /* --------- HEADER RESPONSIVE --------- */
     @media (max-width: 900px) {
       .header-inner {
-        padding: 10px 14px;
-        gap: 10px;
+        padding: 8px 10px;
+        gap: 8px;
       }
 
       nav.main-nav {
-        display: none;         /* plus de liens texte */
+        display: none; /* plus de liens texte */
       }
 
-      .nav-cta {
-        display: none;         /* plus de bouton "Réserver" dans le header */
+      .brand-logo {
+        width: 58px;
       }
 
       .brand-text {
-        display: none;         /* on masque le mot "Singbox" pour gagner de la place */
+        font-size: 15px;
+        letter-spacing: 0.11em;
       }
 
-      .brand-logo {
-        width: 80px;
+      .nav-cta {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
       }
 
       .burger-button {
-        display:flex;          /* on affiche le burger */
+        display: flex;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
+      .header-inner {
+        padding: 8px 8px;
+        gap: 6px;
+      }
+
       .brand-logo {
-        width: 70px;
+        width: 50px;
+      }
+
+      .brand-text {
+        font-size: 13px;
+        letter-spacing: 0.09em;
+      }
+
+      .nav-cta {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
       }
     }
 
@@ -1073,7 +1104,7 @@
               </p>
             </div>
 
-            <div class="order-totals">
+          <div class="order-totals">
               <div class="order-row">
                 <span>Sous-total</span>
                 <span id="order-subtotal">0€</span>
