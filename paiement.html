@@ -1166,6 +1166,10 @@
                 <input type="checkbox" id="rules-checkbox">
                 <span>Il est interdit de ramener des boissons ou aliments dans les box.</span>
               </label>
+              <label>
+                <input type="checkbox" id="newsletter-optin">
+                <span>Je souhaite recevoir la newsletter Singbox (offres, playlists, soirées à thème). Mon e-mail sera ajouté à la liste.</span>
+              </label>
             </div>
 
             <div class="payment-warning">
@@ -1501,6 +1505,7 @@
       const submitBtn     = document.getElementById("checkout-submit-btn");
       const cgvCheckbox   = document.getElementById("cgv-checkbox");
       const rulesCheckbox = document.getElementById("rules-checkbox");
+      const newsletterCheckbox = document.getElementById("newsletter-optin");
       const errorEl       = document.getElementById("checkout-error");
       const successEl     = document.getElementById("checkout-success");
       const billingForm   = document.getElementById("billing-form");
@@ -1620,6 +1625,17 @@
                 // on ne bloque pas l'affichage client si la notif backend échoue
               }
 
+              // Si le client a coché la case newsletter, on ajoute son e-mail
+              if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
+                try {
+                  await window.supabaseClient
+                    .from("newsletter_subscriptions")
+                    .insert({ email });
+                } catch (e) {
+                  console.error("Erreur inscription newsletter :", e);
+                }
+              }
+
               savePanier([]);
               localStorage.removeItem("promoCode");
               updateCartIcon();
@@ -1640,12 +1656,12 @@
   <!-- Supabase Newsletter -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     document.addEventListener("DOMContentLoaded", () => {
-      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
@@ -1664,7 +1680,7 @@
           return;
         }
 
-        const { error } = await supabaseClient
+        const { error } = await window.supabaseClient
           .from("newsletter_subscriptions")
           .insert({ email });
 
