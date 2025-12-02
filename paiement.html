@@ -1104,7 +1104,7 @@
               </p>
             </div>
 
-          <div class="order-totals">
+            <div class="order-totals">
               <div class="order-row">
                 <span>Sous-total</span>
                 <span id="order-subtotal">0€</span>
@@ -1193,9 +1193,19 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" />
-        <button>S'abonner aux actualités</button>
+        <input
+          id="newsletter-email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+        />
+        <button
+          id="newsletter-submit"
+          type="button"
+        >
+          S'abonner aux actualités
+        </button>
       </div>
+      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
     </div>
 
     <div class="footer-columns">
@@ -1624,6 +1634,57 @@
           }
         });
       }
+    });
+  </script>
+
+  <!-- Supabase Newsletter -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
+
+      if (!emailInput || !submitBtn || !messageBox) return;
+
+      submitBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+
+        messageBox.style.color = "#e5e7eb";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (!email || !email.includes("@")) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert({ email });
+
+        if (error) {
+          if (
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"))
+          ) {
+            messageBox.style.color = "#38bdf8";
+            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+          } else {
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
+          }
+        } else {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        }
+      });
     });
   </script>
 
