@@ -579,6 +579,93 @@
       text-decoration: none;
     }
 
+    /* Bloc login dans Mon compte */
+
+    .login-card-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .login-description {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 10px;
+    }
+
+    .login-field {
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .login-field label {
+      display:block;
+      margin-bottom:3px;
+      color:#E5E7EB;
+      font-size:12px;
+    }
+
+    .login-field input {
+      width:100%;
+      font-family:inherit;
+      font-size:13px;
+      color:#F9FAFB;
+      background:#020617;
+      border-radius:999px;
+      border:1px solid var(--sb-border-soft);
+      padding:0.55rem 0.85rem;
+      outline:none;
+      transition:border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .login-field input::placeholder {
+      color:rgba(156,163,175,0.9);
+    }
+
+    .login-field input:focus {
+      border-color:var(--sb-orange);
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,0.8),
+        0 0 22px rgba(249,115,22,0.25);
+    }
+
+    .login-submit-btn {
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:0.6rem 1rem;
+      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      margin-top:6px;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .login-submit-btn:hover {
+      transform:translateY(-1px);
+      filter:brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 22px 52px rgba(0,0,0,1);
+    }
+
+    .login-message {
+      font-size: 12px;
+      margin-top: 6px;
+      min-height: 16px;
+      color: #FCA5A5;
+    }
+
+    .login-message.ok {
+      color: #BBF7D0;
+    }
+
     /* ======================= FOOTER ======================= */
     footer {
       background:#020617;
@@ -732,32 +819,56 @@
       </div>
 
       <div class="account-layout">
-        <!-- Carte principale -->
-        <div class="card account-main-card">
-          <h2>Mes informations</h2>
+        <!-- Colonne gauche : login + infos -->
+        <div class="account-left">
+          <!-- Bloc connexion (visible si non connecté) -->
+          <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
+            <h2 class="login-card-title">Se connecter</h2>
+            <p class="login-description">
+              Connectez-vous pour accéder à vos informations, cumuler des points et retrouver vos réservations.
+            </p>
 
-          <div>
-            <div class="account-field-label">Email</div>
-            <div class="account-field-value" id="user-email">–</div>
+            <form id="login-form">
+              <div class="login-field">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="vous@email.fr" required />
+              </div>
+              <div class="login-field">
+                <label for="login-password">Mot de passe</label>
+                <input type="password" id="login-password" placeholder="Mot de passe" required />
+              </div>
+              <button type="submit" class="login-submit-btn">Connexion</button>
+            </form>
+            <div id="login-message" class="login-message"></div>
           </div>
 
-          <div>
-            <div class="account-field-label">Points de fidélité</div>
-            <div class="account-field-value" id="user-points">–</div>
+          <!-- Carte principale -->
+          <div class="card account-main-card">
+            <h2>Mes informations</h2>
 
-            <div class="badge-points">
-              <span>★</span>
-              <span>10 points par réservation payante. À 100 points, la prochaine séance est offerte.</span>
+            <div>
+              <div class="account-field-label">Email</div>
+              <div class="account-field-value" id="user-email">–</div>
             </div>
-          </div>
 
-          <p class="account-subtext">
-            Utilisez toujours la même adresse email lors de vos réservations pour cumuler vos points automatiquement.
-          </p>
+            <div>
+              <div class="account-field-label">Points de fidélité</div>
+              <div class="account-field-value" id="user-points">–</div>
 
-          <div class="logout-row">
-            <button id="logout-btn" class="logout-btn">Se déconnecter</button>
-            <span id="account-message" class="account-message"></span>
+              <div class="badge-points">
+                <span>★</span>
+                <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+              </div>
+            </div>
+
+            <p class="account-subtext">
+              Utilisez toujours la même adresse email lors de vos réservations pour cumuler vos points automatiquement.
+            </p>
+
+            <div class="logout-row">
+              <button id="logout-btn" class="logout-btn">Se déconnecter</button>
+              <span id="account-message" class="account-message"></span>
+            </div>
           </div>
         </div>
 
@@ -782,9 +893,9 @@
           </p>
 
           <p class="account-cta" id="not-logged-cta" style="display:none;">
-            Vous n’êtes pas connecté. Rendez-vous sur la page
-            <a href="panier.html">Panier & Paiement</a> pour vous connecter ou créer un compte
-            avant de réserver.
+            Vous n’êtes pas connecté. Vous pouvez vous connecter ci-contre ou créer un compte
+            lors de votre prochaine réservation depuis la page
+            <a href="panier.html">Panier & Paiement</a>.
           </p>
         </div>
       </div>
@@ -903,20 +1014,25 @@
       const pointsEl = document.getElementById("user-points");
       const msgEl = document.getElementById("account-message");
       const notLoggedCta = document.getElementById("not-logged-cta");
+      const loginCard = document.getElementById("login-card");
 
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
       if (msgEl) {
-        msgEl.textContent = "Connectez-vous depuis la page Panier & Paiement pour cumuler vos points.";
+        msgEl.textContent = "Connectez-vous pour accéder à vos informations.";
         msgEl.classList.remove("ok");
       }
       if (notLoggedCta) notLoggedCta.style.display = "block";
+      if (loginCard) loginCard.style.display = "block";
 
       updateLoyaltyHighlight(null);
     }
 
     async function loadProfile() {
       const token = localStorage.getItem("token");
+      const loginCard = document.getElementById("login-card");
+      const notLoggedCta = document.getElementById("not-logged-cta");
+
       if (!token) {
         showNotLoggedState();
         return;
@@ -948,6 +1064,9 @@
           msgEl.classList.add("ok");
         }
 
+        if (loginCard) loginCard.style.display = "none";
+        if (notLoggedCta) notLoggedCta.style.display = "none";
+
         updateLoyaltyHighlight(user.points ?? 0);
       } catch (err) {
         console.error(err);
@@ -959,8 +1078,57 @@
       }
     }
 
+    function initLoginForm() {
+      const loginForm = document.getElementById("login-form");
+      const loginMsg  = document.getElementById("login-message");
+      if (!loginForm) return;
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (loginMsg) {
+          loginMsg.textContent = "";
+          loginMsg.classList.remove("ok");
+        }
+
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value;
+
+        if (!email || !password) {
+          if (loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe.";
+          return;
+        }
+
+        try {
+          const res = await fetch(API_BASE + "/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            if (loginMsg) loginMsg.textContent = data.error || "Erreur de connexion.";
+            return;
+          }
+
+          localStorage.setItem("token", data.token);
+          if (loginMsg) {
+            loginMsg.textContent = "Connexion réussie ✔️";
+            loginMsg.classList.add("ok");
+          }
+
+          // recharger le profil
+          loadProfile();
+        } catch (err) {
+          console.error(err);
+          if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+        }
+      });
+    }
+
     // Déconnexion
-    document.addEventListener("DOMContentLoaded", () => {
+    function initLogout() {
       const logoutBtn = document.getElementById("logout-btn");
       if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
@@ -973,7 +1141,7 @@
           showNotLoggedState();
         });
       }
-    });
+    }
 
     // Header / burger + init
     document.addEventListener("DOMContentLoaded", () => {
@@ -993,6 +1161,8 @@
       }
 
       updateCartIcon();
+      initLoginForm();
+      initLogout();
       loadProfile();
     });
   </script>
