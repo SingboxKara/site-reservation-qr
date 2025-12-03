@@ -958,6 +958,236 @@
         padding: 1.55rem 1.45rem;
       }
     }
+
+    /* ======================= MODAL AUTH FIDÉLITÉ ======================= */
+
+    .auth-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.96));
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+      padding: 16px;
+    }
+
+    .auth-modal-backdrop.open {
+      display: flex;
+    }
+
+    .auth-modal {
+      width: 100%;
+      max-width: 440px;
+      background: radial-gradient(circle at 10% 0%, rgba(249,115,22,0.18), transparent 55%),
+                  radial-gradient(circle at 90% 0%, rgba(37,99,235,0.22), transparent 60%),
+                  #020617;
+      border-radius: 24px;
+      border: 1px solid rgba(148,163,184,0.45);
+      box-shadow:
+        0 24px 70px rgba(0,0,0,0.95),
+        0 0 0 1px rgba(15,23,42,0.9);
+      padding: 20px 22px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-modal::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 0 0, rgba(248,250,252,0.05), transparent 55%);
+      mix-blend-mode: soft-light;
+    }
+
+    .auth-modal > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-modal-eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sb-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .auth-modal h2 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .auth-modal-subtext {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 10px;
+    }
+
+    .auth-loyalty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(248,250,252,0.12);
+      margin-bottom: 12px;
+    }
+
+    .auth-loyalty-pill span:first-child {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
+      font-size:11px;
+    }
+
+    .auth-tabs {
+      display:flex;
+      gap:6px;
+      margin-bottom:10px;
+      font-size:12px;
+      background:#020617;
+      border-radius:999px;
+      padding:3px;
+      border:1px solid rgba(148,163,184,0.35);
+    }
+
+    .auth-tab-btn {
+      flex:1;
+      border:none;
+      border-radius:999px;
+      padding:6px 10px;
+      background:transparent;
+      color:#E5E7EB;
+      font-size:12px;
+      font-weight:500;
+      cursor:pointer;
+      transition:background 0.15s ease,color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .auth-tab-btn.active {
+      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.16),
+        0 14px 34px rgba(0,0,0,0.9);
+    }
+
+    .auth-form {
+      font-size:12px;
+      margin-bottom:10px;
+    }
+
+    .auth-form.hidden {
+      display:none;
+    }
+
+    .auth-field {
+      margin-bottom:8px;
+    }
+
+    .auth-field label {
+      display:block;
+      margin-bottom:3px;
+      color:#E5E7EB;
+      font-size:12px;
+    }
+
+    .auth-field input {
+      width:100%;
+      font-family:inherit;
+      font-size:12px;
+      color:#F9FAFB;
+      background:#020617;
+      border-radius:999px;
+      border:1px solid var(--sb-border-soft);
+      padding:0.5rem 0.8rem;
+      outline:none;
+      transition:border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .auth-field input::placeholder {
+      color:rgba(156,163,175,0.9);
+    }
+
+    .auth-field input:focus {
+      border-color:var(--sb-orange);
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,0.8),
+        0 0 22px rgba(249,115,22,0.25);
+    }
+
+    .auth-submit-btn {
+      width:100%;
+      border:none;
+      border-radius:999px;
+      padding:0.55rem 1rem;
+      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      margin-top:4px;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .auth-submit-btn:hover {
+      transform:translateY(-1px);
+      filter:brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 22px 52px rgba(0,0,0,1);
+    }
+
+    .auth-modal-message {
+      min-height:14px;
+      font-size:11px;
+      margin-bottom:6px;
+      color:#FCA5A5;
+    }
+
+    .auth-modal-footer {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-top:6px;
+      font-size:11px;
+      color:var(--sb-text-muted);
+    }
+
+    .auth-modal-skip {
+      border:none;
+      background:transparent;
+      color:#9CA3AF;
+      font-size:11px;
+      cursor:pointer;
+      text-decoration:underline;
+    }
+
+    .auth-modal-skip:hover {
+      color:#E5E7EB;
+      text-decoration:none;
+    }
+
+    .auth-modal-small {
+      font-size:10px;
+      color:var(--sb-text-muted);
+    }
   </style>
 </head>
 <body>
@@ -1004,6 +1234,63 @@
       <li><a href="reservation.html">Réserver</a></li>
     </ul>
   </nav>
+
+  <!-- MODAL CONNEXION / FIDÉLITÉ -->
+  <div id="auth-modal-backdrop" class="auth-modal-backdrop">
+    <div class="auth-modal">
+      <div class="auth-modal-eyebrow">Programme fidélité</div>
+      <h2>Connectez-vous avant de payer</h2>
+      <p class="auth-modal-subtext">
+        Créez votre compte ou connectez-vous pour cumuler des points à chaque session.
+      </p>
+      <div class="auth-loyalty-pill">
+        <span>★</span>
+        <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" id="auth-btn-login" class="auth-tab-btn active">Se connecter</button>
+        <button type="button" id="auth-btn-register" class="auth-tab-btn">Créer un compte</button>
+      </div>
+
+      <div id="auth-modal-message" class="auth-modal-message"></div>
+
+      <!-- Formulaire LOGIN -->
+      <form id="auth-login-form" class="auth-form">
+        <div class="auth-field">
+          <label for="auth-login-email">Email</label>
+          <input type="email" id="auth-login-email" placeholder="vous@email.fr" required>
+        </div>
+        <div class="auth-field">
+          <label for="auth-login-password">Mot de passe</label>
+          <input type="password" id="auth-login-password" placeholder="Mot de passe" required>
+        </div>
+        <button type="submit" class="auth-submit-btn">Connexion</button>
+      </form>
+
+      <!-- Formulaire REGISTER -->
+      <form id="auth-register-form" class="auth-form hidden">
+        <div class="auth-field">
+          <label for="auth-register-email">Email</label>
+          <input type="email" id="auth-register-email" placeholder="vous@email.fr" required>
+        </div>
+        <div class="auth-field">
+          <label for="auth-register-password">Mot de passe</label>
+          <input type="password" id="auth-register-password" placeholder="Mot de passe" required>
+        </div>
+        <button type="submit" class="auth-submit-btn">Créer mon compte</button>
+      </form>
+
+      <div class="auth-modal-footer">
+        <button type="button" id="auth-modal-continue" class="auth-modal-skip">
+          Continuer sans compte (pas de points)
+        </button>
+        <span class="auth-modal-small">
+          Vous pourrez retrouver vos points et vos réservations dans l’espace “Mon compte”.
+        </span>
+      </div>
+    </div>
+  </div>
 
   <!-- MAIN CHECKOUT -->
   <section id="checkout">
@@ -1651,6 +1938,141 @@
         });
       }
     });
+  </script>
+
+  <!-- POPUP AUTH / FIDÉLITÉ JS -->
+  <script>
+    function showAuthModal() {
+      const backdrop = document.getElementById("auth-modal-backdrop");
+      if (backdrop) backdrop.classList.add("open");
+    }
+
+    function hideAuthModal() {
+      const backdrop = document.getElementById("auth-modal-backdrop");
+      if (backdrop) backdrop.classList.remove("open");
+    }
+
+    function initAuthModal() {
+      const backdrop = document.getElementById("auth-modal-backdrop");
+      if (!backdrop) return;
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        showAuthModal(); // ouverture dès l'arrivée sur la page si pas connecté
+      }
+
+      const btnLoginTab    = document.getElementById("auth-btn-login");
+      const btnRegisterTab = document.getElementById("auth-btn-register");
+      const loginForm      = document.getElementById("auth-login-form");
+      const registerForm   = document.getElementById("auth-register-form");
+      const msgEl          = document.getElementById("auth-modal-message");
+      const skipBtn        = document.getElementById("auth-modal-continue");
+
+      if (btnLoginTab && btnRegisterTab && loginForm && registerForm) {
+        btnLoginTab.addEventListener("click", () => {
+          btnLoginTab.classList.add("active");
+          btnRegisterTab.classList.remove("active");
+          loginForm.classList.remove("hidden");
+          registerForm.classList.add("hidden");
+          if (msgEl) msgEl.textContent = "";
+        });
+
+        btnRegisterTab.addEventListener("click", () => {
+          btnRegisterTab.classList.add("active");
+          btnLoginTab.classList.remove("active");
+          registerForm.classList.remove("hidden");
+          loginForm.classList.add("hidden");
+          if (msgEl) msgEl.textContent = "";
+        });
+      }
+
+      if (skipBtn) {
+        skipBtn.addEventListener("click", () => {
+          hideAuthModal(); // continue sans compte, pas de points
+        });
+      }
+
+      if (loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (msgEl) msgEl.textContent = "";
+          const email = document.getElementById("auth-login-email").value.trim();
+          const password = document.getElementById("auth-login-password").value;
+
+          if (!email || !password) {
+            if (msgEl) msgEl.textContent = "Merci de renseigner vos identifiants.";
+            return;
+          }
+
+          try {
+            const res = await fetch(`${API_BASE_URL}/api/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+              if (msgEl) msgEl.textContent = data.error || "Erreur de connexion.";
+              return;
+            }
+
+            localStorage.setItem("token", data.token);
+            hideAuthModal();
+          } catch (err) {
+            console.error(err);
+            if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+          }
+        });
+      }
+
+      if (registerForm) {
+        registerForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (msgEl) msgEl.textContent = "";
+          const email = document.getElementById("auth-register-email").value.trim();
+          const password = document.getElementById("auth-register-password").value;
+
+          if (!email || !password) {
+            if (msgEl) msgEl.textContent = "Merci de renseigner un email et un mot de passe.";
+            return;
+          }
+
+          try {
+            const res = await fetch(`${API_BASE_URL}/api/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+              if (msgEl) msgEl.textContent = data.error || "Erreur lors de la création du compte.";
+              return;
+            }
+
+            // connexion automatique après inscription
+            const loginRes = await fetch(`${API_BASE_URL}/api/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+            const loginData = await loginRes.json();
+            if (loginRes.ok) {
+              localStorage.setItem("token", loginData.token);
+              hideAuthModal();
+            } else {
+              if (msgEl) msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
+            }
+          } catch (err) {
+            console.error(err);
+            if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+          }
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initAuthModal);
   </script>
 
   <!-- Supabase Newsletter -->
