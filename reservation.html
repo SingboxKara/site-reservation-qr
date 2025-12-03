@@ -260,27 +260,28 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* ----------- header responsive ----------- */
-    @media (max-width: 900px) {
+    /* ----------- header responsive (téléphones / tablettes) ----------- */
+    /* On masque le menu de catégories et on affiche le burger */
+    @media screen and (max-width: 1024px) {
       .header-inner {
         padding: 10px 16px;
         gap: 12px;
       }
 
       .main-nav {
-        display:none;
+        display: none !important;
       }
 
       .nav-cta {
-        display:none;
+        display: none !important;
       }
 
       .brand-text {
-        display:none;
+        display: none !important;
       }
 
       .burger-button {
-        display:flex;
+        display: flex !important;
       }
 
       .brand-logo {
