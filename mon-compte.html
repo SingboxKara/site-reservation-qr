@@ -2,25 +2,923 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Mon compte</title>
+  <title>Singbox - Mon compte</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-bg-soft: #030712;
+      --sb-card: #050b18;
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
+      --sb-red: #C94C35;
+      --sb-orange: #F97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.35);
+      --sb-container-width: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--sb-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2, h3, h4 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ======================= HEADER GLOBAL ======================= */
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #020617;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      height: auto;
+    }
+
+    .header-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      height: auto;
+      flex-wrap: nowrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 110px;
+      height: auto;
+      border-radius: 999px;
+      display: block;
+      object-fit: contain;
+      filter:
+        drop-shadow(0 0 12px rgba(255,255,255,0.16))
+        drop-shadow(0 0 20px rgba(201,76,53,0.6));
+    }
+
+    .brand-text {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 26px;
+      color: #F9FAFB;
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+
+    nav.main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .main-nav a {
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6930, #ffb96f);
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .main-nav a:hover::after {
+      width: 100%;
+    }
+
+    .main-nav a:hover {
+      color: #ffb96f;
+      transition: 0.25s ease;
+    }
+
+    /* surligner Mon compte dans le menu */
+    .main-nav a[href="mon-compte.html"]::after {
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .nav-cta {
+      background: var(--sb-red);
+      padding: 8px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #F9FAFB;
+      white-space: nowrap;
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.08),
+        0 10px 28px rgba(0,0,0,0.7);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .nav-cta:hover {
+      background: #d55a40;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.18),
+        0 16px 38px rgba(0,0,0,0.9);
+    }
+
+    .cart-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      backdrop-filter: blur(6px);
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--sb-red);
+      color:#fff;
+      border-radius:999px;
+      font-size:10px;
+      padding: 2px 5px;
+      min-width: 18px;
+      text-align:center;
+    }
+    #cart-count:empty { display:none; }
+
+    .burger-button {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: transparent;
+      color:#fff;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .mobile-nav a { color:#fff; }
+    .mobile-nav.open { display:block; }
+
+    /* --------- HEADER RESPONSIVE --------- */
+    @media (max-width: 900px) {
+      .header-inner {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+
+      nav.main-nav {
+        display: none;
+      }
+
+      .brand-logo {
+        width: 58px;
+      }
+
+      .brand-text {
+        font-size: 15px;
+        letter-spacing: 0.11em;
+      }
+
+      .nav-cta {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+      }
+
+      .burger-button {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner {
+        padding: 8px 8px;
+        gap: 6px;
+      }
+
+      .brand-logo {
+        width: 50px;
+      }
+
+      .brand-text {
+        font-size: 13px;
+        letter-spacing: 0.09em;
+      }
+
+      .nav-cta {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+      }
+    }
+
+    /* ======================= SECTION MON COMPTE ======================= */
+
+    #account {
+      position: relative;
+      padding: 10rem 0 64px;
+      background:
+        radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
+        #050814;
+      color: var(--sb-text-main);
+      overflow: hidden;
+    }
+
+    #account::before {
+      content: "★";
+      position: absolute;
+      top: 16%;
+      left: 8%;
+      font-size: 32px;
+      color: rgba(148,163,184,0.1);
+      pointer-events: none;
+    }
+
+    #account::after {
+      content: "♪";
+      position: absolute;
+      bottom: 14%;
+      right: 8%;
+      font-size: 30px;
+      color: rgba(148,163,184,0.08);
+      pointer-events: none;
+    }
+
+    .account-header {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+
+    .account-header-eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9CA3AF;
+      margin-bottom: 8px;
+    }
+
+    .account-header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .account-header p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(249,250,251,0.85);
+    }
+
+    .account-layout {
+      max-width: 720px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 820px) {
+      .account-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 1.75rem 1.9rem;
+      box-shadow:
+        0 24px 60px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(148,163,184,0.3);
+      border: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      opacity: 0.6;
+      mix-blend-mode: soft-light;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .account-main-card h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .account-field-label {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 2px;
+    }
+
+    .account-field-value {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .badge-points {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(248,250,251,0.12);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .badge-points span:first-child {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
+      font-size:12px;
+    }
+
+    .account-subtext {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-top: 8px;
+    }
+
+    .logout-row {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .logout-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.55rem 1.2rem;
+      background: #111827;
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.6),
+        0 10px 28px rgba(0,0,0,0.8);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .logout-btn:hover {
+      background: #1f2937;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.16),
+        0 14px 34px rgba(0,0,0,0.95);
+    }
+
+    .account-message {
+      font-size: 12px;
+      color: #FCA5A5;
+      min-height: 16px;
+    }
+
+    .account-message.ok {
+      color: #BBF7D0;
+    }
+
+    /* Carte fidélité droite */
+
+    .loyalty-card h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .loyalty-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(248,250,251,0.12);
+      margin-bottom: 10px;
+    }
+
+    .loyalty-pill span:first-child {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
+      font-size:11px;
+    }
+
+    .loyalty-card p {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .loyalty-highlight {
+      font-size: 13px;
+      margin-top: 4px;
+      color: #F9FAFB;
+    }
+
+    .loyalty-next {
+      font-size: 12px;
+      margin-top: 4px;
+      color: #BFDBFE;
+    }
+
+    .account-cta {
+      font-size: 12px;
+      margin-top: 10px;
+      color: #F97316;
+    }
+
+    .account-cta a {
+      color: #F97316;
+      text-decoration: underline;
+    }
+
+    .account-cta a:hover {
+      text-decoration: none;
+    }
+
+    /* ======================= FOOTER ======================= */
+    footer {
+      background:#020617;
+      color:#e5e7eb;
+      padding:32px 24px 18px;
+      border-top: 1px solid #111827;
+    }
+
+    .newsletter-container {
+      max-width:var(--sb-container-width);
+      margin:0 auto 24px;
+      text-align:center;
+    }
+
+    .newsletter-container h3 {
+      margin-bottom: 6px;
+    }
+
+    .newsletter-container p {
+      margin-top: 0;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
+    .newsletter-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+      margin-top: 8px;
+    }
+
+    footer input[type=email] {
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.4);
+      min-width:240px;
+      max-width:360px;
+      font-size:14px;
+      background:#020617;
+      color:#F9FAFB;
+      outline: none;
+    }
+
+    footer input[type=email]::placeholder {
+      color: rgba(156,163,175,0.9);
+    }
+
+    footer button {
+      padding:10px 18px;
+      border:none;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+    }
+
+    .footer-columns {
+      max-width:var(--sb-container-width);
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:24px;
+      justify-content:space-between;
+      font-size:13px;
+    }
+
+    .footer-brand {
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .footer-brand img {
+      height:80px;
+      width:auto;
+      display:block;
+    }
+
+    .footer-columns p { margin:4px 0; }
+
+    .footer-bottom {
+      max-width:var(--sb-container-width);
+      margin:20px auto 0;
+      padding-top:8px;
+      font-size:11px;
+      text-align:center;
+      color:#9CA3AF;
+      border-top:1px solid #111827;
+    }
+
+  </style>
 </head>
 <body>
-  <h1>Mon compte</h1>
 
-  <p>Email : <span id="user-email"></span></p>
-  <p>Points de fidélité : <span id="user-points"></span></p>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <span class="brand-text">Singbox</span>
+      </a>
 
-  <button id="logout-btn">Se déconnecter</button>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="boxs.html">Les boxs</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
+        </ul>
+      </nav>
 
-  <p id="account-message"></p>
+      <div class="header-actions">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
 
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="boxs.html">Les boxs</a></li>
+      <li><a href="actualites.html">Actualités</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="mon-compte.html">Mon compte</a></li>
+    </ul>
+  </nav>
+
+  <!-- SECTION MON COMPTE -->
+  <section id="account">
+    <div class="container">
+      <div class="account-header">
+        <p class="account-header-eyebrow">Espace client</p>
+        <h1>Mon compte Singbox</h1>
+        <p>Consultez vos informations et vos points de fidélité.</p>
+      </div>
+
+      <div class="account-layout">
+        <!-- Carte principale -->
+        <div class="card account-main-card">
+          <h2>Mes informations</h2>
+
+          <div>
+            <div class="account-field-label">Email</div>
+            <div class="account-field-value" id="user-email">–</div>
+          </div>
+
+          <div>
+            <div class="account-field-label">Points de fidélité</div>
+            <div class="account-field-value" id="user-points">–</div>
+
+            <div class="badge-points">
+              <span>★</span>
+              <span>10 points par réservation payante. À 100 points, la prochaine séance est offerte.</span>
+            </div>
+          </div>
+
+          <p class="account-subtext">
+            Utilisez toujours la même adresse email lors de vos réservations pour cumuler vos points automatiquement.
+          </p>
+
+          <div class="logout-row">
+            <button id="logout-btn" class="logout-btn">Se déconnecter</button>
+            <span id="account-message" class="account-message"></span>
+          </div>
+        </div>
+
+        <!-- Carte fidélité / info -->
+        <div class="card loyalty-card">
+          <div class="loyalty-pill">
+            <span>♪</span>
+            <span>Programme fidélité Singbox</span>
+          </div>
+          <h3>Comment ça marche&nbsp;?</h3>
+          <p>
+            Chaque réservation payante réalisée avec votre compte vous rapporte des points.
+          </p>
+          <p>
+            À 100 points, vous débloquez une séance offerte à utiliser sur une prochaine réservation (selon disponibilité).
+          </p>
+          <p class="loyalty-highlight" id="loyalty-highlight-text">
+            Il vous reste – points avant votre prochaine séance offerte.
+          </p>
+          <p class="loyalty-next">
+            Réservez directement depuis la page <a href="reservation.html">Réservation</a> ou finalisez depuis votre panier.
+          </p>
+
+          <p class="account-cta" id="not-logged-cta" style="display:none;">
+            Vous n’êtes pas connecté. Rendez-vous sur la page
+            <a href="panier.html">Panier & Paiement</a> pour vous connecter ou créer un compte
+            avant de réserver.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="newsletter-container">
+      <h3>Inscrivez-vous à notre newsletter</h3>
+      <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
+      <div class="newsletter-row">
+        <input
+          id="newsletter-email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+        />
+        <button
+          id="newsletter-submit"
+          type="button"
+        >
+          S'abonner aux actualités
+        </button>
+      </div>
+      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
+    </div>
+
+    <div class="footer-columns">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Logo Singbox" />
+        <div>
+          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0;">Karaoké Box à Toulouse</p>
+        </div>
+      </div>
+
+      <div>
+        <p><strong>Infos</strong></p>
+        <p><a href="mentions-legales.html">Mentions légales</a></p>
+        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
+        <p><a href="cgv.html">CGV</a></p>
+      </div>
+
+      <div>
+        <p><strong>Contact</strong></p>
+        <p>Adresse : [à compléter]</p>
+        <p>Email : contactsingbox@gmail.com</p>
+        <p>Téléphone : 06 00 00 00 00</p>
+      </div>
+
+      <div>
+        <p><strong>Réseaux</strong></p>
+
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
+            Instagram
+          </a>
+        </p>
+
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+          </svg>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
+            TikTok
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      Réalisé avec ♥ pour Singbox
+    </div>
+  </footer>
+
+  <!-- JS -->
   <script>
-    const API_BASE = "https://TON-BACKEND-RENDER.onrender.com"; // à adapter
+    // même logique que sur panier pour choisir le backend
+    const API_BASE =
+      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://singbox-backend.onrender.com";
+
+    function updateCartIcon() {
+      const el = document.getElementById("cart-count");
+      if (!el) return;
+      let panier = [];
+      try {
+        panier = JSON.parse(localStorage.getItem("panier")) || [];
+      } catch (e) {}
+      el.textContent = panier.length ? panier.length : "";
+    }
+
+    function updateLoyaltyHighlight(points) {
+      const el = document.getElementById("loyalty-highlight-text");
+      if (!el) return;
+      if (typeof points !== "number") {
+        el.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
+        return;
+      }
+      const next = Math.max(0, 100 - points);
+      if (next === 0) {
+        el.textContent = "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte 🎉";
+      } else {
+        el.textContent = `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
+      }
+    }
+
+    function showNotLoggedState() {
+      const emailEl = document.getElementById("user-email");
+      const pointsEl = document.getElementById("user-points");
+      const msgEl = document.getElementById("account-message");
+      const notLoggedCta = document.getElementById("not-logged-cta");
+
+      if (emailEl) emailEl.textContent = "Non connecté";
+      if (pointsEl) pointsEl.textContent = "—";
+      if (msgEl) {
+        msgEl.textContent = "Connectez-vous depuis la page Panier & Paiement pour cumuler vos points.";
+        msgEl.classList.remove("ok");
+      }
+      if (notLoggedCta) notLoggedCta.style.display = "block";
+
+      updateLoyaltyHighlight(null);
+    }
 
     async function loadProfile() {
       const token = localStorage.getItem("token");
       if (!token) {
-        window.location.href = "login.html";
+        showNotLoggedState();
         return;
       }
 
@@ -33,26 +931,122 @@
 
         if (!res.ok) {
           localStorage.removeItem("token");
-          window.location.href = "login.html";
+          showNotLoggedState();
           return;
         }
 
         const user = await res.json();
 
-        document.getElementById("user-email").textContent = user.email;
-        document.getElementById("user-points").textContent = user.points;
+        const emailEl = document.getElementById("user-email");
+        const pointsEl = document.getElementById("user-points");
+        const msgEl = document.getElementById("account-message");
+
+        if (emailEl) emailEl.textContent = user.email || "—";
+        if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
+        if (msgEl) {
+          msgEl.textContent = "Profil chargé avec succès.";
+          msgEl.classList.add("ok");
+        }
+
+        updateLoyaltyHighlight(user.points ?? 0);
       } catch (err) {
         console.error(err);
-        document.getElementById("account-message").textContent = "Erreur de chargement";
+        const msgEl = document.getElementById("account-message");
+        if (msgEl) {
+          msgEl.textContent = "Erreur de chargement.";
+          msgEl.classList.remove("ok");
+        }
       }
     }
 
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location.href = "login.html";
+    // Déconnexion
+    document.addEventListener("DOMContentLoaded", () => {
+      const logoutBtn = document.getElementById("logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("token");
+          const msgEl = document.getElementById("account-message");
+          if (msgEl) {
+            msgEl.textContent = "Vous avez été déconnecté.";
+            msgEl.classList.remove("ok");
+          }
+          showNotLoggedState();
+        });
+      }
     });
 
-    loadProfile();
+    // Header / burger + init
+    document.addEventListener("DOMContentLoaded", () => {
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
+
+      if (burgerBtn && mobileNav) {
+        burgerBtn.addEventListener("click", () => {
+          mobileNav.classList.toggle("open");
+        });
+
+        mobileNav.addEventListener("click", (e) => {
+          if (e.target.tagName === "A") {
+            mobileNav.classList.remove("open");
+          }
+        });
+      }
+
+      updateCartIcon();
+      loadProfile();
+    });
   </script>
+
+  <!-- Supabase Newsletter -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
+
+      if (!emailInput || !submitBtn || !messageBox) return;
+
+      submitBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+
+        messageBox.style.color = "#e5e7eb";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (!email || !email.includes("@")) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        const { error } = await window.supabaseClient
+          .from("newsletter_subscriptions")
+          .insert({ email });
+
+        if (error) {
+          if (
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"))
+          ) {
+            messageBox.style.color = "#38bdf8";
+            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+          } else {
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
+          }
+        } else {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
