@@ -260,38 +260,31 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* ----------- header responsive ----------- */
-    @media (max-width: 900px) {
-  /* on ajoute du padding en haut au body pour ne pas que le header fixe chevauche le titre */
-  body {
-    padding-top: 110px;
+  /* ----------- header responsive ----------- */
+@media (max-width: 900px) {
+  .header-inner {
+    padding: 10px 16px;
+    gap: 12px;
   }
 
-  .resa-card {
-    padding: 1.75rem 1.5rem 2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  /* sur très petit écran on ajuste un peu la hauteur */
-  body {
-    padding-top: 100px;
+  .main-nav {
+    display:none;
   }
 
-  .hero-resa {
-    padding-top: 9rem;
+  .nav-cta {
+    display:none;
   }
-  .hero-resa h1 {
-    font-size: 26px;
+
+  .brand-text {
+    display:none;
   }
-  .resa-header {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .burger-button {
+    display:flex;
   }
-  .resa-header button {
-    width: 100%;
-    text-align: center;
-    margin-top: 0.75rem;
+
+  .brand-logo {
+    width: 72px;
   }
 }
     /* ---------- HERO RÉSERVATION ---------- */
