@@ -268,7 +268,7 @@
       }
 
       .main-nav {
-        display:none !important; /* on masque TOUT le menu PC sur mobile */
+        display:none;
       }
 
       .nav-cta {
@@ -441,20 +441,6 @@
       margin-top: 4px;
     }
 
-    /* Message d'aide pour slider le tableau sur mobile */
-    .table-hint {
-      font-size: 11px;
-      color: var(--sb-text-muted);
-      margin: 0.4rem 0 0.2rem;
-      display: none; /* visible surtout sur mobile plus bas */
-    }
-
-    @media (max-width: 700px) {
-      .table-hint {
-        display: block;
-      }
-    }
-
     /* Alignement PC : bouton aligné sur le champ date */
     @media (min-width: 901px) {
       .resa-header {
@@ -475,6 +461,27 @@
       background: #020617;
       box-shadow: inset 0 0 0 1px rgba(15,23,42,0.8);
       overflow-x: auto;
+    }
+
+    /* Phrase d’aide pour mobile : glisser pour voir l’autre box */
+    .table-scroll-hint {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 0.1rem;
+      text-align: right;
+      display: none; /* visible uniquement sur mobile */
+    }
+
+    .table-scroll-hint .arrow {
+      font-size: 14px;
+      margin-left: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .table-scroll-hint {
+        display: block;
+      }
     }
 
     table {
@@ -922,8 +929,11 @@
           <button id="load-button">Voir les créneaux</button>
         </div>
 
-        <!-- Petit message pour prévenir qu'il faut slider pour voir l'autre box -->
-        <p class="table-hint">👉 Fais glisser le tableau vers la droite pour voir l’autre box.</p>
+        <!-- Texte d’aide mobile pour la 2e box -->
+        <p class="table-scroll-hint">
+          Sur mobile, glissez le tableau vers la droite pour voir l’autre box
+          <span class="arrow">⟶</span>
+        </p>
 
         <div class="table-wrapper">
           <table id="planning-table">
@@ -971,6 +981,8 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
+        <input type="email" placeholder="Entrez votre adresse e-mail" />
+        <button>S'abonner aux actualités</button>
         <input
           id="newsletter-email"
           type="email"
@@ -1356,7 +1368,7 @@
 
         const iso = dateInput.value;
         const parts = iso.split("-");
-        the const selectedDate = new Date(
+        const selectedDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
