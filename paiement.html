@@ -1207,11 +1207,13 @@
           <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="reservation.html">Réserver</a></li>
+          <!-- ICI : ancien "Réserver" → Mon compte -->
+          <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
 
       <div class="header-actions">
+        <!-- Bouton orange Réserver conservé -->
         <a href="reservation.html" class="nav-cta">Réserver</a>
         <a href="panier.html" class="cart-icon">
           🛒<span id="cart-count"></span>
@@ -1231,7 +1233,8 @@
       <li><a href="boxs.html">Les boxs</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
+      <!-- ICI aussi : Réserver → Mon compte dans le menu mobile -->
+      <li><a href="mon-compte.html">Mon compte</a></li>
     </ul>
   </nav>
 
@@ -1898,9 +1901,18 @@
               }
 
               try {
+                // ===== ICI : on envoie le token JWT pour que le backend puisse ajouter les points automatiquement =====
+                const token = localStorage.getItem("token");
+                const headers = {
+                  "Content-Type": "application/json",
+                };
+                if (token) {
+                  headers["Authorization"] = "Bearer " + token;
+                }
+
                 await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
                   method: "POST",
-                  headers: { "Content-Type": "application/json" },
+                  headers,
                   body: JSON.stringify({
                     panier,
                     customer,
