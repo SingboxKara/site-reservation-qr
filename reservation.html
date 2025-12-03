@@ -268,7 +268,7 @@
       }
 
       .main-nav {
-        display:none;
+        display:none !important; /* on masque TOUT le menu PC sur mobile */
       }
 
       .nav-cta {
@@ -439,6 +439,20 @@
       font-size: 12px;
       color: var(--sb-text-muted);
       margin-top: 4px;
+    }
+
+    /* Message d'aide pour slider le tableau sur mobile */
+    .table-hint {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin: 0.4rem 0 0.2rem;
+      display: none; /* visible surtout sur mobile plus bas */
+    }
+
+    @media (max-width: 700px) {
+      .table-hint {
+        display: block;
+      }
     }
 
     /* Alignement PC : bouton aligné sur le champ date */
@@ -908,6 +922,9 @@
           <button id="load-button">Voir les créneaux</button>
         </div>
 
+        <!-- Petit message pour prévenir qu'il faut slider pour voir l'autre box -->
+        <p class="table-hint">👉 Fais glisser le tableau vers la droite pour voir l’autre box.</p>
+
         <div class="table-wrapper">
           <table id="planning-table">
             <!-- Table générée en JS -->
@@ -1339,7 +1356,7 @@
 
         const iso = dateInput.value;
         const parts = iso.split("-");
-        const selectedDate = new Date(
+        the const selectedDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
