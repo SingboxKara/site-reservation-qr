@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox - Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #020617;
+      color: #f9fafb;
+    }
+    .admin-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 16px 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #020617;
+      border-radius: 16px;
+      padding: 16px 18px 18px;
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+    textarea {
+      border-radius: 12px;
+      min-height: 80px;
+      resize: vertical;
+    }
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(90deg, #C94C35, #F97316);
+      color: #fff;
+    }
+    button.secondary {
+      background: transparent;
+      border: 1px solid rgba(148,163,184,0.7);
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: linear-gradient(90deg, #C94C35, #F97316);
+      border-color: transparent;
+    }
+    .hidden { display: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+    th, td {
+      border-bottom: 1px solid rgba(30,41,59,0.9);
+      padding: 6px 4px;
+      text-align: left;
+    }
+    th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .text-muted { color: #9ca3af; font-size: 12px; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+    .status-pill.on { background:#022c22; color:#bbf7d0; }
+    .status-pill.off { background:#7f1d1d; color:#fee2e2; }
+    .login-card { max-width: 360px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <h1>Admin Singbox</h1>
+
+    <!-- LOGIN -->
+    <div id="login-section" class="card login-card">
+      <h2>Connexion</h2>
+      <p class="text-muted">Cette page est réservée à l’administration Singbox.</p>
+      <label for="login-email">E-mail</label>
+      <input type="email" id="login-email" placeholder="ton@email.fr" />
+      <label for="login-password">Mot de passe</label>
+      <input type="password" id="login-password" placeholder="Mot de passe" />
+      <button id="login-button">Se connecter</button>
+      <p id="login-message" class="text-muted" style="margin-top: 8px;"></p>
+    </div>
+
+    <!-- CONTENU ADMIN -->
+    <div id="admin-section" class="hidden">
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="margin:0;font-weight:600;">Connecté</p>
+          <p id="admin-email" class="text-muted" style="margin:0;"></p>
+        </div>
+        <button id="logout-button" class="secondary">Se déconnecter</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="codes">Codes promo</button>
+        <button class="tab-btn" data-tab="news">Actualités</button>
+      </div>
+
+      <!-- CODES PROMO -->
+      <section id="tab-codes" class="card">
+        <h2>Codes promo</h2>
+        <p class="text-muted">Créer un nouveau code promo pour les réservations.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;">
+          <div>
+            <label>Code</label>
+            <input id="code-input" placeholder="SINGBOX10" />
+          </div>
+          <div>
+            <label>Type</label>
+            <select id="type-input">
+              <option value="pourcentage">Pourcentage (%)</option>
+              <option value="montant">Montant (€)</option>
+              <option value="gratuit">Gratuit</option>
+            </select>
+          </div>
+          <div>
+            <label>Valeur</label>
+            <input id="valeur-input" type="number" step="1" min="0" placeholder="10" />
+          </div>
+          <div>
+            <label>Début (facultatif)</label>
+            <input id="debut-input" type="date" />
+          </div>
+          <div>
+            <label>Fin (facultatif)</label>
+            <input id="fin-input" type="date" />
+          </div>
+          <div>
+            <label>Utilisations max</label>
+            <input id="max-input" type="number" min="0" placeholder="Ex : 50" />
+          </div>
+        </div>
+        <button id="create-code-btn" style="margin-top:8px;">Créer le code</button>
+        <p id="code-message" class="text-muted" style="margin-top:6px;"></p>
+
+        <h3 style="margin-top:18px;">Liste des codes</h3>
+        <div class="text-muted">Clique sur “Désactiver” pour rendre un code inutilisable.</div>
+        <table id="codes-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Type</th>
+              <th>Valeur</th>
+              <th>Dates</th>
+              <th>Utilisations</th>
+              <th>Statut</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- ACTUALITÉS -->
+      <section id="tab-news" class="card hidden">
+        <h2>Actualités</h2>
+        <p class="text-muted">Créer ou mettre à jour les articles affichés sur ta page Actualités.</p>
+
+        <label>Titre</label>
+        <input id="news-title" placeholder="Ouverture prochaine de Singbox à Toulouse" />
+
+        <label>Slug (URL courte, ex: ouverture-singbox)</label>
+        <input id="news-slug" placeholder="ouverture-singbox" />
+
+        <label>Catégorie</label>
+        <input id="news-cat" placeholder="vie-lieu, coulisses-travaux..." />
+
+        <label>Chapeau (petite intro)</label>
+        <textarea id="news-chapeau" placeholder="Petit résumé de l’article..."></textarea>
+
+        <label>Contenu (HTML ou texte)</label>
+        <textarea id="news-content" placeholder="Contenu complet de l’article..."></textarea>
+
+        <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;">
+          <input type="checkbox" id="news-publie" checked style="width:16px;height:16px;" />
+          <label for="news-publie" style="margin:0;">Publié</label>
+        </div>
+
+        <button id="create-news-btn">Enregistrer l’actualité</button>
+        <p id="news-message" class="text-muted" style="margin-top:6px;"></p>
+
+        <h3 style="margin-top:18px;">Dernières actualités</h3>
+        <table id="news-table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Slug</th>
+              <th>Catégorie</th>
+              <th>Publié</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const supabaseUrl = "SUPABASE_URL_ICI";
+    const supabaseAnonKey = "SUPABASE_ANON_KEY_ICI";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const loginSection = document.getElementById("login-section");
+    const adminSection = document.getElementById("admin-section");
+    const loginEmail = document.getElementById("login-email");
+    const loginPass = document.getElementById("login-password");
+    const loginBtn = document.getElementById("login-button");
+    const loginMsg = document.getElementById("login-message");
+    const adminEmail = document.getElementById("admin-email");
+    const logoutBtn = document.getElementById("logout-button");
+
+    async function checkSession() {
+      const { data } = await supabaseClient.auth.getUser();
+      if (data && data.user) {
+        loginSection.classList.add("hidden");
+        adminSection.classList.remove("hidden");
+        adminEmail.textContent = data.user.email || "";
+        loadCodes();
+        loadNews();
+      } else {
+        loginSection.classList.remove("hidden");
+        adminSection.classList.add("hidden");
+      }
+    }
+
+    loginBtn.addEventListener("click", async () => {
+      loginMsg.textContent = "Connexion...";
+      const email = loginEmail.value.trim();
+      const password = loginPass.value.trim();
+      if (!email || !password) {
+        loginMsg.textContent = "Merci de remplir e-mail et mot de passe.";
+        return;
+      }
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        loginMsg.textContent = "Erreur : " + error.message;
+      } else {
+        loginMsg.textContent = "";
+        await checkSession();
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      loginPass.value = "";
+      await checkSession();
+    });
+
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const tab = btn.dataset.tab;
+        document.getElementById("tab-codes").classList.toggle("hidden", tab !== "codes");
+        document.getElementById("tab-news").classList.toggle("hidden", tab !== "news");
+      });
+    });
+
+    // --------- CODES PROMO ---------
+    const codeMsg = document.getElementById("code-message");
+
+    async function loadCodes() {
+      const tbody = document.querySelector("#codes-table tbody");
+      tbody.innerHTML = "<tr><td colspan='7'>Chargement...</td></tr>";
+      const { data, error } = await supabaseClient
+        .from("promo_codes")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (error) {
+        tbody.innerHTML = "<tr><td colspan='7'>Erreur de chargement</td></tr>";
+        console.error(error);
+        return;
+      }
+      tbody.innerHTML = "";
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        const dates =
+          (row.date_debut || "") +
+          (row.date_fin ? " → " + row.date_fin : "");
+        const uses =
+          (row.utilisations_actuelles || 0) +
+          (row.utilisations_max ? " / " + row.utilisations_max : "");
+
+        tr.innerHTML = `
+          <td>${row.code}</td>
+          <td>${row.type}</td>
+          <td>${row.valeur}</td>
+          <td>${dates || "-"}</td>
+          <td>${uses}</td>
+          <td>
+            <span class="status-pill ${row.actif ? "on" : "off"}">
+              ${row.actif ? "Actif" : "Inactif"}
+            </span>
+          </td>
+          <td>
+            ${row.actif ? `<button data-id="${row.id}" class="secondary small-btn">Désactiver</button>` : ""}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll("button[data-id]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-id");
+          await supabaseClient.from("promo_codes").update({ actif: false }).eq("id", id);
+          loadCodes();
+        });
+      });
+    }
+
+    document.getElementById("create-code-btn").addEventListener("click", async () => {
+      const code = document.getElementById("code-input").value.trim().toUpperCase();
+      const type = document.getElementById("type-input").value;
+      const valeur = parseFloat(document.getElementById("valeur-input").value || "0");
+      const date_debut = document.getElementById("debut-input").value || null;
+      const date_fin = document.getElementById("fin-input").value || null;
+      const utilisations_max = document.getElementById("max-input").value
+        ? parseInt(document.getElementById("max-input").value, 10)
+        : null;
+
+      if (!code || (type !== "gratuit" && !valeur)) {
+        codeMsg.textContent = "Code et valeur sont requis (sauf gratuit).";
+        return;
+      }
+
+      codeMsg.textContent = "Création...";
+      const { error } = await supabaseClient.from("promo_codes").insert([{
+        code, type, valeur, date_debut, date_fin, utilisations_max
+      }]);
+      if (error) {
+        codeMsg.textContent = "Erreur : " + error.message;
+        console.error(error);
+      } else {
+        codeMsg.textContent = "Code créé ✅";
+        document.getElementById("code-input").value = "";
+        document.getElementById("valeur-input").value = "";
+        document.getElementById("debut-input").value = "";
+        document.getElementById("fin-input").value = "";
+        document.getElementById("max-input").value = "";
+        loadCodes();
+      }
+    });
+
+    // --------- ACTUALITÉS ---------
+    async function loadNews() {
+      const tbody = document.querySelector("#news-table tbody");
+      tbody.innerHTML = "<tr><td colspan='5'>Chargement...</td></tr>";
+      const { data, error } = await supabaseClient
+        .from("actualites")
+        .select("id,titre,slug,categorie,publie,date_publication")
+        .order("date_publication", { ascending: false })
+        .limit(20);
+      if (error) {
+        tbody.innerHTML = "<tr><td colspan='5'>Erreur de chargement</td></tr>";
+        console.error(error);
+        return;
+      }
+      tbody.innerHTML = "";
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.titre}</td>
+          <td>${row.slug}</td>
+          <td>${row.categorie || "-"}</td>
+          <td>${row.publie ? "Oui" : "Non"}</td>
+          <td>${row.date_publication || ""}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("create-news-btn").addEventListener("click", async () => {
+      const titre = document.getElementById("news-title").value.trim();
+      const slug = document.getElementById("news-slug").value.trim();
+      const categorie = document.getElementById("news-cat").value.trim();
+      const chapeau = document.getElementById("news-chapeau").value.trim();
+      const contenu = document.getElementById("news-content").value.trim();
+      const publie = document.getElementById("news-publie").checked;
+      const msg = document.getElementById("news-message");
+
+      if (!titre || !slug) {
+        msg.textContent = "Titre et slug sont obligatoires.";
+        return;
+      }
+      msg.textContent = "Enregistrement...";
+
+      const { error } = await supabaseClient.from("actualites").upsert([{
+        titre, slug, categorie, chapeau, contenu, publie
+      }], { onConflict: "slug" });
+
+      if (error) {
+        msg.textContent = "Erreur : " + error.message;
+        console.error(error);
+      } else {
+        msg.textContent = "Actualité enregistrée ✅";
+        loadNews();
+      }
+    });
+
+    checkSession();
+  </script>
+</body>
+</html>
