@@ -54,7 +54,7 @@
       padding: 0 24px;
     }
 
-    /* ======================= HEADER GLOBAL (IDENTIQUE INDEX) ======================= */
+    /* ======================= HEADER GLOBAL ======================= */
 
     .site-header {
       position: fixed;
@@ -158,6 +158,11 @@
     .main-nav a:hover {
       color: #ffb96f;
       transition: 0.25s ease;
+    }
+
+    /* Lien actif pour cette page */
+    .main-nav a[href="boxs.html"]::after {
+      width: 100%;
     }
 
     /* Actions à droite */
@@ -582,7 +587,7 @@
 
 <body>
 
-  <!-- ================= HEADER IDENTIQUE INDEX ================= -->
+  <!-- ================= HEADER ================= -->
   <header class="site-header">
     <div class="header-inner">
       <!-- Bloc marque : logo + texte -->
@@ -730,17 +735,20 @@
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
-      <!-- FORMULAIRE NEWSLETTER -->
-      <form class="newsletter-row" id="newsletter-form">
+
+      <div class="newsletter-row">
         <input
-          type="email"
           id="newsletter-email"
-          name="email"
+          type="email"
           placeholder="Entrez votre adresse e-mail"
-          required
         />
-        <button type="submit" id="newsletter-submit">S'abonner</button>
-      </form>
+        <button
+          id="newsletter-submit"
+          type="button"
+        >
+          S'abonner
+        </button>
+      </div>
       <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
@@ -800,7 +808,7 @@
   </footer>
 
   <!-- Supabase JS -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
@@ -842,31 +850,27 @@
       updateCartIcon();
 
       // ----- Newsletter -----
-      const newsletterForm = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("newsletter-email");
       const messageEl = document.getElementById("newsletter-message");
       const submitBtn = document.getElementById("newsletter-submit");
 
-      if (newsletterForm && emailInput && messageEl && submitBtn) {
-        newsletterForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
+      if (emailInput && messageEl && submitBtn) {
+        submitBtn.addEventListener("click", async () => {
           const email = emailInput.value.trim();
 
-          // validation simple
+          messageEl.style.color = "#e5e7eb";
+          messageEl.textContent = "Envoi en cours...";
+
           if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+            messageEl.style.color = "#ff6b6b";
             messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
-            messageEl.style.color = "#f97373";
             return;
           }
 
           submitBtn.disabled = true;
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Envoi...";
-          messageEl.textContent = "";
 
           try {
-            const { data, error } = await supabaseClient
+            const { error } = await supabaseClient
               .from("newsletter_subscriptions")
               .insert([{ email }]);
 
@@ -882,7 +886,7 @@
             } else {
               messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
               messageEl.style.color = "#4ade80";
-              newsletterForm.reset();
+              emailInput.value = "";
             }
           } catch (err) {
             console.error(err);
@@ -891,7 +895,6 @@
             messageEl.style.color = "#f97373";
           } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
           }
         });
       }
