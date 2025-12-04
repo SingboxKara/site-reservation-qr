@@ -5,447 +5,850 @@
   <title>Singbox - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
+    :root {
+      --sb-bg-main: #020617;
+      --sb-bg-card: #020617;
+      --sb-border-soft: rgba(148,163,184,0.35);
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
+      --sb-accent: #C94C35;
+      --sb-accent-2: #F97316;
+      --sb-container-width: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #020617;
-      color: #f9fafb;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      color: var(--sb-text-main);
+      min-height: 100vh;
     }
+
+    h1, h2, h3 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
     .admin-container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 16px 40px;
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    .card {
-      background: #020617;
-      border-radius: 16px;
-      padding: 16px 18px 18px;
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-      margin-bottom: 24px;
-    }
-    label {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 13px;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 13px;
-      outline: none;
-      margin-bottom: 10px;
-    }
-    textarea {
-      border-radius: 12px;
-      min-height: 80px;
-      resize: vertical;
-    }
-    button {
-      border-radius: 999px;
-      border: none;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(90deg, #C94C35, #F97316);
-      color: #fff;
-    }
-    button.secondary {
-      background: transparent;
-      border: 1px solid rgba(148,163,184,0.7);
-    }
-    .tabs {
+
+    .admin-header {
       display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
     }
-    .tab-btn {
-      padding: 8px 14px;
+
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      object-fit: cover;
+      box-shadow: 0 0 0 2px rgba(249,250,251,0.12), 0 16px 40px rgba(0,0,0,0.9);
+    }
+
+    .admin-title-main {
+      font-size: 20px;
+    }
+
+    .admin-subtitle {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-top: 4px;
+    }
+
+    .admin-header-right button {
       border-radius: 999px;
       border: 1px solid rgba(148,163,184,0.6);
       background: transparent;
-      color: #e5e7eb;
-      font-size: 13px;
+      color: #E5E7EB;
+      font-size: 12px;
+      padding: 0.4rem 0.9rem;
       cursor: pointer;
     }
-    .tab-btn.active {
-      background: linear-gradient(90deg, #C94C35, #F97316);
-      border-color: transparent;
+
+    /* LOGIN SCREEN */
+    #login-screen {
+      display: none;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
     }
-    .hidden { display: none; }
+
+    #login-card {
+      max-width: 380px;
+      width: 100%;
+      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      border-radius: 20px;
+      padding: 1.8rem 1.8rem 1.6rem;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+
+    #login-card h1 {
+      font-size: 18px;
+      margin-bottom: 0.6rem;
+    }
+
+    #login-card p {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .login-field {
+      margin-bottom: 1rem;
+    }
+
+    .login-field label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .login-field input {
+      width: 100%;
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: var(--sb-text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .login-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+    }
+
+    #login-button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      background: linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.1),
+        0 16px 40px rgba(0,0,0,0.9);
+    }
+
+    #login-error {
+      font-size: 12px;
+      color: #f97373;
+      min-height: 1.1em;
+      margin-top: 0.2rem;
+    }
+
+    /* ADMIN SCREEN */
+    #admin-screen {
+      display: none;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-button {
+      border-radius: 999px 999px 0 0;
+      border: none;
+      padding: 0.5rem 1rem;
+      background: transparent;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      color: #F9FAFB;
+      border-bottom: 2px solid var(--sb-accent-2);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--sb-bg-card);
+      border-radius: 18px;
+      padding: 1.4rem 1.5rem 1.5rem;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      margin-bottom: 1.6rem;
+    }
+
+    .card h2 {
+      font-size: 16px;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .form-field {
+      font-size: 12px;
+    }
+
+    .form-field label {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .form-field input,
+    .form-field select {
+      width: 100%;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: var(--sb-text-main);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.6rem;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 1.4rem;
+      background: linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.1),
+        0 16px 40px rgba(0,0,0,0.9);
+    }
+
+    .helper-text {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-top: 4px;
+    }
+
+    .status-message {
+      font-size: 12px;
+      margin-top: 0.4rem;
+      min-height: 1.2em;
+    }
+
+    .status-message.ok {
+      color: #4ade80;
+    }
+
+    .status-message.error {
+      color: #f97373;
+    }
+
+    /* TABLE LISTE CODES */
+    .table-wrapper {
+      border-radius: 16px;
+      border: 1px solid rgba(31,41,55,0.9);
+      overflow: auto;
+      max-height: 480px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 8px;
       font-size: 12px;
+      min-width: 700px;
     }
+
+    thead {
+      background: #020617;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
     th, td {
-      border-bottom: 1px solid rgba(30,41,59,0.9);
-      padding: 6px 4px;
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
       text-align: left;
+      white-space: nowrap;
     }
-    th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .text-muted { color: #9ca3af; font-size: 12px; }
-    .status-pill {
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      color: #E5E7EB;
+    }
+
+    .badge {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
+      padding: 2px 6px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
-    .status-pill.on { background:#022c22; color:#bbf7d0; }
-    .status-pill.off { background:#7f1d1d; color:#fee2e2; }
-    .login-card { max-width: 360px; margin: 0 auto; }
+
+    .badge-active {
+      background: rgba(22,163,74,0.15);
+      color: #4ade80;
+      border: 1px solid rgba(74,222,128,0.6);
+    }
+
+    .badge-inactive {
+      background: rgba(75,85,99,0.4);
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .small-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 2px 8px;
+      font-size: 11px;
+      background: transparent;
+      color: #E5E7EB;
+      cursor: pointer;
+      margin-right: 4px;
+    }
+
+    .small-btn.danger {
+      border-color: rgba(248,113,113,0.8);
+      color: #fecaca;
+    }
+
+    .pill-free {
+      color: #facc15;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid-3,
+      .form-grid-2 {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="admin-container">
-    <h1>Admin Singbox</h1>
 
-    <!-- LOGIN -->
-    <div id="login-section" class="card login-card">
-      <h2>Connexion</h2>
-      <p class="text-muted">Cette page est réservée à l’administration Singbox.</p>
-      <label for="login-email">E-mail</label>
-      <input type="email" id="login-email" placeholder="ton@email.fr" />
-      <label for="login-password">Mot de passe</label>
-      <input type="password" id="login-password" placeholder="Mot de passe" />
-      <button id="login-button">Se connecter</button>
-      <p id="login-message" class="text-muted" style="margin-top: 8px;"></p>
-    </div>
+  <!-- Écran de login -->
+  <div id="login-screen">
+    <div id="login-card">
+      <h1>Accès admin Singbox</h1>
+      <p>Entrez le mot de passe pour accéder au back-office (codes promo, etc.).</p>
 
-    <!-- CONTENU ADMIN -->
-    <div id="admin-section" class="hidden">
-      <div class="card" style="display:flex;justify-content:space-between;align-items:center;">
-        <div>
-          <p style="margin:0;font-weight:600;">Connecté</p>
-          <p id="admin-email" class="text-muted" style="margin:0;"></p>
-        </div>
-        <button id="logout-button" class="secondary">Se déconnecter</button>
+      <div class="login-field">
+        <label for="admin-password">Mot de passe</label>
+        <input type="password" id="admin-password" autocomplete="current-password" />
       </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="codes">Codes promo</button>
-        <button class="tab-btn" data-tab="news">Actualités</button>
+      <div id="login-error"></div>
+
+      <div class="login-actions">
+        <button id="login-button">Se connecter</button>
       </div>
-
-      <!-- CODES PROMO -->
-      <section id="tab-codes" class="card">
-        <h2>Codes promo</h2>
-        <p class="text-muted">Créer un nouveau code promo pour les réservations.</p>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;">
-          <div>
-            <label>Code</label>
-            <input id="code-input" placeholder="SINGBOX10" />
-          </div>
-          <div>
-            <label>Type</label>
-            <select id="type-input">
-              <option value="pourcentage">Pourcentage (%)</option>
-              <option value="montant">Montant (€)</option>
-              <option value="gratuit">Gratuit</option>
-            </select>
-          </div>
-          <div>
-            <label>Valeur</label>
-            <input id="valeur-input" type="number" step="1" min="0" placeholder="10" />
-          </div>
-          <div>
-            <label>Début (facultatif)</label>
-            <input id="debut-input" type="date" />
-          </div>
-          <div>
-            <label>Fin (facultatif)</label>
-            <input id="fin-input" type="date" />
-          </div>
-          <div>
-            <label>Utilisations max</label>
-            <input id="max-input" type="number" min="0" placeholder="Ex : 50" />
-          </div>
-        </div>
-        <button id="create-code-btn" style="margin-top:8px;">Créer le code</button>
-        <p id="code-message" class="text-muted" style="margin-top:6px;"></p>
-
-        <h3 style="margin-top:18px;">Liste des codes</h3>
-        <div class="text-muted">Clique sur “Désactiver” pour rendre un code inutilisable.</div>
-        <table id="codes-table">
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Type</th>
-              <th>Valeur</th>
-              <th>Dates</th>
-              <th>Utilisations</th>
-              <th>Statut</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- ACTUALITÉS -->
-      <section id="tab-news" class="card hidden">
-        <h2>Actualités</h2>
-        <p class="text-muted">Créer ou mettre à jour les articles affichés sur ta page Actualités.</p>
-
-        <label>Titre</label>
-        <input id="news-title" placeholder="Ouverture prochaine de Singbox à Toulouse" />
-
-        <label>Slug (URL courte, ex: ouverture-singbox)</label>
-        <input id="news-slug" placeholder="ouverture-singbox" />
-
-        <label>Catégorie</label>
-        <input id="news-cat" placeholder="vie-lieu, coulisses-travaux..." />
-
-        <label>Chapeau (petite intro)</label>
-        <textarea id="news-chapeau" placeholder="Petit résumé de l’article..."></textarea>
-
-        <label>Contenu (HTML ou texte)</label>
-        <textarea id="news-content" placeholder="Contenu complet de l’article..."></textarea>
-
-        <div style="display:flex;align-items:center;gap:6px;margin:6px 0 10px;">
-          <input type="checkbox" id="news-publie" checked style="width:16px;height:16px;" />
-          <label for="news-publie" style="margin:0;">Publié</label>
-        </div>
-
-        <button id="create-news-btn">Enregistrer l’actualité</button>
-        <p id="news-message" class="text-muted" style="margin-top:6px;"></p>
-
-        <h3 style="margin-top:18px;">Dernières actualités</h3>
-        <table id="news-table">
-          <thead>
-            <tr>
-              <th>Titre</th>
-              <th>Slug</th>
-              <th>Catégorie</th>
-              <th>Publié</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </section>
     </div>
   </div>
 
+  <!-- Écran admin -->
+  <div id="admin-screen">
+    <div class="admin-container">
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
+          <div>
+            <h1 class="admin-title-main">Back-office Singbox</h1>
+            <p class="admin-subtitle">Gère ici tes codes promo (réducs, gratuites, etc.).</p>
+          </div>
+        </div>
+        <div class="admin-header-right">
+          <button id="logout-button">Se déconnecter</button>
+        </div>
+      </header>
+
+      <div class="tabs">
+        <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
+        <!-- plus tard : <button class="tab-button" data-tab="tab-news">Actualités</button> -->
+      </div>
+
+      <!-- Onglet codes promo -->
+      <section id="tab-promo" class="tab-content active">
+        <!-- Formulaire de création -->
+        <div class="card">
+          <h2>Créer un code promo</h2>
+          <p class="card-subtitle">
+            Ajoute un code (réduction ou gratuit) utilisable sur la réservation.
+          </p>
+
+          <form id="promo-form">
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="promo-code">Code</label>
+                <input type="text" id="promo-code" placeholder="OUVERTURE, NOEL25..." required />
+              </div>
+              <div class="form-field">
+                <label for="promo-type">Type</label>
+                <select id="promo-type">
+                  <option value="percent">Pourcentage (%)</option>
+                  <option value="fixed">Montant fixe (€)</option>
+                  <option value="free">Gratuit (100%)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="promo-value">Valeur</label>
+                <input type="number" id="promo-value" placeholder="ex : 20" min="0" step="0.01" />
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="promo-valid-from">Valide du</label>
+                <input type="date" id="promo-valid-from" />
+              </div>
+              <div class="form-field">
+                <label for="promo-valid-to">Valide jusqu'au</label>
+                <input type="date" id="promo-valid-to" />
+              </div>
+              <div class="form-field">
+                <label for="promo-max-uses">Nb utilisations max</label>
+                <input type="number" id="promo-max-uses" placeholder="ex : 50 ou vide = illimité" min="1" />
+              </div>
+            </div>
+
+            <p class="helper-text">
+              Type <strong>free</strong> = séance gratuite (tu peux l’utiliser pour les invits, influenceurs, etc.).
+            </p>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Créer / enregistrer</button>
+            </div>
+          </form>
+
+          <div id="promo-form-message" class="status-message"></div>
+        </div>
+
+        <!-- Liste des codes -->
+        <div class="card">
+          <h2>Liste des codes promo</h2>
+          <p class="card-subtitle">
+            Tu peux activer/désactiver un code ou le supprimer. Les colonnes <em>utilisations</em> supposent que tu mettras à jour <code>used_count</code> côté backend plus tard.
+          </p>
+
+          <div id="promo-list-message" class="status-message"></div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Type</th>
+                  <th>Valeur</th>
+                  <th>Valide du</th>
+                  <th>au</th>
+                  <th>Utilisations</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="promo-table-body">
+                <!-- rempli en JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- plus tard : onglet actualités -->
+      <!-- <section id="tab-news" class="tab-content">...</section> -->
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // 🔐 Mot de passe admin (à CHANGER)
+    const ADMIN_PASSWORD = "SingboxAdmin123";
+
+    // Supabase config (les mêmes que sur ton site)
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    const loginSection = document.getElementById("login-section");
-    const adminSection = document.getElementById("admin-section");
-    const loginEmail = document.getElementById("login-email");
-    const loginPass = document.getElementById("login-password");
-    const loginBtn = document.getElementById("login-button");
-    const loginMsg = document.getElementById("login-message");
-    const adminEmail = document.getElementById("admin-email");
-    const logoutBtn = document.getElementById("logout-button");
+    // --- Login / logout ---
+    function showLogin() {
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("admin-screen").style.display = "none";
+    }
 
-    async function checkSession() {
-      const { data } = await supabaseClient.auth.getUser();
-      if (data && data.user) {
-        loginSection.classList.add("hidden");
-        adminSection.classList.remove("hidden");
-        adminEmail.textContent = data.user.email || "";
-        loadCodes();
-        loadNews();
+    function showAdmin() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
+    }
+
+    function checkAuth() {
+      if (localStorage.getItem("sb_isAdmin") === "true") {
+        showAdmin();
+        loadPromoCodes();
       } else {
-        loginSection.classList.remove("hidden");
-        adminSection.classList.add("hidden");
+        showLogin();
       }
     }
 
-    loginBtn.addEventListener("click", async () => {
-      loginMsg.textContent = "Connexion...";
-      const email = loginEmail.value.trim();
-      const password = loginPass.value.trim();
-      if (!email || !password) {
-        loginMsg.textContent = "Merci de remplir e-mail et mot de passe.";
-        return;
-      }
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) {
-        loginMsg.textContent = "Erreur : " + error.message;
-      } else {
-        loginMsg.textContent = "";
-        await checkSession();
-      }
-    });
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginButton = document.getElementById("login-button");
+      const loginError = document.getElementById("login-error");
+      const passwordInput = document.getElementById("admin-password");
+      const logoutButton = document.getElementById("logout-button");
 
-    logoutBtn.addEventListener("click", async () => {
-      await supabaseClient.auth.signOut();
-      loginPass.value = "";
-      await checkSession();
-    });
+      // Tabs (au cas où tu en ajoutes d'autres plus tard)
+      document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
 
-    // Tabs
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const tab = btn.dataset.tab;
-        document.getElementById("tab-codes").classList.toggle("hidden", tab !== "codes");
-        document.getElementById("tab-news").classList.toggle("hidden", tab !== "news");
-      });
-    });
-
-    // --------- CODES PROMO ---------
-    const codeMsg = document.getElementById("code-message");
-
-    async function loadCodes() {
-      const tbody = document.querySelector("#codes-table tbody");
-      tbody.innerHTML = "<tr><td colspan='7'>Chargement...</td></tr>";
-      const { data, error } = await supabaseClient
-        .from("promo_codes")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) {
-        tbody.innerHTML = "<tr><td colspan='7'>Erreur de chargement</td></tr>";
-        console.error(error);
-        return;
-      }
-      tbody.innerHTML = "";
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        const dates =
-          (row.date_debut || "") +
-          (row.date_fin ? " → " + row.date_fin : "");
-        const uses =
-          (row.utilisations_actuelles || 0) +
-          (row.utilisations_max ? " / " + row.utilisations_max : "");
-
-        tr.innerHTML = `
-          <td>${row.code}</td>
-          <td>${row.type}</td>
-          <td>${row.valeur}</td>
-          <td>${dates || "-"}</td>
-          <td>${uses}</td>
-          <td>
-            <span class="status-pill ${row.actif ? "on" : "off"}">
-              ${row.actif ? "Actif" : "Inactif"}
-            </span>
-          </td>
-          <td>
-            ${row.actif ? `<button data-id="${row.id}" class="secondary small-btn">Désactiver</button>` : ""}
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      tbody.querySelectorAll("button[data-id]").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-id");
-          await supabaseClient.from("promo_codes").update({ actif: false }).eq("id", id);
-          loadCodes();
+          btn.classList.add("active");
+          const target = document.getElementById(btn.dataset.tab);
+          if (target) target.classList.add("active");
         });
       });
-    }
 
-    document.getElementById("create-code-btn").addEventListener("click", async () => {
-      const code = document.getElementById("code-input").value.trim().toUpperCase();
-      const type = document.getElementById("type-input").value;
-      const valeur = parseFloat(document.getElementById("valeur-input").value || "0");
-      const date_debut = document.getElementById("debut-input").value || null;
-      const date_fin = document.getElementById("fin-input").value || null;
-      const utilisations_max = document.getElementById("max-input").value
-        ? parseInt(document.getElementById("max-input").value, 10)
-        : null;
-
-      if (!code || (type !== "gratuit" && !valeur)) {
-        codeMsg.textContent = "Code et valeur sont requis (sauf gratuit).";
-        return;
-      }
-
-      codeMsg.textContent = "Création...";
-      const { error } = await supabaseClient.from("promo_codes").insert([{
-        code, type, valeur, date_debut, date_fin, utilisations_max
-      }]);
-      if (error) {
-        codeMsg.textContent = "Erreur : " + error.message;
-        console.error(error);
-      } else {
-        codeMsg.textContent = "Code créé ✅";
-        document.getElementById("code-input").value = "";
-        document.getElementById("valeur-input").value = "";
-        document.getElementById("debut-input").value = "";
-        document.getElementById("fin-input").value = "";
-        document.getElementById("max-input").value = "";
-        loadCodes();
-      }
-    });
-
-    // --------- ACTUALITÉS ---------
-    async function loadNews() {
-      const tbody = document.querySelector("#news-table tbody");
-      tbody.innerHTML = "<tr><td colspan='5'>Chargement...</td></tr>";
-      const { data, error } = await supabaseClient
-        .from("actualites")
-        .select("id,titre,slug,categorie,publie,date_publication")
-        .order("date_publication", { ascending: false })
-        .limit(20);
-      if (error) {
-        tbody.innerHTML = "<tr><td colspan='5'>Erreur de chargement</td></tr>";
-        console.error(error);
-        return;
-      }
-      tbody.innerHTML = "";
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.titre}</td>
-          <td>${row.slug}</td>
-          <td>${row.categorie || "-"}</td>
-          <td>${row.publie ? "Oui" : "Non"}</td>
-          <td>${row.date_publication || ""}</td>
-        `;
-        tbody.appendChild(tr);
+      loginButton.addEventListener("click", () => {
+        const pwd = passwordInput.value.trim();
+        if (!pwd) {
+          loginError.textContent = "Merci de saisir le mot de passe.";
+          return;
+        }
+        if (pwd === ADMIN_PASSWORD) {
+          localStorage.setItem("sb_isAdmin", "true");
+          loginError.textContent = "";
+          passwordInput.value = "";
+          showAdmin();
+          loadPromoCodes();
+        } else {
+          loginError.textContent = "Mot de passe incorrect.";
+        }
       });
-    }
 
-    document.getElementById("create-news-btn").addEventListener("click", async () => {
-      const titre = document.getElementById("news-title").value.trim();
-      const slug = document.getElementById("news-slug").value.trim();
-      const categorie = document.getElementById("news-cat").value.trim();
-      const chapeau = document.getElementById("news-chapeau").value.trim();
-      const contenu = document.getElementById("news-content").value.trim();
-      const publie = document.getElementById("news-publie").checked;
-      const msg = document.getElementById("news-message");
+      passwordInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          loginButton.click();
+        }
+      });
 
-      if (!titre || !slug) {
-        msg.textContent = "Titre et slug sont obligatoires.";
-        return;
+      if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+          localStorage.removeItem("sb_isAdmin");
+          showLogin();
+        });
       }
-      msg.textContent = "Enregistrement...";
 
-      const { error } = await supabaseClient.from("actualites").upsert([{
-        titre, slug, categorie, chapeau, contenu, publie
-      }], { onConflict: "slug" });
+      // Form promo
+      const promoForm = document.getElementById("promo-form");
+      promoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await handlePromoFormSubmit();
+      });
 
-      if (error) {
-        msg.textContent = "Erreur : " + error.message;
-        console.error(error);
-      } else {
-        msg.textContent = "Actualité enregistrée ✅";
-        loadNews();
-      }
+      checkAuth();
     });
 
-    checkSession();
+    // --- Gestion des codes promo ---
+
+    async function handlePromoFormSubmit() {
+      const codeInput = document.getElementById("promo-code");
+      const typeInput = document.getElementById("promo-type");
+      const valueInput = document.getElementById("promo-value");
+      const validFromInput = document.getElementById("promo-valid-from");
+      const validToInput = document.getElementById("promo-valid-to");
+      const maxUsesInput = document.getElementById("promo-max-uses");
+      const msgEl = document.getElementById("promo-form-message");
+
+      msgEl.textContent = "";
+      msgEl.className = "status-message";
+
+      const code = codeInput.value.trim().toUpperCase();
+      const type = typeInput.value;
+      let value = valueInput.value ? parseFloat(valueInput.value) : 0;
+
+      if (!code) {
+        msgEl.textContent = "Merci de saisir un code.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      if (type !== "free" && (!value || value <= 0)) {
+        msgEl.textContent = "Merci de mettre une valeur (pourcent ou €) > 0.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      if (type === "free") {
+        value = 0;
+      }
+
+      const payload = {
+        code,
+        type,
+        value,
+        valid_from: validFromInput.value || null,
+        valid_to: validToInput.value || null,
+        max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
+        is_active: true
+      };
+
+      msgEl.textContent = "Enregistrement en cours...";
+      try {
+        const { error } = await supabaseClient
+          .from("promo_codes")
+          .upsert(payload, { onConflict: "code" });
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "enregistrement impossible.");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Code enregistré avec succès ✅";
+          msgEl.classList.add("ok");
+          await loadPromoCodes();
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    async function loadPromoCodes() {
+      const tbody = document.getElementById("promo-table-body");
+      const msgEl = document.getElementById("promo-list-message");
+
+      if (!tbody) return;
+      tbody.innerHTML = "";
+      msgEl.textContent = "Chargement des codes promo...";
+      msgEl.className = "status-message";
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("promo_codes")
+          .select("*")
+          .order("code", { ascending: true });
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors du chargement des codes : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        msgEl.textContent = "";
+        if (!data || data.length === 0) {
+          msgEl.textContent = "Aucun code promo pour le moment.";
+          msgEl.classList.add("error");
+          return;
+        }
+
+        data.forEach((row) => {
+          const tr = document.createElement("tr");
+
+          const tdCode = document.createElement("td");
+          tdCode.textContent = row.code;
+          tr.appendChild(tdCode);
+
+          const tdType = document.createElement("td");
+          if (row.type === "free") {
+            tdType.innerHTML = 'Gratuit <span class="pill-free">(free)</span>';
+          } else if (row.type === "percent") {
+            tdType.textContent = "Pourcentage";
+          } else if (row.type === "fixed") {
+            tdType.textContent = "Montant fixe";
+          } else {
+            tdType.textContent = row.type || "-";
+          }
+          tr.appendChild(tdType);
+
+          const tdValue = document.createElement("td");
+          if (row.type === "percent") {
+            tdValue.textContent = (row.value || 0) + " %";
+          } else if (row.type === "fixed") {
+            tdValue.textContent = (row.value || 0) + " €";
+          } else {
+            tdValue.textContent = "-";
+          }
+          tr.appendChild(tdValue);
+
+          const tdFrom = document.createElement("td");
+          tdFrom.textContent = row.valid_from || "-";
+          tr.appendChild(tdFrom);
+
+          const tdTo = document.createElement("td");
+          tdTo.textContent = row.valid_to || "-";
+          tr.appendChild(tdTo);
+
+          const tdUses = document.createElement("td");
+          const used = row.used_count || 0;
+          const max = row.max_uses || "∞";
+          tdUses.textContent = used + " / " + max;
+          tr.appendChild(tdUses);
+
+          const tdStatus = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.classList.add("badge");
+          if (row.is_active) {
+            badge.classList.add("badge-active");
+            badge.textContent = "Actif";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Inactif";
+          }
+          tdStatus.appendChild(badge);
+          tr.appendChild(tdStatus);
+
+          const tdActions = document.createElement("td");
+
+          const toggleBtn = document.createElement("button");
+          toggleBtn.className = "small-btn";
+          toggleBtn.textContent = row.is_active ? "Désactiver" : "Activer";
+          toggleBtn.addEventListener("click", async () => {
+            await togglePromoActive(row.id, !row.is_active);
+          });
+          tdActions.appendChild(toggleBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "small-btn danger";
+          deleteBtn.textContent = "Supprimer";
+          deleteBtn.addEventListener("click", async () => {
+            if (confirm(`Supprimer le code ${row.code} ?`)) {
+              await deletePromo(row.id);
+            }
+          });
+          tdActions.appendChild(deleteBtn);
+
+          tr.appendChild(tdActions);
+
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    async function togglePromoActive(id, newStatus) {
+      const msgEl = document.getElementById("promo-list-message");
+      msgEl.textContent = "Mise à jour du statut...";
+      msgEl.className = "status-message";
+
+      try {
+        const { error } = await supabaseClient
+          .from("promo_codes")
+          .update({ is_active: newStatus })
+          .eq("id", id);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Statut mis à jour.";
+          msgEl.classList.add("ok");
+          await loadPromoCodes();
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    async function deletePromo(id) {
+      const msgEl = document.getElementById("promo-list-message");
+      msgEl.textContent = "Suppression en cours...";
+      msgEl.className = "status-message";
+
+      try {
+        const { error } = await supabaseClient
+          .from("promo_codes")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Code supprimé.";
+          msgEl.classList.add("ok");
+          await loadPromoCodes();
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
+      }
+    }
   </script>
 </body>
 </html>
