@@ -639,6 +639,7 @@
           <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
 
@@ -763,17 +764,20 @@
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
-      <!-- Formulaire newsletter -->
-      <form class="newsletter-row" id="newsletter-form">
+
+      <div class="newsletter-row">
         <input
-          type="email"
           id="newsletter-email"
-          name="email"
+          type="email"
           placeholder="Entrez votre adresse e-mail"
-          required
         />
-        <button type="submit" id="newsletter-submit">S'abonner</button>
-      </form>
+        <button
+          id="newsletter-submit"
+          type="button"
+        >
+          S'abonner
+        </button>
+      </div>
       <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
@@ -828,15 +832,9 @@
     </div>
   </footer>
 
-  <!-- Supabase JS -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
+  <!-- Supabase + JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
-
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -852,7 +850,7 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
@@ -870,59 +868,51 @@
 
       updateCartIcon();
 
-      // ----- Newsletter -----
-      const newsletterForm = document.getElementById("newsletter-form");
+      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
       const emailInput = document.getElementById("newsletter-email");
-      const messageEl = document.getElementById("newsletter-message");
       const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
 
-      if (newsletterForm && emailInput && messageEl && submitBtn) {
-        newsletterForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
+      if (!emailInput || !submitBtn || !messageBox) return;
 
-          const email = emailInput.value.trim();
+      submitBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
 
-          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
-            messageEl.style.color = "#f97373";
-            return;
+        messageBox.style.color = "#e5e7eb";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (!email || !email.includes("@")) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert({ email });
+
+        if (error) {
+          // Erreur doublon (contrainte UNIQUE)
+          if (
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"))
+          ) {
+            messageBox.style.color = "#38bdf8";
+            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+          } else {
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
           }
-
-          submitBtn.disabled = true;
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Envoi...";
-          messageEl.textContent = "";
-
-          try {
-            const { data, error } = await supabaseClient
-              .from("newsletter_subscriptions")
-              .insert([{ email }]);
-
-            if (error) {
-              console.error(error);
-              if (error.code === "23505") {
-                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
-              } else {
-                messageEl.textContent =
-                  "Oups, une erreur est survenue. Réessaie dans quelques instants.";
-              }
-              messageEl.style.color = "#f97373";
-            } else {
-              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
-              messageEl.style.color = "#4ade80";
-              newsletterForm.reset();
-            }
-          } catch (err) {
-            console.error(err);
-            messageEl.textContent =
-              "Erreur réseau, vérifie ta connexion et réessaie.";
-            messageEl.style.color = "#f97373";
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          }
-        });
-      }
+        } else {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        }
+      });
     });
   </script>
 </body>
