@@ -158,6 +158,7 @@
       transition: 0.25s ease;
     }
 
+    /* lien actif */
     .main-nav a[href="actualites.html"]::after {
       width: 100%;
     }
@@ -850,7 +851,7 @@
         <p>
           Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.
         </p>
-        <button class="news-cta-button">
+        <button class="news-cta-button" id="news-cta-button">
           S’abonner aux actualités
         </button>
       </div>
@@ -859,7 +860,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="newsletter-container">
+    <div class="newsletter-container" id="newsletter-section">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <!-- Newsletter avec formulaire -->
@@ -931,8 +932,8 @@
     </div>
   </footer>
 
-  <!-- Supabase JS -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Supabase JS (CDN jsDelivr, comme sur les autres pages) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- SCRIPT -->
   <script>
@@ -972,6 +973,7 @@
         });
       }
 
+      // Filtres actualités
       const filterPills = document.querySelectorAll(".filter-pill");
       const cards = document.querySelectorAll(".news-card");
 
@@ -1003,6 +1005,20 @@
 
       updateCartIcon();
 
+      // CTA "S’abonner aux actualités" -> scroll vers la newsletter
+      const ctaBtn = document.getElementById("news-cta-button");
+      const newsletterSection = document.getElementById("newsletter-section");
+      const newsletterEmail = document.getElementById("newsletter-email");
+
+      if (ctaBtn && newsletterSection) {
+        ctaBtn.addEventListener("click", () => {
+          newsletterSection.scrollIntoView({ behavior: "smooth" });
+          if (newsletterEmail) {
+            setTimeout(() => newsletterEmail.focus(), 600);
+          }
+        });
+      }
+
       // ----- Newsletter -----
       const newsletterForm = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("newsletter-email");
@@ -1027,7 +1043,7 @@
           messageEl.textContent = "";
 
           try {
-            const { data, error } = await supabaseClient
+            const { error } = await supabaseClient
               .from("newsletter_subscriptions")
               .insert([{ email }]);
 
