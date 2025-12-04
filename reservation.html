@@ -261,7 +261,6 @@
     .mobile-nav.open { display:block; }
 
     /* ----------- header responsive (téléphones / tablettes) ----------- */
-    /* On masque le menu de catégories et on affiche le burger */
     @media screen and (max-width: 1024px) {
       .header-inner {
         padding: 10px 16px;
@@ -442,7 +441,6 @@
       margin-top: 4px;
     }
 
-    /* Alignement PC : bouton aligné sur le champ date */
     @media (min-width: 901px) {
       .resa-header {
         align-items: flex-start;
@@ -450,7 +448,7 @@
 
       .resa-header button {
         align-self: flex-start;
-        margin-top: 1.55rem; /* ajuste la hauteur au niveau du champ date */
+        margin-top: 1.55rem;
       }
     }
 
@@ -464,14 +462,13 @@
       overflow-x: auto;
     }
 
-    /* Phrase d’aide pour mobile : glisser pour voir l’autre box */
     .table-scroll-hint {
       font-size: 11px;
       color: var(--sb-text-muted);
       margin-top: 0.5rem;
       margin-bottom: 0.1rem;
       text-align: right;
-      display: none; /* visible uniquement sur mobile */
+      display: none;
     }
 
     .table-scroll-hint .arrow {
@@ -1369,7 +1366,7 @@
 
         const iso = dateInput.value;
         const parts = iso.split("-");
-        the selectedDate = new Date(
+        const selectedDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
@@ -1490,7 +1487,6 @@
           .insert({ email });
 
         if (error) {
-          // Erreur doublon (contrainte UNIQUE)
           if (
             error.code === "23505" ||
             (error.message && error.message.includes("duplicate key value"))
@@ -1499,7 +1495,7 @@
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
           } else {
             messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message";
+            messageBox.textContent = "Erreur : " + error.message;
           }
         } else {
           messageBox.style.color = "#38bdf8";
