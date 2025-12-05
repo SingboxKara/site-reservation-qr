@@ -450,10 +450,10 @@
               <div class="form-field">
                 <label for="promo-type">Type</label>
                 <select id="promo-type">
-  <option value="percentage">Pourcentage (%)</option>
-  <option value="fixed">Montant fixe (€)</option>
-  <option value="free">Séance gratuite</option>
-</select>
+                  <option value="percentage">Pourcentage (%)</option>
+                  <option value="fixed">Montant fixe (€)</option>
+                  <option value="free">Séance gratuite</option>
+                </select>
               </div>
               <div class="form-field">
                 <label for="promo-value">Valeur</label>
@@ -562,7 +562,7 @@
       const passwordInput = document.getElementById("admin-password");
       const logoutButton = document.getElementById("logout-button");
 
-      // Tabs (au cas où tu en ajoutes d'autres plus tard)
+      // Tabs
       document.querySelectorAll(".tab-button").forEach(btn => {
         btn.addEventListener("click", () => {
           document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
@@ -629,8 +629,8 @@
       msgEl.className = "status-message";
 
       const code = codeInput.value.trim().toUpperCase();
-      const type = document.getElementById("promo-type").value;
-      let value = valueInput.value ? parseFloat(valueInput.value) : 0;
+      const type = typeInput.value; // 'percentage' | 'fixed' | 'free'
+      let valeur = valueInput.value ? parseFloat(valueInput.value) : 0;
 
       if (!code) {
         msgEl.textContent = "Merci de saisir un code.";
@@ -638,20 +638,20 @@
         return;
       }
 
-      if (type !== "free" && (!value || value <= 0)) {
+      if (type !== "free" && (!valeur || valeur <= 0)) {
         msgEl.textContent = "Merci de mettre une valeur (pourcent ou €) > 0.";
         msgEl.classList.add("error");
         return;
       }
 
       if (type === "free") {
-        value = 0;
+        valeur = 0;
       }
 
       const payload = {
         code,
         type,
-        value,
+        valeur, // <-- colonne Supabase
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
@@ -719,7 +719,7 @@
           const tdType = document.createElement("td");
           if (row.type === "free") {
             tdType.innerHTML = 'Gratuit <span class="pill-free">(free)</span>';
-          } else if (row.type === "percent") {
+          } else if (row.type === "percentage") {
             tdType.textContent = "Pourcentage";
           } else if (row.type === "fixed") {
             tdType.textContent = "Montant fixe";
@@ -729,10 +729,10 @@
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
-          if (row.type === "percent") {
-            tdValue.textContent = (row.value || 0) + " %";
+          if (row.type === "percentage") {
+            tdValue.textContent = (row.valeur || 0) + " %";
           } else if (row.type === "fixed") {
-            tdValue.textContent = (row.value || 0) + " €";
+            tdValue.textContent = (row.valeur || 0) + " €";
           } else {
             tdValue.textContent = "-";
           }
