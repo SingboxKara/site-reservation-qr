@@ -429,7 +429,6 @@
 
       <div class="tabs">
         <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
-        <!-- plus tard : <button class="tab-button" data-tab="tab-news">Actualités</button> -->
       </div>
 
       <!-- Onglet codes promo -->
@@ -518,9 +517,6 @@
           </div>
         </div>
       </section>
-
-      <!-- plus tard : onglet actualités -->
-      <!-- <section id="tab-news" class="tab-content">...</section> -->
     </div>
   </div>
 
@@ -629,8 +625,8 @@
       msgEl.className = "status-message";
 
       const code = codeInput.value.trim().toUpperCase();
-      const type = typeInput.value; // 'percentage' | 'fixed' | 'free'
-      let valeur = valueInput.value ? parseFloat(valueInput.value) : 0;
+      const type = typeInput.value; // 'percent' | 'fixed' | 'free'
+      let numericValue = valueInput.value ? parseFloat(valueInput.value) : 0;
 
       if (!code) {
         msgEl.textContent = "Merci de saisir un code.";
@@ -638,20 +634,20 @@
         return;
       }
 
-      if (type !== "free" && (!valeur || valeur <= 0)) {
+      if (type !== "free" && (!numericValue || numericValue <= 0)) {
         msgEl.textContent = "Merci de mettre une valeur (pourcent ou €) > 0.";
         msgEl.classList.add("error");
         return;
       }
 
       if (type === "free") {
-        valeur = 0;
+        numericValue = 0;
       }
 
       const payload = {
         code,
         type,
-        valeur, // <-- colonne Supabase
+        value: numericValue, // <-- colonne Supabase 'value'
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
@@ -719,7 +715,7 @@
           const tdType = document.createElement("td");
           if (row.type === "free") {
             tdType.innerHTML = 'Gratuit <span class="pill-free">(free)</span>';
-          } else if (row.type === "percentage") {
+          } else if (row.type === "percent") {
             tdType.textContent = "Pourcentage";
           } else if (row.type === "fixed") {
             tdType.textContent = "Montant fixe";
@@ -729,10 +725,10 @@
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
-          if (row.type === "percentage") {
-            tdValue.textContent = (row.valeur || 0) + " %";
+          if (row.type === "percent") {
+            tdValue.textContent = (row.value || 0) + " %";
           } else if (row.type === "fixed") {
-            tdValue.textContent = (row.valeur || 0) + " €";
+            tdValue.textContent = (row.value || 0) + " €";
           } else {
             tdValue.textContent = "-";
           }
