@@ -268,7 +268,7 @@
       }
 
       nav.main-nav {
-        display: none; /* plus de liens texte */
+        display: none;
       }
 
       .brand-logo {
@@ -1207,13 +1207,11 @@
           <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <!-- ICI : ancien "Réserver" → Mon compte -->
           <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
 
       <div class="header-actions">
-        <!-- Bouton orange Réserver conservé -->
         <a href="reservation.html" class="nav-cta">Réserver</a>
         <a href="panier.html" class="cart-icon">
           🛒<span id="cart-count"></span>
@@ -1233,7 +1231,6 @@
       <li><a href="boxs.html">Les boxs</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <!-- ICI aussi : Réserver → Mon compte dans le menu mobile -->
       <li><a href="mon-compte.html">Mon compte</a></li>
     </ul>
   </nav>
@@ -1398,6 +1395,10 @@
               <div class="order-row">
                 <span>Sous-total</span>
                 <span id="order-subtotal">0€</span>
+              </div>
+              <div class="order-row" id="order-discount-row" style="display:none;">
+                <span>Remise</span>
+                <span id="order-discount">-0€</span>
               </div>
               <div class="order-row">
                 <span>TVA (20&nbsp;%) incluse</span>
@@ -1570,6 +1571,14 @@
     let stripe = null;
     let cardElement = null;
 
+    // promo actuellement appliquée (issue de Supabase) et totaux
+    let currentPromo = null;
+    let currentTotals = {
+      totalTTCNoDiscount: 0,
+      discount: 0,
+      finalTotalTTC: 0
+    };
+
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -1612,6 +1621,48 @@
       }
     }
 
+    function getTodayISO() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function isPromoCurrentlyValid(promo) {
+      if (!promo) return false;
+      if (!promo.is_active) return false;
+
+      const today = getTodayISO();
+
+      if (promo.valid_from && promo.valid_from > today) return false;
+      if (promo.valid_to && promo.valid_to < today) return false;
+
+      const maxUses = promo.max_uses;
+      const used = promo.used_count || 0;
+      if (maxUses !== null && maxUses !== undefined && typeof maxUses === "number") {
+        if (used >= maxUses) return false;
+      }
+
+      return true;
+    }
+
+    function computeDiscountFromPromo(promo, totalTTC) {
+      if (!promo || totalTTC <= 0) return 0;
+      const value = promo.value || 0;
+
+      if (promo.type === "percent") {
+        return Math.min(totalTTC, totalTTC * (value / 100));
+      }
+      if (promo.type === "fixed") {
+        return Math.min(totalTTC, value);
+      }
+      if (promo.type === "free") {
+        return totalTTC;
+      }
+      return 0;
+    }
+
     function updateOrderSummaryFromPanier() {
       const panier = getPanier();
       const nameEl = document.getElementById("order-product-name");
@@ -1619,6 +1670,8 @@
       const subEl = document.getElementById("order-subtotal");
       const tvaEl = document.getElementById("order-tva");
       const totalEl = document.getElementById("order-total");
+      const discountRow = document.getElementById("order-discount-row");
+      const discountEl = document.getElementById("order-discount");
 
       if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
 
@@ -1628,12 +1681,39 @@
         subEl.textContent = "0€";
         tvaEl.textContent = "0€";
         totalEl.textContent = "0€";
+        if (discountRow) discountRow.style.display = "none";
+        currentTotals = {
+          totalTTCNoDiscount: 0,
+          discount: 0,
+          finalTotalTTC: 0
+        };
         return;
       }
 
-      const totalTTC = computeTotal(panier);
-      const totalHT = totalTTC / 1.2;
-      const tva = totalTTC - totalHT;
+      const totalTTCNoDiscount = computeTotal(panier);
+      const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
+      const tvaNoDiscount = totalTTCNoDiscount - totalHTNoDiscount;
+
+      let discount = 0;
+      if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
+        discount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
+      } else {
+        currentPromo = null;
+      }
+
+      if (discount < 0) discount = 0;
+      if (discount > totalTTCNoDiscount) discount = totalTTCNoDiscount;
+
+      const discountHT = discount / 1.2;
+      const discountTVA = discount - discountHT;
+
+      let totalHT = totalHTNoDiscount - discountHT;
+      let tva = tvaNoDiscount - discountTVA;
+      let finalTotalTTC = totalTTCNoDiscount - discount;
+
+      if (totalHT < 0) totalHT = 0;
+      if (tva < 0) tva = 0;
+      if (finalTotalTTC < 0) finalTotalTTC = 0;
 
       const first = panier[0];
       const dateLabel = first.date ? formatDateFr(first.date) : "";
@@ -1658,7 +1738,22 @@
 
       subEl.textContent   = totalHT.toFixed(2).replace(".", ",") + "€";
       tvaEl.textContent   = tva.toFixed(2).replace(".", ",") + "€";
-      totalEl.textContent = totalTTC.toFixed(2).replace(".", ",") + "€";
+      totalEl.textContent = finalTotalTTC.toFixed(2).replace(".", ",") + "€";
+
+      if (discountRow && discountEl) {
+        if (discount > 0) {
+          discountRow.style.display = "flex";
+          discountEl.textContent = "-" + discount.toFixed(2).replace(".", ",") + "€";
+        } else {
+          discountRow.style.display = "none";
+        }
+      }
+
+      currentTotals = {
+        totalTTCNoDiscount,
+        discount,
+        finalTotalTTC
+      };
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -1748,43 +1843,101 @@
         });
       }
 
-      // Nouveau comportement : on n'essaie plus de valider le code côté front.
-      // On l'enregistre juste et le backend décide s'il est valide ou non.
-      function applyPromo() {
+      // Vérification et application du code promo via Supabase
+      async function applyPromo(silent = false) {
         if (!promoInput || !promoMsg) return;
         const code = promoInput.value.trim().toUpperCase();
         promoMsg.classList.remove("ok","error");
 
         if (!code) {
-          promoMsg.textContent = "Saisissez un code promo.";
-          promoMsg.classList.add("error");
+          currentPromo = null;
           localStorage.removeItem("promoCode");
+          updateOrderSummaryFromPanier();
+          if (!silent) {
+            promoMsg.textContent = "Saisissez un code promo.";
+            promoMsg.classList.add("error");
+          } else {
+            promoMsg.textContent = "";
+          }
           return;
         }
 
-        localStorage.setItem("promoCode", code);
-        promoMsg.textContent = "Code enregistré ✔ Il sera vérifié et appliqué au moment du paiement.";
-        promoMsg.classList.add("ok");
+        if (!window.supabaseClient) {
+          promoMsg.textContent = "Erreur : service promo indisponible.";
+          promoMsg.classList.add("error");
+          return;
+        }
+
+        promoMsg.textContent = "Vérification du code...";
+        try {
+          const { data, error } = await window.supabaseClient
+            .from("promo_codes")
+            .select("*")
+            .eq("code", code)
+            .limit(1)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Erreur Supabase promo:", error);
+            currentPromo = null;
+            localStorage.removeItem("promoCode");
+            updateOrderSummaryFromPanier();
+            promoMsg.textContent = "Erreur lors de la vérification du code.";
+            promoMsg.classList.add("error");
+            return;
+          }
+
+          if (!data || !isPromoCurrentlyValid(data)) {
+            currentPromo = null;
+            localStorage.removeItem("promoCode");
+            updateOrderSummaryFromPanier();
+            promoMsg.textContent = "Ce code n’existe pas ou n’est plus valable.";
+            promoMsg.classList.add("error");
+            return;
+          }
+
+          currentPromo = data;
+          localStorage.setItem("promoCode", data.code);
+          updateOrderSummaryFromPanier();
+
+          const discountNow = currentTotals.discount || 0;
+          promoMsg.classList.add("ok");
+          if (discountNow > 0) {
+            promoMsg.textContent =
+              "Code appliqué ✔ Réduction de " +
+              discountNow.toFixed(2).replace(".", ",") +
+              "€ sur votre commande.";
+          } else {
+            promoMsg.textContent = "Code appliqué ✔";
+          }
+        } catch (e) {
+          console.error("Erreur applyPromo:", e);
+          currentPromo = null;
+          localStorage.removeItem("promoCode");
+          updateOrderSummaryFromPanier();
+          promoMsg.textContent = "Erreur réseau lors de la vérification du code.";
+          promoMsg.classList.add("error");
+        }
       }
 
       if (promoBtn) {
-        promoBtn.addEventListener("click", applyPromo);
+        promoBtn.addEventListener("click", () => {
+          applyPromo(false);
+        });
       }
       if (promoInput) {
         promoInput.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            applyPromo();
+            applyPromo(false);
           }
         });
 
         const stored = localStorage.getItem("promoCode");
         if (stored) {
           promoInput.value = stored;
-          if (promoMsg) {
-            promoMsg.textContent = "Code mémorisé : " + stored + " (il sera vérifié au paiement)";
-            promoMsg.classList.add("ok");
-          }
+          // On ré-applique silencieusement le code stocké
+          applyPromo(true);
         }
       }
 
@@ -1840,24 +1993,20 @@
           const ville      = document.getElementById("ville").value.trim();
           const naissance  = document.getElementById("naissance").value;
 
-          // On lit toujours la valeur actuelle du champ promo
-          let promoCode = null;
-          const promoInputEl = document.getElementById("promo-code");
-          if (promoInputEl) {
-            const v = promoInputEl.value.trim().toUpperCase();
-            promoCode = v || null;
-          }
-          // On synchronise le localStorage pour garder le code en mémoire
-          if (promoCode) {
-            localStorage.setItem("promoCode", promoCode);
-          } else {
-            localStorage.removeItem("promoCode");
-          }
-
           const customer = {
             prenom, nom, email, telephone,
             pays, adresse, complement, cp, ville, naissance,
           };
+
+          // Recalcule les totaux juste avant paiement
+          updateOrderSummaryFromPanier();
+          const promoCode =
+            currentPromo && isPromoCurrentlyValid(currentPromo)
+              ? currentPromo.code
+              : null;
+          const finalAmountCents = Math.round(
+            (currentTotals.finalTotalTTC || 0) * 100
+          );
 
           submitBtn.disabled = true;
           const originalLabel = submitBtn.textContent;
@@ -1870,7 +2019,8 @@
               body: JSON.stringify({
                 panier,
                 customer,
-                promoCode
+                promoCode,
+                finalAmountCents
               })
             });
 
@@ -1880,8 +2030,7 @@
               if (errorEl) {
                 errorEl.textContent = msg;
               }
-              // Si l'erreur concerne le code promo, on l'affiche aussi dans le bloc promo
-              if (promoMsg && msg) {
+              if (promoMsg && msg && msg.toLowerCase().includes("code")) {
                 promoMsg.textContent = msg;
                 promoMsg.classList.remove("ok");
                 promoMsg.classList.add("error");
@@ -1916,7 +2065,6 @@
               }
 
               try {
-                // on envoie le token JWT pour les points fidélité
                 const token = localStorage.getItem("token");
                 const headers = {
                   "Content-Type": "application/json",
@@ -1939,7 +2087,6 @@
                 // on ne bloque pas l'affichage client si la notif backend échoue
               }
 
-              // Si le client a coché la case newsletter, on ajoute son e-mail
               if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
                 try {
                   await window.supabaseClient
@@ -1952,6 +2099,7 @@
 
               savePanier([]);
               localStorage.removeItem("promoCode");
+              currentPromo = null;
               updateCartIcon();
               updateOrderSummaryFromPanier();
             }
@@ -1985,7 +2133,7 @@
 
       const token = localStorage.getItem("token");
       if (!token) {
-        showAuthModal(); // ouverture dès l'arrivée sur la page si pas connecté
+        showAuthModal();
       }
 
       const btnLoginTab    = document.getElementById("auth-btn-login");
@@ -2015,7 +2163,7 @@
 
       if (skipBtn) {
         skipBtn.addEventListener("click", () => {
-          hideAuthModal(); // continue sans compte, pas de points
+          hideAuthModal();
         });
       }
 
@@ -2078,7 +2226,6 @@
               return;
             }
 
-            // connexion automatique après inscription
             const loginRes = await fetch(`${API_BASE_URL}/api/login`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2102,7 +2249,7 @@
     document.addEventListener("DOMContentLoaded", initAuthModal);
   </script>
 
-  <!-- Supabase Newsletter -->
+  <!-- Supabase Newsletter & client global -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
