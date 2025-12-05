@@ -2,8 +2,28 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Les boxs</title>
+  <title>Les box karaoké privatives à Toulouse – Singbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO de base -->
+  <meta name="description" content="Découvrez les box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset. Salons de karaoké insonorisés pour jusqu’à 6 personnes, réservation en ligne, matériel premium et commande via tablette.">
+
+  <!-- Open Graph / Réseaux sociaux -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Les box karaoké privatives à Toulouse – Singbox">
+  <meta property="og:description" content="Deux box karaoké privatives à Toulouse : Nuit étoilée et Ambiance Sunset. Salons insonorisés jusqu’à 6 personnes, ambiance immersive et réservation en ligne.">
+  <meta property="og:image" content="https://tondomaine.fr/box-nuit-etoilee.png">
+  <meta property="og:site_name" content="Singbox">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Les box karaoké privatives à Toulouse – Singbox">
+  <meta name="twitter:description" content="Choisissez votre box karaoké privative à Toulouse : Nuit étoilée ou Ambiance Sunset. Idéal pour anniversaires, afterworks, EVJF/EVG et soirées entre amis.">
+  <meta name="twitter:image" content="https://tondomaine.fr/box-nuit-etoilee.png">
+
+  <!-- (Optionnel) Canonical -->
+  <!-- <link rel="canonical" href="https://tondomaine.fr/boxs.html"> -->
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +32,45 @@
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   >
+
+  <!-- Schema.org : liste de box karaoké -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Box karaok\u00e9 privatives Singbox \u00e0 Toulouse",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Product",
+          "name": "Box karaok\u00e9 Nuit \u00e9toil\u00e9e",
+          "image": "https://tondomaine.fr/box-nuit-etoilee.png",
+          "description": "Box karaok\u00e9 privative jusqu'\u00e0 6 personnes \u00e0 Toulouse. Ambiance bleut\u00e9e, plafond \u00e9toil\u00e9, commande via tablette, 2 micros et acc\u00e8s PMR.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Singbox"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Product",
+          "name": "Box karaok\u00e9 Ambiance Sunset",
+          "image": "https://tondomaine.fr/box-ambiance-sunset.png",
+          "description": "Box karaok\u00e9 privative jusqu'\u00e0 6 personnes \u00e0 Toulouse. D\u00e9grad\u00e9s orang\u00e9s, ambiance coucher de soleil, commande via tablette, 2 micros et acc\u00e8s PMR.",
+          "brand": {
+            "@type": "Brand",
+            "name": "Singbox"
+          }
+        }
+      }
+    ]
+  }
+  </script>
 
   <style>
     :root {
@@ -487,6 +546,45 @@
         0 24px 60px rgba(0,0,0,1);
     }
 
+    /* Texte SEO supplémentaire + FAQ */
+    .boxes-extra {
+      padding: 3rem 0 4rem;
+      background:#030712;
+    }
+
+    .boxes-extra-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .boxes-extra-inner h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .boxes-extra-inner p {
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      max-width: 780px;
+    }
+
+    .boxes-faq {
+      margin-top: 28px;
+    }
+
+    .boxes-faq h3 {
+      font-size: 15px;
+      margin: 14px 0 4px;
+    }
+
+    .boxes-faq p {
+      font-size: 14px;
+      margin: 0;
+      color: var(--sb-text-muted);
+      max-width: 780px;
+    }
+
     /* ---------- FOOTER ---------- */
     footer {
       background:#020617;
@@ -592,7 +690,7 @@
     <div class="header-inner">
       <!-- Bloc marque : logo + texte -->
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox karaoké box à Toulouse" class="brand-logo">
         <span class="brand-text">Singbox</span>
       </a>
 
@@ -637,11 +735,11 @@
   <!-- ---------- HERO / INTRO LES BOXS ---------- -->
   <section id="concept-intro">
     <div class="concept-intro-inner">
-      <p class="concept-eyebrow">Nos boxs</p>
-      <h1 class="concept-title">Les espaces Singbox</h1>
+      <p class="concept-eyebrow">Box karaoké privatives à Toulouse</p>
+      <h1 class="concept-title">Nos box karaoké Singbox</h1>
       <p class="concept-intro-text">
-        Deux boxs privatives, climatisées et insonorisées, chacune avec sa propre ambiance.
-        Choisis l’univers qui colle le plus à ta soirée.
+        Découvrez nos deux salons de karaoké privatisés à Toulouse, climatisés et insonorisés.
+        Choisissez la box qui correspond le mieux à l’ambiance de votre soirée&nbsp;: Nuit étoilée ou Ambiance Sunset.
       </p>
     </div>
   </section>
@@ -654,7 +752,7 @@
         <!-- Box 1 : Nuit étoilée -->
         <article class="box-card">
           <div class="box-card-media">
-            <img src="box-nuit-etoilee.png" alt="Box Nuit étoilée">
+            <img src="box-nuit-etoilee.png" alt="Box karaoké Nuit étoilée Singbox à Toulouse">
             <div class="box-card-badge">
               <span class="box-badge-capacity">6 pers max</span>
             </div>
@@ -678,8 +776,9 @@
             </div>
 
             <p class="box-card-description">
-              Ambiance bleutée, lumières tamisées et plafond étoilé : la box parfaite pour
+              Ambiance bleutée, lumières tamisées et plafond étoilé&nbsp;: la box parfaite pour
               chanter toute la nuit entre amis, comme sous un ciel rempli de constellations.
+              Idéale pour une soirée karaoké intimiste à Toulouse.
             </p>
 
             <button
@@ -694,7 +793,7 @@
         <!-- Box 2 : Ambiance Sunset -->
         <article class="box-card">
           <div class="box-card-media">
-            <img src="box-ambiance-sunset.png" alt="Box Ambiance Sunset">
+            <img src="box-ambiance-sunset.png" alt="Box karaoké Ambiance Sunset Singbox à Toulouse">
             <div class="box-card-badge">
               <span class="box-badge-capacity">6 pers max</span>
             </div>
@@ -718,8 +817,9 @@
             </div>
 
             <p class="box-card-description">
-              Dégradés orangés, ambiance coucher de soleil et mood chaleureux : une box idéale
-              pour les afterworks, les anniversaires et les soirées feel good.
+              Dégradés orangés, ambiance coucher de soleil et mood chaleureux&nbsp;:
+              une box idéale pour les afterworks, les anniversaires et les soirées feel good.
+              Parfaite pour un karaoké convivial à Toulouse entre collègues ou en famille.
             </p>
 
             <button
@@ -730,6 +830,40 @@
             </button>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- TEXTE SEO & FAQ ---------- -->
+  <section class="boxes-extra">
+    <div class="boxes-extra-inner">
+      <h2>Quelle box karaoké choisir pour votre soirée à Toulouse&nbsp;?</h2>
+      <p>
+        Chez Singbox, chaque box karaoké privative a sa propre ambiance. Nuit étoilée est parfaite
+        pour une atmosphère plus intimiste, avec des lumières bleutées et un plafond étoilé. Ambiance Sunset,
+        elle, offre une lumière chaude et des dégradés orangés pour une énergie plus festive.
+        Dans les deux cas, vous profitez d’un salon privatisé, insonorisé et équipé de matériel premium.
+      </p>
+
+      <div class="boxes-faq">
+        <h3>Combien de personnes peuvent venir dans une box Singbox&nbsp;?</h3>
+        <p>
+          Chaque box karaoké Singbox peut accueillir jusqu’à 6 personnes. C’est le format idéal
+          pour une soirée entre amis, un anniversaire en petit comité, un EVJF/EVG ou un afterwork d’équipe.
+        </p>
+
+        <h3>Les box sont-elles adaptées aux personnes à mobilité réduite&nbsp;?</h3>
+        <p>
+          Oui, nos box sont accessibles aux personnes à mobilité réduite (PMR). Les accès sont prévus
+          pour que chacun puisse profiter du karaoké dans les meilleures conditions.
+        </p>
+
+        <h3>Comment réserver une box karaoké à Toulouse&nbsp;?</h3>
+        <p>
+          La réservation se fait en ligne en quelques clics&nbsp;: choisissez votre box, sélectionnez
+          la date et l’horaire, puis validez votre séance. Vous recevrez ensuite votre confirmation
+          par e-mail avec toutes les informations nécessaires.
+        </p>
       </div>
     </div>
   </section>
@@ -758,7 +892,7 @@
 
     <div class="footer-columns">
       <div class="footer-brand">
-        <img src="logo.png" alt="Logo Singbox" />
+        <img src="logo.png" alt="Logo Singbox karaoké box à Toulouse" />
         <div>
           <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
           <p style="margin:0;">Karaoké Box à Toulouse</p>
