@@ -629,7 +629,7 @@
       msgEl.className = "status-message";
 
       const code = codeInput.value.trim().toUpperCase();
-      const type = typeInput.value;
+      const type = document.getElementById("promo-type").value;
       let value = valueInput.value ? parseFloat(valueInput.value) : 0;
 
       if (!code) {
