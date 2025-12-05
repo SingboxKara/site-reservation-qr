@@ -1748,6 +1748,8 @@
         });
       }
 
+      // Nouveau comportement : on n'essaie plus de valider le code côté front.
+      // On l'enregistre juste et le backend décide s'il est valide ou non.
       function applyPromo() {
         if (!promoInput || !promoMsg) return;
         const code = promoInput.value.trim().toUpperCase();
@@ -1760,15 +1762,9 @@
           return;
         }
 
-        if (code === "SINGBOX10") {
-          promoMsg.textContent = "Code appliqué : la remise sera prise en compte lors du paiement.";
-          promoMsg.classList.add("ok");
-          localStorage.setItem("promoCode", code);
-        } else {
-          promoMsg.textContent = "Code promo invalide ou expiré.";
-          promoMsg.classList.add("error");
-          localStorage.removeItem("promoCode");
-        }
+        localStorage.setItem("promoCode", code);
+        promoMsg.textContent = "Code enregistré ✔ Il sera vérifié et appliqué au moment du paiement.";
+        promoMsg.classList.add("ok");
       }
 
       if (promoBtn) {
@@ -1786,7 +1782,7 @@
         if (stored) {
           promoInput.value = stored;
           if (promoMsg) {
-            promoMsg.textContent = "Code promo mémorisé : " + stored;
+            promoMsg.textContent = "Code mémorisé : " + stored + " (il sera vérifié au paiement)";
             promoMsg.classList.add("ok");
           }
         }
@@ -1844,7 +1840,19 @@
           const ville      = document.getElementById("ville").value.trim();
           const naissance  = document.getElementById("naissance").value;
 
-          const promoCode  = localStorage.getItem("promoCode") || null;
+          // On lit toujours la valeur actuelle du champ promo
+          let promoCode = null;
+          const promoInputEl = document.getElementById("promo-code");
+          if (promoInputEl) {
+            const v = promoInputEl.value.trim().toUpperCase();
+            promoCode = v || null;
+          }
+          // On synchronise le localStorage pour garder le code en mémoire
+          if (promoCode) {
+            localStorage.setItem("promoCode", promoCode);
+          } else {
+            localStorage.removeItem("promoCode");
+          }
 
           const customer = {
             prenom, nom, email, telephone,
@@ -1868,8 +1876,15 @@
 
             const json = await res.json();
             if (!res.ok || !json.clientSecret) {
+              const msg = json.error || "Erreur lors de la création du paiement.";
               if (errorEl) {
-                errorEl.textContent = json.error || "Erreur lors de la création du paiement.";
+                errorEl.textContent = msg;
+              }
+              // Si l'erreur concerne le code promo, on l'affiche aussi dans le bloc promo
+              if (promoMsg && msg) {
+                promoMsg.textContent = msg;
+                promoMsg.classList.remove("ok");
+                promoMsg.classList.add("error");
               }
               submitBtn.disabled = false;
               submitBtn.textContent = originalLabel;
@@ -1901,7 +1916,7 @@
               }
 
               try {
-                // ===== ICI : on envoie le token JWT pour que le backend puisse ajouter les points automatiquement =====
+                // on envoie le token JWT pour les points fidélité
                 const token = localStorage.getItem("token");
                 const headers = {
                   "Content-Type": "application/json",
