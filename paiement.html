@@ -2,14 +2,17 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Paiement sécurisé de votre karaoké box à Toulouse</title>
+  <title>Paiement karaoké box Singbox | Panier & règlement sécurisé à Toulouse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO de base -->
+  <!-- SEO -->
   <meta name="description" content="Finalisez le paiement sécurisé de votre karaoké box Singbox à Toulouse. Vérifiez votre panier, appliquez votre code promo et réglez vos réservations en quelques clics." />
-  <meta name="robots" content="index,follow" />
+  <!-- Page de paiement : on évite l’indexation -->
+  <meta name="robots" content="noindex,nofollow" />
   <meta name="author" content="Singbox" />
   <meta name="theme-color" content="#050814" />
+  <meta name="keywords" content="paiement Singbox, paiement karaoké Toulouse, panier Singbox, réservation karaoké box, règlement sécurisé, karaoké privatif Toulouse" />
+  <link rel="canonical" href="https://www.singbox.fr/panier" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:locale" content="fr_FR" />
@@ -17,14 +20,15 @@
   <meta property="og:title" content="Paiement réservation karaoké box - Singbox Toulouse" />
   <meta property="og:description" content="Réglez en ligne votre séance de karaoké privé chez Singbox à Toulouse : créneaux flexibles, paiement sécurisé et codes promo disponibles." />
   <meta property="og:site_name" content="Singbox" />
+  <meta property="og:url" content="https://www.singbox.fr/panier" />
   <!-- À adapter avec votre visuel de partage -->
-  <meta property="og:image" content="/images/singbox-social.jpg" />
+  <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Paiement réservation karaoké box - Singbox Toulouse" />
   <meta name="twitter:description" content="Finalisez en ligne votre réservation de karaoké box Singbox à Toulouse avec un paiement 100 % sécurisé." />
-  <meta name="twitter:image" content="/images/singbox-social.jpg" />
+  <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -38,17 +42,25 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Paiement réservation karaoké box - Singbox Toulouse",
+    "url": "https://www.singbox.fr/panier",
     "description": "Page de paiement sécurisé pour finaliser votre réservation de karaoké box privée chez Singbox à Toulouse.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
       "name": "Singbox",
       "url": "https://www.singbox.fr"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Singbox",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.singbox.fr/logo.png"
+      }
     }
   }
   </script>
 
-  <!-- Google Analytics / Matomo : insérez ici votre script de suivi si nécessaire -->
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1079,7 +1091,7 @@
       padding: 4px 10px;
       border-radius: 999px;
       background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(248,250,252,0.12);
+      border: 1px solid rgba(248,250,251,0.12);
       margin-bottom: 12px;
     }
 
@@ -1240,11 +1252,11 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo">
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" aria-label="Navigation principale">
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
@@ -1257,7 +1269,7 @@
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -1268,7 +1280,7 @@
   </header>
 
   <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
