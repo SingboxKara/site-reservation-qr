@@ -2,8 +2,60 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Mon compte</title>
+
+  <!-- TITRE SEO OPTIMISÉ -->
+  <title>Mon compte Singbox | Espace client & points de fidélité – Karaoké box à Toulouse</title>
+
+  <!-- META SEO -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Pour une page compte / login, on évite l’indexation (SEO propre) -->
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation." />
+  <meta name="author" content="Singbox" />
+  <meta name="keywords" content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse" />
+  <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Singbox" />
+  <meta property="og:title" content="Mon compte Singbox | Espace client & points de fidélité" />
+  <meta property="og:description" content="Connectez-vous à votre espace client Singbox pour consulter vos informations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse." />
+  <meta property="og:url" content="https://www.singbox.fr/mon-compte" />
+  <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
+  <meta name="twitter:description" content="Retrouvez vos informations client et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse." />
+  <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
+
+  <!-- Données structurées WebPage / Espace client -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Mon compte Singbox",
+    "url": "https://www.singbox.fr/mon-compte",
+    "description": "Espace client Singbox : accès au compte, points de fidélité et avantages pour le karaoké box privatif à Toulouse.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Singbox",
+      "url": "https://www.singbox.fr"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Singbox",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.singbox.fr/logo.png"
+      }
+    }
+  }
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -770,24 +822,24 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo">
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" aria-label="Navigation principale">
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="mon-compte.html">Mon compte</a></li>
+          <li><a href="mon-compte.html" aria-current="page">Mon compte</a></li>
         </ul>
       </nav>
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -798,7 +850,7 @@
   </header>
 
   <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
@@ -815,7 +867,7 @@
       <div class="account-header">
         <p class="account-header-eyebrow">Espace client</p>
         <h1>Mon compte Singbox</h1>
-        <p>Consultez vos informations et vos points de fidélité.</p>
+        <p>Consultez vos informations, vos points de fidélité et vos avantages pour vos prochaines séances de karaoké.</p>
       </div>
 
       <div class="account-layout">
@@ -862,7 +914,7 @@
             </div>
 
             <p class="account-subtext">
-              Utilisez toujours la même adresse email lors de vos réservations pour cumuler vos points automatiquement.
+              Utilisez toujours la même adresse e-mail lors de vos réservations pour cumuler vos points automatiquement.
             </p>
 
             <div class="logout-row">
