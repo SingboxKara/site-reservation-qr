@@ -2,31 +2,39 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox - Mon panier</title>
   <title>Panier de réservation karaoké à Toulouse | Singbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO -->
   <meta name="description" content="Consultez le récapitulatif de vos réservations de karaoké box privatives à Toulouse chez Singbox. Vérifiez vos créneaux, le nombre de box et le total avant de procéder au paiement sécurisé." />
-  <meta name="robots" content="index,follow" />
+  <!-- Page panier : on ne l’indexe pas pour éviter les pages temporaires dans Google -->
+  <meta name="robots" content="noindex,nofollow" />
   <meta name="keywords" content="panier karaoke, panier karaoké toulouse, réservation karaoké toulouse, singbox panier, box karaoke privatif toulouse, récapitulatif réservation karaoké" />
-  <link rel="canonical" href="https://www.singbox.fr/panier.html" /> <!-- adapte l’URL selon ton domaine -->
+  <link rel="canonical" href="https://www.singbox.fr/panier" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#050814">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Panier de réservation karaoké à Toulouse | Singbox" />
   <meta property="og:description" content="Vérifiez vos créneaux de karaoké, le nombre de box et le montant total dans votre panier Singbox avant de régler votre réservation à Toulouse." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/panier.html" />
+  <meta property="og:url" content="https://www.singbox.fr/panier" />
   <meta property="og:site_name" content="Singbox" />
-  <meta property="og:image" content="https://www.singbox.fr/logo.png" />
+  <!-- Image sociale dédiée (idéalement 1200x630) -->
+  <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Panier de réservation karaoké à Toulouse | Singbox" />
   <meta name="twitter:description" content="Dernière étape avant de chanter : vérifiez vos réservations de karaoké box Singbox à Toulouse et passez au paiement sécurisé." />
-  <meta name="twitter:image" content="https://www.singbox.fr/logo.png" />
+  <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Données structurées LocalBusiness (facultatif mais utile) -->
+  <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,6 +57,23 @@
       "https://www.instagram.com/singboxtoulouse/",
       "https://www.tiktok.com/@singbox.toulouse/"
     ]
+  }
+  </script>
+
+  <!-- Données structurées WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Panier de réservation karaoké à Toulouse | Singbox",
+    "url": "https://www.singbox.fr/panier",
+    "description": "Panier de réservation des karaoké box Singbox à Toulouse : récapitulatif de vos créneaux et du montant total avant paiement sécurisé.",
+    "inLanguage": "fr-FR",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Singbox",
+      "url": "https://www.singbox.fr"
+    }
   }
   </script>
 
@@ -292,6 +317,7 @@
       z-index:40;
       border-bottom:1px solid #111827;
     }
+
     .mobile-nav ul {
       list-style:none;
       padding:0;
@@ -301,6 +327,7 @@
       gap:12px;
       font-size:15px;
     }
+
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
@@ -723,12 +750,10 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="index.html" class="brand">
-      <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
       <img src="logo.png" alt="Logo Singbox, karaoké box à Toulouse" class="brand-logo" />
       <span class="brand-text">Singbox</span>
     </a>
 
-    <nav class="main-nav">
     <nav class="main-nav" aria-label="Navigation principale">
       <ul>
         <li><a href="index.html">Accueil</a></li>
@@ -742,7 +767,6 @@
 
     <div class="header-actions">
       <a href="reservation.html" class="nav-cta">Réserver</a>
-      <a href="panier.html" class="cart-icon">
       <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier de réservation">
         🛒<span id="cart-count"></span>
       </a>
@@ -754,7 +778,6 @@
 </header>
 
 <!-- MENU MOBILE -->
-<nav class="mobile-nav" id="mobile-nav">
 <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
   <ul>
     <li><a href="index.html">Accueil</a></li>
@@ -769,8 +792,6 @@
 <!-- HERO -->
 <section class="hero-panier">
   <div class="hero-inner">
-    <h1>Mon panier</h1>
-    <p>Vérifiez vos créneaux avant de passer au paiement.</p>
     <p class="hero-eyebrow">PANIER DE RÉSERVATION</p>
     <h1>Mon panier de karaoké Singbox à Toulouse</h1>
     <p>
@@ -781,7 +802,6 @@
 </section>
 
 <main>
-  <section class="container cart-wrapper">
   <section class="container cart-wrapper" aria-label="Récapitulatif de votre panier de réservation Singbox">
     <p class="cart-intro-text">
       Chaque ligne correspond à une réservation de box de karaoké chez Singbox à Toulouse (Nuit étoilée, Ambiance Sunset, etc.).
@@ -791,14 +811,11 @@
     <div id="cart-items"></div>
 
     <div id="cart-summary" class="cart-summary-card" style="display:none;">
-      <span class="cart-summary-label">Total des réservations</span>
       <span class="cart-summary-label">Total des réservations karaoké (TTC)</span>
       <span class="cart-summary-value" id="cart-total">0 €</span>
     </div>
 
     <div class="cart-actions" id="cart-actions" style="display:none;">
-      <button class="btn btn-ghost" id="clear-cart">Vider le panier</button>
-      <button class="btn btn-primary" id="confirm-cart">Procéder au paiement</button>
       <button class="btn btn-ghost" id="clear-cart" type="button">Vider le panier</button>
       <button class="btn btn-primary" id="confirm-cart" type="button">Procéder au paiement sécurisé</button>
     </div>
@@ -827,7 +844,6 @@
 
   <div class="footer-columns">
     <div class="footer-brand">
-      <img src="logo.png" alt="Logo Singbox" />
       <img src="logo.png" alt="Logo Singbox, karaoké box à Toulouse" />
       <div>
         <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
@@ -844,7 +860,6 @@
 
     <div>
       <p><strong>Contact</strong></p>
-      <p>Adresse : [à compléter]</p>
       <p>Adresse : 66 Rue de la République, 31300 Toulouse</p>
       <p>Email : contactsingbox@gmail.com</p>
       <p>Téléphone : 06 00 00 00 00</p>
@@ -944,9 +959,6 @@
       const emptyDiv = document.createElement("div");
       emptyDiv.className = "cart-empty";
       emptyDiv.innerHTML = `
-        <h2>Votre panier est vide</h2>
-        <p>Ajoutez des créneaux depuis la page "Réserver une box" pour les retrouver ici.</p>
-        <a href="reservation.html" class="btn-empty-primary">Voir les créneaux</a>
         <h2>Votre panier de karaoké est vide</h2>
         <p>Ajoutez des créneaux depuis la page "Réserver une box" pour les retrouver ici avant le paiement.</p>
         <a href="reservation.html" class="btn-empty-primary">Voir les créneaux disponibles</a>
@@ -1027,12 +1039,6 @@
     renderPanier();
 
     // Vider le panier
-    document.getElementById("clear-cart").addEventListener("click", function () {
-      if (confirm("Vider le panier ?")) {
-        savePanier([]);
-        renderPanier();
-      }
-    });
     const clearBtn = document.getElementById("clear-cart");
     if (clearBtn) {
       clearBtn.addEventListener("click", function () {
@@ -1055,15 +1061,6 @@
     });
 
     // Aller à la page de paiement
-    document.getElementById("confirm-cart").addEventListener("click", function () {
-      const panier = getPanier();
-      if (panier.length === 0) {
-        alert("Votre panier est vide.");
-        return;
-      }
-      // Les réservations sont dans localStorage, la page paiement.html pourra les lire
-      window.location.href = "paiement.html";
-    });
     const confirmBtn = document.getElementById("confirm-cart");
     if (confirmBtn) {
       confirmBtn.addEventListener("click", function () {
