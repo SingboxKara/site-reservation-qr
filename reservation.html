@@ -424,46 +424,37 @@
       margin-bottom: 0.75rem;
     }
 
-    /* HEADER FORM */
+ /* HEADER FORM ALIGNÉ */
 .resa-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: flex-end; /* aligne les inputs + bouton sur la même ligne */
-  margin-bottom: 1.4rem;
+  align-items: flex-end;     /* aligne les inputs + bouton */
+  gap: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-.resa-dates label {
-  font-size: 13px;
-  color: #E5E7EB;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+/* la date prend la place de gauche */
+.resa-header > .resa-dates {
+  flex: 1;
+  min-width: 0;
 }
 
-.resa-dates input[type="date"] {
-  padding: 0.55rem 0.8rem;
-  border-radius: 999px;
-  border: 1px solid var(--sb-border-soft);
-  background: #020617;
-  color: #F9FAFB;
-  font-size: 13px;
-  outline: none;
-  min-width: 180px;
-  max-width: 260px;
+/* bloc nombre de personnes, largeur fixe */
+.resa-header > .resa-persons {
+  width: 230px;
 }
 
-.resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
+/* bouton collé à droite, aligné avec les inputs */
+.resa-header > button {
+  margin-left: auto;
 }
 
+/* select personnes */
 .resa-persons {
   display: flex;
   flex-direction: column;
   gap: 4px;
   font-size: 13px;
   color: #E5E7EB;
-  min-width: 200px;
 }
 
 .resa-persons select {
@@ -474,34 +465,22 @@
   color: #F9FAFB;
   font-size: 13px;
   outline: none;
-  min-width: 180px;
 }
 
-.resa-header button {
-  border: none;
-  border-radius: 999px;
-  padding: 0.65rem 1.4rem;
-  background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-  color: #F9FAFB;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow:
-    0 0 0 1px rgba(248,250,251,0.12),
-    0 14px 30px rgba(0,0,0,0.85);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-  white-space: nowrap;
-}
-
-/* MOBILE : tout passe en colonne */
+/* responsive : on met tout en colonne sur mobile */
 @media (max-width: 900px) {
   .resa-header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .resa-header button {
+  .resa-header > .resa-persons {
     width: 100%;
+  }
+
+  .resa-header > button {
+    width: 100%;
+    margin-left: 0;
     text-align: center;
     margin-top: 0.5rem;
   }
@@ -972,8 +951,6 @@
               <option value="6">6 personnes</option>
               <option value="7">7 personnes</option>
               <option value="8">8 personnes</option>
-              <option value="9">9 personnes</option>
-              <option value="10">10 personnes</option>
             </select>
           </div>
 
@@ -1001,7 +978,7 @@
           </div>
         </div>
         <p class="resa-pricing-rules">
-          7,50&nbsp;€ par personne en heures creuses (4h–14h) – 9,90&nbsp;€ par personne le reste du temps.
+          7,90&nbsp;€ par personne en heures creuses (4h–14h) – 9,90&nbsp;€ par personne le reste du temps.
           Facturation minimale 2 personnes par créneau (si vous venez seul·e, vous payez pour 2 personnes).
         </p>
 
@@ -1186,7 +1163,7 @@
         " pers.</span>";
     }
 
-    // Prix par personne : 7,50 € en creuse (4h–14h), 9,90 € sinon,
+    // Prix par personne : 7,90 € en creuse (4h–14h), 9,90 € sinon,
     // facturation minimale pour 2 personnes
     function getSlotPrice(date, hour, persons) {
       const baseRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
