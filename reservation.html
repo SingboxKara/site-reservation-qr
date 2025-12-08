@@ -409,13 +409,13 @@
       margin-bottom: 0.75rem;
     }
 
-    /* ===== HEADER FORM ALIGNE ===== */
+    /* ===== HEADER FORM ALIGNE & PROPRE ===== */
     .resa-header {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: flex-end; /* aligne date / select / bouton */
-      margin-bottom: 0.5rem;
+      gap: 1.75rem;
+      align-items: flex-end; /* aligne les champs & le bouton */
+      margin-bottom: 0.4rem;
     }
 
     .resa-field {
@@ -439,18 +439,19 @@
       margin-left: auto;
     }
 
-    .resa-field label {
-      font-size: 13px;
-      color: #E5E7EB;
-    }
-
-    .resa-dates-input {
+    .resa-label-inline {
       display: flex;
-      flex-direction: column;
       gap: 4px;
+      align-items: baseline;
+      font-size: 13px;
     }
 
-    .resa-dates-input input[type="date"] {
+    .resa-indicator {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    #date-input {
       padding: 0.55rem 0.8rem;
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
@@ -462,13 +463,8 @@
       max-width: 260px;
     }
 
-    .resa-dates-input input[type="date"]::-webkit-calendar-picker-indicator {
+    #date-input::-webkit-calendar-picker-indicator {
       filter: invert(1);
-    }
-
-    #persons-indicator {
-      font-size: 12px;
-      color: var(--sb-text-muted);
     }
 
     .resa-persons-select {
@@ -972,11 +968,11 @@
 
         <div class="resa-header">
           <div class="resa-field resa-field-date">
-            <label for="date-input">Date de votre séance</label>
-            <div class="resa-dates-input">
-              <input type="date" id="date-input" />
-              <span id="persons-indicator">2 personnes (facturation min. 2)</span>
-            </div>
+            <label for="date-input" class="resa-label-inline">
+              <span>Date de votre séance</span>
+              <span id="persons-indicator" class="resa-indicator">– 2 personnes (facturation min. 2)</span>
+            </label>
+            <input type="date" id="date-input" />
           </div>
 
           <div class="resa-field resa-field-persons">
@@ -1436,7 +1432,7 @@
                         if (personsSelectEl) personsSelectEl.value = String(val);
                         if (personsIndicatorEl) {
                           personsIndicatorEl.textContent =
-                            val + " personne" + (val > 1 ? "s" : "") + " (facturation min. 2)";
+                            "– " + val + " personne" + (val > 1 ? "s" : "") + " (facturation min. 2)";
                         }
 
                         const parts2 = isoDate.split("-");
@@ -1520,14 +1516,14 @@
 
         const iso = dateInput.value;
         const parts = iso.split("-");
-        const selectedDate = new Date(
+        theDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
         );
 
         await fetchReservationsForDate(iso);
-        buildPlanningTable(selectedDate);
+        buildPlanningTable(theDate);
         document.getElementById("message").textContent = "";
       }
 
@@ -1535,7 +1531,7 @@
         personsSelect.value = "2";
         selectedPersons = 2;
         if (personsIndicator) {
-          personsIndicator.textContent = "2 personnes (facturation min. 2)";
+          personsIndicator.textContent = "– 2 personnes (facturation min. 2)";
         }
 
         personsSelect.addEventListener("change", () => {
@@ -1547,7 +1543,7 @@
 
           if (personsIndicator) {
             personsIndicator.textContent =
-              n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
+              "– " + n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
           }
 
           refreshPlanning();
