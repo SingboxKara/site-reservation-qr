@@ -453,8 +453,8 @@
     }
 
     .resa-header {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
       gap: 1rem 1.5rem;
       align-items: flex-end;
       margin-bottom: 1.4rem;
@@ -477,6 +477,7 @@
       font-size: 13px;
       outline: none;
       min-width: 180px;
+      max-width: 260px;
     }
 
     .resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
@@ -497,6 +498,7 @@
         0 14px 30px rgba(0,0,0,0.85);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
+      justify-self: end;
     }
 
     .resa-header button:hover {
@@ -530,7 +532,7 @@
       color: #F9FAFB;
       font-size: 13px;
       outline: none;
-      min-width: 120px;
+      min-width: 140px;
     }
 
     #persons-indicator {
@@ -539,14 +541,16 @@
       margin-top: 2px;
     }
 
-    @media (min-width: 901px) {
+    @media (max-width: 900px) {
       .resa-header {
+        grid-template-columns: minmax(0, 1fr);
         align-items: flex-start;
       }
-
       .resa-header button {
-        align-self: flex-start;
-        margin-top: 1.55rem;
+        width: 100%;
+        text-align: center;
+        justify-self: stretch;
+        margin-top: 0.75rem;
       }
     }
 
@@ -929,28 +933,12 @@
       border-top:1px solid #111827;
     }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 900px) {
-      .resa-card {
-        padding: 1.75rem 1.5rem 2rem;
-      }
-    }
-
     @media (max-width: 600px) {
       .hero-resa {
         padding-top: 9rem;
       }
       .hero-resa h1 {
         font-size: 26px;
-      }
-      .resa-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .resa-header button {
-        width: 100%;
-        text-align: center;
-        margin-top: 0.75rem;
       }
     }
   </style>
@@ -1021,11 +1009,11 @@
           <div class="resa-dates">
             <label for="date-input">
               Date de votre séance
-              <span id="persons-indicator">2 personnes (modifiable)</span>
+              <span id="persons-indicator">2 personnes (facturation min. 2)</span>
               <input type="date" id="date-input" />
             </label>
             <p class="resa-note">
-              Tarifs par personne
+              Tarifs par personne, facturation minimale 2 personnes (même si vous venez seul·e).
             </p>
           </div>
 
@@ -1034,7 +1022,8 @@
               Nombre de personnes
             </label>
             <select id="persons-select">
-              <option value="2">2 personnes</option>
+              <option value="1">1 personne</option>
+              <option value="2" selected>2 personnes</option>
               <option value="3">3 personnes</option>
               <option value="4">4 personnes</option>
               <option value="5">5 personnes</option>
@@ -1074,7 +1063,7 @@
         </div>
         <p class="resa-pricing-rules">
           7,50&nbsp;€ par personne en heures creuses (4h–14h) – 9,90&nbsp;€ par personne le reste du temps.
-          Minimum pour une réservation 19,80&nbsp;€ soit 2 personnes.
+          Facturation minimale 2 personnes par créneau (si vous venez seul·e, vous payez pour 2 personnes).
         </p>
 
         <p id="message"></p>
@@ -1258,16 +1247,17 @@
         " pers.</span>";
     }
 
-    // Prix par personne : 7,50 € en creuse (4h–14h), 9,90 € sinon, minimum 2 personnes
+    // Prix par personne : 7,50 € en creuse (4h–14h), 9,90 € sinon,
+    // facturation minimale pour 2 personnes
     function getSlotPrice(date, hour, persons) {
       const baseRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
-      const nb = Math.max(persons || 2, 2);
+      const nb = persons ? Math.max(persons, 2) : 2;
       const total = baseRate * nb;
       return Number(total.toFixed(2));
     }
 
     let bookedIndex = {};
-    let selectedPersons = 2;            // par défaut 2 personnes
+    let selectedPersons = 2;            // par défaut 2 personnes (facturation mini 2)
     let personsManuallyChanged = false; // passe à true s'ils modifient le sélecteur
 
     async function fetchReservationsForDate(isoDate) {
@@ -1454,23 +1444,27 @@
                 // popup de rappel si le nombre de personnes n'a jamais été modifié
                 if (!personsManuallyChanged) {
                   const wantsChange = window.confirm(
-                    "Le nombre de personnes est actuellement réglé sur 2.\n" +
+                    "Le nombre de personnes est actuellement réglé sur " +
+                    selectedPersons +
+                    " (facturation minimale 2 personnes).\n" +
+                    "Tu peux venir seul(e) en mettant 1 personne.\n\n" +
                     "Voulez-vous modifier le nombre de personnes avant de réserver ?"
                   );
                   if (wantsChange) {
                     const saisie = window.prompt(
-                      "Nombre de personnes (2 minimum) :",
-                      String(selectedPersons || 2)
+                      "Nombre de personnes (si tu viens seul(e), mets 1) :",
+                      String(selectedPersons || 1)
                     );
                     if (saisie !== null) {
                       const n = parseInt(saisie, 10);
-                      if (!isNaN(n) && n >= 2) {
+                      if (!isNaN(n) && n >= 1) {
                         selectedPersons = n;
                         personsManuallyChanged = true;
                         const personsSelectEl = document.getElementById("persons-select");
                         const personsIndicatorEl = document.getElementById("persons-indicator");
                         if (personsSelectEl) personsSelectEl.value = String(n);
-                        if (personsIndicatorEl) personsIndicatorEl.textContent = n + " personnes";
+                        if (personsIndicatorEl) personsIndicatorEl.textContent =
+                          n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
                         // on reconstruit le planning avec les bons prix
                         const parts = isoDate.split("-");
                         const d = new Date(
@@ -1481,14 +1475,14 @@
                         buildPlanningTable(d);
                         return; // l'utilisateur recliquera sur un créneau
                       } else {
-                        alert("Veuillez entrer un nombre de personnes valide (minimum 2).");
+                        alert("Veuillez entrer un nombre de personnes valide (minimum 1).");
                         return;
                       }
                     }
                   }
                 }
 
-                const personsForSlot = selectedPersons || 2;
+                const personsForSlot = selectedPersons || 1;
                 const priceForSlot = getSlotPrice(date, hour, personsForSlot);
 
                 const slotInfo = {
@@ -1573,15 +1567,17 @@
         personsSelect.value = "2";
         selectedPersons = 2;
         if (personsIndicator) {
-          personsIndicator.textContent = "2 personnes (modifiable)";
+          personsIndicator.textContent = "2 personnes (facturation min. 2)";
         }
 
         personsSelect.addEventListener("change", () => {
           const n = parseInt(personsSelect.value, 10);
-          selectedPersons = Math.max(n || 2, 2);
+          selectedPersons = n || 1; // on permet 1 personne
           personsManuallyChanged = true;
           if (personsIndicator) {
-            personsIndicator.textContent = selectedPersons + " personnes";
+            personsIndicator.textContent =
+              selectedPersons + " personne" + (selectedPersons > 1 ? "s" : "") +
+              " (facturation min. 2)";
           }
           refreshPlanning(); // met à jour tous les prix du tableau
         });
@@ -1618,7 +1614,7 @@
           if (nextHour >= 24) return;
 
           const dateObj = lastSelectedSlot.dateObj;
-          const persons = lastSelectedSlot.persons || selectedPersons || 2;
+          const persons = lastSelectedSlot.persons || selectedPersons || 1;
           const price2 = getSlotPrice(dateObj, nextHour, persons);
 
           const panier = getPanier();
