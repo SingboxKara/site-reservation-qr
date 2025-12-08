@@ -513,6 +513,32 @@
       margin-top: 4px;
     }
 
+    /* Sélecteur de personnes */
+    .resa-persons {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+      color: #E5E7EB;
+    }
+
+    .resa-persons select {
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: #F9FAFB;
+      font-size: 13px;
+      outline: none;
+      min-width: 120px;
+    }
+
+    #persons-indicator {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-top: 2px;
+    }
+
     @media (min-width: 901px) {
       .resa-header {
         align-items: flex-start;
@@ -995,12 +1021,31 @@
           <div class="resa-dates">
             <label for="date-input">
               Date de votre séance
+              <span id="persons-indicator">2 personnes (modifiable)</span>
               <input type="date" id="date-input" />
             </label>
             <p class="resa-note">
-              Tarifs dynamiques selon le jour et l’horaire : plus tôt dans la journée, plus c’est avantageux.
+              Tarifs par personne, 2 minimum par réservation.
             </p>
           </div>
+
+          <div class="resa-persons">
+            <label for="persons-select">
+              Nombre de personnes
+            </label>
+            <select id="persons-select">
+              <option value="2">2 personnes</option>
+              <option value="3">3 personnes</option>
+              <option value="4">4 personnes</option>
+              <option value="5">5 personnes</option>
+              <option value="6">6 personnes</option>
+              <option value="7">7 personnes</option>
+              <option value="8">8 personnes</option>
+              <option value="9">9 personnes</option>
+              <option value="10">10 personnes</option>
+            </select>
+          </div>
+
           <button id="load-button" type="button">Voir les créneaux disponibles</button>
         </div>
 
@@ -1028,7 +1073,8 @@
           </div>
         </div>
         <p class="resa-pricing-rules">
-          25&nbsp;€ de 4h à 14h – 30&nbsp;€ en fin d’après-midi – 35&nbsp;€ en soirée et nuit les jeudis / vendredis / samedis / dimanches.
+          7,50&nbsp;€ par personne en heures creuses (4h–14h) – 9,90&nbsp;€ par personne le reste du temps.
+          2 personnes minimum par réservation (soit 19,80&nbsp;€ minimum).
         </p>
 
         <p id="message"></p>
@@ -1166,7 +1212,7 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    function addSlotToCart(boxId, boxName, dateObj, hour, price) {
+    function addSlotToCart(boxId, boxName, dateObj, hour, price, persons) {
       const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
 
@@ -1186,38 +1232,43 @@
         boxName,
         date: isoDate,
         hour,
-        price
+        price,
+        persons
       });
       savePanier(panier);
       updateCartIcon();
 
       const msgEl = document.getElementById("message");
-      const heureLabel = String(hour).padStart(2, "0") + "h–" + String((hour + 1) % 24).padStart(2, "0") + "h";
+      const heureLabel =
+        String(hour).padStart(2, "0") +
+        "h–" +
+        String((hour + 1) % 24).padStart(2, "0") +
+        "h";
+
+      const prixAffiche = price.toFixed(2).replace(".", ",");
+
       msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" +
         boxName +
         "</strong> – " +
         heureLabel +
         " – " +
-        price +
-        "€</span>";
+        prixAffiche +
+        "€ – " +
+        persons +
+        " pers.</span>";
     }
 
-    function getSlotPrice(date, hour) {
-      const day = date.getDay(); // 0 dimanche
-      const isWeekendPlus = (day === 0 || day === 4 || day === 5 || day === 6);
-      if (hour >= 4 && hour <= 14) {
-        return 25;
-      }
-      if (!isWeekendPlus) {
-        return 30;
-      }
-      if (hour >= 15 && hour <= 19) {
-        return 30;
-      }
-      return 35;
+    // Prix par personne : 7,50 € en creuse (4h–14h), 9,90 € sinon, minimum 2 personnes
+    function getSlotPrice(date, hour, persons) {
+      const baseRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
+      const nb = Math.max(persons || 2, 2);
+      const total = baseRate * nb;
+      return Number(total.toFixed(2));
     }
 
     let bookedIndex = {};
+    let selectedPersons = 2;            // par défaut 2 personnes
+    let personsManuallyChanged = false; // passe à true s'ils modifient le sélecteur
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
@@ -1276,7 +1327,16 @@
         const h1 = String(slot.hour).padStart(2, "0");
         const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
         infoEl.textContent =
-          slot.boxName + " – " + dateStr + " – " + h1 + "h–" + h2 + "h";
+          slot.boxName +
+          " – " +
+          dateStr +
+          " – " +
+          h1 +
+          "h–" +
+          h2 +
+          "h – " +
+          slot.persons +
+          " pers.";
       }
 
       const doubleBtn = document.getElementById("modal-double");
@@ -1352,7 +1412,8 @@
           td.dataset.hour = String(hour);
           td.dataset.date = isoDate;
 
-          const price = getSlotPrice(date, hour);
+          const persons = selectedPersons || 2;
+          const price = getSlotPrice(date, hour, persons);
           const booked = isSlotBooked(box.id, hour);
 
           const wrapper = document.createElement("div");
@@ -1374,7 +1435,8 @@
 
             const priceSpan = document.createElement("span");
             priceSpan.className = "slot-price";
-            priceSpan.textContent = price + "€";
+            const prixAffiche = price.toFixed(2).replace(".", ",");
+            priceSpan.textContent = prixAffiche + "€";
             wrapper.appendChild(priceSpan);
 
             const statusSpan = document.createElement("span");
@@ -1389,15 +1451,64 @@
             } else {
               td.classList.add("slot-free");
               td.onclick = function () {
+                // popup de rappel si le nombre de personnes n'a jamais été modifié
+                if (!personsManuallyChanged) {
+                  const wantsChange = window.confirm(
+                    "Le nombre de personnes est actuellement réglé sur 2.\n" +
+                    "Voulez-vous modifier le nombre de personnes avant de réserver ?"
+                  );
+                  if (wantsChange) {
+                    const saisie = window.prompt(
+                      "Nombre de personnes (2 minimum) :",
+                      String(selectedPersons || 2)
+                    );
+                    if (saisie !== null) {
+                      const n = parseInt(saisie, 10);
+                      if (!isNaN(n) && n >= 2) {
+                        selectedPersons = n;
+                        personsManuallyChanged = true;
+                        const personsSelectEl = document.getElementById("persons-select");
+                        const personsIndicatorEl = document.getElementById("persons-indicator");
+                        if (personsSelectEl) personsSelectEl.value = String(n);
+                        if (personsIndicatorEl) personsIndicatorEl.textContent = n + " personnes";
+                        // on reconstruit le planning avec les bons prix
+                        const parts = isoDate.split("-");
+                        const d = new Date(
+                          parseInt(parts[0], 10),
+                          parseInt(parts[1], 10) - 1,
+                          parseInt(parts[2], 10)
+                        );
+                        buildPlanningTable(d);
+                        return; // l'utilisateur recliquera sur un créneau
+                      } else {
+                        alert("Veuillez entrer un nombre de personnes valide (minimum 2).");
+                        return;
+                      }
+                    }
+                  }
+                }
+
+                const personsForSlot = selectedPersons || 2;
+                const priceForSlot = getSlotPrice(date, hour, personsForSlot);
+
                 const slotInfo = {
                   boxId: box.id,
                   boxName: box.name,
                   date: isoDate,
                   dateObj: date,
                   hour,
-                  price
+                  price: priceForSlot,
+                  persons: personsForSlot
                 };
-                addSlotToCart(box.id, box.name, date, hour, price);
+
+                addSlotToCart(
+                  box.id,
+                  box.name,
+                  date,
+                  hour,
+                  priceForSlot,
+                  personsForSlot
+                );
                 markCellSelected(td);
                 openSlotModal(slotInfo);
               };
@@ -1435,10 +1546,12 @@
 
       const today = new Date();
       const isoToday = toLocalYMD(today);
-      dateInput.value = isoToday;
+      if (dateInput) {
+        dateInput.value = isoToday;
+      }
 
       async function refreshPlanning() {
-        if (!dateInput.value) return;
+        if (!dateInput || !dateInput.value) return;
 
         const iso = dateInput.value;
         const parts = iso.split("-");
@@ -1453,9 +1566,32 @@
         document.getElementById("message").textContent = "";
       }
 
-      loadButton.addEventListener("click", () => {
-        refreshPlanning();
-      });
+      const personsSelect = document.getElementById("persons-select");
+      const personsIndicator = document.getElementById("persons-indicator");
+
+      if (personsSelect) {
+        personsSelect.value = "2";
+        selectedPersons = 2;
+        if (personsIndicator) {
+          personsIndicator.textContent = "2 personnes (modifiable)";
+        }
+
+        personsSelect.addEventListener("change", () => {
+          const n = parseInt(personsSelect.value, 10);
+          selectedPersons = Math.max(n || 2, 2);
+          personsManuallyChanged = true;
+          if (personsIndicator) {
+            personsIndicator.textContent = selectedPersons + " personnes";
+          }
+          refreshPlanning(); // met à jour tous les prix du tableau
+        });
+      }
+
+      if (loadButton) {
+        loadButton.addEventListener("click", () => {
+          refreshPlanning();
+        });
+      }
 
       refreshPlanning();
 
@@ -1482,7 +1618,8 @@
           if (nextHour >= 24) return;
 
           const dateObj = lastSelectedSlot.dateObj;
-          const price2 = getSlotPrice(dateObj, nextHour);
+          const persons = lastSelectedSlot.persons || selectedPersons || 2;
+          const price2 = getSlotPrice(dateObj, nextHour, persons);
 
           const panier = getPanier();
           const exists = panier.some(item =>
@@ -1508,7 +1645,8 @@
             lastSelectedSlot.boxName,
             dateObj,
             nextHour,
-            price2
+            price2,
+            persons
           );
 
           const selector =
