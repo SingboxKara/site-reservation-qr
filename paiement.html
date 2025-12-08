@@ -2069,6 +2069,7 @@
           submitBtn.textContent = "Paiement en cours...";
 
           try {
+            // 1) Paiement de la session
             const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2117,9 +2118,12 @@
 
             if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
               if (successEl) {
-                successEl.textContent = "Paiement accepté ✔️ Votre réservation va être confirmée.";
+                successEl.textContent = "Paiement accepté ✔️ Votre réservation va être confirmée. Une empreinte de caution de 250€ va être réalisée.";
               }
 
+              let reservationId = null;
+
+              // 2) Confirmation de la réservation côté backend
               try {
                 const token = localStorage.getItem("token");
                 const headers = {
@@ -2129,7 +2133,7 @@
                   headers["Authorization"] = "Bearer " + token;
                 }
 
-                await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+                const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
                   method: "POST",
                   headers,
                   body: JSON.stringify({
@@ -2139,10 +2143,61 @@
                     paymentIntentId: result.paymentIntent.id
                   })
                 });
+
+                const confirmJson = await confirmRes.json().catch(() => ({}));
+                if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+                  reservationId = confirmJson.reservations[0].id;
+                }
               } catch (e) {
                 // on ne bloque pas l'affichage client si la notif backend échoue
               }
 
+              // 3) CAUTION 250€ : création de l'empreinte puis confirmCardPayment
+              try {
+                const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    reservationId,
+                    customer
+                  })
+                });
+
+                const depositJson = await depositRes.json();
+                if (depositRes.ok && depositJson && depositJson.clientSecret) {
+                  const depositResult = await stripe.confirmCardPayment(depositJson.clientSecret, {
+                    payment_method: {
+                      card: cardElement,
+                      billing_details: {
+                        name: prenom + " " + nom,
+                        email: email,
+                      }
+                    }
+                  });
+
+                  if (depositResult.error) {
+                    console.error("Erreur caution 250€ :", depositResult.error);
+                    if (errorEl) {
+                      errorEl.textContent = "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : " + depositResult.error.message;
+                    }
+                  } else if (depositResult.paymentIntent && depositResult.paymentIntent.status === "requires_capture") {
+                    // OK : empreinte créée, en attente de capture dans Stripe
+                    console.log("Caution 250€ préautorisée, PaymentIntent:", depositResult.paymentIntent.id);
+                  }
+                } else {
+                  console.error("Erreur création empreinte de caution :", depositJson);
+                  if (errorEl) {
+                    errorEl.textContent = "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée. Merci de contacter Singbox.";
+                  }
+                }
+              } catch (e) {
+                console.error("Erreur inattendue lors de la caution :", e);
+                if (errorEl) {
+                  errorEl.textContent = "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.";
+                }
+              }
+
+              // 4) Newsletter
               if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
                 try {
                   await window.supabaseClient
@@ -2153,6 +2208,7 @@
                 }
               }
 
+              // 5) On vide le panier
               savePanier([]);
               localStorage.removeItem("promoCode");
               currentPromo = null;
