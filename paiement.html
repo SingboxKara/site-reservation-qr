@@ -2544,22 +2544,24 @@
               }
 
               // 7) Génération du QR code si on a une référence
-              if (reservationId && thankyouQrContainer && window.QRCode) {
-                try {
-                  thankyouQrContainer.innerHTML = "";
-                  const qrUrl = `https://www.singbox.fr/reservation/${reservationId}`;
-                  new QRCode(thankyouQrContainer, {
-                    text: qrUrl,
-                    width: 110,
-                    height: 110
-                  });
-                  if (thankyouQrFallback) {
-                    thankyouQrFallback.textContent = "Scannez ce QR code à l’accueil le jour J.";
-                  }
-                } catch (e) {
-                  console.error("Erreur génération QR code :", e);
-                }
-              }
+if (reservationId && thankyouQrContainer && window.QRCode) {
+  try {
+    thankyouQrContainer.innerHTML = "";
+
+    // On encode exactement la même chose que dans l'email : l'ID de la réservation
+    new QRCode(thankyouQrContainer, {
+      text: String(reservationId), // même contenu que qrText = reservation.id côté backend
+      width: 110,
+      height: 110
+    });
+
+    if (thankyouQrFallback) {
+      thankyouQrFallback.textContent = "Scannez ce QR code à l’accueil le jour J.";
+    }
+  } catch (e) {
+    console.error("Erreur génération QR code :", e);
+  }
+}
 
             }
 
