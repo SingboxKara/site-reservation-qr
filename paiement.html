@@ -2223,7 +2223,7 @@ async function initLoyalty() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", initLoyalty);
+await initLoyalty();
       
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
