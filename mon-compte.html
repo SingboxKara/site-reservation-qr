@@ -913,7 +913,7 @@
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
-          <li><a href="boxs.html">Les boxs</a></li>
+          <li><a href="boxs.html">Les boxs</li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="mon-compte.html" aria-current="page">Mon compte</a></li>
@@ -1194,6 +1194,22 @@
       });
     }
 
+    // ✅ nouvelle fonction : format heure à partir de start_time / end_time
+    function formatReservationHours(startStr, endStr) {
+      if (!startStr || !endStr) return "";
+      const start = new Date(startStr);
+      const end = new Date(endStr);
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) return "";
+
+      const formatTime = (d) =>
+        d.toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        }).replace(":", "h");
+
+      return `${formatTime(start)} - ${formatTime(end)}`;
+    }
+
     function renderReservations(reservations) {
       const listEl = document.getElementById("reservations-list");
       if (!listEl) return;
@@ -1209,9 +1225,13 @@
         item.className = "reservation-item";
 
         const date = formatReservationDate(r.date || r.datetime || r.start_time);
-        const heure = r.heure || r.time || "";
-        const duree = r.duree || r.duration || "";
-        const boxName = r.box_name || r.box || "";
+        const plageHeure = formatReservationHours(r.start_time, r.end_time);
+
+        const boxName =
+          r.box_name ||
+          r.box ||
+          r.box_id ||
+          "";
         const montant = r.montant || r.total || r.total_price || "";
         const statutRaw = (r.statut || r.status || "").toString();
         const statut = statutRaw || "";
@@ -1226,13 +1246,17 @@
           statutClass = "reservation-status-annulee";
         }
 
+        const metaPieces = [];
+        if (plageHeure) metaPieces.push(plageHeure);
+        if (boxName) metaPieces.push(`Box ${boxName}`);
+        const metaText = metaPieces.join(" • ");
+
         item.innerHTML = `
           <div class="reservation-main-row">
             <div>
               <div class="reservation-date">${date}</div>
               <div class="reservation-meta">
-                ${heure ? heure : ""}${heure && duree ? " • " : ""}${duree ? duree : ""}
-                ${boxName ? `${(heure || duree) ? " • " : ""}Box ${boxName}` : ""}
+                ${metaText}
               </div>
             </div>
             <div class="reservation-side">
