@@ -425,107 +425,87 @@
     }
 
     /* HEADER FORM */
-    .resa-header {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
-      gap: 1rem 1.5rem;
-      align-items: flex-start; /* aligne les blocs en haut */
-      margin-bottom: 1.4rem;
-    }
+.resa-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end; /* aligne les inputs + bouton sur la même ligne */
+  margin-bottom: 1.4rem;
+}
 
-    .resa-dates label {
-      font-size: 13px;
-      color: #E5E7EB;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+.resa-dates label {
+  font-size: 13px;
+  color: #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-    .resa-dates input[type="date"] {
-      padding: 0.55rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: #F9FAFB;
-      font-size: 13px;
-      outline: none;
-      min-width: 180px;
-      max-width: 260px;
-    }
+.resa-dates input[type="date"] {
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border-soft);
+  background: #020617;
+  color: #F9FAFB;
+  font-size: 13px;
+  outline: none;
+  min-width: 180px;
+  max-width: 260px;
+}
 
-    .resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
-    }
+.resa-dates input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
 
-    .resa-header button {
-      border: none;
-      border-radius: 999px;
-      padding: 0.65rem 1.4rem;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 14px 30px rgba(0,0,0,0.85);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      white-space: nowrap;
-      align-self: center; /* aligne verticalement avec la ligne */
-      justify-self: end;
-    }
+.resa-persons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: #E5E7EB;
+  min-width: 200px;
+}
 
-    .resa-header button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 20px 50px rgba(0,0,0,1);
-    }
+.resa-persons select {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--sb-border-soft);
+  background: #020617;
+  color: #F9FAFB;
+  font-size: 13px;
+  outline: none;
+  min-width: 180px;
+}
 
-    .resa-note {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 4px;
-    }
+.resa-header button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+  color: #F9FAFB;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(248,250,251,0.12),
+    0 14px 30px rgba(0,0,0,0.85);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  white-space: nowrap;
+}
 
-    .resa-persons {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 13px;
-      color: #E5E7EB;
-    }
+/* MOBILE : tout passe en colonne */
+@media (max-width: 900px) {
+  .resa-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .resa-persons select {
-      padding: 0.45rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: #F9FAFB;
-      font-size: 13px;
-      outline: none;
-      min-width: 160px;
-    }
-
-    #persons-indicator {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 2px;
-    }
-
-    @media (max-width: 900px) {
-      .resa-header {
-        grid-template-columns: minmax(0, 1fr);
-        align-items: flex-start;
-      }
-      .resa-header button {
-        width: 100%;
-        text-align: center;
-        justify-self: stretch;
-        margin-top: 0.75rem;
-      }
-    }
+  .resa-header button {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+}
 
     .table-wrapper {
       margin-top: 1rem;
