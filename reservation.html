@@ -132,7 +132,6 @@
       background: #020617;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
-      height: auto;
     }
 
     .header-inner {
@@ -143,8 +142,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 2rem;
-      height: auto;
-      flex-wrap: nowrap;
     }
 
     .brand {
@@ -329,27 +326,15 @@
         padding: 10px 16px;
         gap: 12px;
       }
-      .main-nav {
-        display: none !important;
-      }
-      .nav-cta {
-        display: none !important;
-      }
-      .brand-text {
-        display: none !important;
-      }
-      .burger-button {
-        display: flex !important;
-      }
-      .brand-logo {
-        width: 72px;
-      }
+      .main-nav { display: none !important; }
+      .nav-cta { display: none !important; }
+      .brand-text { display: none !important; }
+      .burger-button { display: flex !important; }
+      .brand-logo { width: 72px; }
     }
 
     @media (max-width: 640px) {
-      .brand-logo {
-        width: 64px;
-      }
+      .brand-logo { width: 64px; }
     }
 
     /* ---------- HERO RÉSERVATION ---------- */
@@ -424,67 +409,126 @@
       margin-bottom: 0.75rem;
     }
 
- /* HEADER FORM ALIGNÉ */
-.resa-header {
-  display: flex;
-  align-items: flex-end;     /* aligne les inputs + bouton */
-  gap: 2rem;
-  margin-bottom: 0.5rem;
-}
+    /* ===== HEADER FORM ALIGNE ===== */
+    .resa-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end; /* aligne date / select / bouton */
+      margin-bottom: 0.5rem;
+    }
 
-/* la date prend la place de gauche */
-.resa-header > .resa-dates {
-  flex: 1;
-  min-width: 0;
-}
+    .resa-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+      color: #E5E7EB;
+    }
 
-/* bloc nombre de personnes, largeur fixe */
-.resa-header > .resa-persons {
-  width: 230px;
-}
+    .resa-field-date {
+      flex: 1;
+      min-width: 0;
+    }
 
-/* bouton collé à droite, aligné avec les inputs */
-.resa-header > button {
-  margin-left: auto;
-}
+    .resa-field-persons {
+      width: 230px;
+    }
 
-/* select personnes */
-.resa-persons {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
-  color: #E5E7EB;
-}
+    .resa-button-wrapper {
+      margin-left: auto;
+    }
 
-.resa-persons select {
-  padding: 0.45rem 0.8rem;
-  border-radius: 999px;
-  border: 1px solid var(--sb-border-soft);
-  background: #020617;
-  color: #F9FAFB;
-  font-size: 13px;
-  outline: none;
-}
+    .resa-field label {
+      font-size: 13px;
+      color: #E5E7EB;
+    }
 
-/* responsive : on met tout en colonne sur mobile */
-@media (max-width: 900px) {
-  .resa-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .resa-dates-input {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-  .resa-header > .resa-persons {
-    width: 100%;
-  }
+    .resa-dates-input input[type="date"] {
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: #F9FAFB;
+      font-size: 13px;
+      outline: none;
+      min-width: 180px;
+      max-width: 260px;
+    }
 
-  .resa-header > button {
-    width: 100%;
-    margin-left: 0;
-    text-align: center;
-    margin-top: 0.5rem;
-  }
-}
+    .resa-dates-input input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+
+    #persons-indicator {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .resa-persons-select {
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: #F9FAFB;
+      font-size: 13px;
+      outline: none;
+      min-width: 180px;
+    }
+
+    .resa-header button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.4rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 14px 30px rgba(0,0,0,0.85);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .resa-header button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 20px 50px rgba(0,0,0,1);
+    }
+
+    .resa-note {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .resa-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .resa-field-persons,
+      .resa-button-wrapper {
+        width: 100%;
+      }
+
+      .resa-header button {
+        width: 100%;
+        text-align: center;
+      }
+    }
 
     .table-wrapper {
       margin-top: 1rem;
@@ -927,22 +971,17 @@
         <h2>Choisissez votre date et votre créneau de karaoké</h2>
 
         <div class="resa-header">
-          <div class="resa-dates">
-            <label for="date-input">
-              Date de votre séance
-              <span id="persons-indicator">2 personnes (facturation min. 2)</span>
+          <div class="resa-field resa-field-date">
+            <label for="date-input">Date de votre séance</label>
+            <div class="resa-dates-input">
               <input type="date" id="date-input" />
-            </label>
-            <p class="resa-note">
-              Tarifs par personne, facturation minimale 2 personnes (même si vous venez seul·e).
-            </p>
+              <span id="persons-indicator">2 personnes (facturation min. 2)</span>
+            </div>
           </div>
 
-          <div class="resa-persons">
-            <label for="persons-select">
-              Nombre de personnes
-            </label>
-            <select id="persons-select">
+          <div class="resa-field resa-field-persons">
+            <label for="persons-select">Nombre de personnes</label>
+            <select id="persons-select" class="resa-persons-select">
               <option value="1">1 personne</option>
               <option value="2" selected>2 personnes</option>
               <option value="3">3 personnes</option>
@@ -954,8 +993,15 @@
             </select>
           </div>
 
-          <button id="load-button" type="button">Voir les créneaux disponibles</button>
+          <div class="resa-field resa-button-wrapper">
+            <button id="load-button" type="button">Voir les créneaux disponibles</button>
+          </div>
         </div>
+
+        <p class="resa-note">
+          Tarifs par personne, facturation minimale 2 personnes (même si vous venez seul·e). Capacité
+          maximale : 8 personnes par box.
+        </p>
 
         <p class="table-scroll-hint">
           Sur mobile, glissez le tableau vers la droite pour voir l’autre box
@@ -963,7 +1009,9 @@
         </p>
 
         <div class="table-wrapper">
-          <table id="planning-table" aria-label="Tableau des créneaux de réservation pour les box Singbox"></table>
+          <table id="planning-table" aria-label="Tableau des créneaux de réservation pour les box Singbox">
+            <!-- Table générée en JS -->
+          </table>
         </div>
 
         <div class="resa-legend">
@@ -1127,9 +1175,7 @@
         item.date === isoDate &&
         item.hour === hour
       );
-      if (exists) {
-        return;
-      }
+      if (exists) return;
 
       panier.push({
         type: "reservation",
@@ -1163,10 +1209,10 @@
         " pers.</span>";
     }
 
-    // Prix par personne : 7,90 € en creuse (4h–14h), 9,90 € sinon,
-    // facturation minimale pour 2 personnes
+    // Prix par personne : 7,90 € en creuse (4h–14h), 9,90 € sinon.
+    // Facturation minimale 2 personnes.
     function getSlotPrice(date, hour, persons) {
-      const baseRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
+      const baseRate = (hour >= 4 && hour <= 14) ? 7.90 : 9.90;
       const nb = persons ? Math.max(persons, 2) : 2;
       const total = baseRate * nb;
       return Number(total.toFixed(2));
@@ -1175,6 +1221,12 @@
     let bookedIndex = {};
     let selectedPersons = 2;
     let personsManuallyChanged = false;
+    const BOXES = [
+      { id: 1, name: "Nuit étoilée" },
+      { id: 2, name: "Ambiance Sunset" }
+    ];
+    let currentPlanningDateIso = null;
+    let lastSelectedSlot = null;
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
@@ -1203,14 +1255,6 @@
       const key = `${boxId}-${hour}`;
       return !!bookedIndex[key];
     }
-
-    const BOXES = [
-      { id: 1, name: "Nuit étoilée" },
-      { id: 2, name: "Ambiance Sunset" }
-    ];
-
-    let currentPlanningDateIso = null;
-    let lastSelectedSlot = null;
 
     function markCellSelected(td) {
       td.classList.remove("slot-free");
@@ -1256,16 +1300,12 @@
         }
       }
 
-      if (modal) {
-        modal.removeAttribute("hidden");
-      }
+      if (modal) modal.removeAttribute("hidden");
     }
 
     function closeSlotModal() {
       const modal = document.getElementById("slot-modal");
-      if (modal) {
-        modal.setAttribute("hidden", "true");
-      }
+      if (modal) modal.setAttribute("hidden", "true");
     }
 
     function buildPlanningTable(date) {
@@ -1320,7 +1360,7 @@
 
           const persons = selectedPersons || 2;
           const totalPrice = getSlotPrice(date, hour, persons);
-          const perPersonRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
+          const perPersonRate = (hour >= 4 && hour <= 14) ? 7.90 : 9.90;
           const booked = isSlotBooked(box.id, hour);
 
           const wrapper = document.createElement("div");
@@ -1381,24 +1421,34 @@
                     );
                     if (saisie !== null) {
                       const n = parseInt(saisie, 10);
-                      if (!isNaN(n) && n >= 1) {
-                        selectedPersons = n;
+                      if (!isNaN(n)) {
+                        let val = n;
+                        if (val < 1) val = 1;
+                        if (val > 8) {
+                          val = 8;
+                          alert("Les box peuvent accueillir 8 personnes maximum.");
+                        }
+                        selectedPersons = val;
                         personsManuallyChanged = true;
+
                         const personsSelectEl = document.getElementById("persons-select");
                         const personsIndicatorEl = document.getElementById("persons-indicator");
-                        if (personsSelectEl) personsSelectEl.value = String(n);
-                        if (personsIndicatorEl) personsIndicatorEl.textContent =
-                          n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
-                        const parts = isoDate.split("-");
-                        const d = new Date(
-                          parseInt(parts[0], 10),
-                          parseInt(parts[1], 10) - 1,
-                          parseInt(parts[2], 10)
+                        if (personsSelectEl) personsSelectEl.value = String(val);
+                        if (personsIndicatorEl) {
+                          personsIndicatorEl.textContent =
+                            val + " personne" + (val > 1 ? "s" : "") + " (facturation min. 2)";
+                        }
+
+                        const parts2 = isoDate.split("-");
+                        const d2 = new Date(
+                          parseInt(parts2[0], 10),
+                          parseInt(parts2[1], 10) - 1,
+                          parseInt(parts2[2], 10)
                         );
-                        buildPlanningTable(d);
+                        buildPlanningTable(d2);
                         return;
                       } else {
-                        alert("Veuillez entrer un nombre de personnes valide (minimum 1).");
+                        alert("Veuillez entrer un nombre de personnes valide (entre 1 et 8).");
                         return;
                       }
                     }
@@ -1450,9 +1500,7 @@
           mobileNav.classList.toggle("open");
         });
         mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
+          if (e.target.tagName === "A") mobileNav.classList.remove("open");
         });
       }
 
@@ -1460,12 +1508,12 @@
 
       const dateInput = document.getElementById("date-input");
       const loadButton = document.getElementById("load-button");
+      const personsSelect = document.getElementById("persons-select");
+      const personsIndicator = document.getElementById("persons-indicator");
 
       const today = new Date();
       const isoToday = toLocalYMD(today);
-      if (dateInput) {
-        dateInput.value = isoToday;
-      }
+      if (dateInput) dateInput.value = isoToday;
 
       async function refreshPlanning() {
         if (!dateInput || !dateInput.value) return;
@@ -1483,9 +1531,6 @@
         document.getElementById("message").textContent = "";
       }
 
-      const personsSelect = document.getElementById("persons-select");
-      const personsIndicator = document.getElementById("persons-indicator");
-
       if (personsSelect) {
         personsSelect.value = "2";
         selectedPersons = 2;
@@ -1494,14 +1539,17 @@
         }
 
         personsSelect.addEventListener("change", () => {
-          const n = parseInt(personsSelect.value, 10);
-          selectedPersons = n || 1;
+          let n = parseInt(personsSelect.value, 10);
+          if (isNaN(n) || n < 1) n = 1;
+          if (n > 8) n = 8;
+          selectedPersons = n;
           personsManuallyChanged = true;
+
           if (personsIndicator) {
             personsIndicator.textContent =
-              selectedPersons + " personne" + (selectedPersons > 1 ? "s" : "") +
-              " (facturation min. 2)";
+              n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
           }
+
           refreshPlanning();
         });
       }
@@ -1577,9 +1625,7 @@
             lastSelectedSlot.date +
             '"]';
           const cell2 = document.querySelector(selector);
-          if (cell2) {
-            markCellSelected(cell2);
-          }
+          if (cell2) markCellSelected(cell2);
 
           doubleBtn.disabled = true;
           doubleBtn.textContent = "Deuxième heure ajoutée ✓";
