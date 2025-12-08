@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Pour une page compte / login, on évite l’indexation (SEO propre) -->
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation." />
+  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation." />
   <meta name="author" content="Singbox" />
   <meta name="keywords" content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse" />
   <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
@@ -22,7 +22,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:title" content="Mon compte Singbox | Espace client & points de fidélité" />
-  <meta property="og:description" content="Connectez-vous à votre espace client Singbox pour consulter vos informations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse." />
+  <meta property="og:description" content="Connectez-vous à votre espace client Singbox pour consulter vos informations, vos réservations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse." />
   <meta property="og:url" content="https://www.singbox.fr/mon-compte" />
   <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
   <meta property="og:locale" content="fr_FR" />
@@ -30,7 +30,7 @@
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
-  <meta name="twitter:description" content="Retrouvez vos informations client et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse." />
+  <meta name="twitter:description" content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse." />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
   <!-- Données structurées WebPage / Espace client -->
@@ -40,7 +40,7 @@
     "@type": "WebPage",
     "name": "Mon compte Singbox",
     "url": "https://www.singbox.fr/mon-compte",
-    "description": "Espace client Singbox : accès au compte, points de fidélité et avantages pour le karaoké box privatif à Toulouse.",
+    "description": "Espace client Singbox : accès au compte, réservations, points de fidélité et avantages pour le karaoké box privatif à Toulouse.",
     "isPartOf": {
       "@type": "WebSite",
       "name": "Singbox",
@@ -567,6 +567,89 @@
       color: #BBF7D0;
     }
 
+    /* ====== RÉSERVATIONS ====== */
+
+    .reservations-block {
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .reservations-list {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .reservations-empty {
+      margin: 0;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .reservation-item {
+      background: #020617;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,0.45);
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .reservation-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .reservation-date {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .reservation-meta {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .reservation-side {
+      text-align: right;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .reservation-price {
+      font-weight: 600;
+    }
+
+    .reservation-status {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      font-size: 11px;
+    }
+
+    .reservation-status-confirmed {
+      border-color: rgba(52,211,153,0.8);
+      color: #6ee7b7;
+    }
+
+    .reservation-status-pending {
+      border-color: rgba(251,191,36,0.8);
+      color: #facc15;
+    }
+
+    .reservation-status-cancelled,
+    .reservation-status-annulee {
+      border-color: rgba(248,113,113,0.85);
+      color: #fecaca;
+    }
+
     /* Carte fidélité droite */
 
     .loyalty-card h3 {
@@ -867,7 +950,7 @@
       <div class="account-header">
         <p class="account-header-eyebrow">Espace client</p>
         <h1>Mon compte Singbox</h1>
-        <p>Consultez vos informations, vos points de fidélité et vos avantages pour vos prochaines séances de karaoké.</p>
+        <p>Consultez vos informations, vos réservations, vos points de fidélité et vos avantages pour vos prochaines séances de karaoké.</p>
       </div>
 
       <div class="account-layout">
@@ -910,6 +993,15 @@
               <div class="badge-points">
                 <span>★</span>
                 <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+              </div>
+            </div>
+
+            <div class="reservations-block">
+              <div class="account-field-label">Mes réservations</div>
+              <div id="reservations-list" class="reservations-list">
+                <p class="reservations-empty">
+                  Connectez-vous pour retrouver vos réservations passées et à venir.
+                </p>
               </div>
             </div>
 
@@ -1061,6 +1153,13 @@
       }
     }
 
+    function setReservationsNotLogged() {
+      const listEl = document.getElementById("reservations-list");
+      if (listEl) {
+        listEl.innerHTML = '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
+      }
+    }
+
     function showNotLoggedState() {
       const emailEl = document.getElementById("user-email");
       const pointsEl = document.getElementById("user-points");
@@ -1077,7 +1176,108 @@
       if (notLoggedCta) notLoggedCta.style.display = "block";
       if (loginCard) loginCard.style.display = "block";
 
+      setReservationsNotLogged();
       updateLoyaltyHighlight(null);
+    }
+
+    function formatReservationDate(dateStr) {
+      if (!dateStr) return "Date à confirmer";
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) {
+        return dateStr;
+      }
+      return d.toLocaleDateString("fr-FR", {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    function renderReservations(reservations) {
+      const listEl = document.getElementById("reservations-list");
+      if (!listEl) return;
+
+      if (!reservations || !reservations.length) {
+        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment. Réservez votre première séance depuis la page "Réservation".</p>';
+        return;
+      }
+
+      listEl.innerHTML = "";
+      reservations.forEach((r) => {
+        const item = document.createElement("div");
+        item.className = "reservation-item";
+
+        const date = formatReservationDate(r.date || r.datetime || r.start_time);
+        const heure = r.heure || r.time || "";
+        const duree = r.duree || r.duration || "";
+        const boxName = r.box_name || r.box || "";
+        const montant = r.montant || r.total || r.total_price || "";
+        const statutRaw = (r.statut || r.status || "").toString();
+        const statut = statutRaw || "";
+        let statutClass = "";
+
+        const s = statutRaw.toLowerCase();
+        if (s.includes("confirme") || s === "confirmed") {
+          statutClass = "reservation-status-confirmed";
+        } else if (s.includes("attente") || s === "pending") {
+          statutClass = "reservation-status-pending";
+        } else if (s.includes("annul") || s === "cancelled" || s === "canceled") {
+          statutClass = "reservation-status-annulee";
+        }
+
+        item.innerHTML = `
+          <div class="reservation-main-row">
+            <div>
+              <div class="reservation-date">${date}</div>
+              <div class="reservation-meta">
+                ${heure ? heure : ""}${heure && duree ? " • " : ""}${duree ? duree : ""}
+                ${boxName ? `${(heure || duree) ? " • " : ""}Box ${boxName}` : ""}
+              </div>
+            </div>
+            <div class="reservation-side">
+              ${montant ? `<div class="reservation-price">${montant} €</div>` : ""}
+              ${statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : ""}
+            </div>
+          </div>
+        `;
+
+        listEl.appendChild(item);
+      });
+    }
+
+    async function loadReservations() {
+      const token = localStorage.getItem("token");
+      const listEl = document.getElementById("reservations-list");
+      if (!listEl) return;
+
+      if (!token) {
+        setReservationsNotLogged();
+        return;
+      }
+
+      listEl.innerHTML = '<p class="reservations-empty">Chargement de vos réservations...</p>';
+
+      try {
+        const res = await fetch(API_BASE + "/api/my-reservations", {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        });
+
+        if (!res.ok) {
+          console.error("Erreur chargement réservations", res.status);
+          listEl.innerHTML = '<p class="reservations-empty">Impossible de charger vos réservations pour le moment.</p>';
+          return;
+        }
+
+        const data = await res.json();
+        const reservations = Array.isArray(data) ? data : (data.reservations || []);
+        renderReservations(reservations);
+      } catch (err) {
+        console.error(err);
+        listEl.innerHTML = '<p class="reservations-empty">Erreur de chargement de vos réservations.</p>';
+      }
     }
 
     async function loadProfile() {
@@ -1120,6 +1320,9 @@
         if (notLoggedCta) notLoggedCta.style.display = "none";
 
         updateLoyaltyHighlight(user.points ?? 0);
+
+        // Charger les réservations du compte
+        loadReservations();
       } catch (err) {
         console.error(err);
         const msgEl = document.getElementById("account-message");
@@ -1170,7 +1373,7 @@
             loginMsg.classList.add("ok");
           }
 
-          // recharger le profil
+          // recharger le profil + réservations
           loadProfile();
         } catch (err) {
           console.error(err);
