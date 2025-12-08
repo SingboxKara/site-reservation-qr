@@ -913,7 +913,7 @@
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
-          <li><a href="boxs.html">Les boxs</li>
+          <li><a href="boxs.html">Les boxs</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="mon-compte.html" aria-current="page">Mon compte</a></li>
@@ -1120,9 +1120,8 @@
     </div>
   </footer>
 
-  <!-- JS -->
+  <!-- JS PRINCIPAL (profil + réservations avec heure) -->
   <script>
-    // même logique que sur panier pour choisir le backend
     const API_BASE =
       (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
         ? "http://localhost:3000"
@@ -1194,18 +1193,32 @@
       });
     }
 
-    // ✅ nouvelle fonction : format heure à partir de start_time / end_time
-    function formatReservationHours(startStr, endStr) {
-      if (!startStr || !endStr) return "";
+    // ✅ récupère l'heure à partir de start_time / datetime + end_time (+1h par défaut)
+    function formatReservationHoursFromReservation(r) {
+      const startStr = r.start_time || r.datetime || null;
+      if (!startStr) return "";
+
       const start = new Date(startStr);
-      const end = new Date(endStr);
-      if (isNaN(start.getTime()) || isNaN(end.getTime())) return "";
+      if (isNaN(start.getTime())) return "";
+
+      let end;
+      if (r.end_time) {
+        end = new Date(r.end_time);
+        if (isNaN(end.getTime())) {
+          end = new Date(start.getTime() + 60 * 60 * 1000);
+        }
+      } else {
+        // créneau d'1h par défaut
+        end = new Date(start.getTime() + 60 * 60 * 1000);
+      }
 
       const formatTime = (d) =>
-        d.toLocaleTimeString("fr-FR", {
-          hour: "2-digit",
-          minute: "2-digit"
-        }).replace(":", "h");
+        d
+          .toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+          .replace(":", "h");
 
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
@@ -1225,13 +1238,9 @@
         item.className = "reservation-item";
 
         const date = formatReservationDate(r.date || r.datetime || r.start_time);
-        const plageHeure = formatReservationHours(r.start_time, r.end_time);
+        const plageHeure = formatReservationHoursFromReservation(r);
 
-        const boxName =
-          r.box_name ||
-          r.box ||
-          r.box_id ||
-          "";
+        const boxName = r.box_name || r.box || r.box_id || "";
         const montant = r.montant || r.total || r.total_price || "";
         const statutRaw = (r.statut || r.status || "").toString();
         const statut = statutRaw || "";
