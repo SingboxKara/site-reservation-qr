@@ -603,17 +603,6 @@
       flex-shrink: 0;
     }
 
-    .fake-captcha {
-      border-radius: 999px;
-      border: 1px dashed rgba(148,163,184,0.5);
-      padding: 7px 12px;
-      font-size: 11px;
-      background: rgba(15,23,42,0.7);
-      color: var(--sb-text-muted);
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
     .contact-submit {
       display: flex;
       justify-content: flex-end;
@@ -954,13 +943,8 @@
               On vous répond rapidement par e-mail ou téléphone.
             </p>
 
-            <!-- FORMULAIRE AVEC ID POUR LA VALIDATION -->
-            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-              <!-- Clé API Web3Forms -->
-              <input type="hidden" name="access_key" value="6dc5cb1e-a12d-42e2-8647-2c80a1a3fdf1" />
-              <input type="hidden" name="from_name" value="Site Singbox" />
-              <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
-
+            <!-- FORMULAIRE SANS WEB3FORMS -->
+            <form id="contact-form" action="#" method="POST">
               <!-- Type Particulier / Entreprise -->
               <div class="contact-type-toggle">
                 <label class="contact-type-option">
@@ -1010,14 +994,6 @@
                   <span>Je confirme avoir pris connaissance des informations relatives à l’utilisation de mes données.</span>
                 </label>
               </div>
-
-              <div class="fake-captcha">
-                Protection anti-spam gérée par Web3Forms.<br />
-                (Tu peux activer hCaptcha dans ton dashboard Web3Forms.)
-              </div>
-
-              <!-- hCaptcha (Web3Forms proxy) -->
-              <div class="h-captcha" data-captcha="true"></div>
 
               <div class="contact-submit">
                 <button type="submit">Envoyer</button>
@@ -1181,9 +1157,6 @@
     </div>
   </footer>
 
-  <!-- Script hCaptcha/Web3Forms -->
-  <script src="https://web3forms.com/client/script.js" async defer></script>
-
   <!-- Supabase JS -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
@@ -1281,18 +1254,6 @@
         });
       }
     });
-
-    // Validation côté client pour hCaptcha (Web3Forms)
-    const form = document.getElementById('contact-form');
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        const hCaptcha = form.querySelector('textarea[name="h-captcha-response"]');
-        if (!hCaptcha || !hCaptcha.value) {
-          e.preventDefault();
-          alert("Merci de valider le captcha avant d'envoyer le formulaire.");
-        }
-      });
-    }
   </script>
 </body>
 </html>
