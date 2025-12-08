@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -102,7 +102,7 @@
       cursor: pointer;
     }
 
-    /* --- NEW: badge caution dans le header --- */
+    /* Badge caution dans le header */
     .deposit-badge {
       border-radius: 999px;
       border: 1px solid rgba(248, 250, 251, 0.2);
@@ -327,7 +327,7 @@
       color: #f97373;
     }
 
-    /* TABLES */
+    /* TABLE LISTE */
     .table-wrapper {
       border-radius: 16px;
       border: 1px solid rgba(31,41,55,0.9);
@@ -405,52 +405,6 @@
       color: #facc15;
     }
 
-    /* --- NEW: cartes KPI dashboard --- */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .kpi-card {
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 0.9rem 1rem;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
-    }
-
-    .kpi-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--sb-text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .kpi-value {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .kpi-sub {
-      font-size: 11px;
-      color: var(--sb-text-muted);
-      margin-top: 0.25rem;
-    }
-
-    @media (max-width: 900px) {
-      .kpi-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .kpi-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
     @media (max-width: 768px) {
       .form-grid-3,
       .form-grid-2 {
@@ -465,7 +419,7 @@
   <div id="login-screen">
     <div id="login-card">
       <h1>Accès admin Singbox</h1>
-      <p>Entrez le mot de passe pour accéder au back-office.</p>
+      <p>Entrez le mot de passe pour accéder au back-office (codes promo, etc.).</p>
 
       <div class="login-field">
         <label for="admin-password">Mot de passe</label>
@@ -488,99 +442,44 @@
           <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
           <div>
             <h1 class="admin-title-main">Back-office Singbox</h1>
-            <p class="admin-subtitle">
-              Réservations, clients, caution et codes promo.
-            </p>
+            <p class="admin-subtitle">Gère ici tes réservations, clients, caution et codes promo.</p>
           </div>
         </div>
         <div class="admin-header-right">
-          <!-- NEW: badge caution toujours visible -->
-          <span id="current-deposit-badge" class="deposit-badge">
-            Caution : -- €
-          </span>
+          <!-- Caution toujours visible -->
+          <span id="deposit-badge" class="deposit-badge">Caution : -- €</span>
           <button id="logout-button">Se déconnecter</button>
         </div>
       </header>
 
-      <!-- NEW: tabs -->
+      <!-- Onglets -->
       <div class="tabs">
-        <button class="tab-button active" data-tab="tab-dashboard">Dashboard</button>
+        <button class="tab-button" data-tab="tab-dashboard">Dashboard</button>
         <button class="tab-button" data-tab="tab-reservations">Réservations</button>
         <button class="tab-button" data-tab="tab-clients">Clients</button>
         <button class="tab-button" data-tab="tab-caution">Caution</button>
-        <button class="tab-button" data-tab="tab-promo">Codes promo</button>
+        <!-- Onglet par défaut = Codes promo -->
+        <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
       </div>
 
-      <!-- NEW: Onglet DASHBOARD -->
-      <section id="tab-dashboard" class="tab-content active">
+      <!-- Dashboard (placeholder) -->
+      <section id="tab-dashboard" class="tab-content">
         <div class="card">
-          <h2>Vue globale</h2>
+          <h2>Dashboard</h2>
           <p class="card-subtitle">
-            Quelques chiffres clés de ton Singbox (réservations, CA, taux de remplissage, caution).
-            <br>
-            <strong>NOTE :</strong> adapte la partie JS <code>loadDashboard()</code> à ton schéma Supabase.
+            Ici tu pourras afficher des stats (réservations du mois, CA, etc.). Pour l’instant c’est juste un placeholder.
           </p>
-
-          <div class="kpi-grid">
-            <div class="kpi-card">
-              <div class="kpi-label">Réservations ce mois</div>
-              <div id="kpi-resa-month" class="kpi-value">--</div>
-              <div id="kpi-resa-month-sub" class="kpi-sub">Confirmées</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">CA estimé</div>
-              <div id="kpi-revenue" class="kpi-value">-- €</div>
-              <div class="kpi-sub">Sur le mois en cours</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Taux de remplissage</div>
-              <div id="kpi-fill-rate" class="kpi-value">-- %</div>
-              <div class="kpi-sub">Par rapport aux créneaux ouverts</div>
-            </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Caution actuelle</div>
-              <div id="kpi-deposit" class="kpi-value">-- €</div>
-              <div class="kpi-sub">Par box / séance</div>
-            </div>
-          </div>
-
-          <div id="dashboard-message" class="status-message"></div>
+          <p style="font-size:13px;color:var(--sb-text-muted);">
+            ➜ On branchera ça sur ta table <code>reservations</code> quand tu voudras (Supabase).
+          </p>
         </div>
       </section>
 
-      <!-- NEW: Onglet RÉSERVATIONS -->
+      <!-- Réservations (placeholder) -->
       <section id="tab-reservations" class="tab-content">
         <div class="card">
           <h2>Réservations</h2>
-          <p class="card-subtitle">
-            Liste des réservations (à relier à ta table <code>reservations</code> dans Supabase).
-          </p>
-
-          <!-- filtres simples -->
-          <div class="form-grid-3">
-            <div class="form-field">
-              <label for="filter-res-date-from">Du</label>
-              <input type="date" id="filter-res-date-from">
-            </div>
-            <div class="form-field">
-              <label for="filter-res-date-to">Au</label>
-              <input type="date" id="filter-res-date-to">
-            </div>
-            <div class="form-field">
-              <label for="filter-res-status">Statut</label>
-              <select id="filter-res-status">
-                <option value="">Tous</option>
-                <option value="confirmed">Confirmée</option>
-                <option value="pending">En attente</option>
-                <option value="cancelled">Annulée</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button id="btn-refresh-reservations" class="btn-primary">Actualiser</button>
-          </div>
-
-          <div id="reservations-list-message" class="status-message"></div>
+          <p class="card-subtitle">Structure prête pour afficher tes réservations.</p>
 
           <div class="table-wrapper">
             <table>
@@ -592,26 +491,23 @@
                   <th>Email</th>
                   <th>Montant</th>
                   <th>Statut</th>
-                  <th>Caution</th>
                 </tr>
               </thead>
-              <tbody id="reservations-table-body">
-                <!-- rempli en JS / Supabase -->
+              <tbody>
+                <tr>
+                  <td colspan="6">On branchera cette table sur Supabase (table <code>reservations</code>).</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- NEW: Onglet CLIENTS -->
+      <!-- Clients (placeholder) -->
       <section id="tab-clients" class="tab-content">
         <div class="card">
           <h2>Clients</h2>
-          <p class="card-subtitle">
-            Vue des clients (à relier à ta table <code>clients</code> ou similaire).
-          </p>
-
-          <div id="clients-list-message" class="status-message"></div>
+          <p class="card-subtitle">Structure prête pour afficher tes clients.</p>
 
           <div class="table-wrapper">
             <table>
@@ -621,49 +517,47 @@
                   <th>Email</th>
                   <th>Téléphone</th>
                   <th>Nb réservations</th>
-                  <th>Dernière venue</th>
                 </tr>
               </thead>
-              <tbody id="clients-table-body">
-                <!-- rempli en JS / Supabase -->
+              <tbody>
+                <tr>
+                  <td colspan="4">On branchera cette table sur Supabase (table <code>clients</code> ou équivalent).</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- NEW: Onglet CAUTION / PARAMÈTRES -->
+      <!-- Caution (localStorage) -->
       <section id="tab-caution" class="tab-content">
         <div class="card">
           <h2>Caution</h2>
           <p class="card-subtitle">
-            Modifie ici le montant de la caution. Il sera affiché en haut de l’admin et tu pourras
-            aussi l’utiliser côté front réservation.
-            <br>
-            <strong>NOTE :</strong> nécessite une table <code>settings</code> dans Supabase avec
-            les colonnes <code>key (text, PK)</code> et <code>value (text)</code>.
+            Modifie ici le montant de la caution. Il sera sauvegardé dans ce back-office et visible en haut à droite.
           </p>
 
-          <div class="form-grid-2">
-            <div class="form-field">
-              <label for="deposit-amount">Montant de la caution (en €)</label>
-              <input type="number" id="deposit-amount" min="0" step="1" placeholder="ex : 80" />
-              <p class="helper-text">
-                Ce montant peut être affiché sur tes pages de réservation, CGV, etc.
-              </p>
+          <form id="deposit-form">
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="deposit-amount">Montant de la caution (€)</label>
+                <input type="number" id="deposit-amount" min="0" step="1" placeholder="ex : 80" />
+                <p class="helper-text">
+                  Stocké dans ton navigateur (localStorage). On pourra ensuite le passer en base Supabase si tu veux.
+                </p>
+              </div>
             </div>
-          </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Enregistrer la caution</button>
+            </div>
+          </form>
 
-          <div class="form-actions">
-            <button id="btn-save-deposit" class="btn-primary">Enregistrer la caution</button>
-          </div>
-
-          <div id="settings-message" class="status-message"></div>
+          <div id="deposit-message" class="status-message"></div>
         </div>
       </section>
 
-      <!-- Onglet codes promo (existant) -->
-      <section id="tab-promo" class="tab-content">
+      <!-- Onglet codes promo (ton code d’origine) -->
+      <section id="tab-promo" class="tab-content active">
         <!-- Formulaire de création -->
         <div class="card">
           <h2>Créer un code promo</h2>
@@ -763,6 +657,46 @@
 
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
+    // Caution stockée localement
+    const DEFAULT_DEPOSIT = 80;
+
+    function initDeposit() {
+      const badge = document.getElementById("deposit-badge");
+      const input = document.getElementById("deposit-amount");
+      const stored = localStorage.getItem("sb_deposit_amount");
+      const value = stored ? parseInt(stored, 10) : DEFAULT_DEPOSIT;
+
+      if (badge) badge.textContent = "Caution : " + value + " €";
+      if (input) input.value = value;
+    }
+
+    function handleDepositForm(e) {
+      e.preventDefault();
+      const input = document.getElementById("deposit-amount");
+      const msgEl = document.getElementById("deposit-message");
+      const badge = document.getElementById("deposit-badge");
+
+      if (!input || !msgEl) return;
+
+      const raw = input.value.trim();
+      const num = Number(raw);
+
+      msgEl.textContent = "";
+      msgEl.className = "status-message";
+
+      if (!raw || isNaN(num) || num < 0) {
+        msgEl.textContent = "Merci d’indiquer un montant valide.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      localStorage.setItem("sb_deposit_amount", String(num));
+      if (badge) badge.textContent = "Caution : " + num + " €";
+
+      msgEl.textContent = "Caution enregistrée ✅";
+      msgEl.classList.add("ok");
+    }
+
     // --- Login / logout ---
     function showLogin() {
       document.getElementById("login-screen").style.display = "flex";
@@ -777,12 +711,7 @@
     function checkAuth() {
       if (localStorage.getItem("sb_isAdmin") === "true") {
         showAdmin();
-        // NEW: chargement des différents dashboards
-        loadDeposit();      // caution
-        loadDashboard();    // KPIs
-        // Tu peux commenter ces deux lignes tant que tes tables ne sont pas prêtes :
-        loadReservations();
-        loadClients();
+        initDeposit();
         loadPromoCodes();
       } else {
         showLogin();
@@ -818,10 +747,7 @@
           loginError.textContent = "";
           passwordInput.value = "";
           showAdmin();
-          loadDeposit();
-          loadDashboard();
-          loadReservations();
-          loadClients();
+          initDeposit();
           loadPromoCodes();
         } else {
           loginError.textContent = "Mot de passe incorrect.";
@@ -848,373 +774,16 @@
         await handlePromoFormSubmit();
       });
 
-      // NEW: listeners réservations & caution
-      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
-      if (btnRefreshRes) {
-        btnRefreshRes.addEventListener("click", () => {
-          loadReservations();
-        });
-      }
-
-      const btnSaveDeposit = document.getElementById("btn-save-deposit");
-      if (btnSaveDeposit) {
-        btnSaveDeposit.addEventListener("click", () => {
-          saveDeposit();
-        });
+      // Form caution
+      const depositForm = document.getElementById("deposit-form");
+      if (depositForm) {
+        depositForm.addEventListener("submit", handleDepositForm);
       }
 
       checkAuth();
     });
 
-    // --- NEW: GESTION CAUTION / SETTINGS ---
-
-    async function loadDeposit() {
-      const badge = document.getElementById("current-deposit-badge");
-      const input = document.getElementById("deposit-amount");
-      const kpiDeposit = document.getElementById("kpi-deposit");
-      const settingsMsg = document.getElementById("settings-message");
-
-      if (!badge || !input) return;
-
-      if (settingsMsg) {
-        settingsMsg.textContent = "";
-        settingsMsg.className = "status-message";
-      }
-
-      try {
-        const { data, error } = await supabaseClient
-          .from("settings")
-          .select("value")
-          .eq("key", "deposit_amount")
-          .maybeSingle(); // nécessite supabase-js v2
-
-        let value = "0";
-        if (error && error.code !== "PGRST116") {
-          console.error(error);
-          if (settingsMsg) {
-            settingsMsg.textContent = "Impossible de charger la caution (table settings ?).";
-            settingsMsg.classList.add("error");
-          }
-        } else if (data && data.value) {
-          value = data.value;
-        } else {
-          // valeur par défaut si pas encore en base
-          value = "80";
-        }
-
-        badge.textContent = "Caution : " + value + " €";
-        input.value = value;
-        if (kpiDeposit) kpiDeposit.textContent = value + " €";
-      } catch (err) {
-        console.error(err);
-        if (settingsMsg) {
-          settingsMsg.textContent = "Erreur réseau lors du chargement de la caution.";
-          settingsMsg.classList.add("error");
-        }
-      }
-    }
-
-    async function saveDeposit() {
-      const input = document.getElementById("deposit-amount");
-      const settingsMsg = document.getElementById("settings-message");
-      const badge = document.getElementById("current-deposit-badge");
-      const kpiDeposit = document.getElementById("kpi-deposit");
-
-      if (!input) return;
-
-      const raw = input.value.trim();
-      const num = Number(raw);
-
-      if (!raw || isNaN(num) || num < 0) {
-        if (settingsMsg) {
-          settingsMsg.textContent = "Merci d’indiquer un montant de caution valide.";
-          settingsMsg.className = "status-message error";
-        }
-        return;
-      }
-
-      if (settingsMsg) {
-        settingsMsg.textContent = "Enregistrement en cours...";
-        settingsMsg.className = "status-message";
-      }
-
-      try {
-        const { error } = await supabaseClient
-          .from("settings")
-          .upsert({ key: "deposit_amount", value: String(num) }, { onConflict: "key" });
-
-        if (error) {
-          console.error(error);
-          if (settingsMsg) {
-            settingsMsg.textContent = "Erreur : " + (error.message || "enregistrement impossible.");
-            settingsMsg.classList.add("error");
-          }
-        } else {
-          if (settingsMsg) {
-            settingsMsg.textContent = "Caution mise à jour ✅";
-            settingsMsg.classList.add("ok");
-          }
-          if (badge) badge.textContent = "Caution : " + num + " €";
-          if (kpiDeposit) kpiDeposit.textContent = num + " €";
-        }
-      } catch (err) {
-        console.error(err);
-        if (settingsMsg) {
-          settingsMsg.textContent = "Erreur réseau.";
-          settingsMsg.classList.add("error");
-        }
-      }
-    }
-
-    // --- NEW: DASHBOARD KPIs (exemple à adapter) ---
-
-    async function loadDashboard() {
-      const msgEl = document.getElementById("dashboard-message");
-      const kpiResa = document.getElementById("kpi-resa-month");
-      const kpiResaSub = document.getElementById("kpi-resa-month-sub");
-      const kpiRevenue = document.getElementById("kpi-revenue");
-      const kpiFill = document.getElementById("kpi-fill-rate");
-
-      if (!msgEl) return;
-      msgEl.textContent = "Chargement des données dashboard...";
-      msgEl.className = "status-message";
-
-      // Par défaut, on met des placeholders si tes tables ne sont pas prêtes
-      try {
-        // TODO: adapte selon ta table reservations
-        // EXEMPLE : on récupère toutes les réservations du mois courant
-        /*
-        const now = new Date();
-        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-        const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
-
-        const { data, error, count } = await supabaseClient
-          .from("reservations")
-          .select("amount,status,start_datetime", { count: "exact" })
-          .gte("start_datetime", firstDay)
-          .lt("start_datetime", nextMonth);
-
-        if (error) throw error;
-
-        const confirmed = data.filter(r => r.status === "confirmed");
-        const totalResa = confirmed.length;
-        const totalRevenue = confirmed.reduce((sum, r) => sum + (r.amount || 0), 0);
-        */
-
-        // Pour l’instant on met des valeurs placeholders
-        const totalResa = "--";
-        const totalRevenue = "--";
-        const fillRate = "--";
-
-        if (kpiResa) kpiResa.textContent = totalResa;
-        if (kpiResaSub) kpiResaSub.textContent = "Confirmées (adapter dans loadDashboard)";
-        if (kpiRevenue) kpiRevenue.textContent = totalRevenue + " €";
-        if (kpiFill) kpiFill.textContent = fillRate + " %";
-
-        msgEl.textContent = "Dashboard prêt (branche la fonction loadDashboard sur ta table reservations).";
-        msgEl.classList.add("ok");
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Impossible de charger le dashboard (à connecter à ta base).";
-        msgEl.classList.add("error");
-      }
-    }
-
-    // --- NEW: RÉSERVATIONS ---
-
-    async function loadReservations() {
-      const tbody = document.getElementById("reservations-table-body");
-      const msgEl = document.getElementById("reservations-list-message");
-
-      if (!tbody || !msgEl) return;
-
-      tbody.innerHTML = "";
-      msgEl.textContent = "Chargement des réservations...";
-      msgEl.className = "status-message";
-
-      const dateFrom = document.getElementById("filter-res-date-from")?.value || null;
-      const dateTo = document.getElementById("filter-res-date-to")?.value || null;
-      const status = document.getElementById("filter-res-status")?.value || "";
-
-      try {
-        // TODO: adapte selon ta table reservations et tes colonnes
-        // Exemple de squelette de requête :
-        /*
-        let query = supabaseClient
-          .from("reservations")
-          .select("*")
-          .order("start_datetime", { ascending: false });
-
-        if (dateFrom) {
-          query = query.gte("start_datetime", dateFrom);
-        }
-        if (dateTo) {
-          const toPlusOne = new Date(dateTo);
-          toPlusOne.setDate(toPlusOne.getDate() + 1);
-          query = query.lt("start_datetime", toPlusOne.toISOString().split("T")[0]);
-        }
-        if (status) {
-          query = query.eq("status", status);
-        }
-
-        const { data, error } = await query;
-        if (error) throw error;
-        */
-
-        // En attendant que tu relies la table, on met un exemple statique
-        const data = [
-          {
-            start_datetime: "2025-01-12T20:00:00",
-            customer_name: "Exemple Client",
-            customer_email: "client@example.com",
-            amount: 60,
-            status: "confirmed",
-            deposit_status: "paid"
-          }
-        ];
-
-        if (!data || data.length === 0) {
-          msgEl.textContent = "Aucune réservation (ou pas encore connectée à Supabase).";
-          msgEl.classList.add("error");
-          return;
-        }
-
-        data.forEach((row) => {
-          const tr = document.createElement("tr");
-
-          const d = row.start_datetime ? new Date(row.start_datetime) : null;
-          const dateStr = d ? d.toLocaleDateString("fr-FR") : "-";
-          const timeStr = d ? d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : "-";
-
-          const tdDate = document.createElement("td");
-          tdDate.textContent = dateStr;
-          tr.appendChild(tdDate);
-
-          const tdTime = document.createElement("td");
-          tdTime.textContent = timeStr;
-          tr.appendChild(tdTime);
-
-          const tdClient = document.createElement("td");
-          tdClient.textContent = row.customer_name || "-";
-          tr.appendChild(tdClient);
-
-          const tdEmail = document.createElement("td");
-          tdEmail.textContent = row.customer_email || "-";
-          tr.appendChild(tdEmail);
-
-          const tdAmount = document.createElement("td");
-          tdAmount.textContent = (row.amount || 0) + " €";
-          tr.appendChild(tdAmount);
-
-          const tdStatus = document.createElement("td");
-          const badge = document.createElement("span");
-          badge.classList.add("badge");
-          if (row.status === "confirmed") {
-            badge.classList.add("badge-active");
-            badge.textContent = "Confirmée";
-          } else if (row.status === "cancelled") {
-            badge.classList.add("badge-inactive");
-            badge.textContent = "Annulée";
-          } else {
-            badge.classList.add("badge-inactive");
-            badge.textContent = row.status || "Autre";
-          }
-          tdStatus.appendChild(badge);
-          tr.appendChild(tdStatus);
-
-          const tdDeposit = document.createElement("td");
-          tdDeposit.textContent = row.deposit_status === "paid" ? "Payée" : "À encaisser";
-          tr.appendChild(tdDeposit);
-
-          tbody.appendChild(tr);
-        });
-
-        msgEl.textContent = "";
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur lors du chargement des réservations (branche loadReservations à ta base).";
-        msgEl.classList.add("error");
-      }
-    }
-
-    // --- NEW: CLIENTS ---
-
-    async function loadClients() {
-      const tbody = document.getElementById("clients-table-body");
-      const msgEl = document.getElementById("clients-list-message");
-
-      if (!tbody || !msgEl) return;
-
-      tbody.innerHTML = "";
-      msgEl.textContent = "Chargement des clients...";
-      msgEl.className = "status-message";
-
-      try {
-        // TODO: adapte selon ta table clients
-        /*
-        const { data, error } = await supabaseClient
-          .from("clients")
-          .select("*")
-          .order("last_reservation_at", { ascending: false });
-
-        if (error) throw error;
-        */
-
-        // Exemple statique en attendant :
-        const data = [
-          {
-            name: "Client Exemple",
-            email: "client@example.com",
-            phone: "06 00 00 00 00",
-            reservations_count: 3,
-            last_reservation_at: "2025-01-10T21:00:00"
-          }
-        ];
-
-        if (!data || data.length === 0) {
-          msgEl.textContent = "Aucun client (ou pas encore connecté à Supabase).";
-          msgEl.classList.add("error");
-          return;
-        }
-
-        data.forEach((row) => {
-          const tr = document.createElement("tr");
-
-          const tdName = document.createElement("td");
-          tdName.textContent = row.name || "-";
-          tr.appendChild(tdName);
-
-          const tdEmail = document.createElement("td");
-          tdEmail.textContent = row.email || "-";
-          tr.appendChild(tdEmail);
-
-          const tdPhone = document.createElement("td");
-          tdPhone.textContent = row.phone || "-";
-          tr.appendChild(tdPhone);
-
-          const tdCount = document.createElement("td");
-          tdCount.textContent = row.reservations_count || 0;
-          tr.appendChild(tdCount);
-
-          const d = row.last_reservation_at ? new Date(row.last_reservation_at) : null;
-          const lastStr = d ? d.toLocaleDateString("fr-FR") + " " +
-            d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : "-";
-          const tdLast = document.createElement("td");
-          tdLast.textContent = lastStr;
-          tr.appendChild(tdLast);
-
-          tbody.appendChild(tr);
-        });
-
-        msgEl.textContent = "";
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur lors du chargement des clients (branche loadClients à ta base).";
-        msgEl.classList.add("error");
-      }
-    }
-
-    // --- Gestion des codes promo (existant) ---
+    // --- Gestion des codes promo (inchangé, sauf petit fix de parenthèse) ---
 
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
@@ -1251,7 +820,7 @@
       const payload = {
         code,
         type,
-        value: numericValue,
+        value: numericValue, // <-- colonne Supabase 'value'
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
@@ -1266,7 +835,7 @@
 
         if (error) {
           console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "enregistrement impossible.";
+          msgEl.textContent = "Erreur : " + (error.message || "enregistrement impossible.");
           msgEl.classList.add("error");
         } else {
           msgEl.textContent = "Code enregistré avec succès ✅";
