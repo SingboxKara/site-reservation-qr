@@ -287,7 +287,7 @@
       color:#fff;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
+      cursor: button;
       font-size: 20px;
     }
 
@@ -895,6 +895,177 @@
     .checkout-submit button[disabled] {
       opacity: 0.6;
       cursor: progress;
+    }
+
+    /* ======================= PAGE MERCI (POST-PAIEMENT) ======================= */
+
+    #thankyou-section {
+      margin-top: 2.5rem;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+      display: none;
+    }
+
+    .thankyou-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .thankyou-title {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .thankyou-subtitle {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
+    .thankyou-highlight-name {
+      background: radial-gradient(circle at 0 0, rgba(249,115,22,0.25), transparent 55%);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .thankyou-summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 1.25rem;
+      font-size: 13px;
+      align-items: stretch;
+    }
+
+    .thankyou-summary ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .thankyou-summary li strong {
+      font-weight: 600;
+    }
+
+    .thankyou-qr {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .thankyou-qr-inner {
+      border-radius: 18px;
+      border: 1px dashed rgba(148,163,184,0.5);
+      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.98));
+      padding: 10px 12px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .thankyou-qr-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--sb-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .thankyou-qr-placeholder {
+      height: 120px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      background:
+        radial-gradient(circle at 0 0, rgba(248,250,252,0.04), transparent 60%);
+    }
+
+    .thankyou-qr-note {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
+
+    .thankyou-deposit {
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(248,250,251,0.08);
+      background: rgba(15,23,42,0.9);
+      line-height: 1.5;
+    }
+
+    .thankyou-deposit strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .thankyou-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .thankyou-btn-primary,
+    .thankyou-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.55rem 1.3rem;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .thankyou-btn-primary {
+      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.14),
+        0 18px 45px rgba(0,0,0,0.95);
+    }
+
+    .thankyou-btn-secondary {
+      background: transparent;
+      color: #E5E7EB;
+      border-color: rgba(148,163,184,0.6);
+    }
+
+    .thankyou-btn-primary:hover {
+      filter: brightness(1.04);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 65px rgba(0,0,0,1);
+    }
+
+    .thankyou-btn-secondary:hover {
+      border-color: rgba(248,250,251,0.9);
+    }
+
+    @media (max-width: 900px) {
+      .thankyou-summary {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      #thankyou-section {
+        margin-top: 2rem;
+      }
+
+      .thankyou-card {
+        padding: 1.55rem 1.45rem;
+      }
     }
 
     /* ======================= FOOTER ======================= */
@@ -1535,6 +1706,67 @@
           </div>
         </div>
       </div>
+
+      <!-- SECTION MERCI / RÉCAPITULATIF POST-PAIEMENT -->
+      <div id="thankyou-section">
+        <div class="card thankyou-card">
+          <div>
+            <h2 class="thankyou-title">
+              Merci <span id="thankyou-name" class="thankyou-highlight-name"></span> 🎉
+            </h2>
+            <p class="thankyou-subtitle">
+              Votre réservation est confirmée. Un e-mail récapitulatif vient de vous être envoyé avec tous les détails de votre séance.
+            </p>
+          </div>
+
+          <div class="thankyou-summary">
+            <div>
+              <h3 style="font-size:14px;margin-bottom:6px;">Détails de votre séance</h3>
+              <ul>
+                <li><strong>Date :</strong> <span id="thankyou-date">-</span></li>
+                <li><strong>Créneau :</strong> <span id="thankyou-time">-</span></li>
+                <li><strong>Box :</strong> <span id="thankyou-box">-</span></li>
+                <li><strong>Montant payé :</strong> <span id="thankyou-total">-</span></li>
+                <li><strong>Référence réservation :</strong> <span id="thankyou-ref">-</span></li>
+              </ul>
+            </div>
+            <div class="thankyou-qr">
+              <div class="thankyou-qr-inner">
+                <p class="thankyou-qr-label">QR code de réservation</p>
+                <div class="thankyou-qr-placeholder" id="thankyou-qr-placeholder">
+                  <span>Disponible bientôt</span>
+                </div>
+                <p class="thankyou-qr-note">
+                  Votre QR code de réservation vous sera envoyé par e-mail.<br>
+                  Vous pourrez le présenter à l’accueil le jour J.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="thankyou-deposit">
+            <strong>À propos de l’empreinte bancaire de 250€</strong>
+            <p>
+              Pour garantir le bon déroulement de votre séance, une empreinte bancaire de 250€ vient d’être réalisée sur votre carte.
+              Cette somme n’est <u>pas débitée</u> et ne le sera que :
+            </p>
+            <ul style="margin:4px 0 0 1.1rem;padding:0;font-size:12px;">
+              <li>en cas de dégradations importantes dans la box ;</li>
+              <li>en cas de non-respect grave du règlement intérieur ;</li>
+              <li>ou si vous ne vous présentez pas sans prévenir selon nos CGV.</li>
+            </ul>
+            <p style="margin-top:4px;">
+              Si tout se passe bien (et on sait que ce sera le cas 😉), l’empreinte expirera automatiquement après la séance.
+            </p>
+          </div>
+
+          <div class="thankyou-actions">
+            <a href="mon-compte.html" class="thankyou-btn-secondary">Voir mes réservations</a>
+            <a href="index.html" class="thankyou-btn-primary">Retour à l’accueil</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2005,6 +2237,16 @@
       const successEl     = document.getElementById("checkout-success");
       const billingForm   = document.getElementById("billing-form");
 
+      // éléments de la page Merci
+      const checkoutLayout = document.querySelector(".checkout-layout");
+      const thankyouSection = document.getElementById("thankyou-section");
+      const thankyouName = document.getElementById("thankyou-name");
+      const thankyouDate = document.getElementById("thankyou-date");
+      const thankyouTime = document.getElementById("thankyou-time");
+      const thankyouBox = document.getElementById("thankyou-box");
+      const thankyouTotal = document.getElementById("thankyou-total");
+      const thankyouRef = document.getElementById("thankyou-ref");
+
       if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
           if (!billingForm) return;
@@ -2118,7 +2360,39 @@
 
             if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
               if (successEl) {
-                successEl.textContent = "Paiement accepté ✔️ Votre réservation va être confirmée. Une empreinte de caution de 250€ va être réalisée.";
+                successEl.textContent = "Paiement accepté ✔️";
+              }
+
+              // Préparation des données pour la page Merci
+              const panierBeforeClear = getPanier();
+              const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+              const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+              const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
+                ? (firstItem.boxName || firstItem.box || firstItem.boxId)
+                : "Box privée";
+              let hourText = "";
+              if (firstItem && typeof firstItem.hour === "number") {
+                const start = firstItem.hour;
+                const end = (firstItem.hour + 1) % 24;
+                hourText = String(start).padStart(2,"0") + "h – " + String(end).padStart(2,"0") + "h";
+              }
+
+              if (thankyouName) thankyouName.textContent = prenom || "";
+              if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
+              if (thankyouTime) thankyouTime.textContent = hourText || "-";
+              if (thankyouBox) thankyouBox.textContent = boxName;
+              if (thankyouTotal) {
+                const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
+                thankyouTotal.textContent = totalLabel;
+              }
+
+              const headerTitle = document.querySelector(".checkout-header h1");
+              const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
+              if (headerTitle) {
+                headerTitle.textContent = "Merci pour votre réservation 🎉";
+              }
+              if (headerSubtitle) {
+                headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
               }
 
               let reservationId = null;
@@ -2147,6 +2421,9 @@
                 const confirmJson = await confirmRes.json().catch(() => ({}));
                 if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
                   reservationId = confirmJson.reservations[0].id;
+                  if (thankyouRef) {
+                    thankyouRef.textContent = reservationId;
+                  }
                 }
               } catch (e) {
                 // on ne bloque pas l'affichage client si la notif backend échoue
@@ -2214,6 +2491,13 @@
               currentPromo = null;
               updateCartIcon();
               updateOrderSummaryFromPanier();
+
+              // 6) Affichage de la page Merci
+              if (checkoutLayout && thankyouSection) {
+                checkoutLayout.style.display = "none";
+                thankyouSection.style.display = "block";
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }
 
           } catch (err) {
