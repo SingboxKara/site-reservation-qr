@@ -7,7 +7,6 @@
 
   <!-- SEO -->
   <meta name="description" content="Consultez le récapitulatif de vos réservations de karaoké box privatives à Toulouse chez Singbox. Vérifiez vos créneaux, le nombre de box et le total avant de procéder au paiement sécurisé." />
-  <!-- Page panier : on ne l’indexe pas pour éviter les pages temporaires dans Google -->
   <meta name="robots" content="noindex,nofollow" />
   <meta name="keywords" content="panier karaoke, panier karaoké toulouse, réservation karaoké toulouse, singbox panier, box karaoke privatif toulouse, récapitulatif réservation karaoké" />
   <link rel="canonical" href="https://www.singbox.fr/panier" />
@@ -25,7 +24,6 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.singbox.fr/panier" />
   <meta property="og:site_name" content="Singbox" />
-  <!-- Image sociale dédiée (idéalement 1200x630) -->
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Twitter -->
@@ -151,7 +149,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Bloc marque */
     .brand {
       display: flex;
       align-items: center;
@@ -183,7 +180,6 @@
       align-items: center;
     }
 
-    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -231,7 +227,6 @@
       transition: 0.25s ease;
     }
 
-    /* Actions à droite */
     .header-actions {
       display: flex;
       align-items: center;
@@ -291,7 +286,6 @@
 
     #cart-count:empty { display:none; }
 
-    /* Burger + menu mobile */
     .burger-button {
       display: none;
       width:36px;
@@ -378,24 +372,6 @@
       color: var(--sb-text-main);
     }
 
-    .hero-panier::before {
-      content: "♪";
-      position: absolute;
-      top: 18%;
-      left: 12%;
-      font-size: 32px;
-      color: rgba(148,163,184,0.08);
-    }
-
-    .hero-panier::after {
-      content: "✦";
-      position: absolute;
-      bottom: 16%;
-      right: 10%;
-      font-size: 30px;
-      color: rgba(148,163,184,0.08);
-    }
-
     .hero-inner {
       max-width: 640px;
       margin: 0 auto;
@@ -435,11 +411,13 @@
       margin-bottom: 1.75rem;
     }
 
+    /* TEXTE INTRO : CENTRÉ & SUR TOUTE LA LARGEUR */
     .cart-intro-text {
       font-size: 13px;
       color: var(--sb-text-muted);
-      margin-bottom: 1.25rem;
-      max-width: 640px;
+      margin: 0 auto 1.25rem;
+      max-width: 100%;
+      text-align: center;
     }
 
     .cart-item-card {
@@ -471,22 +449,11 @@
       font-size: 14px;
     }
 
-    .cart-date {
-      font-weight: 600;
-    }
+    .cart-date { font-weight: 600; }
+    .cart-box { font-weight: 600; color: #F97316; }
+    .cart-dot { opacity: 0.7; }
 
-    .cart-box {
-      font-weight: 600;
-      color: #F97316;
-    }
-
-    .cart-dot {
-      opacity: 0.7;
-    }
-
-    .cart-slot-line {
-      color: #E5E7EB;
-    }
+    .cart-slot-line { color: #E5E7EB; }
 
     .cart-extra {
       color: var(--sb-text-muted);
@@ -536,14 +503,8 @@
       color: #E5E7EB;
     }
 
-    .cart-summary-label {
-      font-weight: 500;
-    }
-
-    .cart-summary-value {
-      font-size: 18px;
-      font-weight: 700;
-    }
+    .cart-summary-label { font-weight: 500; }
+    .cart-summary-value { font-size: 18px; font-weight: 700; }
 
     .cart-actions {
       margin-top: 1.5rem;
@@ -587,7 +548,6 @@
         0 22px 50px rgba(0,0,0,1);
     }
 
-    /* ÉTAT PANIER VIDE */
     .cart-empty {
       background: #050b18;
       border-radius: 20px;
@@ -623,7 +583,6 @@
         0 16px 40px rgba(0,0,0,0.9);
     }
 
-    /* FOOTER */
     footer {
       background:#020617;
       color:#e5e7eb;
@@ -717,7 +676,6 @@
       border-top:1px solid #111827;
     }
 
-    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
       .cart-item-card {
         flex-direction: column;
@@ -746,7 +704,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <a href="index.html" class="brand">
@@ -777,7 +734,6 @@
   </div>
 </header>
 
-<!-- MENU MOBILE -->
 <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
   <ul>
     <li><a href="index.html">Accueil</a></li>
@@ -789,7 +745,6 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero-panier">
   <div class="hero-inner">
     <p class="hero-eyebrow">PANIER DE RÉSERVATION</p>
@@ -867,8 +822,6 @@
 
     <div>
       <p><strong>Réseaux</strong></p>
-
-      <!-- Instagram -->
       <p style="display:flex;align-items:center;gap:8px;">
         <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
           <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -879,8 +832,6 @@
           Instagram
         </a>
       </p>
-
-      <!-- TikTok -->
       <p style="display:flex;align-items:center;gap:8px;">
         <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
@@ -898,7 +849,7 @@
 </footer>
 
 <script>
-  const PRICE_PER_SLOT_EUR = 10; // fallback si un item n'a pas de propriété price
+  const PRICE_PER_SLOT_EUR = 10;
 
   function getPanier() {
     try {
@@ -1006,7 +957,7 @@
         </div>
         <div class="cart-item-right">
           <div>
-            <div class="cart-price-amount">${price.toFixed(0)} €</div>
+            <div class="cart-price-amount">${price.toFixed(2)} €</div>
             <div class="cart-price-sub">TTC / par box</div>
           </div>
           <button class="cart-remove" data-index="${index}">Supprimer</button>
@@ -1021,7 +972,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // MENU MOBILE
     const burgerBtn = document.getElementById("burger-button");
     const mobileNav = document.getElementById("mobile-nav");
     if (burgerBtn && mobileNav) {
@@ -1038,7 +988,6 @@
     updateCartIcon();
     renderPanier();
 
-    // Vider le panier
     const clearBtn = document.getElementById("clear-cart");
     if (clearBtn) {
       clearBtn.addEventListener("click", function () {
@@ -1049,7 +998,6 @@
       });
     }
 
-    // Supprimer un item
     document.getElementById("cart-items").addEventListener("click", function (e) {
       if (e.target.classList.contains("cart-remove")) {
         const index = Number(e.target.dataset.index);
@@ -1060,7 +1008,6 @@
       }
     });
 
-    // Aller à la page de paiement
     const confirmBtn = document.getElementById("confirm-cart");
     if (confirmBtn) {
       confirmBtn.addEventListener("click", function () {
@@ -1069,14 +1016,12 @@
           alert("Votre panier est vide.");
           return;
         }
-        // Les réservations sont dans localStorage, la page paiement.html pourra les lire
         window.location.href = "paiement.html";
       });
     }
   });
 </script>
 
-<!-- Supabase Newsletter Script -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -1108,7 +1053,6 @@
         .insert({ email });
 
       if (error) {
-        // Erreur doublon (contrainte UNIQUE)
         if (
           error.code === "23505" ||
           (error.message && error.message.includes("duplicate key value"))
