@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -405,6 +405,52 @@ v<!DOCTYPE html>
       color: #facc15;
     }
 
+    /* KPI Dashboard */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .kpi-card {
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.4);
+      padding: 0.9rem 1rem;
+      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--sb-text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     @media (max-width: 768px) {
       .form-grid-3,
       .form-grid-2 {
@@ -446,7 +492,7 @@ v<!DOCTYPE html>
           </div>
         </div>
         <div class="admin-header-right">
-          <!-- Caution toujours visible -->
+          <!-- Caution toujours visible, chargée depuis Supabase.settings -->
           <span id="deposit-badge" class="deposit-badge">Caution : -- €</span>
           <button id="logout-button">Se déconnecter</button>
         </div>
@@ -457,29 +503,73 @@ v<!DOCTYPE html>
         <button class="tab-button" data-tab="tab-dashboard">Dashboard</button>
         <button class="tab-button" data-tab="tab-reservations">Réservations</button>
         <button class="tab-button" data-tab="tab-clients">Clients</button>
-        <button class="tab-button" data-tab="tab-caution">Caution</button>
         <!-- Onglet par défaut = Codes promo -->
         <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
       </div>
 
-      <!-- Dashboard (placeholder) -->
+      <!-- Dashboard -->
       <section id="tab-dashboard" class="tab-content">
         <div class="card">
           <h2>Dashboard</h2>
           <p class="card-subtitle">
-            Ici tu pourras afficher des stats (réservations du mois, CA, etc.). Pour l’instant c’est juste un placeholder.
+            Vue rapide sur le mois en cours (basée sur la table <code>reservations</code>).
+            <br>Si tes champs n’ont pas exactement les mêmes noms, change-les dans <code>loadDashboard()</code>.
           </p>
-          <p style="font-size:13px;color:var(--sb-text-muted);">
-            ➜ On branchera ça sur ta table <code>reservations</code> quand tu voudras (Supabase).
-          </p>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Réservations confirmées</div>
+              <div id="kpi-resa-month" class="kpi-value">--</div>
+              <div class="kpi-sub">Mois en cours</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">CA estimé</div>
+              <div id="kpi-revenue" class="kpi-value">-- €</div>
+              <div class="kpi-sub">Somme des montants confirmés</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Taux de remplissage (simple)</div>
+              <div id="kpi-fill-rate" class="kpi-value">-- %</div>
+              <div class="kpi-sub">Confirmées / total réservations du mois</div>
+            </div>
+          </div>
+
+          <div id="dashboard-message" class="status-message"></div>
         </div>
       </section>
 
-      <!-- Réservations (placeholder) -->
+      <!-- Réservations -->
       <section id="tab-reservations" class="tab-content">
         <div class="card">
           <h2>Réservations</h2>
-          <p class="card-subtitle">Structure prête pour afficher tes réservations.</p>
+          <p class="card-subtitle">
+            Liste des réservations (table <code>reservations</code>).
+          </p>
+
+          <div class="form-grid-3">
+            <div class="form-field">
+              <label for="filter-res-date-from">Du</label>
+              <input type="date" id="filter-res-date-from">
+            </div>
+            <div class="form-field">
+              <label for="filter-res-date-to">Au</label>
+              <input type="date" id="filter-res-date-to">
+            </div>
+            <div class="form-field">
+              <label for="filter-res-status">Statut</label>
+              <select id="filter-res-status">
+                <option value="">Tous</option>
+                <option value="confirmed">Confirmée</option>
+                <option value="pending">En attente</option>
+                <option value="cancelled">Annulée</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="btn-refresh-reservations" class="btn-primary">Actualiser</button>
+          </div>
+
+          <div id="reservations-list-message" class="status-message"></div>
 
           <div class="table-wrapper">
             <table>
@@ -493,21 +583,23 @@ v<!DOCTYPE html>
                   <th>Statut</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td colspan="6">On branchera cette table sur Supabase (table <code>reservations</code>).</td>
-                </tr>
+              <tbody id="reservations-table-body">
+                <!-- rempli en JS -->
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- Clients (placeholder) -->
+      <!-- Clients (calculés à partir de reservations) -->
       <section id="tab-clients" class="tab-content">
         <div class="card">
           <h2>Clients</h2>
-          <p class="card-subtitle">Structure prête pour afficher tes clients.</p>
+          <p class="card-subtitle">
+            Vue clients construite à partir de la table <code>reservations</code> (groupé par email).
+          </p>
+
+          <div id="clients-list-message" class="status-message"></div>
 
           <div class="table-wrapper">
             <table>
@@ -517,46 +609,18 @@ v<!DOCTYPE html>
                   <th>Email</th>
                   <th>Téléphone</th>
                   <th>Nb réservations</th>
+                  <th>Dernière venue</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td colspan="4">On branchera cette table sur Supabase (table <code>clients</code> ou équivalent).</td>
-                </tr>
+              <tbody id="clients-table-body">
+                <!-- rempli en JS -->
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- Caution (localStorage) -->
-      <section id="tab-caution" class="tab-content">
-        <div class="card">
-          <h2>Caution</h2>
-          <p class="card-subtitle">
-            Modifie ici le montant de la caution. Il sera sauvegardé dans ce back-office et visible en haut à droite.
-          </p>
-
-          <form id="deposit-form">
-            <div class="form-grid-2">
-              <div class="form-field">
-                <label for="deposit-amount">Montant de la caution (€)</label>
-                <input type="number" id="deposit-amount" min="0" step="1" placeholder="ex : 80" />
-                <p class="helper-text">
-                  Stocké dans ton navigateur (localStorage). On pourra ensuite le passer en base Supabase si tu veux.
-                </p>
-              </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Enregistrer la caution</button>
-            </div>
-          </form>
-
-          <div id="deposit-message" class="status-message"></div>
-        </div>
-      </section>
-
-      <!-- Onglet codes promo (ton code d’origine) -->
+      <!-- Codes promo -->
       <section id="tab-promo" class="tab-content active">
         <!-- Formulaire de création -->
         <div class="card">
@@ -657,47 +721,305 @@ v<!DOCTYPE html>
 
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Caution stockée localement
-    const DEFAULT_DEPOSIT = 80;
+    // --- CAUTION / SETTINGS ---
 
-    function initDeposit() {
+    async function loadDeposit() {
       const badge = document.getElementById("deposit-badge");
-      const input = document.getElementById("deposit-amount");
-      const stored = localStorage.getItem("sb_deposit_amount");
-      const value = stored ? parseInt(stored, 10) : DEFAULT_DEPOSIT;
+      if (!badge) return;
 
-      if (badge) badge.textContent = "Caution : " + value + " €";
-      if (input) input.value = value;
+      try {
+        /*
+          TABLE SUGGÉRÉE DANS SUPABASE :
+          - Nom : settings
+          - Colonnes :
+            key   (text, PRIMARY KEY)
+            value (text)
+          Insérer par ex : { key: 'deposit_amount', value: '80' }
+        */
+        const { data, error } = await supabaseClient
+          .from("settings")
+          .select("value")
+          .eq("key", "deposit_amount")
+          .maybeSingle();
+
+        let value = "80"; // défaut si rien en base
+        if (error && error.code !== "PGRST116") {
+          console.error("Erreur loadDeposit:", error);
+        } else if (data && data.value) {
+          value = data.value;
+        }
+
+        badge.textContent = "Caution : " + value + " €";
+      } catch (err) {
+        console.error("Erreur réseau loadDeposit:", err);
+        badge.textContent = "Caution : 80 €";
+      }
     }
 
-    function handleDepositForm(e) {
-      e.preventDefault();
-      const input = document.getElementById("deposit-amount");
-      const msgEl = document.getElementById("deposit-message");
-      const badge = document.getElementById("deposit-badge");
+    // --- DASHBOARD ---
 
-      if (!input || !msgEl) return;
+    async function loadDashboard() {
+      const msgEl = document.getElementById("dashboard-message");
+      const kpiResa = document.getElementById("kpi-resa-month");
+      const kpiRevenue = document.getElementById("kpi-revenue");
+      const kpiFill = document.getElementById("kpi-fill-rate");
 
-      const raw = input.value.trim();
-      const num = Number(raw);
-
-      msgEl.textContent = "";
+      if (!msgEl) return;
+      msgEl.textContent = "Chargement du dashboard...";
       msgEl.className = "status-message";
 
-      if (!raw || isNaN(num) || num < 0) {
-        msgEl.textContent = "Merci d’indiquer un montant valide.";
+      try {
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+        const firstISO = firstDay.toISOString();
+        const nextISO = nextMonth.toISOString();
+
+        // TODO: adapte les noms de colonnes à ta table reservations
+        const { data, error } = await supabaseClient
+          .from("reservations")
+          .select("amount,status,start_datetime")
+          .gte("start_datetime", firstISO)
+          .lt("start_datetime", nextISO);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur dashboard : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        const total = data.length;
+        const confirmed = data.filter(r => r.status === "confirmed");
+        const totalResa = confirmed.length;
+        const totalRevenue = confirmed.reduce((sum, r) => sum + (r.amount || 0), 0);
+        const fillRate = total > 0 ? Math.round((totalResa / total) * 100) : 0;
+
+        if (kpiResa) kpiResa.textContent = totalResa;
+        if (kpiRevenue) kpiRevenue.textContent = totalRevenue.toFixed(2) + " €";
+        if (kpiFill) kpiFill.textContent = fillRate + " %";
+
+        msgEl.textContent = "Dashboard mis à jour ✔️";
+        msgEl.classList.add("ok");
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau pour le dashboard.";
         msgEl.classList.add("error");
-        return;
       }
+    }
 
-      localStorage.setItem("sb_deposit_amount", String(num));
-      if (badge) badge.textContent = "Caution : " + num + " €";
+    // --- RÉSERVATIONS ---
 
-      msgEl.textContent = "Caution enregistrée ✅";
-      msgEl.classList.add("ok");
+    async function loadReservations() {
+      const tbody = document.getElementById("reservations-table-body");
+      const msgEl = document.getElementById("reservations-list-message");
+
+      if (!tbody || !msgEl) return;
+
+      tbody.innerHTML = "";
+      msgEl.textContent = "Chargement des réservations...";
+      msgEl.className = "status-message";
+
+      const dateFrom = document.getElementById("filter-res-date-from")?.value || null;
+      const dateTo = document.getElementById("filter-res-date-to")?.value || null;
+      const status = document.getElementById("filter-res-status")?.value || "";
+
+      try {
+        let query = supabaseClient
+          .from("reservations")
+          // TODO: adapte les colonnes à ta table
+          .select("start_datetime, customer_name, customer_email, amount, status")
+          .order("start_datetime", { ascending: false });
+
+        if (dateFrom) {
+          query = query.gte("start_datetime", dateFrom);
+        }
+        if (dateTo) {
+          const toPlusOne = new Date(dateTo);
+          toPlusOne.setDate(toPlusOne.getDate() + 1);
+          query = query.lt("start_datetime", toPlusOne.toISOString().split("T")[0]);
+        }
+        if (status) {
+          query = query.eq("status", status);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur chargement réservations : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          msgEl.textContent = "Aucune réservation trouvée.";
+          msgEl.classList.add("error");
+          return;
+        }
+
+        data.forEach((row) => {
+          const tr = document.createElement("tr");
+
+          const d = row.start_datetime ? new Date(row.start_datetime) : null;
+          const dateStr = d ? d.toLocaleDateString("fr-FR") : "-";
+          const timeStr = d ? d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : "-";
+
+          const tdDate = document.createElement("td");
+          tdDate.textContent = dateStr;
+          tr.appendChild(tdDate);
+
+          const tdTime = document.createElement("td");
+          tdTime.textContent = timeStr;
+          tr.appendChild(tdTime);
+
+          const tdClient = document.createElement("td");
+          tdClient.textContent = row.customer_name || "-";
+          tr.appendChild(tdClient);
+
+          const tdEmail = document.createElement("td");
+          tdEmail.textContent = row.customer_email || "-";
+          tr.appendChild(tdEmail);
+
+          const tdAmount = document.createElement("td");
+          tdAmount.textContent = (row.amount || 0).toFixed(2) + " €";
+          tr.appendChild(tdAmount);
+
+          const tdStatus = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.classList.add("badge");
+          if (row.status === "confirmed") {
+            badge.classList.add("badge-active");
+            badge.textContent = "Confirmée";
+          } else if (row.status === "cancelled") {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Annulée";
+          } else if (row.status === "pending") {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "En attente";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = row.status || "Autre";
+          }
+          tdStatus.appendChild(badge);
+          tr.appendChild(tdStatus);
+
+          tbody.appendChild(tr);
+        });
+
+        msgEl.textContent = "";
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement des réservations.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    // --- CLIENTS (à partir de reservations) ---
+
+    async function loadClients() {
+      const tbody = document.getElementById("clients-table-body");
+      const msgEl = document.getElementById("clients-list-message");
+
+      if (!tbody || !msgEl) return;
+
+      tbody.innerHTML = "";
+      msgEl.textContent = "Chargement des clients...";
+      msgEl.className = "status-message";
+
+      try {
+        // On se base sur reservations pour reconstituer les clients
+        const { data, error } = await supabaseClient
+          .from("reservations")
+          // TODO: adapte les colonnes à ta table
+          .select("customer_name, customer_email, customer_phone, start_datetime")
+          .order("start_datetime", { ascending: false });
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur chargement clients : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          msgEl.textContent = "Aucun client trouvé (pas de réservations).";
+          msgEl.classList.add("error");
+          return;
+        }
+
+        // Regroupe par email
+        const map = new Map();
+        data.forEach((row) => {
+          const email = row.customer_email || "inconnu";
+          if (!map.has(email)) {
+            map.set(email, {
+              name: row.customer_name || "-",
+              email,
+              phone: row.customer_phone || "-",
+              reservationsCount: 0,
+              lastDate: null
+            });
+          }
+          const entry = map.get(email);
+          entry.reservationsCount += 1;
+          const d = row.start_datetime ? new Date(row.start_datetime) : null;
+          if (d && (!entry.lastDate || d > entry.lastDate)) {
+            entry.lastDate = d;
+          }
+        });
+
+        const clients = Array.from(map.values()).sort((a, b) => {
+          if (!a.lastDate && !b.lastDate) return 0;
+          if (!a.lastDate) return 1;
+          if (!b.lastDate) return -1;
+          return b.lastDate - a.lastDate;
+        });
+
+        clients.forEach((c) => {
+          const tr = document.createElement("tr");
+
+          const tdName = document.createElement("td");
+          tdName.textContent = c.name;
+          tr.appendChild(tdName);
+
+          const tdEmail = document.createElement("td");
+          tdEmail.textContent = c.email;
+          tr.appendChild(tdEmail);
+
+          const tdPhone = document.createElement("td");
+          tdPhone.textContent = c.phone;
+          tr.appendChild(tdPhone);
+
+          const tdCount = document.createElement("td");
+          tdCount.textContent = c.reservationsCount;
+          tr.appendChild(tdCount);
+
+          const tdLast = document.createElement("td");
+          if (c.lastDate) {
+            tdLast.textContent =
+              c.lastDate.toLocaleDateString("fr-FR") +
+              " " +
+              c.lastDate.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+          } else {
+            tdLast.textContent = "-";
+          }
+          tr.appendChild(tdLast);
+
+          tbody.appendChild(tr);
+        });
+
+        msgEl.textContent = "";
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement des clients.";
+        msgEl.classList.add("error");
+      }
     }
 
     // --- Login / logout ---
+
     function showLogin() {
       document.getElementById("login-screen").style.display = "flex";
       document.getElementById("admin-screen").style.display = "none";
@@ -711,11 +1033,18 @@ v<!DOCTYPE html>
     function checkAuth() {
       if (localStorage.getItem("sb_isAdmin") === "true") {
         showAdmin();
-        initDeposit();
-        loadPromoCodes();
+        initAfterLogin();
       } else {
         showLogin();
       }
+    }
+
+    async function initAfterLogin() {
+      await loadDeposit();
+      await loadPromoCodes();
+      await loadDashboard();
+      await loadReservations();
+      await loadClients();
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -736,7 +1065,7 @@ v<!DOCTYPE html>
         });
       });
 
-      loginButton.addEventListener("click", () => {
+      loginButton.addEventListener("click", async () => {
         const pwd = passwordInput.value.trim();
         if (!pwd) {
           loginError.textContent = "Merci de saisir le mot de passe.";
@@ -747,8 +1076,7 @@ v<!DOCTYPE html>
           loginError.textContent = "";
           passwordInput.value = "";
           showAdmin();
-          initDeposit();
-          loadPromoCodes();
+          await initAfterLogin();
         } else {
           loginError.textContent = "Mot de passe incorrect.";
         }
@@ -767,6 +1095,14 @@ v<!DOCTYPE html>
         });
       }
 
+      // Bouton refresh réservations
+      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
+      if (btnRefreshRes) {
+        btnRefreshRes.addEventListener("click", () => {
+          loadReservations();
+        });
+      }
+
       // Form promo
       const promoForm = document.getElementById("promo-form");
       promoForm.addEventListener("submit", async (e) => {
@@ -774,16 +1110,10 @@ v<!DOCTYPE html>
         await handlePromoFormSubmit();
       });
 
-      // Form caution
-      const depositForm = document.getElementById("deposit-form");
-      if (depositForm) {
-        depositForm.addEventListener("submit", handleDepositForm);
-      }
-
       checkAuth();
     });
 
-    // --- Gestion des codes promo (inchangé, sauf petit fix de parenthèse) ---
+    // --- CODES PROMO ---
 
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
@@ -820,7 +1150,7 @@ v<!DOCTYPE html>
       const payload = {
         code,
         type,
-        value: numericValue, // <-- colonne Supabase 'value'
+        value: numericValue, // colonne Supabase 'value'
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
