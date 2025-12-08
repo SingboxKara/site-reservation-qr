@@ -147,7 +147,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Bloc marque */
     .brand {
       display: flex;
       align-items: center;
@@ -179,7 +178,6 @@
       align-items: center;
     }
 
-    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -231,7 +229,6 @@
       width: 100%;
     }
 
-    /* Actions à droite */
     .header-actions {
       display: flex;
       align-items: center;
@@ -327,29 +324,23 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* ----------- header responsive (téléphones / tablettes) ----------- */
     @media screen and (max-width: 1024px) {
       .header-inner {
         padding: 10px 16px;
         gap: 12px;
       }
-
       .main-nav {
         display: none !important;
       }
-
       .nav-cta {
         display: none !important;
       }
-
       .brand-text {
         display: none !important;
       }
-
       .burger-button {
         display: flex !important;
       }
-
       .brand-logo {
         width: 72px;
       }
@@ -371,24 +362,6 @@
         #050814;
       text-align: center;
       overflow: hidden;
-    }
-
-    .hero-resa::before {
-      content: "♪";
-      position: absolute;
-      top: 18%;
-      left: 12%;
-      font-size: 32px;
-      color: rgba(148,163,184,0.08);
-    }
-
-    .hero-resa::after {
-      content: "✦";
-      position: absolute;
-      bottom: 16%;
-      right: 10%;
-      font-size: 30px;
-      color: rgba(148,163,184,0.08);
     }
 
     .hero-inner {
@@ -417,7 +390,6 @@
       color: rgba(249,250,251,0.85);
     }
 
-    /* ---------- MAIN / CARD RÉSERVATION ---------- */
     main {
       padding: 0 0 4rem;
       background: #050814;
@@ -452,11 +424,12 @@
       margin-bottom: 0.75rem;
     }
 
+    /* HEADER FORM */
     .resa-header {
       display: grid;
       grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
       gap: 1rem 1.5rem;
-      align-items: flex-end;
+      align-items: flex-start; /* aligne les blocs en haut */
       margin-bottom: 1.4rem;
     }
 
@@ -498,6 +471,7 @@
         0 14px 30px rgba(0,0,0,0.85);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
+      align-self: center; /* aligne verticalement avec la ligne */
       justify-self: end;
     }
 
@@ -515,7 +489,6 @@
       margin-top: 4px;
     }
 
-    /* Sélecteur de personnes */
     .resa-persons {
       display: flex;
       flex-direction: column;
@@ -532,7 +505,7 @@
       color: #F9FAFB;
       font-size: 13px;
       outline: none;
-      min-width: 140px;
+      min-width: 160px;
     }
 
     #persons-indicator {
@@ -589,10 +562,6 @@
       width: 100%;
       min-width: 540px;
       color: #F9FAFB;
-    }
-
-    thead {
-      background: #020617;
     }
 
     th, td {
@@ -666,9 +635,14 @@
       line-height: 1.2;
     }
 
-    .slot-price {
-      font-weight: 600;
-      font-size: 13px;
+    .slot-price-main {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .slot-price-total {
+      font-size: 11px;
+      color: var(--sb-text-muted);
     }
 
     .slot-status {
@@ -727,15 +701,10 @@
       min-height: 1em;
     }
 
-    #message span {
-      opacity: 0.9;
-    }
-
     #qrcode {
       margin-top: 0.5rem;
     }
 
-    /* ---------- MODAL DE CONFIRMATION ---------- */
     #slot-modal[hidden] {
       display: none;
     }
@@ -813,7 +782,6 @@
       cursor: not-allowed;
     }
 
-    /* ---------- FOOTER ---------- */
     footer {
       background:#020617;
       color:#e5e7eb;
@@ -915,12 +883,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .footer-social .social-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: currentColor;
     }
 
     .footer-bottom {
@@ -1038,16 +1000,13 @@
           <button id="load-button" type="button">Voir les créneaux disponibles</button>
         </div>
 
-        <!-- Texte d’aide mobile pour la 2e box -->
         <p class="table-scroll-hint">
           Sur mobile, glissez le tableau vers la droite pour voir l’autre box
           <span class="arrow">⟶</span>
         </p>
 
         <div class="table-wrapper">
-          <table id="planning-table" aria-label="Tableau des créneaux de réservation pour les box Singbox">
-            <!-- Table générée en JS -->
-          </table>
+          <table id="planning-table" aria-label="Tableau des créneaux de réservation pour les box Singbox"></table>
         </div>
 
         <div class="resa-legend">
@@ -1257,8 +1216,8 @@
     }
 
     let bookedIndex = {};
-    let selectedPersons = 2;            // par défaut 2 personnes (facturation mini 2)
-    let personsManuallyChanged = false; // passe à true s'ils modifient le sélecteur
+    let selectedPersons = 2;
+    let personsManuallyChanged = false;
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
@@ -1403,7 +1362,8 @@
           td.dataset.date = isoDate;
 
           const persons = selectedPersons || 2;
-          const price = getSlotPrice(date, hour, persons);
+          const totalPrice = getSlotPrice(date, hour, persons);
+          const perPersonRate = (hour >= 4 && hour <= 14) ? 7.50 : 9.90;
           const booked = isSlotBooked(box.id, hour);
 
           const wrapper = document.createElement("div");
@@ -1423,11 +1383,19 @@
               item.hour === hour
             );
 
-            const priceSpan = document.createElement("span");
-            priceSpan.className = "slot-price";
-            const prixAffiche = price.toFixed(2).replace(".", ",");
-            priceSpan.textContent = prixAffiche + "€";
-            wrapper.appendChild(priceSpan);
+            const perPersonStr = perPersonRate.toFixed(2).replace(".", ",");
+            const totalStr = totalPrice.toFixed(2).replace(".", ",");
+
+            const mainPriceSpan = document.createElement("span");
+            mainPriceSpan.className = "slot-price-main";
+            mainPriceSpan.textContent = perPersonStr + "€/pers";
+
+            const totalPriceSpan = document.createElement("span");
+            totalPriceSpan.className = "slot-price-total";
+            totalPriceSpan.textContent = "soit " + totalStr + "€";
+
+            wrapper.appendChild(mainPriceSpan);
+            wrapper.appendChild(totalPriceSpan);
 
             const statusSpan = document.createElement("span");
             statusSpan.className = "slot-status";
@@ -1441,7 +1409,6 @@
             } else {
               td.classList.add("slot-free");
               td.onclick = function () {
-                // popup de rappel si le nombre de personnes n'a jamais été modifié
                 if (!personsManuallyChanged) {
                   const wantsChange = window.confirm(
                     "Le nombre de personnes est actuellement réglé sur " +
@@ -1465,7 +1432,6 @@
                         if (personsSelectEl) personsSelectEl.value = String(n);
                         if (personsIndicatorEl) personsIndicatorEl.textContent =
                           n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
-                        // on reconstruit le planning avec les bons prix
                         const parts = isoDate.split("-");
                         const d = new Date(
                           parseInt(parts[0], 10),
@@ -1473,7 +1439,7 @@
                           parseInt(parts[2], 10)
                         );
                         buildPlanningTable(d);
-                        return; // l'utilisateur recliquera sur un créneau
+                        return;
                       } else {
                         alert("Veuillez entrer un nombre de personnes valide (minimum 1).");
                         return;
@@ -1572,14 +1538,14 @@
 
         personsSelect.addEventListener("change", () => {
           const n = parseInt(personsSelect.value, 10);
-          selectedPersons = n || 1; // on permet 1 personne
+          selectedPersons = n || 1;
           personsManuallyChanged = true;
           if (personsIndicator) {
             personsIndicator.textContent =
               selectedPersons + " personne" + (selectedPersons > 1 ? "s" : "") +
               " (facturation min. 2)";
           }
-          refreshPlanning(); // met à jour tous les prix du tableau
+          refreshPlanning();
         });
       }
 
