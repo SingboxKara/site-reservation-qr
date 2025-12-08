@@ -1632,6 +1632,45 @@
           </form>
         </div>
 
+        <!-- ⭐⭐ BLOC FIDÉLITÉ ⭐⭐ -->
+<div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
+  <label style="color:#F9FAFB; font-weight:600;">Programme Fidélité ⭐</label>
+
+  <div style="
+    padding:12px 14px;
+    background:#020617;
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:14px;
+    line-height:1.45;
+  ">
+    <p style="margin:0; font-size:13px;">
+      Points disponibles : <b id="loyalty-points">0</b> ⭐
+    </p>
+    <p style="margin:4px 0 10px; font-size:12px; color:#9CA3AF;">
+      100 points = 1 réservation gratuite
+    </p>
+
+    <button id="use-loyalty-btn" type="button"
+      style="
+        display:none;
+        width:100%;
+        padding:8px 14px;
+        border-radius:999px;
+        background:linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+        color:white;
+        font-weight:600;
+        border:none;
+        cursor:pointer;
+        font-size:13px;
+      ">
+      Utiliser 100 points pour une réservation gratuite
+    </button>
+
+    <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#BBF7D0;"></p>
+  </div>
+</div>
+<!-- ⭐⭐ FIN BLOC FIDÉLITÉ ⭐⭐ -->
+
         <!-- COLONNE DROITE : RÉCAP + PAIEMENT -->
         <div class="summary-column">
           <div class="order-card card">
@@ -1903,6 +1942,7 @@
 
     // promo actuellement appliquée (issue de Supabase) et totaux
     let currentPromo = null;
+    let loyaltyUsed = false;
     let currentTotals = {
       totalTTCNoDiscount: 0,
       discount: 0,
@@ -2105,6 +2145,87 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
+/* ----------------------------------------------------------
+   PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
+---------------------------------------------------------- */
+async function fetchUserPoints() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/me`, {
+      headers: { "Authorization": "Bearer " + token }
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.points || 0;
+
+  } catch (err) {
+    console.error("Erreur points fidélité :", err);
+    return null;
+  }
+}
+
+async function initLoyalty() {
+  const loyaltyBlock = document.getElementById("loyalty-block");
+  const loyaltyPointsEl = document.getElementById("loyalty-points");
+  const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
+  const loyaltyMsg = document.getElementById("loyalty-msg");
+
+  const points = await fetchUserPoints();
+
+  if (points !== null) {
+    loyaltyBlock.style.display = "block";
+    loyaltyPointsEl.textContent = points;
+
+    if (points >= 100) {
+      useLoyaltyBtn.style.display = "block";
+    }
+  }
+
+  useLoyaltyBtn.addEventListener("click", async () => {
+    loyaltyMsg.textContent = "";
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`${API_BASE_URL}/api/use-loyalty`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        }
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        loyaltyMsg.style.color = "#FCA5A5";
+        loyaltyMsg.textContent = data.error || "Erreur";
+        return;
+      }
+
+      // On active la remise totale
+      currentPromo = { type: "free", code: "LOYALTY100" };
+      loyaltyUsed = true;
+
+      updateOrderSummaryFromPanier();
+
+      loyaltyMsg.style.color = "#BBF7D0";
+      loyaltyMsg.textContent = "🎉 Séance gratuite grâce à vos points !";
+
+      useLoyaltyBtn.style.display = "none";
+
+    } catch (err) {
+      loyaltyMsg.style.color = "#FCA5A5";
+      loyaltyMsg.textContent = "Erreur réseau.";
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initLoyalty);
+      
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -2346,9 +2467,10 @@
             currentPromo && isPromoCurrentlyValid(currentPromo)
               ? currentPromo.code
               : null;
-          const finalAmountCents = Math.round(
-            (currentTotals.finalTotalTTC || 0) * 100
-          );
+          const finalAmountCents = 
+  (currentPromo && currentPromo.type === "free")
+    ? 0
+    : Math.round((currentTotals.finalTotalTTC || 0) * 100);
 
           submitBtn.disabled = true;
           const originalLabel = submitBtn.textContent;
