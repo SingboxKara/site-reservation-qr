@@ -287,7 +287,7 @@
       color:#fff;
       align-items: center;
       justify-content: center;
-      cursor: button;
+      cursor: pointer;
       font-size: 20px;
     }
 
@@ -979,10 +979,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+      gap: 6px;
       font-size: 11px;
       color: var(--sb-text-muted);
       background:
         radial-gradient(circle at 0 0, rgba(248,250,252,0.04), transparent 60%);
+      padding: 6px;
+    }
+
+    #thankyou-qr {
+      width: 110px;
+      height: 110px;
     }
 
     .thankyou-qr-note {
@@ -1003,6 +1011,26 @@
     .thankyou-deposit strong {
       display: block;
       margin-bottom: 4px;
+    }
+
+    .thankyou-practical {
+      font-size: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.8);
+      line-height: 1.5;
+    }
+
+    .thankyou-practical strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .thankyou-practical ul {
+      margin: 4px 0 0 1.1rem;
+      padding: 0;
+      font-size: 12px;
     }
 
     .thankyou-actions {
@@ -1732,12 +1760,13 @@
             </div>
             <div class="thankyou-qr">
               <div class="thankyou-qr-inner">
-                <p class="thankyou-qr-label">QR code de réservation</p>
-                <div class="thankyou-qr-placeholder" id="thankyou-qr-placeholder">
-                  <span>Disponible bientôt</span>
+                <p class="thankyou-qr-label">QR CODE DE RÉSERVATION</p>
+                <div class="thankyou-qr-placeholder">
+                  <div id="thankyou-qr"></div>
+                  <span id="thankyou-qr-fallback">Disponible bientôt</span>
                 </div>
                 <p class="thankyou-qr-note">
-                  Votre QR code de réservation vous sera envoyé par e-mail.<br>
+                  Votre QR code de réservation est aussi envoyé par e-mail.<br>
                   Vous pourrez le présenter à l’accueil le jour J.
                 </p>
               </div>
@@ -1758,6 +1787,17 @@
             <p style="margin-top:4px;">
               Si tout se passe bien (et on sait que ce sera le cas 😉), l’empreinte expirera automatiquement après la séance.
             </p>
+          </div>
+
+          <div class="thankyou-practical">
+            <strong>Infos pratiques pour votre venue</strong>
+            <ul>
+              <li><b>Adresse :</b> Singbox – Adresse à compléter, 31000 Toulouse.</li>
+              <li>Vous pouvez arriver dès <b>5 minutes avant le début</b> de votre créneau pour vous installer tranquillement.</li>
+              <li>En cas de retard, la séance se termine tout de même à l’heure prévue afin de respecter les créneaux suivants.</li>
+              <li>Merci de prévoir une pièce d’identité au même nom que la réservation si besoin de vérification.</li>
+              <li>Vous retrouverez dans l’e-mail toutes les informations pratiques (plan d’accès, parking, règlement intérieur détaillé).</li>
+            </ul>
           </div>
 
           <div class="thankyou-actions">
@@ -1846,6 +1886,8 @@
 
   <!-- Stripe -->
   <script src="https://js.stripe.com/v3"></script>
+  <!-- QR Code library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
@@ -2246,6 +2288,8 @@
       const thankyouBox = document.getElementById("thankyou-box");
       const thankyouTotal = document.getElementById("thankyou-total");
       const thankyouRef = document.getElementById("thankyou-ref");
+      const thankyouQrContainer = document.getElementById("thankyou-qr");
+      const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
 
       if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
@@ -2498,6 +2542,25 @@
                 thankyouSection.style.display = "block";
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
+
+              // 7) Génération du QR code si on a une référence
+              if (reservationId && thankyouQrContainer && window.QRCode) {
+                try {
+                  thankyouQrContainer.innerHTML = "";
+                  const qrUrl = `https://www.singbox.fr/reservation/${reservationId}`;
+                  new QRCode(thankyouQrContainer, {
+                    text: qrUrl,
+                    width: 110,
+                    height: 110
+                  });
+                  if (thankyouQrFallback) {
+                    thankyouQrFallback.textContent = "Scannez ce QR code à l’accueil le jour J.";
+                  }
+                } catch (e) {
+                  console.error("Erreur génération QR code :", e);
+                }
+              }
+
             }
 
           } catch (err) {
