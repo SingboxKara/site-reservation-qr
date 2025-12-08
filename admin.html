@@ -513,7 +513,6 @@
           <h2>Dashboard</h2>
           <p class="card-subtitle">
             Vue rapide sur le mois en cours (basée sur la table <code>reservations</code>).
-            <br>Si tes champs n’ont pas exactement les mêmes noms, change-les dans <code>loadDashboard()</code>.
           </p>
 
           <div class="kpi-grid">
@@ -525,7 +524,7 @@
             <div class="kpi-card">
               <div class="kpi-label">CA estimé</div>
               <div id="kpi-revenue" class="kpi-value">-- €</div>
-              <div class="kpi-sub">Somme des montants confirmés</div>
+              <div class="kpi-sub">Somme des montants confirmés (à configurer)</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-label">Taux de remplissage (simple)</div>
@@ -776,12 +775,12 @@
         const firstISO = firstDay.toISOString();
         const nextISO = nextMonth.toISOString();
 
-        // TODO: adapte les noms de colonnes à ta table reservations
+        // on utilise la colonne datetime (timestamptz)
         const { data, error } = await supabaseClient
           .from("reservations")
-          .select("amount,status,start_datetime")
-          .gte("start_datetime", firstISO)
-          .lt("start_datetime", nextISO);
+          .select("status, datetime")
+          .gte("datetime", firstISO)
+          .lt("datetime", nextISO);
 
         if (error) {
           console.error(error);
@@ -793,11 +792,10 @@
         const total = data.length;
         const confirmed = data.filter(r => r.status === "confirmed");
         const totalResa = confirmed.length;
-        const totalRevenue = confirmed.reduce((sum, r) => sum + (r.amount || 0), 0);
         const fillRate = total > 0 ? Math.round((totalResa / total) * 100) : 0;
 
         if (kpiResa) kpiResa.textContent = totalResa;
-        if (kpiRevenue) kpiRevenue.textContent = totalRevenue.toFixed(2) + " €";
+        if (kpiRevenue) kpiRevenue.textContent = "-- €"; // pas encore de colonne montant
         if (kpiFill) kpiFill.textContent = fillRate + " %";
 
         msgEl.textContent = "Dashboard mis à jour ✔️";
@@ -828,17 +826,16 @@
       try {
         let query = supabaseClient
           .from("reservations")
-          // TODO: adapte les colonnes à ta table
-          .select("start_datetime, customer_name, customer_email, amount, status")
-          .order("start_datetime", { ascending: false });
+          .select("datetime, name, email, status")
+          .order("datetime", { ascending: false });
 
         if (dateFrom) {
-          query = query.gte("start_datetime", dateFrom);
+          const fromISO = new Date(dateFrom + "T00:00:00").toISOString();
+          query = query.gte("datetime", fromISO);
         }
         if (dateTo) {
-          const toPlusOne = new Date(dateTo);
-          toPlusOne.setDate(toPlusOne.getDate() + 1);
-          query = query.lt("start_datetime", toPlusOne.toISOString().split("T")[0]);
+          const toISO = new Date(dateTo + "T23:59:59").toISOString();
+          query = query.lte("datetime", toISO);
         }
         if (status) {
           query = query.eq("status", status);
@@ -862,7 +859,7 @@
         data.forEach((row) => {
           const tr = document.createElement("tr");
 
-          const d = row.start_datetime ? new Date(row.start_datetime) : null;
+          const d = row.datetime ? new Date(row.datetime) : null;
           const dateStr = d ? d.toLocaleDateString("fr-FR") : "-";
           const timeStr = d ? d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : "-";
 
@@ -875,15 +872,15 @@
           tr.appendChild(tdTime);
 
           const tdClient = document.createElement("td");
-          tdClient.textContent = row.customer_name || "-";
+          tdClient.textContent = row.name || "-";
           tr.appendChild(tdClient);
 
           const tdEmail = document.createElement("td");
-          tdEmail.textContent = row.customer_email || "-";
+          tdEmail.textContent = row.email || "-";
           tr.appendChild(tdEmail);
 
           const tdAmount = document.createElement("td");
-          tdAmount.textContent = (row.amount || 0).toFixed(2) + " €";
+          tdAmount.textContent = "- €"; // pas de montant en base pour l’instant
           tr.appendChild(tdAmount);
 
           const tdStatus = document.createElement("td");
@@ -932,9 +929,8 @@
         // On se base sur reservations pour reconstituer les clients
         const { data, error } = await supabaseClient
           .from("reservations")
-          // TODO: adapte les colonnes à ta table
-          .select("customer_name, customer_email, customer_phone, start_datetime")
-          .order("start_datetime", { ascending: false });
+          .select("name, email, datetime")
+          .order("datetime", { ascending: false });
 
         if (error) {
           console.error(error);
@@ -952,19 +948,19 @@
         // Regroupe par email
         const map = new Map();
         data.forEach((row) => {
-          const email = row.customer_email || "inconnu";
+          const email = row.email || "inconnu";
           if (!map.has(email)) {
             map.set(email, {
-              name: row.customer_name || "-",
+              name: row.name || "-",
               email,
-              phone: row.customer_phone || "-",
+              phone: "-", // pas de téléphone pour l’instant
               reservationsCount: 0,
               lastDate: null
             });
           }
           const entry = map.get(email);
           entry.reservationsCount += 1;
-          const d = row.start_datetime ? new Date(row.start_datetime) : null;
+          const d = row.datetime ? new Date(row.datetime) : null;
           if (d && (!entry.lastDate || d > entry.lastDate)) {
             entry.lastDate = d;
           }
