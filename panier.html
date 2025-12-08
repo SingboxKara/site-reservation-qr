@@ -18,13 +18,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.singbox.fr/panier" />
   <meta property="og:site_name" content="Singbox" />
-  <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
+  <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Panier de réservation karaoké à Toulouse | Singbox" />
   <meta name="twitter:description" content="Dernière étape avant de chanter : vérifiez vos réservations de karaoké box Singbox à Toulouse et passez au paiement sécurisé." />
-  <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
+  <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
@@ -935,7 +939,7 @@
 
   function renderPanier() {
     const container = document.getElementById("cart-items");
-    const summaryEl = document.getElementById("cart-summary");
+    the summaryEl = document.getElementById("cart-summary");
     const totalEl = document.getElementById("cart-total");
     const actionsEl = document.getElementById("cart-actions");
     const panier = getPanier();
