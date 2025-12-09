@@ -1507,16 +1507,48 @@
       const personsSelect = document.getElementById("persons-select");
       const personsIndicator = document.getElementById("persons-indicator");
 
-      const today = new Date();
-      const isoToday = toLocalYMD(today);
-      if (dateInput) dateInput.value = isoToday;
+      /* ==== NOUVEAU : on lit date & people depuis l’URL (et éventuellement localStorage) ==== */
+      const params = new URLSearchParams(window.location.search);
+      const dateFromUrl   = params.get("date")   || localStorage.getItem("resaDate");
+      const peopleFromUrl = params.get("people") || localStorage.getItem("resaPeople");
+
+      // 1) Date : paramètre -> sinon aujourd’hui
+      let initialDateIso;
+      if (dateFromUrl) {
+        initialDateIso = dateFromUrl;
+      } else {
+        const today = new Date();
+        initialDateIso = toLocalYMD(today);
+      }
+      if (dateInput) {
+        dateInput.value = initialDateIso;
+      }
+
+      // 2) Nombre de personnes : paramètre -> sinon 2
+      let initialPersons = 2;
+      if (peopleFromUrl) {
+        const n = parseInt(peopleFromUrl, 10);
+        if (!isNaN(n)) {
+          initialPersons = Math.min(Math.max(n, 1), 8);
+        }
+      }
+      selectedPersons = initialPersons;
+      personsManuallyChanged = !!peopleFromUrl; // il/elle l’a choisi sur la home
+
+      if (personsSelect) {
+        personsSelect.value = String(initialPersons);
+      }
+      if (personsIndicator) {
+        personsIndicator.textContent =
+          "– " + initialPersons + " personne" + (initialPersons > 1 ? "s" : "") + " (facturation min. 2)";
+      }
 
       async function refreshPlanning() {
         if (!dateInput || !dateInput.value) return;
 
         const iso = dateInput.value;
         const parts = iso.split("-");
-        theDate = new Date(
+        const theDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
@@ -1528,12 +1560,6 @@
       }
 
       if (personsSelect) {
-        personsSelect.value = "2";
-        selectedPersons = 2;
-        if (personsIndicator) {
-          personsIndicator.textContent = "– 2 personnes (facturation min. 2)";
-        }
-
         personsSelect.addEventListener("change", () => {
           let n = parseInt(personsSelect.value, 10);
           if (isNaN(n) || n < 1) n = 1;
@@ -1556,6 +1582,7 @@
         });
       }
 
+      // On charge directement le planning à l’ouverture
       refreshPlanning();
 
       const continueBtn = document.getElementById("modal-continue");
