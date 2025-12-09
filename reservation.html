@@ -700,10 +700,6 @@
       min-height: 1em;
     }
 
-    #qrcode {
-      margin-top: 0.5rem;
-    }
-
     #slot-modal[hidden] {
       display: none;
     }
@@ -1029,7 +1025,6 @@
         </p>
 
         <p id="message"></p>
-        <div id="qrcode"></div>
       </section>
     </div>
   </main>
@@ -1213,7 +1208,6 @@
     let currentDateIsHoliday = false;
 
     async function checkDateContext(isoDate) {
-      // isoDate = "2025-12-23"
       const parts = isoDate.split("-");
       const dateObj = new Date(
         parseInt(parts[0], 10),
@@ -1221,7 +1215,6 @@
         parseInt(parts[2], 10)
       );
 
-      // Week-end ?
       const day = dateObj.getDay(); // 0 = dimanche, 6 = samedi
       currentDateIsWeekend = (day === 0 || day === 6);
 
@@ -1234,7 +1227,6 @@
           return;
         }
         const data = await res.json();
-        // on accepte plusieurs noms de clé possibles
         currentDateIsHoliday = !!(
           data.vacances ??
           data.is_vacances ??
@@ -1386,6 +1378,13 @@
 
       const tbody = document.createElement("tbody");
 
+      // Jour courant ?
+      const now = new Date();
+      const isToday =
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate();
+
       hours.forEach(hour => {
         const tr = document.createElement("tr");
 
@@ -1414,15 +1413,16 @@
               : ((hour >= 4 && hour < 14) ? 7.90 : 9.90);
 
           const booked = isSlotBooked(box.id, hour);
+          const isPastToday = isToday && hour <= now.getHours();
 
           const wrapper = document.createElement("div");
           wrapper.className = "slot-label";
 
-          if (booked) {
+          if (booked || isPastToday) {
             td.classList.add("slot-booked");
             const statusSpan = document.createElement("span");
             statusSpan.className = "slot-status";
-            statusSpan.textContent = "Réservé";
+            statusSpan.textContent = isPastToday ? "Passé" : "Réservé";
             wrapper.appendChild(statusSpan);
           } else {
             const alreadyInCart = panier.some(item =>
@@ -1462,13 +1462,14 @@
                   const wantsChange = window.confirm(
                     "Le nombre de personnes est actuellement réglé sur " +
                     selectedPersons +
-                    " (facturation minimale 2 personnes).\n" +
-                    "Tu peux venir seul(e) en mettant 1 personne.\n\n" +
-                    "Voulez-vous modifier le nombre de personnes avant de réserver ?"
+                    " (facturation minimale 2 personnes).\n\n" +
+                    "Si tu viens seul(e), tu peux mettre 1 personne (tu payeras automatiquement pour 2).\n" +
+                    "Les box peuvent accueillir jusqu’à 8 personnes.\n\n" +
+                    "Souhaites-tu ajuster le nombre de personnes avant de réserver ce créneau ?"
                   );
                   if (wantsChange) {
                     const saisie = window.prompt(
-                      "Nombre de personnes (si tu viens seul(e), mets 1) :",
+                      "Nombre de personnes pour cette séance (entre 1 et 8) :",
                       String(selectedPersons || 1)
                     );
                     if (saisie !== null) {
@@ -1565,14 +1566,28 @@
 
       const today = new Date();
       const isoToday = toLocalYMD(today);
-      if (dateInput) dateInput.value = isoToday;
+      if (dateInput) {
+        dateInput.value = isoToday;
+        dateInput.min = isoToday; // 🔒 pas de date avant aujourd’hui
+      }
 
       async function refreshPlanning() {
         if (!dateInput || !dateInput.value) return;
 
         const iso = dateInput.value;
+
+        // Protection en plus côté JS au cas où
+        const todayYMD = toLocalYMD(new Date());
+        if (iso < todayYMD) {
+          const msg = document.getElementById("message");
+          if (msg) {
+            msg.textContent = "Tu ne peux pas réserver à une date passée 🙂";
+          }
+          return;
+        }
+
         const parts = iso.split("-");
-        theDate = new Date(
+        const theDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
@@ -1584,7 +1599,8 @@
         await fetchReservationsForDate(iso);
         // 3. on construit le tableau avec les bons prix
         buildPlanningTable(theDate);
-        document.getElementById("message").textContent = "";
+        const msgEl = document.getElementById("message");
+        if (msgEl) msgEl.textContent = "";
       }
 
       if (personsSelect) {
