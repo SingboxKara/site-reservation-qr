@@ -481,7 +481,7 @@
 
     .account-main-card h2 {
       font-size: 22px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .account-field-label {
@@ -561,6 +561,7 @@
       font-size: 12px;
       color: #FCA5A5;
       min-height: 16px;
+      margin: 4px 0 10px;
     }
 
     .account-message.ok {
@@ -763,8 +764,14 @@
         0 0 22px rgba(249,115,22,0.25);
     }
 
+    .login-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
     .login-submit-btn {
-      width:100%;
       border:none;
       border-radius:999px;
       padding:0.6rem 1rem;
@@ -775,11 +782,11 @@
       cursor:pointer;
       letter-spacing:0.06em;
       text-transform:uppercase;
-      margin-top:6px;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.12),
         0 16px 40px rgba(0,0,0,0.9);
       transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      flex: 1 1 140px;
     }
 
     .login-submit-btn:hover {
@@ -788,6 +795,45 @@
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
         0 22px 52px rgba(0,0,0,1);
+    }
+
+    .login-secondary-btn {
+      border:none;
+      border-radius:999px;
+      padding:0.6rem 1rem;
+      background:#111827;
+      color:#F9FAFB;
+      font-size:13px;
+      font-weight:500;
+      cursor:pointer;
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.7),
+        0 10px 28px rgba(0,0,0,0.8);
+      transition:background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      flex: 1 1 140px;
+      white-space: nowrap;
+    }
+
+    .login-secondary-btn:hover {
+      background:#1f2937;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.16),
+        0 14px 34px rgba(0,0,0,0.95);
+    }
+
+    .login-links {
+      margin: 8px 0 0;
+      font-size: 12px;
+    }
+
+    .login-forgot {
+      color: #F97316;
+      text-decoration: underline;
+    }
+
+    .login-forgot:hover {
+      text-decoration: none;
     }
 
     .login-message {
@@ -950,7 +996,11 @@
       <div class="account-header">
         <p class="account-header-eyebrow">Espace client</p>
         <h1>Mon compte Singbox</h1>
-        <p>Consultez vos informations, vos réservations, vos points de fidélité et vos avantages pour vos prochaines séances de karaoké.</p>
+        <p>
+          Consultez vos prochaines réservations, l’historique de vos séances,
+          votre solde de points de fidélité et voyez en un coup d’œil combien
+          il vous reste avant votre séance offerte.
+        </p>
       </div>
 
       <div class="account-layout">
@@ -960,7 +1010,8 @@
           <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
             <h2 class="login-card-title">Se connecter</h2>
             <p class="login-description">
-              Connectez-vous pour accéder à vos informations, cumuler des points et retrouver vos réservations.
+              Connectez-vous pour retrouver vos prochaines réservations, l’historique de vos séances
+              et votre solde de points de fidélité.
             </p>
 
             <form id="login-form">
@@ -972,7 +1023,13 @@
                 <label for="login-password">Mot de passe</label>
                 <input type="password" id="login-password" placeholder="Mot de passe" required />
               </div>
-              <button type="submit" class="login-submit-btn">Connexion</button>
+              <div class="login-actions">
+                <button type="submit" class="login-submit-btn">Connexion</button>
+                <button type="button" id="create-account-btn" class="login-secondary-btn">Créer mon compte</button>
+              </div>
+              <p class="login-links">
+                <a href="mot-de-passe-oublie.html" class="login-forgot">Mot de passe oublié&nbsp;?</a>
+              </p>
             </form>
             <div id="login-message" class="login-message"></div>
           </div>
@@ -980,6 +1037,9 @@
           <!-- Carte principale -->
           <div class="card account-main-card">
             <h2>Mes informations</h2>
+
+            <!-- Bandeau d’état (non connecté / chargement / ok) -->
+            <p class="account-message" id="account-message"></p>
 
             <div>
               <div class="account-field-label">Email</div>
@@ -1011,7 +1071,6 @@
 
             <div class="logout-row">
               <button id="logout-btn" class="logout-btn">Se déconnecter</button>
-              <span id="account-message" class="account-message"></span>
             </div>
           </div>
         </div>
@@ -1029,6 +1088,10 @@
           <p>
             À 100 points, vous débloquez une séance offerte à utiliser sur une prochaine réservation (selon disponibilité).
           </p>
+          <p>
+            Par exemple : une réservation = 10 points. Au bout de 10 réservations,
+            vous obtenez une séance offerte.
+          </p>
           <p class="loyalty-highlight" id="loyalty-highlight-text">
             Il vous reste – points avant votre prochaine séance offerte.
           </p>
@@ -1039,7 +1102,7 @@
           <p class="account-cta" id="not-logged-cta" style="display:none;">
             Vous n’êtes pas connecté. Vous pouvez vous connecter ci-contre ou créer un compte
             lors de votre prochaine réservation depuis la page
-            <a href="panier.html">Panier & Paiement</a>.
+            <a href="panier.html">Panier &amp; Paiement</a>.
           </p>
         </div>
       </div>
@@ -1169,7 +1232,7 @@
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
       if (msgEl) {
-        msgEl.textContent = "Connectez-vous pour accéder à vos informations.";
+        msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus pour accéder à vos infos.";
         msgEl.classList.remove("ok");
       }
       if (notLoggedCta) notLoggedCta.style.display = "block";
@@ -1317,10 +1380,17 @@
       const token = localStorage.getItem("token");
       const loginCard = document.getElementById("login-card");
       const notLoggedCta = document.getElementById("not-logged-cta");
+      const msgEl = document.getElementById("account-message");
 
       if (!token) {
         showNotLoggedState();
         return;
+      }
+
+      // ✅ État "chargement" explicite quand on a un token
+      if (msgEl) {
+        msgEl.textContent = "Chargement de vos informations...";
+        msgEl.classList.remove("ok");
       }
 
       try {
@@ -1340,7 +1410,6 @@
 
         const emailEl = document.getElementById("user-email");
         const pointsEl = document.getElementById("user-points");
-        const msgEl = document.getElementById("account-message");
 
         if (emailEl) emailEl.textContent = user.email || "—";
         if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
@@ -1358,7 +1427,6 @@
         loadReservations();
       } catch (err) {
         console.error(err);
-        const msgEl = document.getElementById("account-message");
         if (msgEl) {
           msgEl.textContent = "Erreur de chargement.";
           msgEl.classList.remove("ok");
@@ -1369,8 +1437,10 @@
     function initLoginForm() {
       const loginForm = document.getElementById("login-form");
       const loginMsg  = document.getElementById("login-message");
+      const createBtn = document.getElementById("create-account-btn");
       if (!loginForm) return;
 
+      // Connexion
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (loginMsg) {
@@ -1413,6 +1483,66 @@
           if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
         }
       });
+
+      // 🔹 Création de compte depuis la même carte
+      if (createBtn) {
+        createBtn.addEventListener("click", async () => {
+          if (loginMsg) {
+            loginMsg.textContent = "";
+            loginMsg.classList.remove("ok");
+          }
+
+          const email = document.getElementById("login-email").value.trim();
+          const password = document.getElementById("login-password").value;
+
+          if (!email || !password) {
+            if (loginMsg) {
+              loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
+            }
+            return;
+          }
+
+          try {
+            // 1) Création du compte
+            const res = await fetch(API_BASE + "/api/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+              if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte.";
+              return;
+            }
+
+            // 2) Connexion auto après création (comme sur la page paiement)
+            const loginRes = await fetch(API_BASE + "/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+            const loginData = await loginRes.json();
+
+            if (loginRes.ok) {
+              localStorage.setItem("token", loginData.token);
+              if (loginMsg) {
+                loginMsg.textContent = "Compte créé et connecté ✔️";
+                loginMsg.classList.add("ok");
+              }
+              loadProfile();
+            } else {
+              if (loginMsg) {
+                loginMsg.textContent = "Compte créé, mais la connexion a échoué. Essayez de vous connecter avec vos identifiants.";
+              }
+            }
+          } catch (err) {
+            console.error(err);
+            if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+          }
+        });
+      }
     }
 
     // Déconnexion
