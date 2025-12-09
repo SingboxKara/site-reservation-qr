@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO -->
-  <meta name="description" content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre, avec tarifs dynamiques selon le jour et l’horaire." />
+  <meta name="description" content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire." />
   <meta name="robots" content="index,follow" />
   <meta name="keywords" content="karaoke toulouse, karaoké toulouse, karaoke box toulouse, karaoké privatif toulouse, réserver karaoké toulouse, singbox, nuit étoilée, ambiance sunset" />
   <link rel="canonical" href="https://www.singbox.fr/reservation" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
-  <meta property="og:description" content="Réservez votre box de karaoké privative à Toulouse (Nuit étoilée ou Ambiance Sunset). Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier." />
+  <meta property="og:description" content="Réservez votre box de karaoké privative à Toulouse (Nuit étoilée ou Ambiance Sunset) pour une session de 1h30. Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.singbox.fr/reservation" />
   <meta property="og:site_name" content="Singbox" />
@@ -23,7 +23,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
-  <meta name="twitter:description" content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox : deux ambiances, tarifs dynamiques et réservation 100% en ligne." />
+  <meta name="twitter:description" content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox : sessions de 1h30, deux ambiances, tarifs dynamiques et réservation 100% en ligne." />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
   <!-- Favicon -->
@@ -63,7 +63,7 @@
     "@type": "WebPage",
     "name": "Réserver votre karaoké box à Toulouse | Singbox",
     "url": "https://www.singbox.fr/reservation",
-    "description": "Réservez votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre, avec tarifs dynamiques selon le jour et l’horaire.",
+    "description": "Réservez votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -766,17 +766,6 @@
       border: 1px solid rgba(148,163,184,0.6);
     }
 
-    #modal-double {
-      background: #111827;
-      color: #F9FAFB;
-      border: 1px solid rgba(96,165,250,0.6);
-    }
-
-    #modal-double:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
     footer {
       background:#020617;
       color:#e5e7eb;
@@ -951,7 +940,7 @@
       <p class="hero-eyebrow">RÉSERVATION KARAOKÉ BOX</p>
       <h1>Réserver votre karaoké box à Toulouse</h1>
       <p>
-        Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et cliquez sur un créneau libre
+        Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et cliquez sur une session de 1h30 libre
         pour l’ajouter à votre panier. Réservation 100&nbsp;% en ligne, 24h/24.
       </p>
     </div>
@@ -960,7 +949,7 @@
   <main>
     <div class="container resa-wrapper">
       <section class="resa-card" aria-label="Planning de réservation des box Singbox">
-        <h2>Choisissez votre date et votre créneau de karaoké</h2>
+        <h2>Choisissez votre date et votre session de 1h30</h2>
 
         <div class="resa-header">
           <div class="resa-field resa-field-date">
@@ -992,7 +981,7 @@
 
         <p class="resa-note">
           Tarifs par personne, facturation minimale 2 personnes (même si vous venez seul·e). Capacité
-          maximale : 8 personnes par box.  
+          maximale : 8 personnes par box. Sessions de 1h30.  
           Heures creuses seulement en semaine hors vacances scolaires.
         </p>
 
@@ -1021,7 +1010,7 @@
         <p class="resa-pricing-rules">
           7,90&nbsp;€ par personne en heures creuses (4h–14h) du lundi au vendredi hors vacances scolaires –
           9,90&nbsp;€ par personne le reste du temps (week-end et vacances scolaires compris).
-          Facturation minimale 2 personnes par créneau (si vous venez seul·e, vous payez pour 2 personnes).
+          Facturation minimale 2 personnes par session de 1h30 (si vous venez seul·e, vous payez pour 2 personnes).
         </p>
 
         <p id="message"></p>
@@ -1032,10 +1021,9 @@
   <!-- MODAL CONFIRMATION CRÉNEAU -->
   <div id="slot-modal" class="modal-backdrop" hidden>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-slot-info">
-      <h2>Créneau ajouté au panier</h2>
+      <h2>Session ajoutée au panier</h2>
       <p id="modal-slot-info"></p>
       <div class="modal-actions">
-        <button id="modal-double" type="button">Réserver 2 heures</button>
         <button id="modal-continue" type="button">Continuer ma réservation</button>
         <button id="modal-cart" type="button">Valider mon panier</button>
       </div>
@@ -1158,6 +1146,20 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
+    // Format d'une session de 1h30 à partir de l'heure de début (entier)
+    function formatSlotRange(hour) {
+      const startH = hour;
+      const startLabel = String(startH).padStart(2, "0") + "h";
+
+      const totalMinutesEnd = hour * 60 + 90; // +1h30
+      let endH = Math.floor((totalMinutesEnd / 60) % 24);
+      let endM = totalMinutesEnd % 60;
+      const endLabel =
+        String(endH).padStart(2, "0") + "h" + (endM === 0 ? "" : String(endM).padStart(2, "0"));
+
+      return startLabel + "–" + endLabel;
+    }
+
     function addSlotToCart(boxId, boxName, dateObj, hour, price, persons) {
       const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
@@ -1183,15 +1185,10 @@
       updateCartIcon();
 
       const msgEl = document.getElementById("message");
-      const heureLabel =
-        String(hour).padStart(2, "0") +
-        "h–" +
-        String((hour + 1) % 24).padStart(2, "0") +
-        "h";
-
+      const heureLabel = formatSlotRange(hour);
       const prixAffiche = price.toFixed(2).replace(".", ",");
 
-      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" +
+      msgEl.innerHTML = "<span>Session ajoutée au panier : <strong>" +
         boxName +
         "</strong> – " +
         heureLabel +
@@ -1239,7 +1236,8 @@
       }
     }
 
-    // Prix par personne : 7,90 € en creuse (4h–14h) en semaine hors vacances,
+    // Prix par personne pour une session de 1h30 :
+    // 7,90 € en creuse (4h–14h) en semaine hors vacances,
     // 9,90 € sinon (week-end + vacances scolaires).
     // Facturation minimale 2 personnes.
     function getSlotPrice(date, hour, persons) {
@@ -1266,7 +1264,6 @@
       { id: 2, name: "Ambiance Sunset" }
     ];
     let currentPlanningDateIso = null;
-    let lastSelectedSlot = null;
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
@@ -1307,37 +1304,22 @@
     }
 
     function openSlotModal(slot) {
-      lastSelectedSlot = slot;
       const modal = document.getElementById("slot-modal");
       const infoEl = document.getElementById("modal-slot-info");
 
       if (infoEl) {
         const parts = slot.date.split("-");
         const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-        const h1 = String(slot.hour).padStart(2, "0");
-        const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
+        const range = formatSlotRange(slot.hour);
         infoEl.textContent =
           slot.boxName +
           " – " +
           dateStr +
           " – " +
-          h1 +
-          "h–" +
-          h2 +
-          "h – " +
+          range +
+          " – " +
           slot.persons +
           " pers.";
-      }
-
-      const doubleBtn = document.getElementById("modal-double");
-      if (doubleBtn) {
-        if (slot.hour >= 23) {
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Réserver 2 heures (indisponible)";
-        } else {
-          doubleBtn.disabled = false;
-          doubleBtn.textContent = "Réserver 2 heures";
-        }
       }
 
       if (modal) modal.removeAttribute("hidden");
@@ -1363,7 +1345,7 @@
       const headRow = document.createElement("tr");
 
       const hourTh = document.createElement("th");
-      hourTh.textContent = "Heure";
+      hourTh.textContent = "Heure (session 1h30)";
       hourTh.className = "hour-cell";
       headRow.appendChild(hourTh);
 
@@ -1390,12 +1372,7 @@
 
         const hourTd = document.createElement("td");
         hourTd.className = "hour-cell";
-        const endHour = (hour + 1) % 24;
-        hourTd.textContent =
-          String(hour).padStart(2, "0") +
-          "h–" +
-          String(endHour).padStart(2, "0") +
-          "h";
+        hourTd.textContent = formatSlotRange(hour);
         tr.appendChild(hourTd);
 
         BOXES.forEach(box => {
@@ -1413,7 +1390,15 @@
               : ((hour >= 4 && hour < 14) ? 7.90 : 9.90);
 
           const booked = isSlotBooked(box.id, hour);
-          const isPastToday = isToday && hour <= now.getHours();
+
+          // Si on veut empêcher une session déjà commencée aujourd'hui
+          let isPastToday = false;
+          if (isToday) {
+            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+            const slotStartMinutes = hour * 60;
+            // on bloque si l'heure de départ est passée
+            isPastToday = slotStartMinutes <= nowMinutes;
+          }
 
           const wrapper = document.createElement("div");
           wrapper.className = "slot-label";
@@ -1441,7 +1426,7 @@
 
             const totalPriceSpan = document.createElement("span");
             totalPriceSpan.className = "slot-price-total";
-            totalPriceSpan.textContent = "soit " + totalStr + "€";
+            totalPriceSpan.textContent = "soit " + totalStr + "€ / session";
 
             wrapper.appendChild(mainPriceSpan);
             wrapper.appendChild(totalPriceSpan);
@@ -1465,7 +1450,7 @@
                     " (facturation minimale 2 personnes).\n\n" +
                     "Si tu viens seul(e), tu peux mettre 1 personne (tu payeras automatiquement pour 2).\n" +
                     "Les box peuvent accueillir jusqu’à 8 personnes.\n\n" +
-                    "Souhaites-tu ajuster le nombre de personnes avant de réserver ce créneau ?"
+                    "Souhaites-tu ajuster le nombre de personnes avant de réserver cette session de 1h30 ?"
                   );
                   if (wantsChange) {
                     const saisie = window.prompt(
@@ -1637,7 +1622,6 @@
 
       const continueBtn = document.getElementById("modal-continue");
       const cartBtn = document.getElementById("modal-cart");
-      const doubleBtn = document.getElementById("modal-double");
 
       if (continueBtn) {
         continueBtn.addEventListener("click", () => {
@@ -1648,60 +1632,6 @@
       if (cartBtn) {
         cartBtn.addEventListener("click", () => {
           window.location.href = "panier.html";
-        });
-      }
-
-      if (doubleBtn) {
-        doubleBtn.addEventListener("click", () => {
-          if (!lastSelectedSlot) return;
-          const nextHour = lastSelectedSlot.hour + 1;
-          if (nextHour >= 24) return;
-
-          const dateObj = lastSelectedSlot.dateObj;
-          const persons = lastSelectedSlot.persons || selectedPersons || 1;
-          const price2 = getSlotPrice(dateObj, nextHour, persons);
-
-          const panier = getPanier();
-          const exists = panier.some(item =>
-            item.type === "reservation" &&
-            item.boxId === lastSelectedSlot.boxId &&
-            item.date === lastSelectedSlot.date &&
-            item.hour === nextHour
-          );
-          if (exists) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Déjà dans ton panier";
-            return;
-          }
-
-          if (isSlotBooked(lastSelectedSlot.boxId, nextHour)) {
-            doubleBtn.disabled = true;
-            doubleBtn.textContent = "Créneau suivant réservé";
-            return;
-          }
-
-          addSlotToCart(
-            lastSelectedSlot.boxId,
-            lastSelectedSlot.boxName,
-            dateObj,
-            nextHour,
-            price2,
-            persons
-          );
-
-          const selector =
-            '.slot-cell[data-box-id="' +
-            lastSelectedSlot.boxId +
-            '"][data-hour="' +
-            nextHour +
-            '"][data-date="' +
-            lastSelectedSlot.date +
-            '"]';
-          const cell2 = document.querySelector(selector);
-          if (cell2) markCellSelected(cell2);
-
-          doubleBtn.disabled = true;
-          doubleBtn.textContent = "Deuxième heure ajoutée ✓";
         });
       }
     });
