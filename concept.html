@@ -25,9 +25,6 @@
   <meta name="twitter:description" content="Des salons privés de karaoké à Toulouse avec matériel premium et catalogue XXL. Découvrez le concept Singbox.">
   <meta name="twitter:image" content="https://tondomaine.fr/hero-groupe-karaoke.png">
 
-  <!-- (Optionnel) Canonical quand ton domaine sera fixé -->
-  <!-- <link rel="canonical" href="https://tondomaine.fr/concept.html"> -->
-
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +33,7 @@
     rel="stylesheet"
   >
 
-  <!-- FAQPage Schema.org (lié à la FAQ plus bas) -->
+  <!-- FAQPage Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,7 +44,7 @@
         "name": "Qu\u2019est-ce que le concept Singbox \u00e0 Toulouse ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Singbox est un karaok\u00e9 box privatif situ\u00e9 \u00e0 Toulouse. Vous r\u00e9servez un salon de karaok\u00e9 insonoris\u00e9 et totalement privatis\u00e9 pour chanter en toute intimité entre amis, en famille ou entre coll\u00e8gues."
+          "text": "Singbox est un karaok\u00e9 box privatif en autonomie situ\u00e9 \u00e0 Toulouse. Vous r\u00e9servez un salon de karaok\u00e9 insonoris\u00e9 et totalement privatis\u00e9 pour chanter en toute intimité entre amis, en famille ou entre coll\u00e8gues."
         }
       },
       {
@@ -55,7 +52,7 @@
         "name": "Comment se d\u00e9roule une s\u00e9ance de karaok\u00e9 chez Singbox ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Vous r\u00e9servez votre cr\u00e9neau en ligne, vous recevez un QR code, puis le jour J vous vous rendez dans votre box privatis\u00e9e. Vous scannez, choisissez vos chansons dans le catalogue et profitez de la s\u00e9ance sans \u00eatre observ\u00e9 par d\u2019autres clients."
+          "text": "Vous r\u00e9servez votre cr\u00e9neau en ligne sur ce site, vous recevez un QR code par mail, puis le jour J vous vous rendez sur place à l'adresse indiqué dans le mail. Vous scannez votre QR Code, choisissez vos chansons dans le catalogue et profitez de la s\u00e9ance sans \u00eatre observ\u00e9 par d\u2019autres clients."
         }
       },
       {
@@ -63,7 +60,7 @@
         "name": "Combien de personnes peuvent venir chanter dans une box Singbox ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Selon la box choisie, Singbox peut accueillir de petits et moyens groupes. C\u2019est id\u00e9al pour une soir\u00e9e entre amis, un anniversaire, un EVJF/EVG ou un team building d\u2019entreprise."
+          "text": "Selon la box choisie, Singbox peut accueillir de petits et moyens groupes de 1 à 8 personnes. C\u2019est id\u00e9al pour une soir\u00e9e entre amis, un anniversaire, un EVJF/EVG ou un team building d\u2019entreprise."
         }
       },
       {
@@ -411,6 +408,50 @@
       line-height: 1.7;
     }
 
+    /* CTA dans le hero */
+    .concept-intro-cta-row {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .concept-intro-cta {
+      border-radius: 999px;
+      padding: 0.75rem 1.8rem;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .concept-intro-cta-primary {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .concept-intro-cta-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 60px rgba(0,0,0,1);
+    }
+
+    .concept-intro-cta-secondary {
+      background: transparent;
+      color: #E5E7EB;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
     .concept-section {
       padding: 80px 0 80px;
     }
@@ -559,6 +600,27 @@
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
         0 24px 60px rgba(0,0,0,1);
+    }
+
+    /* CTA inline dans la section avantages */
+    .concept-inline-cta {
+      margin-top: 24px;
+    }
+
+    .concept-inline-cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.6rem 1.6rem;
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      text-decoration: none;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 14px 32px rgba(0,0,0,0.85);
     }
 
     /* ---------- SECTION AVANTAGES / FAQ ---------- */
@@ -802,7 +864,8 @@
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
+      <!-- ICI : Mon compte à la place de Réserver -->
+      <li><a href="mon-compte.html">Mon compte</a></li>
     </ul>
   </nav>
 
@@ -816,6 +879,15 @@
         Que vous chantiez juste ou totalement faux, l’important est de rire, profiter
         et partager un moment unique dans une box entièrement privatisée.
       </p>
+
+      <div class="concept-intro-cta-row">
+        <a href="reservation.html" class="concept-intro-cta concept-intro-cta-primary">
+          Réserver une box
+        </a>
+        <a href="mon-compte.html" class="concept-intro-cta concept-intro-cta-secondary">
+          Créer / accéder à mon compte
+        </a>
+      </div>
     </div>
   </section>
 
@@ -909,6 +981,12 @@
         </article>
       </div>
 
+      <p class="concept-inline-cta">
+        <a href="reservation.html" class="concept-inline-cta-button">
+          Réserver mon créneau de karaoké
+        </a>
+      </p>
+
       <div class="concept-faq">
         <h2>FAQ</h2>
 
@@ -939,7 +1017,7 @@
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- CTA FINALE -->
   <section class="concept-cta-section">
     <div class="concept-cta-inner">
       <h2>Convaincu par le concept&nbsp;?</h2>
@@ -1093,7 +1171,6 @@
           .insert({ email });
 
         if (error) {
-          // Erreur doublon (contrainte UNIQUE)
           if (
             error.code === "23505" ||
             (error.message && error.message.includes("duplicate key value"))
