@@ -1629,44 +1629,45 @@
               <label for="naissance">Date de naissance *</label>
               <input type="date" id="naissance" name="naissance" required />
             </div>
+
             <!-- ⭐⭐ BLOC FIDÉLITÉ ⭐⭐ -->
-<div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
-  <label style="color:#F9FAFB; font-weight:600;">Programme Fidélité ⭐</label>
+            <div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
+              <label style="color:#F9FAFB; font-weight:600;">Programme Fidélité ⭐</label>
 
-  <div style="
-    padding:12px 14px;
-    background:#020617;
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:14px;
-    line-height:1.45;
-  ">
-    <p style="margin:0; font-size:13px;">
-      Points disponibles : <b id="loyalty-points">0</b> ⭐
-    </p>
-    <p style="margin:4px 0 10px; font-size:12px; color:#9CA3AF;">
-      100 points = 1 réservation gratuite
-    </p>
+              <div style="
+                padding:12px 14px;
+                background:#020617;
+                border:1px solid rgba(255,255,255,0.15);
+                border-radius:14px;
+                line-height:1.45;
+              ">
+                <p style="margin:0; font-size:13px;">
+                  Points disponibles : <b id="loyalty-points">0</b> ⭐
+                </p>
+                <p style="margin:4px 0 10px; font-size:12px; color:#9CA3AF;">
+                  100 points = 1 réservation gratuite
+                </p>
 
-    <button id="use-loyalty-btn" type="button"
-      style="
-        display:none;
-        width:100%;
-        padding:8px 14px;
-        border-radius:999px;
-        background:linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-        color:white;
-        font-weight:600;
-        border:none;
-        cursor:pointer;
-        font-size:13px;
-      ">
-      Utiliser 100 points pour une réservation gratuite
-    </button>
+                <button id="use-loyalty-btn" type="button"
+                  style="
+                    display:none;
+                    width:100%;
+                    padding:8px 14px;
+                    border-radius:999px;
+                    background:linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+                    color:white;
+                    font-weight:600;
+                    border:none;
+                    cursor:pointer;
+                    font-size:13px;
+                  ">
+                  Utiliser 100 points pour une réservation gratuite
+                </button>
 
-    <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#BBF7D0;"></p>
-  </div>
-</div>
-<!-- ⭐⭐ FIN BLOC FIDÉLITÉ ⭐⭐ -->
+                <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#BBF7D0;"></p>
+              </div>
+            </div>
+            <!-- ⭐⭐ FIN BLOC FIDÉLITÉ ⭐⭐ -->
           </form>
         </div>
 
@@ -2144,87 +2145,127 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
-/* ----------------------------------------------------------
-   PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
----------------------------------------------------------- */
-async function fetchUserPoints() {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
+      /* ----------------------------------------------------------
+         PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
+      ---------------------------------------------------------- */
+      async function fetchUserPoints() {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
 
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/me`, {
-      headers: { "Authorization": "Bearer " + token }
-    });
+        try {
+          const res = await fetch(`${API_BASE_URL}/api/me`, {
+            headers: { "Authorization": "Bearer " + token }
+          });
 
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.points || 0;
+          if (!res.ok) return null;
+          const data = await res.json();
+          return data.points || 0;
 
-  } catch (err) {
-    console.error("Erreur points fidélité :", err);
-    return null;
-  }
-}
-
-async function initLoyalty() {
-  const loyaltyBlock = document.getElementById("loyalty-block");
-  const loyaltyPointsEl = document.getElementById("loyalty-points");
-  const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
-  const loyaltyMsg = document.getElementById("loyalty-msg");
-
-  const points = await fetchUserPoints();
-
-  if (points !== null) {
-    loyaltyBlock.style.display = "block";
-    loyaltyPointsEl.textContent = points;
-
-    if (points >= 100) {
-      useLoyaltyBtn.style.display = "block";
-    }
-  }
-
-  useLoyaltyBtn.addEventListener("click", async () => {
-    loyaltyMsg.textContent = "";
-
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(`${API_BASE_URL}/api/use-loyalty`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + token
+        } catch (err) {
+          console.error("Erreur points fidélité :", err);
+          return null;
         }
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        loyaltyMsg.style.color = "#FCA5A5";
-        loyaltyMsg.textContent = data.error || "Erreur";
-        return;
       }
 
-      // On active la remise totale
-      currentPromo = { type: "free", code: "LOYALTY100" };
-      loyaltyUsed = true;
+      async function initLoyalty() {
+        const loyaltyBlock = document.getElementById("loyalty-block");
+        const loyaltyPointsEl = document.getElementById("loyalty-points");
+        const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
+        const loyaltyMsg = document.getElementById("loyalty-msg");
 
-      updateOrderSummaryFromPanier();
+        if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) return;
 
-      loyaltyMsg.style.color = "#BBF7D0";
-      loyaltyMsg.textContent = "🎉 Séance gratuite grâce à vos points !";
+        // Toujours afficher le bloc, même si l'utilisateur n'est pas connecté (cas mobile, etc.)
+        loyaltyBlock.style.display = "block";
 
-      useLoyaltyBtn.style.display = "none";
+        const token = localStorage.getItem("token");
 
-    } catch (err) {
-      loyaltyMsg.style.color = "#FCA5A5";
-      loyaltyMsg.textContent = "Erreur réseau.";
-    }
-  });
-}
+        if (!token) {
+          // Pas connecté : on affiche 0 point et on invite à se connecter
+          loyaltyPointsEl.textContent = "0";
+          loyaltyMsg.style.color = "#FCA5A5";
+          loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
+          useLoyaltyBtn.style.display = "none";
+        } else {
+          // Utilisateur connecté : on va chercher ses points
+          const points = await fetchUserPoints();
 
-await initLoyalty();
-      
+          if (points !== null) {
+            loyaltyPointsEl.textContent = points;
+
+            if (points >= 100) {
+              useLoyaltyBtn.style.display = "block";
+              loyaltyMsg.style.color = "#BBF7D0";
+              loyaltyMsg.textContent = "Vous pouvez utiliser vos points pour une séance gratuite.";
+            } else {
+              useLoyaltyBtn.style.display = "none";
+              loyaltyMsg.style.color = "#9CA3AF";
+              loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, 100 - points)} point(s) pour une séance gratuite.`;
+            }
+          } else {
+            loyaltyPointsEl.textContent = "0";
+            useLoyaltyBtn.style.display = "none";
+            loyaltyMsg.style.color = "#FCA5A5";
+            loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
+          }
+        }
+
+        useLoyaltyBtn.addEventListener("click", async () => {
+          loyaltyMsg.textContent = "";
+
+          const tokenClick = localStorage.getItem("token");
+          if (!tokenClick) {
+            loyaltyMsg.style.color = "#FCA5A5";
+            loyaltyMsg.textContent = "Connectez-vous pour utiliser vos points.";
+            return;
+          }
+
+          const currentPoints = parseInt(loyaltyPointsEl.textContent || "0", 10);
+          if (currentPoints < 100) {
+            loyaltyMsg.style.color = "#FCA5A5";
+            loyaltyMsg.textContent = "Vous n'avez pas encore assez de points pour une séance gratuite.";
+            return;
+          }
+
+          try {
+            const res = await fetch(`${API_BASE_URL}/api/use-loyalty`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + tokenClick
+              }
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+              loyaltyMsg.style.color = "#FCA5A5";
+              loyaltyMsg.textContent = data.error || "Erreur";
+              return;
+            }
+
+            // On active la remise totale
+            currentPromo = { type: "free", code: "LOYALTY100" };
+            loyaltyUsed = true;
+
+            updateOrderSummaryFromPanier();
+
+            loyaltyMsg.style.color = "#BBF7D0";
+            loyaltyMsg.textContent = "🎉 Séance gratuite grâce à vos points !";
+
+            // Met à jour le compteur local (si l'API renvoie un total, tu peux mettre data.points_restants à la place)
+            loyaltyPointsEl.textContent = String(currentPoints - 100);
+            useLoyaltyBtn.style.display = "none";
+
+          } catch (err) {
+            loyaltyMsg.style.color = "#FCA5A5";
+            loyaltyMsg.textContent = "Erreur réseau.";
+          }
+        });
+      }
+
+      await initLoyalty();
+
       if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -2467,9 +2508,9 @@ await initLoyalty();
               ? currentPromo.code
               : null;
           const finalAmountCents = 
-  (currentPromo && currentPromo.type === "free")
-    ? 0
-    : Math.round((currentTotals.finalTotalTTC || 0) * 100);
+            (currentPromo && currentPromo.type === "free")
+              ? 0
+              : Math.round((currentTotals.finalTotalTTC || 0) * 100);
 
           submitBtn.disabled = true;
           const originalLabel = submitBtn.textContent;
@@ -2665,28 +2706,28 @@ await initLoyalty();
               }
 
               // 7) Génération du QR code si on a une référence
-if (reservationId && thankyouQrContainer && window.QRCode) {
-  try {
-    // On nettoie le conteneur au cas où
-    thankyouQrContainer.innerHTML = "";
+              if (reservationId && thankyouQrContainer && window.QRCode) {
+                try {
+                  // On nettoie le conteneur au cas où
+                  thankyouQrContainer.innerHTML = "";
 
-    // On encode EXACTEMENT la même chose que dans l'email : l'ID de la réservation
-    new QRCode(thankyouQrContainer, {
-      text: String(reservationId),  // même contenu que qrText = reservation.id côté backend
-      width: 110,
-      height: 110
-    });
+                  // On encode EXACTEMENT la même chose que dans l'email : l'ID de la réservation
+                  new QRCode(thankyouQrContainer, {
+                    text: String(reservationId),  // même contenu que qrText = reservation.id côté backend
+                    width: 110,
+                    height: 110
+                  });
 
-    // On retire le texte "Disponible bientôt" une fois le QR généré
-    if (thankyouQrFallback) {
-      thankyouQrFallback.style.display = "none";
-    }
-  } catch (e) {
-    console.error("Erreur génération QR code :", e);
-  }
-} else {
-  console.warn("QR code non généré : reservationId ou conteneur manquant.");
-}
+                  // On retire le texte "Disponible bientôt" une fois le QR généré
+                  if (thankyouQrFallback) {
+                    thankyouQrFallback.style.display = "none";
+                  }
+                } catch (e) {
+                  console.error("Erreur génération QR code :", e);
+                }
+              } else {
+                console.warn("QR code non généré : reservationId ou conteneur manquant.");
+              }
 
             }
 
