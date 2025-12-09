@@ -411,7 +411,6 @@
       margin-bottom: 1.75rem;
     }
 
-    /* TEXTE INTRO : CENTRÉ & SUR TOUTE LA LARGEUR */
     .cart-intro-text {
       font-size: 13px;
       color: var(--sb-text-muted);
@@ -506,11 +505,18 @@
     .cart-summary-label { font-weight: 500; }
     .cart-summary-value { font-size: 18px; font-weight: 700; }
 
+    .cart-policy {
+      margin-top: 0.75rem;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
     .cart-actions {
       margin-top: 1.5rem;
       display: flex;
       gap: 1rem;
       justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -770,7 +776,14 @@
       <span class="cart-summary-value" id="cart-total">0 €</span>
     </div>
 
+    <p id="cart-policy" class="cart-policy" style="display:none;">
+      Les réservations ne sont pas remboursables mais modifiables jusqu'à X heures avant, selon nos CGV.
+    </p>
+
     <div class="cart-actions" id="cart-actions" style="display:none;">
+      <a href="reservation.html" class="btn btn-ghost" id="add-more-link" type="button">
+        ← Ajouter d’autres créneaux
+      </a>
       <button class="btn btn-ghost" id="clear-cart" type="button">Vider le panier</button>
       <button class="btn btn-primary" id="confirm-cart" type="button">Procéder au paiement sécurisé</button>
     </div>
@@ -849,7 +862,7 @@
 </footer>
 
 <script>
-  const PRICE_PER_SLOT_EUR = 10;
+  const API_BASE = "https://singbox-backend.onrender.com";
 
   function getPanier() {
     try {
@@ -889,8 +902,12 @@
 
   function computeCartTotal(panier) {
     return panier.reduce((sum, item) => {
-      const price = typeof item.price === "number" ? item.price : PRICE_PER_SLOT_EUR;
-      return sum + price;
+      if (typeof item.price === "number") {
+        return sum + item.price;
+      } else {
+        console.error("Prix manquant pour un item du panier :", item);
+        return sum;
+      }
     }, 0);
   }
 
@@ -899,6 +916,7 @@
     const summaryEl = document.getElementById("cart-summary");
     const totalEl = document.getElementById("cart-total");
     const actionsEl = document.getElementById("cart-actions");
+    const policyEl = document.getElementById("cart-policy");
     const panier = getPanier();
 
     container.innerHTML = "";
@@ -906,6 +924,7 @@
     if (panier.length === 0) {
       summaryEl.style.display = "none";
       actionsEl.style.display = "none";
+      policyEl.style.display = "none";
 
       const emptyDiv = document.createElement("div");
       emptyDiv.className = "cart-empty";
@@ -920,6 +939,7 @@
 
     actionsEl.style.display = "flex";
     summaryEl.style.display = "flex";
+    policyEl.style.display = "block";
 
     panier.forEach((item, index) => {
       const card = document.createElement("div");
@@ -939,7 +959,31 @@
         hourText = item.hourLabel;
       }
 
-      const price = (typeof item.price === "number" ? item.price : PRICE_PER_SLOT_EUR);
+      const rawPersons = typeof item.persons === "number" ? item.persons : null;
+      const personsFacturees = Math.max(rawPersons || 2, 2);
+
+      const personnesPrevuesText = rawPersons
+        ? (rawPersons === 1 ? "1 personne prévue" : `${rawPersons} personnes prévues`)
+        : "Nombre de personnes non renseigné";
+
+      const personnesFactureesText =
+        personsFacturees === 1
+          ? "1 personne facturée (minimum 2)"
+          : `${personsFacturees} personnes facturées (minimum 2)`;
+
+      const hasPrice = typeof item.price === "number";
+      const price = hasPrice ? item.price : null;
+      const priceDisplay = hasPrice
+        ? price.toFixed(2).replace(".", ",") + " €"
+        : "—";
+
+      const perPerson = (hasPrice && personsFacturees > 0)
+        ? price / personsFacturees
+        : null;
+
+      const priceSubDetail = perPerson
+        ? `${perPerson.toFixed(2).replace(".", ",")} €/pers × ${personsFacturees} pers facturées`
+        : "Tarif à confirmer au moment du paiement";
 
       card.innerHTML = `
         <div class="cart-item-info">
@@ -952,13 +996,14 @@
             Créneau : ${hourText}
           </div>
           <div class="cart-extra">
-            2 à 6 personnes – consommations en supplément.
+            ${personnesPrevuesText} – ${personnesFactureesText}<br>
+            1 à 8 personnes – facturation minimale 2 – consommations en supplément.
           </div>
         </div>
         <div class="cart-item-right">
           <div>
-            <div class="cart-price-amount">${price.toFixed(2)} €</div>
-            <div class="cart-price-sub">TTC / par box</div>
+            <div class="cart-price-amount">${priceDisplay}</div>
+            <div class="cart-price-sub">${priceSubDetail}</div>
           </div>
           <button class="cart-remove" data-index="${index}">Supprimer</button>
         </div>
@@ -968,7 +1013,7 @@
     });
 
     const total = computeCartTotal(panier);
-    totalEl.textContent = `${total.toFixed(2)} €`;
+    totalEl.textContent = `${total.toFixed(2).replace(".", ",")} €`;
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -1010,13 +1055,53 @@
 
     const confirmBtn = document.getElementById("confirm-cart");
     if (confirmBtn) {
-      confirmBtn.addEventListener("click", function () {
+      confirmBtn.addEventListener("click", async function () {
         const panier = getPanier();
         if (panier.length === 0) {
           alert("Votre panier est vide.");
           return;
         }
-        window.location.href = "paiement.html";
+
+        // 🔁 Vérification côté backend avant de passer au paiement
+        try {
+          const res = await fetch(`${API_BASE}/api/verify-cart`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ items: panier })
+          });
+
+          if (!res.ok) {
+            const errorText = await res.text().catch(() => "");
+            alert(
+              "Un ou plusieurs créneaux ne sont plus disponibles ou le prix a changé.\n" +
+              "Merci de mettre à jour votre panier depuis la page de réservation.\n\n" +
+              (errorText || "")
+            );
+            return;
+          }
+
+          const data = await res.json().catch(() => null);
+          if (data && Array.isArray(data.items)) {
+            // Le backend peut renvoyer un panier corrigé (prix ajustés, créneaux supprimés, etc.)
+            savePanier(data.items);
+            renderPanier();
+          }
+
+          // Si tout est ok, on passe à la page de paiement
+          window.location.href = "paiement.html";
+        } catch (err) {
+          console.error("Erreur vérification panier :", err);
+          const proceed = confirm(
+            "Nous n'avons pas pu vérifier la disponibilité des créneaux auprès du serveur.\n" +
+            "Tu peux réessayer dans quelques instants.\n\n" +
+            "Continuer quand même vers le paiement ?"
+          );
+          if (proceed) {
+            window.location.href = "paiement.html";
+          }
+        }
       });
     }
   });
