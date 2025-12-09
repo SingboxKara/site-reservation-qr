@@ -12,7 +12,7 @@
   <meta name="author" content="Singbox" />
   <meta name="theme-color" content="#050814" />
   <meta name="keywords" content="paiement Singbox, paiement karaoké Toulouse, panier Singbox, réservation karaoké box, règlement sécurisé, karaoké privatif Toulouse" />
-  <link rel="canonical" href="https://www.singbox.fr/panier" />
+  <link rel="canonical" href="https://www.singbox.fr/paiement" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:locale" content="fr_FR" />
@@ -20,7 +20,7 @@
   <meta property="og:title" content="Paiement réservation karaoké box - Singbox Toulouse" />
   <meta property="og:description" content="Réglez en ligne votre séance de karaoké privé chez Singbox à Toulouse : créneaux flexibles, paiement sécurisé et codes promo disponibles." />
   <meta property="og:site_name" content="Singbox" />
-  <meta property="og:url" content="https://www.singbox.fr/panier" />
+  <meta property="og:url" content="https://www.singbox.fr/paiement" />
   <!-- À adapter avec votre visuel de partage -->
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
@@ -42,7 +42,7 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Paiement réservation karaoké box - Singbox Toulouse",
-    "url": "https://www.singbox.fr/panier",
+    "url": "https://www.singbox.fr/paiement",
     "description": "Page de paiement sécurisé pour finaliser votre réservation de karaoké box privée chez Singbox à Toulouse.",
     "inLanguage": "fr-FR",
     "isPartOf": {
@@ -213,10 +213,6 @@
     .main-nav a:hover {
       color: #ffb96f;
       transition: 0.25s ease;
-    }
-
-    .main-nav a[href="panier.html"]::after {
-      width: 100%;
     }
 
     .header-actions {
@@ -497,6 +493,12 @@
       color: #E5E7EB;
     }
 
+    .billing-field .field-help {
+      margin: 4px 0 0;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
+
     .billing-field input,
     .billing-field select {
       width: 100%;
@@ -775,6 +777,14 @@
       margin-bottom: 10px;
     }
 
+    .payment-info a {
+      color: #F97316;
+      text-decoration: underline;
+    }
+    .payment-info a:hover {
+      text-decoration: none;
+    }
+
     .card-element-wrapper {
       margin-bottom: 10px;
     }
@@ -847,10 +857,11 @@
     }
 
     .checkout-error {
-      font-size: 11px;
+      font-size: 13px;
       color: #FCA5A5;
-      margin-top: 4px;
-      min-height: 1em;
+      margin-top: 8px;
+      min-height: 1.2em;
+      font-weight: 500;
     }
 
     .checkout-success {
@@ -895,6 +906,64 @@
     .checkout-submit button[disabled] {
       opacity: 0.6;
       cursor: progress;
+    }
+
+    /* ======================= EMPTY CART STATE ======================= */
+
+    .empty-cart {
+      max-width: 640px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+    .empty-cart-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .empty-cart-text {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 14px;
+    }
+    .empty-cart-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .empty-cart-btn-primary,
+    .empty-cart-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .empty-cart-btn-primary {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.14),
+        0 18px 45px rgba(0,0,0,0.95);
+    }
+    .empty-cart-btn-primary:hover {
+      filter: brightness(1.04);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 65px rgba(0,0,0,1);
+    }
+    .empty-cart-btn-secondary {
+      background: transparent;
+      color: #E5E7EB;
+      border-color: rgba(148,163,184,0.6);
+    }
+    .empty-cart-btn-secondary:hover {
+      border-color: rgba(248,250,251,0.9);
     }
 
     /* ======================= PAGE MERCI (POST-PAIEMENT) ======================= */
@@ -1556,6 +1625,18 @@
         <p>Vérifiez vos informations et votre commande avant de chanter chez Singbox.</p>
       </div>
 
+      <!-- EMPTY CART STATE -->
+      <div id="empty-cart-state" class="empty-cart" style="display:none;">
+        <p class="empty-cart-title">Votre panier est vide 😅</p>
+        <p class="empty-cart-text">
+          Ajoutez au moins un créneau de karaoké pour pouvoir passer au paiement.
+        </p>
+        <div class="empty-cart-actions">
+          <a href="panier.html" class="empty-cart-btn-secondary">Retour au panier</a>
+          <a href="reservation.html" class="empty-cart-btn-primary">Voir les créneaux disponibles</a>
+        </div>
+      </div>
+
       <div class="checkout-layout">
         <!-- COLONNE GAUCHE : FACTURATION -->
         <div class="billing-card card">
@@ -1628,6 +1709,9 @@
             <div class="billing-field">
               <label for="naissance">Date de naissance *</label>
               <input type="date" id="naissance" name="naissance" required />
+              <p class="field-help">
+                Utilisée uniquement pour vérifier la majorité (soirées alcoolisées, créneaux tardifs, etc.).
+              </p>
             </div>
 
             <!-- ⭐⭐ BLOC FIDÉLITÉ ⭐⭐ -->
@@ -1687,7 +1771,7 @@
 
             <div class="order-totals">
               <div class="order-row">
-                <span>Sous-total</span>
+                <span>Sous-total (HT)</span>
                 <span id="order-subtotal">0€</span>
               </div>
               <div class="order-row" id="order-discount-row" style="display:none;">
@@ -1695,14 +1779,14 @@
                 <span id="order-discount">-0€</span>
               </div>
               <div class="order-row">
-                <span>TVA (20&nbsp;%) incluse</span>
+                <span>TVA (20&nbsp;%)</span>
                 <span id="order-tva">0€</span>
               </div>
               <div class="order-row total">
-                <span>Total</span>
+                <span>Total à payer (TTC)</span>
                 <span id="order-total">0€</span>
               </div>
-              <p class="order-note">Prix TTC, TVA incluse. Réglable en une seule fois.</p>
+              <p class="order-note">Paiement en une fois, toutes taxes comprises.</p>
             </div>
           </div>
 
@@ -1734,7 +1818,9 @@
             </div>
 
             <p class="payment-info">
-              Vos données personnelles seront utilisées pour le traitement de votre commande, pour le suivi de votre visite sur notre site, et pour d’autres raisons décrites dans notre politique de confidentialité.
+              Vos données personnelles seront utilisées pour le traitement de votre commande et le suivi de votre visite sur notre site,
+              conformément à notre
+              <a href="politique-confidentialite.html" target="_blank" rel="noopener noreferrer">politique de confidentialité</a>.
             </p>
 
             <div class="card-element-wrapper">
@@ -1745,7 +1831,10 @@
             <div class="payment-consents">
               <label>
                 <input type="checkbox" id="cgv-checkbox">
-                <span>J’ai lu et j’accepte les conditions générales de vente.</span>
+                <span>
+                  J’ai lu et j’accepte les
+                  <a href="cgv.html" target="_blank" rel="noopener noreferrer">conditions générales de vente</a>.
+                </span>
               </label>
               <label>
                 <input type="checkbox" id="rules-checkbox">
@@ -1930,7 +2019,7 @@
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
-    const PRICE_FALLBACK = 10;
+    const PRICE_FALLBACK = 10; // plus utilisé pour le calcul, gardé si tu t'en sers ailleurs
 
     const API_BASE_URL =
       (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
@@ -1948,6 +2037,7 @@
       discount: 0,
       finalTotalTTC: 0
     };
+    let cartValid = true;
 
     function getPanier() {
       try {
@@ -1969,10 +2059,14 @@
     }
 
     function computeTotal(panier) {
-      return panier.reduce((sum, item) => {
-        const p = typeof item.price === "number" ? item.price : PRICE_FALLBACK;
-        return sum + p;
-      }, 0);
+      let total = 0;
+      for (const item of panier) {
+        if (typeof item.price !== "number" || !isFinite(item.price) || item.price <= 0) {
+          return null; // panier invalide
+        }
+        total += item.price;
+      }
+      return total;
     }
 
     function formatDateFr(iso) {
@@ -2033,6 +2127,27 @@
       return 0;
     }
 
+    function calculateAgeFromBirthdate(isoDate) {
+      if (!isoDate) return null;
+      const parts = isoDate.split("-");
+      if (parts.length !== 3) return null;
+
+      const year = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+
+      const birth = new Date(year, month, day);
+      if (isNaN(birth.getTime())) return null;
+
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
     function updateOrderSummaryFromPanier() {
       const panier = getPanier();
       const nameEl = document.getElementById("order-product-name");
@@ -2044,6 +2159,18 @@
       const discountEl = document.getElementById("order-discount");
 
       if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
+
+      const emptyState = document.getElementById("empty-cart-state");
+      const checkoutLayout = document.querySelector(".checkout-layout");
+      const paymentCard = document.querySelector(".payment-card");
+      const submitBtn = document.getElementById("checkout-submit-btn");
+
+      const setEmptyCartUI = (isEmpty) => {
+        if (emptyState) emptyState.style.display = isEmpty ? "block" : "none";
+        if (checkoutLayout) checkoutLayout.style.display = isEmpty ? "none" : "grid";
+        if (paymentCard) paymentCard.style.display = isEmpty ? "none" : "";
+        if (submitBtn) submitBtn.disabled = isEmpty;
+      };
 
       if (panier.length === 0) {
         nameEl.textContent = "Aucune réservation";
@@ -2057,10 +2184,38 @@
           discount: 0,
           finalTotalTTC: 0
         };
+        cartValid = false;
+        setEmptyCartUI(true);
         return;
       }
 
       const totalTTCNoDiscount = computeTotal(panier);
+
+      if (totalTTCNoDiscount === null) {
+        // panier corrompu → on bloque le paiement
+        nameEl.textContent = "Erreur sur votre panier";
+        metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
+        subEl.textContent = "—";
+        tvaEl.textContent = "—";
+        totalEl.textContent = "—";
+        if (discountRow) discountRow.style.display = "none";
+
+        currentTotals = {
+          totalTTCNoDiscount: 0,
+          discount: 0,
+          finalTotalTTC: 0
+        };
+
+        cartValid = false;
+        if (submitBtn) submitBtn.disabled = true;
+        setEmptyCartUI(false);
+        return;
+      }
+
+      cartValid = true;
+      if (submitBtn) submitBtn.disabled = false;
+      setEmptyCartUI(false);
+
       const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
       const tvaNoDiscount = totalTTCNoDiscount - totalHTNoDiscount;
 
@@ -2175,7 +2330,7 @@
 
         if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) return;
 
-        // Toujours afficher le bloc, même si l'utilisateur n'est pas connecté (cas mobile, etc.)
+        // Toujours afficher le bloc, même si l'utilisateur n'est pas connecté
         loyaltyBlock.style.display = "block";
 
         const token = localStorage.getItem("token");
@@ -2210,7 +2365,7 @@
           }
         }
 
-        useLoyaltyBtn.addEventListener("click", async () => {
+        useLoyaltyBtn.addEventListener("click", () => {
           loyaltyMsg.textContent = "";
 
           const tokenClick = localStorage.getItem("token");
@@ -2227,40 +2382,14 @@
             return;
           }
 
-          try {
-            const res = await fetch(`${API_BASE_URL}/api/use-loyalty`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + tokenClick
-              }
-            });
+          // On n'appelle plus l'API ici : on active juste le mode "séance gratuite"
+          currentPromo = { type: "free", code: "LOYALTY100" };
+          loyaltyUsed = true;
+          updateOrderSummaryFromPanier();
 
-            const data = await res.json();
-
-            if (!res.ok) {
-              loyaltyMsg.style.color = "#FCA5A5";
-              loyaltyMsg.textContent = data.error || "Erreur";
-              return;
-            }
-
-            // On active la remise totale
-            currentPromo = { type: "free", code: "LOYALTY100" };
-            loyaltyUsed = true;
-
-            updateOrderSummaryFromPanier();
-
-            loyaltyMsg.style.color = "#BBF7D0";
-            loyaltyMsg.textContent = "🎉 Séance gratuite grâce à vos points !";
-
-            // Met à jour le compteur local (si l'API renvoie un total, tu peux mettre data.points_restants à la place)
-            loyaltyPointsEl.textContent = String(currentPoints - 100);
-            useLoyaltyBtn.style.display = "none";
-
-          } catch (err) {
-            loyaltyMsg.style.color = "#FCA5A5";
-            loyaltyMsg.textContent = "Erreur réseau.";
-          }
+          loyaltyMsg.style.color = "#BBF7D0";
+          loyaltyMsg.textContent = "🎉 Séance gratuite activée. Les points seront débités après validation du paiement.";
+          useLoyaltyBtn.disabled = true;
         });
       }
 
@@ -2462,7 +2591,14 @@
 
           const panier = getPanier();
           if (!panier || panier.length === 0) {
-            if (errorEl) errorEl.textContent = "Votre panier est vide.";
+            if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+            return;
+          }
+
+          if (!cartValid) {
+            if (errorEl) {
+              errorEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre réservation.";
+            }
             return;
           }
 
@@ -2482,9 +2618,6 @@
             return;
           }
 
-          if (errorEl) errorEl.textContent = "";
-          if (successEl) successEl.textContent = "";
-
           const prenom     = document.getElementById("prenom").value.trim();
           const nom        = document.getElementById("nom").value.trim();
           const email      = document.getElementById("email").value.trim();
@@ -2495,6 +2628,17 @@
           const cp         = document.getElementById("cp").value.trim();
           const ville      = document.getElementById("ville").value.trim();
           const naissance  = document.getElementById("naissance").value;
+
+          const age = calculateAgeFromBirthdate(naissance);
+          if (!age || age < 18) {
+            if (errorEl) {
+              errorEl.textContent = "La réservation doit être faite par un adulte. Merci de renseigner une date de naissance valide.";
+            }
+            return;
+          }
+
+          if (errorEl) errorEl.textContent = "";
+          if (successEl) successEl.textContent = "";
 
           const customer = {
             prenom, nom, email, telephone,
@@ -2525,7 +2669,8 @@
                 panier,
                 customer,
                 promoCode,
-                finalAmountCents
+                finalAmountCents,
+                loyaltyUsed
               })
             });
 
@@ -2620,7 +2765,8 @@
                     panier,
                     customer,
                     promoCode,
-                    paymentIntentId: result.paymentIntent.id
+                    paymentIntentId: result.paymentIntent.id,
+                    loyaltyUsed
                   })
                 });
 
@@ -2661,7 +2807,10 @@
                   if (depositResult.error) {
                     console.error("Erreur caution 250€ :", depositResult.error);
                     if (errorEl) {
-                      errorEl.textContent = "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : " + depositResult.error.message;
+                      errorEl.textContent =
+                        "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : " +
+                        depositResult.error.message +
+                        ". Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
                     }
                   } else if (depositResult.paymentIntent && depositResult.paymentIntent.status === "requires_capture") {
                     // OK : empreinte créée, en attente de capture dans Stripe
@@ -2670,13 +2819,15 @@
                 } else {
                   console.error("Erreur création empreinte de caution :", depositJson);
                   if (errorEl) {
-                    errorEl.textContent = "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée. Merci de contacter Singbox.";
+                    errorEl.textContent =
+                      "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
                   }
                 }
               } catch (e) {
                 console.error("Erreur inattendue lors de la caution :", e);
                 if (errorEl) {
-                  errorEl.textContent = "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.";
+                  errorEl.textContent =
+                    "Votre séance est payée, mais une erreur est survenue lors de la création de la caution. Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
                 }
               }
 
