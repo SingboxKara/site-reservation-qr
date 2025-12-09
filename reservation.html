@@ -785,7 +785,7 @@
       background:#020617;
       color:#e5e7eb;
       padding:32px 24px 18px;
-      border-top: 1px solid #111827;
+      border-top: 1 solid #111827;
     }
 
     .newsletter-container {
@@ -1022,7 +1022,8 @@
           </div>
         </div>
         <p class="resa-pricing-rules">
-          7,90&nbsp;€ par personne en heures creuses (4h–14h) – 9,90&nbsp;€ par personne le reste du temps.
+          7,90&nbsp;€ par personne en heures creuses (4h–14h) <strong>du lundi au vendredi, hors vacances scolaires</strong> – 9,90&nbsp;€ par personne le reste du temps.<br>
+          <strong>Le week-end et pendant les vacances scolaires&nbsp;:</strong> 9,90&nbsp;€ par personne toute la journée.<br>
           Facturation minimale 2 personnes par créneau (si vous venez seul·e, vous payez pour 2 personnes).
         </p>
 
@@ -1132,8 +1133,11 @@
     </div>
   </footer>
 
+  <!-- SCRIPT RESA 1h30 + heures creuses uniquement semaine hors vacances -->
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+
+    /* ========= Helpers généraux ========= */
 
     function toLocalYMD(dateObj) {
       const y = dateObj.getFullYear();
@@ -1161,7 +1165,90 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    function addSlotToCart(boxId, boxName, dateObj, hour, price, persons) {
+    /* ========= Slots de 1h30 =========
+       16 créneaux de 1h30 = 24h
+       00:00–01:30, 01:30–03:00, ... , 22:30–00:00
+    =================================== */
+
+    const SLOTS = Array.from({ length: 16 }, (_, index) => {
+      const totalMin = index * 90; // minutes depuis minuit
+      const h1 = Math.floor(totalMin / 60);
+      const m1 = totalMin % 60;
+
+      const totalMinEnd = totalMin + 90;
+      const totalMinEndWrapped = totalMinEnd % 1440; // au cas où on dépasse minuit
+      const h2 = Math.floor(totalMinEndWrapped / 60);
+      const m2 = totalMinEndWrapped % 60;
+
+      const label =
+        String(h1).padStart(2, "0") + "h" + String(m1).padStart(2, "0") +
+        "–" +
+        String(h2).padStart(2, "0") + "h" + String(m2).padStart(2, "0");
+
+      return {
+        index,
+        startMinutes: totalMin,
+        endMinutes: totalMinEnd,
+        label
+      };
+    });
+
+    function isWeekend(date) {
+      const day = date.getDay(); // 0 = dimanche, 6 = samedi
+      return day === 0 || day === 6;
+    }
+
+    /* ========= Vacances scolaires (à adapter !) =========
+       Tu peux ajouter / modifier ces plages pour les prochaines années.
+       Format : { start: "YYYY-MM-DD", end: "YYYY-MM-DD" } inclus.
+    =================================== */
+    const HOLIDAY_RANGES = [
+      // Exemple zone C 2024–2025 (≈ à ajuster) :
+      { start: "2024-10-19", end: "2024-11-03" }, // Toussaint
+      { start: "2024-12-21", end: "2025-01-05" }, // Noël
+      { start: "2025-02-08", end: "2025-02-23" }, // Hiver
+      { start: "2025-04-12", end: "2025-04-27" }, // Printemps
+      { start: "2025-07-05", end: "2025-09-01" }  // Grandes vacances
+    ];
+
+    function isSchoolHoliday(date) {
+      const iso = toLocalYMD(date);
+      return HOLIDAY_RANGES.some(range => iso >= range.start && iso <= range.end);
+    }
+
+    /* ========= Prix =========
+       - 7,90 € / pers en creuse (4h–14h)
+         uniquement du lundi au vendredi, hors vacances scolaires
+       - Sinon 9,90 € / pers
+       - Facturation min. 2 personnes
+    =================================== */
+
+    function getSlotPrice(date, slotIndex, persons) {
+      const slot = SLOTS[slotIndex];
+      if (!slot) return 0;
+
+      const startHour = Math.floor(slot.startMinutes / 60);
+
+      const weekend = isWeekend(date);
+      const holiday = isSchoolHoliday(date);
+
+      let baseRate;
+      if (!weekend && !holiday && startHour >= 4 && startHour <= 14) {
+        // Heures creuses (semaine hors vacances)
+        baseRate = 7.90;
+      } else {
+        // Reste du temps + week-end + vacances
+        baseRate = 9.90;
+      }
+
+      const nb = persons ? Math.max(persons, 2) : 2;
+      const total = baseRate * nb;
+      return Number(total.toFixed(2));
+    }
+
+    /* ========= Panier ========= */
+
+    function addSlotToCart(boxId, boxName, dateObj, slotIndex, slotLabel, price, persons) {
       const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
 
@@ -1169,7 +1256,7 @@
         item.type === "reservation" &&
         item.boxId === boxId &&
         item.date === isoDate &&
-        item.hour === hour
+        item.slotIndex === slotIndex
       );
       if (exists) return;
 
@@ -1178,7 +1265,8 @@
         boxId,
         boxName,
         date: isoDate,
-        hour,
+        slotIndex,
+        slotLabel,
         price,
         persons
       });
@@ -1186,18 +1274,13 @@
       updateCartIcon();
 
       const msgEl = document.getElementById("message");
-      const heureLabel =
-        String(hour).padStart(2, "0") +
-        "h–" +
-        String((hour + 1) % 24).padStart(2, "0") +
-        "h";
-
       const prixAffiche = price.toFixed(2).replace(".", ",");
 
-      msgEl.innerHTML = "<span>Créneau ajouté au panier : <strong>" +
+      msgEl.innerHTML =
+        "<span>Créneau ajouté au panier : <strong>" +
         boxName +
         "</strong> – " +
-        heureLabel +
+        slotLabel +
         " – " +
         prixAffiche +
         "€ – " +
@@ -1205,16 +1288,9 @@
         " pers.</span>";
     }
 
-    // Prix par personne : 7,90 € en creuse (4h–14h), 9,90 € sinon.
-    // Facturation minimale 2 personnes.
-    function getSlotPrice(date, hour, persons) {
-      const baseRate = (hour >= 4 && hour <= 14) ? 7.90 : 9.90;
-      const nb = persons ? Math.max(persons, 2) : 2;
-      const total = baseRate * nb;
-      return Number(total.toFixed(2));
-    }
+    /* ========= Réservations existantes (backend) ========= */
 
-    let bookedIndex = {};
+    let bookedIndex = {}; // clé "boxId-slotIndex"
     let selectedPersons = 2;
     let personsManuallyChanged = false;
     const BOXES = [
@@ -1238,8 +1314,16 @@
         reservations.forEach(r => {
           const start = new Date(r.start_time);
           const h = start.getHours();
+          const m = start.getMinutes();
           const boxId = r.box_id;
-          const key = `${boxId}-${h}`;
+
+          const totalMin = h * 60 + m;
+          if (totalMin % 90 !== 0) {
+            // Si ce n'est pas parfaitement aligné sur 1h30, on ignore
+            return;
+          }
+          const index = totalMin / 90;
+          const key = `${boxId}-${index}`;
           bookedIndex[key] = true;
         });
       } catch (e) {
@@ -1247,8 +1331,8 @@
       }
     }
 
-    function isSlotBooked(boxId, hour) {
-      const key = `${boxId}-${hour}`;
+    function isSlotBooked(boxId, slotIndex) {
+      const key = `${boxId}-${slotIndex}`;
       return !!bookedIndex[key];
     }
 
@@ -1270,29 +1354,25 @@
       if (infoEl) {
         const parts = slot.date.split("-");
         const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-        const h1 = String(slot.hour).padStart(2, "0");
-        const h2 = String((slot.hour + 1) % 24).padStart(2, "0");
         infoEl.textContent =
           slot.boxName +
           " – " +
           dateStr +
           " – " +
-          h1 +
-          "h–" +
-          h2 +
-          "h – " +
+          slot.slotLabel +
+          " – " +
           slot.persons +
           " pers.";
       }
 
       const doubleBtn = document.getElementById("modal-double");
       if (doubleBtn) {
-        if (slot.hour >= 23) {
+        if (slot.slotIndex >= SLOTS.length - 1) {
           doubleBtn.disabled = true;
-          doubleBtn.textContent = "Réserver 2 heures (indisponible)";
+          doubleBtn.textContent = "Réserver 2 créneaux (indisponible)";
         } else {
           doubleBtn.disabled = false;
-          doubleBtn.textContent = "Réserver 2 heures";
+          doubleBtn.textContent = "Réserver 2 créneaux (1h30 x 2)";
         }
       }
 
@@ -1304,6 +1384,8 @@
       if (modal) modal.setAttribute("hidden", "true");
     }
 
+    /* ========= Construction du planning (1h30) ========= */
+
     function buildPlanningTable(date) {
       const table = document.getElementById("planning-table");
       if (!table) return;
@@ -1312,14 +1394,13 @@
       currentPlanningDateIso = isoDate;
 
       const panier = getPanier();
-      const hours = Array.from({ length: 24 }, (_, h) => h);
       table.innerHTML = "";
 
       const thead = document.createElement("thead");
       const headRow = document.createElement("tr");
 
       const hourTh = document.createElement("th");
-      hourTh.textContent = "Heure";
+      hourTh.textContent = "Créneau";
       hourTh.className = "hour-cell";
       headRow.appendChild(hourTh);
 
@@ -1334,30 +1415,34 @@
 
       const tbody = document.createElement("tbody");
 
-      hours.forEach(hour => {
+      SLOTS.forEach(slot => {
         const tr = document.createElement("tr");
 
         const hourTd = document.createElement("td");
         hourTd.className = "hour-cell";
-        const endHour = (hour + 1) % 24;
-        hourTd.textContent =
-          String(hour).padStart(2, "0") +
-          "h–" +
-          String(endHour).padStart(2, "0") +
-          "h";
+        hourTd.textContent = slot.label;
         tr.appendChild(hourTd);
 
         BOXES.forEach(box => {
           const td = document.createElement("td");
           td.classList.add("slot-cell");
           td.dataset.boxId = String(box.id);
-          td.dataset.hour = String(hour);
+          td.dataset.slotIndex = String(slot.index);
           td.dataset.date = isoDate;
 
           const persons = selectedPersons || 2;
-          const totalPrice = getSlotPrice(date, hour, persons);
-          const perPersonRate = (hour >= 4 && hour <= 14) ? 7.90 : 9.90;
-          const booked = isSlotBooked(box.id, hour);
+          const totalPrice = getSlotPrice(date, slot.index, persons);
+
+          // Pour l'affichage, on recalcule le tarif par personne (7,90 ou 9,90)
+          const isWeekendDay = isWeekend(date);
+          const isHolidayDay = isSchoolHoliday(date);
+          const startHour = Math.floor(slot.startMinutes / 60);
+          const perPersonRate =
+            (!isWeekendDay && !isHolidayDay && startHour >= 4 && startHour <= 14)
+              ? 7.90
+              : 9.90;
+
+          const booked = isSlotBooked(box.id, slot.index);
 
           const wrapper = document.createElement("div");
           wrapper.className = "slot-label";
@@ -1373,7 +1458,7 @@
               item.type === "reservation" &&
               item.boxId === box.id &&
               item.date === isoDate &&
-              item.hour === hour
+              item.slotIndex === slot.index
             );
 
             const perPersonStr = perPersonRate.toFixed(2).replace(".", ",");
@@ -1452,14 +1537,15 @@
                 }
 
                 const personsForSlot = selectedPersons || 1;
-                const priceForSlot = getSlotPrice(date, hour, personsForSlot);
+                const priceForSlot = getSlotPrice(date, slot.index, personsForSlot);
 
                 const slotInfo = {
                   boxId: box.id,
                   boxName: box.name,
                   date: isoDate,
                   dateObj: date,
-                  hour,
+                  slotIndex: slot.index,
+                  slotLabel: slot.label,
                   price: priceForSlot,
                   persons: personsForSlot
                 };
@@ -1468,7 +1554,8 @@
                   box.id,
                   box.name,
                   date,
-                  hour,
+                  slot.index,
+                  slot.label,
                   priceForSlot,
                   personsForSlot
                 );
@@ -1487,6 +1574,8 @@
 
       table.appendChild(tbody);
     }
+
+    /* ========= DOMContentLoaded ========= */
 
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
@@ -1507,12 +1596,12 @@
       const personsSelect = document.getElementById("persons-select");
       const personsIndicator = document.getElementById("persons-indicator");
 
-      /* ==== NOUVEAU : on lit date & people depuis l’URL (et éventuellement localStorage) ==== */
+      // Récupération des paramètres URL (date & people) éventuels
       const params = new URLSearchParams(window.location.search);
       const dateFromUrl   = params.get("date")   || localStorage.getItem("resaDate");
       const peopleFromUrl = params.get("people") || localStorage.getItem("resaPeople");
 
-      // 1) Date : paramètre -> sinon aujourd’hui
+      // Date initiale
       let initialDateIso;
       if (dateFromUrl) {
         initialDateIso = dateFromUrl;
@@ -1524,7 +1613,7 @@
         dateInput.value = initialDateIso;
       }
 
-      // 2) Nombre de personnes : paramètre -> sinon 2
+      // Nombre de personnes initial
       let initialPersons = 2;
       if (peopleFromUrl) {
         const n = parseInt(peopleFromUrl, 10);
@@ -1533,7 +1622,7 @@
         }
       }
       selectedPersons = initialPersons;
-      personsManuallyChanged = !!peopleFromUrl; // il/elle l’a choisi sur la home
+      personsManuallyChanged = !!peopleFromUrl;
 
       if (personsSelect) {
         personsSelect.value = String(initialPersons);
@@ -1556,7 +1645,9 @@
 
         await fetchReservationsForDate(iso);
         buildPlanningTable(theDate);
-        document.getElementById("message").textContent = "";
+
+        const msgEl = document.getElementById("message");
+        if (msgEl) msgEl.textContent = "";
       }
 
       if (personsSelect) {
@@ -1582,7 +1673,7 @@
         });
       }
 
-      // On charge directement le planning à l’ouverture
+      // Chargement initial du planning
       refreshPlanning();
 
       const continueBtn = document.getElementById("modal-continue");
@@ -1604,19 +1695,21 @@
       if (doubleBtn) {
         doubleBtn.addEventListener("click", () => {
           if (!lastSelectedSlot) return;
-          const nextHour = lastSelectedSlot.hour + 1;
-          if (nextHour >= 24) return;
+
+          const currentIndex = lastSelectedSlot.slotIndex;
+          const nextIndex = currentIndex + 1;
+          if (nextIndex >= SLOTS.length) return;
 
           const dateObj = lastSelectedSlot.dateObj;
           const persons = lastSelectedSlot.persons || selectedPersons || 1;
-          const price2 = getSlotPrice(dateObj, nextHour, persons);
+          const price2 = getSlotPrice(dateObj, nextIndex, persons);
 
           const panier = getPanier();
           const exists = panier.some(item =>
             item.type === "reservation" &&
             item.boxId === lastSelectedSlot.boxId &&
             item.date === lastSelectedSlot.date &&
-            item.hour === nextHour
+            item.slotIndex === nextIndex
           );
           if (exists) {
             doubleBtn.disabled = true;
@@ -1624,17 +1717,20 @@
             return;
           }
 
-          if (isSlotBooked(lastSelectedSlot.boxId, nextHour)) {
+          if (isSlotBooked(lastSelectedSlot.boxId, nextIndex)) {
             doubleBtn.disabled = true;
             doubleBtn.textContent = "Créneau suivant réservé";
             return;
           }
 
+          const nextSlot = SLOTS[nextIndex];
+
           addSlotToCart(
             lastSelectedSlot.boxId,
             lastSelectedSlot.boxName,
             dateObj,
-            nextHour,
+            nextIndex,
+            nextSlot.label,
             price2,
             persons
           );
@@ -1642,8 +1738,8 @@
           const selector =
             '.slot-cell[data-box-id="' +
             lastSelectedSlot.boxId +
-            '"][data-hour="' +
-            nextHour +
+            '"][data-slot-index="' +
+            nextIndex +
             '"][data-date="' +
             lastSelectedSlot.date +
             '"]';
@@ -1651,7 +1747,7 @@
           if (cell2) markCellSelected(cell2);
 
           doubleBtn.disabled = true;
-          doubleBtn.textContent = "Deuxième heure ajoutée ✓";
+          doubleBtn.textContent = "Deuxième créneau ajouté ✓";
         });
       }
     });
