@@ -20,24 +20,11 @@
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="Singbox">
 
-  <!-- Twitter Card (optionnel mais utile) -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Karaoké box privative à Toulouse – Singbox">
   <meta name="twitter:description" content="Réservez votre box karaoké privative à Toulouse 24/7 chez Singbox. Entre amis, en famille ou entre collègues.">
   <meta name="twitter:image" content="https://tondomaine.fr/OG-image.png">
-
-  <!-- (Optionnel) Canonical à mettre quand ton domaine sera fixé -->
-  <!-- <link rel="canonical" href="https://tondomaine.fr/"> -->
-
-  <!-- Google Analytics (quand tu seras prêt : remplace G-XXXXXXX et enlève les commentaires)
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXX');
-  </script>
-  -->
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +34,7 @@
     rel="stylesheet"
   >
 
-  <!-- Schema.org LocalBusiness (SEO local) -->
+  <!-- Schema.org LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -109,7 +96,7 @@
         radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
-      overflow-x: hidden; /* évite que ça déborde sur le côté */
+      overflow-x: hidden;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -150,7 +137,6 @@
       height: auto;
     }
 
-    /* Bloc marque : logo + texte */
     .brand {
       display: flex;
       align-items: center;
@@ -182,7 +168,6 @@
       align-items: center;
     }
 
-    /* NAV */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -242,7 +227,6 @@
       transition: 0.25s ease;
     }
 
-    /* HEADER ACTIONS */
     .header-actions {
       display: flex;
       align-items: center;
@@ -402,7 +386,7 @@
       border-radius: 24px;
       padding: 20px 20px;
       display: flex;
-      flex-wrap: wrap;   /* ← important pour gérer les petites largeurs */
+      flex-wrap: wrap;
       gap: 16px;
       align-items: center;
       border: 1px solid rgba(148,163,184,0.2);
@@ -414,7 +398,7 @@
     }
 
     .resa-field {
-      flex: 0 1 210px;   /* champ compact, ne prend pas toute la largeur */
+      flex: 0 1 210px;
       max-width: 230px;
       display: flex;
       flex-direction: column;
@@ -462,9 +446,7 @@
       cursor: pointer;
     }
 
-    .resa-button-wrapper {
-      flex: 0 0 auto;
-    }
+    .resa-button-wrapper { flex: 0 0 auto; }
 
     .resa-button {
       border: none;
@@ -481,6 +463,7 @@
         0 18px 40px rgba(0,0,0,0.9);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
+
     .resa-button:hover {
       transform: translateY(-1px);
       box-shadow:
@@ -606,7 +589,6 @@
     }
 
     /* ---------- SECTION OCCASIONS (cartes + contact) ---------- */
-
     .section-occasions {
       padding: 4.5rem 0 4.5rem;
       background: #050814;
@@ -811,10 +793,10 @@
       margin-bottom: 0.4rem;
     }
 
+    /* plus de max-width ici pour que ça suive la même largeur que .occasions-container */
     .section-faq p {
       font-size: 0.95rem;
       color: #E5E7EB;
-      max-width: 720px;
     }
 
     /* ---------- FOOTER ---------- */
@@ -966,10 +948,9 @@
       }
 
       .nav-cta {
-        display: none; /* le bouton réserver reste dans le menu mobile */
+        display: none;
       }
 
-      /* sur les tout petits écrans, on met simplement le bouton sur une ligne à part */
       .resa-button-wrapper {
         width: 100%;
       }
@@ -996,7 +977,6 @@
   <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
-      <!-- Bloc marque : logo + texte -->
       <a href="index.html" class="brand">
         <img src="logo.png" alt="Logo Singbox" class="brand-logo">
         <span class="brand-text">Singbox</span>
