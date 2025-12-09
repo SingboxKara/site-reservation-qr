@@ -595,10 +595,23 @@
       z-index: 1;
     }
 
-    .slot-cell {
-      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
-      cursor: default;
-    }
+.slot-cell {
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
+  cursor: default;
+  /* 🔽 même hauteur pour tous les créneaux */
+  height: 70px;              /* ajuste 60–75px selon ton rendu */
+  vertical-align: middle;    /* centre le contenu dans la cellule */
+}
+
+.slot-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;   /* centre le texte dans la hauteur dispo */
+  line-height: 1.2;
+  height: 100%;              /* occupe toute la cellule */
+}
 
     .slot-free {
       background-color: #022c22;
