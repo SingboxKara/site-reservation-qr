@@ -775,6 +775,76 @@
         0 24px 60px rgba(0, 0, 0, 1);
     }
 
+    /* ---------- SECTION AVIS ---------- */
+    .section-reviews {
+      padding: 4rem 0 4.5rem;
+      background: #030712;
+      color: #F9FAFB;
+    }
+
+    .reviews-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .reviews-title {
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
+    }
+
+    .reviews-meta {
+      font-size: 0.95rem;
+      color: #9CA3AF;
+    }
+
+    .reviews-meta strong {
+      color: #FBBF24;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: rgba(2, 6, 23, 0.96);
+      border-radius: 18px;
+      padding: 1.25rem 1.5rem 1.5rem;
+      border: 1px solid rgba(148,163,184,0.3);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.75);
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .review-stars {
+      color: #FBBF24;
+      font-size: 0.95rem;
+    }
+
+    .review-text {
+      color: #E5E7EB;
+      line-height: 1.5;
+    }
+
+    .review-footer {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: #9CA3AF;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .review-author {
+      font-weight: 600;
+      color: #E5E7EB;
+    }
+
     /* ---------- SECTION FAQ (SEO) ---------- */
     .section-faq {
       padding: 4rem 0;
@@ -793,7 +863,6 @@
       margin-bottom: 0.4rem;
     }
 
-    /* plus de max-width ici pour que ça suive la même largeur que .occasions-container */
     .section-faq p {
       font-size: 0.95rem;
       color: #E5E7EB;
@@ -893,6 +962,9 @@
       .occasions-layout {
         grid-template-columns: minmax(0,1fr);
       }
+      .reviews-grid {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
     }
 
     @media (max-width: 768px) {
@@ -931,6 +1003,10 @@
 
       .hero h1 { font-size: 34px; }
       .hero .subtitle { font-size: 15px; }
+
+      .reviews-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
     }
 
     @media (max-width: 420px) {
@@ -1208,6 +1284,23 @@
     </div>
   </section>
 
+  <!-- SECTION AVIS -->
+  <section class="section-reviews" id="avis">
+    <div class="occasions-container">
+      <header class="reviews-header">
+        <h2 class="reviews-title">Ils ont chanté chez Singbox</h2>
+        <p class="reviews-meta">
+          Note moyenne <strong><span id="reviews-average">5.0</span>/5</strong>
+          sur <span id="reviews-count">0</span> avis.
+        </p>
+      </header>
+
+      <div id="reviews-grid" class="reviews-grid">
+        <!-- Avis chargés en JS depuis Supabase -->
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION FAQ SEO -->
   <section class="section-faq">
     <div class="occasions-container">
@@ -1370,7 +1463,7 @@
     });
   </script>
 
-  <!-- Supabase Newsletter Script -->
+  <!-- Supabase Newsletter + Avis -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -1380,38 +1473,102 @@
 
       const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
+      // ----- Newsletter -----
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn) return;
+      if (emailInput && submitBtn) {
+        submitBtn.addEventListener("click", async () => {
+          const email = emailInput.value.trim();
 
-      submitBtn.addEventListener("click", async () => {
-        const email = emailInput.value.trim();
+          messageBox.style.color = "#e5e7eb";
+          messageBox.textContent = "Envoi en cours...";
 
-        messageBox.style.color = "#e5e7eb";
-        messageBox.textContent = "Envoi en cours...";
+          if (!email || !email.includes("@")) {
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+            return;
+          }
 
-        if (!email || !email.includes("@")) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert({ email });
+
+          if (error) {
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
+          } else {
+            messageBox.style.color = "#38bdf8";
+            messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+            emailInput.value = "";
+          }
+        });
+      }
+
+      // ----- Avis (reviews) -----
+      const reviewsGrid   = document.getElementById("reviews-grid");
+      const avgEl         = document.getElementById("reviews-average");
+      const countEl       = document.getElementById("reviews-count");
+
+      async function loadReviews() {
+        if (!reviewsGrid) return;
+
+        // Adapte le nom de la table / des colonnes à ta BDD Supabase
+        const { data, error } = await supabaseClient
+          .from("reviews")          // table "reviews"
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(6);
+
+        if (error) {
+          console.error("Erreur chargement avis:", error);
+          reviewsGrid.innerHTML = "<p style='color:#9CA3AF;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert({ email });
-
-        if (error) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
-        } else {
-          messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-          emailInput.value = "";
+        if (!data || !data.length) {
+          reviewsGrid.innerHTML = "<p style='color:#9CA3AF;font-size:0.9rem;'>Les premiers avis arrivent bientôt.</p>";
+          return;
         }
-      });
 
+        // calcul moyenne
+        let sum = 0;
+        data.forEach(r => {
+          sum += Number(r.rating || 5);
+        });
+        const avg   = (sum / data.length).toFixed(1);
+        const count = data.length;
+
+        if (avgEl)   avgEl.textContent   = avg;
+        if (countEl) countEl.textContent = count;
+
+        // rendu cartes
+        reviewsGrid.innerHTML = "";
+        data.forEach(review => {
+          const rating = Number(review.rating || 5);
+          const stars  = "★".repeat(rating) + "☆".repeat(5 - rating);
+          const author = review.author || "Client Singbox";
+          const text   = review.comment || review.message || "";
+          const date   = review.created_at
+            ? new Date(review.created_at).toLocaleDateString("fr-FR")
+            : "";
+
+          const card = document.createElement("article");
+          card.className = "review-card";
+          card.innerHTML = `
+            <div class="review-stars">${stars}</div>
+            <p class="review-text">${text}</p>
+            <div class="review-footer">
+              <span class="review-author">${author}</span>
+              <span class="review-date">${date}</span>
+            </div>
+          `;
+          reviewsGrid.appendChild(card);
+        });
+      }
+
+      loadReviews();
     });
   </script>
 </body>
