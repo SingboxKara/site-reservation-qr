@@ -313,7 +313,6 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* --------- HEADER RESPONSIVE --------- */
     @media (max-width: 900px) {
       .header-inner {
         padding: 8px 10px;
@@ -645,7 +644,6 @@
       color: #facc15;
     }
 
-    .reservation-status-cancelled,
     .reservation-status-annulee {
       border-color: rgba(248,113,113,0.85);
       color: #fecaca;
@@ -1038,7 +1036,7 @@
           <div class="card account-main-card">
             <h2>Mes informations</h2>
 
-            <!-- Bandeau d’état (non connecté / chargement / ok) -->
+            <!-- Bandeau d’état -->
             <p class="account-message" id="account-message"></p>
 
             <div>
@@ -1185,10 +1183,10 @@
 
   <!-- JS PRINCIPAL (profil + réservations avec heure) -->
   <script>
-    const API_BASE =
-      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-        ? "http://localhost:3000"
-        : "https://singbox-backend.onrender.com";
+    // 🔗 URL backend (prod)
+    const API_BASE = "https://singbox-backend.onrender.com";
+    // Si tu veux tester en local :
+    // const API_BASE = "http://localhost:3000";
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
@@ -1256,7 +1254,6 @@
       });
     }
 
-    // ✅ récupère l'heure à partir de start_time / datetime + end_time (+1h par défaut)
     function formatReservationHoursFromReservation(r) {
       const startStr = r.start_time || r.datetime || null;
       if (!startStr) return "";
@@ -1271,7 +1268,6 @@
           end = new Date(start.getTime() + 60 * 60 * 1000);
         }
       } else {
-        // créneau d'1h par défaut
         end = new Date(start.getTime() + 60 * 60 * 1000);
       }
 
@@ -1387,7 +1383,6 @@
         return;
       }
 
-      // ✅ État "chargement" explicite quand on a un token
       if (msgEl) {
         msgEl.textContent = "Chargement de vos informations...";
         msgEl.classList.remove("ok");
@@ -1401,6 +1396,7 @@
         });
 
         if (!res.ok) {
+          console.warn("API /api/me non OK :", res.status);
           localStorage.removeItem("token");
           showNotLoggedState();
           return;
@@ -1423,14 +1419,15 @@
 
         updateLoyaltyHighlight(user.points ?? 0);
 
-        // Charger les réservations du compte
         loadReservations();
       } catch (err) {
-        console.error(err);
+        console.error("Erreur /api/me :", err);
         if (msgEl) {
-          msgEl.textContent = "Erreur de chargement.";
+          msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter.";
           msgEl.classList.remove("ok");
         }
+        localStorage.removeItem("token");
+        showNotLoggedState();
       }
     }
 
@@ -1463,10 +1460,15 @@
             body: JSON.stringify({ email, password })
           });
 
-          const data = await res.json();
+          let data = {};
+          try {
+            data = await res.json();
+          } catch (_) {}
 
-          if (!res.ok) {
-            if (loginMsg) loginMsg.textContent = data.error || "Erreur de connexion.";
+          if (!res.ok || !data.token) {
+            if (loginMsg) {
+              loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
+            }
             return;
           }
 
@@ -1476,7 +1478,6 @@
             loginMsg.classList.add("ok");
           }
 
-          // recharger le profil + réservations
           loadProfile();
         } catch (err) {
           console.error(err);
@@ -1484,7 +1485,7 @@
         }
       });
 
-      // 🔹 Création de compte depuis la même carte
+      // Création de compte
       if (createBtn) {
         createBtn.addEventListener("click", async () => {
           if (loginMsg) {
@@ -1503,29 +1504,34 @@
           }
 
           try {
-            // 1) Création du compte
             const res = await fetch(API_BASE + "/api/register", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password })
             });
 
-            const data = await res.json();
+            let data = {};
+            try {
+              data = await res.json();
+            } catch (_) {}
 
             if (!res.ok) {
               if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte.";
               return;
             }
 
-            // 2) Connexion auto après création (comme sur la page paiement)
+            // connexion auto
             const loginRes = await fetch(API_BASE + "/api/login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password })
             });
-            const loginData = await loginRes.json();
+            let loginData = {};
+            try {
+              loginData = await loginRes.json();
+            } catch (_) {}
 
-            if (loginRes.ok) {
+            if (loginRes.ok && loginData.token) {
               localStorage.setItem("token", loginData.token);
               if (loginMsg) {
                 loginMsg.textContent = "Compte créé et connecté ✔️";
@@ -1545,7 +1551,6 @@
       }
     }
 
-    // Déconnexion
     function initLogout() {
       const logoutBtn = document.getElementById("logout-btn");
       if (logoutBtn) {
@@ -1561,7 +1566,6 @@
       }
     }
 
-    // Header / burger + init
     document.addEventListener("DOMContentLoaded", () => {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
