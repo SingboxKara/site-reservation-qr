@@ -128,11 +128,12 @@
     }
 
     .brand-logo img {
-      width: 90%;
-      height: auto;
-      display: block;
-    }
-
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* Remplit le cercle */
+  border-radius: 999px;  /* Pour rester parfaitement rond */
+  display: block;
+}
     .brand-text-block {
       display: flex;
       flex-direction: column;
