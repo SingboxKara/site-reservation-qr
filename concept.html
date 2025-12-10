@@ -25,15 +25,24 @@
   <meta name="twitter:description" content="Des salons privés de karaoké à Toulouse avec matériel premium et catalogue XXL. Découvrez le concept Singbox.">
   <meta name="twitter:image" content="https://tondomaine.fr/hero-groupe-karaoke.png">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <!-- Schema.org WebPage / AboutPage pour la page concept -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Le concept Singbox – Karaoké box privative à Toulouse",
+    "url": "https://www.singbox.fr/concept.html",
+    "inLanguage": "fr-FR",
+    "description": "Découvrez le concept Singbox : des salons privés de karaoké à Toulouse, insonorisés et équipés de matériel premium. Catalogue XXL de chansons, réservation simple en ligne et expérience fun entre amis, en famille ou entre collègues.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Singbox",
+      "url": "https://www.singbox.fr"
+    }
+  }
+  </script>
 
-  <!-- FAQPage Schema.org -->
+  <!-- FAQPage Schema.org pour la section FAQ de cette page -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,18 +50,18 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Qu\u2019est-ce que le concept Singbox \u00e0 Toulouse ?",
+        "name": "Qu’est-ce que le concept Singbox à Toulouse ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Singbox est un karaok\u00e9 box privatif en autonomie situ\u00e9 \u00e0 Toulouse. Vous r\u00e9servez un salon de karaok\u00e9 insonoris\u00e9 et totalement privatis\u00e9 pour chanter en toute intimité entre amis, en famille ou entre coll\u00e8gues."
+          "text": "Singbox est un karaoké box privatif en autonomie situé à Toulouse. Vous réservez un salon de karaoké insonorisé et totalement privatisé pour chanter en toute intimité entre amis, en famille ou entre collègues."
         }
       },
       {
         "@type": "Question",
-        "name": "Comment se d\u00e9roule une s\u00e9ance de karaok\u00e9 chez Singbox ?",
+        "name": "Comment se déroule une séance de karaoké chez Singbox ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Vous r\u00e9servez votre cr\u00e9neau en ligne sur ce site, vous recevez un QR code par mail, puis le jour J vous vous rendez sur place à l'adresse indiqué dans le mail. Vous scannez votre QR Code, choisissez vos chansons dans le catalogue et profitez de la s\u00e9ance sans \u00eatre observ\u00e9 par d\u2019autres clients."
+          "text": "Vous réservez votre créneau en ligne sur ce site, vous recevez un QR code par e-mail, puis le jour J vous vous rendez sur place à l'adresse indiquée dans le mail. Vous scannez votre QR code, choisissez vos chansons dans le catalogue et profitez de la séance sans être observé par d'autres clients."
         }
       },
       {
@@ -60,7 +69,7 @@
         "name": "Combien de personnes peuvent venir chanter dans une box Singbox ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Selon la box choisie, Singbox peut accueillir de petits et moyens groupes de 1 à 8 personnes. C\u2019est id\u00e9al pour une soir\u00e9e entre amis, un anniversaire, un EVJF/EVG ou un team building d\u2019entreprise."
+          "text": "Selon la box choisie, Singbox peut accueillir de petits et moyens groupes de 1 à 8 personnes. C’est idéal pour une soirée entre amis, un anniversaire, un EVJF/EVG ou un team building d’entreprise."
         }
       },
       {
@@ -68,12 +77,20 @@
         "name": "Quel type de chansons propose Singbox ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Le catalogue Singbox est XXL : chansons fran\u00e7aises, tubes internationaux, classiques ind\u00e9modables et derniers hits. Chacun peut trouver ses titres favoris et les ajouter facilement \u00e0 la file de lecture."
+          "text": "Le catalogue Singbox est XXL : chansons françaises, tubes internationaux, classiques indémodables et derniers hits. Chacun peut trouver ses titres favoris et les ajouter facilement à la file de lecture."
         }
       }
     ]
   }
   </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
     :root {
@@ -218,6 +235,11 @@
     .main-nav a:hover {
       color: #ffb96f;
       transition: 0.25s ease;
+    }
+
+    /* Lien actif pour la page concept */
+    .main-nav a[href="concept.html"]::after {
+      width: 100%;
     }
 
     .header-actions {
@@ -641,7 +663,6 @@
     .concept-advantages-inner p {
       font-size: 14px;
       color: var(--sb-text-muted);
-      /* plus de max-width ici pour que ça s'aligne avec le reste */
     }
 
     .advantages-grid {
@@ -688,7 +709,6 @@
       font-size: 14px;
       color: var(--sb-text-muted);
       margin: 0;
-      /* plus de max-width ici non plus */
     }
 
     /* ---------- FOOTER ---------- */
@@ -854,7 +874,7 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
+  <!-- MENU MOBILE (Mon compte présent, pas de bouton Réserver séparé) -->
   <nav class="mobile-nav" id="mobile-nav">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -903,6 +923,11 @@
             Entre amis, en famille ou entre collègues : chantez à tue-tête et vivez une
             expérience de karaoké à Toulouse sans stress, où tout le monde ose se lancer.
           </p>
+          <p class="concept-inline-cta">
+            <a href="reservation.html" class="concept-inline-cta-button">
+              Réserver un salon privé
+            </a>
+          </p>
         </div>
         <div class="concept-card concept-card--image">
           <img src="box-ambiance-sunset.png" alt="Salon privé de karaoké Singbox à Toulouse avec banquette et écran" />
@@ -926,6 +951,11 @@
             Recherche rapide, file d’attente, enchaînement fluide : tout est pensé pour rendre
             votre séance de karaoké fun et sans temps mort, quelle que soit l’occasion.
           </p>
+          <p class="concept-inline-cta">
+            <a href="box.html" class="concept-inline-cta-button">
+              Découvrir nos box et ambiances
+            </a>
+          </p>
         </div>
       </div>
     </div>
@@ -943,6 +973,11 @@
             Aucun réglage technique : entrez, scannez votre QR code, choisissez votre première
             chanson et chantez&nbsp;! Tout est prévu pour que la technologie disparaisse derrière le plaisir.
           </p>
+          <p class="concept-inline-cta">
+            <a href="reservation.html" class="concept-inline-cta-button">
+              Tester l’expérience Singbox
+            </a>
+          </p>
         </div>
         <div class="concept-card concept-card--image">
           <img src="photo-concept.png" alt="Matériel de karaoké premium avec micros et lumières Singbox" />
@@ -958,13 +993,13 @@
       <p>
         Singbox est conçu pour toutes les occasions : anniversaires, EVJF/EVG, afterworks, team building
         ou soirée entre amis. Nos salons privés permettent de vivre un karaoké à Toulouse
-        sans jugement en complète autonomie et dans une ambiance vraiment conviviale.
+        sans jugement, en complète autonomie et dans une ambiance vraiment conviviale.
       </p>
 
       <div class="advantages-grid">
         <article class="advantage-card">
           <h3>Intimité totale</h3>
-          <p>Vous réservez votre propre box de karaoké, fermé et insonorisé, pour chanter en toute liberté.</p>
+          <p>Vous réservez votre propre box de karaoké, fermée et insonorisée, pour chanter en toute liberté.</p>
         </article>
 
         <article class="advantage-card">
@@ -1010,6 +1045,12 @@
             le concept Singbox s’adapte à toutes les occasions où vous avez envie de chanter et de vous amuser.
           </p>
         </div>
+
+        <p class="concept-inline-cta">
+          <a href="contact.html" class="concept-inline-cta-button">
+            Une question ? Nous contacter
+          </a>
+        </p>
       </div>
     </div>
   </section>
