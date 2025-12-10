@@ -644,8 +644,47 @@
                 <input type="date" id="promo-valid-to" />
               </div>
               <div class="form-field">
-                <label for="promo-max-uses">Nb utilisations max</label>
+                <label for="promo-max-uses">Nb utilisations max (global)</label>
                 <input type="number" id="promo-max-uses" placeholder="ex : 50 ou vide = illimité" min="1" />
+              </div>
+            </div>
+
+            <!-- Conditions d'utilisation -->
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="promo-max-per-email">Nb utilisations max / email</label>
+                <input type="number" id="promo-max-per-email" placeholder="ex : 1, 2, 10..." min="1" />
+                <p class="helper-text">
+                  Ex : PREMS = 1, Duo Pack = 2, VIP = 100...
+                </p>
+              </div>
+
+              <div class="form-field">
+                <label>
+                  <input type="checkbox" id="promo-first-session" />
+                  Réservé à la <strong>première session</strong>
+                </label>
+                <p class="helper-text">
+                  Le code ne sera valable que si l'email n'a jamais réservé.
+                </p>
+              </div>
+
+              <div class="form-field">
+                <label for="promo-email-domain">Domaine email (optionnel)</label>
+                <input type="text" id="promo-email-domain" placeholder="ex : univ-toulouse.fr" />
+                <p class="helper-text">
+                  Laisse vide pour tous. Utile pour un code "étudiants" avec mail spécifique.
+                </p>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="promo-note">Label interne</label>
+                <input type="text" id="promo-note" placeholder="Étudiants, Seniors, Ulule Duo..." />
+                <p class="helper-text">
+                  Juste pour toi, affiché dans la liste admin (ne change rien côté client).
+                </p>
               </div>
             </div>
 
@@ -674,7 +713,7 @@
               <thead>
                 <tr>
                   <th>Code</th>
-                  <th>Type</th>
+                  <th>Type / Conditions</th>
                   <th>Valeur</th>
                   <th>Valide du</th>
                   <th>au</th>
@@ -1074,6 +1113,10 @@
       const validFromInput = document.getElementById("promo-valid-from");
       const validToInput = document.getElementById("promo-valid-to");
       const maxUsesInput = document.getElementById("promo-max-uses");
+      const maxPerEmailInput = document.getElementById("promo-max-per-email");
+      const firstSessionInput = document.getElementById("promo-first-session");
+      const emailDomainInput = document.getElementById("promo-email-domain");
+      const noteInput = document.getElementById("promo-note");
       const msgEl = document.getElementById("promo-form-message");
 
       msgEl.textContent = "";
@@ -1106,6 +1149,10 @@
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
+        max_uses_per_user: maxPerEmailInput.value ? parseInt(maxPerEmailInput.value, 10) : null,
+        first_session_only: firstSessionInput && firstSessionInput.checked ? true : false,
+        email_domain: emailDomainInput.value.trim() || null,
+        note: noteInput.value.trim() || null,
         is_active: true
       };
 
@@ -1168,15 +1215,36 @@
           tr.appendChild(tdCode);
 
           const tdType = document.createElement("td");
+          let typeLabel = "";
           if (row.type === "free") {
-            tdType.innerHTML = 'Gratuit <span class="pill-free">(free)</span>';
+            typeLabel = 'Gratuit <span class="pill-free">(free)</span>';
           } else if (row.type === "percent") {
-            tdType.textContent = "Pourcentage";
+            typeLabel = "Pourcentage";
           } else if (row.type === "fixed") {
-            tdType.textContent = "Montant fixe";
+            typeLabel = "Montant fixe";
           } else {
-            tdType.textContent = row.type || "-";
+            typeLabel = row.type || "-";
           }
+
+          const extras = [];
+          if (row.note) {
+            extras.push(row.note);
+          }
+          if (row.first_session_only) {
+            extras.push("1ère session");
+          }
+          if (row.max_uses_per_user) {
+            extras.push(row.max_uses_per_user + "x / email");
+          }
+          if (row.email_domain) {
+            extras.push("@" + row.email_domain);
+          }
+
+          if (extras.length > 0) {
+            typeLabel += " · " + extras.join(" · ");
+          }
+
+          tdType.innerHTML = typeLabel;
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
