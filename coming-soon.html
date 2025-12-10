@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox – Ouverture prochaine 🎤</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      margin: 0;
+      background: #050814;
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 380px;
+      padding: 20px;
+    }
+
+    img {
+      width: 140px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      font-family: "League Spartan", sans-serif;
+    }
+
+    p {
+      font-size: 15px;
+      color: #d1d5db;
+    }
+
+    input {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 50px;
+      border: 1px solid #444;
+      background: #111827;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 10px 22px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #C94C35, #F97316);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    #msg {
+      margin-top: 8px;
+      font-size: 13px;
+      min-height: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="logo.png" alt="Singbox logo">
+    <h1>Ouverture prochaine 🎤</h1>
+    <p>Inscrivez-vous pour être averti dès que Singbox ouvre officiellement !</p>
+
+    <input type="email" id="email" placeholder="Votre email">
+    <button id="send">M'avertir</button>
+
+    <p id="msg"></p>
+  </div>
+
+  <!-- Supabase Newsletter -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://sfckofydfqbllkxhxwnt.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
+    );
+
+    document.getElementById("send").addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const msg = document.getElementById("msg");
+
+      msg.style.color = "#aaa";
+      msg.textContent = "Envoi...";
+
+      if (!email.includes("@")) {
+        msg.style.color = "#f87171";
+        msg.textContent = "Email invalide.";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("newsletter_subscriptions")
+        .insert({ email });
+
+      if (error) {
+        if (error.code === "23505") {
+          msg.style.color = "#38bdf8";
+          msg.textContent = "Vous êtes déjà inscrit 😉";
+        } else {
+          msg.style.color = "#f87171";
+          msg.textContent = "Erreur : " + error.message;
+        }
+      } else {
+        msg.style.color = "#38bdf8";
+        msg.textContent = "Merci ! Vous serez averti 🎉";
+        document.getElementById("email").value = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
