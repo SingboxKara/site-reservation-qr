@@ -2,8 +2,60 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Singbox – Ouverture prochaine 🎤</title>
+  <title>Singbox – Ouverture prochaine du karaoké box à Toulouse 🎤</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO de base -->
+  <meta name="description" content="Singbox arrive bientôt à Toulouse : karaoké box privative, salons insonorisés et catalogue XXL de chansons. Inscrivez-vous pour être averti de l’ouverture et suivre l’avancée du projet.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://www.singbox.fr/">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Singbox">
+  <meta property="og:title" content="Singbox – Ouverture prochaine du karaoké box à Toulouse">
+  <meta property="og:description" content="Karaoké box privative à Toulouse : salons privés & insonorisés, catalogue XXL, ouvert 24h/24. Inscrivez-vous pour être averti de l’ouverture.">
+  <meta property="og:url" content="https://www.singbox.fr/">
+  <meta property="og:image" content="https://www.singbox.fr/OG-image.jpg">
+  <meta property="og:locale" content="fr_FR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Singbox – Ouverture prochaine du karaoké box à Toulouse">
+  <meta name="twitter:description" content="Inscrivez-vous pour être averti de l’ouverture du karaoké box Singbox à Toulouse et suivre le projet.">
+  <meta name="twitter:image" content="https://www.singbox.fr/OG-image.jpg">
+
+  <!-- Schema.org LocalBusiness (version allégée) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "KaraokeBar",
+    "name": "Singbox",
+    "image": "https://www.singbox.fr/logo.png",
+    "url": "https://www.singbox.fr/",
+    "telephone": "+33 6 00 00 00 00",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "66 Rue de la République",
+      "addressLocality": "Toulouse",
+      "postalCode": "31300",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 43.5980134,
+      "longitude": 1.432544
+    },
+    "sameAs": [
+      "https://www.instagram.com/singboxtoulouse/",
+      "https://www.tiktok.com/@singbox.toulouse/"
+    ]
+  }
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,24 +91,25 @@
         radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
         radial-gradient(circle at 85% 0%, rgba(56,189,248,0.45), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      overflow: hidden;
+      overflow-x: hidden;
+      padding: 40px 0;
     }
 
     .page {
       width: 100%;
-      max-width: 960px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 32px 20px;
+      padding: 0 24px;
     }
 
     .card {
       background: var(--sb-card);
-      border-radius: 26px;
+      border-radius: 28px;
       border: 1px solid var(--sb-border-soft);
       box-shadow:
-        0 30px 80px rgba(0,0,0,0.9),
+        0 40px 90px rgba(0,0,0,0.9),
         0 0 0 1px rgba(15,23,42,0.9);
-      padding: 26px 26px 24px;
+      padding: 32px 32px 26px;
       position: relative;
       overflow: hidden;
     }
@@ -64,18 +117,18 @@
     .card::before {
       content: "♪";
       position: absolute;
-      top: 16px;
-      right: 18px;
+      top: 18px;
+      right: 24px;
       font-size: 30px;
-      color: rgba(148,163,184,0.12);
+      color: rgba(148,163,184,0.14);
       pointer-events: none;
     }
 
     .card::after {
       content: "✦";
       position: absolute;
-      bottom: 10px;
-      left: 18px;
+      bottom: 16px;
+      left: 24px;
       font-size: 30px;
       color: rgba(148,163,184,0.08);
       pointer-events: none;
@@ -83,33 +136,35 @@
 
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 26px;
-      align-items: center;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: stretch;
     }
 
-    @media (max-width: 820px) {
-      .layout {
-        grid-template-columns: minmax(0,1fr);
-      }
+    @media (max-width: 900px) {
       body {
         align-items: flex-start;
+        padding-top: 32px;
       }
-      .page {
-        padding-top: 40px;
+      .card {
+        padding: 24px 20px 22px;
+      }
+      .layout {
+        grid-template-columns: minmax(0,1fr);
+        gap: 26px;
       }
     }
 
     .logo-row {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
     .logo-row img {
-      width: 90px;
-      height: 90px;
+      width: 96px;
+      height: 96px;
       border-radius: 999px;
       object-fit: contain;
       filter:
@@ -120,38 +175,40 @@
     .brand-text {
       font-family: "League Spartan", system-ui, sans-serif;
       font-weight: 700;
-      letter-spacing: 0.16em;
-      font-size: 22px;
+      letter-spacing: 0.18em;
+      font-size: 24px;
       text-transform: uppercase;
     }
 
     .tagline {
       font-size: 13px;
       color: var(--sb-text-muted);
+      margin-top: 4px;
     }
 
     h1 {
       font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 28px;
-      margin: 0 0 6px;
-      letter-spacing: 0.04em;
+      font-size: 30px;
+      margin: 0 0 10px;
+      letter-spacing: 0.05em;
     }
 
     .subtitle {
-      margin: 0 0 16px;
-      font-size: 14px;
-      color: rgba(249,250,251,0.85);
-      max-width: 420px;
+      margin: 0 0 20px;
+      font-size: 15px;
+      color: rgba(249,250,251,0.88);
+      max-width: 480px;
+      line-height: 1.6;
     }
 
     .badge-date {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 11px;
+      padding: 6px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(248,250,251,0.14);
-      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(248,250,251,0.18);
+      background: rgba(15,23,42,0.9);
       font-size: 12px;
       margin-bottom: 12px;
     }
@@ -161,26 +218,37 @@
     }
 
     /* TIMER */
+    .countdown-wrapper {
+      margin: 18px 0 22px;
+    }
+
+    .countdown-label {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 6px;
+    }
+
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin: 14px 0 18px;
-      max-width: 380px;
+      gap: 14px;
+      max-width: 440px;
     }
 
     .countdown-item {
       background: rgba(15,23,42,0.96);
-      border-radius: 18px;
-      padding: 10px 8px;
+      border-radius: 20px;
+      padding: 12px 10px;
       text-align: center;
       border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      box-shadow: 0 16px 42px rgba(0,0,0,0.85);
     }
 
     .count-value {
       display: block;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       font-family: "League Spartan", system-ui, sans-serif;
     }
@@ -195,48 +263,50 @@
     }
 
     .info-list {
-      margin: 0 0 14px;
+      margin: 0 0 16px;
       padding: 0;
       list-style: none;
       font-size: 13px;
       color: var(--sb-text-muted);
+      line-height: 1.5;
     }
 
     .info-list li {
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 6px;
     }
 
     .info-list li span.icon {
       width: 18px;
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
+      margin-top: 1px;
     }
 
     /* NEWSLETTER */
     .newsletter {
-      margin-top: 12px;
-      max-width: 420px;
+      margin-top: 10px;
+      max-width: 460px;
     }
 
     .newsletter label {
       font-size: 12px;
       color: var(--sb-text-muted);
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .newsletter-row {
       display: flex;
       flex-wrap: nowrap;
-      gap: 6px;
+      gap: 8px;
     }
 
     .newsletter input[type="email"] {
       flex: 1;
-      padding: 9px 11px;
+      padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,184,0.45);
       background: #020617;
@@ -252,7 +322,7 @@
     .newsletter button {
       border-radius: 999px;
       border: none;
-      padding: 9px 14px;
+      padding: 10px 16px;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       font-size: 12px;
@@ -261,8 +331,8 @@
       white-space: nowrap;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.12),
-        0 14px 34px rgba(0,0,0,0.9);
-      letter-spacing: 0.05em;
+        0 16px 40px rgba(0,0,0,0.9);
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
@@ -270,7 +340,7 @@
       transform: translateY(-1px);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
-        0 18px 45px rgba(0,0,0,1);
+        0 22px 52px rgba(0,0,0,1);
     }
 
     #newsletter-msg {
@@ -281,34 +351,39 @@
 
     /* COLONNE DROITE */
     .side {
-      border-radius: 22px;
-      padding: 16px 18px 18px;
+      border-radius: 24px;
+      padding: 18px 20px 18px;
       background:
         radial-gradient(circle at 0% 0%, rgba(201,76,53,0.45), transparent 60%),
         radial-gradient(circle at 100% 0%, rgba(37,99,235,0.45), transparent 60%),
         #020617;
       border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 22px 55px rgba(0,0,0,0.9);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.9);
       font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .side h2 {
       font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       margin: 0 0 8px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
     }
 
     .side p {
-      margin: 0 0 8px;
+      margin: 0;
       color: rgba(249,250,251,0.9);
+      line-height: 1.6;
     }
 
     .side .muted {
       font-size: 12px;
       color: var(--sb-text-muted);
-      margin-bottom: 10px;
+      margin-top: 4px;
+      margin-bottom: 8px;
     }
 
     .side-block-title {
@@ -317,7 +392,7 @@
       letter-spacing: 0.16em;
       color: var(--sb-text-muted);
       margin-top: 10px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .side-infos {
@@ -332,6 +407,7 @@
       align-items: center;
       gap: 6px;
       margin-bottom: 4px;
+      color: rgba(249,250,251,0.9);
     }
 
     .side-infos span.icon {
@@ -342,7 +418,7 @@
     .social-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       margin-top: 10px;
     }
 
@@ -350,35 +426,41 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 12px;
+      padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid rgba(248,250,251,0.16);
-      background: rgba(15,23,42,0.9);
+      background: rgba(15,23,42,0.94);
       font-size: 12px;
       color: #F9FAFB;
       text-decoration: none;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.85);
     }
 
-    .social-btn span.icon {
-      font-size: 15px;
+    .social-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .social-btn:hover {
+      border-color: rgba(248,250,251,0.28);
+      transform: translateY(-1px);
     }
 
     .footer-note {
-      margin-top: 14px;
+      margin-top: 10px;
       font-size: 11px;
       color: var(--sb-text-muted);
+      line-height: 1.5;
     }
 
     @media (max-width: 540px) {
-      .card {
-        padding: 20px 18px 18px;
-      }
       .logo-row img {
-        width: 76px;
-        height: 76px;
+        width: 80px;
+        height: 80px;
       }
       h1 {
-        font-size: 24px;
+        font-size: 26px;
       }
       .countdown {
         grid-template-columns: repeat(2, minmax(0,1fr));
@@ -401,7 +483,7 @@
           </div>
 
           <div class="badge-date">
-            <span>⏰</span>
+            <span>📅</span>
             <span id="opening-text">Ouverture prochainement à Toulouse</span>
           </div>
 
@@ -412,22 +494,25 @@
           </p>
 
           <!-- TIMER -->
-          <div class="countdown" aria-label="Compte à rebours avant ouverture">
-            <div class="countdown-item">
-              <span class="count-value" id="days">--</span>
-              <span class="count-label">Jours</span>
-            </div>
-            <div class="countdown-item">
-              <span class="count-value" id="hours">--</span>
-              <span class="count-label">Heures</span>
-            </div>
-            <div class="countdown-item">
-              <span class="count-value" id="minutes">--</span>
-              <span class="count-label">Minutes</span>
-            </div>
-            <div class="countdown-item">
-              <span class="count-value" id="seconds">--</span>
-              <span class="count-label">Secondes</span>
+          <div class="countdown-wrapper" aria-label="Compte à rebours avant ouverture">
+            <div class="countdown-label">Compte à rebours</div>
+            <div class="countdown">
+              <div class="countdown-item">
+                <span class="count-value" id="days">--</span>
+                <span class="count-label">Jours</span>
+              </div>
+              <div class="countdown-item">
+                <span class="count-value" id="hours">--</span>
+                <span class="count-label">Heures</span>
+              </div>
+              <div class="countdown-item">
+                <span class="count-value" id="minutes">--</span>
+                <span class="count-label">Minutes</span>
+              </div>
+              <div class="countdown-item">
+                <span class="count-value" id="seconds">--</span>
+                <span class="count-label">Secondes</span>
+              </div>
             </div>
           </div>
 
@@ -439,7 +524,7 @@
 
           <!-- NEWSLETTER -->
           <div class="newsletter" aria-label="Inscription newsletter">
-            <label for="newsletter-email">Laissez votre email pour être prévenu en avant-première</label>
+            <label for="newsletter-email">Laissez votre e-mail pour être prévenu en avant-première</label>
             <div class="newsletter-row">
               <input
                 type="email"
@@ -459,7 +544,7 @@
           <h2>En coulisses…</h2>
           <p>
             Nous finalisons les dernières touches : installation des box, tests son &amp; lumières,
-            validation du catalogue et mise en place des premières soirées à thème.
+            validation du catalogue et préparation des premières soirées à thème.
           </p>
           <p class="muted">
             Bientôt, vous pourrez réserver votre créneau 24/7 directement en ligne.
@@ -478,23 +563,36 @@
           </p>
 
           <div class="social-row">
+            <!-- Bouton Instagram avec "vrai" logo -->
             <a
               href="https://www.instagram.com/singboxtoulouse/"
               target="_blank"
               rel="noopener noreferrer"
               class="social-btn"
+              aria-label="Compte Instagram Singbox Toulouse"
             >
-              <span class="icon">📸</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+                <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
+                <circle cx="17" cy="7" r="1.3" fill="#F9FAFB"/>
+              </svg>
               <span>Instagram</span>
             </a>
 
+            <!-- Bouton TikTok avec logo style TikTok -->
             <a
               href="https://www.tiktok.com/@singbox.toulouse/"
               target="_blank"
               rel="noopener noreferrer"
               class="social-btn"
+              aria-label="Compte TikTok Singbox Toulouse"
             >
-              <span class="icon">🎵</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M16.5 5.2c.6.7 1.4 1.3 2.3 1.5l.7.2v3.2a5.4 5.4 0 0 1-3.1-1v5.2a4.9 4.9 0 1 1-4.9-4.9c.3 0 .6 0 .9.1v2.9a2 2 0 0 0-.9-.2 2 2 0 1 0 2 2V4.5h3v.7z"
+                  fill="#F9FAFB"
+                />
+              </svg>
               <span>TikTok</span>
             </a>
           </div>
@@ -510,13 +608,13 @@
   <!-- Supabase + Timer JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // 🔥 1) CONFIGURE ICI LA DATE D'OUVERTURE
-    // Format recommandé : "2025-03-01T18:00:00+01:00" (1er mars 2025 à 18h, heure de Paris)
+    // 🔥 1) CONFIG : mets ici la vraie date/heure d'ouverture
+    // Exemple : 1er mars 2025 à 18h, heure de Paris
     const OPENING_DATE = new Date("2026-03-01T18:00:00+01:00");
 
-    // Texte sous le badge (optionnel)
+    // 2) Texte dans le badge (formaté en français)
     const openingTextEl = document.getElementById("opening-text");
-    if (openingTextEl) {
+    if (openingTextEl && !isNaN(OPENING_DATE.getTime())) {
       openingTextEl.textContent = "Ouverture prévue le " + OPENING_DATE.toLocaleDateString("fr-FR", {
         weekday: "long",
         day: "2-digit",
@@ -525,34 +623,24 @@
       });
     }
 
-    // 🔁 2) TIMER – met à jour le compte à rebours toutes les secondes
+    // 3) TIMER – met à jour le compte à rebours toutes les secondes
     function startCountdown() {
       const daysEl    = document.getElementById("days");
       const hoursEl   = document.getElementById("hours");
       const minutesEl = document.getElementById("minutes");
       const secondsEl = document.getElementById("seconds");
 
+      if (isNaN(OPENING_DATE.getTime())) {
+        // Date invalide → on affiche juste --
+        return;
+      }
+
       function update() {
-        const now = new Date().getTime();
+        const now    = Date.now();
         const target = OPENING_DATE.getTime();
-        const diff = target - now;
+        let diff     = target - now;
 
-        if (diff <= 0) {
-          // Ouverture atteinte/passee
-          if (daysEl)    daysEl.textContent    = "0";
-          if (hoursEl)   hoursEl.textContent   = "0";
-          if (minutesEl) minutesEl.textContent = "0";
-          if (secondsEl) secondsEl.textContent = "0";
-
-          const h1 = document.querySelector("h1");
-          if (h1) h1.textContent = "Singbox est ouvert 🎉";
-
-          const subtitle = document.querySelector(".subtitle");
-          if (subtitle) {
-            subtitle.textContent = "Le site complet est maintenant en ligne. Rafraîchissez la page ou accédez directement à l'URL principale.";
-          }
-          return;
-        }
+        if (diff < 0) diff = 0; // si la date est passée, on bloque à 0
 
         const totalSeconds = Math.floor(diff / 1000);
         const days    = Math.floor(totalSeconds / (60 * 60 * 24));
@@ -566,17 +654,17 @@
         if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, "0");
       }
 
-      update(); // premier calcul immédiat
-      setInterval(update, 1000);
+      update();                // premier calcul immédiat
+      setInterval(update, 1000); // puis toutes les secondes
     }
 
-    // 3) SUPABASE – inscription newsletter
+    // 4) SUPABASE – inscription newsletter
     const supabaseClient = supabase.createClient(
       "https://sfckofydfqbllkxhxwnt.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
     );
 
-    async function handleNewsletter() {
+    function initNewsletter() {
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn  = document.getElementById("newsletter-submit");
       const msg        = document.getElementById("newsletter-msg");
@@ -620,7 +708,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       startCountdown();
-      handleNewsletter();
+      initNewsletter();
     });
   </script>
 </body>
