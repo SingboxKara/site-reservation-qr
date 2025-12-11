@@ -949,13 +949,27 @@
       const boxName = item.boxName || item.box || item.boxId || "Box";
 
       let hourText = "?";
+
+      // 🔁 NOUVEAU : afficher un créneau de 1h30 à partir de item.hour (en heures décimales)
       if (typeof item.hour === "number") {
-        const start = item.hour;
-        const end = (item.hour + 1) % 24;
-        const s = String(start).padStart(2,"0") + "h";
-        const e = String(end).padStart(2,"0") + "h";
-        hourText = `${s} – ${e}`;
+        // item.hour peut être 18, 18.5, etc.
+        const startTotalMin = Math.round(item.hour * 60); // ex: 18 -> 1080, 18.5 -> 1110
+        const startHour = Math.floor(startTotalMin / 60);
+        const startMin = startTotalMin % 60;
+
+        const endTotalMin = startTotalMin + 90; // 1h30 plus tard
+        const endHour = Math.floor((endTotalMin / 60) % 24);
+        const endMin = endTotalMin % 60;
+
+        const fmtHM = (h, m) => {
+          const hh = String(h).padStart(2, "0");
+          const mm = String(m).padStart(2, "0");
+          return `${hh}h${mm}`;
+        };
+
+        hourText = `${fmtHM(startHour, startMin)} – ${fmtHM(endHour, endMin)}`;
       } else if (item.hourLabel) {
+        // Si tu enregistres déjà un label du type "18h00 – 19h30", on le garde
         hourText = item.hourLabel;
       }
 
@@ -993,7 +1007,7 @@
             <span class="cart-box">Box ${boxName}</span>
           </div>
           <div class="cart-slot-line">
-            Créneau : ${hourText}
+            Créneau : ${hourText} (1h30)
           </div>
           <div class="cart-extra">
             ${personnesPrevuesText} – ${personnesFactureesText}<br>
