@@ -1309,6 +1309,7 @@
       });
     }
 
+    // 🔁 Créneaux de 1h30 par défaut
     function formatReservationHoursFromReservation(r) {
       const startStr = r.start_time || r.datetime || null;
       if (!startStr) return "";
@@ -1316,14 +1317,17 @@
       const start = new Date(startStr);
       if (isNaN(start.getTime())) return "";
 
+      // Durée par défaut : 1h30 (en ms)
+      const DUREE_MS = 90 * 60 * 1000;
+
       let end;
       if (r.end_time) {
         end = new Date(r.end_time);
         if (isNaN(end.getTime())) {
-          end = new Date(start.getTime() + 60 * 60 * 1000);
+          end = new Date(start.getTime() + DUREE_MS);
         }
       } else {
-        end = new Date(start.getTime() + 60 * 60 * 1000);
+        end = new Date(start.getTime() + DUREE_MS);
       }
 
       const formatTime = (d) =>
