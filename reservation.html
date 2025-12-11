@@ -561,6 +561,7 @@
       width: 100%;
       min-width: 540px;
       color: #F9FAFB;
+      table-layout: fixed; /* HARMONISATION COLONNES : largeur forcée */
     }
 
     th, td {
@@ -595,23 +596,38 @@
       z-index: 1;
     }
 
-.slot-cell {
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
-  cursor: default;
-  /* 🔽 même hauteur pour tous les créneaux */
-  height: 70px;              /* ajuste 60–75px selon ton rendu */
-  vertical-align: middle;    /* centre le contenu dans la cellule */
-}
+    /* HARMONISATION COLONNES
+       - 1ère colonne (heure) plus étroite
+       - 2ème et 3ème colonnes (box) même largeur
+    */
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 18%;   /* colonne heure */
+    }
 
-.slot-label {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: center;
-  justify-content: center;   /* centre le texte dans la hauteur dispo */
-  line-height: 1.2;
-  height: 100%;              /* occupe toute la cellule */
-}
+    th:nth-child(2),
+    td:nth-child(2),
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 41%;   /* colonnes box */
+    }
+
+    .slot-cell {
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
+      cursor: default;
+      height: 70px;
+      vertical-align: middle;
+    }
+
+    .slot-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+      height: 100%;
+    }
 
     .slot-free {
       background-color: #022c22;
@@ -636,15 +652,6 @@
       color: #F9FAFB;
       cursor: default;
       box-shadow: 0 0 0 1px rgba(129,140,248,0.7);
-    }
-
-    .slot-label {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.2;
     }
 
     .slot-price-main {
@@ -1585,7 +1592,7 @@
         }
 
         const parts = iso.split("-");
-        const theDate = new Date(
+        theDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
