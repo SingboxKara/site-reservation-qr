@@ -561,7 +561,7 @@
       width: 100%;
       min-width: 540px;
       color: #F9FAFB;
-      table-layout: fixed; /* colonnes harmonisées */
+      table-layout: fixed;
     }
 
     th, td {
@@ -596,7 +596,6 @@
       z-index: 1;
     }
 
-    /* largeur colonnes : heure plus fine, 2 box égales */
     th:nth-child(1),
     td:nth-child(1) {
       width: 18%;
@@ -736,7 +735,7 @@
       background: #020617;
       border-radius: 20px;
       padding: 1.5rem 1.75rem 1.4rem;
-      max-width: 420px;
+      max-width: 440px;
       width: 100%;
       box-shadow: 0 24px 70px rgba(0,0,0,0.95);
       border: 1px solid rgba(248,250,251,0.12);
@@ -750,7 +749,36 @@
     .modal-dialog p {
       font-size: 13px;
       color: var(--sb-text-muted);
-      margin-bottom: 14px;
+      margin-bottom: 8px;
+    }
+
+    .modal-extra-text {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .modal-persons-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 14px;
+    }
+
+    .modal-persons-row label {
+      font-size: 13px;
+      color: #E5E7EB;
+    }
+
+    #modal-persons-select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: #020617;
+      color: #F9FAFB;
+      font-size: 13px;
+      outline: none;
+      min-width: 80px;
     }
 
     .modal-actions {
@@ -1040,6 +1068,30 @@
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-slot-info">
       <h2>Session ajoutée au panier</h2>
       <p id="modal-slot-info"></p>
+
+      <p class="modal-extra-text">
+        Le nombre de personnes est actuellement réglé sur
+        <strong><span id="modal-persons-current"></span></strong> (facturation minimale 2 personnes).
+      </p>
+      <p class="modal-extra-text">
+        Si tu viens seul(e), tu peux mettre 1 personne (tu payeras automatiquement pour 2).
+        Les box peuvent accueillir jusqu’à 8 personnes.
+      </p>
+
+      <div class="modal-persons-row">
+        <label for="modal-persons-select">Modifier le nombre de personnes :</label>
+        <select id="modal-persons-select">
+          <option value="1">1 personne</option>
+          <option value="2">2 personnes</option>
+          <option value="3">3 personnes</option>
+          <option value="4">4 personnes</option>
+          <option value="5">5 personnes</option>
+          <option value="6">6 personnes</option>
+          <option value="7">7 personnes</option>
+          <option value="8">8 personnes</option>
+        </select>
+      </div>
+
       <div class="modal-actions">
         <button id="modal-continue" type="button">Continuer ma réservation</button>
         <button id="modal-cart" type="button">Valider mon panier</button>
@@ -1262,10 +1314,8 @@
 
       let baseRate;
       if (currentDateIsWeekend || currentDateIsHoliday) {
-        // week-end OU vacances : jamais d'heure creuse
         baseRate = 9.90;
       } else {
-        // semaine hors vacances : heures creuses de 4h à 14h (exclu 14–15)
         baseRate = (hour >= 4 && hour < 14) ? 7.90 : 9.90;
       }
 
@@ -1274,12 +1324,16 @@
     }
 
     let bookedIndex = {};
-    let selectedPersons = 2; // par défaut, sera écrasé par l'URL ou le select
+    let selectedPersons = 2;
     const BOXES = [
       { id: 1, name: "Nuit étoilée" },
       { id: 2, name: "Ambiance Sunset" }
     ];
     let currentPlanningDateIso = null;
+
+    // état pour la popup
+    let currentSlotChoice = null;
+    let currentSlotCell = null;
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
@@ -1319,24 +1373,42 @@
       td.onclick = null;
     }
 
-    function openSlotModal(slot) {
-      const modal = document.getElementById("slot-modal");
+    function updateModalSummary() {
+      if (!currentSlotChoice) return;
       const infoEl = document.getElementById("modal-slot-info");
+      const personsCurrentEl = document.getElementById("modal-persons-current");
+
+      const parts = currentSlotChoice.date.split("-");
+      const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
+      const range = formatSlotRange(currentSlotChoice.hour);
 
       if (infoEl) {
-        const parts = slot.date.split("-");
-        const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-        const range = formatSlotRange(slot.hour);
         infoEl.textContent =
-          slot.boxName +
+          currentSlotChoice.boxName +
           " – " +
           dateStr +
           " – " +
           range +
           " – " +
-          slot.persons +
+          currentSlotChoice.persons +
           " pers.";
       }
+      if (personsCurrentEl) {
+        personsCurrentEl.textContent = currentSlotChoice.persons;
+      }
+    }
+
+    function openSlotModal(slot, td) {
+      currentSlotChoice = slot;
+      currentSlotCell = td;
+
+      const modal = document.getElementById("slot-modal");
+      const personsSelect = document.getElementById("modal-persons-select");
+      if (personsSelect) {
+        personsSelect.value = String(slot.persons);
+      }
+
+      updateModalSummary();
 
       if (modal) modal.removeAttribute("hidden");
     }
@@ -1344,6 +1416,19 @@
     function closeSlotModal() {
       const modal = document.getElementById("slot-modal");
       if (modal) modal.setAttribute("hidden", "true");
+      currentSlotChoice = null;
+      currentSlotCell = null;
+    }
+
+    function finalizeSlot(goToCart) {
+      if (!currentSlotChoice) return;
+      const s = currentSlotChoice;
+      addSlotToCart(s.boxId, s.boxName, s.dateObj, s.hour, s.price, s.persons);
+      if (currentSlotCell) markCellSelected(currentSlotCell);
+      closeSlotModal();
+      if (goToCart) {
+        window.location.href = "panier.html";
+      }
     }
 
     function buildPlanningTable(date) {
@@ -1376,7 +1461,6 @@
 
       const tbody = document.createElement("tbody");
 
-      // Jour courant ?
       const now = new Date();
       const isToday =
         date.getFullYear() === now.getFullYear() &&
@@ -1407,7 +1491,6 @@
 
           const booked = isSlotBooked(box.id, hour);
 
-          // Empêcher une session déjà commencée aujourd'hui
           let isPastToday = false;
           if (isToday) {
             const nowMinutes = now.getHours() * 60 + now.getMinutes();
@@ -1458,7 +1541,6 @@
             } else {
               td.classList.add("slot-free");
               td.onclick = function () {
-                // ➜ plus de pop-up confirm : on prend directement selectedPersons
                 const personsForSlot = selectedPersons || 1;
                 const priceForSlot = getSlotPrice(date, hour, personsForSlot);
 
@@ -1472,16 +1554,7 @@
                   persons: personsForSlot
                 };
 
-                addSlotToCart(
-                  box.id,
-                  box.name,
-                  date,
-                  hour,
-                  priceForSlot,
-                  personsForSlot
-                );
-                markCellSelected(td);
-                openSlotModal(slotInfo);
+                openSlotModal(slotInfo, td);
               };
             }
           }
@@ -1518,14 +1591,13 @@
       const today = new Date();
       const isoToday = toLocalYMD(today);
 
-      // === récupération paramètres URL (?date=...&people=...) ===
+      // récupération paramètres URL (?date=...&people=...)
       const params = new URLSearchParams(window.location.search);
       const urlDate = params.get("date");
       const urlPeople = params.get("people");
 
       if (dateInput) {
         dateInput.min = isoToday;
-
         if (urlDate && urlDate >= isoToday) {
           dateInput.value = urlDate;
         } else {
@@ -1568,8 +1640,6 @@
         if (!dateInput || !dateInput.value) return;
 
         const iso = dateInput.value;
-
-        // Protection en plus côté JS au cas où
         const todayYMD = toLocalYMD(new Date());
         if (iso < todayYMD) {
           const msg = document.getElementById("message");
@@ -1586,11 +1656,8 @@
           parseInt(parts[2], 10)
         );
 
-        // 1. on récupère le contexte (week-end / vacances)
         await checkDateContext(iso);
-        // 2. on charge les réservations existantes
         await fetchReservationsForDate(iso);
-        // 3. on construit le tableau avec les bons prix
         buildPlanningTable(theDate);
         const msgEl = document.getElementById("message");
         if (msgEl) msgEl.textContent = "";
@@ -1607,16 +1674,29 @@
 
       const continueBtn = document.getElementById("modal-continue");
       const cartBtn = document.getElementById("modal-cart");
+      const modalPersonsSelect = document.getElementById("modal-persons-select");
+
+      if (modalPersonsSelect) {
+        modalPersonsSelect.addEventListener("change", () => {
+          if (!currentSlotChoice) return;
+          let n = parseInt(modalPersonsSelect.value, 10);
+          if (isNaN(n) || n < 1) n = 1;
+          if (n > 8) n = 8;
+          currentSlotChoice.persons = n;
+          currentSlotChoice.price = getSlotPrice(currentSlotChoice.dateObj, currentSlotChoice.hour, n);
+          updateModalSummary();
+        });
+      }
 
       if (continueBtn) {
         continueBtn.addEventListener("click", () => {
-          closeSlotModal();
+          finalizeSlot(false);
         });
       }
 
       if (cartBtn) {
         cartBtn.addEventListener("click", () => {
-          window.location.href = "panier.html";
+          finalizeSlot(true);
         });
       }
     });
