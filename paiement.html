@@ -2019,7 +2019,7 @@
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
-    const PRICE_FALLBACK = 10; // plus utilisé pour le calcul, gardé si tu t'en sers ailleurs
+    const PRICE_FALLBACK = 10;
 
     const API_BASE_URL =
       (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
@@ -2029,7 +2029,6 @@
     let stripe = null;
     let cardElement = null;
 
-    // promo actuellement appliquée (issue de Supabase) et totaux
     let currentPromo = null;
     let loyaltyUsed = false;
     let currentTotals = {
@@ -2062,7 +2061,7 @@
       let total = 0;
       for (const item of panier) {
         if (typeof item.price !== "number" || !isFinite(item.price) || item.price <= 0) {
-          return null; // panier invalide
+          return null;
         }
         total += item.price;
       }
@@ -2192,7 +2191,6 @@
       const totalTTCNoDiscount = computeTotal(panier);
 
       if (totalTTCNoDiscount === null) {
-        // panier corrompu → on bloque le paiement
         nameEl.textContent = "Erreur sur votre panier";
         metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
         subEl.textContent = "—";
@@ -2240,18 +2238,23 @@
       if (tva < 0) tva = 0;
       if (finalTotalTTC < 0) finalTotalTTC = 0;
 
-const first = panier[0];
-let hourText = "";
+      // 🔧 Correction : on prépare les infos du premier créneau
+      const first = panier[0];
+      const dateLabel = first && first.date ? formatDateFr(first.date) : "";
+      const boxName = first && (first.boxName || first.box || first.boxId)
+        ? (first.boxName || first.box || first.boxId)
+        : "Box privée";
 
-if (first && typeof first.hour === "number") {
-  const start = first.hour;
-  const endHour = (start + 1) % 24;
+      let hourText = "";
+      if (first && typeof first.hour === "number") {
+        const start = first.hour;
+        const endHour = (start + 1) % 24;
 
-  const startStr = String(start).padStart(2, "0") + "h00";
-  const endStr   = String(endHour).padStart(2, "0") + "h30";
+        const startStr = String(start).padStart(2, "0") + "h00";
+        const endStr   = String(endHour).padStart(2, "0") + "h30";
 
-  hourText = `${startStr} – ${endStr}`;
-}
+        hourText = `${startStr} – ${endStr}`;
+      }
 
       const extraCount = panier.length - 1;
 
@@ -2382,7 +2385,6 @@ if (first && typeof first.hour === "number") {
             return;
           }
 
-          // ✅ Correction : on crée un “promo” fidélité considéré comme valide
           currentPromo = {
             type: "free",
             code: "LOYALTY100",
@@ -2590,16 +2592,17 @@ if (first && typeof first.hour === "number") {
         const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
           ? (firstItem.boxName || firstItem.box || firstItem.boxId)
           : "Box privée";
-let hourText = "";
-if (firstItem && typeof firstItem.hour === "number") {
-  const start = firstItem.hour;
-  const endHour = (start + 1) % 24; // fin à +1h30
 
-  const startStr = String(start).padStart(2, "0") + "h00";
-  const endStr   = String(endHour).padStart(2, "0") + "h30";
+        let hourText = "";
+        if (firstItem && typeof firstItem.hour === "number") {
+          const start = firstItem.hour;
+          const endHour = (start + 1) % 24;
 
-  hourText = `${startStr} – ${endStr}`; // ex: 19h00 – 20h30
-}
+          const startStr = String(start).padStart(2, "0") + "h00";
+          const endStr   = String(endHour).padStart(2, "0") + "h30";
+
+          hourText = `${startStr} – ${endStr}`;
+        }
 
         const prenomValue = document.getElementById("prenom")
           ? document.getElementById("prenom").value.trim()
@@ -2625,7 +2628,6 @@ if (firstItem && typeof firstItem.hour === "number") {
 
         let reservationId = null;
 
-        // 2) Confirmation de la réservation côté backend
         try {
           const token = localStorage.getItem("token");
           const headers = {
@@ -2680,7 +2682,6 @@ if (firstItem && typeof firstItem.hour === "number") {
           console.error("Erreur confirm-reservation :", e);
         }
 
-        // 3) CAUTION 250€ : création de l'empreinte puis confirmCardPayment
         try {
           const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
             method: "POST",
@@ -2744,7 +2745,6 @@ if (firstItem && typeof firstItem.hour === "number") {
           }
         }
 
-        // 4) Newsletter
         if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
           try {
             await window.supabaseClient
@@ -2755,24 +2755,20 @@ if (firstItem && typeof firstItem.hour === "number") {
           }
         }
 
-        // 5) On vide le panier
- savePanier([]);
+        savePanier([]);
         localStorage.removeItem("promoCode");
         currentPromo = null;
         updateCartIcon();
 
-        // On cache explicitement l'état panier vide pour la page Merci
         const emptyCartState = document.getElementById("empty-cart-state");
         if (emptyCartState) emptyCartState.style.display = "none";
 
-        // 6) Affichage de la page Merci
         if (checkoutLayout && thankyouSection) {
           checkoutLayout.style.display = "none";
           thankyouSection.style.display = "block";
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        // 7) Génération du QR code si on a une référence
         if (reservationId && thankyouQrContainer && window.QRCode) {
           try {
             thankyouQrContainer.innerHTML = "";
@@ -2840,7 +2836,6 @@ if (firstItem && typeof firstItem.hour === "number") {
           if (errorEl) errorEl.textContent = "";
           if (successEl) successEl.textContent = "";
 
-          // Recalcule les totaux juste avant paiement
           updateOrderSummaryFromPanier();
           const promoCode =
             currentPromo && isPromoCurrentlyValid(currentPromo)
@@ -2857,7 +2852,6 @@ if (firstItem && typeof firstItem.hour === "number") {
           submitBtn.textContent = "Paiement en cours...";
 
           try {
-            // 1) Création PaymentIntent OU séance gratuite côté backend
             const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -2897,7 +2891,6 @@ if (firstItem && typeof firstItem.hour === "number") {
               return;
             }
 
-            // Cas 1 : séance gratuite (montant 0€)
             if (json.isFree) {
               if (successEl) {
                 successEl.textContent = "Réservation gratuite validée ✔️";
@@ -2908,7 +2901,6 @@ if (firstItem && typeof firstItem.hour === "number") {
               return;
             }
 
-            // Cas 2 : paiement Stripe normal
             if (!json.clientSecret) {
               if (errorEl) {
                 errorEl.textContent = "Réponse inattendue du serveur de paiement.";
