@@ -2240,18 +2240,17 @@
       if (tva < 0) tva = 0;
       if (finalTotalTTC < 0) finalTotalTTC = 0;
 
-      const first = panier[0];
-      const dateLabel = first.date ? formatDateFr(first.date) : "";
-      const boxName = first.boxName || first.box || first.boxId || "Box privée";
+const first = panier[0];
 let hourText = "";
-if (firstItem && typeof firstItem.hour === "number") {
-  const start = firstItem.hour;
-  const endHour = (start + 1) % 24; // fin à +1h30
+
+if (first && typeof first.hour === "number") {
+  const start = first.hour;
+  const endHour = (start + 1) % 24;
 
   const startStr = String(start).padStart(2, "0") + "h00";
   const endStr   = String(endHour).padStart(2, "0") + "h30";
 
-  hourText = `${startStr} – ${endStr}`; // ex: 19h00 – 20h30
+  hourText = `${startStr} – ${endStr}`;
 }
 
       const extraCount = panier.length - 1;
