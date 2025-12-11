@@ -649,6 +649,52 @@
       color: #fecaca;
     }
 
+    /* === Remboursement === */
+    .reservation-refund-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
+
+    .reservation-refund-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 10px 28px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .reservation-refund-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.2),
+        0 16px 40px rgba(0,0,0,1);
+    }
+
+    .reservation-refund-btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.4),
+        0 6px 16px rgba(0,0,0,0.5);
+    }
+
     /* Carte fidélité droite */
 
     .loyalty-card h3 {
@@ -1056,11 +1102,15 @@
 
             <div class="reservations-block">
               <div class="account-field-label">Mes réservations</div>
+
               <div id="reservations-list" class="reservations-list">
                 <p class="reservations-empty">
                   Connectez-vous pour retrouver vos réservations passées et à venir.
                 </p>
               </div>
+
+              <!-- message global pour les demandes de remboursement -->
+              <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
             </div>
 
             <p class="account-subtext">
@@ -1181,7 +1231,7 @@
     </div>
   </footer>
 
-  <!-- JS PRINCIPAL (profil + réservations avec heure) -->
+  <!-- JS PRINCIPAL (profil + réservations avec heure + remboursement) -->
   <script>
     // 🔗 URL backend (prod)
     const API_BASE = "https://singbox-backend.onrender.com";
@@ -1226,12 +1276,17 @@
       const msgEl = document.getElementById("account-message");
       const notLoggedCta = document.getElementById("not-logged-cta");
       const loginCard = document.getElementById("login-card");
+      const refundMsgEl = document.getElementById("refund-message");
 
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
       if (msgEl) {
         msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus pour accéder à vos infos.";
         msgEl.classList.remove("ok");
+      }
+      if (refundMsgEl) {
+        refundMsgEl.textContent = "";
+        refundMsgEl.classList.remove("ok");
       }
       if (notLoggedCta) notLoggedCta.style.display = "block";
       if (loginCard) loginCard.style.display = "block";
@@ -1282,6 +1337,17 @@
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
 
+    // Remboursement possible seulement si la séance est dans plus de 24h
+    function isRefundPossible(startTimeIso) {
+      if (!startTimeIso) return false;
+      const start = new Date(startTimeIso);
+      if (isNaN(start.getTime())) return false;
+      const now = new Date();
+      const diffMs = start.getTime() - now.getTime();
+      const hoursBefore = diffMs / (1000 * 60 * 60);
+      return hoursBefore >= 24;
+    }
+
     function renderReservations(reservations) {
       const listEl = document.getElementById("reservations-list");
       if (!listEl) return;
@@ -1296,7 +1362,9 @@
         const item = document.createElement("div");
         item.className = "reservation-item";
 
-        const date = formatReservationDate(r.date || r.datetime || r.start_time);
+        const startTimeIso = r.start_time || r.datetime || null;
+
+        const date = formatReservationDate(r.date || startTimeIso);
         const plageHeure = formatReservationHoursFromReservation(r);
 
         const boxName = r.box_name || r.box || r.box_id || "";
@@ -1319,6 +1387,34 @@
         if (boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
+        // bloc remboursement
+        let refundHtml = "";
+        const hasValidStart =
+          !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
+        const isInFuture =
+          hasValidStart && new Date(startTimeIso).getTime() > Date.now();
+
+        if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
+          if (isRefundPossible(startTimeIso)) {
+            refundHtml = `
+              <div class="reservation-refund-row">
+                <span>Remboursement possible jusqu'à 24h avant la séance.</span>
+                <button class="reservation-refund-btn"
+                        data-reservation-id="${r.id}"
+                        data-start-time="${startTimeIso}">
+                  Demander un remboursement
+                </button>
+              </div>
+            `;
+          } else {
+            refundHtml = `
+              <div class="reservation-refund-row">
+                <span>Le remboursement n'est plus possible (moins de 24h avant la séance).</span>
+              </div>
+            `;
+          }
+        }
+
         item.innerHTML = `
           <div class="reservation-main-row">
             <div>
@@ -1332,6 +1428,7 @@
               ${statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : ""}
             </div>
           </div>
+          ${refundHtml}
         `;
 
         listEl.appendChild(item);
@@ -1341,7 +1438,13 @@
     async function loadReservations() {
       const token = localStorage.getItem("token");
       const listEl = document.getElementById("reservations-list");
+      const refundMsgEl = document.getElementById("refund-message");
       if (!listEl) return;
+
+      if (refundMsgEl) {
+        refundMsgEl.textContent = "";
+        refundMsgEl.classList.remove("ok");
+      }
 
       if (!token) {
         setReservationsNotLogged();
@@ -1557,13 +1660,90 @@
         logoutBtn.addEventListener("click", () => {
           localStorage.removeItem("token");
           const msgEl = document.getElementById("account-message");
+          const refundMsgEl = document.getElementById("refund-message");
           if (msgEl) {
             msgEl.textContent = "Vous avez été déconnecté.";
             msgEl.classList.remove("ok");
           }
+          if (refundMsgEl) {
+            refundMsgEl.textContent = "";
+            refundMsgEl.classList.remove("ok");
+          }
           showNotLoggedState();
         });
       }
+    }
+
+    // Gestion du clic sur "Demander un remboursement"
+    function initRefundButtons() {
+      const listEl = document.getElementById("reservations-list");
+      const refundMsgEl = document.getElementById("refund-message");
+      if (!listEl) return;
+
+      listEl.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".reservation-refund-btn");
+        if (!btn) return;
+
+        const reservationId = btn.getAttribute("data-reservation-id");
+        const startTime = btn.getAttribute("data-start-time");
+        const token = localStorage.getItem("token");
+
+        if (!refundMsgEl) return;
+
+        refundMsgEl.classList.remove("ok");
+        refundMsgEl.textContent = "";
+
+        if (!token) {
+          refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement.";
+          return;
+        }
+
+        if (!reservationId) {
+          refundMsgEl.textContent = "Réservation introuvable.";
+          return;
+        }
+
+        // Double sécurité côté front
+        if (!isRefundPossible(startTime)) {
+          refundMsgEl.textContent = "Le remboursement n'est plus possible (moins de 24h avant la séance).";
+          return;
+        }
+
+        btn.disabled = true;
+        refundMsgEl.textContent = "Demande de remboursement en cours...";
+
+        try {
+          const res = await fetch(API_BASE + "/api/refund-reservation", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({ reservationId }),
+          });
+
+          let data = {};
+          try {
+            data = await res.json();
+          } catch (_) {}
+
+          if (!res.ok || data.success !== true) {
+            btn.disabled = false;
+            refundMsgEl.textContent = data.error || "Impossible de procéder au remboursement.";
+            return;
+          }
+
+          refundMsgEl.textContent = "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
+          refundMsgEl.classList.add("ok");
+
+          // On recharge les réservations pour voir le statut mis à jour
+          loadReservations();
+        } catch (err) {
+          console.error(err);
+          btn.disabled = false;
+          refundMsgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+        }
+      });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1585,6 +1765,7 @@
       updateCartIcon();
       initLoginForm();
       initLogout();
+      initRefundButtons();
       loadProfile();
     });
   </script>
