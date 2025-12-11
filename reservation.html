@@ -561,7 +561,7 @@
       width: 100%;
       min-width: 540px;
       color: #F9FAFB;
-      table-layout: fixed;
+      table-layout: fixed; /* colonnes harmonisées */
     }
 
     th, td {
@@ -596,11 +596,12 @@
       z-index: 1;
     }
 
-    /* Harmonisation des colonnes */
+    /* largeur colonnes : heure plus fine, 2 box égales */
     th:nth-child(1),
     td:nth-child(1) {
       width: 18%;
     }
+
     th:nth-child(2),
     td:nth-child(2),
     th:nth-child(3),
@@ -1273,8 +1274,7 @@
     }
 
     let bookedIndex = {};
-    let selectedPersons = 2;
-    let personsManuallyChanged = false;
+    let selectedPersons = 2; // par défaut, sera écrasé par l'URL ou le select
     const BOXES = [
       { id: 1, name: "Nuit étoilée" },
       { id: 2, name: "Ambiance Sunset" }
@@ -1407,12 +1407,11 @@
 
           const booked = isSlotBooked(box.id, hour);
 
-          // Si on veut empêcher une session déjà commencée aujourd'hui
+          // Empêcher une session déjà commencée aujourd'hui
           let isPastToday = false;
           if (isToday) {
             const nowMinutes = now.getHours() * 60 + now.getMinutes();
             const slotStartMinutes = hour * 60;
-            // on bloque si l'heure de départ est passée
             isPastToday = slotStartMinutes <= nowMinutes;
           }
 
@@ -1459,56 +1458,7 @@
             } else {
               td.classList.add("slot-free");
               td.onclick = function () {
-                if (!personsManuallyChanged) {
-                  const wantsChange = window.confirm(
-                    "Le nombre de personnes est actuellement réglé sur " +
-                    selectedPersons +
-                    " (facturation minimale 2 personnes).\n\n" +
-                    "Si tu viens seul(e), tu peux mettre 1 personne (tu payeras automatiquement pour 2).\n" +
-                    "Les box peuvent accueillir jusqu’à 8 personnes.\n\n" +
-                    "Souhaites-tu ajuster le nombre de personnes avant de réserver cette session de 1h30 ?"
-                  );
-                  if (wantsChange) {
-                    const saisie = window.prompt(
-                      "Nombre de personnes pour cette séance (entre 1 et 8) :",
-                      String(selectedPersons || 1)
-                    );
-                    if (saisie !== null) {
-                      const n = parseInt(saisie, 10);
-                      if (!isNaN(n)) {
-                        let val = n;
-                        if (val < 1) val = 1;
-                        if (val > 8) {
-                          val = 8;
-                          alert("Les box peuvent accueillir 8 personnes maximum.");
-                        }
-                        selectedPersons = val;
-                        personsManuallyChanged = true;
-
-                        const personsSelectEl = document.getElementById("persons-select");
-                        const personsIndicatorEl = document.getElementById("persons-indicator");
-                        if (personsSelectEl) personsSelectEl.value = String(val);
-                        if (personsIndicatorEl) {
-                          personsIndicatorEl.textContent =
-                            "– " + val + " personne" + (val > 1 ? "s" : "") + " (facturation min. 2)";
-                        }
-
-                        const parts2 = isoDate.split("-");
-                        const d2 = new Date(
-                          parseInt(parts2[0], 10),
-                          parseInt(parts2[1], 10) - 1,
-                          parseInt(parts2[2], 10)
-                        );
-                        buildPlanningTable(d2);
-                        return;
-                      } else {
-                        alert("Veuillez entrer un nombre de personnes valide (entre 1 et 8).");
-                        return;
-                      }
-                    }
-                  }
-                }
-
+                // ➜ plus de pop-up confirm : on prend directement selectedPersons
                 const personsForSlot = selectedPersons || 1;
                 const priceForSlot = getSlotPrice(date, hour, personsForSlot);
 
@@ -1560,42 +1510,39 @@
 
       updateCartIcon();
 
-      const dateInput        = document.getElementById("date-input");
-      const loadButton       = document.getElementById("load-button");
-      const personsSelect    = document.getElementById("persons-select");
+      const dateInput = document.getElementById("date-input");
+      const loadButton = document.getElementById("load-button");
+      const personsSelect = document.getElementById("persons-select");
       const personsIndicator = document.getElementById("persons-indicator");
 
-      const today    = new Date();
+      const today = new Date();
       const isoToday = toLocalYMD(today);
 
-      // Récupération des paramètres depuis l'URL (?date=...&people=...)
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlDate   = urlParams.get("date");
-      const urlPeople = urlParams.get("people");
+      // === récupération paramètres URL (?date=...&people=...) ===
+      const params = new URLSearchParams(window.location.search);
+      const urlDate = params.get("date");
+      const urlPeople = params.get("people");
 
-      // ----- Initialisation de la date -----
       if (dateInput) {
-        let initialDate = isoToday;
-        if (urlDate && urlDate >= isoToday) {
-          initialDate = urlDate;
-        }
-        dateInput.value = initialDate;
-        dateInput.min   = isoToday; // jamais avant aujourd’hui
-      }
+        dateInput.min = isoToday;
 
-      // ----- Initialisation du nombre de personnes -----
-      let initialPersons = 2; // défaut
-      if (urlPeople) {
-        const n = parseInt(urlPeople, 10);
-        if (!isNaN(n) && n >= 1 && n <= 8) {
-          initialPersons = n;
+        if (urlDate && urlDate >= isoToday) {
+          dateInput.value = urlDate;
+        } else {
+          dateInput.value = isoToday;
         }
       }
 
       if (personsSelect) {
+        let initialPersons = 2;
+        if (urlPeople) {
+          const n = parseInt(urlPeople, 10);
+          if (!isNaN(n) && n >= 1 && n <= 8) {
+            initialPersons = n;
+          }
+        }
+        selectedPersons = initialPersons;
         personsSelect.value = String(initialPersons);
-        selectedPersons     = initialPersons;
-
         if (personsIndicator) {
           personsIndicator.textContent =
             "– " + initialPersons + " personne" + (initialPersons > 1 ? "s" : "") +
@@ -1607,7 +1554,6 @@
           if (isNaN(n) || n < 1) n = 1;
           if (n > 8) n = 8;
           selectedPersons = n;
-          personsManuallyChanged = true;
 
           if (personsIndicator) {
             personsIndicator.textContent =
@@ -1640,11 +1586,11 @@
           parseInt(parts[2], 10)
         );
 
-        // 1. contexte (week-end / vacances)
+        // 1. on récupère le contexte (week-end / vacances)
         await checkDateContext(iso);
-        // 2. réservations existantes
+        // 2. on charge les réservations existantes
         await fetchReservationsForDate(iso);
-        // 3. construction du tableau
+        // 3. on construit le tableau avec les bons prix
         buildPlanningTable(theDate);
         const msgEl = document.getElementById("message");
         if (msgEl) msgEl.textContent = "";
