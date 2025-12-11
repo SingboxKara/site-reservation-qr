@@ -2244,14 +2244,14 @@
       const dateLabel = first.date ? formatDateFr(first.date) : "";
       const boxName = first.boxName || first.box || first.boxId || "Box privée";
 let hourText = "";
-if (typeof first.hour === "number") {
-  const start = first.hour;
+if (firstItem && typeof firstItem.hour === "number") {
+  const start = firstItem.hour;
   const endHour = (start + 1) % 24; // fin à +1h30
 
-  const startStr = String(start).padStart(2,"0") + "h00";
-  const endStr   = String(endHour).padStart(2,"0") + "h30";
+  const startStr = String(start).padStart(2, "0") + "h00";
+  const endStr   = String(endHour).padStart(2, "0") + "h30";
 
-  hourText = `${startStr} – ${endStr}`; // ex : 19h00 – 20h30
+  hourText = `${startStr} – ${endStr}`; // ex: 19h00 – 20h30
 }
 
       const extraCount = panier.length - 1;
@@ -2592,14 +2592,14 @@ if (typeof first.hour === "number") {
           ? (firstItem.boxName || firstItem.box || firstItem.boxId)
           : "Box privée";
 let hourText = "";
-if (typeof first.hour === "number") {
-  const start = first.hour;
+if (firstItem && typeof firstItem.hour === "number") {
+  const start = firstItem.hour;
   const endHour = (start + 1) % 24; // fin à +1h30
 
-  const startStr = String(start).padStart(2,"0") + "h00";
-  const endStr   = String(endHour).padStart(2,"0") + "h30";
+  const startStr = String(start).padStart(2, "0") + "h00";
+  const endStr   = String(endHour).padStart(2, "0") + "h30";
 
-  hourText = `${startStr} – ${endStr}`; // ex : 19h00 – 20h30
+  hourText = `${startStr} – ${endStr}`; // ex: 19h00 – 20h30
 }
 
         const prenomValue = document.getElementById("prenom")
