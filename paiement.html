@@ -2749,11 +2749,14 @@
         }
 
         // 5) On vide le panier
-        savePanier([]);
+ savePanier([]);
         localStorage.removeItem("promoCode");
         currentPromo = null;
         updateCartIcon();
-        updateOrderSummaryFromPanier();
+
+        // On cache explicitement l'état panier vide pour la page Merci
+        const emptyCartState = document.getElementById("empty-cart-state");
+        if (emptyCartState) emptyCartState.style.display = "none";
 
         // 6) Affichage de la page Merci
         if (checkoutLayout && thankyouSection) {
