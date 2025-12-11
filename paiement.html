@@ -2330,19 +2330,16 @@
 
         if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) return;
 
-        // Toujours afficher le bloc, même si l'utilisateur n'est pas connecté
         loyaltyBlock.style.display = "block";
 
         const token = localStorage.getItem("token");
 
         if (!token) {
-          // Pas connecté : on affiche 0 point et on invite à se connecter
           loyaltyPointsEl.textContent = "0";
           loyaltyMsg.style.color = "#FCA5A5";
           loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
           useLoyaltyBtn.style.display = "none";
         } else {
-          // Utilisateur connecté : on va chercher ses points
           const points = await fetchUserPoints();
 
           if (points !== null) {
@@ -2382,8 +2379,12 @@
             return;
           }
 
-          // On n'appelle plus l'API ici : on active juste le mode "séance gratuite"
-          currentPromo = { type: "free", code: "LOYALTY100" };
+          // ✅ Correction : on crée un “promo” fidélité considéré comme valide
+          currentPromo = {
+            type: "free",
+            code: "LOYALTY100",
+            is_active: true
+          };
           loyaltyUsed = true;
           updateOrderSummaryFromPanier();
 
@@ -2463,7 +2464,6 @@
         });
       }
 
-      // Vérification et application du code promo via Supabase
       async function applyPromo(silent = false) {
         if (!promoInput || !promoMsg) return;
         const code = promoInput.value.trim().toUpperCase();
@@ -2556,7 +2556,6 @@
         const stored = localStorage.getItem("promoCode");
         if (stored) {
           promoInput.value = stored;
-          // On ré-applique silencieusement le code stocké
           applyPromo(true);
         }
       }
@@ -2569,7 +2568,6 @@
       const successEl     = document.getElementById("checkout-success");
       const billingForm   = document.getElementById("billing-form");
 
-      // éléments de la page Merci
       const checkoutLayout = document.querySelector(".checkout-layout");
       const thankyouSection = document.getElementById("thankyou-section");
       const thankyouName = document.getElementById("thankyou-name");
@@ -2580,6 +2578,209 @@
       const thankyouRef = document.getElementById("thankyou-ref");
       const thankyouQrContainer = document.getElementById("thankyou-qr");
       const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
+
+      // ---------- helper commun après paiement OU gratuit ----------
+      const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
+        const panierBeforeClear = getPanier();
+        const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+        const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+        const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
+          ? (firstItem.boxName || firstItem.box || firstItem.boxId)
+          : "Box privée";
+        let hourText = "";
+        if (firstItem && typeof firstItem.hour === "number") {
+          const start = firstItem.hour;
+          const end = (firstItem.hour + 1) % 24;
+          hourText = String(start).padStart(2,"0") + "h – " + String(end).padStart(2,"0") + "h";
+        }
+
+        const prenomValue = document.getElementById("prenom")
+          ? document.getElementById("prenom").value.trim()
+          : "";
+        if (thankyouName) thankyouName.textContent = prenomValue;
+
+        if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
+        if (thankyouTime) thankyouTime.textContent = hourText || "-";
+        if (thankyouBox) thankyouBox.textContent = boxName;
+        if (thankyouTotal) {
+          const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
+          thankyouTotal.textContent = totalLabel;
+        }
+
+        const headerTitle = document.querySelector(".checkout-header h1");
+        const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
+        if (headerTitle) {
+          headerTitle.textContent = "Merci pour votre réservation 🎉";
+        }
+        if (headerSubtitle) {
+          headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
+        }
+
+        let reservationId = null;
+
+        // 2) Confirmation de la réservation côté backend
+        try {
+          const token = localStorage.getItem("token");
+          const headers = {
+            "Content-Type": "application/json",
+          };
+          if (token) {
+            headers["Authorization"] = "Bearer " + token;
+          }
+
+          const body = {
+            panier: getPanier(),
+            customer: {
+              prenom: document.getElementById("prenom").value.trim(),
+              nom: document.getElementById("nom").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              telephone: document.getElementById("telephone").value.trim(),
+              pays: document.getElementById("pays").value,
+              adresse: document.getElementById("adresse").value.trim(),
+              complement: document.getElementById("complement").value.trim(),
+              cp: document.getElementById("cp").value.trim(),
+              ville: document.getElementById("ville").value.trim(),
+              naissance: document.getElementById("naissance").value
+            },
+            promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+            loyaltyUsed,
+            isFree: !!isFree
+          };
+          if (!isFree && paymentIntentId) {
+            body.paymentIntentId = paymentIntentId;
+          }
+
+          const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(body)
+          });
+
+          const confirmJson = await confirmRes.json().catch(() => ({}));
+          if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+            reservationId = confirmJson.reservations[0].id;
+            if (thankyouRef) {
+              thankyouRef.textContent = reservationId;
+            }
+          } else {
+            if (errorEl) {
+              errorEl.textContent =
+                confirmJson.error ||
+                "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
+            }
+          }
+        } catch (e) {
+          console.error("Erreur confirm-reservation :", e);
+        }
+
+        // 3) CAUTION 250€ : création de l'empreinte puis confirmCardPayment
+        try {
+          const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              reservationId,
+              customer: {
+                prenom: document.getElementById("prenom").value.trim(),
+                nom: document.getElementById("nom").value.trim(),
+                email: document.getElementById("email").value.trim()
+              }
+            })
+          });
+
+          const depositJson = await depositRes.json();
+          if (depositRes.ok && depositJson && depositJson.clientSecret) {
+            const depositResult = await stripe.confirmCardPayment(depositJson.clientSecret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: {
+                  name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
+                  email: document.getElementById("email").value.trim(),
+                }
+              }
+            });
+
+            if (depositResult.error) {
+              console.error("Erreur caution 250€ :", depositResult.error);
+              if (errorEl) {
+                errorEl.textContent =
+                  (isFree
+                    ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
+                    : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : "
+                  ) +
+                  depositResult.error.message +
+                  ". Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+              }
+            } else if (depositResult.paymentIntent && depositResult.paymentIntent.status === "requires_capture") {
+              console.log("Caution 250€ préautorisée, PaymentIntent:", depositResult.paymentIntent.id);
+            }
+          } else {
+            console.error("Erreur création empreinte de caution :", depositJson);
+            if (errorEl) {
+              errorEl.textContent =
+                (isFree
+                  ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
+                  : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée."
+                ) +
+                " Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+            }
+          }
+        } catch (e) {
+          console.error("Erreur inattendue lors de la caution :", e);
+          if (errorEl) {
+            errorEl.textContent =
+              (isFree
+                ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
+                : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution."
+              ) +
+              " Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+          }
+        }
+
+        // 4) Newsletter
+        if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
+          try {
+            await window.supabaseClient
+              .from("newsletter_subscriptions")
+              .insert({ email: document.getElementById("email").value.trim() });
+          } catch (e) {
+            console.error("Erreur inscription newsletter :", e);
+          }
+        }
+
+        // 5) On vide le panier
+        savePanier([]);
+        localStorage.removeItem("promoCode");
+        currentPromo = null;
+        updateCartIcon();
+        updateOrderSummaryFromPanier();
+
+        // 6) Affichage de la page Merci
+        if (checkoutLayout && thankyouSection) {
+          checkoutLayout.style.display = "none";
+          thankyouSection.style.display = "block";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // 7) Génération du QR code si on a une référence
+        if (reservationId && thankyouQrContainer && window.QRCode) {
+          try {
+            thankyouQrContainer.innerHTML = "";
+            new QRCode(thankyouQrContainer, {
+              text: String(reservationId),
+              width: 110,
+              height: 110
+            });
+            if (thankyouQrFallback) {
+              thankyouQrFallback.style.display = "none";
+            }
+          } catch (e) {
+            console.error("Erreur génération QR code :", e);
+          }
+        } else {
+          console.warn("QR code non généré : reservationId ou conteneur manquant.");
+        }
+      };
 
       if (submitBtn) {
         submitBtn.addEventListener("click", async () => {
@@ -2618,18 +2819,7 @@
             return;
           }
 
-          const prenom     = document.getElementById("prenom").value.trim();
-          const nom        = document.getElementById("nom").value.trim();
-          const email      = document.getElementById("email").value.trim();
-          const telephone  = document.getElementById("telephone").value.trim();
-          const pays       = document.getElementById("pays").value;
-          const adresse    = document.getElementById("adresse").value.trim();
-          const complement = document.getElementById("complement").value.trim();
-          const cp         = document.getElementById("cp").value.trim();
-          const ville      = document.getElementById("ville").value.trim();
-          const naissance  = document.getElementById("naissance").value;
-
-          const age = calculateAgeFromBirthdate(naissance);
+          const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
           if (!age || age < 18) {
             if (errorEl) {
               errorEl.textContent = "La réservation doit être faite par un adulte. Merci de renseigner une date de naissance valide.";
@@ -2640,18 +2830,14 @@
           if (errorEl) errorEl.textContent = "";
           if (successEl) successEl.textContent = "";
 
-          const customer = {
-            prenom, nom, email, telephone,
-            pays, adresse, complement, cp, ville, naissance,
-          };
-
           // Recalcule les totaux juste avant paiement
           updateOrderSummaryFromPanier();
           const promoCode =
             currentPromo && isPromoCurrentlyValid(currentPromo)
               ? currentPromo.code
               : null;
-          const finalAmountCents = 
+
+          const finalAmountCents =
             (currentPromo && currentPromo.type === "free")
               ? 0
               : Math.round((currentTotals.finalTotalTTC || 0) * 100);
@@ -2661,13 +2847,24 @@
           submitBtn.textContent = "Paiement en cours...";
 
           try {
-            // 1) Paiement de la session
+            // 1) Création PaymentIntent OU séance gratuite côté backend
             const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 panier,
-                customer,
+                customer: {
+                  prenom: document.getElementById("prenom").value.trim(),
+                  nom: document.getElementById("nom").value.trim(),
+                  email: document.getElementById("email").value.trim(),
+                  telephone: document.getElementById("telephone").value.trim(),
+                  pays: document.getElementById("pays").value,
+                  adresse: document.getElementById("adresse").value.trim(),
+                  complement: document.getElementById("complement").value.trim(),
+                  cp: document.getElementById("cp").value.trim(),
+                  ville: document.getElementById("ville").value.trim(),
+                  naissance: document.getElementById("naissance").value
+                },
                 promoCode,
                 finalAmountCents,
                 loyaltyUsed
@@ -2675,7 +2872,7 @@
             });
 
             const json = await res.json();
-            if (!res.ok || !json.clientSecret) {
+            if (!res.ok) {
               const msg = json.error || "Erreur lors de la création du paiement.";
               if (errorEl) {
                 errorEl.textContent = msg;
@@ -2690,14 +2887,35 @@
               return;
             }
 
+            // Cas 1 : séance gratuite (montant 0€)
+            if (json.isFree) {
+              if (successEl) {
+                successEl.textContent = "Réservation gratuite validée ✔️";
+              }
+              await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalLabel;
+              return;
+            }
+
+            // Cas 2 : paiement Stripe normal
+            if (!json.clientSecret) {
+              if (errorEl) {
+                errorEl.textContent = "Réponse inattendue du serveur de paiement.";
+              }
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalLabel;
+              return;
+            }
+
             const clientSecret = json.clientSecret;
 
             const result = await stripe.confirmCardPayment(clientSecret, {
               payment_method: {
                 card: cardElement,
                 billing_details: {
-                  name: prenom + " " + nom,
-                  email: email,
+                  name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
+                  email: document.getElementById("email").value.trim(),
                 }
               }
             });
@@ -2713,173 +2931,10 @@
               if (successEl) {
                 successEl.textContent = "Paiement accepté ✔️";
               }
-
-              // Préparation des données pour la page Merci
-              const panierBeforeClear = getPanier();
-              const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
-              const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
-              const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
-                ? (firstItem.boxName || firstItem.box || firstItem.boxId)
-                : "Box privée";
-              let hourText = "";
-              if (firstItem && typeof firstItem.hour === "number") {
-                const start = firstItem.hour;
-                const end = (firstItem.hour + 1) % 24;
-                hourText = String(start).padStart(2,"0") + "h – " + String(end).padStart(2,"0") + "h";
-              }
-
-              if (thankyouName) thankyouName.textContent = prenom || "";
-              if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
-              if (thankyouTime) thankyouTime.textContent = hourText || "-";
-              if (thankyouBox) thankyouBox.textContent = boxName;
-              if (thankyouTotal) {
-                const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
-                thankyouTotal.textContent = totalLabel;
-              }
-
-              const headerTitle = document.querySelector(".checkout-header h1");
-              const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
-              if (headerTitle) {
-                headerTitle.textContent = "Merci pour votre réservation 🎉";
-              }
-              if (headerSubtitle) {
-                headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
-              }
-
-              let reservationId = null;
-
-              // 2) Confirmation de la réservation côté backend
-              try {
-                const token = localStorage.getItem("token");
-                const headers = {
-                  "Content-Type": "application/json",
-                };
-                if (token) {
-                  headers["Authorization"] = "Bearer " + token;
-                }
-
-                const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
-                  method: "POST",
-                  headers,
-                  body: JSON.stringify({
-                    panier,
-                    customer,
-                    promoCode,
-                    paymentIntentId: result.paymentIntent.id,
-                    loyaltyUsed
-                  })
-                });
-
-                const confirmJson = await confirmRes.json().catch(() => ({}));
-                if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
-                  reservationId = confirmJson.reservations[0].id;
-                  if (thankyouRef) {
-                    thankyouRef.textContent = reservationId;
-                  }
-                }
-              } catch (e) {
-                // on ne bloque pas l'affichage client si la notif backend échoue
-              }
-
-              // 3) CAUTION 250€ : création de l'empreinte puis confirmCardPayment
-              try {
-                const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    reservationId,
-                    customer
-                  })
-                });
-
-                const depositJson = await depositRes.json();
-                if (depositRes.ok && depositJson && depositJson.clientSecret) {
-                  const depositResult = await stripe.confirmCardPayment(depositJson.clientSecret, {
-                    payment_method: {
-                      card: cardElement,
-                      billing_details: {
-                        name: prenom + " " + nom,
-                        email: email,
-                      }
-                    }
-                  });
-
-                  if (depositResult.error) {
-                    console.error("Erreur caution 250€ :", depositResult.error);
-                    if (errorEl) {
-                      errorEl.textContent =
-                        "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : " +
-                        depositResult.error.message +
-                        ". Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
-                    }
-                  } else if (depositResult.paymentIntent && depositResult.paymentIntent.status === "requires_capture") {
-                    // OK : empreinte créée, en attente de capture dans Stripe
-                    console.log("Caution 250€ préautorisée, PaymentIntent:", depositResult.paymentIntent.id);
-                  }
-                } else {
-                  console.error("Erreur création empreinte de caution :", depositJson);
-                  if (errorEl) {
-                    errorEl.textContent =
-                      "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
-                  }
-                }
-              } catch (e) {
-                console.error("Erreur inattendue lors de la caution :", e);
-                if (errorEl) {
-                  errorEl.textContent =
-                    "Votre séance est payée, mais une erreur est survenue lors de la création de la caution. Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
-                }
-              }
-
-              // 4) Newsletter
-              if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
-                try {
-                  await window.supabaseClient
-                    .from("newsletter_subscriptions")
-                    .insert({ email });
-                } catch (e) {
-                  console.error("Erreur inscription newsletter :", e);
-                }
-              }
-
-              // 5) On vide le panier
-              savePanier([]);
-              localStorage.removeItem("promoCode");
-              currentPromo = null;
-              updateCartIcon();
-              updateOrderSummaryFromPanier();
-
-              // 6) Affichage de la page Merci
-              if (checkoutLayout && thankyouSection) {
-                checkoutLayout.style.display = "none";
-                thankyouSection.style.display = "block";
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }
-
-              // 7) Génération du QR code si on a une référence
-              if (reservationId && thankyouQrContainer && window.QRCode) {
-                try {
-                  // On nettoie le conteneur au cas où
-                  thankyouQrContainer.innerHTML = "";
-
-                  // On encode EXACTEMENT la même chose que dans l'email : l'ID de la réservation
-                  new QRCode(thankyouQrContainer, {
-                    text: String(reservationId),  // même contenu que qrText = reservation.id côté backend
-                    width: 110,
-                    height: 110
-                  });
-
-                  // On retire le texte "Disponible bientôt" une fois le QR généré
-                  if (thankyouQrFallback) {
-                    thankyouQrFallback.style.display = "none";
-                  }
-                } catch (e) {
-                  console.error("Erreur génération QR code :", e);
-                }
-              } else {
-                console.warn("QR code non généré : reservationId ou conteneur manquant.");
-              }
-
+              await processReservationAndDeposit({
+                isFree: false,
+                paymentIntentId: result.paymentIntent.id
+              });
             }
 
           } catch (err) {
