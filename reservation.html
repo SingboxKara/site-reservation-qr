@@ -561,7 +561,7 @@
       width: 100%;
       min-width: 540px;
       color: #F9FAFB;
-      table-layout: fixed; /* HARMONISATION COLONNES : largeur forcée */
+      table-layout: fixed;
     }
 
     th, td {
@@ -596,20 +596,16 @@
       z-index: 1;
     }
 
-    /* HARMONISATION COLONNES
-       - 1ère colonne (heure) plus étroite
-       - 2ème et 3ème colonnes (box) même largeur
-    */
+    /* Harmonisation des colonnes */
     th:nth-child(1),
     td:nth-child(1) {
-      width: 18%;   /* colonne heure */
+      width: 18%;
     }
-
     th:nth-child(2),
     td:nth-child(2),
     th:nth-child(3),
     td:nth-child(3) {
-      width: 41%;   /* colonnes box */
+      width: 41%;
     }
 
     .slot-cell {
@@ -1564,16 +1560,62 @@
 
       updateCartIcon();
 
-      const dateInput = document.getElementById("date-input");
-      const loadButton = document.getElementById("load-button");
-      const personsSelect = document.getElementById("persons-select");
+      const dateInput        = document.getElementById("date-input");
+      const loadButton       = document.getElementById("load-button");
+      const personsSelect    = document.getElementById("persons-select");
       const personsIndicator = document.getElementById("persons-indicator");
 
-      const today = new Date();
+      const today    = new Date();
       const isoToday = toLocalYMD(today);
+
+      // Récupération des paramètres depuis l'URL (?date=...&people=...)
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlDate   = urlParams.get("date");
+      const urlPeople = urlParams.get("people");
+
+      // ----- Initialisation de la date -----
       if (dateInput) {
-        dateInput.value = isoToday;
-        dateInput.min = isoToday; // 🔒 pas de date avant aujourd’hui
+        let initialDate = isoToday;
+        if (urlDate && urlDate >= isoToday) {
+          initialDate = urlDate;
+        }
+        dateInput.value = initialDate;
+        dateInput.min   = isoToday; // jamais avant aujourd’hui
+      }
+
+      // ----- Initialisation du nombre de personnes -----
+      let initialPersons = 2; // défaut
+      if (urlPeople) {
+        const n = parseInt(urlPeople, 10);
+        if (!isNaN(n) && n >= 1 && n <= 8) {
+          initialPersons = n;
+        }
+      }
+
+      if (personsSelect) {
+        personsSelect.value = String(initialPersons);
+        selectedPersons     = initialPersons;
+
+        if (personsIndicator) {
+          personsIndicator.textContent =
+            "– " + initialPersons + " personne" + (initialPersons > 1 ? "s" : "") +
+            " (facturation min. 2)";
+        }
+
+        personsSelect.addEventListener("change", () => {
+          let n = parseInt(personsSelect.value, 10);
+          if (isNaN(n) || n < 1) n = 1;
+          if (n > 8) n = 8;
+          selectedPersons = n;
+          personsManuallyChanged = true;
+
+          if (personsIndicator) {
+            personsIndicator.textContent =
+              "– " + n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
+          }
+
+          refreshPlanning();
+        });
       }
 
       async function refreshPlanning() {
@@ -1592,43 +1634,20 @@
         }
 
         const parts = iso.split("-");
-        theDate = new Date(
+        const theDate = new Date(
           parseInt(parts[0], 10),
           parseInt(parts[1], 10) - 1,
           parseInt(parts[2], 10)
         );
 
-        // 1. on récupère le contexte (week-end / vacances)
+        // 1. contexte (week-end / vacances)
         await checkDateContext(iso);
-        // 2. on charge les réservations existantes
+        // 2. réservations existantes
         await fetchReservationsForDate(iso);
-        // 3. on construit le tableau avec les bons prix
+        // 3. construction du tableau
         buildPlanningTable(theDate);
         const msgEl = document.getElementById("message");
         if (msgEl) msgEl.textContent = "";
-      }
-
-      if (personsSelect) {
-        personsSelect.value = "2";
-        selectedPersons = 2;
-        if (personsIndicator) {
-          personsIndicator.textContent = "– 2 personnes (facturation min. 2)";
-        }
-
-        personsSelect.addEventListener("change", () => {
-          let n = parseInt(personsSelect.value, 10);
-          if (isNaN(n) || n < 1) n = 1;
-          if (n > 8) n = 8;
-          selectedPersons = n;
-          personsManuallyChanged = true;
-
-          if (personsIndicator) {
-            personsIndicator.textContent =
-              "– " + n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
-          }
-
-          refreshPlanning();
-        });
       }
 
       if (loadButton) {
