@@ -11,7 +11,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  />
+  >
 
   <style>
     :root{
@@ -121,7 +121,10 @@
       cursor:pointer;
       box-shadow:0 0 0 1px rgba(248,250,251,0.1), 0 16px 40px rgba(0,0,0,0.9);
     }
-    .btn-primary[disabled]{opacity:.6;cursor:not-allowed}
+    .btn-primary:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+    }
     .status-message{font-size:12px;margin-top:.4rem;min-height:1.2em}
     .status-message.ok{color:#4ade80}
     .status-message.error{color:#f97373}
@@ -235,40 +238,22 @@
       <h1>Accès admin Singbox</h1>
       <p>Connexion sécurisée (Supabase Auth). Ton compte doit être admin côté DB.</p>
 
-      <!-- IMPORTANT: form + anti-autofill -->
-      <form id="login-form" autocomplete="off">
-        <!-- champs “piège” pour calmer Chrome autofill -->
-        <input type="text" name="fake_user" autocomplete="username" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" />
-        <input type="password" name="fake_pass" autocomplete="new-password" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" />
+      <div class="login-field">
+        <label for="admin-email">Email</label>
+        <!-- Pour éviter la “prévisualisation”/auto-remplissage, on coupe l’autocomplete -->
+        <input type="email" id="admin-email" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Email admin" />
+      </div>
 
-        <div class="login-field">
-          <label for="admin-email">Email</label>
-          <input
-            type="email"
-            id="admin-email"
-            name="sb_admin_email"
-            placeholder="Email admin"
-            autocomplete="off"
-            inputmode="email"
-          />
-        </div>
+      <div class="login-field">
+        <label for="admin-password">Mot de passe</label>
+        <input type="password" id="admin-password" autocomplete="current-password" />
+      </div>
 
-        <div class="login-field">
-          <label for="admin-password">Mot de passe</label>
-          <input
-            type="password"
-            id="admin-password"
-            name="sb_admin_password"
-            autocomplete="new-password"
-          />
-        </div>
+      <div id="login-error" class="status-message"></div>
 
-        <div id="login-error" class="status-message"></div>
-
-        <div class="login-actions">
-          <button id="login-button" class="btn-primary" type="submit">Se connecter</button>
-        </div>
-      </form>
+      <div class="login-actions">
+        <button id="login-button" class="btn-primary" type="button">Se connecter</button>
+      </div>
     </div>
   </div>
 
@@ -286,16 +271,16 @@
         </div>
         <div class="admin-header-right">
           <span id="user-badge" class="deposit-badge">Connecté : --</span>
-          <button id="logout-button" type="button">Se déconnecter</button>
+          <button id="logout-button">Se déconnecter</button>
         </div>
       </header>
 
       <div class="tabs">
-        <button class="tab-button active" data-tab="tab-dashboard" type="button">Dashboard</button>
-        <button class="tab-button" data-tab="tab-actualites" type="button">Actualités</button>
-        <button class="tab-button" data-tab="tab-reservations" type="button">Réservations</button>
-        <button class="tab-button" data-tab="tab-clients" type="button">Clients</button>
-        <button class="tab-button" data-tab="tab-promo" type="button">Codes promo</button>
+        <button class="tab-button active" data-tab="tab-dashboard">Dashboard</button>
+        <button class="tab-button" data-tab="tab-actualites">Actualités</button>
+        <button class="tab-button" data-tab="tab-reservations">Réservations</button>
+        <button class="tab-button" data-tab="tab-clients">Clients</button>
+        <button class="tab-button" data-tab="tab-promo">Codes promo</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -445,7 +430,7 @@
             </div>
             <div class="form-field">
               <label for="filter-res-status">Statut</label>
-              <select id="filter-resC>
+              <select id="filter-res-status">
                 <option value="">Tous</option>
                 <option value="confirmed">Confirmée</option>
                 <option value="pending">En attente</option>
@@ -617,6 +602,7 @@
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // ⚠️ OK d'exposer l'ANON KEY côté front
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
@@ -629,24 +615,28 @@
       "promo": "Promo"
     };
 
-    function $(id){ return document.getElementById(id); }
-
     function showLogin() {
-      const ls = $("login-screen"), as = $("admin-screen");
-      if (ls) ls.style.display = "flex";
-      if (as) as.style.display = "none";
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("admin-screen").style.display = "none";
     }
     function showAdmin() {
-      const ls = $("login-screen"), as = $("admin-screen");
-      if (ls) ls.style.display = "none";
-      if (as) as.style.display = "block";
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
     }
 
     function setMsg(id, text, ok=false) {
-      const el = $(id);
+      const el = document.getElementById(id);
       if (!el) return;
       el.textContent = text || "";
       el.className = "status-message" + (text ? (ok ? " ok" : " error") : "");
+    }
+
+    function withTimeout(promise, ms, label = "Opération") {
+      let timer;
+      const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} : timeout après ${ms/1000}s`)), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
     }
 
     function toISODate(date) {
@@ -669,59 +659,34 @@
     }
 
     // -------------------------
-    // AUTH (avec check admin)
+    // AUTH
     // -------------------------
-    async function isAdmin() {
-      const { data, error } = await supabaseClient.rpc("is_admin");
-      if (error) {
-        console.error("RPC is_admin error:", error);
-        return false;
-      }
-      return data === true;
-    }
-
     async function refreshAuthUI() {
-      try {
-        const { data } = await supabaseClient.auth.getUser();
-        const user = data?.user || null;
+      const { data } = await supabaseClient.auth.getUser();
+      const user = data?.user || null;
 
-        if (!user) {
-          showLogin();
-          return;
-        }
-
-        const ok = await isAdmin();
-        if (!ok) {
-          await supabaseClient.auth.signOut();
-          showLogin();
-          setMsg("login-error", "Accès refusé : ce compte n'est pas admin.", false);
-          return;
-        }
-
-        showAdmin();
-        if ($("user-badge")) $("user-badge").textContent = "Connecté : " + (user.email || "admin");
-
-        await loadDashboard();
-        await loadArticles();
-        await loadReservations();
-        await loadClients();
-        await loadPromoCodes();
-      } catch (e) {
-        console.error(e);
+      if (!user) {
         showLogin();
-        setMsg("login-error", "Erreur auth : " + (e?.message || "inconnue"), false);
+        return;
       }
+
+      showAdmin();
+      document.getElementById("user-badge").textContent = "Connecté : " + (user.email || "admin");
+
+      // Charge tout (si une requête pend, handleLogin a un timeout sur refreshAuthUI)
+      await loadDashboard();
+      await loadArticles();
+      await loadReservations();
+      await loadClients();
+      await loadPromoCodes();
     }
 
     async function handleLogin() {
-      const emailEl = $("admin-email");
-      const passEl  = $("admin-password");
-      const btn     = $("login-button");
+      const emailEl = document.getElementById("admin-email");
+      const passEl  = document.getElementById("admin-password");
+      const btn     = document.getElementById("login-button");
 
-      if (!emailEl || !passEl || !btn) {
-        console.error("Login elements missing");
-        return;
-      }
+      if (!emailEl || !passEl || !btn) return;
 
       const email = (emailEl.value || "").trim();
       const password = passEl.value || "";
@@ -737,18 +702,36 @@
       btn.textContent = "Connexion...";
 
       try {
-        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        // Connexion avec timeout (évite le bouton bloqué)
+        const { data, error } = await withTimeout(
+          supabaseClient.auth.signInWithPassword({ email, password }),
+          12000,
+          "Connexion Supabase"
+        );
+
         if (error) {
           console.error(error);
           setMsg("login-error", "Connexion refusée : " + (error.message || "erreur"), false);
           return;
         }
 
+        // Par sécurité si session non renvoyée
+        if (!data?.session) {
+          const s = await supabaseClient.auth.getSession();
+          if (!s?.data?.session) {
+            setMsg("login-error", "Connexion ok mais session absente. Essaie en navigation privée.", false);
+            return;
+          }
+        }
+
         passEl.value = "";
-        await refreshAuthUI();
+
+        // Chargement admin avec timeout (si une requête DB pend)
+        await withTimeout(refreshAuthUI(), 12000, "Chargement admin");
+
       } catch (e) {
         console.error(e);
-        setMsg("login-error", "Erreur : " + (e?.message || "inconnue"), false);
+        setMsg("login-error", e.message || "Erreur inconnue.", false);
       } finally {
         btn.disabled = false;
         btn.textContent = oldText;
@@ -769,7 +752,7 @@
           document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
           document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
           btn.classList.add("active");
-          const target = $(btn.dataset.tab);
+          const target = document.getElementById(btn.dataset.tab);
           if (target) target.classList.add("active");
         });
       });
@@ -779,12 +762,13 @@
     // DASHBOARD
     // -------------------------
     async function loadDashboard() {
-      const msgEl = $("dashboard-message");
-      if (msgEl) { msgEl.textContent = "Chargement du dashboard..."; msgEl.className = "status-message"; }
+      const msgEl = document.getElementById("dashboard-message");
+      msgEl.textContent = "Chargement du dashboard...";
+      msgEl.className = "status-message";
 
-      const kpiConfirmed = $("kpi-resa-month");
-      const kpiTotal = $("kpi-resa-total");
-      const kpiRate = $("kpi-fill-rate");
+      const kpiConfirmed = document.getElementById("kpi-resa-month");
+      const kpiTotal = document.getElementById("kpi-resa-total");
+      const kpiRate = document.getElementById("kpi-fill-rate");
 
       try {
         const now = new Date();
@@ -802,7 +786,8 @@
 
         if (error) {
           console.error(error);
-          if (msgEl) { msgEl.textContent = "Erreur dashboard : " + (error.message || ""); msgEl.classList.add("error"); }
+          msgEl.textContent = "Erreur dashboard : " + (error.message || "");
+          msgEl.classList.add("error");
           return;
         }
 
@@ -814,10 +799,12 @@
         if (kpiTotal) kpiTotal.textContent = total;
         if (kpiRate) kpiRate.textContent = rate + " %";
 
-        if (msgEl) { msgEl.textContent = "Dashboard mis à jour ✔"; msgEl.classList.add("ok"); }
+        msgEl.textContent = "Dashboard mis à jour ✔";
+        msgEl.classList.add("ok");
       } catch (err) {
         console.error(err);
-        if (msgEl) { msgEl.textContent = "Erreur réseau dashboard."; msgEl.classList.add("error"); }
+        msgEl.textContent = "Erreur réseau dashboard.";
+        msgEl.classList.add("error");
       }
     }
 
@@ -825,17 +812,17 @@
     // RESERVATIONS
     // -------------------------
     async function loadReservations() {
-      const tbody = $("reservations-table-body");
-      const msgEl = $("reservations-list-message");
+      const tbody = document.getElementById("reservations-table-body");
+      const msgEl = document.getElementById("reservations-list-message");
       if (!tbody || !msgEl) return;
 
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des réservations...";
       msgEl.className = "status-message";
 
-      const dateFrom = $("filter-res-date-from")?.value || null;
-      const dateTo = $("filter-res-date-to")?.value || null;
-      const status = $("filter-res-status")?.value || "";
+      const dateFrom = document.getElementById("filter-res-date-from")?.value || null;
+      const dateTo = document.getElementById("filter-res-date-to")?.value || null;
+      const status = document.getElementById("filter-res-status")?.value || "";
 
       try {
         let query = supabaseClient
@@ -905,11 +892,11 @@
     }
 
     // -------------------------
-    // CLIENTS
+    // CLIENTS (depuis reservations)
     // -------------------------
     async function loadClients() {
-      const tbody = $("clients-table-body");
-      const msgEl = $("clients-list-message");
+      const tbody = document.getElementById("clients-table-body");
+      const msgEl = document.getElementById("clients-list-message");
       if (!tbody || !msgEl) return;
 
       tbody.innerHTML = "";
@@ -970,15 +957,15 @@
     // ACTUALITES (CRUD)
     // -------------------------
     function resetArticleForm() {
-      $("a-id").value = "";
-      $("a-titre").value = "";
-      $("a-slug").value = "";
-      $("a-image").value = "";
-      $("a-chapeau").value = "";
-      $("a-contenu").value = "";
-      $("a-categorie").value = "coulisses-travaux";
-      $("a-publie").checked = false;
-      $("a-datepub").value = "";
+      document.getElementById("a-id").value = "";
+      document.getElementById("a-titre").value = "";
+      document.getElementById("a-slug").value = "";
+      document.getElementById("a-image").value = "";
+      document.getElementById("a-chapeau").value = "";
+      document.getElementById("a-contenu").value = "";
+      document.getElementById("a-categorie").value = "coulisses-travaux";
+      document.getElementById("a-publie").checked = false;
+      document.getElementById("a-datepub").value = "";
       setMsg("article-form-message", "");
     }
 
@@ -993,8 +980,8 @@
     }
 
     async function loadArticles() {
-      const tbody = $("articles-table-body");
-      const msgEl = $("articles-list-message");
+      const tbody = document.getElementById("articles-table-body");
+      const msgEl = document.getElementById("articles-list-message");
       if (!tbody || !msgEl) return;
 
       tbody.innerHTML = "";
@@ -1052,7 +1039,6 @@
 
           const editBtn = document.createElement("button");
           editBtn.className = "small-btn";
-          editBtn.type = "button";
           editBtn.textContent = "Éditer";
           editBtn.addEventListener("click", async () => {
             await loadArticleIntoForm(row.id);
@@ -1063,7 +1049,6 @@
 
           const delBtn = document.createElement("button");
           delBtn.className = "small-btn danger";
-          delBtn.type = "button";
           delBtn.textContent = "Supprimer";
           delBtn.addEventListener("click", async () => {
             if (confirm("Supprimer l’article \"" + (row.titre || row.slug) + "\" ?")) {
@@ -1097,24 +1082,24 @@
         return;
       }
 
-      $("a-id").value = data.id || "";
-      $("a-titre").value = data.titre || "";
-      $("a-slug").value = data.slug || "";
-      $("a-image").value = data.image_url || "";
-      $("a-chapeau").value = data.chapeau || "";
-      $("a-contenu").value = data.contenu || "";
-      $("a-categorie").value = data.categorie || "coulisses-travaux";
-      $("a-publie").checked = !!data.publie;
+      document.getElementById("a-id").value = data.id || "";
+      document.getElementById("a-titre").value = data.titre || "";
+      document.getElementById("a-slug").value = data.slug || "";
+      document.getElementById("a-image").value = data.image_url || "";
+      document.getElementById("a-chapeau").value = data.chapeau || "";
+      document.getElementById("a-contenu").value = data.contenu || "";
+      document.getElementById("a-categorie").value = data.categorie || "coulisses-travaux";
+      document.getElementById("a-publie").checked = !!data.publie;
 
       if (data.date_publication) {
         const d = new Date(data.date_publication);
         if (!isNaN(d)) {
           const pad = (n) => String(n).padStart(2,"0");
           const v = d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
-          $("a-datepub").value = v;
+          document.getElementById("a-datepub").value = v;
         }
       } else {
-        $("a-datepub").value = "";
+        document.getElementById("a-datepub").value = "";
       }
 
       setMsg("article-form-message", "Mode édition ✔", true);
@@ -1129,7 +1114,7 @@
       setMsg(msgId, "Enregistrement en cours...", true);
 
       try {
-        const q = supabaseClient.from("actualites");
+        let q = supabaseClient.from("actualites");
         const res = id
           ? await q.update(payload).eq("id", id)
           : await q.insert([payload]);
@@ -1150,16 +1135,19 @@
     }
 
     async function deleteArticle(id) {
-      const msgEl = $("articles-list-message");
-      if (msgEl) { msgEl.textContent = "Suppression en cours..."; msgEl.className = "status-message"; }
+      const msgEl = document.getElementById("articles-list-message");
+      msgEl.textContent = "Suppression en cours...";
+      msgEl.className = "status-message";
 
       const { error } = await supabaseClient.from("actualites").delete().eq("id", id);
       if (error) {
         console.error(error);
-        if (msgEl) { msgEl.textContent = "Erreur suppression : " + (error.message || ""); msgEl.classList.add("error"); }
+        msgEl.textContent = "Erreur suppression : " + (error.message || "");
+        msgEl.classList.add("error");
         return;
       }
-      if (msgEl) { msgEl.textContent = "Article supprimé."; msgEl.classList.add("ok"); }
+      msgEl.textContent = "Article supprimé.";
+      msgEl.classList.add("ok");
       await loadArticles();
     }
 
@@ -1167,26 +1155,24 @@
     // PROMO CODES (CRUD)
     // -------------------------
     async function handlePromoFormSubmit() {
-      const codeInput = $("promo-code");
-      const typeInput = $("promo-type");
-      const valueInput = $("promo-value");
-      const validFromInput = $("promo-valid-from");
-      const validToInput = $("promo-valid-to");
-      const maxUsesInput = $("promo-max-uses");
-      const maxPerEmailInput = $("promo-max-per-email");
-      const firstSessionInput = $("promo-first-session");
-      const emailDomainInput = $("promo-email-domain");
-      const noteInput = $("promo-note");
-      const msgEl = $("promo-form-message");
-
-      if (!msgEl) return;
+      const codeInput = document.getElementById("promo-code");
+      const typeInput = document.getElementById("promo-type");
+      const valueInput = document.getElementById("promo-value");
+      const validFromInput = document.getElementById("promo-valid-from");
+      const validToInput = document.getElementById("promo-valid-to");
+      const maxUsesInput = document.getElementById("promo-max-uses");
+      const maxPerEmailInput = document.getElementById("promo-max-per-email");
+      const firstSessionInput = document.getElementById("promo-first-session");
+      const emailDomainInput = document.getElementById("promo-email-domain");
+      const noteInput = document.getElementById("promo-note");
+      const msgEl = document.getElementById("promo-form-message");
 
       msgEl.textContent = "";
       msgEl.className = "status-message";
 
-      const code = (codeInput?.value || "").trim().toUpperCase();
-      const type = typeInput?.value || "percent";
-      let numericValue = valueInput?.value ? parseFloat(valueInput.value) : 0;
+      const code = (codeInput.value || "").trim().toUpperCase();
+      const type = typeInput.value;
+      let numericValue = valueInput.value ? parseFloat(valueInput.value) : 0;
 
       if (!code) { msgEl.textContent = "Merci de saisir un code."; msgEl.classList.add("error"); return; }
       if (type !== "free" && (!numericValue || numericValue <= 0)) { msgEl.textContent = "Merci de mettre une valeur > 0."; msgEl.classList.add("error"); return; }
@@ -1196,13 +1182,13 @@
         code,
         type,
         value: numericValue,
-        valid_from: validFromInput?.value || null,
-        valid_to: validToInput?.value || null,
-        max_uses: maxUsesInput?.value ? parseInt(maxUsesInput.value, 10) : null,
-        max_uses_per_user: maxPerEmailInput?.value ? parseInt(maxPerEmailInput.value, 10) : null,
+        valid_from: validFromInput.value || null,
+        valid_to: validToInput.value || null,
+        max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
+        max_uses_per_user: maxPerEmailInput.value ? parseInt(maxPerEmailInput.value, 10) : null,
         first_session_only: !!(firstSessionInput && firstSessionInput.checked),
-        email_domain: (emailDomainInput?.value || "").trim() || null,
-        note: (noteInput?.value || "").trim() || null,
+        email_domain: (emailDomainInput.value || "").trim() || null,
+        note: (noteInput.value || "").trim() || null,
         is_active: true
       };
 
@@ -1229,8 +1215,8 @@
     }
 
     async function loadPromoCodes() {
-      const tbody = $("promo-table-body");
-      const msgEl = $("promo-list-message");
+      const tbody = document.getElementById("promo-table-body");
+      const msgEl = document.getElementById("promo-list-message");
       if (!tbody || !msgEl) return;
 
       tbody.innerHTML = "";
@@ -1266,7 +1252,7 @@
 
           const tdType = document.createElement("td");
           let typeLabel = row.type || "-";
-          if (row.type === "free") typeLabel = "Gratuit (free)";
+          if (row.type === "free") typeLabel = "Gratuit";
           if (row.type === "percent") typeLabel = "Pourcentage";
           if (row.type === "fixed") typeLabel = "Montant fixe";
 
@@ -1304,7 +1290,6 @@
 
           const toggleBtn = document.createElement("button");
           toggleBtn.className = "small-btn";
-          toggleBtn.type = "button";
           toggleBtn.textContent = row.is_active ? "Désactiver" : "Activer";
           toggleBtn.addEventListener("click", async () => {
             await togglePromoActive(row.id, !row.is_active);
@@ -1313,7 +1298,6 @@
 
           const deleteBtn = document.createElement("button");
           deleteBtn.className = "small-btn danger";
-          deleteBtn.type = "button";
           deleteBtn.textContent = "Supprimer";
           deleteBtn.addEventListener("click", async () => {
             if (confirm(`Supprimer le code ${row.code} ?`)) {
@@ -1334,8 +1318,9 @@
     }
 
     async function togglePromoActive(id, newStatus) {
-      const msgEl = $("promo-list-message");
-      if (msgEl) { msgEl.textContent = "Mise à jour..."; msgEl.className = "status-message"; }
+      const msgEl = document.getElementById("promo-list-message");
+      msgEl.textContent = "Mise à jour...";
+      msgEl.className = "status-message";
 
       const { error } = await supabaseClient
         .from("promo_codes")
@@ -1344,24 +1329,29 @@
 
       if (error) {
         console.error(error);
-        if (msgEl) { msgEl.textContent = "Erreur : " + (error.message || ""); msgEl.classList.add("error"); }
+        msgEl.textContent = "Erreur : " + (error.message || "");
+        msgEl.classList.add("error");
         return;
       }
-      if (msgEl) { msgEl.textContent = "Statut mis à jour."; msgEl.classList.add("ok"); }
+      msgEl.textContent = "Statut mis à jour.";
+      msgEl.classList.add("ok");
       await loadPromoCodes();
     }
 
     async function deletePromo(id) {
-      const msgEl = $("promo-list-message");
-      if (msgEl) { msgEl.textContent = "Suppression..."; msgEl.className = "status-message"; }
+      const msgEl = document.getElementById("promo-list-message");
+      msgEl.textContent = "Suppression...";
+      msgEl.className = "status-message";
 
       const { error } = await supabaseClient.from("promo_codes").delete().eq("id", id);
       if (error) {
         console.error(error);
-        if (msgEl) { msgEl.textContent = "Erreur : " + (error.message || ""); msgEl.classList.add("error"); }
+        msgEl.textContent = "Erreur : " + (error.message || "");
+        msgEl.classList.add("error");
         return;
       }
-      if (msgEl) { msgEl.textContent = "Code supprimé."; msgEl.classList.add("ok"); }
+      msgEl.textContent = "Code supprimé.";
+      msgEl.classList.add("ok");
       await loadPromoCodes();
     }
 
@@ -1371,43 +1361,43 @@
     document.addEventListener("DOMContentLoaded", async () => {
       initTabs();
 
-      // login submit
-      const loginForm = $("login-form");
-      if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          await handleLogin();
+      const loginBtn = document.getElementById("login-button");
+      const logoutBtn = document.getElementById("logout-button");
+      const passEl = document.getElementById("admin-password");
+
+      if (loginBtn) loginBtn.addEventListener("click", handleLogin);
+      if (logoutBtn) logoutBtn.addEventListener("click", handleLogout);
+
+      if (passEl) {
+        passEl.addEventListener("keyup", (e) => {
+          if (e.key === "Enter") handleLogin();
         });
       }
 
-      $("logout-button")?.addEventListener("click", handleLogout);
+      document.getElementById("article-reset").addEventListener("click", resetArticleForm);
+      document.getElementById("btn-refresh-articles").addEventListener("click", loadArticles);
 
-      // Actualités
-      $("article-reset")?.addEventListener("click", resetArticleForm);
-      $("btn-refresh-articles")?.addEventListener("click", loadArticles);
-
-      // auto slug depuis titre si slug vide
-      $("a-titre")?.addEventListener("input", () => {
-        const slugEl = $("a-slug");
-        if (slugEl && !slugEl.value.trim()) slugEl.value = normalizeSlug($("a-titre").value);
+      document.getElementById("a-titre").addEventListener("input", () => {
+        const slugEl = document.getElementById("a-slug");
+        if (!slugEl.value.trim()) slugEl.value = normalizeSlug(document.getElementById("a-titre").value);
       });
-      $("a-slug")?.addEventListener("blur", () => {
-        const slugEl = $("a-slug");
-        if (slugEl) slugEl.value = normalizeSlug(slugEl.value);
+      document.getElementById("a-slug").addEventListener("blur", () => {
+        const slugEl = document.getElementById("a-slug");
+        slugEl.value = normalizeSlug(slugEl.value);
       });
 
-      $("article-form")?.addEventListener("submit", async (e) => {
+      document.getElementById("article-form").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const id = $("a-id").value || null;
-        const titre = $("a-titre").value.trim();
-        const slug = normalizeSlug($("a-slug").value);
-        const image_url = $("a-image").value.trim() || null;
-        const chapeau = $("a-chapeau").value.trim() || null;
-        const contenu = $("a-contenu").value || null;
-        const categorie = $("a-categorie").value || "coulisses-travaux";
-        const publie = $("a-publie").checked;
-        const dateLocal = $("a-datepub").value || null;
+        const id = document.getElementById("a-id").value || null;
+        const titre = document.getElementById("a-titre").value.trim();
+        const slug = normalizeSlug(document.getElementById("a-slug").value);
+        const image_url = document.getElementById("a-image").value.trim() || null;
+        const chapeau = document.getElementById("a-chapeau").value.trim() || null;
+        const contenu = document.getElementById("a-contenu").value || null;
+        const categorie = document.getElementById("a-categorie").value || "coulisses-travaux";
+        const publie = document.getElementById("a-publie").checked;
+        const dateLocal = document.getElementById("a-datepub").value || null;
 
         if (!titre || !slug) {
           setMsg("article-form-message", "Titre + slug requis.", false);
@@ -1428,16 +1418,14 @@
         await upsertArticle(payload, id);
       });
 
-      // Réservations / clients
-      $("btn-refresh-reservations")?.addEventListener("click", loadReservations);
-      $("btn-refresh-clients")?.addEventListener("click", loadClients);
+      document.getElementById("btn-refresh-reservations").addEventListener("click", loadReservations);
+      document.getElementById("btn-refresh-clients").addEventListener("click", loadClients);
 
-      // Promo
-      $("promo-form")?.addEventListener("submit", async (e) => {
+      document.getElementById("promo-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         await handlePromoFormSubmit();
       });
-      $("btn-refresh-promo")?.addEventListener("click", loadPromoCodes);
+      document.getElementById("btn-refresh-promo").addEventListener("click", loadPromoCodes);
 
       supabaseClient.auth.onAuthStateChange(async () => {
         await refreshAuthUI();
