@@ -81,7 +81,7 @@
 
     /* LOGIN */
     #login-screen{
-      display:none;
+      display:flex; /* ✅ IMPORTANT : on l’affiche par défaut */
       min-height:100vh;
       align-items:center;
       justify-content:center;
@@ -120,6 +120,10 @@
       font-weight:600;
       cursor:pointer;
       box-shadow:0 0 0 1px rgba(248,250,251,0.1), 0 16px 40px rgba(0,0,0,0.9);
+    }
+    .btn-primary:disabled{
+      opacity:.65;
+      cursor:not-allowed;
     }
     .status-message{font-size:12px;margin-top:.4rem;min-height:1.2em}
     .status-message.ok{color:#4ade80}
@@ -594,12 +598,18 @@
     </div>
   </div>
 
-  <!-- Supabase -->
+  <!-- ✅ Supabase (UNE SEULE FOIS) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true
+      }
+    });
 
     const CATEGORY_LABELS = {
       "coulisses-travaux": "Coulisses & travaux",
@@ -613,6 +623,7 @@
       document.getElementById("login-screen").style.display = "flex";
       document.getElementById("admin-screen").style.display = "none";
     }
+
     function showAdmin() {
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("admin-screen").style.display = "block";
@@ -623,6 +634,13 @@
       if (!el) return;
       el.textContent = text || "";
       el.className = "status-message" + (text ? (ok ? " ok" : " error") : "");
+    }
+
+    function withTimeout(promise, ms = 12000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms))
+      ]);
     }
 
     function toISODate(date) {
@@ -645,28 +663,61 @@
     }
 
     // -------------------------
-    // AUTH
+    // AUTH (ROBUSTE)
     // -------------------------
-    async function refreshAuthUI() {
-      const { data } = await supabaseClient.auth.getUser();
-      const user = data?.user || null;
-      if (!user) {
-        showLogin();
-        return;
-      }
-      showAdmin();
-      document.getElementById("user-badge").textContent = "Connecté : " + (user.email || "admin");
+    let authRefreshing = false;
 
-      await loadDashboard();
-      await loadArticles();
-      await loadReservations();
-      await loadClients();
-      await loadPromoCodes();
+    async function refreshAuthUI() {
+      if (authRefreshing) return;
+      authRefreshing = true;
+
+      try {
+        // 1) On tente d’abord la session locale (rapide)
+        const { data: sessionData } = await withTimeout(supabaseClient.auth.getSession(), 8000);
+        const session = sessionData?.session || null;
+
+        if (!session) {
+          showLogin();
+          authRefreshing = false;
+          return;
+        }
+
+        // 2) On récupère l'user (peut être réseau)
+        const { data: userData } = await withTimeout(supabaseClient.auth.getUser(), 10000);
+        const user = userData?.user || null;
+
+        if (!user) {
+          showLogin();
+          authRefreshing = false;
+          return;
+        }
+
+        showAdmin();
+        document.getElementById("user-badge").textContent = "Connecté : " + (user.email || "admin");
+
+        // Charge tout
+        await loadDashboard();
+        await loadArticles();
+        await loadReservations();
+        await loadClients();
+        await loadPromoCodes();
+
+      } catch (e) {
+        console.error("refreshAuthUI error:", e);
+        showLogin();
+        setMsg("login-error", "Connexion Supabase impossible (réseau / config). Réessaie.", false);
+      } finally {
+        authRefreshing = false;
+      }
     }
 
     async function handleLogin() {
-      const email = document.getElementById("admin-email").value.trim();
-      const password = document.getElementById("admin-password").value;
+      const emailEl = document.getElementById("admin-email");
+      const passEl = document.getElementById("admin-password");
+      const btn = document.getElementById("login-button");
+
+      const email = (emailEl.value || "").trim();
+      const password = passEl.value || "";
 
       setMsg("login-error", "");
       if (!email || !password) {
@@ -674,20 +725,48 @@
         return;
       }
 
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) {
-        console.error(error);
-        setMsg("login-error", "Connexion refusée : " + (error.message || "erreur"), false);
-        return;
-      }
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "Connexion...";
 
-      document.getElementById("admin-password").value = "";
-      await refreshAuthUI();
+      try {
+        const { data, error } = await withTimeout(
+          supabaseClient.auth.signInWithPassword({ email, password }),
+          12000
+        );
+
+        if (error) {
+          console.error(error);
+          setMsg("login-error", "Connexion refusée : " + (error.message || "erreur"), false);
+          return;
+        }
+
+        // OK
+        passEl.value = "";
+        setMsg("login-error", "", true);
+        await refreshAuthUI();
+
+      } catch (e) {
+        console.error("login error:", e);
+        if (String(e?.message || "") === "timeout") {
+          setMsg("login-error", "Connexion Supabase : timeout (réseau ou config).", false);
+        } else {
+          setMsg("login-error", "Erreur connexion (console).", false);
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = oldText;
+      }
     }
 
     async function handleLogout() {
-      await supabaseClient.auth.signOut();
+      try {
+        await withTimeout(supabaseClient.auth.signOut(), 8000);
+      } catch(e) {
+        console.error("logout error:", e);
+      }
       showLogin();
+      setMsg("login-error", "");
     }
 
     // -------------------------
@@ -725,11 +804,14 @@
         const firstDateStr = toISODate(firstDay);
         const nextDateStr = toISODate(nextMonth);
 
-        const { data, error } = await supabaseClient
-          .from("reservations")
-          .select("status, date")
-          .gte("date", firstDateStr)
-          .lt("date", nextDateStr);
+        const { data, error } = await withTimeout(
+          supabaseClient
+            .from("reservations")
+            .select("status, date")
+            .gte("date", firstDateStr)
+            .lt("date", nextDateStr),
+          12000
+        );
 
         if (error) {
           console.error(error);
@@ -781,7 +863,8 @@
         if (dateTo) query = query.lte("date", dateTo);
         if (status) query = query.eq("status", status);
 
-        const { data, error } = await query;
+        const { data, error } = await withTimeout(query, 12000);
+
         if (error) {
           console.error(error);
           msgEl.textContent = "Erreur chargement réservations : " + (error.message || "");
@@ -851,10 +934,13 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await supabaseClient
-          .from("reservations")
-          .select("name, email, start_time")
-          .order("start_time", { ascending: false });
+        const { data, error } = await withTimeout(
+          supabaseClient
+            .from("reservations")
+            .select("name, email, start_time")
+            .order("start_time", { ascending: false }),
+          12000
+        );
 
         if (error) {
           console.error(error);
@@ -936,10 +1022,13 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await supabaseClient
-          .from("actualites")
-          .select("id, titre, slug, categorie, publie, date_publication, created_at")
-          .order("created_at", { ascending: false });
+        const { data, error } = await withTimeout(
+          supabaseClient
+            .from("actualites")
+            .select("id, titre, slug, categorie, publie, date_publication, created_at")
+            .order("created_at", { ascending: false }),
+          12000
+        );
 
         if (error) {
           console.error(error);
@@ -1019,11 +1108,15 @@
 
     async function loadArticleIntoForm(id) {
       setMsg("article-form-message", "Chargement de l’article...", true);
-      const { data, error } = await supabaseClient
-        .from("actualites")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
+
+      const { data, error } = await withTimeout(
+        supabaseClient
+          .from("actualites")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle(),
+        12000
+      );
 
       if (error || !data) {
         console.error(error);
@@ -1065,8 +1158,8 @@
       try {
         let q = supabaseClient.from("actualites");
         const res = id
-          ? await q.update(payload).eq("id", id)
-          : await q.insert([payload]);
+          ? await withTimeout(q.update(payload).eq("id", id), 12000)
+          : await withTimeout(q.insert([payload]), 12000);
 
         if (res.error) {
           console.error(res.error);
@@ -1088,7 +1181,11 @@
       msgEl.textContent = "Suppression en cours...";
       msgEl.className = "status-message";
 
-      const { error } = await supabaseClient.from("actualites").delete().eq("id", id);
+      const { error } = await withTimeout(
+        supabaseClient.from("actualites").delete().eq("id", id),
+        12000
+      );
+
       if (error) {
         console.error(error);
         msgEl.textContent = "Erreur suppression : " + (error.message || "");
@@ -1143,9 +1240,10 @@
 
       msgEl.textContent = "Enregistrement en cours...";
       try {
-        const { error } = await supabaseClient
-          .from("promo_codes")
-          .upsert(payload, { onConflict: "code" });
+        const { error } = await withTimeout(
+          supabaseClient.from("promo_codes").upsert(payload, { onConflict: "code" }),
+          12000
+        );
 
         if (error) {
           console.error(error);
@@ -1173,10 +1271,10 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await supabaseClient
-          .from("promo_codes")
-          .select("*")
-          .order("code", { ascending: true });
+        const { data, error } = await withTimeout(
+          supabaseClient.from("promo_codes").select("*").order("code", { ascending: true }),
+          12000
+        );
 
         if (error) {
           console.error(error);
@@ -1187,7 +1285,7 @@
 
         msgEl.textContent = "";
         if (!data || data.length === 0) {
-          msgEl.textContent = "Aucun code promo.";
+          msgEl.textContent = "Aucun codede promo.";
           msgEl.classList.add("error");
           return;
         }
@@ -1273,10 +1371,10 @@
       msgEl.textContent = "Mise à jour...";
       msgEl.className = "status-message";
 
-      const { error } = await supabaseClient
-        .from("promo_codes")
-        .update({ is_active: newStatus })
-        .eq("id", id);
+      const { error } = await withTimeout(
+        supabaseClient.from("promo_codes").update({ is_active: newStatus }).eq("id", id),
+        12000
+      );
 
       if (error) {
         console.error(error);
@@ -1294,7 +1392,11 @@
       msgEl.textContent = "Suppression...";
       msgEl.className = "status-message";
 
-      const { error } = await supabaseClient.from("promo_codes").delete().eq("id", id);
+      const { error } = await withTimeout(
+        supabaseClient.from("promo_codes").delete().eq("id", id),
+        12000
+      );
+
       if (error) {
         console.error(error);
         msgEl.textContent = "Erreur : " + (error.message || "");
@@ -1310,6 +1412,13 @@
     // INIT
     // -------------------------
     document.addEventListener("DOMContentLoaded", async () => {
+      // ✅ login sûr au départ
+      showLogin();
+
+      // ✅ email pré-rempli
+      const emailEl = document.getElementById("admin-email");
+      if (emailEl && !emailEl.value) emailEl.value = "contactsingbox@gmail.com";
+
       initTabs();
 
       document.getElementById("login-button").addEventListener("click", handleLogin);
@@ -1375,11 +1484,20 @@
       });
       document.getElementById("btn-refresh-promo").addEventListener("click", loadPromoCodes);
 
-      supabaseClient.auth.onAuthStateChange(async () => {
-        await refreshAuthUI();
+      // ✅ Important : on écoute l’état mais sans boucle
+      supabaseClient.auth.onAuthStateChange((_event) => {
+        // SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED
+        refreshAuthUI();
       });
 
       await refreshAuthUI();
+    });
+
+    // ✅ Si une promesse plante sans catch → on affiche au moins le login
+    window.addEventListener("unhandledrejection", (e) => {
+      console.error("Unhandled rejection:", e.reason);
+      showLogin();
+      setMsg("login-error", "Erreur JS (voir console).", false);
     });
   </script>
 </body>
