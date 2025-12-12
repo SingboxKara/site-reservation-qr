@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Singbox - Article</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="description" content="Article d’actualités Singbox : promos, coulisses, nouveautés et idées de soirées autour du karaoké box privatif à Toulouse." />
+
+  <link rel="canonical" href="https://www.singbox.fr/article" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-card: #0a0f1c;
+      --sb-text-main: #F9FAFB;
+      --sb-text-muted: #9CA3AF;
+      --sb-red: #C94C35;
+      --sb-orange: #F97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.25);
+      --sb-container-width: 900px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--sb-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    h1, h2, h3 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HEADER (copié d’actualites.html) */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #020617;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: nowrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 110px;
+      height: auto;
+      border-radius: 999px;
+      display: block;
+      object-fit: contain;
+      filter:
+        drop-shadow(0 0 12px rgba(255,255,255,0.16))
+        drop-shadow(0 0 20px rgba(201,76,53,0.6));
+    }
+
+    .brand-text {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 26px;
+      color: #F9FAFB;
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+
+    nav.main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .main-nav a {
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6930, #ffb96f);
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .main-nav a:hover::after {
+      width: 100%;
+    }
+
+    .main-nav a:hover {
+      color: #ffb96f;
+      transition: 0.25s ease;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .nav-cta {
+      background: var(--sb-red);
+      padding: 8px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #F9FAFB;
+      white-space: nowrap;
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.08),
+        0 10px 28px rgba(0,0,0,0.7);
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .nav-cta:hover {
+      background: #d55a40;
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(249,250,251,0.18),
+        0 16px 38px rgba(0,0,0,0.9);
+    }
+
+    .cart-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      backdrop-filter: blur(6px);
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--sb-red);
+      color:#fff;
+      border-radius:999px;
+      font-size:10px;
+      padding: 2px 5px;
+      min-width: 18px;
+      text-align:center;
+    }
+    #cart-count:empty { display:none; }
+
+    .burger-button {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: transparent;
+      color:#fff;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 15px;
+    }
+
+    .mobile-nav a { color:#fff; }
+    .mobile-nav.open { display:block; }
+
+    @media (max-width: 900px) {
+      .header-inner {
+        padding: 10px 16px;
+        gap: 12px;
+      }
+
+      nav.main-nav {
+        display: none !important;
+      }
+
+      .burger-button {
+        display:flex;
+      }
+
+      .brand-logo {
+        width: 90px;
+      }
+
+      .brand-text {
+        font-size: 20px;
+        letter-spacing: 0.12em;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand-logo {
+        width: 72px;
+      }
+      .brand-text {
+        font-size: 18px;
+        letter-spacing: 0.1em;
+      }
+    }
+
+    /* CONTENU ARTICLE */
+    main {
+      padding-top: 110px;
+      padding-bottom: 60px;
+    }
+
+    .article-card {
+      background: var(--sb-card);
+      border-radius: 22px;
+      padding: 2rem 2.2rem;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      margin-bottom: 10px;
+      box-shadow: 0 0 18px rgba(201,76,53,0.6);
+    }
+
+    .article-title {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .article-meta {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 14px;
+    }
+
+    .article-image {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin: 16px 0 18px;
+      border: 1px solid rgba(15,23,42,0.8);
+    }
+
+    .article-chapeau {
+      font-size: 15px;
+      color: rgba(249,250,251,0.9);
+      margin-bottom: 18px;
+    }
+
+    .article-content {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(229,231,235,0.9);
+    }
+
+    .article-content p {
+      margin-bottom: 0.8em;
+    }
+
+    .article-content strong {
+      font-weight: 600;
+      color: #F9FAFB;
+    }
+
+    .article-content a {
+      color: #FED7AA;
+      text-decoration: underline;
+    }
+
+    .article-back {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #FBBF77;
+      cursor: pointer;
+    }
+
+    .article-back:hover {
+      text-decoration: underline;
+    }
+
+    .article-message {
+      text-align: center;
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      margin-top: 24px;
+    }
+
+    /* FOOTER (simplifié) */
+    footer {
+      background:#020617;
+      color:#e5e7eb;
+      padding:24px 24px 16px;
+      border-top: 1px solid #111827;
+      font-size: 12px;
+    }
+
+    .footer-inner {
+      max-width:1180px;
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        padding-top: 96px;
+      }
+      .article-card {
+        padding: 1.6rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <span class="brand-text">Singbox</span>
+      </a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="box.html">Les box</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="box.html">Les box</a></li>
+      <li><a href="actualites.html">Actualités</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="mon-compte.html">Mon compte</a></li>
+      <li><a href="reservation.html">Réserver</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div id="article-wrapper" class="article-card" style="display:none;">
+        <span id="article-badge" class="article-badge"></span>
+        <h1 id="article-title" class="article-title"></h1>
+        <p id="article-meta" class="article-meta"></p>
+        <img id="article-image" class="article-image" alt="" style="display:none;" />
+        <p id="article-chapeau" class="article-chapeau"></p>
+        <div id="article-content" class="article-content"></div>
+
+        <a href="actualites.html" class="article-back">
+          ← Retour aux actualités
+        </a>
+      </div>
+
+      <p id="article-message" class="article-message"></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© Singbox – Karaoké box privatif à Toulouse</span>
+      <a href="actualites.html">Retour aux actualités</a>
+    </div>
+  </footer>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const CATEGORY_LABELS = {
+      "coulisses-travaux": "Coulisses & travaux",
+      "nouvelles-chansons": "Nouvelles chansons",
+      "vie-lieu": "Vie du lieu",
+      "idees-soirees": "Idées de soirées",
+      "promo": "Promo"
+    };
+
+    function getPanier() {
+      try {
+        return JSON.parse(localStorage.getItem("panier")) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function updateCartIcon() {
+      const el = document.getElementById("cart-count");
+      if (!el) return;
+      const panier = getPanier();
+      el.textContent = panier.length ? panier.length : "";
+    }
+
+    function getSlugFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("slug");
+    }
+
+    function formatDateFr(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    }
+
+    function sanitizeHtml(text) {
+      // On autorise du texte simple + quelques balises basiques écrites dans le contenu
+      // Si tu veux vraiment du HTML libre, tu peux enlever cette fonction et faire innerHTML direct.
+      return text
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    async function loadArticle() {
+      const slug = getSlugFromUrl();
+      const msgEl = document.getElementById("article-message");
+      const wrapper = document.getElementById("article-wrapper");
+
+      if (!slug) {
+        msgEl.textContent = "Aucun article spécifié.";
+        return;
+      }
+
+      msgEl.textContent = "Chargement de l’article...";
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("actualites")
+          .select("*")
+          .eq("slug", slug)
+          .eq("publie", true)
+          .maybeSingle();
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors du chargement de l’article.";
+          return;
+        }
+
+        if (!data) {
+          msgEl.textContent = "Article introuvable ou non publié.";
+          return;
+        }
+
+        // Mise à jour du title / meta description
+        if (data.titre) {
+          document.title = data.titre + " | Actualités Singbox";
+        }
+
+        const badge = document.getElementById("article-badge");
+        const titleEl = document.getElementById("article-title");
+        const metaEl = document.getElementById("article-meta");
+        const imgEl = document.getElementById("article-image");
+        const chapEl = document.getElementById("article-chapeau");
+        const contentEl = document.getElementById("article-content");
+
+        const catSlug = data.categorie || "autre";
+        badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
+
+        titleEl.textContent = data.titre || "Sans titre";
+
+        const dateTxt = data.date_publication ? formatDateFr(data.date_publication) : "";
+        const catLabel = CATEGORY_LABELS[catSlug] || "";
+        metaEl.textContent =
+          (dateTxt ? "Publié le " + dateTxt : "") +
+          (catLabel ? " • Catégorie : " + catLabel : "");
+
+        if (data.image_url) {
+          imgEl.src = data.image_url;
+          imgEl.alt = data.titre || "Illustration de l’article";
+          imgEl.style.display = "block";
+        } else {
+          imgEl.style.display = "none";
+        }
+
+        chapEl.textContent = data.chapeau || "";
+
+        // Si tu veux autoriser un peu de HTML dans "contenu",
+        // mets directement data.contenu en innerHTML (en faisant attention).
+        if (data.contenu) {
+          contentEl.innerHTML = data.contenu;
+        } else {
+          contentEl.textContent = "";
+        }
+
+        msgEl.textContent = "";
+        wrapper.style.display = "block";
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement de l’article.";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Burger / mobile
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
+      if (burgerBtn && mobileNav) {
+        burgerBtn.addEventListener("click", () => {
+          mobileNav.classList.toggle("open");
+        });
+        mobileNav.addEventListener("click", (e) => {
+          if (e.target.tagName === "A") {
+            mobileNav.classList.remove("open");
+          }
+        });
+      }
+
+      updateCartIcon();
+      loadArticle();
+    });
+  </script>
+</body>
+</html>
