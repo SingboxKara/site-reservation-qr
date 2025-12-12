@@ -14,516 +14,275 @@
   >
 
   <style>
-    :root {
-      --sb-bg-main: #020617;
-      --sb-bg-card: #020617;
+    :root{
+      --sb-bg-main:#020617;
+      --sb-bg-card:#020617;
       --sb-border-soft: rgba(148,163,184,0.35);
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #9CA3AF;
-      --sb-accent: #C94C35;
-      --sb-accent-2: #F97316;
-      --sb-container-width: 1100px;
+      --sb-text-main:#F9FAFB;
+      --sb-text-muted:#9CA3AF;
+      --sb-accent:#C94C35;
+      --sb-accent-2:#F97316;
+      --sb-container-width:1100px;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
-      color: var(--sb-text-main);
-      min-height: 100vh;
+      color:var(--sb-text-main);
+      min-height:100vh;
     }
-
-    h1, h2, h3 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin: 0;
+    h1,h2,h3{
+      font-family:"League Spartan",system-ui,sans-serif;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin:0;
     }
+    a{color:inherit;text-decoration:none}
 
-    a { color: inherit; text-decoration: none; }
-
-    .admin-container {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 3rem;
+    .admin-container{
+      max-width:var(--sb-container-width);
+      margin:0 auto;
+      padding:2.5rem 1.5rem 3rem;
     }
-
-    .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      gap: 1rem;
-      flex-wrap: wrap;
+    .admin-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:2rem;
+      gap:1rem;
+      flex-wrap:wrap;
     }
-
-    .admin-header-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    .admin-header-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
-
-    .admin-logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 999px;
-      object-fit: cover;
-      box-shadow: 0 0 0 2px rgba(249,250,251,0.12), 0 16px 40px rgba(0,0,0,0.9);
+    .admin-logo{
+      width:56px;height:56px;border-radius:999px;object-fit:cover;
+      box-shadow:0 0 0 2px rgba(249,250,251,0.12), 0 16px 40px rgba(0,0,0,0.9);
     }
-
-    .admin-title-main {
-      font-size: 20px;
+    .admin-title-main{font-size:20px}
+    .admin-subtitle{font-size:13px;color:var(--sb-text-muted);margin-top:4px}
+    .admin-header-right{
+      display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:flex-end;
     }
-
-    .admin-subtitle {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-top: 4px;
+    .admin-header-right button{
+      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
+      background:transparent;color:#E5E7EB;font-size:12px;padding:.4rem .9rem;cursor:pointer;
     }
-
-    .admin-header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .admin-header-right button {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: transparent;
-      color: #E5E7EB;
-      font-size: 12px;
-      padding: 0.4rem 0.9rem;
-      cursor: pointer;
-    }
-
-    .deposit-badge {
-      border-radius: 999px;
-      border: 1px solid rgba(248, 250, 251, 0.2);
-      padding: 0.25rem 0.7rem;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
+    .deposit-badge{
+      border-radius:999px;border:1px solid rgba(248,250,251,0.2);
+      padding:.25rem .7rem;font-size:11px;text-transform:uppercase;letter-spacing:.07em;
       background: radial-gradient(circle at 0 0, rgba(249,115,22,0.45), transparent 55%), #020617;
-      color: #FED7AA;
-      white-space: nowrap;
+      color:#FED7AA;white-space:nowrap;
     }
 
-    /* LOGIN SCREEN */
-    #login-screen {
-      display: none;
-      min-height: 100vh;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1.5rem;
+    /* LOGIN */
+    #login-screen{
+      display:none;
+      min-height:100vh;
+      align-items:center;
+      justify-content:center;
+      padding:2rem 1.5rem;
     }
-
-    #login-card {
-      max-width: 380px;
-      width: 100%;
+    #login-card{
+      max-width:420px;width:100%;
       background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
-      border-radius: 20px;
-      padding: 1.8rem 1.8rem 1.6rem;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
-      border: 1px solid rgba(148,163,184,0.5);
+      border-radius:20px;
+      padding:1.8rem 1.8rem 1.6rem;
+      box-shadow:0 22px 60px rgba(0,0,0,0.9);
+      border:1px solid rgba(148,163,184,0.5);
     }
+    #login-card h1{font-size:18px;margin-bottom:.6rem}
+    #login-card p{font-size:13px;color:var(--sb-text-muted);margin-bottom:1.2rem}
 
-    #login-card h1 {
-      font-size: 18px;
-      margin-bottom: 0.6rem;
+    .login-field{margin-bottom:1rem}
+    .login-field label{display:block;font-size:12px;margin-bottom:4px}
+    .login-field input{
+      width:100%;
+      padding:.55rem .8rem;
+      border-radius:999px;
+      border:1px solid var(--sb-border-soft);
+      background:#020617;
+      color:var(--sb-text-main);
+      font-size:13px;
+      outline:none;
     }
-
-    #login-card p {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 1.2rem;
+    .login-actions{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;margin-top:.3rem}
+    .btn-primary{
+      border-radius:999px;border:none;
+      padding:.6rem 1.4rem;
+      background:linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
+      color:#F9FAFB;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 0 0 1px rgba(248,250,251,0.1), 0 16px 40px rgba(0,0,0,0.9);
     }
+    .status-message{font-size:12px;margin-top:.4rem;min-height:1.2em}
+    .status-message.ok{color:#4ade80}
+    .status-message.error{color:#f97373}
 
-    .login-field {
-      margin-bottom: 1rem;
+    /* ADMIN */
+    #admin-screen{display:none}
+    .tabs{
+      display:flex;gap:8px;flex-wrap:wrap;
+      border-bottom:1px solid rgba(31,41,55,0.9);
+      margin-bottom:1.5rem;
     }
-
-    .login-field label {
-      display: block;
-      font-size: 12px;
-      margin-bottom: 4px;
+    .tab-button{
+      border-radius:999px 999px 0 0;
+      border:none;padding:.5rem 1rem;
+      background:transparent;
+      font-size:13px;color:var(--sb-text-muted);
+      cursor:pointer;
     }
-
-    .login-field input {
-      width: 100%;
-      padding: 0.55rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: var(--sb-text-main);
-      font-size: 13px;
-      outline: none;
-    }
-
-    .login-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 0.6rem;
-      margin-top: 0.3rem;
-    }
-
-    #login-button {
-      border-radius: 999px;
-      border: none;
-      padding: 0.6rem 1.4rem;
-      background: linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
-      color: #F9FAFB;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.1),
-        0 16px 40px rgba(0,0,0,0.9);
-    }
-
-    #login-error {
-      font-size: 12px;
-      color: #f97373;
-      min-height: 1.1em;
-      margin-top: 0.2rem;
-    }
-
-    /* ADMIN SCREEN */
-    #admin-screen {
-      display: none;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .tab-button {
-      border-radius: 999px 999px 0 0;
-      border: none;
-      padding: 0.5rem 1rem;
-      background: transparent;
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      cursor: pointer;
-    }
-
-    .tab-button.active {
+    .tab-button.active{
       background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
-      color: #F9FAFB;
-      border-bottom: 2px solid var(--sb-accent-2);
+      color:#F9FAFB;
+      border-bottom:2px solid var(--sb-accent-2);
+    }
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+
+    .card{
+      background:var(--sb-bg-card);
+      border-radius:18px;
+      padding:1.4rem 1.5rem 1.5rem;
+      box-shadow:0 22px 60px rgba(0,0,0,0.9);
+      border:1px solid rgba(148,163,184,0.4);
+      margin-bottom:1.6rem;
+    }
+    .card h2{font-size:16px;margin-bottom:.4rem}
+    .card-subtitle{font-size:12px;color:var(--sb-text-muted);margin-bottom:1.1rem}
+
+    .form-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-bottom:.75rem}
+    .form-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-bottom:.75rem}
+    @media(max-width:768px){
+      .form-grid-3,.form-grid-2{grid-template-columns:minmax(0,1fr)}
+    }
+    .form-field{font-size:12px}
+    .form-field label{display:block;margin-bottom:3px}
+    .form-field input,.form-field select,.form-field textarea{
+      width:100%;
+      padding:.45rem .7rem;
+      border-radius:14px;
+      border:1px solid var(--sb-border-soft);
+      background:#020617;
+      color:var(--sb-text-main);
+      font-size:12px;
+      outline:none;
+    }
+    .form-field textarea{min-height:160px;resize:vertical}
+
+    .form-actions{display:flex;justify-content:flex-end;gap:.6rem;margin-top:.6rem;flex-wrap:wrap}
+    .btn-secondary{
+      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
+      padding:.55rem 1.2rem;background:transparent;color:#E5E7EB;cursor:pointer;font-size:13px;
     }
 
-    .tab-content {
-      display: none;
+    .table-wrapper{
+      border-radius:16px;border:1px solid rgba(31,41,55,0.9);
+      overflow:auto;max-height:520px;
     }
+    table{width:100%;border-collapse:collapse;font-size:12px;min-width:860px}
+    thead{background:#020617;position:sticky;top:0;z-index:1}
+    th,td{padding:.4rem .6rem;border-bottom:1px solid rgba(31,41,55,0.9);text-align:left;white-space:nowrap}
+    th{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:#E5E7EB}
+    .badge{
+      display:inline-flex;align-items:center;
+      padding:2px 6px;border-radius:999px;font-size:10px;
+      text-transform:uppercase;letter-spacing:.08em;
+    }
+    .badge-active{background:rgba(22,163,74,.15);color:#4ade80;border:1px solid rgba(74,222,128,.6)}
+    .badge-inactive{background:rgba(75,85,99,.4);color:#e5e7eb;border:1px solid rgba(148,163,184,.6)}
 
-    .tab-content.active {
-      display: block;
+    .small-btn{
+      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
+      padding:2px 8px;font-size:11px;background:transparent;color:#E5E7EB;cursor:pointer;margin-right:6px;
     }
+    .small-btn.danger{border-color:rgba(248,113,113,.8);color:#fecaca}
 
-    .card {
-      background: var(--sb-bg-card);
-      border-radius: 18px;
-      padding: 1.4rem 1.5rem 1.5rem;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      margin-bottom: 1.6rem;
+    .helper-text{font-size:11px;color:var(--sb-text-muted);margin-top:4px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
+    .kpi-card{
+      border-radius:18px;border:1px solid rgba(148,163,184,0.4);
+      padding:.9rem 1rem;background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
     }
+    .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--sb-text-muted);margin-bottom:.25rem}
+    .kpi-value{font-size:18px;font-weight:700}
+    .kpi-sub{font-size:11px;color:var(--sb-text-muted);margin-top:.25rem}
+    @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.kpi-grid{grid-template-columns:minmax(0,1fr)}}
 
-    .card h2 {
-      font-size: 16px;
-      margin-bottom: 0.4rem;
+    .inline-check{
+      display:flex;align-items:center;gap:10px;
+      padding:.5rem .7rem;border-radius:14px;border:1px solid rgba(148,163,184,0.35);
+      background:#020617;
     }
-
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-bottom: 1.1rem;
-    }
-
-    .form-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .form-field {
-      font-size: 12px;
-    }
-
-    .form-field label {
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      width: 100%;
-      padding: 0.45rem 0.7rem;
-      border-radius: 10px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: var(--sb-text-main);
-      font-size: 12px;
-      outline: none;
-      font-family: inherit;
-    }
-
-    .form-field textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 0.6rem;
-      gap: 0.5rem;
-    }
-
-    .btn-primary {
-      border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1.4rem;
-      background: linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
-      color: #F9FAFB;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-secondary {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      padding: 0.45rem 1.2rem;
-      background: transparent;
-      color: #E5E7EB;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .helper-text {
-      font-size: 11px;
-      color: var(--sb-text-muted);
-      margin-top: 4px;
-    }
-
-    .status-message {
-      font-size: 12px;
-      margin-top: 0.4rem;
-      min-height: 1.2em;
-    }
-
-    .status-message.ok {
-      color: #4ade80;
-    }
-
-    .status-message.error {
-      color: #f97373;
-    }
-
-    .table-wrapper {
-      border-radius: 16px;
-      border: 1px solid rgba(31,41,55,0.9);
-      overflow: auto;
-      max-height: 480px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      min-width: 700px;
-    }
-
-    thead {
-      background: #020617;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-
-    th, td {
-      padding: 0.4rem 0.6rem;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 11px;
-      color: #E5E7EB;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .badge-active {
-      background: rgba(22,163,74,0.15);
-      color: #4ade80;
-      border: 1px solid rgba(74,222,128,0.6);
-    }
-
-    .badge-inactive {
-      background: rgba(75,85,99,0.4);
-      color: #e5e7eb;
-      border: 1px solid rgba(148,163,184,0.6);
-    }
-
-    .small-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      padding: 2px 8px;
-      font-size: 11px;
-      background: transparent;
-      color: #E5E7EB;
-      cursor: pointer;
-      margin-right: 4px;
-    }
-
-    .small-btn.danger {
-      border-color: rgba(248,113,113,0.8);
-      color: #fecaca;
-    }
-
-    .pill-free {
-      color: #facc15;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .kpi-card {
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 0.9rem 1rem;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
-    }
-
-    .kpi-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--sb-text-muted);
-      margin-bottom: 0.25rem;
-    }
-
-    .kpi-value {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .kpi-sub {
-      font-size: 11px;
-      color: var(--sb-text-muted);
-      margin-top: 0.25rem;
-    }
-
-    @media (max-width: 900px) {
-      .kpi-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 600px) {
-      .kpi-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .form-grid-3,
-      .form-grid-2 {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
+    .inline-check input{width:auto}
   </style>
 </head>
+
 <body>
 
-  <!-- Écran de login -->
+  <!-- LOGIN -->
   <div id="login-screen">
     <div id="login-card">
       <h1>Accès admin Singbox</h1>
-      <p>Entrez le mot de passe pour accéder au back-office (codes promo, actualités, réservations...).</p>
+      <p>Connexion sécurisée (Supabase Auth). Ton compte doit être admin côté DB.</p>
+
+      <div class="login-field">
+        <label for="admin-email">Email</label>
+        <input type="email" id="admin-email" autocomplete="email" placeholder="contactsingbox@gmail.com" />
+      </div>
 
       <div class="login-field">
         <label for="admin-password">Mot de passe</label>
         <input type="password" id="admin-password" autocomplete="current-password" />
       </div>
 
-      <div id="login-error"></div>
+      <div id="login-error" class="status-message"></div>
 
       <div class="login-actions">
-        <button id="login-button">Se connecter</button>
+        <button id="login-button" class="btn-primary">Se connecter</button>
       </div>
     </div>
   </div>
 
-  <!-- Écran admin -->
+  <!-- ADMIN -->
   <div id="admin-screen">
     <div class="admin-container">
+
       <header class="admin-header">
         <div class="admin-header-left">
           <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
           <div>
             <h1 class="admin-title-main">Back-office Singbox</h1>
-            <p class="admin-subtitle">Gère ici tes réservations, clients, caution, codes promo et actualités.</p>
+            <p class="admin-subtitle">Admin sécurisé (RLS) : actualités, codes promo, réservations.</p>
           </div>
         </div>
         <div class="admin-header-right">
-          <span id="deposit-badge" class="deposit-badge">Caution : -- €</span>
+          <span id="user-badge" class="deposit-badge">Connecté : --</span>
           <button id="logout-button">Se déconnecter</button>
         </div>
       </header>
 
       <div class="tabs">
-        <button class="tab-button" data-tab="tab-dashboard">Dashboard</button>
+        <button class="tab-button active" data-tab="tab-dashboard">Dashboard</button>
+        <button class="tab-button" data-tab="tab-actualites">Actualités</button>
         <button class="tab-button" data-tab="tab-reservations">Réservations</button>
         <button class="tab-button" data-tab="tab-clients">Clients</button>
-        <button class="tab-button" data-tab="tab-actualites">Actualités</button>
-        <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
+        <button class="tab-button" data-tab="tab-promo">Codes promo</button>
       </div>
 
-      <!-- Dashboard -->
-      <section id="tab-dashboard" class="tab-content">
+      <!-- DASHBOARD -->
+      <section id="tab-dashboard" class="tab-content active">
         <div class="card">
           <h2>Dashboard</h2>
-          <p class="card-subtitle">
-            Vue rapide sur le mois en cours (basée sur la table <code>reservations</code>).
-          </p>
+          <p class="card-subtitle">Vue rapide du mois en cours (table <code>reservations</code>).</p>
 
           <div class="kpi-grid">
             <div class="kpi-card">
@@ -532,14 +291,14 @@
               <div class="kpi-sub">Mois en cours</div>
             </div>
             <div class="kpi-card">
-              <div class="kpi-label">CA estimé</div>
-              <div id="kpi-revenue" class="kpi-value">-- €</div>
-              <div class="kpi-sub">Somme des montants confirmés (à venir)</div>
+              <div class="kpi-label">Total réservations</div>
+              <div id="kpi-resa-total" class="kpi-value">--</div>
+              <div class="kpi-sub">Mois en cours</div>
             </div>
             <div class="kpi-card">
-              <div class="kpi-label">Taux de remplissage (simple)</div>
+              <div class="kpi-label">Taux confirmées</div>
               <div id="kpi-fill-rate" class="kpi-value">-- %</div>
-              <div class="kpi-sub">Confirmées / total réservations du mois</div>
+              <div class="kpi-sub">Confirmées / total</div>
             </div>
           </div>
 
@@ -547,13 +306,113 @@
         </div>
       </section>
 
-      <!-- Réservations -->
+      <!-- ACTUALITES -->
+      <section id="tab-actualites" class="tab-content">
+        <div class="card">
+          <h2>Nouvel article / édition</h2>
+          <p class="card-subtitle">CRUD table <code>actualites</code>. Le slug doit être unique.</p>
+
+          <form id="article-form">
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="a-titre">Titre</label>
+                <input id="a-titre" type="text" required />
+              </div>
+              <div class="form-field">
+                <label for="a-slug">Slug (URL)</label>
+                <input id="a-slug" type="text" placeholder="promo-etudiants" required />
+                <div class="helper-text">Sans espaces ni accents. Ex: <code>ouverture-officielle</code></div>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="a-image">Image (URL) (optionnel)</label>
+                <input id="a-image" type="url" placeholder="https://.../image.jpg" />
+              </div>
+              <div class="form-field">
+                <label for="a-chapeau">Résumé court</label>
+                <input id="a-chapeau" type="text" />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="a-contenu">Contenu</label>
+              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML (ex: <br>, <strong>)"></textarea>
+            </div>
+
+            <div class="form-grid-3" style="margin-top:.75rem">
+              <div class="form-field">
+                <label for="a-categorie">Catégorie</label>
+                <select id="a-categorie">
+                  <option value="coulisses-travaux">Coulisses & travaux</option>
+                  <option value="nouvelles-chansons">Nouvelles chansons</option>
+                  <option value="vie-lieu">Vie du lieu</option>
+                  <option value="idees-soirees">Idées de soirées</option>
+                  <option value="promo">Promo</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>Article publié</label>
+                <div class="inline-check">
+                  <input id="a-publie" type="checkbox" />
+                  <span>Visible côté site</span>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="a-datepub">Date de publication (optionnel)</label>
+                <input id="a-datepub" type="datetime-local" />
+                <div class="helper-text">Si vide : on met la date actuelle au moment de publier.</div>
+              </div>
+            </div>
+
+            <input id="a-id" type="hidden" />
+
+            <div class="form-actions">
+              <button type="button" id="article-reset" class="btn-secondary">Réinitialiser</button>
+              <button type="submit" class="btn-primary">Enregistrer l’article</button>
+            </div>
+          </form>
+
+          <div id="article-form-message" class="status-message"></div>
+        </div>
+
+        <div class="card">
+          <h2>Liste des articles</h2>
+          <p class="card-subtitle">Gestion des articles présents dans <code>actualites</code>.</p>
+
+          <div class="form-actions" style="justify-content:flex-end;margin-top:0">
+            <button id="btn-refresh-articles" class="btn-primary" type="button">Actualiser</button>
+          </div>
+
+          <div id="articles-list-message" class="status-message"></div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Slug</th>
+                  <th>Catégorie</th>
+                  <th>Créé le</th>
+                  <th>Publication</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="articles-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESERVATIONS -->
       <section id="tab-reservations" class="tab-content">
         <div class="card">
           <h2>Réservations</h2>
-          <p class="card-subtitle">
-            Liste des réservations (table <code>reservations</code>).
-          </p>
+          <p class="card-subtitle">Lecture admin (table <code>reservations</code>).</p>
 
           <div class="form-grid-3">
             <div class="form-field">
@@ -574,8 +433,9 @@
               </select>
             </div>
           </div>
+
           <div class="form-actions">
-            <button id="btn-refresh-reservations" class="btn-primary">Actualiser</button>
+            <button id="btn-refresh-reservations" class="btn-primary" type="button">Actualiser</button>
           </div>
 
           <div id="reservations-list-message" class="status-message"></div>
@@ -588,7 +448,6 @@
                   <th>Heure</th>
                   <th>Client</th>
                   <th>Email</th>
-                  <th>Montant</th>
                   <th>Statut</th>
                 </tr>
               </thead>
@@ -598,13 +457,15 @@
         </div>
       </section>
 
-      <!-- Clients -->
+      <!-- CLIENTS -->
       <section id="tab-clients" class="tab-content">
         <div class="card">
           <h2>Clients</h2>
-          <p class="card-subtitle">
-            Vue clients construite à partir de la table <code>reservations</code> (groupé par email).
-          </p>
+          <p class="card-subtitle">Vue clients construite depuis <code>reservations</code> (groupé par email).</p>
+
+          <div class="form-actions" style="justify-content:flex-end;margin-top:0">
+            <button id="btn-refresh-clients" class="btn-primary" type="button">Actualiser</button>
+          </div>
 
           <div id="clients-list-message" class="status-message"></div>
 
@@ -614,7 +475,6 @@
                 <tr>
                   <th>Nom</th>
                   <th>Email</th>
-                  <th>Téléphone</th>
                   <th>Nb réservations</th>
                   <th>Dernière venue</th>
                 </tr>
@@ -625,137 +485,11 @@
         </div>
       </section>
 
-      <!-- Actualités -->
-      <section id="tab-actualites" class="tab-content">
-        <div class="card">
-          <h2>Nouvel article / édition</h2>
-          <p class="card-subtitle">
-            Crée ou modifie un article d’actualités. Ces données sont lues sur la page <code>actualites.html</code> depuis la table <code>actualites</code>.
-          </p>
-
-          <form id="article-form">
-            <input type="hidden" id="article-id" />
-
-            <div class="form-grid-2">
-              <div class="form-field">
-                <label for="article-title">Titre</label>
-                <input type="text" id="article-title" placeholder="Promo Étudiants" required />
-              </div>
-              <div class="form-field">
-                <label for="article-slug">Slug (URL)</label>
-                <input type="text" id="article-slug" placeholder="promo-etudiants" required />
-                <p class="helper-text">
-                  Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.
-                </p>
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div class="form-field">
-                <label for="article-image-url">Image (URL)</label>
-                <input type="text" id="article-image-url" placeholder="https://…/image.jpg" />
-                <p class="helper-text">
-                  URL complète de l’image. Sera remplacée automatiquement si tu importes un fichier ci-dessous.
-                </p>
-              </div>
-              <div class="form-field">
-                <label for="article-image-file">Ou importer une image</label>
-                <input type="file" id="article-image-file" accept="image/*" />
-                <p class="helper-text">
-                  L’image sera uploadée dans le bucket <code>actualites-images</code> et son URL enregistrée.
-                </p>
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div class="form-field">
-                <label for="article-excerpt">Résumé court</label>
-                <input type="text" id="article-excerpt" placeholder="Nouvelle promo spéciale étudiant disponible 1 mois..." />
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label for="article-content">Contenu</label>
-              <textarea id="article-content" placeholder="Texte principal de l’article (HTML léger possible)."></textarea>
-              <p class="helper-text">
-                Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).
-              </p>
-            </div>
-
-            <div class="form-grid-3">
-              <div class="form-field">
-                <label for="article-category">Catégorie (optionnel)</label>
-                <select id="article-category">
-                  <option value="">Aucune (toutes catégories)</option>
-                  <option value="Coulisses & travaux">Coulisses & travaux</option>
-                  <option value="Nouvelles chansons">Nouvelles chansons</option>
-                  <option value="Vie du lieu">Vie du lieu</option>
-                  <option value="Idées de soirées">Idées de soirées</option>
-                  <option value="Promo">Promo</option>
-                </select>
-              </div>
-
-              <div class="form-field">
-                <label for="article-published">
-                  <input type="checkbox" id="article-published" />
-                  Article publié
-                </label>
-                <p class="helper-text">
-                  Si décoché : l’article reste en brouillon (non visible côté site).
-                </p>
-              </div>
-
-              <div class="form-field">
-                <label for="article-date-publication">Date de publication (optionnel)</label>
-                <input type="datetime-local" id="article-date-publication" />
-                <p class="helper-text">
-                  Si tu laisses vide, on prend la date/heure actuelle lors de la publication.
-                </p>
-              </div>
-            </div>
-
-            <div class="form-actions">
-              <button type="button" class="btn-secondary" id="article-reset-button">Réinitialiser le formulaire</button>
-              <button type="submit" class="btn-primary">Enregistrer l’article</button>
-            </div>
-          </form>
-
-          <div id="article-form-message" class="status-message"></div>
-        </div>
-
-        <div class="card">
-          <h2>Liste des articles</h2>
-          <p class="card-subtitle">
-            Gère ici les articles présents dans la table <code>actualites</code>.
-          </p>
-
-          <div id="articles-list-message" class="status-message"></div>
-
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Titre</th>
-                  <th>Slug</th>
-                  <th>Créé le</th>
-                  <th>Publication</th>
-                  <th>Statut</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="articles-table-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- Codes promo -->
-      <section id="tab-promo" class="tab-content active">
+      <!-- PROMO -->
+      <section id="tab-promo" class="tab-content">
         <div class="card">
           <h2>Créer un code promo</h2>
-          <p class="card-subtitle">
-            Ajoute un code (réduction ou gratuit) utilisable sur la réservation.
-          </p>
+          <p class="card-subtitle">CRUD table <code>promo_codes</code>.</p>
 
           <form id="promo-form">
             <div class="form-grid-3">
@@ -792,14 +526,10 @@
               </div>
             </div>
 
-            <!-- Conditions d'utilisation -->
             <div class="form-grid-3">
               <div class="form-field">
                 <label for="promo-max-per-email">Nb utilisations max / email</label>
                 <input type="number" id="promo-max-per-email" placeholder="ex : 1, 2, 10..." min="1" />
-                <p class="helper-text">
-                  Ex : PREMS = 1, Duo Pack = 2, VIP = 100...
-                </p>
               </div>
 
               <div class="form-field">
@@ -807,33 +537,21 @@
                   <input type="checkbox" id="promo-first-session" />
                   Réservé à la <strong>première session</strong>
                 </label>
-                <p class="helper-text">
-                  Le code ne sera valable que si l'email n'a jamais réservé.
-                </p>
+                <div class="helper-text">Valable si l'email n'a jamais réservé.</div>
               </div>
 
               <div class="form-field">
                 <label for="promo-email-domain">Domaine email (optionnel)</label>
                 <input type="text" id="promo-email-domain" placeholder="ex : univ-toulouse.fr" />
-                <p class="helper-text">
-                  Laisse vide pour tous. Utile pour un code "étudiants" avec mail spécifique.
-                </p>
               </div>
             </div>
 
             <div class="form-grid-3">
               <div class="form-field">
                 <label for="promo-note">Label interne</label>
-                <input type="text" id="promo-note" placeholder="Étudiants, Seniors, Ulule Duo..." />
-                <p class="helper-text">
-                  Juste pour toi, affiché dans la liste admin (ne change rien côté client).
-                </p>
+                <input type="text" id="promo-note" placeholder="Étudiants, Ulule Duo..." />
               </div>
             </div>
-
-            <p class="helper-text">
-              Type <strong>free</strong> = séance gratuite (tu peux l’utiliser pour les invits, influenceurs, etc.).
-            </p>
 
             <div class="form-actions">
               <button type="submit" class="btn-primary">Créer / enregistrer</button>
@@ -845,9 +563,11 @@
 
         <div class="card">
           <h2>Liste des codes promo</h2>
-          <p class="card-subtitle">
-            Tu peux activer/désactiver un code ou le supprimer.
-          </p>
+          <p class="card-subtitle">Activer/désactiver, supprimer.</p>
+
+          <div class="form-actions" style="justify-content:flex-end;margin-top:0">
+            <button id="btn-refresh-promo" class="btn-primary" type="button">Actualiser</button>
+          </div>
 
           <div id="promo-list-message" class="status-message"></div>
 
@@ -870,62 +590,143 @@
           </div>
         </div>
       </section>
+
     </div>
   </div>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const ADMIN_PASSWORD = "Singbox8206!";
+    // ⚠️ OK d'exposer l'ANON KEY côté front
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    const ARTICLES_BUCKET = "actualites-images";
+    const CATEGORY_LABELS = {
+      "coulisses-travaux": "Coulisses & travaux",
+      "nouvelles-chansons": "Nouvelles chansons",
+      "vie-lieu": "Vie du lieu",
+      "idees-soirees": "Idées de soirées",
+      "promo": "Promo"
+    };
 
-    // CAUTION
-    async function loadDeposit() {
-      const badge = document.getElementById("deposit-badge");
-      if (!badge) return;
-
-      try {
-        const { data, error } = await supabaseClient
-          .from("settings")
-          .select("value")
-          .eq("key", "deposit_amount")
-          .maybeSingle();
-
-        let value = "80";
-        if (error && error.code !== "PGRST116") {
-          console.error("Erreur loadDeposit:", error);
-        } else if (data && data.value) {
-          value = data.value;
-        }
-        badge.textContent = "Caution : " + value + " €";
-      } catch (err) {
-        console.error("Erreur réseau loadDeposit:", err);
-        badge.textContent = "Caution : 80 €";
-      }
+    function showLogin() {
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("admin-screen").style.display = "none";
+    }
+    function showAdmin() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
     }
 
-    // DASHBOARD (utilise 'date')
+    function setMsg(id, text, ok=false) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text || "";
+      el.className = "status-message" + (text ? (ok ? " ok" : " error") : "");
+    }
+
+    function toISODate(date) {
+      // YYYY-MM-DD (for filters)
+      const d = new Date(date);
+      return d.toISOString().split("T")[0];
+    }
+
+    function formatDateFr(dateStr) {
+      if (!dateStr) return "-";
+      const d = new Date(dateStr);
+      if (isNaN(d)) return dateStr;
+      return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
+    }
+
+    function formatDateTimeFr(ts) {
+      if (!ts) return "-";
+      const d = new Date(ts);
+      if (isNaN(d)) return "-";
+      return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
+    }
+
+    // -------------------------
+    // AUTH
+    // -------------------------
+    async function refreshAuthUI() {
+      const { data } = await supabaseClient.auth.getUser();
+      const user = data?.user || null;
+      if (!user) {
+        showLogin();
+        return;
+      }
+      showAdmin();
+      document.getElementById("user-badge").textContent = "Connecté : " + (user.email || "admin");
+
+      // Charge tout
+      await loadDashboard();
+      await loadArticles();
+      await loadReservations();
+      await loadClients();
+      await loadPromoCodes();
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById("admin-email").value.trim();
+      const password = document.getElementById("admin-password").value;
+
+      setMsg("login-error", "");
+      if (!email || !password) {
+        setMsg("login-error", "Merci de saisir email + mot de passe.", false);
+        return;
+      }
+
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        console.error(error);
+        setMsg("login-error", "Connexion refusée : " + (error.message || "erreur"), false);
+        return;
+      }
+
+      document.getElementById("admin-password").value = "";
+      await refreshAuthUI();
+    }
+
+    async function handleLogout() {
+      await supabaseClient.auth.signOut();
+      showLogin();
+    }
+
+    // -------------------------
+    // TABS
+    // -------------------------
+    function initTabs() {
+      document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+          btn.classList.add("active");
+          const target = document.getElementById(btn.dataset.tab);
+          if (target) target.classList.add("active");
+        });
+      });
+    }
+
+    // -------------------------
+    // DASHBOARD
+    // -------------------------
     async function loadDashboard() {
       const msgEl = document.getElementById("dashboard-message");
-      const kpiResa = document.getElementById("kpi-resa-month");
-      const kpiRevenue = document.getElementById("kpi-revenue");
-      const kpiFill = document.getElementById("kpi-fill-rate");
-
-      if (!msgEl) return;
       msgEl.textContent = "Chargement du dashboard...";
       msgEl.className = "status-message";
+
+      const kpiConfirmed = document.getElementById("kpi-resa-month");
+      const kpiTotal = document.getElementById("kpi-resa-total");
+      const kpiRate = document.getElementById("kpi-fill-rate");
 
       try {
         const now = new Date();
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
         const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-        const firstDateStr = firstDay.toISOString().split("T")[0];
-        const nextDateStr = nextMonth.toISOString().split("T")[0];
+        const firstDateStr = toISODate(firstDay);
+        const nextDateStr = toISODate(nextMonth);
 
         const { data, error } = await supabaseClient
           .from("reservations")
@@ -940,25 +741,26 @@
           return;
         }
 
-        const total = data.length;
-        const confirmed = data.filter(r => r.status === "confirmed");
-        const totalResa = confirmed.length;
-        const fillRate = total > 0 ? Math.round((totalResa / total) * 100) : 0;
+        const total = data?.length || 0;
+        const confirmed = (data || []).filter(r => r.status === "confirmed").length;
+        const rate = total > 0 ? Math.round((confirmed / total) * 100) : 0;
 
-        if (kpiResa) kpiResa.textContent = totalResa;
-        if (kpiRevenue) kpiRevenue.textContent = "-- €";
-        if (kpiFill) kpiFill.textContent = fillRate + " %";
+        if (kpiConfirmed) kpiConfirmed.textContent = confirmed;
+        if (kpiTotal) kpiTotal.textContent = total;
+        if (kpiRate) kpiRate.textContent = rate + " %";
 
-        msgEl.textContent = "Dashboard mis à jour ✔️";
+        msgEl.textContent = "Dashboard mis à jour ✔";
         msgEl.classList.add("ok");
       } catch (err) {
         console.error(err);
-        msgEl.textContent = "Erreur réseau pour le dashboard.";
+        msgEl.textContent = "Erreur réseau dashboard.";
         msgEl.classList.add("error");
       }
     }
 
-    // RÉSERVATIONS
+    // -------------------------
+    // RESERVATIONS
+    // -------------------------
     async function loadReservations() {
       const tbody = document.getElementById("reservations-table-body");
       const msgEl = document.getElementById("reservations-list-message");
@@ -978,18 +780,11 @@
           .select("date, start_time, name, email, status")
           .order("start_time", { ascending: false });
 
-        if (dateFrom) {
-          query = query.gte("date", dateFrom);
-        }
-        if (dateTo) {
-          query = query.lte("date", dateTo);
-        }
-        if (status) {
-          query = query.eq("status", status);
-        }
+        if (dateFrom) query = query.gte("date", dateFrom);
+        if (dateTo) query = query.lte("date", dateTo);
+        if (status) query = query.eq("status", status);
 
         const { data, error } = await query;
-
         if (error) {
           console.error(error);
           msgEl.textContent = "Erreur chargement réservations : " + (error.message || "");
@@ -1006,18 +801,15 @@
         data.forEach((row) => {
           const tr = document.createElement("tr");
 
-          const dateStr = row.date || "-";
-          const dTime = row.start_time ? new Date(row.start_time) : null;
-          const timeStr = dTime
-            ? dTime.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-            : "-";
-
           const tdDate = document.createElement("td");
-          tdDate.textContent = dateStr;
+          tdDate.textContent = row.date || "-";
           tr.appendChild(tdDate);
 
           const tdTime = document.createElement("td");
-          tdTime.textContent = timeStr;
+          const dTime = row.start_time ? new Date(row.start_time) : null;
+          tdTime.textContent = dTime
+            ? dTime.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" })
+            : "-";
           tr.appendChild(tdTime);
 
           const tdClient = document.createElement("td");
@@ -1028,26 +820,13 @@
           tdEmail.textContent = row.email || "-";
           tr.appendChild(tdEmail);
 
-          const tdAmount = document.createElement("td");
-          tdAmount.textContent = "- €";
-          tr.appendChild(tdAmount);
-
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.status === "confirmed") {
-            badge.classList.add("badge-active");
-            badge.textContent = "Confirmée";
-          } else if (row.status === "cancelled") {
-            badge.classList.add("badge-inactive");
-            badge.textContent = "Annulée";
-          } else if (row.status === "pending") {
-            badge.classList.add("badge-inactive");
-            badge.textContent = "En attente";
-          } else {
-            badge.classList.add("badge-inactive");
-            badge.textContent = row.status || "Autre";
-          }
+          if (row.status === "confirmed") { badge.classList.add("badge-active"); badge.textContent = "Confirmée"; }
+          else if (row.status === "cancelled") { badge.classList.add("badge-inactive"); badge.textContent = "Annulée"; }
+          else if (row.status === "pending") { badge.classList.add("badge-inactive"); badge.textContent = "En attente"; }
+          else { badge.classList.add("badge-inactive"); badge.textContent = row.status || "Autre"; }
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
 
@@ -1062,7 +841,9 @@
       }
     }
 
-    // CLIENTS
+    // -------------------------
+    // CLIENTS (depuis reservations)
+    // -------------------------
     async function loadClients() {
       const tbody = document.getElementById("clients-table-body");
       const msgEl = document.getElementById("clients-list-message");
@@ -1095,59 +876,22 @@
         data.forEach((row) => {
           const email = row.email || "inconnu";
           if (!map.has(email)) {
-            map.set(email, {
-              name: row.name || "-",
-              email,
-              phone: "-",
-              reservationsCount: 0,
-              lastDate: null
-            });
+            map.set(email, { name: row.name || "-", email, reservationsCount: 0, lastDate: null });
           }
           const entry = map.get(email);
           entry.reservationsCount += 1;
           const d = row.start_time ? new Date(row.start_time) : null;
-          if (d && (!entry.lastDate || d > entry.lastDate)) {
-            entry.lastDate = d;
-          }
+          if (d && (!entry.lastDate || d > entry.lastDate)) entry.lastDate = d;
         });
 
-        const clients = Array.from(map.values()).sort((a, b) => {
-          if (!a.lastDate && !b.lastDate) return 0;
-          if (!a.lastDate) return 1;
-          if (!b.lastDate) return -1;
-          return b.lastDate - a.lastDate;
-        });
+        const clients = Array.from(map.values()).sort((a,b) => (b.lastDate||0) - (a.lastDate||0));
 
         clients.forEach((c) => {
           const tr = document.createElement("tr");
-
-          const tdName = document.createElement("td");
-          tdName.textContent = c.name;
-          tr.appendChild(tdName);
-
-          const tdEmail = document.createElement("td");
-          tdEmail.textContent = c.email;
-          tr.appendChild(tdEmail);
-
-          const tdPhone = document.createElement("td");
-          tdPhone.textContent = c.phone;
-          tr.appendChild(tdPhone);
-
-          const tdCount = document.createElement("td");
-          tdCount.textContent = c.reservationsCount;
-          tr.appendChild(tdCount);
-
-          const tdLast = document.createElement("td");
-          if (c.lastDate) {
-            tdLast.textContent =
-              c.lastDate.toLocaleDateString("fr-FR") +
-              " " +
-              c.lastDate.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-          } else {
-            tdLast.textContent = "-";
-          }
-          tr.appendChild(tdLast);
-
+          const tdName = document.createElement("td"); tdName.textContent = c.name; tr.appendChild(tdName);
+          const tdEmail = document.createElement("td"); tdEmail.textContent = c.email; tr.appendChild(tdEmail);
+          const tdCount = document.createElement("td"); tdCount.textContent = c.reservationsCount; tr.appendChild(tdCount);
+          const tdLast = document.createElement("td"); tdLast.textContent = c.lastDate ? formatDateTimeFr(c.lastDate) : "-"; tr.appendChild(tdLast);
           tbody.appendChild(tr);
         });
 
@@ -1159,187 +903,30 @@
       }
     }
 
-    // --- ACTUALITÉS ---
-
+    // -------------------------
+    // ACTUALITES (CRUD)
+    // -------------------------
     function resetArticleForm() {
-      document.getElementById("article-id").value = "";
-      document.getElementById("article-title").value = "";
-      document.getElementById("article-slug").value = "";
-      document.getElementById("article-image-url").value = "";
-      document.getElementById("article-image-file").value = "";
-      document.getElementById("article-excerpt").value = "";
-      document.getElementById("article-content").value = "";
-      document.getElementById("article-category").value = "";
-      document.getElementById("article-published").checked = false;
-      document.getElementById("article-date-publication").value = "";
-      const msgEl = document.getElementById("article-form-message");
-      if (msgEl) {
-        msgEl.textContent = "";
-        msgEl.className = "status-message";
-      }
+      document.getElementById("a-id").value = "";
+      document.getElementById("a-titre").value = "";
+      document.getElementById("a-slug").value = "";
+      document.getElementById("a-image").value = "";
+      document.getElementById("a-chapeau").value = "";
+      document.getElementById("a-contenu").value = "";
+      document.getElementById("a-categorie").value = "coulisses-travaux";
+      document.getElementById("a-publie").checked = false;
+      document.getElementById("a-datepub").value = "";
+      setMsg("article-form-message", "");
     }
 
-    async function uploadArticleImageIfNeeded() {
-      const fileInput = document.getElementById("article-image-file");
-      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-        return null;
-      }
-
-      const file = fileInput.files[0];
-      const ext = file.name.includes(".") ? file.name.split(".").pop() : "jpg";
-      const filePath = `actualites/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-      const { data, error } = await supabaseClient
-        .storage
-        .from(ARTICLES_BUCKET)
-        .upload(filePath, file, { upsert: true });
-
-      if (error) {
-        throw error;
-      }
-
-      const { data: publicData } = supabaseClient
-        .storage
-        .from(ARTICLES_BUCKET)
-        .getPublicUrl(data.path);
-
-      return publicData.publicUrl;
-    }
-
-    async function handleArticleFormSubmit(event) {
-      event.preventDefault();
-      const msgEl = document.getElementById("article-form-message");
-      msgEl.textContent = "Enregistrement en cours...";
-      msgEl.className = "status-message";
-
-      const id = document.getElementById("article-id").value || null;
-      const titre = document.getElementById("article-title").value.trim();
-      const slug = document.getElementById("article-slug").value.trim();
-      const imageUrlInput = document.getElementById("article-image-url").value.trim();
-      const chapeau = document.getElementById("article-excerpt").value.trim();
-      const contenu = document.getElementById("article-content").value.trim();
-      const categorie = document.getElementById("article-category").value || null;
-      const publie = document.getElementById("article-published").checked;
-      let datePub = document.getElementById("article-date-publication").value || null;
-
-      if (!titre || !slug) {
-        msgEl.textContent = "Merci de renseigner au minimum un titre et un slug.";
-        msgEl.classList.add("error");
-        return;
-      }
-
-      // Convertir datetime-local -> date (YYYY-MM-DD) pour la colonne date_publication
-      if (datePub) {
-        datePub = datePub.split("T")[0];
-      }
-
-      try {
-        // 1) upload image si fichier sélectionné
-        let finalImageUrl = imageUrlInput || null;
-        try {
-          const uploadedUrl = await uploadArticleImageIfNeeded();
-          if (uploadedUrl) {
-            finalImageUrl = uploadedUrl;
-          }
-        } catch (uploadErr) {
-          console.error("Erreur upload image:", uploadErr);
-          msgEl.textContent = "Erreur lors de l’upload de l’image : " + (uploadErr.message || "");
-          msgEl.classList.add("error");
-          return;
-        }
-
-        const payload = {
-          titre,
-          slug,
-          chapeau: chapeau || null,
-          contenu: contenu || null,
-          categorie,
-          publie,
-          date_publication: datePub,
-          image_url: finalImageUrl
-        };
-
-        let error;
-        if (id) {
-          const res = await supabaseClient
-            .from("actualites")
-            .update(payload)
-            .eq("id", id);
-          error = res.error;
-        } else {
-          const res = await supabaseClient
-            .from("actualites")
-            .insert(payload);
-          error = res.error;
-        }
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur lors de l’enregistrement : " + (error.message || "");
-          msgEl.classList.add("error");
-          return;
-        }
-
-        msgEl.textContent = "Article enregistré avec succès ✅";
-        msgEl.classList.add("ok");
-        resetArticleForm();
-        await loadArticles();
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau lors de l’enregistrement.";
-        msgEl.classList.add("error");
-      }
-    }
-
-    function fillArticleFormForEdit(row) {
-      document.getElementById("article-id").value = row.id;
-      document.getElementById("article-title").value = row.titre || "";
-      document.getElementById("article-slug").value = row.slug || "";
-      document.getElementById("article-image-url").value = row.image_url || "";
-      document.getElementById("article-image-file").value = "";
-      document.getElementById("article-excerpt").value = row.chapeau || "";
-      document.getElementById("article-content").value = row.contenu || "";
-      document.getElementById("article-category").value = row.categorie || "";
-      document.getElementById("article-published").checked = !!row.publie;
-
-      if (row.date_publication) {
-        // on remet à midi pour remplir le champ datetime-local proprement
-        document.getElementById("article-date-publication").value = row.date_publication + "T12:00";
-      } else {
-        document.getElementById("article-date-publication").value = "";
-      }
-
-      const msgEl = document.getElementById("article-form-message");
-      msgEl.textContent = "Mode édition : " + (row.titre || "article");
-      msgEl.className = "status-message";
-    }
-
-    async function deleteArticle(id) {
-      const msgEl = document.getElementById("articles-list-message");
-      if (!confirm("Supprimer cet article ?")) return;
-      msgEl.textContent = "Suppression en cours...";
-      msgEl.className = "status-message";
-
-      try {
-        const { error } = await supabaseClient
-          .from("actualites")
-          .delete()
-          .eq("id", id);
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur lors de la suppression : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Article supprimé.";
-          msgEl.classList.add("ok");
-          await loadArticles();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau lors de la suppression.";
-        msgEl.classList.add("error");
-      }
+    function normalizeSlug(s) {
+      return (s || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-]/g, "")
+        .replace(/\-+/g, "-")
+        .replace(/^\-+|\-+$/g, "");
     }
 
     async function loadArticles() {
@@ -1354,13 +941,12 @@
       try {
         const { data, error } = await supabaseClient
           .from("actualites")
-          .select("*")
-          .order("date_publication", { ascending: false, nullsFirst: false })
+          .select("id, titre, slug, categorie, publie, date_publication, created_at")
           .order("created_at", { ascending: false });
 
         if (error) {
           console.error(error);
-          msgEl.textContent = "Erreur lors du chargement : " + (error.message || "");
+          msgEl.textContent = "Erreur chargement actualités : " + (error.message || "");
           msgEl.classList.add("error");
           return;
         }
@@ -1372,38 +958,30 @@
         }
 
         msgEl.textContent = "";
-        data.forEach((row) => {
+
+        data.forEach(row => {
           const tr = document.createElement("tr");
 
-          const tdTitle = document.createElement("td");
-          tdTitle.textContent = row.titre || "-";
-          tr.appendChild(tdTitle);
+          const tdTitre = document.createElement("td"); tdTitre.textContent = row.titre || "-"; tr.appendChild(tdTitre);
+          const tdSlug = document.createElement("td"); tdSlug.textContent = row.slug || "-"; tr.appendChild(tdSlug);
 
-          const tdSlug = document.createElement("td");
-          tdSlug.textContent = row.slug || "-";
-          tr.appendChild(tdSlug);
+          const tdCat = document.createElement("td");
+          tdCat.textContent = CATEGORY_LABELS[row.categorie] || row.categorie || "-";
+          tr.appendChild(tdCat);
 
           const tdCreated = document.createElement("td");
-          const created = row.created_at ? new Date(row.created_at) : null;
-          tdCreated.textContent = created
-            ? created.toLocaleDateString("fr-FR") + " " + created.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-            : "-";
+          tdCreated.textContent = row.created_at ? formatDateFr(row.created_at) : "-";
           tr.appendChild(tdCreated);
 
           const tdPub = document.createElement("td");
-          tdPub.textContent = row.date_publication || "-";
+          tdPub.textContent = row.date_publication ? formatDateFr(row.date_publication) : "-";
           tr.appendChild(tdPub);
 
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.publie) {
-            badge.classList.add("badge-active");
-            badge.textContent = "Publié";
-          } else {
-            badge.classList.add("badge-inactive");
-            badge.textContent = "Brouillon";
-          }
+          if (row.publie) { badge.classList.add("badge-active"); badge.textContent = "Publié"; }
+          else { badge.classList.add("badge-inactive"); badge.textContent = "Brouillon"; }
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
 
@@ -1412,128 +990,123 @@
           const editBtn = document.createElement("button");
           editBtn.className = "small-btn";
           editBtn.textContent = "Éditer";
-          editBtn.addEventListener("click", () => fillArticleFormForEdit(row));
+          editBtn.addEventListener("click", async () => {
+            await loadArticleIntoForm(row.id);
+            // Switch sur l'onglet actualites si besoin
+            document.querySelector('.tab-button[data-tab="tab-actualites"]').click();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
           tdActions.appendChild(editBtn);
 
           const delBtn = document.createElement("button");
           delBtn.className = "small-btn danger";
           delBtn.textContent = "Supprimer";
-          delBtn.addEventListener("click", () => deleteArticle(row.id));
+          delBtn.addEventListener("click", async () => {
+            if (confirm("Supprimer l’article \"" + (row.titre || row.slug) + "\" ?")) {
+              await deleteArticle(row.id);
+            }
+          });
           tdActions.appendChild(delBtn);
 
           tr.appendChild(tdActions);
-
           tbody.appendChild(tr);
         });
+
       } catch (err) {
         console.error(err);
-        msgEl.textContent = "Erreur réseau lors du chargement des articles.";
+        msgEl.textContent = "Erreur réseau chargement actualités.";
         msgEl.classList.add("error");
       }
     }
 
-    // Login / logout
-    function showLogin() {
-      document.getElementById("login-screen").style.display = "flex";
-      document.getElementById("admin-screen").style.display = "none";
-    }
+    async function loadArticleIntoForm(id) {
+      setMsg("article-form-message", "Chargement de l’article...", true);
+      const { data, error } = await supabaseClient
+        .from("actualites")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
 
-    function showAdmin() {
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("admin-screen").style.display = "block";
-    }
+      if (error || !data) {
+        console.error(error);
+        setMsg("article-form-message", "Impossible de charger l’article.", false);
+        return;
+      }
 
-    function checkAuth() {
-      if (localStorage.getItem("sb_isAdmin") === "true") {
-        showAdmin();
-        initAfterLogin();
+      document.getElementById("a-id").value = data.id || "";
+      document.getElementById("a-titre").value = data.titre || "";
+      document.getElementById("a-slug").value = data.slug || "";
+      document.getElementById("a-image").value = data.image_url || "";
+      document.getElementById("a-chapeau").value = data.chapeau || "";
+      document.getElementById("a-contenu").value = data.contenu || "";
+      document.getElementById("a-categorie").value = data.categorie || "coulisses-travaux";
+      document.getElementById("a-publie").checked = !!data.publie;
+
+      // datetime-local attends "YYYY-MM-DDTHH:mm"
+      if (data.date_publication) {
+        const d = new Date(data.date_publication);
+        if (!isNaN(d)) {
+          const pad = (n) => String(n).padStart(2,"0");
+          const v = d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
+          document.getElementById("a-datepub").value = v;
+        }
       } else {
-        showLogin();
+        document.getElementById("a-datepub").value = "";
+      }
+
+      setMsg("article-form-message", "Mode édition ✔", true);
+    }
+
+    async function upsertArticle(payload, id) {
+      // si "publie" et pas de date_publication -> set now
+      if (payload.publie && !payload.date_publication) {
+        payload.date_publication = new Date().toISOString();
+      }
+
+      const msgId = "article-form-message";
+      setMsg(msgId, "Enregistrement en cours...", true);
+
+      try {
+        let q = supabaseClient.from("actualites");
+        const res = id
+          ? await q.update(payload).eq("id", id)
+          : await q.insert([payload]);
+
+        if (res.error) {
+          console.error(res.error);
+          setMsg(msgId, "Erreur : " + (res.error.message || "impossible"), false);
+          return;
+        }
+
+        setMsg(msgId, "Article enregistré ✅", true);
+        resetArticleForm();
+        await loadArticles();
+      } catch (err) {
+        console.error(err);
+        setMsg(msgId, "Erreur réseau.", false);
       }
     }
 
-    async function initAfterLogin() {
-      await loadDeposit();
-      await loadPromoCodes();
-      await loadDashboard();
-      await loadReservations();
-      await loadClients();
+    async function deleteArticle(id) {
+      const msgEl = document.getElementById("articles-list-message");
+      msgEl.textContent = "Suppression en cours...";
+      msgEl.className = "status-message";
+
+      const { error } = await supabaseClient.from("actualites").delete().eq("id", id);
+      if (error) {
+        console.error(error);
+        msgEl.textContent = "Erreur suppression : " + (error.message || "");
+        msgEl.classList.add("error");
+        return;
+      }
+      msgEl.textContent = "Article supprimé.";
+      msgEl.classList.add("ok");
       await loadArticles();
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const loginButton = document.getElementById("login-button");
-      const loginError = document.getElementById("login-error");
-      const passwordInput = document.getElementById("admin-password");
-      const logoutButton = document.getElementById("logout-button");
-
-      document.querySelectorAll(".tab-button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-
-          btn.classList.add("active");
-          const target = document.getElementById(btn.dataset.tab);
-          if (target) target.classList.add("active");
-        });
-      });
-
-      loginButton.addEventListener("click", async () => {
-        const pwd = passwordInput.value.trim();
-        if (!pwd) {
-          loginError.textContent = "Merci de saisir le mot de passe.";
-          return;
-        }
-        if (pwd === ADMIN_PASSWORD) {
-          localStorage.setItem("sb_isAdmin", "true");
-          loginError.textContent = "";
-          passwordInput.value = "";
-          showAdmin();
-          await initAfterLogin();
-        } else {
-          loginError.textContent = "Mot de passe incorrect.";
-        }
-      });
-
-      passwordInput.addEventListener("keyup", (e) => {
-        if (e.key === "Enter") {
-          loginButton.click();
-        }
-      });
-
-      if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-          localStorage.removeItem("sb_isAdmin");
-          showLogin();
-        });
-      }
-
-      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
-      if (btnRefreshRes) {
-        btnRefreshRes.addEventListener("click", () => {
-          loadReservations();
-        });
-      }
-
-      const promoForm = document.getElementById("promo-form");
-      promoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        await handlePromoFormSubmit();
-      });
-
-      const articleForm = document.getElementById("article-form");
-      if (articleForm) {
-        articleForm.addEventListener("submit", handleArticleFormSubmit);
-      }
-      const articleResetBtn = document.getElementById("article-reset-button");
-      if (articleResetBtn) {
-        articleResetBtn.addEventListener("click", resetArticleForm);
-      }
-
-      checkAuth();
-    });
-
-    // Codes promo
+    // -------------------------
+    // PROMO CODES (CRUD)
+    // -------------------------
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
       const typeInput = document.getElementById("promo-type");
@@ -1550,25 +1123,13 @@
       msgEl.textContent = "";
       msgEl.className = "status-message";
 
-      const code = codeInput.value.trim().toUpperCase();
+      const code = (codeInput.value || "").trim().toUpperCase();
       const type = typeInput.value;
       let numericValue = valueInput.value ? parseFloat(valueInput.value) : 0;
 
-      if (!code) {
-        msgEl.textContent = "Merci de saisir un code.";
-        msgEl.classList.add("error");
-        return;
-      }
-
-      if (type !== "free" && (!numericValue || numericValue <= 0)) {
-        msgEl.textContent = "Merci de mettre une valeur (pourcent ou €) > 0.";
-        msgEl.classList.add("error");
-        return;
-      }
-
-      if (type === "free") {
-        numericValue = 0;
-      }
+      if (!code) { msgEl.textContent = "Merci de saisir un code."; msgEl.classList.add("error"); return; }
+      if (type !== "free" && (!numericValue || numericValue <= 0)) { msgEl.textContent = "Merci de mettre une valeur > 0."; msgEl.classList.add("error"); return; }
+      if (type === "free") numericValue = 0;
 
       const payload = {
         code,
@@ -1578,9 +1139,9 @@
         valid_to: validToInput.value || null,
         max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
         max_uses_per_user: maxPerEmailInput.value ? parseInt(maxPerEmailInput.value, 10) : null,
-        first_session_only: firstSessionInput && firstSessionInput.checked ? true : false,
-        email_domain: emailDomainInput.value.trim() || null,
-        note: noteInput.value.trim() || null,
+        first_session_only: !!(firstSessionInput && firstSessionInput.checked),
+        email_domain: (emailDomainInput.value || "").trim() || null,
+        note: (noteInput.value || "").trim() || null,
         is_active: true
       };
 
@@ -1595,7 +1156,7 @@
           msgEl.textContent = "Erreur : " + (error.message || "enregistrement impossible.");
           msgEl.classList.add("error");
         } else {
-          msgEl.textContent = "Code enregistré avec succès ✅";
+          msgEl.textContent = "Code enregistré ✅";
           msgEl.classList.add("ok");
           await loadPromoCodes();
         }
@@ -1609,8 +1170,8 @@
     async function loadPromoCodes() {
       const tbody = document.getElementById("promo-table-body");
       const msgEl = document.getElementById("promo-list-message");
+      if (!tbody || !msgEl) return;
 
-      if (!tbody) return;
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des codes promo...";
       msgEl.className = "status-message";
@@ -1623,14 +1184,14 @@
 
         if (error) {
           console.error(error);
-          msgEl.textContent = "Erreur lors du chargement des codes : " + (error.message || "");
+          msgEl.textContent = "Erreur chargement : " + (error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
         msgEl.textContent = "";
         if (!data || data.length === 0) {
-          msgEl.textContent = "Aucun code promo pour le moment.";
+          msgEl.textContent = "Aucun code promo.";
           msgEl.classList.add("error");
           return;
         }
@@ -1643,72 +1204,38 @@
           tr.appendChild(tdCode);
 
           const tdType = document.createElement("td");
-          let typeLabel = "";
-          if (row.type === "free") {
-            typeLabel = 'Gratuit <span class="pill-free">(free)</span>';
-          } else if (row.type === "percent") {
-            typeLabel = "Pourcentage";
-          } else if (row.type === "fixed") {
-            typeLabel = "Montant fixe";
-          } else {
-            typeLabel = row.type || "-";
-          }
+          let typeLabel = row.type || "-";
+          if (row.type === "free") typeLabel = 'Gratuit (free)';
+          if (row.type === "percent") typeLabel = "Pourcentage";
+          if (row.type === "fixed") typeLabel = "Montant fixe";
 
           const extras = [];
-          if (row.note) {
-            extras.push(row.note);
-          }
-          if (row.first_session_only) {
-            extras.push("1ère session");
-          }
-          if (row.max_uses_per_user) {
-            extras.push(row.max_uses_per_user + "x / email");
-          }
-          if (row.email_domain) {
-            extras.push("@" + row.email_domain);
-          }
+          if (row.note) extras.push(row.note);
+          if (row.first_session_only) extras.push("1ère session");
+          if (row.max_uses_per_user) extras.push(row.max_uses_per_user + "x / email");
+          if (row.email_domain) extras.push("@" + row.email_domain);
 
-          if (extras.length > 0) {
-            typeLabel += " · " + extras.join(" · ");
-          }
-
-          tdType.innerHTML = typeLabel;
+          tdType.textContent = extras.length ? (typeLabel + " · " + extras.join(" · ")) : typeLabel;
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
-          if (row.type === "percent") {
-            tdValue.textContent = (row.value || 0) + " %";
-          } else if (row.type === "fixed") {
-            tdValue.textContent = (row.value || 0) + " €";
-          } else {
-            tdValue.textContent = "-";
-          }
+          if (row.type === "percent") tdValue.textContent = (row.value || 0) + " %";
+          else if (row.type === "fixed") tdValue.textContent = (row.value || 0) + " €";
+          else tdValue.textContent = "-";
           tr.appendChild(tdValue);
 
-          const tdFrom = document.createElement("td");
-          tdFrom.textContent = row.valid_from || "-";
-          tr.appendChild(tdFrom);
-
-          const tdTo = document.createElement("td");
-          tdTo.textContent = row.valid_to || "-";
-          tr.appendChild(tdTo);
+          const tdFrom = document.createElement("td"); tdFrom.textContent = row.valid_from || "-"; tr.appendChild(tdFrom);
+          const tdTo = document.createElement("td"); tdTo.textContent = row.valid_to || "-"; tr.appendChild(tdTo);
 
           const tdUses = document.createElement("td");
-          const used = row.used_count || 0;
-          const max = row.max_uses || "∞";
-          tdUses.textContent = used + " / " + max;
+          tdUses.textContent = (row.used_count || 0) + " / " + (row.max_uses || "∞");
           tr.appendChild(tdUses);
 
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.is_active) {
-            badge.classList.add("badge-active");
-            badge.textContent = "Actif";
-          } else {
-            badge.classList.add("badge-inactive");
-            badge.textContent = "Inactif";
-          }
+          if (row.is_active) { badge.classList.add("badge-active"); badge.textContent = "Actif"; }
+          else { badge.classList.add("badge-inactive"); badge.textContent = "Inactif"; }
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
 
@@ -1735,66 +1262,129 @@
           tr.appendChild(tdActions);
           tbody.appendChild(tr);
         });
+
       } catch (err) {
         console.error(err);
-        msgEl.textContent = "Erreur réseau lors du chargement.";
+        msgEl.textContent = "Erreur réseau.";
         msgEl.classList.add("error");
       }
     }
 
     async function togglePromoActive(id, newStatus) {
       const msgEl = document.getElementById("promo-list-message");
-      msgEl.textContent = "Mise à jour du statut...";
+      msgEl.textContent = "Mise à jour...";
       msgEl.className = "status-message";
 
-      try {
-        const { error } = await supabaseClient
-          .from("promo_codes")
-          .update({ is_active: newStatus })
-          .eq("id", id);
+      const { error } = await supabaseClient
+        .from("promo_codes")
+        .update({ is_active: newStatus })
+        .eq("id", id);
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Statut mis à jour.";
-          msgEl.classList.add("ok");
-          await loadPromoCodes();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau.";
+      if (error) {
+        console.error(error);
+        msgEl.textContent = "Erreur : " + (error.message || "");
         msgEl.classList.add("error");
+        return;
       }
+      msgEl.textContent = "Statut mis à jour.";
+      msgEl.classList.add("ok");
+      await loadPromoCodes();
     }
 
     async function deletePromo(id) {
       const msgEl = document.getElementById("promo-list-message");
-      msgEl.textContent = "Suppression en cours...";
+      msgEl.textContent = "Suppression...";
       msgEl.className = "status-message";
 
-      try {
-        const { error } = await supabaseClient
-          .from("promo_codes")
-          .delete()
-          .eq("id", id);
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Code supprimé.";
-          msgEl.classList.add("ok");
-          await loadPromoCodes();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau.";
+      const { error } = await supabaseClient.from("promo_codes").delete().eq("id", id);
+      if (error) {
+        console.error(error);
+        msgEl.textContent = "Erreur : " + (error.message || "");
         msgEl.classList.add("error");
+        return;
       }
+      msgEl.textContent = "Code supprimé.";
+      msgEl.classList.add("ok");
+      await loadPromoCodes();
     }
+
+    // -------------------------
+    // INIT
+    // -------------------------
+    document.addEventListener("DOMContentLoaded", async () => {
+      initTabs();
+
+      document.getElementById("login-button").addEventListener("click", handleLogin);
+      document.getElementById("logout-button").addEventListener("click", handleLogout);
+
+      document.getElementById("admin-password").addEventListener("keyup", (e) => {
+        if (e.key === "Enter") handleLogin();
+      });
+
+      // Actualités
+      document.getElementById("article-reset").addEventListener("click", resetArticleForm);
+      document.getElementById("btn-refresh-articles").addEventListener("click", loadArticles);
+
+      // auto slug depuis titre si slug vide
+      document.getElementById("a-titre").addEventListener("input", () => {
+        const slugEl = document.getElementById("a-slug");
+        if (!slugEl.value.trim()) slugEl.value = normalizeSlug(document.getElementById("a-titre").value);
+      });
+      document.getElementById("a-slug").addEventListener("blur", () => {
+        const slugEl = document.getElementById("a-slug");
+        slugEl.value = normalizeSlug(slugEl.value);
+      });
+
+      document.getElementById("article-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById("a-id").value || null;
+        const titre = document.getElementById("a-titre").value.trim();
+        const slug = normalizeSlug(document.getElementById("a-slug").value);
+        const image_url = document.getElementById("a-image").value.trim() || null;
+        const chapeau = document.getElementById("a-chapeau").value.trim() || null;
+        const contenu = document.getElementById("a-contenu").value || null;
+        const categorie = document.getElementById("a-categorie").value || "coulisses-travaux";
+        const publie = document.getElementById("a-publie").checked;
+        const dateLocal = document.getElementById("a-datepub").value || null;
+
+        if (!titre || !slug) {
+          setMsg("article-form-message", "Titre + slug requis.", false);
+          return;
+        }
+
+        const payload = {
+          titre,
+          slug,
+          image_url,
+          chapeau,
+          contenu,
+          categorie,
+          publie,
+          date_publication: dateLocal ? new Date(dateLocal).toISOString() : null
+        };
+
+        await upsertArticle(payload, id);
+      });
+
+      // Réservations / clients
+      document.getElementById("btn-refresh-reservations").addEventListener("click", loadReservations);
+      document.getElementById("btn-refresh-clients").addEventListener("click", loadClients);
+
+      // Promo
+      document.getElementById("promo-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await handlePromoFormSubmit();
+      });
+      document.getElementById("btn-refresh-promo").addEventListener("click", loadPromoCodes);
+
+      // Auto refresh quand session change
+      supabaseClient.auth.onAuthStateChange(async (_event, _session) => {
+        await refreshAuthUI();
+      });
+
+      await refreshAuthUI();
+    });
   </script>
 </body>
 </html>
