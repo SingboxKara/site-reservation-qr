@@ -289,7 +289,7 @@
     }
 
     .form-field textarea {
-      min-height: 120px;
+      min-height: 140px;
       resize: vertical;
     }
 
@@ -313,11 +313,11 @@
 
     .btn-secondary {
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      padding: 0.55rem 1.4rem;
+      border: 1px solid rgba(148,163,184,0.7);
+      padding: 0.45rem 1.2rem;
       background: transparent;
       color: #E5E7EB;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
     }
 
@@ -477,7 +477,7 @@
   <div id="login-screen">
     <div id="login-card">
       <h1>Accès admin Singbox</h1>
-      <p>Entrez le mot de passe pour accéder au back-office (codes promo, etc.).</p>
+      <p>Entrez le mot de passe pour accéder au back-office (codes promo, actualités, réservations...).</p>
 
       <div class="login-field">
         <label for="admin-password">Mot de passe</label>
@@ -628,13 +628,12 @@
       <!-- Actualités -->
       <section id="tab-actualites" class="tab-content">
         <div class="card">
-          <h2>Nouvel article / Édition</h2>
+          <h2>Nouvel article / édition</h2>
           <p class="card-subtitle">
             Crée ou modifie un article d’actualités. Ces données sont lues sur la page <code>actualites.html</code> depuis la table <code>actualites</code>.
           </p>
 
           <form id="article-form">
-            <!-- id caché pour l’édition -->
             <input type="hidden" id="article-id" />
 
             <div class="form-grid-2">
@@ -645,49 +644,78 @@
               <div class="form-field">
                 <label for="article-slug">Slug (URL)</label>
                 <input type="text" id="article-slug" placeholder="promo-etudiants" required />
-                <p class="helper-text">Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.</p>
+                <p class="helper-text">
+                  Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.
+                </p>
               </div>
             </div>
 
             <div class="form-grid-2">
               <div class="form-field">
                 <label for="article-image-url">Image (URL)</label>
-                <input type="text" id="article-image-url" placeholder="https://.../image.jpg" />
-                <p class="helper-text">URL complète de l’image utilisée sur la page actualités.</p>
+                <input type="text" id="article-image-url" placeholder="https://…/image.jpg" />
+                <p class="helper-text">
+                  URL complète de l’image. Sera remplacée automatiquement si tu importes un fichier ci-dessous.
+                </p>
               </div>
               <div class="form-field">
-                <label for="article-summary">Résumé court</label>
-                <input type="text" id="article-summary" placeholder="Nouvelle promo spéciale étudiant disponible pendant 1 mois..." />
+                <label for="article-image-file">Ou importer une image</label>
+                <input type="file" id="article-image-file" accept="image/*" />
+                <p class="helper-text">
+                  L’image sera uploadée dans le bucket <code>actualites-images</code> et son URL enregistrée.
+                </p>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="article-excerpt">Résumé court</label>
+                <input type="text" id="article-excerpt" placeholder="Nouvelle promo spéciale étudiant disponible 1 mois..." />
               </div>
             </div>
 
             <div class="form-field">
               <label for="article-content">Contenu</label>
-              <textarea id="article-content" placeholder="Promo : STUDENT&#10;Détails de la promo, conditions, etc."></textarea>
-              <p class="helper-text">Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).</p>
+              <textarea id="article-content" placeholder="Texte principal de l’article (HTML léger possible)."></textarea>
+              <p class="helper-text">
+                Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).
+              </p>
             </div>
 
             <div class="form-grid-3">
               <div class="form-field">
                 <label for="article-category">Catégorie (optionnel)</label>
-                <input type="text" id="article-category" placeholder="Promo, Nouveauté, Infos pratiques..." />
+                <select id="article-category">
+                  <option value="">Aucune (toutes catégories)</option>
+                  <option value="Coulisses & travaux">Coulisses & travaux</option>
+                  <option value="Nouvelles chansons">Nouvelles chansons</option>
+                  <option value="Vie du lieu">Vie du lieu</option>
+                  <option value="Idées de soirées">Idées de soirées</option>
+                  <option value="Promo">Promo</option>
+                </select>
               </div>
+
               <div class="form-field">
-                <label>Article publié</label>
-                <div style="display:flex;align-items:center;gap:8px;">
+                <label for="article-published">
                   <input type="checkbox" id="article-published" />
-                  <span class="helper-text">Si décoché : l’article reste en brouillon (non visible côté site).</span>
-                </div>
+                  Article publié
+                </label>
+                <p class="helper-text">
+                  Si décoché : l’article reste en brouillon (non visible côté site).
+                </p>
               </div>
+
               <div class="form-field">
-                <label for="article-publication-date">Date de publication (optionnel)</label>
-                <input type="datetime-local" id="article-publication-date" />
-                <p class="helper-text">Si tu laisses vide, on prend la date/heure actuelles lors de la publication.</p>
+                <label for="article-date-publication">Date de publication (optionnel)</label>
+                <input type="datetime-local" id="article-date-publication" />
+                <p class="helper-text">
+                  Si tu laisses vide, on prend la date/heure actuelle lors de la publication.
+                </p>
               </div>
             </div>
 
             <div class="form-actions">
-              <button type="button" id="article-reset" class="btn-secondary">Réinitialiser le formulaire</button>
+              <button type="button" class="btn-secondary" id="article-reset-button">Réinitialiser le formulaire</button>
               <button type="submit" class="btn-primary">Enregistrer l’article</button>
             </div>
           </form>
@@ -701,7 +729,7 @@
             Gère ici les articles présents dans la table <code>actualites</code>.
           </p>
 
-          <div id="article-list-message" class="status-message"></div>
+          <div id="articles-list-message" class="status-message"></div>
 
           <div class="table-wrapper">
             <table>
@@ -715,7 +743,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="article-table-body"></tbody>
+              <tbody id="articles-table-body"></tbody>
             </table>
           </div>
         </div>
@@ -818,7 +846,7 @@
         <div class="card">
           <h2>Liste des codes promo</h2>
           <p class="card-subtitle">
-            Tu peux activer/désactiver un code ou le supprimer. Les colonnes <em>utilisations</em> supposent que tu mettras à jour <code>used_count</code> côté backend plus tard.
+            Tu peux activer/désactiver un code ou le supprimer.
           </p>
 
           <div id="promo-list-message" class="status-message"></div>
@@ -852,6 +880,8 @@
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const ARTICLES_BUCKET = "actualites-images";
 
     // CAUTION
     async function loadDeposit() {
@@ -894,7 +924,7 @@
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
         const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-        const firstDateStr = firstDay.toISOString().split("T")[0]; // YYYY-MM-DD
+        const firstDateStr = firstDay.toISOString().split("T")[0];
         const nextDateStr = nextMonth.toISOString().split("T")[0];
 
         const { data, error } = await supabaseClient
@@ -928,7 +958,7 @@
       }
     }
 
-    // RÉSERVATIONS (utilise 'date' + 'start_time')
+    // RÉSERVATIONS
     async function loadReservations() {
       const tbody = document.getElementById("reservations-table-body");
       const msgEl = document.getElementById("reservations-list-message");
@@ -1032,7 +1062,7 @@
       }
     }
 
-    // CLIENTS (à partir de reservations)
+    // CLIENTS
     async function loadClients() {
       const tbody = document.getElementById("clients-table-body");
       const msgEl = document.getElementById("clients-list-message");
@@ -1129,26 +1159,192 @@
       }
     }
 
-    /* ====================== ACTUALITÉS ====================== */
+    // --- ACTUALITÉS ---
 
     function resetArticleForm() {
       document.getElementById("article-id").value = "";
       document.getElementById("article-title").value = "";
       document.getElementById("article-slug").value = "";
       document.getElementById("article-image-url").value = "";
-      document.getElementById("article-summary").value = "";
+      document.getElementById("article-image-file").value = "";
+      document.getElementById("article-excerpt").value = "";
       document.getElementById("article-content").value = "";
       document.getElementById("article-category").value = "";
       document.getElementById("article-published").checked = false;
-      document.getElementById("article-publication-date").value = "";
-      const msg = document.getElementById("article-form-message");
-      msg.textContent = "";
-      msg.className = "status-message";
+      document.getElementById("article-date-publication").value = "";
+      const msgEl = document.getElementById("article-form-message");
+      if (msgEl) {
+        msgEl.textContent = "";
+        msgEl.className = "status-message";
+      }
+    }
+
+    async function uploadArticleImageIfNeeded() {
+      const fileInput = document.getElementById("article-image-file");
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        return null;
+      }
+
+      const file = fileInput.files[0];
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "jpg";
+      const filePath = `actualites/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+      const { data, error } = await supabaseClient
+        .storage
+        .from(ARTICLES_BUCKET)
+        .upload(filePath, file, { upsert: true });
+
+      if (error) {
+        throw error;
+      }
+
+      const { data: publicData } = supabaseClient
+        .storage
+        .from(ARTICLES_BUCKET)
+        .getPublicUrl(data.path);
+
+      return publicData.publicUrl;
+    }
+
+    async function handleArticleFormSubmit(event) {
+      event.preventDefault();
+      const msgEl = document.getElementById("article-form-message");
+      msgEl.textContent = "Enregistrement en cours...";
+      msgEl.className = "status-message";
+
+      const id = document.getElementById("article-id").value || null;
+      const titre = document.getElementById("article-title").value.trim();
+      const slug = document.getElementById("article-slug").value.trim();
+      const imageUrlInput = document.getElementById("article-image-url").value.trim();
+      const chapeau = document.getElementById("article-excerpt").value.trim();
+      const contenu = document.getElementById("article-content").value.trim();
+      const categorie = document.getElementById("article-category").value || null;
+      const publie = document.getElementById("article-published").checked;
+      let datePub = document.getElementById("article-date-publication").value || null;
+
+      if (!titre || !slug) {
+        msgEl.textContent = "Merci de renseigner au minimum un titre et un slug.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      // Convertir datetime-local -> date (YYYY-MM-DD) pour la colonne date_publication
+      if (datePub) {
+        datePub = datePub.split("T")[0];
+      }
+
+      try {
+        // 1) upload image si fichier sélectionné
+        let finalImageUrl = imageUrlInput || null;
+        try {
+          const uploadedUrl = await uploadArticleImageIfNeeded();
+          if (uploadedUrl) {
+            finalImageUrl = uploadedUrl;
+          }
+        } catch (uploadErr) {
+          console.error("Erreur upload image:", uploadErr);
+          msgEl.textContent = "Erreur lors de l’upload de l’image : " + (uploadErr.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        const payload = {
+          titre,
+          slug,
+          chapeau: chapeau || null,
+          contenu: contenu || null,
+          categorie,
+          publie,
+          date_publication: datePub,
+          image_url: finalImageUrl
+        };
+
+        let error;
+        if (id) {
+          const res = await supabaseClient
+            .from("actualites")
+            .update(payload)
+            .eq("id", id);
+          error = res.error;
+        } else {
+          const res = await supabaseClient
+            .from("actualites")
+            .insert(payload);
+          error = res.error;
+        }
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors de l’enregistrement : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+
+        msgEl.textContent = "Article enregistré avec succès ✅";
+        msgEl.classList.add("ok");
+        resetArticleForm();
+        await loadArticles();
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors de l’enregistrement.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    function fillArticleFormForEdit(row) {
+      document.getElementById("article-id").value = row.id;
+      document.getElementById("article-title").value = row.titre || "";
+      document.getElementById("article-slug").value = row.slug || "";
+      document.getElementById("article-image-url").value = row.image_url || "";
+      document.getElementById("article-image-file").value = "";
+      document.getElementById("article-excerpt").value = row.chapeau || "";
+      document.getElementById("article-content").value = row.contenu || "";
+      document.getElementById("article-category").value = row.categorie || "";
+      document.getElementById("article-published").checked = !!row.publie;
+
+      if (row.date_publication) {
+        // on remet à midi pour remplir le champ datetime-local proprement
+        document.getElementById("article-date-publication").value = row.date_publication + "T12:00";
+      } else {
+        document.getElementById("article-date-publication").value = "";
+      }
+
+      const msgEl = document.getElementById("article-form-message");
+      msgEl.textContent = "Mode édition : " + (row.titre || "article");
+      msgEl.className = "status-message";
+    }
+
+    async function deleteArticle(id) {
+      const msgEl = document.getElementById("articles-list-message");
+      if (!confirm("Supprimer cet article ?")) return;
+      msgEl.textContent = "Suppression en cours...";
+      msgEl.className = "status-message";
+
+      try {
+        const { error } = await supabaseClient
+          .from("actualites")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors de la suppression : " + (error.message || "");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Article supprimé.";
+          msgEl.classList.add("ok");
+          await loadArticles();
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors de la suppression.";
+        msgEl.classList.add("error");
+      }
     }
 
     async function loadArticles() {
-      const tbody = document.getElementById("article-table-body");
-      const msgEl = document.getElementById("article-list-message");
+      const tbody = document.getElementById("articles-table-body");
+      const msgEl = document.getElementById("articles-list-message");
       if (!tbody || !msgEl) return;
 
       tbody.innerHTML = "";
@@ -1158,12 +1354,13 @@
       try {
         const { data, error } = await supabaseClient
           .from("actualites")
-          .select("id, titre, slug, publie, date_publication, created_at")
+          .select("*")
+          .order("date_publication", { ascending: false, nullsFirst: false })
           .order("created_at", { ascending: false });
 
         if (error) {
           console.error(error);
-          msgEl.textContent = "Erreur lors du chargement des articles : " + (error.message || "");
+          msgEl.textContent = "Erreur lors du chargement : " + (error.message || "");
           msgEl.classList.add("error");
           return;
         }
@@ -1178,23 +1375,19 @@
         data.forEach((row) => {
           const tr = document.createElement("tr");
 
-          const tdTitre = document.createElement("td");
-          tdTitre.textContent = row.titre || "(sans titre)";
-          tr.appendChild(tdTitre);
+          const tdTitle = document.createElement("td");
+          tdTitle.textContent = row.titre || "-";
+          tr.appendChild(tdTitle);
 
           const tdSlug = document.createElement("td");
-          tdSlug.textContent = row.slug;
+          tdSlug.textContent = row.slug || "-";
           tr.appendChild(tdSlug);
 
           const tdCreated = document.createElement("td");
-          if (row.created_at) {
-            const d = new Date(row.created_at);
-            tdCreated.textContent =
-              d.toLocaleDateString("fr-FR") + " " +
-              d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-          } else {
-            tdCreated.textContent = "-";
-          }
+          const created = row.created_at ? new Date(row.created_at) : null;
+          tdCreated.textContent = created
+            ? created.toLocaleDateString("fr-FR") + " " + created.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+            : "-";
           tr.appendChild(tdCreated);
 
           const tdPub = document.createElement("td");
@@ -1215,25 +1408,21 @@
           tr.appendChild(tdStatus);
 
           const tdActions = document.createElement("td");
+
           const editBtn = document.createElement("button");
           editBtn.className = "small-btn";
-          editBtn.textContent = "Modifier";
-          editBtn.addEventListener("click", () => {
-            fillArticleForm(row);
-          });
+          editBtn.textContent = "Éditer";
+          editBtn.addEventListener("click", () => fillArticleFormForEdit(row));
           tdActions.appendChild(editBtn);
 
           const delBtn = document.createElement("button");
           delBtn.className = "small-btn danger";
           delBtn.textContent = "Supprimer";
-          delBtn.addEventListener("click", async () => {
-            if (confirm(`Supprimer l'article "${row.titre}" ?`)) {
-              await deleteArticle(row.id);
-            }
-          });
+          delBtn.addEventListener("click", () => deleteArticle(row.id));
           tdActions.appendChild(delBtn);
 
           tr.appendChild(tdActions);
+
           tbody.appendChild(tr);
         });
       } catch (err) {
@@ -1243,129 +1432,7 @@
       }
     }
 
-    function fillArticleForm(row) {
-      document.getElementById("article-id").value = row.id || "";
-      document.getElementById("article-title").value = row.titre || "";
-      document.getElementById("article-slug").value = row.slug || "";
-      document.getElementById("article-image-url").value = row.image_url || "";
-      document.getElementById("article-summary").value = row.chapeau || "";
-      document.getElementById("article-content").value = row.contenu || "";
-      document.getElementById("article-category").value = row.categorie || "";
-      document.getElementById("article-published").checked = !!row.publie;
-
-      const pubInput = document.getElementById("article-publication-date");
-      if (row.date_publication) {
-        let v = row.date_publication;
-        if (!v.includes("T")) {
-          v = v + "T10:00";
-        }
-        pubInput.value = v;
-      } else {
-        pubInput.value = "";
-      }
-
-      const msg = document.getElementById("article-form-message");
-      msg.textContent = `Édition de : ${row.titre || "(sans titre)"}`;
-      msg.className = "status-message ok";
-    }
-
-    async function deleteArticle(id) {
-      const msgEl = document.getElementById("article-list-message");
-      msgEl.textContent = "Suppression en cours...";
-      msgEl.className = "status-message";
-
-      try {
-        const { error } = await supabaseClient
-          .from("actualites")
-          .delete()
-          .eq("id", id);
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Article supprimé.";
-          msgEl.classList.add("ok");
-          await loadArticles();
-          resetArticleForm();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau.";
-        msgEl.classList.add("error");
-      }
-    }
-
-    async function handleArticleSubmit(e) {
-      e.preventDefault();
-      const msgEl = document.getElementById("article-form-message");
-      msgEl.textContent = "";
-      msgEl.className = "status-message";
-
-      const id = document.getElementById("article-id").value || null;
-      const titre = document.getElementById("article-title").value.trim();
-      const slug = document.getElementById("article-slug").value.trim();
-      const imageUrl = document.getElementById("article-image-url").value.trim() || null;
-      const chapeau = document.getElementById("article-summary").value.trim() || null;
-      const contenu = document.getElementById("article-content").value.trim() || null;
-      const categorie = document.getElementById("article-category").value.trim() || null;
-      const publie = document.getElementById("article-published").checked;
-      const datePubRaw = document.getElementById("article-publication-date").value || null;
-
-      if (!titre || !slug) {
-        msgEl.textContent = "Merci de renseigner au minimum le titre et le slug.";
-        msgEl.classList.add("error");
-        return;
-      }
-
-      const payload = {
-        titre,
-        slug,
-        image_url: imageUrl,
-        chapeau,
-        contenu,
-        categorie,
-        publie,
-        date_publication: datePubRaw
-      };
-
-      msgEl.textContent = "Enregistrement en cours...";
-      try {
-        let error;
-
-        if (id) {
-          // update
-          ({ error } = await supabaseClient
-            .from("actualites")
-            .update(payload)
-            .eq("id", id));
-        } else {
-          // insert
-          ({ error } = await supabaseClient
-            .from("actualites")
-            .insert(payload));
-        }
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur lors de l’enregistrement : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Article enregistré avec succès ✅";
-          msgEl.classList.add("ok");
-          await loadArticles();
-          resetArticleForm();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau.";
-        msgEl.classList.add("error");
-      }
-    }
-
-    /* ====================== LOGIN / INIT ====================== */
-
+    // Login / logout
     function showLogin() {
       document.getElementById("login-screen").style.display = "flex";
       document.getElementById("admin-screen").style.display = "none";
@@ -1400,7 +1467,6 @@
       const passwordInput = document.getElementById("admin-password");
       const logoutButton = document.getElementById("logout-button");
 
-      // Tabs
       document.querySelectorAll(".tab-button").forEach(btn => {
         btn.addEventListener("click", () => {
           document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
@@ -1412,7 +1478,6 @@
         });
       });
 
-      // Login
       loginButton.addEventListener("click", async () => {
         const pwd = passwordInput.value.trim();
         if (!pwd) {
@@ -1450,30 +1515,25 @@
         });
       }
 
-      // Form promo
       const promoForm = document.getElementById("promo-form");
       promoForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         await handlePromoFormSubmit();
       });
 
-      // Form article
       const articleForm = document.getElementById("article-form");
-      const articleReset = document.getElementById("article-reset");
       if (articleForm) {
-        articleForm.addEventListener("submit", handleArticleSubmit);
+        articleForm.addEventListener("submit", handleArticleFormSubmit);
       }
-      if (articleReset) {
-        articleReset.addEventListener("click", () => {
-          resetArticleForm();
-        });
+      const articleResetBtn = document.getElementById("article-reset-button");
+      if (articleResetBtn) {
+        articleResetBtn.addEventListener("click", resetArticleForm);
       }
 
       checkAuth();
     });
 
-    /* ====================== CODES PROMO ====================== */
-
+    // Codes promo
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
       const typeInput = document.getElementById("promo-type");
