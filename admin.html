@@ -260,7 +260,7 @@
 
     .form-grid-2 {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1 fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.75rem;
       margin-bottom: 0.75rem;
     }
@@ -286,10 +286,26 @@
       outline: none;
     }
 
+    .form-field textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.6rem 0.75rem;
+      border-radius: 12px;
+      border: 1px solid var(--sb-border-soft);
+      background: #020617;
+      color: var(--sb-text-main);
+      font-size: 12px;
+      resize: vertical;
+      outline: none;
+      font-family: inherit;
+    }
+
     .form-actions {
       display: flex;
       justify-content: flex-end;
       margin-top: 0.6rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -300,6 +316,16 @@
       color: #F9FAFB;
       font-size: 13px;
       font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      padding: 0.55rem 1.4rem;
+      background: transparent;
+      color: #E5E7EB;
+      font-size: 13px;
       cursor: pointer;
     }
 
@@ -482,7 +508,7 @@
           <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
           <div>
             <h1 class="admin-title-main">Back-office Singbox</h1>
-            <p class="admin-subtitle">Gère ici tes réservations, clients, caution et codes promo.</p>
+            <p class="admin-subtitle">Gère ici tes réservations, clients, caution, codes promo et actualités.</p>
           </div>
         </div>
         <div class="admin-header-right">
@@ -495,6 +521,7 @@
         <button class="tab-button" data-tab="tab-dashboard">Dashboard</button>
         <button class="tab-button" data-tab="tab-reservations">Réservations</button>
         <button class="tab-button" data-tab="tab-clients">Clients</button>
+        <button class="tab-button" data-tab="tab-actualites">Actualités</button>
         <button class="tab-button active" data-tab="tab-promo">Codes promo</button>
       </div>
 
@@ -601,6 +628,108 @@
                 </tr>
               </thead>
               <tbody id="clients-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actualités -->
+      <section id="tab-actualites" class="tab-content">
+        <div class="card">
+          <h2>Nouvel article / Édition</h2>
+          <p class="card-subtitle">
+            Crée ou modifie un article d’actualités. Ces données sont lues sur la page <code>actualites.html</code> depuis la table <code>actualites</code>.
+          </p>
+
+          <form id="article-form">
+            <!-- id caché pour savoir si on édite -->
+            <input type="hidden" id="article-id" />
+
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="article-title">Titre</label>
+                <input type="text" id="article-title" required placeholder="Ex : Ouverture officielle de Singbox Toulouse" />
+              </div>
+              <div class="form-field">
+                <label for="article-slug">Slug (URL)</label>
+                <input type="text" id="article-slug" placeholder="ouverture-officielle, soiree-haloween..." />
+                <p class="helper-text">
+                  Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="article-image">Image (URL)</label>
+                <input type="text" id="article-image" placeholder="https://.../image.jpg" />
+                <p class="helper-text">
+                  URL complète de l’image utilisée sur la page actualités.
+                </p>
+              </div>
+              <div class="form-field">
+                <label for="article-excerpt">Résumé court</label>
+                <input type="text" id="article-excerpt" placeholder="2–3 phrases qui résument l'article." />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="article-content">Contenu</label>
+              <textarea id="article-content" placeholder="Texte de l’article (HTML simple ou texte brut)."></textarea>
+              <p class="helper-text">
+                Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).
+              </p>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="article-published">
+                  <input type="checkbox" id="article-published" />
+                  Article publié
+                </label>
+                <p class="helper-text">
+                  Si décoché : l’article reste en brouillon (non visible côté site).
+                </p>
+              </div>
+              <div class="form-field">
+                <label for="article-published-at">Date de publication (optionnel)</label>
+                <input type="datetime-local" id="article-published-at" />
+                <p class="helper-text">
+                  Si tu laisses vide, on prend la date/heure actuelle lors de la publication.
+                </p>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="article-reset" class="btn-secondary">Réinitialiser le formulaire</button>
+              <button type="submit" class="btn-primary">Enregistrer l’article</button>
+            </div>
+          </form>
+
+          <div id="article-form-message" class="status-message"></div>
+        </div>
+
+        <div class="card">
+          <h2>Liste des articles</h2>
+          <p class="card-subtitle">
+            Gère ici les articles présents dans la table <code>actualites</code>.
+          </p>
+
+          <div id="article-list-message" class="status-message"></div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Titre</th>
+                  <th>Slug</th>
+                  <th>Créé le</th>
+                  <th>Publication</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="article-table-body"></tbody>
             </table>
           </div>
         </div>
@@ -738,7 +867,27 @@
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // CAUTION
+    /* ========== FONCTIONS UTILITAIRES GLOBALES ========== */
+
+    function toLocalDateTimeInput(isoString) {
+      if (!isoString) return "";
+      const d = new Date(isoString);
+      const pad = (n) => String(n).padStart(2, "0");
+      const y = d.getFullYear();
+      const m = pad(d.getMonth() + 1);
+      const day = pad(d.getDate());
+      const h = pad(d.getHours());
+      const min = pad(d.getMinutes());
+      return `${y}-${m}-${day}T${h}:${min}`;
+    }
+
+    function fromLocalDateTimeInput(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      return d.toISOString();
+    }
+
+    /* ========== CAUTION ========== */
     async function loadDeposit() {
       const badge = document.getElementById("deposit-badge");
       if (!badge) return;
@@ -763,7 +912,7 @@
       }
     }
 
-    // DASHBOARD (utilise 'date')
+    /* ========== DASHBOARD (RESERVATIONS) ========== */
     async function loadDashboard() {
       const msgEl = document.getElementById("dashboard-message");
       const kpiResa = document.getElementById("kpi-resa-month");
@@ -779,7 +928,7 @@
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
         const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-        const firstDateStr = firstDay.toISOString().split("T")[0]; // YYYY-MM-DD
+        const firstDateStr = firstDay.toISOString().split("T")[0];
         const nextDateStr = nextMonth.toISOString().split("T")[0];
 
         const { data, error } = await supabaseClient
@@ -813,7 +962,7 @@
       }
     }
 
-    // RÉSERVATIONS (utilise 'date' + 'start_time')
+    /* ========== RESERVATIONS LISTE ========== */
     async function loadReservations() {
       const tbody = document.getElementById("reservations-table-body");
       const msgEl = document.getElementById("reservations-list-message");
@@ -917,7 +1066,7 @@
       }
     }
 
-    // CLIENTS (à partir de reservations)
+    /* ========== CLIENTS ========== */
     async function loadClients() {
       const tbody = document.getElementById("clients-table-body");
       const msgEl = document.getElementById("clients-list-message");
@@ -1014,98 +1163,318 @@
       }
     }
 
-    // Login / logout
-    function showLogin() {
-      document.getElementById("login-screen").style.display = "flex";
-      document.getElementById("admin-screen").style.display = "none";
-    }
+    /* ========== ACTUALITES (ARTICLES) ========== */
 
-    function showAdmin() {
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("admin-screen").style.display = "block";
-    }
-
-    function checkAuth() {
-      if (localStorage.getItem("sb_isAdmin") === "true") {
-        showAdmin();
-        initAfterLogin();
-      } else {
-        showLogin();
+    function resetArticleForm() {
+      document.getElementById("article-id").value = "";
+      document.getElementById("article-title").value = "";
+      document.getElementById("article-slug").value = "";
+      document.getElementById("article-image").value = "";
+      document.getElementById("article-excerpt").value = "";
+      document.getElementById("article-content").value = "";
+      document.getElementById("article-published").checked = false;
+      document.getElementById("article-published-at").value = "";
+      const msgEl = document.getElementById("article-form-message");
+      if (msgEl) {
+        msgEl.textContent = "";
+        msgEl.className = "status-message";
       }
     }
 
-    async function initAfterLogin() {
-      await loadDeposit();
-      await loadPromoCodes();
-      await loadDashboard();
-      await loadReservations();
-      await loadClients();
+    async function handleArticleFormSubmit(event) {
+      event.preventDefault();
+
+      const id = document.getElementById("article-id").value || null;
+      const title = document.getElementById("article-title").value.trim();
+      let slug = document.getElementById("article-slug").value.trim();
+      const image_url = document.getElementById("article-image").value.trim() || null;
+      const excerpt = document.getElementById("article-excerpt").value.trim() || null;
+      const content = document.getElementById("article-content").value.trim() || "";
+      const is_published = document.getElementById("article-published").checked;
+      const publishedAtInput = document.getElementById("article-published-at").value;
+      const msgEl = document.getElementById("article-form-message");
+
+      msgEl.textContent = "";
+      msgEl.className = "status-message";
+
+      if (!title) {
+        msgEl.textContent = "Merci de renseigner un titre.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      if (!slug) {
+        // auto-slug : minuscules, tirets, pas d'accents
+        slug = title
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      let published_at = null;
+      if (is_published) {
+        published_at = publishedAtInput ? fromLocalDateTimeInput(publishedAtInput) : new Date().toISOString();
+      }
+
+      const payload = {
+        title,
+        slug,
+        image_url,
+        excerpt,
+        content,
+        is_published,
+        published_at
+      };
+
+      msgEl.textContent = "Enregistrement de l’article...";
+      try {
+        let query = supabaseClient.from("actualites");
+
+        if (id) {
+          // update
+          const { error } = await query.update(payload).eq("id", id);
+          if (error) {
+            console.error(error);
+            msgEl.textContent = "Erreur lors de la mise à jour : " + (error.message || "");
+            msgEl.classList.add("error");
+            return;
+          }
+          msgEl.textContent = "Article mis à jour ✅";
+        } else {
+          // insert
+          const { error } = await query.insert(payload);
+          if (error) {
+            console.error(error);
+            msgEl.textContent = "Erreur lors de la création : " + (error.message || "");
+            msgEl.classList.add("error");
+            return;
+          }
+          msgEl.textContent = "Article créé ✅";
+        }
+
+        msgEl.classList.add("ok");
+        await loadArticles();
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors de l’enregistrement.";
+        msgEl.classList.add("error");
+      }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const loginButton = document.getElementById("login-button");
-      const loginError = document.getElementById("login-error");
-      const passwordInput = document.getElementById("admin-password");
-      const logoutButton = document.getElementById("logout-button");
+    async function loadArticles() {
+      const tbody = document.getElementById("article-table-body");
+      const msgEl = document.getElementById("article-list-message");
+      if (!tbody || !msgEl) return;
 
-      document.querySelectorAll(".tab-button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+      tbody.innerHTML = "";
+      msgEl.textContent = "Chargement des articles...";
+      msgEl.className = "status-message";
 
-          btn.classList.add("active");
-          const target = document.getElementById(btn.dataset.tab);
-          if (target) target.classList.add("active");
-        });
-      });
+      try {
+        const { data, error } = await supabaseClient
+          .from("actualites")
+          .select("id, title, slug, is_published, created_at, published_at")
+          .order("created_at", { ascending: false });
 
-      loginButton.addEventListener("click", async () => {
-        const pwd = passwordInput.value.trim();
-        if (!pwd) {
-          loginError.textContent = "Merci de saisir le mot de passe.";
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors du chargement : " + (error.message || "");
+          msgEl.classList.add("error");
           return;
         }
-        if (pwd === ADMIN_PASSWORD) {
-          localStorage.setItem("sb_isAdmin", "true");
-          loginError.textContent = "";
-          passwordInput.value = "";
-          showAdmin();
-          await initAfterLogin();
+
+        if (!data || data.length === 0) {
+          msgEl.textContent = "Aucun article pour le moment.";
+          msgEl.classList.add("error");
+          return;
+        }
+
+        msgEl.textContent = "";
+
+        data.forEach((row) => {
+          const tr = document.createElement("tr");
+
+          const tdTitle = document.createElement("td");
+          tdTitle.textContent = row.title || "-";
+          tr.appendChild(tdTitle);
+
+          const tdSlug = document.createElement("td");
+          tdSlug.textContent = row.slug || "-";
+          tr.appendChild(tdSlug);
+
+          const tdCreated = document.createElement("td");
+          tdCreated.textContent = row.created_at
+            ? new Date(row.created_at).toLocaleDateString("fr-FR")
+            : "-";
+          tr.appendChild(tdCreated);
+
+          const tdPub = document.createElement("td");
+          tdPub.textContent = row.published_at
+            ? new Date(row.published_at).toLocaleString("fr-FR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+              })
+            : "-";
+          tr.appendChild(tdPub);
+
+          const tdStatus = document.createElement("td");
+          const badge = document.createElement("span");
+          badge.classList.add("badge");
+          if (row.is_published) {
+            badge.classList.add("badge-active");
+            badge.textContent = "Publié";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Brouillon";
+          }
+          tdStatus.appendChild(badge);
+          tr.appendChild(tdStatus);
+
+          const tdActions = document.createElement("td");
+
+          const editBtn = document.createElement("button");
+          editBtn.className = "small-btn";
+          editBtn.textContent = "Modifier";
+          editBtn.addEventListener("click", () => {
+            editArticle(row.id);
+          });
+          tdActions.appendChild(editBtn);
+
+          const toggleBtn = document.createElement("button");
+          toggleBtn.className = "small-btn";
+          toggleBtn.textContent = row.is_published ? "Dépublier" : "Publier";
+          toggleBtn.addEventListener("click", async () => {
+            await toggleArticlePublished(row.id, !row.is_published);
+          });
+          tdActions.appendChild(toggleBtn);
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "small-btn danger";
+          delBtn.textContent = "Supprimer";
+          delBtn.addEventListener("click", async () => {
+            if (confirm(`Supprimer l’article "${row.title}" ?`)) {
+              await deleteArticle(row.id);
+            }
+          });
+          tdActions.appendChild(delBtn);
+
+          tr.appendChild(tdActions);
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    async function editArticle(id) {
+      const msgEl = document.getElementById("article-form-message");
+      msgEl.textContent = "Chargement de l’article...";
+      msgEl.className = "status-message";
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("actualites")
+          .select("*")
+          .eq("id", id)
+          .maybeSingle();
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "");
+          msgEl.classList.add("error");
+          return;
+        }
+        if (!data) {
+          msgEl.textContent = "Article introuvable.";
+          msgEl.classList.add("error");
+          return;
+        }
+
+        document.getElementById("article-id").value = data.id;
+        document.getElementById("article-title").value = data.title || "";
+        document.getElementById("article-slug").value = data.slug || "";
+        document.getElementById("article-image").value = data.image_url || "";
+        document.getElementById("article-excerpt").value = data.excerpt || "";
+        document.getElementById("article-content").value = data.content || "";
+        document.getElementById("article-published").checked = !!data.is_published;
+        document.getElementById("article-published-at").value = toLocalDateTimeInput(data.published_at);
+
+        msgEl.textContent = "Article chargé. Tu peux modifier puis enregistrer.";
+        msgEl.classList.add("ok");
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau lors du chargement.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    async function toggleArticlePublished(id, newStatus) {
+      const msgEl = document.getElementById("article-list-message");
+      msgEl.textContent = "Mise à jour du statut...";
+      msgEl.className = "status-message";
+
+      try {
+        const payload = { is_published: newStatus };
+        if (newStatus) {
+          payload.published_at = new Date().toISOString();
+        }
+        const { error } = await supabaseClient
+          .from("actualites")
+          .update(payload)
+          .eq("id", id);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "");
+          msgEl.classList.add("error");
         } else {
-          loginError.textContent = "Mot de passe incorrect.";
+          msgEl.textContent = "Statut mis à jour.";
+          msgEl.classList.add("ok");
+          await loadArticles();
         }
-      });
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
+      }
+    }
 
-      passwordInput.addEventListener("keyup", (e) => {
-        if (e.key === "Enter") {
-          loginButton.click();
+    async function deleteArticle(id) {
+      const msgEl = document.getElementById("article-list-message");
+      msgEl.textContent = "Suppression en cours...";
+      msgEl.className = "status-message";
+
+      try {
+        const { error } = await supabaseClient
+          .from("actualites")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur : " + (error.message || "");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Article supprimé.";
+          msgEl.classList.add("ok");
+          await loadArticles();
         }
-      });
-
-      if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-          localStorage.removeItem("sb_isAdmin");
-          showLogin();
-        });
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
       }
+    }
 
-      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
-      if (btnRefreshRes) {
-        btnRefreshRes.addEventListener("click", () => {
-          loadReservations();
-        });
-      }
+    /* ========== CODES PROMO ========== */
 
-      const promoForm = document.getElementById("promo-form");
-      promoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        await handlePromoFormSubmit();
-      });
-
-      checkAuth();
-    });
-
-    // Codes promo
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
       const typeInput = document.getElementById("promo-type");
@@ -1367,6 +1736,112 @@
         msgEl.classList.add("error");
       }
     }
+
+    /* ========== LOGIN / INIT ==========\ */
+
+    function showLogin() {
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("admin-screen").style.display = "none";
+    }
+
+    function showAdmin() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
+    }
+
+    function checkAuth() {
+      if (localStorage.getItem("sb_isAdmin") === "true") {
+        showAdmin();
+        initAfterLogin();
+      } else {
+        showLogin();
+      }
+    }
+
+    async function initAfterLogin() {
+      await loadDeposit();
+      await loadPromoCodes();
+      await loadDashboard();
+      await loadReservations();
+      await loadClients();
+      await loadArticles();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginButton = document.getElementById("login-button");
+      const loginError = document.getElementById("login-error");
+      const passwordInput = document.getElementById("admin-password");
+      const logoutButton = document.getElementById("logout-button");
+
+      // Tabs
+      document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+          btn.classList.add("active");
+          const target = document.getElementById(btn.dataset.tab);
+          if (target) target.classList.add("active");
+        });
+      });
+
+      // Login
+      loginButton.addEventListener("click", async () => {
+        const pwd = passwordInput.value.trim();
+        if (!pwd) {
+          loginError.textContent = "Merci de saisir le mot de passe.";
+          return;
+        }
+        if (pwd === ADMIN_PASSWORD) {
+          localStorage.setItem("sb_isAdmin", "true");
+          loginError.textContent = "";
+          passwordInput.value = "";
+          showAdmin();
+          await initAfterLogin();
+        } else {
+          loginError.textContent = "Mot de passe incorrect.";
+        }
+      });
+
+      passwordInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          loginButton.click();
+        }
+      });
+
+      if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+          localStorage.removeItem("sb_isAdmin");
+          showLogin();
+        });
+      }
+
+      // Réservations – bouton actualiser
+      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
+      if (btnRefreshRes) {
+        btnRefreshRes.addEventListener("click", () => {
+          loadReservations();
+        });
+      }
+
+      // Promo form
+      const promoForm = document.getElementById("promo-form");
+      promoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await handlePromoFormSubmit();
+      });
+
+      // Article form
+      const articleForm = document.getElementById("article-form");
+      articleForm.addEventListener("submit", handleArticleFormSubmit);
+
+      const articleResetBtn = document.getElementById("article-reset");
+      articleResetBtn.addEventListener("click", () => {
+        resetArticleForm();
+      });
+
+      checkAuth();
+    });
   </script>
 </body>
 </html>
