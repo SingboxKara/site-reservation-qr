@@ -275,29 +275,22 @@
     }
 
     .form-field input,
-    .form-field select {
+    .form-field select,
+    .form-field textarea {
       width: 100%;
       padding: 0.45rem 0.7rem;
-      border-radius: 999px;
+      border-radius: 10px;
       border: 1px solid var(--sb-border-soft);
       background: #020617;
       color: var(--sb-text-main);
       font-size: 12px;
       outline: none;
+      font-family: inherit;
     }
 
     .form-field textarea {
-      width: 100%;
       min-height: 120px;
-      padding: 0.6rem 0.75rem;
-      border-radius: 12px;
-      border: 1px solid var(--sb-border-soft);
-      background: #020617;
-      color: var(--sb-text-main);
-      font-size: 12px;
       resize: vertical;
-      outline: none;
-      font-family: inherit;
     }
 
     .form-actions {
@@ -305,7 +298,6 @@
       justify-content: flex-end;
       margin-top: 0.6rem;
       gap: 0.5rem;
-      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -642,61 +634,55 @@
           </p>
 
           <form id="article-form">
-            <!-- id caché pour savoir si on édite -->
+            <!-- id caché pour l’édition -->
             <input type="hidden" id="article-id" />
 
             <div class="form-grid-2">
               <div class="form-field">
                 <label for="article-title">Titre</label>
-                <input type="text" id="article-title" required placeholder="Ex : Ouverture officielle de Singbox Toulouse" />
+                <input type="text" id="article-title" placeholder="Promo Étudiants" required />
               </div>
               <div class="form-field">
                 <label for="article-slug">Slug (URL)</label>
-                <input type="text" id="article-slug" placeholder="ouverture-officielle, soiree-haloween..." />
-                <p class="helper-text">
-                  Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.
-                </p>
+                <input type="text" id="article-slug" placeholder="promo-etudiants" required />
+                <p class="helper-text">Sans espaces ni accents. Exemple : <code>ouverture-officielle</code>.</p>
               </div>
             </div>
 
             <div class="form-grid-2">
               <div class="form-field">
-                <label for="article-image">Image (URL)</label>
-                <input type="text" id="article-image" placeholder="https://.../image.jpg" />
-                <p class="helper-text">
-                  URL complète de l’image utilisée sur la page actualités.
-                </p>
+                <label for="article-image-url">Image (URL)</label>
+                <input type="text" id="article-image-url" placeholder="https://.../image.jpg" />
+                <p class="helper-text">URL complète de l’image utilisée sur la page actualités.</p>
               </div>
               <div class="form-field">
-                <label for="article-excerpt">Résumé court</label>
-                <input type="text" id="article-excerpt" placeholder="2–3 phrases qui résument l'article." />
+                <label for="article-summary">Résumé court</label>
+                <input type="text" id="article-summary" placeholder="Nouvelle promo spéciale étudiant disponible pendant 1 mois..." />
               </div>
             </div>
 
             <div class="form-field">
               <label for="article-content">Contenu</label>
-              <textarea id="article-content" placeholder="Texte de l’article (HTML simple ou texte brut)."></textarea>
-              <p class="helper-text">
-                Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).
-              </p>
+              <textarea id="article-content" placeholder="Promo : STUDENT&#10;Détails de la promo, conditions, etc."></textarea>
+              <p class="helper-text">Tu peux mettre du texte simple ou un peu de HTML (par ex. &lt;br&gt;, &lt;strong&gt;).</p>
             </div>
 
             <div class="form-grid-3">
               <div class="form-field">
-                <label for="article-published">
-                  <input type="checkbox" id="article-published" />
-                  Article publié
-                </label>
-                <p class="helper-text">
-                  Si décoché : l’article reste en brouillon (non visible côté site).
-                </p>
+                <label for="article-category">Catégorie (optionnel)</label>
+                <input type="text" id="article-category" placeholder="Promo, Nouveauté, Infos pratiques..." />
               </div>
               <div class="form-field">
-                <label for="article-published-at">Date de publication (optionnel)</label>
-                <input type="datetime-local" id="article-published-at" />
-                <p class="helper-text">
-                  Si tu laisses vide, on prend la date/heure actuelle lors de la publication.
-                </p>
+                <label>Article publié</label>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <input type="checkbox" id="article-published" />
+                  <span class="helper-text">Si décoché : l’article reste en brouillon (non visible côté site).</span>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="article-publication-date">Date de publication (optionnel)</label>
+                <input type="datetime-local" id="article-publication-date" />
+                <p class="helper-text">Si tu laisses vide, on prend la date/heure actuelles lors de la publication.</p>
               </div>
             </div>
 
@@ -867,27 +853,7 @@
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    /* ========== FONCTIONS UTILITAIRES GLOBALES ========== */
-
-    function toLocalDateTimeInput(isoString) {
-      if (!isoString) return "";
-      const d = new Date(isoString);
-      const pad = (n) => String(n).padStart(2, "0");
-      const y = d.getFullYear();
-      const m = pad(d.getMonth() + 1);
-      const day = pad(d.getDate());
-      const h = pad(d.getHours());
-      const min = pad(d.getMinutes());
-      return `${y}-${m}-${day}T${h}:${min}`;
-    }
-
-    function fromLocalDateTimeInput(value) {
-      if (!value) return null;
-      const d = new Date(value);
-      return d.toISOString();
-    }
-
-    /* ========== CAUTION ========== */
+    // CAUTION
     async function loadDeposit() {
       const badge = document.getElementById("deposit-badge");
       if (!badge) return;
@@ -912,7 +878,7 @@
       }
     }
 
-    /* ========== DASHBOARD (RESERVATIONS) ========== */
+    // DASHBOARD (utilise 'date')
     async function loadDashboard() {
       const msgEl = document.getElementById("dashboard-message");
       const kpiResa = document.getElementById("kpi-resa-month");
@@ -928,7 +894,7 @@
         const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
         const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-        const firstDateStr = firstDay.toISOString().split("T")[0];
+        const firstDateStr = firstDay.toISOString().split("T")[0]; // YYYY-MM-DD
         const nextDateStr = nextMonth.toISOString().split("T")[0];
 
         const { data, error } = await supabaseClient
@@ -962,7 +928,7 @@
       }
     }
 
-    /* ========== RESERVATIONS LISTE ========== */
+    // RÉSERVATIONS (utilise 'date' + 'start_time')
     async function loadReservations() {
       const tbody = document.getElementById("reservations-table-body");
       const msgEl = document.getElementById("reservations-list-message");
@@ -1066,7 +1032,7 @@
       }
     }
 
-    /* ========== CLIENTS ========== */
+    // CLIENTS (à partir de reservations)
     async function loadClients() {
       const tbody = document.getElementById("clients-table-body");
       const msgEl = document.getElementById("clients-list-message");
@@ -1163,104 +1129,21 @@
       }
     }
 
-    /* ========== ACTUALITES (ARTICLES) ========== */
+    /* ====================== ACTUALITÉS ====================== */
 
     function resetArticleForm() {
       document.getElementById("article-id").value = "";
       document.getElementById("article-title").value = "";
       document.getElementById("article-slug").value = "";
-      document.getElementById("article-image").value = "";
-      document.getElementById("article-excerpt").value = "";
+      document.getElementById("article-image-url").value = "";
+      document.getElementById("article-summary").value = "";
       document.getElementById("article-content").value = "";
+      document.getElementById("article-category").value = "";
       document.getElementById("article-published").checked = false;
-      document.getElementById("article-published-at").value = "";
-      const msgEl = document.getElementById("article-form-message");
-      if (msgEl) {
-        msgEl.textContent = "";
-        msgEl.className = "status-message";
-      }
-    }
-
-    async function handleArticleFormSubmit(event) {
-      event.preventDefault();
-
-      const id = document.getElementById("article-id").value || null;
-      const title = document.getElementById("article-title").value.trim();
-      let slug = document.getElementById("article-slug").value.trim();
-      const image_url = document.getElementById("article-image").value.trim() || null;
-      const excerpt = document.getElementById("article-excerpt").value.trim() || null;
-      const content = document.getElementById("article-content").value.trim() || "";
-      const is_published = document.getElementById("article-published").checked;
-      const publishedAtInput = document.getElementById("article-published-at").value;
-      const msgEl = document.getElementById("article-form-message");
-
-      msgEl.textContent = "";
-      msgEl.className = "status-message";
-
-      if (!title) {
-        msgEl.textContent = "Merci de renseigner un titre.";
-        msgEl.classList.add("error");
-        return;
-      }
-
-      if (!slug) {
-        // auto-slug : minuscules, tirets, pas d'accents
-        slug = title
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/^-+|-+$/g, "");
-      }
-
-      let published_at = null;
-      if (is_published) {
-        published_at = publishedAtInput ? fromLocalDateTimeInput(publishedAtInput) : new Date().toISOString();
-      }
-
-      const payload = {
-        title,
-        slug,
-        image_url,
-        excerpt,
-        content,
-        is_published,
-        published_at
-      };
-
-      msgEl.textContent = "Enregistrement de l’article...";
-      try {
-        let query = supabaseClient.from("actualites");
-
-        if (id) {
-          // update
-          const { error } = await query.update(payload).eq("id", id);
-          if (error) {
-            console.error(error);
-            msgEl.textContent = "Erreur lors de la mise à jour : " + (error.message || "");
-            msgEl.classList.add("error");
-            return;
-          }
-          msgEl.textContent = "Article mis à jour ✅";
-        } else {
-          // insert
-          const { error } = await query.insert(payload);
-          if (error) {
-            console.error(error);
-            msgEl.textContent = "Erreur lors de la création : " + (error.message || "");
-            msgEl.classList.add("error");
-            return;
-          }
-          msgEl.textContent = "Article créé ✅";
-        }
-
-        msgEl.classList.add("ok");
-        await loadArticles();
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau lors de l’enregistrement.";
-        msgEl.classList.add("error");
-      }
+      document.getElementById("article-publication-date").value = "";
+      const msg = document.getElementById("article-form-message");
+      msg.textContent = "";
+      msg.className = "status-message";
     }
 
     async function loadArticles() {
@@ -1275,12 +1158,12 @@
       try {
         const { data, error } = await supabaseClient
           .from("actualites")
-          .select("id, title, slug, is_published, created_at, published_at")
+          .select("id, titre, slug, publie, date_publication, created_at")
           .order("created_at", { ascending: false });
 
         if (error) {
           console.error(error);
-          msgEl.textContent = "Erreur lors du chargement : " + (error.message || "");
+          msgEl.textContent = "Erreur lors du chargement des articles : " + (error.message || "");
           msgEl.classList.add("error");
           return;
         }
@@ -1292,40 +1175,36 @@
         }
 
         msgEl.textContent = "";
-
         data.forEach((row) => {
           const tr = document.createElement("tr");
 
-          const tdTitle = document.createElement("td");
-          tdTitle.textContent = row.title || "-";
-          tr.appendChild(tdTitle);
+          const tdTitre = document.createElement("td");
+          tdTitre.textContent = row.titre || "(sans titre)";
+          tr.appendChild(tdTitre);
 
           const tdSlug = document.createElement("td");
-          tdSlug.textContent = row.slug || "-";
+          tdSlug.textContent = row.slug;
           tr.appendChild(tdSlug);
 
           const tdCreated = document.createElement("td");
-          tdCreated.textContent = row.created_at
-            ? new Date(row.created_at).toLocaleDateString("fr-FR")
-            : "-";
+          if (row.created_at) {
+            const d = new Date(row.created_at);
+            tdCreated.textContent =
+              d.toLocaleDateString("fr-FR") + " " +
+              d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+          } else {
+            tdCreated.textContent = "-";
+          }
           tr.appendChild(tdCreated);
 
           const tdPub = document.createElement("td");
-          tdPub.textContent = row.published_at
-            ? new Date(row.published_at).toLocaleString("fr-FR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-              })
-            : "-";
+          tdPub.textContent = row.date_publication || "-";
           tr.appendChild(tdPub);
 
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.is_published) {
+          if (row.publie) {
             badge.classList.add("badge-active");
             badge.textContent = "Publié";
           } else {
@@ -1336,28 +1215,19 @@
           tr.appendChild(tdStatus);
 
           const tdActions = document.createElement("td");
-
           const editBtn = document.createElement("button");
           editBtn.className = "small-btn";
           editBtn.textContent = "Modifier";
           editBtn.addEventListener("click", () => {
-            editArticle(row.id);
+            fillArticleForm(row);
           });
           tdActions.appendChild(editBtn);
-
-          const toggleBtn = document.createElement("button");
-          toggleBtn.className = "small-btn";
-          toggleBtn.textContent = row.is_published ? "Dépublier" : "Publier";
-          toggleBtn.addEventListener("click", async () => {
-            await toggleArticlePublished(row.id, !row.is_published);
-          });
-          tdActions.appendChild(toggleBtn);
 
           const delBtn = document.createElement("button");
           delBtn.className = "small-btn danger";
           delBtn.textContent = "Supprimer";
           delBtn.addEventListener("click", async () => {
-            if (confirm(`Supprimer l’article "${row.title}" ?`)) {
+            if (confirm(`Supprimer l'article "${row.titre}" ?`)) {
               await deleteArticle(row.id);
             }
           });
@@ -1368,82 +1238,35 @@
         });
       } catch (err) {
         console.error(err);
-        msgEl.textContent = "Erreur réseau lors du chargement.";
+        msgEl.textContent = "Erreur réseau lors du chargement des articles.";
         msgEl.classList.add("error");
       }
     }
 
-    async function editArticle(id) {
-      const msgEl = document.getElementById("article-form-message");
-      msgEl.textContent = "Chargement de l’article...";
-      msgEl.className = "status-message";
+    function fillArticleForm(row) {
+      document.getElementById("article-id").value = row.id || "";
+      document.getElementById("article-title").value = row.titre || "";
+      document.getElementById("article-slug").value = row.slug || "";
+      document.getElementById("article-image-url").value = row.image_url || "";
+      document.getElementById("article-summary").value = row.chapeau || "";
+      document.getElementById("article-content").value = row.contenu || "";
+      document.getElementById("article-category").value = row.categorie || "";
+      document.getElementById("article-published").checked = !!row.publie;
 
-      try {
-        const { data, error } = await supabaseClient
-          .from("actualites")
-          .select("*")
-          .eq("id", id)
-          .maybeSingle();
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "");
-          msgEl.classList.add("error");
-          return;
+      const pubInput = document.getElementById("article-publication-date");
+      if (row.date_publication) {
+        let v = row.date_publication;
+        if (!v.includes("T")) {
+          v = v + "T10:00";
         }
-        if (!data) {
-          msgEl.textContent = "Article introuvable.";
-          msgEl.classList.add("error");
-          return;
-        }
-
-        document.getElementById("article-id").value = data.id;
-        document.getElementById("article-title").value = data.title || "";
-        document.getElementById("article-slug").value = data.slug || "";
-        document.getElementById("article-image").value = data.image_url || "";
-        document.getElementById("article-excerpt").value = data.excerpt || "";
-        document.getElementById("article-content").value = data.content || "";
-        document.getElementById("article-published").checked = !!data.is_published;
-        document.getElementById("article-published-at").value = toLocalDateTimeInput(data.published_at);
-
-        msgEl.textContent = "Article chargé. Tu peux modifier puis enregistrer.";
-        msgEl.classList.add("ok");
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau lors du chargement.";
-        msgEl.classList.add("error");
+        pubInput.value = v;
+      } else {
+        pubInput.value = "";
       }
-    }
 
-    async function toggleArticlePublished(id, newStatus) {
-      const msgEl = document.getElementById("article-list-message");
-      msgEl.textContent = "Mise à jour du statut...";
-      msgEl.className = "status-message";
-
-      try {
-        const payload = { is_published: newStatus };
-        if (newStatus) {
-          payload.published_at = new Date().toISOString();
-        }
-        const { error } = await supabaseClient
-          .from("actualites")
-          .update(payload)
-          .eq("id", id);
-
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "");
-          msgEl.classList.add("error");
-        } else {
-          msgEl.textContent = "Statut mis à jour.";
-          msgEl.classList.add("ok");
-          await loadArticles();
-        }
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Erreur réseau.";
-        msgEl.classList.add("error");
-      }
+      const msg = document.getElementById("article-form-message");
+      msg.textContent = `Édition de : ${row.titre || "(sans titre)"}`;
+      msg.className = "status-message ok";
     }
 
     async function deleteArticle(id) {
@@ -1465,6 +1288,7 @@
           msgEl.textContent = "Article supprimé.";
           msgEl.classList.add("ok");
           await loadArticles();
+          resetArticleForm();
         }
       } catch (err) {
         console.error(err);
@@ -1473,7 +1297,182 @@
       }
     }
 
-    /* ========== CODES PROMO ========== */
+    async function handleArticleSubmit(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById("article-form-message");
+      msgEl.textContent = "";
+      msgEl.className = "status-message";
+
+      const id = document.getElementById("article-id").value || null;
+      const titre = document.getElementById("article-title").value.trim();
+      const slug = document.getElementById("article-slug").value.trim();
+      const imageUrl = document.getElementById("article-image-url").value.trim() || null;
+      const chapeau = document.getElementById("article-summary").value.trim() || null;
+      const contenu = document.getElementById("article-content").value.trim() || null;
+      const categorie = document.getElementById("article-category").value.trim() || null;
+      const publie = document.getElementById("article-published").checked;
+      const datePubRaw = document.getElementById("article-publication-date").value || null;
+
+      if (!titre || !slug) {
+        msgEl.textContent = "Merci de renseigner au minimum le titre et le slug.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      const payload = {
+        titre,
+        slug,
+        image_url: imageUrl,
+        chapeau,
+        contenu,
+        categorie,
+        publie,
+        date_publication: datePubRaw
+      };
+
+      msgEl.textContent = "Enregistrement en cours...";
+      try {
+        let error;
+
+        if (id) {
+          // update
+          ({ error } = await supabaseClient
+            .from("actualites")
+            .update(payload)
+            .eq("id", id));
+        } else {
+          // insert
+          ({ error } = await supabaseClient
+            .from("actualites")
+            .insert(payload));
+        }
+
+        if (error) {
+          console.error(error);
+          msgEl.textContent = "Erreur lors de l’enregistrement : " + (error.message || "");
+          msgEl.classList.add("error");
+        } else {
+          msgEl.textContent = "Article enregistré avec succès ✅";
+          msgEl.classList.add("ok");
+          await loadArticles();
+          resetArticleForm();
+        }
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Erreur réseau.";
+        msgEl.classList.add("error");
+      }
+    }
+
+    /* ====================== LOGIN / INIT ====================== */
+
+    function showLogin() {
+      document.getElementById("login-screen").style.display = "flex";
+      document.getElementById("admin-screen").style.display = "none";
+    }
+
+    function showAdmin() {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-screen").style.display = "block";
+    }
+
+    function checkAuth() {
+      if (localStorage.getItem("sb_isAdmin") === "true") {
+        showAdmin();
+        initAfterLogin();
+      } else {
+        showLogin();
+      }
+    }
+
+    async function initAfterLogin() {
+      await loadDeposit();
+      await loadPromoCodes();
+      await loadDashboard();
+      await loadReservations();
+      await loadClients();
+      await loadArticles();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginButton = document.getElementById("login-button");
+      const loginError = document.getElementById("login-error");
+      const passwordInput = document.getElementById("admin-password");
+      const logoutButton = document.getElementById("logout-button");
+
+      // Tabs
+      document.querySelectorAll(".tab-button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+          btn.classList.add("active");
+          const target = document.getElementById(btn.dataset.tab);
+          if (target) target.classList.add("active");
+        });
+      });
+
+      // Login
+      loginButton.addEventListener("click", async () => {
+        const pwd = passwordInput.value.trim();
+        if (!pwd) {
+          loginError.textContent = "Merci de saisir le mot de passe.";
+          return;
+        }
+        if (pwd === ADMIN_PASSWORD) {
+          localStorage.setItem("sb_isAdmin", "true");
+          loginError.textContent = "";
+          passwordInput.value = "";
+          showAdmin();
+          await initAfterLogin();
+        } else {
+          loginError.textContent = "Mot de passe incorrect.";
+        }
+      });
+
+      passwordInput.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          loginButton.click();
+        }
+      });
+
+      if (logoutButton) {
+        logoutButton.addEventListener("click", () => {
+          localStorage.removeItem("sb_isAdmin");
+          showLogin();
+        });
+      }
+
+      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
+      if (btnRefreshRes) {
+        btnRefreshRes.addEventListener("click", () => {
+          loadReservations();
+        });
+      }
+
+      // Form promo
+      const promoForm = document.getElementById("promo-form");
+      promoForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await handlePromoFormSubmit();
+      });
+
+      // Form article
+      const articleForm = document.getElementById("article-form");
+      const articleReset = document.getElementById("article-reset");
+      if (articleForm) {
+        articleForm.addEventListener("submit", handleArticleSubmit);
+      }
+      if (articleReset) {
+        articleReset.addEventListener("click", () => {
+          resetArticleForm();
+        });
+      }
+
+      checkAuth();
+    });
+
+    /* ====================== CODES PROMO ====================== */
 
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
@@ -1736,112 +1735,6 @@
         msgEl.classList.add("error");
       }
     }
-
-    /* ========== LOGIN / INIT ==========\ */
-
-    function showLogin() {
-      document.getElementById("login-screen").style.display = "flex";
-      document.getElementById("admin-screen").style.display = "none";
-    }
-
-    function showAdmin() {
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("admin-screen").style.display = "block";
-    }
-
-    function checkAuth() {
-      if (localStorage.getItem("sb_isAdmin") === "true") {
-        showAdmin();
-        initAfterLogin();
-      } else {
-        showLogin();
-      }
-    }
-
-    async function initAfterLogin() {
-      await loadDeposit();
-      await loadPromoCodes();
-      await loadDashboard();
-      await loadReservations();
-      await loadClients();
-      await loadArticles();
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const loginButton = document.getElementById("login-button");
-      const loginError = document.getElementById("login-error");
-      const passwordInput = document.getElementById("admin-password");
-      const logoutButton = document.getElementById("logout-button");
-
-      // Tabs
-      document.querySelectorAll(".tab-button").forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-
-          btn.classList.add("active");
-          const target = document.getElementById(btn.dataset.tab);
-          if (target) target.classList.add("active");
-        });
-      });
-
-      // Login
-      loginButton.addEventListener("click", async () => {
-        const pwd = passwordInput.value.trim();
-        if (!pwd) {
-          loginError.textContent = "Merci de saisir le mot de passe.";
-          return;
-        }
-        if (pwd === ADMIN_PASSWORD) {
-          localStorage.setItem("sb_isAdmin", "true");
-          loginError.textContent = "";
-          passwordInput.value = "";
-          showAdmin();
-          await initAfterLogin();
-        } else {
-          loginError.textContent = "Mot de passe incorrect.";
-        }
-      });
-
-      passwordInput.addEventListener("keyup", (e) => {
-        if (e.key === "Enter") {
-          loginButton.click();
-        }
-      });
-
-      if (logoutButton) {
-        logoutButton.addEventListener("click", () => {
-          localStorage.removeItem("sb_isAdmin");
-          showLogin();
-        });
-      }
-
-      // Réservations – bouton actualiser
-      const btnRefreshRes = document.getElementById("btn-refresh-reservations");
-      if (btnRefreshRes) {
-        btnRefreshRes.addEventListener("click", () => {
-          loadReservations();
-        });
-      }
-
-      // Promo form
-      const promoForm = document.getElementById("promo-form");
-      promoForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        await handlePromoFormSubmit();
-      });
-
-      // Article form
-      const articleForm = document.getElementById("article-form");
-      articleForm.addEventListener("submit", handleArticleFormSubmit);
-
-      const articleResetBtn = document.getElementById("article-reset");
-      articleResetBtn.addEventListener("click", () => {
-        resetArticleForm();
-      });
-
-      checkAuth();
-    });
   </script>
 </body>
 </html>
