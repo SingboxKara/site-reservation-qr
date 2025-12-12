@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- META DESCRIPTION (SEO) -->
-  <meta name="description" content="Découvrez toutes les actualités Singbox : nouveautés, coulisses, travaux, playlists et idées de soirées autour du premier karaoké box privatif de Toulouse. Suivez l’aventure et préparez vos prochaines soirées karaoké." />
+  <meta name="description" content="Découvrez toutes les actualités Singbox : nouveautés, coulisses, travaux, playlists, promos et idées de soirées autour du premier karaoké box privatif de Toulouse. Suivez l’aventure et préparez vos prochaines soirées karaoké." />
 
-  <!-- KEYWORDS (optionnels mais ok) -->
+  <!-- KEYWORDS -->
   <meta name="keywords" content="karaoké box Toulouse, actualités Singbox, nouveautés karaoké, playlist karaoké, soirées karaoké Toulouse, karaoké privatif, EVJF Toulouse, EVG Toulouse, activités Toulouse" />
 
   <!-- CANONICAL -->
@@ -20,7 +20,7 @@
   <!-- OPEN GRAPH -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Actualités Singbox – Nouveautés & coulisses du karaoké box à Toulouse">
-  <meta property="og:description" content="Nouveautés, coulisses, travaux, playlists et idées de soirées : toutes les actualités du premier karaoké box privatif de Toulouse.">
+  <meta property="og:description" content="Nouveautés, coulisses, travaux, promos, playlists et idées de soirées : toutes les actualités du premier karaoké box privatif de Toulouse.">
   <meta property="og:image" content="https://www.singbox.fr/assets/actualites-preview.png">
   <meta property="og:url" content="https://www.singbox.fr/actualites">
   <meta property="og:site_name" content="Singbox">
@@ -28,7 +28,7 @@
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Actualités Singbox – Nouveautés & coulisses à Toulouse">
-  <meta name="twitter:description" content="Suivez toutes les actualités de Singbox : nouveautés, coulisses, playlists et idées de soirées karaoké à Toulouse.">
+  <meta name="twitter:description" content="Suivez toutes les actualités de Singbox : nouveautés, coulisses, playlists, promos et idées de soirées karaoké à Toulouse.">
   <meta name="twitter:image" content="https://www.singbox.fr/assets/actualites-preview.png">
 
   <!-- STRUCTURED DATA : BLOG -->
@@ -38,7 +38,7 @@
     "@type": "Blog",
     "name": "Actualités Singbox",
     "url": "https://www.singbox.fr/actualites",
-    "description": "Actualités, nouveautés, coulisses et idées de soirées du karaoké box Singbox à Toulouse.",
+    "description": "Actualités, nouveautés, coulisses, promos et idées de soirées du karaoké box Singbox à Toulouse.",
     "publisher": {
       "@type": "Organization",
       "name": "Singbox",
@@ -50,7 +50,7 @@
   }
   </script>
 
-  <!-- STRUCTURED DATA : ARTICLE VEDETTE (exemple statique, ok à laisser) -->
+  <!-- STRUCTURED DATA : ARTICLE VEDETTE (exemple statique) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -141,7 +141,6 @@
       background: #020617;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
-      height: auto;
     }
 
     .header-inner {
@@ -152,7 +151,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 2rem;
-      height: auto;
       flex-wrap: nowrap;
     }
 
@@ -234,7 +232,6 @@
       transition: 0.25s ease;
     }
 
-    /* lien actif */
     .main-nav a[href="actualites.html"]::after {
       width: 100%;
     }
@@ -544,7 +541,9 @@
       transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        opacity 0.2s ease,
+        filter 0.2s ease;
     }
 
     .news-card::after {
@@ -617,7 +616,22 @@
       text-shadow: 0 0 12px rgba(248,250,252,0.6);
     }
 
+    .news-card.is-highlighted {
+      opacity: 1;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.18),
+        0 24px 60px rgba(255,120,80,0.35);
+      border-color: rgba(255,120,80,0.6);
+      filter: none;
+    }
+
+    .news-card.is-dimmed {
+      opacity: 0.45;
+      filter: grayscale(0.15);
+    }
+
     .news-empty {
+      text-align: center;
       font-size: 14px;
       color: var(--sb-text-muted);
       margin-top: 12px;
@@ -794,7 +808,6 @@
           <li><a href="box.html">Les box</a></li>
           <li><a href="actualites.html" aria-current="page">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <!-- NOUVEL ONGLET MON COMPTE -->
           <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
@@ -819,7 +832,6 @@
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <!-- NOUVEL ONGLET MON COMPTE MOBILE -->
       <li><a href="mon-compte.html">Mon compte</a></li>
       <li><a href="reservation.html">Réserver</a></li>
     </ul>
@@ -829,9 +841,9 @@
   <section id="news-intro">
     <div class="news-intro-inner">
       <p class="news-eyebrow">Actualités Singbox</p>
-      <h1 class="news-title-main">Actualités Singbox : nouveautés, annonces et coulisses à Toulouse</h1>
+      <h1 class="news-title-main">Actualités Singbox : nouveautés, promos, annonces et coulisses à Toulouse</h1>
       <p class="news-intro-text">
-        Nouveautés, coulisses, annonces et idées pour vos soirées karaoké.<br />
+        Nouveautés, coulisses, promos et idées pour vos soirées karaoké.<br />
         Suivez toute l’aventure du premier karaoké box privatif de Toulouse.
       </p>
     </div>
@@ -854,21 +866,15 @@
       </div>
     </section>
 
-    <!-- LISTE DES ARTICLES (dynamiques) -->
+    <!-- LISTE DES ARTICLES -->
     <section id="news-list">
       <div class="container">
-        <div class="news-grid">
-          <div class="news-main-column" id="news-main-column">
-            <!-- Article vedette injecté en JS -->
-          </div>
+        <p id="news-empty" class="news-empty"></p>
 
-          <div class="news-side-column" id="news-side-column">
-            <!-- Autres articles injectés en JS -->
-          </div>
+        <div id="news-grid" class="news-grid" style="display:none;">
+          <div class="news-main-column" id="news-main-column"></div>
+          <div class="news-side-column" id="news-side-column"></div>
         </div>
-        <p id="news-empty" class="news-empty" style="display:none;">
-          Aucune actualité pour cette catégorie pour le moment. Reviens un peu plus tard ✨
-        </p>
       </div>
     </section>
 
@@ -891,7 +897,6 @@
     <div class="newsletter-container" id="newsletter-section">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
-      <!-- Newsletter avec formulaire -->
       <form class="newsletter-row" id="newsletter-form">
         <input
           type="email"
@@ -923,9 +928,9 @@
 
       <div>
         <p><strong>Contact</strong></p>
-        <p>Adresse : [à compléter]</p>
+        <p>Adresse : 66 Rue de la République, 31300 Toulouse</p>
         <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : [à compléter]</p>
+        <p>Téléphone : 06 00 00 00 00</p>
       </div>
 
       <div>
@@ -960,14 +965,24 @@
     </div>
   </footer>
 
-  <!-- Supabase JS (CDN) -->
+  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- SCRIPT -->
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+    const CATEGORY_LABELS = {
+      "coulisses-travaux": "Coulisses & travaux",
+      "nouvelles-chansons": "Nouvelles chansons",
+      "vie-lieu": "Vie du lieu",
+      "idees-soirees": "Idées de soirées",
+      "promo": "Promo"
+    };
+
+    let allArticles = [];
+    let currentCategory = "all";
 
     function getPanier() {
       try {
@@ -984,11 +999,10 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    // ---- Formatage date FR ----
-    function formatDateFR(dateStr) {
+    function formatDateFr(dateStr) {
       if (!dateStr) return "";
       const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
+      if (isNaN(d)) return dateStr;
       return d.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
@@ -996,108 +1010,79 @@
       });
     }
 
-    // ---- Labels de catégories ----
-    const CATEGORY_LABELS = {
-      "coulisses-travaux": {
-        badge: "Coulisses & travaux",
-        meta: "Coulisses & travaux"
-      },
-      "nouvelles-chansons": {
-        badge: "Nouvelles chansons",
-        meta: "Nouvelles chansons"
-      },
-      "vie-lieu": {
-        badge: "Vie du lieu",
-        meta: "Vie du lieu"
-      },
-      "idees-soirees": {
-        badge: "Idées de soirées",
-        meta: "Idées de soirées"
-      },
-      "promo": {
-        badge: "Promo",
-        meta: "Promo"
-      }
-    };
+    function createArticleCard(article, isFeatured) {
+      const card = document.createElement("article");
+      card.className = "news-card" + (isFeatured ? " news-card--featured" : "");
+      const catSlug = article.categorie || "autre";
+      card.dataset.category = catSlug;
 
-    let allArticles = [];
-    let currentCategory = "all";
+      const badge = document.createElement("span");
+      badge.className = "news-badge";
+      badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
+      card.appendChild(badge);
 
-    // ---- Rendu des articles en HTML ----
+      const titleEl = document.createElement(isFeatured ? "h2" : "h3");
+      titleEl.className = "news-title";
+      titleEl.textContent = article.titre || "Sans titre";
+      card.appendChild(titleEl);
+
+      const meta = document.createElement("p");
+      meta.className = "news-meta";
+      const dateTxt = article.date_publication ? formatDateFr(article.date_publication) : "";
+      const catLabel = CATEGORY_LABELS[catSlug] || "";
+      meta.textContent = (dateTxt ? "Publié le " + dateTxt : "") +
+        (catLabel ? " • Catégorie : " + catLabel : "");
+      card.appendChild(meta);
+
+      const excerpt = document.createElement("p");
+      excerpt.className = "news-excerpt";
+      const baseText = article.chapeau || article.contenu || "";
+      excerpt.textContent = baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
+      card.appendChild(excerpt);
+
+      const link = document.createElement("a");
+      link.className = "news-link";
+      const slug = article.slug || "";
+      link.href = slug ? ("article.html?slug=" + encodeURIComponent(slug)) : "#";
+      link.textContent = "Lire l’article complet →";
+      card.appendChild(link);
+
+      return card;
+    }
+
     function renderArticles() {
+      const grid = document.getElementById("news-grid");
       const mainCol = document.getElementById("news-main-column");
       const sideCol = document.getElementById("news-side-column");
       const emptyEl = document.getElementById("news-empty");
+      if (!grid || !mainCol || !sideCol || !emptyEl) return;
 
-      if (!mainCol || !sideCol || !emptyEl) return;
+      let articles = allArticles.slice();
+      if (currentCategory !== "all") {
+        articles = articles.filter(a => (a.categorie || "autre") === currentCategory);
+      }
 
       mainCol.innerHTML = "";
       sideCol.innerHTML = "";
 
-      let filtered = allArticles;
-      if (currentCategory !== "all") {
-        filtered = allArticles.filter(a => a.categorie === currentCategory);
-      }
-
-      if (!filtered || filtered.length === 0) {
-        emptyEl.style.display = "block";
+      if (!articles.length) {
+        grid.style.display = "none";
+        emptyEl.textContent = "Aucune actualité dans cette catégorie pour le moment.";
         return;
-      } else {
-        emptyEl.style.display = "none";
       }
 
-      const [featured, ...others] = filtered;
+      emptyEl.textContent = "";
+      grid.style.display = "grid";
 
+      const [featured, ...others] = articles;
       if (featured) {
-        const catInfo = CATEGORY_LABELS[featured.categorie] || {};
-        const badgeLabel = catInfo.badge || "Actualité";
-        const metaLabel = catInfo.meta || "Actualité";
-        const dateLabel = formatDateFR(featured.date_publication || featured.created_at);
-        const excerpt = featured.extrait || (featured.contenu ? featured.contenu.slice(0, 160) + "..." : "");
-        const linkHref = "article.html?id=" + featured.id;
-
-        const featuredHtml = `
-          <article class="news-card news-card--featured">
-            <span class="news-badge">${badgeLabel.toUpperCase()}</span>
-            <h2 class="news-title">${featured.titre || "Sans titre"}</h2>
-            <p class="news-meta">Publié le ${dateLabel || "—"} • Catégorie : ${metaLabel}</p>
-            <p class="news-excerpt">
-              ${excerpt}
-            </p>
-            <a href="${linkHref}" class="news-link">
-              Lire l’article complet →
-            </a>
-          </article>
-        `;
-        mainCol.innerHTML = featuredHtml;
+        mainCol.appendChild(createArticleCard(featured, true));
       }
-
-      others.forEach(article => {
-        const catInfo = CATEGORY_LABELS[article.categorie] || {};
-        const badgeLabel = catInfo.badge || "Actualité";
-        const metaLabel = catInfo.meta || "Actualité";
-        const dateLabel = formatDateFR(article.date_publication || article.created_at);
-        const excerpt = article.extrait || (article.contenu ? article.contenu.slice(0, 140) + "..." : "");
-        const linkHref = "article.html?id=" + article.id;
-
-        const card = document.createElement("article");
-        card.className = "news-card";
-        card.innerHTML = `
-          <span class="news-badge">${badgeLabel}</span>
-          <h3 class="news-title">${article.titre || "Sans titre"}</h3>
-          <p class="news-meta">Publié le ${dateLabel || "—"} • Catégorie : ${metaLabel}</p>
-          <p class="news-excerpt">
-            ${excerpt}
-          </p>
-          <a href="${linkHref}" class="news-link">
-            Lire l’article complet →
-          </a>
-        `;
-        sideCol.appendChild(card);
+      others.forEach(a => {
+        sideCol.appendChild(createArticleCard(a, false));
       });
     }
 
-    // ---- Chargement depuis Supabase ----
     async function loadArticles() {
       const emptyEl = document.getElementById("news-empty");
       if (emptyEl) {
@@ -1109,21 +1094,22 @@
         const { data, error } = await supabaseClient
           .from("actualites")
           .select("*")
-          .eq("is_published", true)
+          .eq("publie", true)     // IMPORTANT : nom de la colonne booléenne
           .order("date_publication", { ascending: false });
 
         if (error) {
           console.error("Erreur chargement actualités :", error);
           if (emptyEl) {
-            emptyEl.textContent = "Erreur lors du chargement des actualités.";
+            emptyEl.textContent =
+              "Erreur lors du chargement des actualités.";
           }
           return;
         }
 
         allArticles = data || [];
         if (!allArticles.length && emptyEl) {
-          emptyEl.textContent = "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
-          emptyEl.style.display = "block";
+          emptyEl.textContent =
+            "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
           return;
         }
 
@@ -1136,15 +1122,14 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
+      // Burger / menu mobile
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
-
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", () => {
           mobileNav.classList.toggle("open");
         });
-
         mobileNav.addEventListener("click", (e) => {
           if (e.target.tagName === "A") {
             mobileNav.classList.remove("open");
@@ -1154,16 +1139,13 @@
 
       updateCartIcon();
 
-      // Filtres actualités
+      // Filtres catégories
       const filterPills = document.querySelectorAll(".filter-pill");
-
       filterPills.forEach(pill => {
         pill.addEventListener("click", () => {
           filterPills.forEach(p => p.classList.remove("active"));
           pill.classList.add("active");
-
-          const cat = pill.getAttribute("data-category") || "all";
-          currentCategory = cat;
+          currentCategory = pill.dataset.category || "all";
           renderArticles();
         });
       });
@@ -1172,7 +1154,6 @@
       const ctaBtn = document.getElementById("news-cta-button");
       const newsletterSection = document.getElementById("newsletter-section");
       const newsletterEmail = document.getElementById("newsletter-email");
-
       if (ctaBtn && newsletterSection) {
         ctaBtn.addEventListener("click", () => {
           newsletterSection.scrollIntoView({ behavior: "smooth" });
@@ -1182,7 +1163,7 @@
         });
       }
 
-      // ----- Newsletter -----
+      // Newsletter
       const newsletterForm = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("newsletter-email");
       const messageEl = document.getElementById("newsletter-message");
@@ -1193,7 +1174,6 @@
           e.preventDefault();
 
           const email = emailInput.value.trim();
-
           if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
             messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
             messageEl.style.color = "#f97373";
@@ -1236,7 +1216,7 @@
         });
       }
 
-      // 🔥 Charge les actualités au chargement
+      // Chargement des actualités
       loadArticles();
     });
   </script>
