@@ -50,7 +50,7 @@
   }
   </script>
 
-  <!-- STRUCTURED DATA : ARTICLE VEDETTE -->
+  <!-- STRUCTURED DATA : ARTICLE VEDETTE (exemple statique, ok à laisser) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -544,9 +544,7 @@
       transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        opacity 0.2s ease,
-        filter 0.2s ease;
+        border-color 0.2s ease;
     }
 
     .news-card::after {
@@ -619,18 +617,10 @@
       text-shadow: 0 0 12px rgba(248,250,252,0.6);
     }
 
-    .news-card.is-highlighted {
-      opacity: 1;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 24px 60px rgba(255,120,80,0.35);
-      border-color: rgba(255,120,80,0.6);
-      filter: none;
-    }
-
-    .news-card.is-dimmed {
-      opacity: 0.45;
-      filter: grayscale(0.15);
+    .news-empty {
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      margin-top: 12px;
     }
 
     /* ---------- CTA FINAL ---------- */
@@ -859,68 +849,26 @@
           <span class="filter-pill" data-category="nouvelles-chansons">🎤 Nouvelles chansons</span>
           <span class="filter-pill" data-category="vie-lieu">👥 Vie du lieu</span>
           <span class="filter-pill" data-category="idees-soirees">💡 Idées de soirées</span>
+          <span class="filter-pill" data-category="promo">🔥 Promo</span>
         </div>
       </div>
     </section>
 
-    <!-- LISTE DES ARTICLES -->
+    <!-- LISTE DES ARTICLES (dynamiques) -->
     <section id="news-list">
       <div class="container">
         <div class="news-grid">
-          <div class="news-main-column">
-            <article class="news-card news-card--featured" data-category="vie-lieu">
-              <span class="news-badge">ACTUALITÉ</span>
-              <h2 class="news-title">Ouverture prochaine de Singbox à Toulouse</h2>
-              <p class="news-meta">Publié le 01/01/2026 • Catégorie : Vie du lieu</p>
-              <p class="news-excerpt">
-                Après des mois de préparation, Singbox s’apprête à ouvrir ses toutes premières box
-                de karaoké privatif au cœur de Toulouse. Découvrez les coulisses et ce qui arrive bientôt.
-              </p>
-              <a href="article.html?id=1" class="news-link">
-                Lire l’article complet →
-              </a>
-            </article>
+          <div class="news-main-column" id="news-main-column">
+            <!-- Article vedette injecté en JS -->
           </div>
 
-          <div class="news-side-column">
-            <article class="news-card" data-category="coulisses-travaux">
-              <span class="news-badge">Coulisses &amp; travaux</span>
-              <h3 class="news-title">Les coulisses de la création de Singbox</h3>
-              <p class="news-meta">Publié le 15/12/2025 • Catégorie : Coulisses & travaux</p>
-              <p class="news-excerpt">
-                De l’idée initiale jusqu’au choix du matériel : retour sur tout ce qui a permis
-                de donner vie au projet Singbox.
-              </p>
-              <a href="article.html?id=2" class="news-link">
-                Lire l’article complet →
-              </a>
-            </article>
-
-            <article class="news-card" data-category="idees-soirees">
-              <span class="news-badge">Idées de soirées</span>
-              <h3 class="news-title">Pourquoi le karaoké en box, c’est différent</h3>
-              <p class="news-meta">Publié le 08/12/2025 • Catégorie : Idées de soirées</p>
-              <p class="news-excerpt">
-                Plus intime, plus fun, zéro jugement : voici ce qui rend le karaoké en box unique.
-              </p>
-              <a href="article.html?id=3" class="news-link">
-                Lire l’article complet →
-              </a>
-            </article>
-
-            <article class="news-card" data-category="nouvelles-chansons">
-              <span class="news-badge">Nouvelle playlist</span>
-              <h3 class="news-title">Top 10 des chansons pour démarrer une séance</h3>
-              <p class="news-meta">Publié le 01/12/2025 • Catégorie : Nouvelles chansons</p>
-              <p class="news-excerpt">
-                Voici notre sélection imparable pour chauffer l’ambiance dès les premières minutes.
-              </p>
-              <a href="article.html?id=4" class="news-link">
-                Lire l’article complet →
-              </a>
-            </article>
+          <div class="news-side-column" id="news-side-column">
+            <!-- Autres articles injectés en JS -->
           </div>
         </div>
+        <p id="news-empty" class="news-empty" style="display:none;">
+          Aucune actualité pour cette catégorie pour le moment. Reviens un peu plus tard ✨
+        </p>
       </div>
     </section>
 
@@ -1012,14 +960,13 @@
     </div>
   </footer>
 
-  <!-- Supabase JS (CDN jsDelivr, comme sur les autres pages) -->
+  <!-- Supabase JS (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- SCRIPT -->
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     function getPanier() {
@@ -1035,6 +982,158 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? panier.length : "";
+    }
+
+    // ---- Formatage date FR ----
+    function formatDateFR(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    }
+
+    // ---- Labels de catégories ----
+    const CATEGORY_LABELS = {
+      "coulisses-travaux": {
+        badge: "Coulisses & travaux",
+        meta: "Coulisses & travaux"
+      },
+      "nouvelles-chansons": {
+        badge: "Nouvelles chansons",
+        meta: "Nouvelles chansons"
+      },
+      "vie-lieu": {
+        badge: "Vie du lieu",
+        meta: "Vie du lieu"
+      },
+      "idees-soirees": {
+        badge: "Idées de soirées",
+        meta: "Idées de soirées"
+      },
+      "promo": {
+        badge: "Promo",
+        meta: "Promo"
+      }
+    };
+
+    let allArticles = [];
+    let currentCategory = "all";
+
+    // ---- Rendu des articles en HTML ----
+    function renderArticles() {
+      const mainCol = document.getElementById("news-main-column");
+      const sideCol = document.getElementById("news-side-column");
+      const emptyEl = document.getElementById("news-empty");
+
+      if (!mainCol || !sideCol || !emptyEl) return;
+
+      mainCol.innerHTML = "";
+      sideCol.innerHTML = "";
+
+      let filtered = allArticles;
+      if (currentCategory !== "all") {
+        filtered = allArticles.filter(a => a.categorie === currentCategory);
+      }
+
+      if (!filtered || filtered.length === 0) {
+        emptyEl.style.display = "block";
+        return;
+      } else {
+        emptyEl.style.display = "none";
+      }
+
+      const [featured, ...others] = filtered;
+
+      if (featured) {
+        const catInfo = CATEGORY_LABELS[featured.categorie] || {};
+        const badgeLabel = catInfo.badge || "Actualité";
+        const metaLabel = catInfo.meta || "Actualité";
+        const dateLabel = formatDateFR(featured.date_publication || featured.created_at);
+        const excerpt = featured.extrait || (featured.contenu ? featured.contenu.slice(0, 160) + "..." : "");
+        const linkHref = "article.html?id=" + featured.id;
+
+        const featuredHtml = `
+          <article class="news-card news-card--featured">
+            <span class="news-badge">${badgeLabel.toUpperCase()}</span>
+            <h2 class="news-title">${featured.titre || "Sans titre"}</h2>
+            <p class="news-meta">Publié le ${dateLabel || "—"} • Catégorie : ${metaLabel}</p>
+            <p class="news-excerpt">
+              ${excerpt}
+            </p>
+            <a href="${linkHref}" class="news-link">
+              Lire l’article complet →
+            </a>
+          </article>
+        `;
+        mainCol.innerHTML = featuredHtml;
+      }
+
+      others.forEach(article => {
+        const catInfo = CATEGORY_LABELS[article.categorie] || {};
+        const badgeLabel = catInfo.badge || "Actualité";
+        const metaLabel = catInfo.meta || "Actualité";
+        const dateLabel = formatDateFR(article.date_publication || article.created_at);
+        const excerpt = article.extrait || (article.contenu ? article.contenu.slice(0, 140) + "..." : "");
+        const linkHref = "article.html?id=" + article.id;
+
+        const card = document.createElement("article");
+        card.className = "news-card";
+        card.innerHTML = `
+          <span class="news-badge">${badgeLabel}</span>
+          <h3 class="news-title">${article.titre || "Sans titre"}</h3>
+          <p class="news-meta">Publié le ${dateLabel || "—"} • Catégorie : ${metaLabel}</p>
+          <p class="news-excerpt">
+            ${excerpt}
+          </p>
+          <a href="${linkHref}" class="news-link">
+            Lire l’article complet →
+          </a>
+        `;
+        sideCol.appendChild(card);
+      });
+    }
+
+    // ---- Chargement depuis Supabase ----
+    async function loadArticles() {
+      const emptyEl = document.getElementById("news-empty");
+      if (emptyEl) {
+        emptyEl.textContent = "Chargement des actualités...";
+        emptyEl.style.display = "block";
+      }
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("actualites")
+          .select("*")
+          .eq("is_published", true)
+          .order("date_publication", { ascending: false });
+
+        if (error) {
+          console.error("Erreur chargement actualités :", error);
+          if (emptyEl) {
+            emptyEl.textContent = "Erreur lors du chargement des actualités.";
+          }
+          return;
+        }
+
+        allArticles = data || [];
+        if (!allArticles.length && emptyEl) {
+          emptyEl.textContent = "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
+          emptyEl.style.display = "block";
+          return;
+        }
+
+        renderArticles();
+      } catch (err) {
+        console.error("Erreur réseau actualités :", err);
+        if (emptyEl) {
+          emptyEl.textContent = "Erreur réseau lors du chargement des actualités.";
+        }
+      }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -1053,37 +1152,21 @@
         });
       }
 
+      updateCartIcon();
+
       // Filtres actualités
       const filterPills = document.querySelectorAll(".filter-pill");
-      const cards = document.querySelectorAll(".news-card");
 
       filterPills.forEach(pill => {
         pill.addEventListener("click", () => {
           filterPills.forEach(p => p.classList.remove("active"));
           pill.classList.add("active");
 
-          const cat = pill.getAttribute("data-category");
-
-          if (cat === "all") {
-            cards.forEach(card => {
-              card.classList.remove("is-highlighted", "is-dimmed");
-            });
-          } else {
-            cards.forEach(card => {
-              const postCat = card.getAttribute("data-category");
-              if (postCat === cat) {
-                card.classList.add("is-highlighted");
-                card.classList.remove("is-dimmed");
-              } else {
-                card.classList.add("is-dimmed");
-                card.classList.remove("is-highlighted");
-              }
-            });
-          }
+          const cat = pill.getAttribute("data-category") || "all";
+          currentCategory = cat;
+          renderArticles();
         });
       });
-
-      updateCartIcon();
 
       // CTA "S’abonner aux actualités" -> scroll vers la newsletter
       const ctaBtn = document.getElementById("news-cta-button");
@@ -1152,6 +1235,9 @@
           }
         });
       }
+
+      // 🔥 Charge les actualités au chargement
+      loadArticles();
     });
   </script>
 </body>
