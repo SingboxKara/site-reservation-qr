@@ -637,10 +637,16 @@
       transform: translateY(-1px);
     }
 
+    /* ✅ Réduire la teinte rouge sur les créneaux "Réservé" */
     .slot-booked {
-      background-color: #7f1d1d;
+      background-color: rgba(127, 29, 29, 0.55); /* était #7f1d1d */
       color: #FEE2E2;
       cursor: not-allowed;
+    }
+
+    /* (optionnel mais cohérent) dot de légende "Réservé" moins rouge aussi */
+    .legend-dot.booked {
+      background-color: rgba(127, 29, 29, 0.55); /* était #7f1d1d */
     }
 
     .slot-selected {
@@ -692,10 +698,6 @@
 
     .legend-dot.free {
       background-color: #022c22;
-    }
-
-    .legend-dot.booked {
-      background-color: #7f1d1d;
     }
 
     .legend-dot.selected {
@@ -1030,6 +1032,19 @@
           Heures creuses seulement en semaine hors vacances scolaires.
         </p>
 
+        <!-- ✅ LÉGENDE AU-DESSUS DU TABLEAU -->
+        <div class="resa-legend" aria-label="Légende des statuts">
+          <div class="legend-item">
+            <span class="legend-dot free"></span> <span>Libre</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot booked"></span> <span>Réservé</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot selected"></span> <span>Dans ton panier</span>
+          </div>
+        </div>
+
         <p class="table-scroll-hint">
           Sur mobile, glissez le tableau vers la droite pour voir l’autre box
           <span class="arrow">⟶</span>
@@ -1041,17 +1056,6 @@
           </table>
         </div>
 
-        <div class="resa-legend">
-          <div class="legend-item">
-            <span class="legend-dot free"></span> <span>Libre</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot booked"></span> <span>Réservé</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot selected"></span> <span>Dans ton panier</span>
-          </div>
-        </div>
         <p class="resa-pricing-rules">
           7,90&nbsp;€ par personne en heures creuses (4h–14h) du lundi au vendredi hors vacances scolaires –
           9,90&nbsp;€ par personne le reste du temps (week-end et vacances scolaires compris).
