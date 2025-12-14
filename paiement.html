@@ -2772,11 +2772,13 @@
         if (reservationId && thankyouQrContainer && window.QRCode) {
           try {
             thankyouQrContainer.innerHTML = "";
-            new QRCode(thankyouQrContainer, {
-              text: String(reservationId),
-              width: 110,
-              height: 110
-            });
+const checkUrl = `${API_BASE_URL}/api/check?id=${encodeURIComponent(String(reservationId))}`;
+            
+new QRCode(thankyouQrContainer, {
+  text: checkUrl,
+  width: 110,
+  height: 110
+});
             if (thankyouQrFallback) {
               thankyouQrFallback.style.display = "none";
             }
