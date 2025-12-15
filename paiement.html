@@ -1046,7 +1046,7 @@
   max-width: 260px;
   aspect-ratio: 1 / 1;
 
-  padding: 14px;
+  padding: 18px;
   box-sizing: border-box;
 
   border-radius: 16px;
@@ -1059,7 +1059,7 @@
   align-items: center;
   justify-content: center;
 
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   margin: 0 auto;
 }
@@ -1076,7 +1076,9 @@
 #thankyou-qr img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 10px;
+  border-radius: 0 !important;
+  image-rendering: pixelated;
+  display: block;
 }
 
 #thankyou-qr-fallback {
@@ -2798,16 +2800,17 @@
 
 if (reservationId && thankyouQrContainer && window.QRCode) {
   try {
-    const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}&box=1`;
+const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
 
-    thankyouQrContainer.innerHTML = "";
+thankyouQrContainer.innerHTML = "";
 
-    new QRCode(thankyouQrContainer, {
-      text: qrText,
-      width: 220,
-      height: 220,
-      correctLevel: QRCode.CorrectLevel.M
-    });
+// 🔥 QR plus lisible : plus grand + correction H
+new QRCode(thankyouQrContainer, {
+  text: qrText,
+  width: 260,
+  height: 260,
+  correctLevel: QRCode.CorrectLevel.H
+});
 
     if (thankyouQrFallback) {
       thankyouQrFallback.style.display = "none";
