@@ -1041,41 +1041,38 @@
       margin-bottom: 6px;
     }
     
-.thankyou-qr-frame {
-  width: 100%;
-  max-width: 260px;
-  aspect-ratio: 1 / 1;
-
-  background: #ffffff !important;   /* ✅ fond blanc obligatoire */
-  padding: 16px !important;         /* ✅ marge blanche (quiet zone) */
-
-  border-radius: 0 !important;      /* ✅ pas d’arrondi */
-  overflow: visible !important;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: 0 auto;
-  box-sizing: border-box;
+.thankyou-qr-frame{
+  width: 260px;                 /* cadre total */
+  aspect-ratio: 1/1;
+  background:#fff;
+  padding:16px;                  /* quiet zone */
+  border-radius:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+  box-sizing:border-box;
+  position:relative;             /* utile pour fallback */
 }
 
+/* Le QR doit prendre 100% de la zone intérieure (= 228px) */
 #thankyou-qr canvas,
-#thankyou-qr img {
-  width: 260px !important;
-  height: 260px !important;
-  display: block !important;
-  border-radius: 0 !important;
+#thankyou-qr img{
+  width:100% !important;
+  height:100% !important;
+  display:block !important;
+  border-radius:0 !important;
   image-rendering: pixelated;
 }
-#thankyou-qr-fallback {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 11px;
-  color: rgba(156,163,175,0.9);
+
+#thankyou-qr-fallback{
+  position:absolute;
+  bottom:10px;
+  left:0;
+  right:0;
+  text-align:center;
+  font-size:11px;
+  color:rgba(156,163,175,0.9);
 }
     .thankyou-qr-note {
       margin-top: 6px;
@@ -2794,8 +2791,8 @@ thankyouQrContainer.innerHTML = "";
 // 🔥 QR plus lisible : plus grand + correction H
 new QRCode(thankyouQrContainer, {
   text: qrText,
-  width: 260,
-  height: 260,
+  width: 228,
+  height: 228,
   colorDark: "#000000",
   colorLight: "#ffffff",
   correctLevel: QRCode.CorrectLevel.H
