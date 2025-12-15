@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-
   <title>Mon compte Singbox | Espace client & points de fidélité – Karaoké box à Toulouse</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +10,6 @@
   <meta name="author" content="Singbox" />
   <meta name="keywords" content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse" />
   <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
-
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <meta property="og:type" content="website" />
@@ -58,673 +56,650 @@
   >
 
   <style>
-    :root {
-      --sb-bg-main: #050814;
-      --sb-bg-deep: #020617;
-      --sb-bg-soft: #030712;
-      --sb-card: #050b18;
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #9CA3AF;
-      --sb-red: #C94C35;
-      --sb-orange: #F97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.35);
-      --sb-container-width: 1180px;
+    :root{
+      --sb-bg-main:#050814;
+      --sb-bg-deep:#020617;
+      --sb-card:#050b18;
+      --sb-text-main:#F9FAFB;
+      --sb-text-muted:#9CA3AF;
+      --sb-red:#C94C35;
+      --sb-orange:#F97316;
+      --sb-container-width:1180px;
+
+      /* ✅ Bordures blanches */
+      --sb-border-white: rgba(255,255,255,0.22);
+      --sb-border-white-strong: rgba(255,255,255,0.35);
     }
 
-    * { box-sizing: border-box; }
+    *{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--sb-text-main);
+    body{
+      margin:0;
+      font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--sb-text-main);
       background:
         radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
         radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
+      min-height:100vh;
+      overflow-x:hidden;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a{ text-decoration:none; color:inherit; }
 
-    h1, h2, h3, h4 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.03em;
-      margin: 0;
+    h1,h2,h3,h4{
+      font-family:"League Spartan",system-ui,sans-serif;
+      letter-spacing:0.03em;
+      margin:0;
     }
 
-    .container {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
+    .container{
+      max-width:var(--sb-container-width);
+      margin:0 auto;
+      padding:0 24px;
     }
 
-    /* ======================= HEADER GLOBAL ======================= */
+    /* ======================= HEADER ======================= */
 
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: #020617;
-      color: #fff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
-      height: auto;
+    .site-header{
+      position:fixed;
+      top:0;left:0;right:0;
+      z-index:50;
+      background:#020617;
+      box-shadow:0 14px 30px rgba(0,0,0,0.75);
     }
 
-    .header-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      height: auto;
-      flex-wrap: nowrap;
+    .header-inner{
+      max-width:var(--sb-container-width);
+      margin:0 auto;
+      padding:12px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:2rem;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      flex-shrink: 0;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-shrink:0;
     }
 
-    .brand-logo {
-      width: 110px;
-      height: auto;
-      border-radius: 999px;
-      display: block;
-      object-fit: contain;
+    .brand-logo{
+      width:110px;
+      height:auto;
+      border-radius:999px;
+      display:block;
+      object-fit:contain;
       filter:
         drop-shadow(0 0 12px rgba(255,255,255,0.16))
         drop-shadow(0 0 20px rgba(201,76,53,0.6));
     }
 
-    .brand-text {
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      font-size: 26px;
-      color: #F9FAFB;
-      text-transform: uppercase;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
+    .brand-text{
+      font-family:"League Spartan",system-ui,sans-serif;
+      font-weight:600;
+      letter-spacing:0.15em;
+      font-size:26px;
+      color:#F9FAFB;
+      text-transform:uppercase;
+      white-space:nowrap;
+      display:flex;
+      align-items:center;
     }
 
-    nav.main-nav {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      min-width: 0;
+    nav.main-nav{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      min-width:0;
     }
 
-    .main-nav ul {
-      list-style: none;
-      display: flex;
-      gap: 32px;
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
+    .main-nav ul{
+      list-style:none;
+      display:flex;
+      gap:32px;
+      margin:0;
+      padding:0;
+      font-size:14px;
     }
 
-    .main-nav a {
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color: #ffffff;
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      white-space: nowrap;
+    .main-nav a{
+      font-weight:600;
+      letter-spacing:0.3px;
+      color:#fff;
+      position:relative;
+      padding-bottom:4px;
+      white-space:nowrap;
     }
 
-    .main-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: linear-gradient(90deg, #ff6930, #ffb96f);
-      transition: width 0.3s ease;
-      border-radius: 6px;
+    .main-nav a::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:0;
+      width:0%;
+      height:2px;
+      background:linear-gradient(90deg,#ff6930,#ffb96f);
+      transition:width 0.3s ease;
+      border-radius:6px;
     }
 
-    .main-nav a:hover::after { width: 100%; }
-    .main-nav a:hover { color: #ffb96f; transition: 0.25s ease; }
+    .main-nav a:hover::after{ width:100%; }
+    .main-nav a:hover{ color:#ffb96f; transition:0.25s ease; }
+    .main-nav a[href="mon-compte.html"]::after{ width:100%; }
 
-    .main-nav a[href="mon-compte.html"]::after { width: 100%; }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-shrink:0;
     }
 
-    .nav-cta {
-      background: var(--sb-red);
-      padding: 8px 22px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 14px;
-      color: #F9FAFB;
-      white-space: nowrap;
+    .nav-cta{
+      background:var(--sb-red);
+      padding:8px 22px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:14px;
+      color:#F9FAFB;
+      white-space:nowrap;
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 10px 28px rgba(0,0,0,0.7);
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      transition:background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
-      background: #d55a40;
-      transform: translateY(-1px);
+    .nav-cta:hover{
+      background:#d55a40;
+      transform:translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
+        0 0 0 1px rgba(255,255,255,0.18),
         0 16px 38px rgba(0,0,0,0.9);
     }
 
-    .cart-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
-      backdrop-filter: blur(6px);
+    .cart-icon{
+      width:36px;height:36px;
+      border-radius:999px;
+      border:1px solid var(--sb-border-white);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      cursor:pointer;
+      position:relative;
+      background:radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      backdrop-filter:blur(6px);
     }
 
-    #cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: var(--sb-red);
+    #cart-count{
+      position:absolute;
+      top:-6px;right:-6px;
+      background:var(--sb-red);
       color:#fff;
       border-radius:999px;
       font-size:10px;
-      padding: 2px 5px;
-      min-width: 18px;
+      padding:2px 5px;
+      min-width:18px;
       text-align:center;
     }
-    #cart-count:empty { display:none; }
+    #cart-count:empty{display:none}
 
-    .burger-button {
-      display: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: transparent;
+    .burger-button{
+      display:none;
+      width:36px;height:36px;
+      border-radius:999px;
+      border:1px solid var(--sb-border-white);
+      background:transparent;
       color:#fff;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:20px;
     }
 
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 70px;
-      left: 0;
-      right: 0;
-      background: #020617;
-      padding: 12px 24px 16px;
-      z-index: 40;
-      border-bottom: 1px solid #111827;
+    .mobile-nav{
+      display:none;
+      position:fixed;
+      top:70px;
+      left:0;right:0;
+      background:#020617;
+      padding:12px 24px 16px;
+      z-index:40;
+      border-bottom:1px solid var(--sb-border-white);
     }
 
-    .mobile-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-size: 15px;
+    .mobile-nav ul{
+      list-style:none;
+      padding:0;margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      font-size:15px;
     }
 
-    .mobile-nav a { color:#fff; }
-    .mobile-nav.open { display:block; }
+    .mobile-nav a{color:#fff}
+    .mobile-nav.open{display:block}
 
-    @media (max-width: 900px) {
-      .header-inner { padding: 8px 10px; gap: 8px; }
-      nav.main-nav { display: none; }
-      .brand-logo { width: 58px; }
-      .brand-text { font-size: 15px; letter-spacing: 0.11em; }
-      .nav-cta { padding: 6px 12px; font-size: 11px; }
-      .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
-      .burger-button { display: flex; }
+    @media (max-width:900px){
+      .header-inner{ padding:8px 10px; gap:8px; }
+      nav.main-nav{ display:none; }
+      .brand-logo{ width:58px; }
+      .brand-text{ font-size:15px; letter-spacing:0.11em; }
+      .nav-cta{ padding:6px 12px; font-size:11px; }
+      .cart-icon, .burger-button{ width:32px; height:32px; font-size:18px; }
+      .burger-button{ display:flex; }
     }
 
-    @media (max-width: 480px) {
-      .header-inner { padding: 8px 8px; gap: 6px; }
-      .brand-logo { width: 50px; }
-      .brand-text { font-size: 13px; letter-spacing: 0.09em; }
-      .nav-cta { padding: 5px 10px; font-size: 10px; }
-      .cart-icon, .burger-button { width: 30px; height: 30px; font-size: 16px; }
+    @media (max-width:480px){
+      .header-inner{ padding:8px 8px; gap:6px; }
+      .brand-logo{ width:50px; }
+      .brand-text{ font-size:13px; letter-spacing:0.09em; }
+      .nav-cta{ padding:5px 10px; font-size:10px; }
+      .cart-icon, .burger-button{ width:30px; height:30px; font-size:16px; }
     }
 
-    /* ======================= SECTION MON COMPTE ======================= */
+    /* ======================= MON COMPTE ======================= */
 
-    #account {
-      position: relative;
-      padding: 10rem 0 64px;
+    #account{
+      position:relative;
+      padding:10rem 0 64px;
       background:
         radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
         #050814;
-      color: var(--sb-text-main);
-      overflow: hidden;
+      overflow:hidden;
     }
 
-    #account::before {
-      content: "★";
-      position: absolute;
-      top: 16%;
-      left: 8%;
-      font-size: 32px;
-      color: rgba(148,163,184,0.1);
-      pointer-events: none;
+    #account::before{
+      content:"★";
+      position:absolute;
+      top:16%;
+      left:8%;
+      font-size:32px;
+      color:rgba(255,255,255,0.06);
+      pointer-events:none;
     }
 
-    #account::after {
-      content: "♪";
-      position: absolute;
-      bottom: 14%;
-      right: 8%;
-      font-size: 30px;
-      color: rgba(148,163,184,0.08);
-      pointer-events: none;
+    #account::after{
+      content:"♪";
+      position:absolute;
+      bottom:14%;
+      right:8%;
+      font-size:30px;
+      color:rgba(255,255,255,0.05);
+      pointer-events:none;
     }
 
-    .account-header {
-      max-width: 640px;
-      margin: 0 auto 32px;
-      text-align: center;
+    .account-header{
+      max-width:640px;
+      margin:0 auto 32px;
+      text-align:center;
     }
 
-    .account-header-eyebrow {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: #9CA3AF;
-      margin-bottom: 8px;
+    .account-header-eyebrow{
+      font-size:13px;
+      text-transform:uppercase;
+      letter-spacing:0.18em;
+      color:#9CA3AF;
+      margin-bottom:8px;
     }
 
-    .account-header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
+    .account-header h1{
+      font-size:30px;
+      margin-bottom:8px;
     }
 
-    .account-header p {
-      margin: 0;
-      font-size: 14px;
-      color: rgba(249,250,251,0.85);
+    .account-header p{
+      margin:0;
+      font-size:14px;
+      color:rgba(249,250,251,0.85);
     }
 
-    .account-layout {
-      max-width: 720px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      gap: 1.5rem;
-      align-items: stretch;
+    .account-layout{
+      max-width:720px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:minmax(0, 1.6fr) minmax(0, 1fr);
+      gap:1.5rem;
+      align-items:stretch;
     }
 
-    @media (max-width: 820px) {
-      .account-layout { grid-template-columns: minmax(0, 1fr); }
+    @media (max-width:820px){
+      .account-layout{ grid-template-columns:minmax(0,1fr); }
     }
 
-    .card {
-      background: var(--sb-card);
-      border-radius: 24px;
-      padding: 1.75rem 1.9rem;
-      box-shadow:
-        0 24px 60px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(148,163,184,0.3);
-      border: 1px solid rgba(255,255,255,0.04);
-      position: relative;
-      overflow: hidden;
+    .card{
+      background:var(--sb-card);
+      border-radius:24px;
+      padding:1.75rem 1.9rem;
+      box-shadow:0 24px 60px rgba(0,0,0,0.9);
+      border:1px solid var(--sb-border-white); /* ✅ bordure blanche */
+      position:relative;
+      overflow:hidden;
     }
 
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
-      opacity: 0.6;
-      mix-blend-mode: soft-light;
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,0.07), transparent 60%);
+      opacity:0.7;
+      mix-blend-mode:soft-light;
     }
 
-    .card > * { position: relative; z-index: 1; }
+    .card > *{ position:relative; z-index:1; }
 
-    .account-main-card h2 {
-      font-size: 22px;
-      margin-bottom: 6px;
+    .account-main-card h2{ font-size:22px; margin-bottom:6px; }
+
+    .account-field-label{
+      font-size:13px;
+      color:var(--sb-text-muted);
+      margin-bottom:2px;
     }
 
-    .account-field-label {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 2px;
+    .account-field-value{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:10px;
     }
 
-    .account-field-value {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 10px;
+    .badge-points{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(15,23,42,0.9);
+      border:1px solid var(--sb-border-white);
+      font-size:12px;
+      margin-top:6px;
     }
 
-    .badge-points {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(248,250,251,0.12);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .badge-points span:first-child {
+    .badge-points span:first-child{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:20px;
-      height:20px;
+      width:20px;height:20px;
       border-radius:999px;
       background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
       font-size:12px;
     }
 
-    .account-subtext {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 8px;
+    .account-subtext{
+      font-size:12px;
+      color:var(--sb-text-muted);
+      margin-top:8px;
     }
 
-    .logout-row {
-      margin-top: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .logout-row{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .logout-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.55rem 1.2rem;
-      background: #111827;
-      color: #F9FAFB;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
+    .logout-btn{
+      border:none;
+      border-radius:999px;
+      padding:0.55rem 1.2rem;
+      background:#111827;
+      color:#F9FAFB;
+      font-size:13px;
+      font-weight:500;
+      cursor:pointer;
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.6),
+        0 0 0 1px var(--sb-border-white),
         0 10px 28px rgba(0,0,0,0.8);
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      transition:background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .logout-btn:hover {
-      background: #1f2937;
-      transform: translateY(-1px);
+    .logout-btn:hover{
+      background:#1f2937;
+      transform:translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.16),
+        0 0 0 1px rgba(255,255,255,0.18),
         0 14px 34px rgba(0,0,0,0.95);
     }
 
-    .account-message {
-      font-size: 12px;
-      color: #FCA5A5;
-      min-height: 16px;
-      margin: 4px 0 10px;
+    .account-message{
+      font-size:12px;
+      color:#FCA5A5;
+      min-height:16px;
+      margin:4px 0 10px;
     }
-    .account-message.ok { color: #BBF7D0; }
+    .account-message.ok{ color:#BBF7D0; }
 
     /* ====== RÉSERVATIONS ====== */
 
-    .reservations-block { margin-top: 18px; font-size: 13px; }
+    .reservations-block{ margin-top:18px; font-size:13px; }
 
-    .reservations-list {
-      margin-top: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .reservations-list{
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
     }
 
-    .reservations-empty {
-      margin: 0;
-      font-size: 12px;
-      color: var(--sb-text-muted);
+    .reservations-empty{
+      margin:0;
+      font-size:12px;
+      color:var(--sb-text-muted);
     }
 
-    .reservation-item {
-      background: #020617;
-      border-radius: 16px;
-      border: 1px solid rgba(148,163,184,0.45);
-      padding: 9px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .reservation-item{
+      background:#020617;
+      border-radius:16px;
+      border:1px solid var(--sb-border-white); /* ✅ bordure blanche */
+      padding:10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
-    .reservation-main-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+    .reservation-main-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
     }
 
-    .reservation-date { font-weight: 600; font-size: 13px; }
-    .reservation-meta { font-size: 12px; color: var(--sb-text-muted); }
+    .reservation-date{ font-weight:600; font-size:13px; }
+    .reservation-meta{ font-size:12px; color:var(--sb-text-muted); }
 
-    .reservation-side {
-      text-align: right;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 3px;
+    .reservation-side{
+      text-align:right;
+      font-size:12px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:3px;
     }
 
-    .reservation-price { font-weight: 600; }
+    .reservation-price{ font-weight:600; }
 
-    .reservation-status {
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      font-size: 11px;
+    .reservation-status{
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid var(--sb-border-white-strong); /* ✅ bordure blanche */
+      font-size:11px;
     }
 
-    .reservation-status-confirmed { border-color: rgba(52,211,153,0.8); color: #6ee7b7; }
-    .reservation-status-pending { border-color: rgba(251,191,36,0.8); color: #facc15; }
-    .reservation-status-annulee { border-color: rgba(248,113,113,0.85); color: #fecaca; }
+    .reservation-status-confirmed{ border-color: rgba(52,211,153,0.8); color:#6ee7b7; }
+    .reservation-status-pending{ border-color: rgba(251,191,36,0.8); color:#facc15; }
+    .reservation-status-annulee{ border-color: rgba(248,113,113,0.85); color:#fecaca; }
 
-    /* === Boutons QR / Validation === */
-    .reservation-actions-row {
+    .reservation-actions-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       justify-content:flex-end;
       align-items:center;
-      margin-top: 2px;
     }
 
-    .reservation-action-btn {
+    .reservation-action-btn{
       border:none;
       border-radius:999px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      padding:6px 10px;
+      font-size:11px;
+      font-weight:700;
+      cursor:pointer;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 10px 28px rgba(0,0,0,0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      white-space: nowrap;
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      white-space:nowrap;
     }
 
-    .reservation-action-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
+    .reservation-action-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.2),
+        0 0 0 1px rgba(255,255,255,0.2),
         0 16px 40px rgba(0,0,0,1);
     }
 
-    .reservation-qr-btn {
-      background: linear-gradient(90deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
+    .reservation-qr-btn{
+      background:linear-gradient(90deg, #1d4ed8, #4c1d95);
+      color:#F9FAFB;
     }
 
-    .reservation-validate-btn {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-    }
-
-    .reservation-action-btn[disabled] {
-      opacity: 0.55;
-      cursor: not-allowed;
-      transform: none;
+    .reservation-action-btn[disabled]{
+      opacity:0.55;
+      cursor:not-allowed;
+      transform:none;
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.35),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 6px 16px rgba(0,0,0,0.45);
     }
 
-    /* === Remboursement === */
-    .reservation-refund-row {
-      margin-top: 6px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--sb-text-muted);
+    /* === Remboursement (inchangé) === */
+    .reservation-refund-row{
+      margin-top:2px;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      color:var(--sb-text-muted);
     }
 
-    .reservation-refund-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 5px 10px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .reservation-refund-btn{
+      border:none;
+      border-radius:999px;
+      padding:5px 10px;
+      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      color:#F9FAFB;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 10px 28px rgba(0,0,0,0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      white-space: nowrap;
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      white-space:nowrap;
     }
 
-    .reservation-refund-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
+    .reservation-refund-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.2),
+        0 0 0 1px rgba(255,255,255,0.2),
         0 16px 40px rgba(0,0,0,1);
     }
 
-    .reservation-refund-btn[disabled] {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
+    .reservation-refund-btn[disabled]{
+      opacity:0.5;
+      cursor:not-allowed;
+      transform:none;
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.4),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 6px 16px rgba(0,0,0,0.5);
     }
 
-    /* Carte fidélité droite */
-    .loyalty-card h3 { font-size: 18px; margin-bottom: 6px; }
+    /* Carte fidélité */
+    .loyalty-card h3{ font-size:18px; margin-bottom:6px; }
 
-    .loyalty-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(248,250,251,0.12);
-      margin-bottom: 10px;
+    .loyalty-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(15,23,42,0.9);
+      border:1px solid var(--sb-border-white);
+      margin-bottom:10px;
     }
 
-    .loyalty-pill span:first-child {
+    .loyalty-pill span:first-child{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:18px;
-      height:18px;
+      width:18px;height:18px;
       border-radius:999px;
       background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
       font-size:11px;
     }
 
-    .loyalty-card p {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-top: 0;
-      margin-bottom: 8px;
+    .loyalty-card p{
+      font-size:12px;
+      color:var(--sb-text-muted);
+      margin-top:0;
+      margin-bottom:8px;
     }
 
-    .loyalty-highlight { font-size: 13px; margin-top: 4px; color: #F9FAFB; }
-    .loyalty-next { font-size: 12px; margin-top: 4px; color: #BFDBFE; }
+    .loyalty-highlight{ font-size:13px; margin-top:4px; color:#F9FAFB; }
+    .loyalty-next{ font-size:12px; margin-top:4px; color:#BFDBFE; }
 
-    .account-cta { font-size: 12px; margin-top: 10px; color: #F97316; }
-    .account-cta a { color: #F97316; text-decoration: underline; }
-    .account-cta a:hover { text-decoration: none; }
+    .account-cta{ font-size:12px; margin-top:10px; color:#F97316; }
+    .account-cta a{ color:#F97316; text-decoration:underline; }
+    .account-cta a:hover{ text-decoration:none; }
 
     /* Bloc login */
-    .login-card-title { font-size: 18px; margin-bottom: 8px; }
-    .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
+    .login-card-title{ font-size:18px; margin-bottom:8px; }
+    .login-description{ font-size:13px; color:var(--sb-text-muted); margin-bottom:10px; }
 
-    .login-field { margin-bottom: 8px; font-size: 13px; }
-    .login-field label { display:block; margin-bottom:3px; color:#E5E7EB; font-size:12px; }
+    .login-field{ margin-bottom:8px; font-size:13px; }
+    .login-field label{ display:block; margin-bottom:3px; color:#E5E7EB; font-size:12px; }
 
-    .login-field input {
+    .login-field input{
       width:100%;
       font-family:inherit;
       font-size:13px;
       color:#F9FAFB;
       background:#020617;
       border-radius:999px;
-      border:1px solid var(--sb-border-soft);
+      border:1px solid var(--sb-border-white);
       padding:0.55rem 0.85rem;
       outline:none;
       transition:border-color 0.16s ease, box-shadow 0.16s ease;
     }
 
-    .login-field input::placeholder { color:rgba(156,163,175,0.9); }
+    .login-field input::placeholder{ color:rgba(156,163,175,0.9); }
 
-    .login-field input:focus {
-      border-color:var(--sb-orange);
+    .login-field input:focus{
+      border-color:rgba(255,255,255,0.45);
       box-shadow:
-        0 0 0 1px rgba(249,115,22,0.8),
-        0 0 22px rgba(249,115,22,0.25);
+        0 0 0 1px rgba(255,255,255,0.25),
+        0 0 22px rgba(249,115,22,0.18);
     }
 
-    .login-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .login-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:6px;
+    }
 
-    .login-submit-btn {
+    .login-submit-btn{
       border:none;
       border-radius:999px;
       padding:0.6rem 1rem;
@@ -736,21 +711,21 @@
       letter-spacing:0.06em;
       text-transform:uppercase;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 16px 40px rgba(0,0,0,0.9);
       transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      flex: 1 1 140px;
+      flex:1 1 140px;
     }
 
-    .login-submit-btn:hover {
+    .login-submit-btn:hover{
       transform:translateY(-1px);
       filter:brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
+        0 0 0 1px rgba(255,255,255,0.18),
         0 22px 52px rgba(0,0,0,1);
     }
 
-    .login-secondary-btn {
+    .login-secondary-btn{
       border:none;
       border-radius:999px;
       padding:0.6rem 1rem;
@@ -760,169 +735,156 @@
       font-weight:500;
       cursor:pointer;
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.7),
+        0 0 0 1px rgba(255,255,255,0.18),
         0 10px 28px rgba(0,0,0,0.8);
       transition:background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-      flex: 1 1 140px;
-      white-space: nowrap;
+      flex:1 1 140px;
+      white-space:nowrap;
     }
 
-    .login-secondary-btn:hover {
+    .login-secondary-btn:hover{
       background:#1f2937;
-      transform: translateY(-1px);
+      transform:translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.16),
+        0 0 0 1px rgba(255,255,255,0.22),
         0 14px 34px rgba(0,0,0,0.95);
     }
 
-    .login-links { margin: 8px 0 0; font-size: 12px; }
-    .login-forgot { color: #F97316; text-decoration: underline; }
-    .login-forgot:hover { text-decoration: none; }
+    .login-links{ margin:8px 0 0; font-size:12px; }
+    .login-forgot{ color:#F97316; text-decoration:underline; }
+    .login-forgot:hover{ text-decoration:none; }
 
-    .login-message { font-size: 12px; margin-top: 6px; min-height: 16px; color: #FCA5A5; }
-    .login-message.ok { color: #BBF7D0; }
+    .login-message{ font-size:12px; margin-top:6px; min-height:16px; color:#FCA5A5; }
+    .login-message.ok{ color:#BBF7D0; }
 
     /* ======================= MODAL QR ======================= */
-    #qr-modal[hidden] { display:none; }
+    #qr-modal[hidden]{ display:none; }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 80;
-      backdrop-filter: blur(4px);
-      padding: 16px;
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.7);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:80;
+      backdrop-filter:blur(4px);
+      padding:16px;
     }
 
-    .modal-dialog {
-      background: #020617;
-      border-radius: 20px;
-      padding: 1.2rem 1.25rem 1.1rem;
-      max-width: 520px;
-      width: 100%;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
-      border: 1px solid rgba(248,250,251,0.12);
+    .modal-dialog{
+      background:#020617;
+      border-radius:20px;
+      padding:1.2rem 1.25rem 1.1rem;
+      max-width:520px;
+      width:100%;
+      box-shadow:0 24px 70px rgba(0,0,0,0.95);
+      border:1px solid var(--sb-border-white); /* ✅ bordure blanche */
     }
 
-    /* ✅ MODAL: UNIQUEMENT QR + 2 BOUTONS (donc pas de titre/texte visibles) */
-    .modal-dialog h2,
-    .modal-dialog p,
-    .qr-info { display: none !important; }
-
-    .qr-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      align-items: center;
-      justify-items: center;
-      margin: 4px 0 10px;
+    /* ✅ MODAL: UNIQUEMENT QR + bouton Fermer */
+    .qr-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      align-items:center;
+      justify-items:center;
+      margin:4px 0 10px;
     }
 
-    /* ✅ IMPORTANT : QR PNG, margin=0, >=300x300, sans arrondis, fond blanc */
-    .qr-img {
-      width: 320px;
-      height: 320px;
-      min-width: 300px;
-      min-height: 300px;
-      border-radius: 0 !important;
-      border: 0 !important;
-      background: #ffffff !important;
-      display: block;
-      object-fit: contain;
-      image-rendering: pixelated;
+    /* ✅ QR : PNG, margin=0, >=300, fond blanc, SANS ARRONDIS */
+    .qr-img{
+      width:320px;
+      height:320px;
+      min-width:300px;
+      min-height:300px;
+      border-radius:0 !important;
+      border:1px solid rgba(255,255,255,0.25); /* ✅ bordure blanche autour du QR */
+      background:#ffffff !important;
+      display:block;
+      object-fit:contain;
+      image-rendering:pixelated;
     }
 
-    @media (max-width: 360px) {
-      .qr-img {
-        width: 300px;
-        height: 300px;
-        min-width: 300px;
-        min-height: 300px;
+    @media (max-width:360px){
+      .qr-img{
+        width:300px;
+        height:300px;
+        min-width:300px;
+        min-height:300px;
       }
     }
 
-    .modal-actions {
+    .modal-actions{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       justify-content:flex-end;
-      margin-top: 10px;
+      margin-top:10px;
     }
 
-    .modal-btn {
-      border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1rem;
-      font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    .modal-btn{
+      border-radius:999px;
+      border:none;
+      padding:0.55rem 1rem;
+      font-size:12px;
+      cursor:pointer;
+      white-space:nowrap;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.04em;
     }
 
-    .modal-btn-primary {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
-    }
-
-    .modal-btn-secondary {
-      background: transparent;
-      color: #E5E7EB;
-      border: 1px solid rgba(148,163,184,0.6);
+    .modal-btn-secondary{
+      background:transparent;
+      color:#E5E7EB;
+      border:1px solid var(--sb-border-white);
     }
 
     /* ======================= FOOTER ======================= */
-    footer {
+    footer{
       background:#020617;
       color:#e5e7eb;
       padding:32px 24px 18px;
-      border-top: 1px solid #111827;
+      border-top:1px solid var(--sb-border-white);
     }
 
-    .newsletter-container {
+    .newsletter-container{
       max-width:var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
     }
 
-    .newsletter-container h3 { margin-bottom: 6px; }
-
-    .newsletter-container p {
-      margin-top: 0;
-      font-size: 13px;
-      color: var(--sb-text-muted);
+    .newsletter-container h3{ margin-bottom:6px; }
+    .newsletter-container p{
+      margin-top:0;
+      font-size:13px;
+      color:var(--sb-text-muted);
     }
 
-    .newsletter-row {
+    .newsletter-row{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
       justify-content:center;
-      margin-top: 8px;
+      margin-top:8px;
     }
 
-    footer input[type=email] {
+    footer input[type=email]{
       padding:10px 12px;
       border-radius:999px;
-      border:1px solid rgba(148,163,184,0.4);
+      border:1px solid var(--sb-border-white);
       min-width:240px;
       max-width:360px;
       font-size:14px;
       background:#020617;
       color:#F9FAFB;
-      outline: none;
+      outline:none;
     }
 
-    footer input[type=email]::placeholder { color: rgba(156,163,175,0.9); }
+    footer input[type=email]::placeholder{ color:rgba(156,163,175,0.9); }
 
-    footer button {
+    footer button{
       padding:10px 18px;
       border:none;
       border-radius:999px;
@@ -932,11 +894,11 @@
       font-size:14px;
       cursor:pointer;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
+        0 0 0 1px rgba(255,255,255,0.12),
         0 16px 40px rgba(0,0,0,0.9);
     }
 
-    .footer-columns {
+    .footer-columns{
       max-width:var(--sb-container-width);
       margin:0 auto;
       display:flex;
@@ -946,18 +908,18 @@
       font-size:13px;
     }
 
-    .footer-brand { display:flex; align-items:center; gap:10px; }
-    .footer-brand img { height:80px; width:auto; display:block; }
-    .footer-columns p { margin:4px 0; }
+    .footer-brand{ display:flex; align-items:center; gap:10px; }
+    .footer-brand img{ height:80px; width:auto; display:block; }
+    .footer-columns p{ margin:4px 0; }
 
-    .footer-bottom {
+    .footer-bottom{
       max-width:var(--sb-container-width);
       margin:20px auto 0;
       padding-top:8px;
       font-size:11px;
       text-align:center;
       color:#9CA3AF;
-      border-top:1px solid #111827;
+      border-top:1px solid var(--sb-border-white);
     }
   </style>
 </head>
@@ -1010,19 +972,15 @@
       <div class="account-header">
         <p class="account-header-eyebrow">Espace client</p>
         <h1>Mon compte Singbox</h1>
-        <p>
-          Consultez vos réservations, vos points de fidélité et récupérez votre QR code de validation.
-        </p>
+        <p>Consultez vos réservations, vos points de fidélité et récupérez votre QR code de validation.</p>
       </div>
 
       <div class="account-layout">
         <div class="account-left">
-          <!-- Bloc connexion (visible si non connecté) -->
+          <!-- Bloc connexion -->
           <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
             <h2 class="login-card-title">Se connecter</h2>
-            <p class="login-description">
-              Connectez-vous pour retrouver vos réservations et votre solde de points.
-            </p>
+            <p class="login-description">Connectez-vous pour retrouver vos réservations et votre solde de points.</p>
 
             <form id="login-form">
               <div class="login-field">
@@ -1068,16 +1026,14 @@
               <div class="account-field-label">Mes réservations</div>
 
               <div id="reservations-list" class="reservations-list">
-                <p class="reservations-empty">
-                  Connectez-vous pour retrouver vos réservations passées et à venir.
-                </p>
+                <p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>
               </div>
 
               <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
             </div>
 
             <p class="account-subtext">
-              Astuce : vous pouvez afficher le QR et ouvrir la validation depuis vos réservations ci-dessus.
+              Astuce : cliquez sur « Afficher le QR » pour afficher le QR code exactement lié à votre réservation.
             </p>
 
             <div class="logout-row">
@@ -1110,7 +1066,7 @@
     </div>
   </section>
 
-  <!-- MODAL QR (UNIQUEMENT: QR + Fermer + Ouvrir la validation) -->
+  <!-- MODAL QR (UNIQUEMENT: QR + Fermer) -->
   <div id="qr-modal" class="modal-backdrop" hidden>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="QR code de validation">
       <div class="qr-grid">
@@ -1119,7 +1075,6 @@
 
       <div class="modal-actions">
         <button class="modal-btn modal-btn-secondary" id="qr-close-btn" type="button">Fermer</button>
-        <button class="modal-btn modal-btn-primary" id="qr-open-btn" type="button">Ouvrir la validation</button>
       </div>
     </div>
   </div>
@@ -1183,45 +1138,41 @@
     <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
-  <!-- JS PRINCIPAL -->
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+    const VALIDATION_PAGE_PATH = "validation.html"; // QR doit pointer vers validation.html?ref=XXXX
 
-    // ✅ URL UNIQUE de vérité : validation.html?ref=XXXX
-    const VALIDATION_PAGE_PATH = "validation.html";
-
-    function updateCartIcon() {
+    function updateCartIcon(){
       const el = document.getElementById("cart-count");
-      if (!el) return;
+      if(!el) return;
       let panier = [];
-      try { panier = JSON.parse(localStorage.getItem("panier")) || []; } catch (e) {}
+      try{ panier = JSON.parse(localStorage.getItem("panier")) || []; }catch(e){}
       el.textContent = panier.length ? panier.length : "";
     }
 
-    function updateLoyaltyHighlight(points) {
+    function updateLoyaltyHighlight(points){
       const el = document.getElementById("loyalty-highlight-text");
-      if (!el) return;
+      if(!el) return;
 
-      if (typeof points !== "number") {
+      if(typeof points !== "number"){
         el.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
         return;
       }
 
       const next = Math.max(0, 100 - points);
-      el.textContent =
-        next === 0
-          ? "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte."
-          : `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
+      el.textContent = next === 0
+        ? "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte."
+        : `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
     }
 
-    function setReservationsNotLogged() {
+    function setReservationsNotLogged(){
       const listEl = document.getElementById("reservations-list");
-      if (listEl) {
+      if(listEl){
         listEl.innerHTML = '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
       }
     }
 
-    function showNotLoggedState() {
+    function showNotLoggedState(){
       const emailEl = document.getElementById("user-email");
       const pointsEl = document.getElementById("user-points");
       const msgEl = document.getElementById("account-message");
@@ -1229,21 +1180,21 @@
       const loginCard = document.getElementById("login-card");
       const refundMsgEl = document.getElementById("refund-message");
 
-      if (emailEl) emailEl.textContent = "Non connecté";
-      if (pointsEl) pointsEl.textContent = "—";
-      if (msgEl) { msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus."; msgEl.classList.remove("ok"); }
-      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
-      if (notLoggedCta) notLoggedCta.style.display = "block";
-      if (loginCard) loginCard.style.display = "block";
+      if(emailEl) emailEl.textContent = "Non connecté";
+      if(pointsEl) pointsEl.textContent = "—";
+      if(msgEl){ msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus."; msgEl.classList.remove("ok"); }
+      if(refundMsgEl){ refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
+      if(notLoggedCta) notLoggedCta.style.display = "block";
+      if(loginCard) loginCard.style.display = "block";
 
       setReservationsNotLogged();
       updateLoyaltyHighlight(null);
     }
 
-    function formatReservationDate(dateStr) {
-      if (!dateStr) return "Date à confirmer";
+    function formatReservationDate(dateStr){
+      if(!dateStr) return "Date à confirmer";
       const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
+      if(isNaN(d.getTime())) return dateStr;
 
       return d.toLocaleDateString("fr-FR", {
         weekday: "short",
@@ -1253,19 +1204,19 @@
       });
     }
 
-    function formatReservationHoursFromReservation(r) {
+    function formatReservationHoursFromReservation(r){
       const startStr = r.start_time || r.datetime || null;
-      if (!startStr) return "";
+      if(!startStr) return "";
 
       const start = new Date(startStr);
-      if (isNaN(start.getTime())) return "";
+      if(isNaN(start.getTime())) return "";
 
       const DUREE_MS = 90 * 60 * 1000;
       let end;
 
-      if (r.end_time) {
+      if(r.end_time){
         end = new Date(r.end_time);
-        if (isNaN(end.getTime())) end = new Date(start.getTime() + DUREE_MS);
+        if(isNaN(end.getTime())) end = new Date(start.getTime() + DUREE_MS);
       } else {
         end = new Date(start.getTime() + DUREE_MS);
       }
@@ -1276,18 +1227,18 @@
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
 
-    function isRefundPossible(startTimeIso) {
-      if (!startTimeIso) return false;
+    function isRefundPossible(startTimeIso){
+      if(!startTimeIso) return false;
       const start = new Date(startTimeIso);
-      if (isNaN(start.getTime())) return false;
+      if(isNaN(start.getTime())) return false;
       const now = new Date();
       const diffMs = start.getTime() - now.getTime();
       const hoursBefore = diffMs / (1000 * 60 * 60);
       return hoursBefore >= 24;
     }
 
-    // ✅ REF = EXACTEMENT la référence déjà fournie par le backend (paiement/email)
-    function getReservationRef(r) {
+    // ✅ Référence unique utilisée (doit matcher paiement/email)
+    function getReservationRef(r){
       return (
         r.payment_reference ||
         r.checkout_reference ||
@@ -1307,9 +1258,8 @@
       );
     }
 
-    // ✅ Source de vérité : URL publique de validation (celle du paiement/email)
-    function buildValidationUrlFromRef(ref) {
-      if (!ref) return null;
+    function buildValidationUrlFromRef(ref){
+      if(!ref) return null;
       const url = new URL(VALIDATION_PAGE_PATH, window.location.origin);
       url.searchParams.set("ref", String(ref));
       return url.toString();
@@ -1318,41 +1268,36 @@
     /* ===== MODAL QR ===== */
     let currentQrUrl = null;
 
-    function qrPngUrlFromValidationUrl(validationUrl) {
-      // ✅ PNG + margin=0 + taille >= 300 + aucun overlay / aucun arrondi
-      return (
-        "https://api.qrserver.com/v1/create-qr-code/?" +
-        "format=png&size=360x360&margin=0&data=" + encodeURIComponent(validationUrl)
-      );
+    function qrPngUrlFromValidationUrl(validationUrl){
+      // ✅ PNG + margin=0 + taille >= 300 + sans arrondis (QR pur)
+      return "https://api.qrserver.com/v1/create-qr-code/?format=png&size=360x360&margin=0&data=" +
+        encodeURIComponent(validationUrl);
     }
 
-    function openQrModal(validationUrl) {
+    function openQrModal(validationUrl){
       currentQrUrl = validationUrl;
-
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
-
-      if (img) {
+      if(img){
         img.removeAttribute("src");
         img.src = qrPngUrlFromValidationUrl(validationUrl);
       }
-
-      if (modal) modal.removeAttribute("hidden");
+      if(modal) modal.removeAttribute("hidden");
     }
 
-    function closeQrModal() {
+    function closeQrModal(){
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
-      if (modal) modal.setAttribute("hidden", "true");
-      if (img) img.removeAttribute("src");
+      if(modal) modal.setAttribute("hidden", "true");
+      if(img) img.removeAttribute("src");
       currentQrUrl = null;
     }
 
-    function renderReservations(reservations) {
+    function renderReservations(reservations){
       const listEl = document.getElementById("reservations-list");
-      if (!listEl) return;
+      if(!listEl) return;
 
-      if (!reservations || !reservations.length) {
+      if(!reservations || !reservations.length){
         listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment.</p>';
         return;
       }
@@ -1373,13 +1318,13 @@
         let statutClass = "";
 
         const s = statutRaw.toLowerCase();
-        if (s.includes("confirme") || s === "confirmed") statutClass = "reservation-status-confirmed";
-        else if (s.includes("attente") || s === "pending") statutClass = "reservation-status-pending";
-        else if (s.includes("annul") || s === "cancelled" || s === "canceled") statutClass = "reservation-status-annulee";
+        if(s.includes("confirme") || s === "confirmed") statutClass = "reservation-status-confirmed";
+        else if(s.includes("attente") || s === "pending") statutClass = "reservation-status-pending";
+        else if(s.includes("annul") || s === "cancelled" || s === "canceled") statutClass = "reservation-status-annulee";
 
         const metaPieces = [];
-        if (plageHeure) metaPieces.push(plageHeure);
-        if (boxName) metaPieces.push(`Box ${boxName}`);
+        if(plageHeure) metaPieces.push(plageHeure);
+        if(boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
         const ref = getReservationRef(r);
@@ -1387,7 +1332,7 @@
         const canShowQr = !!validationUrl;
 
         let actionsHtml = "";
-        if (canShowQr) {
+        if(canShowQr){
           actionsHtml = `
             <div class="reservation-actions-row">
               <button
@@ -1396,14 +1341,6 @@
                 type="button"
               >
                 Afficher le QR
-              </button>
-
-              <button
-                class="reservation-action-btn reservation-validate-btn"
-                data-open-url="${validationUrl}"
-                type="button"
-              >
-                Ouvrir la validation
               </button>
             </div>
           `;
@@ -1417,13 +1354,12 @@
           `;
         }
 
-        // remboursement (inchangé)
         const hasValidStart = !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
         const isInFuture = hasValidStart && new Date(startTimeIso).getTime() > Date.now();
 
         let refundHtml = "";
-        if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
-          if (isRefundPossible(startTimeIso)) {
+        if(statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture){
+          if(isRefundPossible(startTimeIso)){
             refundHtml = `
               <div class="reservation-refund-row">
                 <span>Remboursement possible jusqu'à 24h avant la séance.</span>
@@ -1463,24 +1399,24 @@
       });
     }
 
-    async function loadReservations() {
+    async function loadReservations(){
       const token = localStorage.getItem("token");
       const listEl = document.getElementById("reservations-list");
       const refundMsgEl = document.getElementById("refund-message");
-      if (!listEl) return;
+      if(!listEl) return;
 
-      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
+      if(refundMsgEl){ refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
 
-      if (!token) { setReservationsNotLogged(); return; }
+      if(!token){ setReservationsNotLogged(); return; }
 
       listEl.innerHTML = '<p class="reservations-empty">Chargement de vos réservations...</p>';
 
-      try {
+      try{
         const res = await fetch(API_BASE + "/api/my-reservations", {
           headers: { Authorization: "Bearer " + token }
         });
 
-        if (!res.ok) {
+        if(!res.ok){
           console.error("Erreur chargement réservations", res.status);
           listEl.innerHTML = '<p class="reservations-empty">Impossible de charger vos réservations pour le moment.</p>';
           return;
@@ -1489,28 +1425,28 @@
         const data = await res.json();
         const reservations = Array.isArray(data) ? data : (data.reservations || []);
         renderReservations(reservations);
-      } catch (err) {
+      } catch(err){
         console.error(err);
         listEl.innerHTML = '<p class="reservations-empty">Erreur de chargement de vos réservations.</p>';
       }
     }
 
-    async function loadProfile() {
+    async function loadProfile(){
       const token = localStorage.getItem("token");
       const loginCard = document.getElementById("login-card");
       const notLoggedCta = document.getElementById("not-logged-cta");
       const msgEl = document.getElementById("account-message");
 
-      if (!token) { showNotLoggedState(); return; }
+      if(!token){ showNotLoggedState(); return; }
 
-      if (msgEl) { msgEl.textContent = "Chargement de vos informations..."; msgEl.classList.remove("ok"); }
+      if(msgEl){ msgEl.textContent = "Chargement de vos informations..."; msgEl.classList.remove("ok"); }
 
-      try {
+      try{
         const res = await fetch(API_BASE + "/api/me", {
-          headers: { Authorization: "Bearer " + token },
+          headers: { Authorization: "Bearer " + token }
         });
 
-        if (!res.ok) {
+        if(!res.ok){
           console.warn("API /api/me non OK :", res.status);
           localStorage.removeItem("token");
           showNotLoggedState();
@@ -1522,147 +1458,153 @@
         const emailEl = document.getElementById("user-email");
         const pointsEl = document.getElementById("user-points");
 
-        if (emailEl) emailEl.textContent = user.email || "—";
-        if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
+        if(emailEl) emailEl.textContent = user.email || "—";
+        if(pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
 
-        if (msgEl) { msgEl.textContent = "Profil chargé avec succès."; msgEl.classList.add("ok"); }
+        if(msgEl){ msgEl.textContent = "Profil chargé avec succès."; msgEl.classList.add("ok"); }
 
-        if (loginCard) loginCard.style.display = "none";
-        if (notLoggedCta) notLoggedCta.style.display = "none";
+        if(loginCard) loginCard.style.display = "none";
+        if(notLoggedCta) notLoggedCta.style.display = "none";
 
         updateLoyaltyHighlight(user.points ?? 0);
         loadReservations();
-      } catch (err) {
+      } catch(err){
         console.error("Erreur /api/me :", err);
-        if (msgEl) { msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter."; msgEl.classList.remove("ok"); }
+        if(msgEl){ msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter."; msgEl.classList.remove("ok"); }
         localStorage.removeItem("token");
         showNotLoggedState();
       }
     }
 
-    function initLoginForm() {
+    function initLoginForm(){
       const loginForm = document.getElementById("login-form");
       const loginMsg  = document.getElementById("login-message");
       const createBtn = document.getElementById("create-account-btn");
-      if (!loginForm) return;
+      if(!loginForm) return;
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
+        if(loginMsg){ loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
 
         const email = document.getElementById("login-email").value.trim();
         const password = document.getElementById("login-password").value;
 
-        if (!email || !password) { if (loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe."; return; }
+        if(!email || !password){
+          if(loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe.";
+          return;
+        }
 
-        try {
+        try{
           const res = await fetch(API_BASE + "/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
             body: JSON.stringify({ email, password })
           });
 
           let data = {};
-          try { data = await res.json(); } catch (_) {}
+          try{ data = await res.json(); }catch(_){}
 
-          if (!res.ok || !data.token) {
-            if (loginMsg) loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
+          if(!res.ok || !data.token){
+            if(loginMsg) loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
             return;
           }
 
           localStorage.setItem("token", data.token);
-          if (loginMsg) { loginMsg.textContent = "Connexion réussie."; loginMsg.classList.add("ok"); }
+          if(loginMsg){ loginMsg.textContent = "Connexion réussie."; loginMsg.classList.add("ok"); }
           loadProfile();
-        } catch (err) {
+        } catch(err){
           console.error(err);
-          if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+          if(loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
         }
       });
 
-      if (createBtn) {
+      if(createBtn){
         createBtn.addEventListener("click", async () => {
-          if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
+          if(loginMsg){ loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
 
           const email = document.getElementById("login-email").value.trim();
           const password = document.getElementById("login-password").value;
 
-          if (!email || !password) {
-            if (loginMsg) loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
+          if(!email || !password){
+            if(loginMsg) loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
             return;
           }
 
-          try {
+          try{
             const res = await fetch(API_BASE + "/api/register", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
+              method:"POST",
+              headers:{ "Content-Type":"application/json" },
               body: JSON.stringify({ email, password })
             });
 
             let data = {};
-            try { data = await res.json(); } catch (_) {}
+            try{ data = await res.json(); }catch(_){}
 
-            if (!res.ok) { if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte."; return; }
+            if(!res.ok){
+              if(loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte.";
+              return;
+            }
 
             const loginRes = await fetch(API_BASE + "/api/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
+              method:"POST",
+              headers:{ "Content-Type":"application/json" },
               body: JSON.stringify({ email, password })
             });
 
             let loginData = {};
-            try { loginData = await loginRes.json(); } catch (_) {}
+            try{ loginData = await loginRes.json(); }catch(_){}
 
-            if (loginRes.ok && loginData.token) {
+            if(loginRes.ok && loginData.token){
               localStorage.setItem("token", loginData.token);
-              if (loginMsg) { loginMsg.textContent = "Compte créé et connecté."; loginMsg.classList.add("ok"); }
+              if(loginMsg){ loginMsg.textContent = "Compte créé et connecté."; loginMsg.classList.add("ok"); }
               loadProfile();
             } else {
-              if (loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué.";
+              if(loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué.";
             }
-          } catch (err) {
+          } catch(err){
             console.error(err);
-            if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+            if(loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
           }
         });
       }
     }
 
-    function initLogout() {
+    function initLogout(){
       const logoutBtn = document.getElementById("logout-btn");
-      if (logoutBtn) {
+      if(logoutBtn){
         logoutBtn.addEventListener("click", () => {
           localStorage.removeItem("token");
           const msgEl = document.getElementById("account-message");
           const refundMsgEl = document.getElementById("refund-message");
-          if (msgEl) { msgEl.textContent = "Vous avez été déconnecté."; msgEl.classList.remove("ok"); }
-          if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
+          if(msgEl){ msgEl.textContent = "Vous avez été déconnecté."; msgEl.classList.remove("ok"); }
+          if(refundMsgEl){ refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
           showNotLoggedState();
         });
       }
     }
 
-    function initRefundButtons() {
+    function initRefundButtons(){
       const listEl = document.getElementById("reservations-list");
       const refundMsgEl = document.getElementById("refund-message");
-      if (!listEl) return;
+      if(!listEl) return;
 
       listEl.addEventListener("click", async (e) => {
         const btn = e.target.closest(".reservation-refund-btn");
-        if (!btn) return;
+        if(!btn) return;
 
         const reservationId = btn.getAttribute("data-reservation-id");
         const startTime = btn.getAttribute("data-start-time");
         const token = localStorage.getItem("token");
 
-        if (!refundMsgEl) return;
+        if(!refundMsgEl) return;
 
         refundMsgEl.classList.remove("ok");
         refundMsgEl.textContent = "";
 
-        if (!token) { refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement."; return; }
-        if (!reservationId) { refundMsgEl.textContent = "Réservation introuvable."; return; }
+        if(!token){ refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement."; return; }
+        if(!reservationId){ refundMsgEl.textContent = "Réservation introuvable."; return; }
 
-        if (!isRefundPossible(startTime)) {
+        if(!isRefundPossible(startTime)){
           refundMsgEl.textContent = "Le remboursement n'est plus possible (moins de 24h avant la séance).";
           return;
         }
@@ -1670,20 +1612,20 @@
         btn.disabled = true;
         refundMsgEl.textContent = "Demande de remboursement en cours...";
 
-        try {
+        try{
           const res = await fetch(API_BASE + "/api/refund-reservation", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
+            method:"POST",
+            headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer " + token
             },
-            body: JSON.stringify({ reservationId }),
+            body: JSON.stringify({ reservationId })
           });
 
           let data = {};
-          try { data = await res.json(); } catch (_) {}
+          try{ data = await res.json(); }catch(_){}
 
-          if (!res.ok || data.success !== true) {
+          if(!res.ok || data.success !== true){
             btn.disabled = false;
             refundMsgEl.textContent = data.error || "Impossible de procéder au remboursement.";
             return;
@@ -1692,7 +1634,7 @@
           refundMsgEl.textContent = "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
           refundMsgEl.classList.add("ok");
           loadReservations();
-        } catch (err) {
+        } catch(err){
           console.error(err);
           btn.disabled = false;
           refundMsgEl.textContent = "Erreur réseau. Veuillez réessayer.";
@@ -1700,46 +1642,29 @@
       });
     }
 
-    // ✅ Gestion QR/validation (liste + modal)
-    function initQrActions() {
+    // ✅ QR uniquement
+    function initQrActions(){
       const listEl = document.getElementById("reservations-list");
       const closeBtn = document.getElementById("qr-close-btn");
-      const openBtn  = document.getElementById("qr-open-btn");
       const modal = document.getElementById("qr-modal");
 
-      if (closeBtn) closeBtn.addEventListener("click", closeQrModal);
+      if(closeBtn) closeBtn.addEventListener("click", closeQrModal);
 
-      if (modal) {
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeQrModal();
-        });
+      if(modal){
+        modal.addEventListener("click", (e) => { if(e.target === modal) closeQrModal(); });
       }
 
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal && !modal.hasAttribute("hidden")) closeQrModal();
+        if(e.key === "Escape" && modal && !modal.hasAttribute("hidden")) closeQrModal();
       });
 
-      if (openBtn) {
-        openBtn.addEventListener("click", () => {
-          if (!currentQrUrl) return;
-          window.location.href = currentQrUrl; // ✅ pas de window.open
-        });
-      }
-
-      if (!listEl) return;
+      if(!listEl) return;
 
       listEl.addEventListener("click", (e) => {
         const qrBtn = e.target.closest(".reservation-qr-btn");
-        const openValidationBtn = e.target.closest(".reservation-validate-btn");
-
-        if (qrBtn && !qrBtn.hasAttribute("disabled")) {
+        if(qrBtn && !qrBtn.hasAttribute("disabled")){
           const url = qrBtn.getAttribute("data-qr-url");
-          if (url) openQrModal(url);
-        }
-
-        if (openValidationBtn) {
-          const url = openValidationBtn.getAttribute("data-open-url");
-          if (url) window.location.href = url; // ✅ redirection directe
+          if(url) openQrModal(url);
         }
       });
     }
@@ -1748,9 +1673,9 @@
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
-      if (burgerBtn && mobileNav) {
+      if(burgerBtn && mobileNav){
         burgerBtn.addEventListener("click", () => { mobileNav.classList.toggle("open"); });
-        mobileNav.addEventListener("click", (e) => { if (e.target.tagName === "A") mobileNav.classList.remove("open"); });
+        mobileNav.addEventListener("click", (e) => { if(e.target.tagName === "A") mobileNav.classList.remove("open"); });
       }
 
       updateCartIcon();
@@ -1775,7 +1700,7 @@
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn || !messageBox) return;
+      if(!emailInput || !submitBtn || !messageBox) return;
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
@@ -1783,7 +1708,7 @@
         messageBox.style.color = "#e5e7eb";
         messageBox.textContent = "Envoi en cours...";
 
-        if (!email || !email.includes("@")) {
+        if(!email || !email.includes("@")){
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
           return;
@@ -1793,8 +1718,8 @@
           .from("newsletter_subscriptions")
           .insert({ email });
 
-        if (error) {
-          if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
+        if(error){
+          if(error.code === "23505" || (error.message && error.message.includes("duplicate key value"))){
             messageBox.style.color = "#38bdf8";
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
           } else {
