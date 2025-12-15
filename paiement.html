@@ -2025,6 +2025,7 @@
       (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
         ? "http://localhost:3000"
         : "https://singbox-backend.onrender.com";
+    const QR_CHECK_BASE_URL = `${API_BASE_URL}/api/check`;
 
     let stripe = null;
     let cardElement = null;
@@ -2769,25 +2770,28 @@
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        if (reservationId && thankyouQrContainer && window.QRCode) {
-          try {
-            thankyouQrContainer.innerHTML = "";
-const checkUrl = `${API_BASE_URL}/api/check?id=${encodeURIComponent(String(reservationId))}`;
-            
-new QRCode(thankyouQrContainer, {
-  text: checkUrl,
-  width: 110,
-  height: 110
-});
-            if (thankyouQrFallback) {
-              thankyouQrFallback.style.display = "none";
-            }
-          } catch (e) {
-            console.error("Erreur génération QR code :", e);
-          }
-        } else {
-          console.warn("QR code non généré : reservationId ou conteneur manquant.");
-        }
+if (reservationId && thankyouQrContainer && window.QRCode) {
+  try {
+    const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}&box=1`;
+
+    thankyouQrContainer.innerHTML = "";
+
+    new QRCode(thankyouQrContainer, {
+      text: qrText,
+      width: 220,
+      height: 220,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    if (thankyouQrFallback) {
+      thankyouQrFallback.style.display = "none";
+    }
+  } catch (e) {
+    console.error("Erreur génération QR code :", e);
+  }
+} else {
+  console.warn("QR code non généré : reservationId ou conteneur manquant.");
+}
       };
 
       if (submitBtn) {
