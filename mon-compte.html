@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- TITRE SEO OPTIMISÉ -->
   <title>Mon compte Singbox | Espace client & points de fidélité – Karaoké box à Toulouse</title>
 
-  <!-- META SEO -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Pour une page compte / login, on évite l’indexation (SEO propre) -->
   <meta name="robots" content="noindex,nofollow" />
   <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation." />
   <meta name="author" content="Singbox" />
   <meta name="keywords" content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse" />
   <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
 
-  <!-- FAVICON -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- OPEN GRAPH -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:title" content="Mon compte Singbox | Espace client & points de fidélité" />
@@ -27,13 +22,11 @@
   <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
   <meta property="og:locale" content="fr_FR" />
 
-  <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
   <meta name="twitter:description" content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse." />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
-  <!-- Données structurées WebPage / Espace client -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -57,7 +50,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -202,19 +194,10 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
-      width: 100%;
-    }
+    .main-nav a:hover::after { width: 100%; }
+    .main-nav a:hover { color: #ffb96f; transition: 0.25s ease; }
 
-    .main-nav a:hover {
-      color: #ffb96f;
-      transition: 0.25s ease;
-    }
-
-    /* surligner Mon compte dans le menu */
-    .main-nav a[href="mon-compte.html"]::after {
-      width: 100%;
-    }
+    .main-nav a[href="mon-compte.html"]::after { width: 100%; }
 
     .header-actions {
       display: flex;
@@ -314,67 +297,21 @@
     .mobile-nav.open { display:block; }
 
     @media (max-width: 900px) {
-      .header-inner {
-        padding: 8px 10px;
-        gap: 8px;
-      }
-
-      nav.main-nav {
-        display: none;
-      }
-
-      .brand-logo {
-        width: 58px;
-      }
-
-      .brand-text {
-        font-size: 15px;
-        letter-spacing: 0.11em;
-      }
-
-      .nav-cta {
-        padding: 6px 12px;
-        font-size: 11px;
-      }
-
-      .cart-icon,
-      .burger-button {
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
-      }
-
-      .burger-button {
-        display: flex;
-      }
+      .header-inner { padding: 8px 10px; gap: 8px; }
+      nav.main-nav { display: none; }
+      .brand-logo { width: 58px; }
+      .brand-text { font-size: 15px; letter-spacing: 0.11em; }
+      .nav-cta { padding: 6px 12px; font-size: 11px; }
+      .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
+      .burger-button { display: flex; }
     }
 
     @media (max-width: 480px) {
-      .header-inner {
-        padding: 8px 8px;
-        gap: 6px;
-      }
-
-      .brand-logo {
-        width: 50px;
-      }
-
-      .brand-text {
-        font-size: 13px;
-        letter-spacing: 0.09em;
-      }
-
-      .nav-cta {
-        padding: 5px 10px;
-        font-size: 10px;
-      }
-
-      .cart-icon,
-      .burger-button {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-      }
+      .header-inner { padding: 8px 8px; gap: 6px; }
+      .brand-logo { width: 50px; }
+      .brand-text { font-size: 13px; letter-spacing: 0.09em; }
+      .nav-cta { padding: 5px 10px; font-size: 10px; }
+      .cart-icon, .burger-button { width: 30px; height: 30px; font-size: 16px; }
     }
 
     /* ======================= SECTION MON COMPTE ======================= */
@@ -445,9 +382,7 @@
     }
 
     @media (max-width: 820px) {
-      .account-layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      .account-layout { grid-template-columns: minmax(0, 1fr); }
     }
 
     .card {
@@ -467,16 +402,12 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background:
-        radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
       opacity: 0.6;
       mix-blend-mode: soft-light;
     }
 
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
+    .card > * { position: relative; z-index: 1; }
 
     .account-main-card h2 {
       font-size: 22px;
@@ -563,16 +494,11 @@
       margin: 4px 0 10px;
     }
 
-    .account-message.ok {
-      color: #BBF7D0;
-    }
+    .account-message.ok { color: #BBF7D0; }
 
     /* ====== RÉSERVATIONS ====== */
 
-    .reservations-block {
-      margin-top: 18px;
-      font-size: 13px;
-    }
+    .reservations-block { margin-top: 18px; font-size: 13px; }
 
     .reservations-list {
       margin-top: 6px;
@@ -594,7 +520,7 @@
       padding: 9px 11px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
     }
 
     .reservation-main-row {
@@ -604,15 +530,8 @@
       gap: 12px;
     }
 
-    .reservation-date {
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .reservation-meta {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-    }
+    .reservation-date { font-weight: 600; font-size: 13px; }
+    .reservation-meta { font-size: 12px; color: var(--sb-text-muted); }
 
     .reservation-side {
       text-align: right;
@@ -623,9 +542,7 @@
       gap: 3px;
     }
 
-    .reservation-price {
-      font-weight: 600;
-    }
+    .reservation-price { font-weight: 600; }
 
     .reservation-status {
       padding: 2px 8px;
@@ -634,19 +551,61 @@
       font-size: 11px;
     }
 
-    .reservation-status-confirmed {
-      border-color: rgba(52,211,153,0.8);
-      color: #6ee7b7;
+    .reservation-status-confirmed { border-color: rgba(52,211,153,0.8); color: #6ee7b7; }
+    .reservation-status-pending { border-color: rgba(251,191,36,0.8); color: #facc15; }
+    .reservation-status-annulee { border-color: rgba(248,113,113,0.85); color: #fecaca; }
+
+    /* === Boutons QR / Validation === */
+    .reservation-actions-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top: 2px;
     }
 
-    .reservation-status-pending {
-      border-color: rgba(251,191,36,0.8);
-      color: #facc15;
+    .reservation-action-btn {
+      border:none;
+      border-radius:999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 10px 28px rgba(0,0,0,0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      white-space: nowrap;
     }
 
-    .reservation-status-annulee {
-      border-color: rgba(248,113,113,0.85);
-      color: #fecaca;
+    .reservation-action-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.2),
+        0 16px 40px rgba(0,0,0,1);
+    }
+
+    .reservation-qr-btn {
+      background: linear-gradient(90deg, #1d4ed8, #4c1d95);
+      color: #F9FAFB;
+    }
+
+    .reservation-validate-btn {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+    }
+
+    .reservation-action-btn[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.35),
+        0 6px 16px rgba(0,0,0,0.45);
     }
 
     /* === Remboursement === */
@@ -697,10 +656,7 @@
 
     /* Carte fidélité droite */
 
-    .loyalty-card h3 {
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
+    .loyalty-card h3 { font-size: 18px; margin-bottom: 6px; }
 
     .loyalty-pill {
       display: inline-flex;
@@ -732,57 +688,20 @@
       margin-bottom: 8px;
     }
 
-    .loyalty-highlight {
-      font-size: 13px;
-      margin-top: 4px;
-      color: #F9FAFB;
-    }
+    .loyalty-highlight { font-size: 13px; margin-top: 4px; color: #F9FAFB; }
+    .loyalty-next { font-size: 12px; margin-top: 4px; color: #BFDBFE; }
 
-    .loyalty-next {
-      font-size: 12px;
-      margin-top: 4px;
-      color: #BFDBFE;
-    }
+    .account-cta { font-size: 12px; margin-top: 10px; color: #F97316; }
+    .account-cta a { color: #F97316; text-decoration: underline; }
+    .account-cta a:hover { text-decoration: none; }
 
-    .account-cta {
-      font-size: 12px;
-      margin-top: 10px;
-      color: #F97316;
-    }
+    /* Bloc login */
 
-    .account-cta a {
-      color: #F97316;
-      text-decoration: underline;
-    }
+    .login-card-title { font-size: 18px; margin-bottom: 8px; }
+    .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
 
-    .account-cta a:hover {
-      text-decoration: none;
-    }
-
-    /* Bloc login dans Mon compte */
-
-    .login-card-title {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .login-description {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 10px;
-    }
-
-    .login-field {
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-
-    .login-field label {
-      display:block;
-      margin-bottom:3px;
-      color:#E5E7EB;
-      font-size:12px;
-    }
+    .login-field { margin-bottom: 8px; font-size: 13px; }
+    .login-field label { display:block; margin-bottom:3px; color:#E5E7EB; font-size:12px; }
 
     .login-field input {
       width:100%;
@@ -797,9 +716,7 @@
       transition:border-color 0.16s ease, box-shadow 0.16s ease;
     }
 
-    .login-field input::placeholder {
-      color:rgba(156,163,175,0.9);
-    }
+    .login-field input::placeholder { color:rgba(156,163,175,0.9); }
 
     .login-field input:focus {
       border-color:var(--sb-orange);
@@ -808,12 +725,7 @@
         0 0 22px rgba(249,115,22,0.25);
     }
 
-    .login-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-    }
+    .login-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 
     .login-submit-btn {
       border:none;
@@ -866,29 +778,119 @@
         0 14px 34px rgba(0,0,0,0.95);
     }
 
-    .login-links {
-      margin: 8px 0 0;
+    .login-links { margin: 8px 0 0; font-size: 12px; }
+    .login-forgot { color: #F97316; text-decoration: underline; }
+    .login-forgot:hover { text-decoration: none; }
+
+    .login-message { font-size: 12px; margin-top: 6px; min-height: 16px; color: #FCA5A5; }
+    .login-message.ok { color: #BBF7D0; }
+
+    /* ======================= MODAL QR ======================= */
+    #qr-modal[hidden] { display:none; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+      backdrop-filter: blur(4px);
+      padding: 16px;
+    }
+
+    .modal-dialog {
+      background: #020617;
+      border-radius: 20px;
+      padding: 1.2rem 1.25rem 1.1rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
+      border: 1px solid rgba(248,250,251,0.12);
+    }
+
+    .modal-dialog h2 { font-size: 18px; margin-bottom: 6px; }
+    .modal-dialog p { font-size: 12px; color: var(--sb-text-muted); margin: 0 0 10px; }
+
+    .qr-grid {
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    @media (max-width: 520px) {
+      .qr-grid { grid-template-columns: 1fr; }
+    }
+
+    .qr-img {
+      width: 160px;
+      height: 160px;
+      border-radius: 16px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: #0b1228;
+      display:block;
+      object-fit: contain;
+    }
+
+    .qr-info {
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+      min-width:0;
+    }
+
+    .qr-link-box {
+      background: #0b1228;
+      border: 1px solid rgba(148,163,184,0.35);
+      border-radius: 14px;
+      padding: 10px;
       font-size: 12px;
+      color: #E5E7EB;
+      overflow-wrap: anywhere;
     }
 
-    .login-forgot {
-      color: #F97316;
-      text-decoration: underline;
+    .modal-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+      margin-top: 12px;
     }
 
-    .login-forgot:hover {
-      text-decoration: none;
-    }
-
-    .login-message {
+    .modal-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 1rem;
       font-size: 12px;
-      margin-top: 6px;
-      min-height: 16px;
-      color: #FCA5A5;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    .login-message.ok {
+    .modal-btn-primary {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #F9FAFB;
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,0.12),
+        0 16px 40px rgba(0,0,0,0.9);
+    }
+
+    .modal-btn-secondary {
+      background: transparent;
+      color: #E5E7EB;
+      border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    .modal-copy-status {
+      font-size: 12px;
       color: #BBF7D0;
+      min-height: 16px;
+      margin-top: 8px;
+      display:none;
     }
 
     /* ======================= FOOTER ======================= */
@@ -905,9 +907,7 @@
       text-align:center;
     }
 
-    .newsletter-container h3 {
-      margin-bottom: 6px;
-    }
+    .newsletter-container h3 { margin-bottom: 6px; }
 
     .newsletter-container p {
       margin-top: 0;
@@ -935,9 +935,7 @@
       outline: none;
     }
 
-    footer input[type=email]::placeholder {
-      color: rgba(156,163,175,0.9);
-    }
+    footer input[type=email]::placeholder { color: rgba(156,163,175,0.9); }
 
     footer button {
       padding:10px 18px;
@@ -963,18 +961,8 @@
       font-size:13px;
     }
 
-    .footer-brand {
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .footer-brand img {
-      height:80px;
-      width:auto;
-      display:block;
-    }
-
+    .footer-brand { display:flex; align-items:center; gap:10px; }
+    .footer-brand img { height:80px; width:auto; display:block; }
     .footer-columns p { margin:4px 0; }
 
     .footer-bottom {
@@ -986,7 +974,6 @@
       color:#9CA3AF;
       border-top:1px solid #111827;
     }
-
   </style>
 </head>
 <body>
@@ -1042,8 +1029,7 @@
         <h1>Mon compte Singbox</h1>
         <p>
           Consultez vos prochaines réservations, l’historique de vos séances,
-          votre solde de points de fidélité et voyez en un coup d’œil combien
-          il vous reste avant votre séance offerte.
+          votre solde de points de fidélité et récupérez votre QR code de validation.
         </p>
       </div>
 
@@ -1082,7 +1068,6 @@
           <div class="card account-main-card">
             <h2>Mes informations</h2>
 
-            <!-- Bandeau d’état -->
             <p class="account-message" id="account-message"></p>
 
             <div>
@@ -1109,12 +1094,11 @@
                 </p>
               </div>
 
-              <!-- message global pour les demandes de remboursement -->
               <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
             </div>
 
             <p class="account-subtext">
-              Utilisez toujours la même adresse e-mail lors de vos réservations pour cumuler vos points automatiquement.
+              Astuce : vous pouvez ouvrir la page de validation ou afficher le QR code directement depuis cette page “Mon compte”.
             </p>
 
             <div class="logout-row">
@@ -1130,21 +1114,14 @@
             <span>Programme fidélité Singbox</span>
           </div>
           <h3>Comment ça marche&nbsp;?</h3>
-          <p>
-            Chaque réservation payante réalisée avec votre compte vous rapporte des points.
-          </p>
-          <p>
-            À 100 points, vous débloquez une séance offerte à utiliser sur une prochaine réservation (selon disponibilité).
-          </p>
-          <p>
-            Par exemple : une réservation = 10 points. Au bout de 10 réservations,
-            vous obtenez une séance offerte.
-          </p>
+          <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
+          <p>À 100 points, vous débloquez une séance offerte à utiliser sur une prochaine réservation (selon disponibilité).</p>
+          <p>Par exemple : une réservation = 10 points. Au bout de 10 réservations, vous obtenez une séance offerte.</p>
           <p class="loyalty-highlight" id="loyalty-highlight-text">
             Il vous reste – points avant votre prochaine séance offerte.
           </p>
           <p class="loyalty-next">
-            Réservez directement depuis la page <a href="reservation.html">Réservation</a> ou finalisez depuis votre panier.
+            Réservez depuis <a href="reservation.html">Réservation</a> ou finalisez depuis votre <a href="panier.html">panier</a>.
           </p>
 
           <p class="account-cta" id="not-logged-cta" style="display:none;">
@@ -1157,23 +1134,36 @@
     </div>
   </section>
 
+  <!-- MODAL QR -->
+  <div id="qr-modal" class="modal-backdrop" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+      <h2 id="qr-modal-title">Votre QR code de validation</h2>
+      <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil (ou ouvrez la page de validation).</p>
+
+      <div class="qr-grid">
+        <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
+        <div class="qr-info">
+          <div class="qr-link-box" id="qr-link-box"></div>
+          <button class="modal-btn modal-btn-secondary" id="qr-copy-btn" type="button">Copier le lien</button>
+          <div class="modal-copy-status" id="qr-copy-status">Lien copié ✔️</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-secondary" id="qr-close-btn" type="button">Fermer</button>
+        <button class="modal-btn modal-btn-primary" id="qr-open-btn" type="button">Ouvrir la validation</button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
-        <input
-          id="newsletter-email"
-          type="email"
-          placeholder="Entrez votre adresse e-mail"
-        />
-        <button
-          id="newsletter-submit"
-          type="button"
-        >
-          S'abonner aux actualités
-        </button>
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
       <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
     </div>
@@ -1210,51 +1200,46 @@
             <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
             <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
           </svg>
-          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </p>
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
           </svg>
-          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
-            TikTok
-          </a>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">TikTok</a>
         </p>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
-    </div>
+    <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
-  <!-- JS PRINCIPAL (profil + réservations avec heure + remboursement) -->
+  <!-- JS PRINCIPAL -->
   <script>
-    // 🔗 URL backend (prod)
     const API_BASE = "https://singbox-backend.onrender.com";
-    // Si tu veux tester en local :
-    // const API_BASE = "http://localhost:3000";
+
+    // ✅ Page de validation (celle que ton QR code ouvre)
+    // Si ta page a un autre nom (ex: validation-qr.html), change ici.
+    const VALIDATION_PAGE_PATH = "validation.html";
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
       if (!el) return;
       let panier = [];
-      try {
-        panier = JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {}
+      try { panier = JSON.parse(localStorage.getItem("panier")) || []; } catch (e) {}
       el.textContent = panier.length ? panier.length : "";
     }
 
     function updateLoyaltyHighlight(points) {
       const el = document.getElementById("loyalty-highlight-text");
       if (!el) return;
+
       if (typeof points !== "number") {
         el.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
         return;
       }
+
       const next = Math.max(0, 100 - points);
       if (next === 0) {
         el.textContent = "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte 🎉";
@@ -1280,14 +1265,8 @@
 
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
-      if (msgEl) {
-        msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus pour accéder à vos infos.";
-        msgEl.classList.remove("ok");
-      }
-      if (refundMsgEl) {
-        refundMsgEl.textContent = "";
-        refundMsgEl.classList.remove("ok");
-      }
+      if (msgEl) { msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus pour accéder à vos infos."; msgEl.classList.remove("ok"); }
+      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
       if (notLoggedCta) notLoggedCta.style.display = "block";
       if (loginCard) loginCard.style.display = "block";
 
@@ -1298,9 +1277,8 @@
     function formatReservationDate(dateStr) {
       if (!dateStr) return "Date à confirmer";
       const d = new Date(dateStr);
-      if (isNaN(d.getTime())) {
-        return dateStr;
-      }
+      if (isNaN(d.getTime())) return dateStr;
+
       return d.toLocaleDateString("fr-FR", {
         weekday: "short",
         day: "2-digit",
@@ -1309,7 +1287,6 @@
       });
     }
 
-    // 🔁 Créneaux de 1h30 par défaut
     function formatReservationHoursFromReservation(r) {
       const startStr = r.start_time || r.datetime || null;
       if (!startStr) return "";
@@ -1317,31 +1294,22 @@
       const start = new Date(startStr);
       if (isNaN(start.getTime())) return "";
 
-      // Durée par défaut : 1h30 (en ms)
       const DUREE_MS = 90 * 60 * 1000;
 
       let end;
       if (r.end_time) {
         end = new Date(r.end_time);
-        if (isNaN(end.getTime())) {
-          end = new Date(start.getTime() + DUREE_MS);
-        }
+        if (isNaN(end.getTime())) end = new Date(start.getTime() + DUREE_MS);
       } else {
         end = new Date(start.getTime() + DUREE_MS);
       }
 
       const formatTime = (d) =>
-        d
-          .toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit"
-          })
-          .replace(":", "h");
+        d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h");
 
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
 
-    // Remboursement possible seulement si la séance est dans plus de 24h
     function isRefundPossible(startTimeIso) {
       if (!startTimeIso) return false;
       const start = new Date(startTimeIso);
@@ -1350,6 +1318,90 @@
       const diffMs = start.getTime() - now.getTime();
       const hoursBefore = diffMs / (1000 * 60 * 60);
       return hoursBefore >= 24;
+    }
+
+    // ✅ Récupère une "référence" utilisable pour le QR / validation (selon ce que renvoie ton API)
+    function getReservationRef(r) {
+      return (
+        r.qr_ref ||
+        r.qr_token ||
+        r.validation_token ||
+        r.token ||
+        r.reference ||
+        r.ref ||
+        r.payment_reference ||
+        r.checkout_reference ||
+        r.checkout_ref ||
+        r.session_id ||
+        r.stripe_session_id ||
+        r.uuid ||
+        r.id ||
+        null
+      );
+    }
+
+    function buildValidationUrlFromReservation(r) {
+      const ref = getReservationRef(r);
+      if (!ref) return null;
+      const base = new URL(VALIDATION_PAGE_PATH, window.location.origin);
+      base.searchParams.set("ref", String(ref));
+      return base.toString();
+    }
+
+    // ✅ QR Modal helpers
+    let currentQrUrl = null;
+
+    function openQrModal(validationUrl, subtitleText) {
+      currentQrUrl = validationUrl;
+
+      const modal = document.getElementById("qr-modal");
+      const img = document.getElementById("qr-image");
+      const linkBox = document.getElementById("qr-link-box");
+      const subtitle = document.getElementById("qr-modal-subtitle");
+      const copyStatus = document.getElementById("qr-copy-status");
+
+      if (subtitle && subtitleText) subtitle.textContent = subtitleText;
+      if (copyStatus) { copyStatus.style.display = "none"; }
+
+      // QR via service image (simple, robuste)
+      const qrImgUrl =
+        "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+        encodeURIComponent(validationUrl);
+
+      if (img) img.src = qrImgUrl;
+      if (linkBox) linkBox.textContent = validationUrl;
+
+      if (modal) modal.removeAttribute("hidden");
+    }
+
+    function closeQrModal() {
+      const modal = document.getElementById("qr-modal");
+      if (modal) modal.setAttribute("hidden", "true");
+      currentQrUrl = null;
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (_) {}
+      // fallback
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return !!ok;
+      } catch (_) {
+        return false;
+      }
     }
 
     function renderReservations(reservations) {
@@ -1378,26 +1430,58 @@
         let statutClass = "";
 
         const s = statutRaw.toLowerCase();
-        if (s.includes("confirme") || s === "confirmed") {
-          statutClass = "reservation-status-confirmed";
-        } else if (s.includes("attente") || s === "pending") {
-          statutClass = "reservation-status-pending";
-        } else if (s.includes("annul") || s === "cancelled" || s === "canceled") {
-          statutClass = "reservation-status-annulee";
-        }
+        if (s.includes("confirme") || s === "confirmed") statutClass = "reservation-status-confirmed";
+        else if (s.includes("attente") || s === "pending") statutClass = "reservation-status-pending";
+        else if (s.includes("annul") || s === "cancelled" || s === "canceled") statutClass = "reservation-status-annulee";
 
         const metaPieces = [];
         if (plageHeure) metaPieces.push(plageHeure);
         if (boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
+        const hasValidStart = !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
+        const isInFuture = hasValidStart && new Date(startTimeIso).getTime() > Date.now();
+
+        const validationUrl = buildValidationUrlFromReservation(r);
+        const canShowQr = !!validationUrl && (statutClass === "reservation-status-confirmed" || statutClass === "reservation-status-pending");
+
+        // ✅ actions QR / validation (en plus du remboursement)
+        let actionsHtml = "";
+        if (canShowQr) {
+          actionsHtml = `
+            <div class="reservation-actions-row">
+              <button
+                class="reservation-action-btn reservation-qr-btn"
+                data-qr-url="${validationUrl}"
+                data-qr-title="${(boxName ? "Box " + boxName + " • " : "") + date + (plageHeure ? " • " + plageHeure : "")}"
+                type="button"
+              >
+                Voir QR code
+              </button>
+              <a
+                class="reservation-action-btn reservation-validate-btn"
+                href="${validationUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display:inline-flex;align-items:center;justify-content:center;"
+              >
+                Ouvrir validation
+              </a>
+            </div>
+          `;
+        } else if ((statutClass === "reservation-status-confirmed" || statutClass === "reservation-status-pending")) {
+          // On indique juste s'il manque la ref dans la réponse API
+          actionsHtml = `
+            <div class="reservation-actions-row">
+              <button class="reservation-action-btn reservation-qr-btn" type="button" disabled>
+                QR indisponible
+              </button>
+            </div>
+          `;
+        }
+
         // bloc remboursement
         let refundHtml = "";
-        const hasValidStart =
-          !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
-        const isInFuture =
-          hasValidStart && new Date(startTimeIso).getTime() > Date.now();
-
         if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
           if (isRefundPossible(startTimeIso)) {
             refundHtml = `
@@ -1423,15 +1507,14 @@
           <div class="reservation-main-row">
             <div>
               <div class="reservation-date">${date}</div>
-              <div class="reservation-meta">
-                ${metaText}
-              </div>
+              <div class="reservation-meta">${metaText}</div>
             </div>
             <div class="reservation-side">
               ${montant ? `<div class="reservation-price">${montant} €</div>` : ""}
               ${statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : ""}
             </div>
           </div>
+          ${actionsHtml}
           ${refundHtml}
         `;
 
@@ -1445,23 +1528,15 @@
       const refundMsgEl = document.getElementById("refund-message");
       if (!listEl) return;
 
-      if (refundMsgEl) {
-        refundMsgEl.textContent = "";
-        refundMsgEl.classList.remove("ok");
-      }
+      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
 
-      if (!token) {
-        setReservationsNotLogged();
-        return;
-      }
+      if (!token) { setReservationsNotLogged(); return; }
 
       listEl.innerHTML = '<p class="reservations-empty">Chargement de vos réservations...</p>';
 
       try {
         const res = await fetch(API_BASE + "/api/my-reservations", {
-          headers: {
-            Authorization: "Bearer " + token
-          }
+          headers: { Authorization: "Bearer " + token }
         });
 
         if (!res.ok) {
@@ -1485,21 +1560,13 @@
       const notLoggedCta = document.getElementById("not-logged-cta");
       const msgEl = document.getElementById("account-message");
 
-      if (!token) {
-        showNotLoggedState();
-        return;
-      }
+      if (!token) { showNotLoggedState(); return; }
 
-      if (msgEl) {
-        msgEl.textContent = "Chargement de vos informations...";
-        msgEl.classList.remove("ok");
-      }
+      if (msgEl) { msgEl.textContent = "Chargement de vos informations..."; msgEl.classList.remove("ok"); }
 
       try {
         const res = await fetch(API_BASE + "/api/me", {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
+          headers: { Authorization: "Bearer " + token },
         });
 
         if (!res.ok) {
@@ -1516,23 +1583,17 @@
 
         if (emailEl) emailEl.textContent = user.email || "—";
         if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
-        if (msgEl) {
-          msgEl.textContent = "Profil chargé avec succès.";
-          msgEl.classList.add("ok");
-        }
+
+        if (msgEl) { msgEl.textContent = "Profil chargé avec succès."; msgEl.classList.add("ok"); }
 
         if (loginCard) loginCard.style.display = "none";
         if (notLoggedCta) notLoggedCta.style.display = "none";
 
         updateLoyaltyHighlight(user.points ?? 0);
-
         loadReservations();
       } catch (err) {
         console.error("Erreur /api/me :", err);
-        if (msgEl) {
-          msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter.";
-          msgEl.classList.remove("ok");
-        }
+        if (msgEl) { msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter."; msgEl.classList.remove("ok"); }
         localStorage.removeItem("token");
         showNotLoggedState();
       }
@@ -1544,21 +1605,14 @@
       const createBtn = document.getElementById("create-account-btn");
       if (!loginForm) return;
 
-      // Connexion
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        if (loginMsg) {
-          loginMsg.textContent = "";
-          loginMsg.classList.remove("ok");
-        }
+        if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
 
         const email = document.getElementById("login-email").value.trim();
         const password = document.getElementById("login-password").value;
 
-        if (!email || !password) {
-          if (loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe.";
-          return;
-        }
+        if (!email || !password) { if (loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe."; return; }
 
         try {
           const res = await fetch(API_BASE + "/api/login", {
@@ -1568,23 +1622,15 @@
           });
 
           let data = {};
-          try {
-            data = await res.json();
-          } catch (_) {}
+          try { data = await res.json(); } catch (_) {}
 
           if (!res.ok || !data.token) {
-            if (loginMsg) {
-              loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
-            }
+            if (loginMsg) loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
             return;
           }
 
           localStorage.setItem("token", data.token);
-          if (loginMsg) {
-            loginMsg.textContent = "Connexion réussie ✔️";
-            loginMsg.classList.add("ok");
-          }
-
+          if (loginMsg) { loginMsg.textContent = "Connexion réussie ✔️"; loginMsg.classList.add("ok"); }
           loadProfile();
         } catch (err) {
           console.error(err);
@@ -1592,21 +1638,15 @@
         }
       });
 
-      // Création de compte
       if (createBtn) {
         createBtn.addEventListener("click", async () => {
-          if (loginMsg) {
-            loginMsg.textContent = "";
-            loginMsg.classList.remove("ok");
-          }
+          if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
 
           const email = document.getElementById("login-email").value.trim();
           const password = document.getElementById("login-password").value;
 
           if (!email || !password) {
-            if (loginMsg) {
-              loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
-            }
+            if (loginMsg) loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
             return;
           }
 
@@ -1618,37 +1658,25 @@
             });
 
             let data = {};
-            try {
-              data = await res.json();
-            } catch (_) {}
+            try { data = await res.json(); } catch (_) {}
 
-            if (!res.ok) {
-              if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte.";
-              return;
-            }
+            if (!res.ok) { if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte."; return; }
 
-            // connexion auto
             const loginRes = await fetch(API_BASE + "/api/login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password })
             });
+
             let loginData = {};
-            try {
-              loginData = await loginRes.json();
-            } catch (_) {}
+            try { loginData = await loginRes.json(); } catch (_) {}
 
             if (loginRes.ok && loginData.token) {
               localStorage.setItem("token", loginData.token);
-              if (loginMsg) {
-                loginMsg.textContent = "Compte créé et connecté ✔️";
-                loginMsg.classList.add("ok");
-              }
+              if (loginMsg) { loginMsg.textContent = "Compte créé et connecté ✔️"; loginMsg.classList.add("ok"); }
               loadProfile();
             } else {
-              if (loginMsg) {
-                loginMsg.textContent = "Compte créé, mais la connexion a échoué. Essayez de vous connecter avec vos identifiants.";
-              }
+              if (loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué. Essayez de vous connecter avec vos identifiants.";
             }
           } catch (err) {
             console.error(err);
@@ -1665,20 +1693,13 @@
           localStorage.removeItem("token");
           const msgEl = document.getElementById("account-message");
           const refundMsgEl = document.getElementById("refund-message");
-          if (msgEl) {
-            msgEl.textContent = "Vous avez été déconnecté.";
-            msgEl.classList.remove("ok");
-          }
-          if (refundMsgEl) {
-            refundMsgEl.textContent = "";
-            refundMsgEl.classList.remove("ok");
-          }
+          if (msgEl) { msgEl.textContent = "Vous avez été déconnecté."; msgEl.classList.remove("ok"); }
+          if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
           showNotLoggedState();
         });
       }
     }
 
-    // Gestion du clic sur "Demander un remboursement"
     function initRefundButtons() {
       const listEl = document.getElementById("reservations-list");
       const refundMsgEl = document.getElementById("refund-message");
@@ -1697,17 +1718,9 @@
         refundMsgEl.classList.remove("ok");
         refundMsgEl.textContent = "";
 
-        if (!token) {
-          refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement.";
-          return;
-        }
+        if (!token) { refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement."; return; }
+        if (!reservationId) { refundMsgEl.textContent = "Réservation introuvable."; return; }
 
-        if (!reservationId) {
-          refundMsgEl.textContent = "Réservation introuvable.";
-          return;
-        }
-
-        // Double sécurité côté front
         if (!isRefundPossible(startTime)) {
           refundMsgEl.textContent = "Le remboursement n'est plus possible (moins de 24h avant la séance).";
           return;
@@ -1727,9 +1740,7 @@
           });
 
           let data = {};
-          try {
-            data = await res.json();
-          } catch (_) {}
+          try { data = await res.json(); } catch (_) {}
 
           if (!res.ok || data.success !== true) {
             btn.disabled = false;
@@ -1739,8 +1750,6 @@
 
           refundMsgEl.textContent = "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
           refundMsgEl.classList.add("ok");
-
-          // On recharge les réservations pour voir le statut mis à jour
           loadReservations();
         } catch (err) {
           console.error(err);
@@ -1750,26 +1759,72 @@
       });
     }
 
+    // ✅ Gestion QR/validation depuis le compte
+    function initQrActions() {
+      const listEl = document.getElementById("reservations-list");
+      if (!listEl) return;
+
+      const closeBtn = document.getElementById("qr-close-btn");
+      const openBtn  = document.getElementById("qr-open-btn");
+      const copyBtn  = document.getElementById("qr-copy-btn");
+      const copyStatus = document.getElementById("qr-copy-status");
+      const modal = document.getElementById("qr-modal");
+
+      if (closeBtn) closeBtn.addEventListener("click", closeQrModal);
+      if (modal) {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeQrModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !modal.hasAttribute("hidden")) closeQrModal();
+        });
+      }
+
+      if (openBtn) {
+        openBtn.addEventListener("click", () => {
+          if (!currentQrUrl) return;
+          window.open(currentQrUrl, "_blank", "noopener,noreferrer");
+        });
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+          if (!currentQrUrl) return;
+          const ok = await copyToClipboard(currentQrUrl);
+          if (copyStatus) {
+            copyStatus.style.display = ok ? "block" : "block";
+            copyStatus.style.color = ok ? "#BBF7D0" : "#FCA5A5";
+            copyStatus.textContent = ok ? "Lien copié ✔️" : "Impossible de copier (copiez manuellement le lien).";
+          }
+        });
+      }
+
+      listEl.addEventListener("click", (e) => {
+        const qrBtn = e.target.closest(".reservation-qr-btn");
+        if (!qrBtn || qrBtn.hasAttribute("disabled")) return;
+
+        const url = qrBtn.getAttribute("data-qr-url");
+        const title = qrBtn.getAttribute("data-qr-title") || "Réservation Singbox";
+        if (!url) return;
+
+        openQrModal(url, title);
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
       if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
-
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
+        burgerBtn.addEventListener("click", () => { mobileNav.classList.toggle("open"); });
+        mobileNav.addEventListener("click", (e) => { if (e.target.tagName === "A") mobileNav.classList.remove("open"); });
       }
 
       updateCartIcon();
       initLoginForm();
       initLogout();
       initRefundButtons();
+      initQrActions();
       loadProfile();
     });
   </script>
@@ -1806,10 +1861,7 @@
           .insert({ email });
 
         if (error) {
-          if (
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"))
-          ) {
+          if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
             messageBox.style.color = "#38bdf8";
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
           } else {
