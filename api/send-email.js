@@ -2,11 +2,30 @@ const { createClient } = require("@supabase/supabase-js");
 const nodemailer = require("nodemailer");
 const QRCode = require("qrcode");
 
+// ✅ AJOUTS LOGO
+const fs = require("fs");
+const path = require("path");
+
+// ----------------------------------------------------
+// Config Supabase
+// ----------------------------------------------------
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Transport SMTP (Gmail, OVH, etc.)
+if (!supabaseUrl || !supabaseKey) {
+  console.warn("⚠️ SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY manquante");
+}
+
+const supabase =
+  supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+
+// ----------------------------------------------------
+// Config SMTP
+// ----------------------------------------------------
+if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+  console.warn("⚠️ SMTP_HOST / SMTP_USER / SMTP_PASS manquants (envoi mail KO)");
+}
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT) || 587,
@@ -17,6 +36,43 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// ----------------------------------------------------
+// ✅ Helper logo : lit le fichier et renvoie un buffer
+// ----------------------------------------------------
+function getLogoBuffer() {
+  // Option 1 : chemin via env (prod) ex: LOGO_PATH=logo.png ou assets/logo.png
+  if (process.env.LOGO_PATH) {
+    const p = path.resolve(process.cwd(), process.env.LOGO_PATH);
+    if (fs.existsSync(p)) {
+      console.log("✅ Logo trouvé via LOGO_PATH :", p);
+      return fs.readFileSync(p);
+    }
+  }
+
+  // Option 2 : chemins probables
+  const candidates = [
+    path.resolve(process.cwd(), "logo.png"),
+    path.resolve(process.cwd(), "assets", "logo.png"),
+    path.resolve(process.cwd(), "backend", "logo.png"),
+    path.resolve(process.cwd(), "backend", "assets", "logo.png"),
+    path.resolve(__dirname, "logo.png"),
+    path.resolve(__dirname, "..", "logo.png"),
+  ];
+
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      console.log("✅ Logo trouvé :", p);
+      return fs.readFileSync(p);
+    }
+  }
+
+  console.warn("⚠️ Logo introuvable. cwd=", process.cwd(), "dirname=", __dirname);
+  return null;
+}
+
+// ----------------------------------------------------
+// Handler
+// ----------------------------------------------------
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.statusCode = 405;
@@ -24,14 +80,18 @@ module.exports = async (req, res) => {
   }
 
   const { reservationId } = req.body || {};
-
   if (!reservationId) {
     res.statusCode = 400;
     return res.json({ error: "reservationId manquant" });
   }
 
   try {
-    // 1) Récupérer la réservation dans Supabase
+    if (!supabase) {
+      res.statusCode = 500;
+      return res.json({ error: "Supabase non configuré" });
+    }
+
+    // 1) Récupérer la réservation
     const { data: reservation, error } = await supabase
       .from("reservations")
       .select("*")
@@ -50,23 +110,30 @@ module.exports = async (req, res) => {
       return res.json({ error: "Email client manquant sur la réservation" });
     }
 
-    // 2) Générer le QR code (basé sur l'id de réservation)
-    const qrText = reservation.id; // ce qu'on met dans le QR
-    const qrDataUrl = await QRCode.toDataURL(qrText); // "data:image/png;base64,...."
+    // 2) QR code
+    // ✅ Mieux: un lien de check (tu peux remplacer BACKEND_BASE_URL par ton domaine)
+    const backendBase =
+      process.env.BACKEND_BASE_URL || "https://singbox-backend.onrender.com";
+    const qrText = `${backendBase}/api/check?id=${encodeURIComponent(
+      reservation.id
+    )}`;
 
-    // On extrait la partie base64
+    const qrDataUrl = await QRCode.toDataURL(qrText);
     const base64Data = qrDataUrl.split(",")[1];
     const qrBuffer = Buffer.from(base64Data, "base64");
 
-    // 3) Construire l'email
-    const start = reservation.start_time
-      ? new Date(reservation.start_time)
-      : null;
+    // ✅ Logo
+    const logoBuffer = getLogoBuffer();
+    const logoCid = "logo@singbox";
+
+    // 3) Contenu email
+    const start = reservation.start_time ? new Date(reservation.start_time) : null;
     const end = reservation.end_time ? new Date(reservation.end_time) : null;
 
     const formatDateTime = (d) =>
       d
         ? d.toLocaleString("fr-FR", {
+            timeZone: "Europe/Paris",
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
@@ -95,44 +162,81 @@ Votre QR code est en pièce jointe (à présenter à l'entrée).
 `;
 
     const htmlBody = `
-      <p>Bonjour,</p>
-      <p>Votre réservation <strong>Singbox</strong> a bien été enregistrée ✅</p>
-      <p><strong>Détails de votre session :</strong></p>
-      <ul>
-        <li>Box : <strong>${reservation.box_id}</strong></li>
-        <li>Début : <strong>${startStr}</strong></li>
-        <li>Fin : <strong>${endStr}</strong></li>
-      </ul>
-      <p>Votre QR code est ci-dessous et en pièce jointe (à présenter à l'entrée) :</p>
-      <p><img src="cid:qrimage@singbox" alt="QR Code Singbox" /></p>
-      <p>À très vite chez Singbox 🎤</p>
+      <div style="font-family:Arial,sans-serif;line-height:1.5;">
+        ${
+          logoBuffer
+            ? `<p style="margin:0 0 12px 0;">
+                 <img src="cid:${logoCid}" alt="Logo Singbox" width="80"
+                   style="display:block;border-radius:12px;" />
+               </p>`
+            : ""
+        }
+
+        <p>Bonjour,</p>
+        <p>Votre réservation <strong>Singbox</strong> a bien été enregistrée ✅</p>
+
+        <p><strong>Détails de votre session :</strong></p>
+        <ul>
+          <li>Box : <strong>${reservation.box_id}</strong></li>
+          <li>Début : <strong>${startStr}</strong></li>
+          <li>Fin : <strong>${endStr}</strong></li>
+        </ul>
+
+        <p>Présentez ce QR code à l'entrée :</p>
+        <p>
+          <img src="cid:qrimage@singbox" alt="QR Code Singbox"
+            style="max-width:220px;height:auto;border-radius:12px;" />
+        </p>
+
+        <p style="font-size:12px;color:#666;">
+          (Lien contenu dans le QR : ${qrText})
+        </p>
+
+        <p>À très vite chez Singbox 🎤</p>
+      </div>
     `;
 
+    // 4) Pièces jointes inline
+    const attachments = [
+      {
+        filename: "qr-reservation.png",
+        content: qrBuffer,
+        contentType: "image/png",
+        cid: "qrimage@singbox",
+      },
+    ];
+
+    if (logoBuffer) {
+      attachments.push({
+        filename: "logo.png",
+        content: logoBuffer,
+        contentType: "image/png",
+        cid: logoCid,
+      });
+    } else {
+      console.warn(
+        "⚠️ Logo introuvable. Mets LOGO_PATH=logo.png (ou le bon chemin) dans tes variables d'env."
+      );
+    }
+
+    // 5) Envoi
     const mailOptions = {
       from: `"Singbox" <${process.env.SMTP_USER}>`,
       to: toEmail,
       subject,
       text: textBody,
       html: htmlBody,
-      attachments: [
-        {
-          filename: "qr-reservation.png",
-          content: qrBuffer,
-          contentType: "image/png",
-          cid: "qrimage@singbox", // pour l'afficher dans le HTML avec <img src="cid:qrimage@singbox">
-        },
-      ],
+      attachments,
     };
 
-    // 4) Envoi du mail
     await transporter.sendMail(mailOptions);
 
-    console.log("Email envoyé à", toEmail);
+    console.log("✅ Email envoyé à", toEmail);
 
     res.statusCode = 200;
     return res.json({ success: true });
   } catch (e) {
-    console.error("Erreur /api/send-email :", e);
+    console.error("❌ Erreur /api/send-email :", e);
     res.statusCode = 500;
     return res.json({ error: "Erreur lors de l'envoi de l'email" });
   }
