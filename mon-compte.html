@@ -807,37 +807,41 @@
       border: 1px solid rgba(248,250,251,0.12);
     }
 
-    .modal-dialog h2 { font-size: 18px; margin-bottom: 6px; }
-    .modal-dialog p { font-size: 12px; color: var(--sb-text-muted); margin: 0 0 10px; }
+    /* ✅ MODAL: UNIQUEMENT QR + 2 BOUTONS (donc pas de titre/texte visibles) */
+    .modal-dialog h2,
+    .modal-dialog p,
+    .qr-info { display: none !important; }
 
     .qr-grid {
-      display:grid;
-      grid-template-columns: 180px 1fr;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 12px;
-      align-items: start;
+      align-items: center;
+      justify-items: center;
+      margin: 4px 0 10px;
     }
 
-    @media (max-width: 520px) {
-      .qr-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ✅ IMPORTANT : QR SANS ARRONDIS */
+    /* ✅ IMPORTANT : QR PNG, margin=0, >=300x300, sans arrondis, fond blanc */
     .qr-img {
-      width: 180px;
-      height: 180px;
-      border-radius: 0;
-      border: 1px solid rgba(148,163,184,0.45);
-      background: #ffffff;
-      display:block;
+      width: 320px;
+      height: 320px;
+      min-width: 300px;
+      min-height: 300px;
+      border-radius: 0 !important;
+      border: 0 !important;
+      background: #ffffff !important;
+      display: block;
       object-fit: contain;
+      image-rendering: pixelated;
     }
 
-    .qr-info {
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-      min-width:0;
-      justify-content: center;
+    @media (max-width: 360px) {
+      .qr-img {
+        width: 300px;
+        height: 300px;
+        min-width: 300px;
+        min-height: 300px;
+      }
     }
 
     .modal-actions {
@@ -845,7 +849,7 @@
       flex-wrap:wrap;
       gap:8px;
       justify-content:flex-end;
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .modal-btn {
@@ -1106,19 +1110,11 @@
     </div>
   </section>
 
-  <!-- MODAL QR (SANS LIEN AFFICHÉ) -->
+  <!-- MODAL QR (UNIQUEMENT: QR + Fermer + Ouvrir la validation) -->
   <div id="qr-modal" class="modal-backdrop" hidden>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
-      <h2 id="qr-modal-title">Votre QR code de validation</h2>
-      <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil.</p>
-
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="QR code de validation">
       <div class="qr-grid">
         <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
-        <div class="qr-info">
-          <p style="margin:0;color:#9CA3AF;font-size:12px;">
-            Si besoin, vous pouvez aussi ouvrir directement la validation.
-          </p>
-        </div>
       </div>
 
       <div class="modal-actions">
@@ -1191,8 +1187,7 @@
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
 
-    // ✅ Mets ici le bon nom de ta page de validation
-    // Exemple si ton URL est .../validation.html?ref=XXXX
+    // ✅ URL UNIQUE de vérité : validation.html?ref=XXXX
     const VALIDATION_PAGE_PATH = "validation.html";
 
     function updateCartIcon() {
@@ -1291,28 +1286,29 @@
       return hoursBefore >= 24;
     }
 
-    // ✅ Récupère une "référence" utilisable pour le QR / validation
+    // ✅ REF = EXACTEMENT la référence déjà fournie par le backend (paiement/email)
     function getReservationRef(r) {
       return (
-        r.qr_ref ||
-        r.qr_token ||
-        r.validation_token ||
-        r.token ||
-        r.reference ||
-        r.ref ||
         r.payment_reference ||
         r.checkout_reference ||
         r.checkout_ref ||
         r.session_id ||
         r.stripe_session_id ||
+        r.validation_ref ||
+        r.qr_ref ||
+        r.validation_token ||
+        r.qr_token ||
+        r.token ||
+        r.reference ||
+        r.ref ||
         r.uuid ||
         r.id ||
         null
       );
     }
 
-    function buildValidationUrlFromReservation(r) {
-      const ref = getReservationRef(r);
+    // ✅ Source de vérité : URL publique de validation (celle du paiement/email)
+    function buildValidationUrlFromRef(ref) {
       if (!ref) return null;
       const url = new URL(VALIDATION_PAGE_PATH, window.location.origin);
       url.searchParams.set("ref", String(ref));
@@ -1322,27 +1318,33 @@
     /* ===== MODAL QR ===== */
     let currentQrUrl = null;
 
-    function openQrModal(validationUrl, subtitleText) {
+    function qrPngUrlFromValidationUrl(validationUrl) {
+      // ✅ PNG + margin=0 + taille >= 300 + aucun overlay / aucun arrondi
+      return (
+        "https://api.qrserver.com/v1/create-qr-code/?" +
+        "format=png&size=360x360&margin=0&data=" + encodeURIComponent(validationUrl)
+      );
+    }
+
+    function openQrModal(validationUrl) {
       currentQrUrl = validationUrl;
 
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
-      const subtitle = document.getElementById("qr-modal-subtitle");
 
-      if (subtitle && subtitleText) subtitle.textContent = subtitleText;
+      if (img) {
+        img.removeAttribute("src");
+        img.src = qrPngUrlFromValidationUrl(validationUrl);
+      }
 
-      // ✅ QR propre + margin=0 + format png
-      const qrImgUrl =
-        "https://api.qrserver.com/v1/create-qr-code/?format=png&size=360x360&margin=0&data=" +
-        encodeURIComponent(validationUrl);
-
-      if (img) img.src = qrImgUrl;
       if (modal) modal.removeAttribute("hidden");
     }
 
     function closeQrModal() {
       const modal = document.getElementById("qr-modal");
+      const img = document.getElementById("qr-image");
       if (modal) modal.setAttribute("hidden", "true");
+      if (img) img.removeAttribute("src");
       currentQrUrl = null;
     }
 
@@ -1380,7 +1382,8 @@
         if (boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
-        const validationUrl = buildValidationUrlFromReservation(r);
+        const ref = getReservationRef(r);
+        const validationUrl = buildValidationUrlFromRef(ref);
         const canShowQr = !!validationUrl;
 
         let actionsHtml = "";
@@ -1390,7 +1393,6 @@
               <button
                 class="reservation-action-btn reservation-qr-btn"
                 data-qr-url="${validationUrl}"
-                data-qr-title="${(boxName ? "Box " + boxName + " • " : "") + date + (plageHeure ? " • " + plageHeure : "")}"
                 type="button"
               >
                 Afficher le QR
@@ -1720,7 +1722,7 @@
       if (openBtn) {
         openBtn.addEventListener("click", () => {
           if (!currentQrUrl) return;
-          window.location.href = currentQrUrl;
+          window.location.href = currentQrUrl; // ✅ pas de window.open
         });
       }
 
@@ -1732,13 +1734,12 @@
 
         if (qrBtn && !qrBtn.hasAttribute("disabled")) {
           const url = qrBtn.getAttribute("data-qr-url");
-          const title = qrBtn.getAttribute("data-qr-title") || "Présentez ce QR code à l’accueil.";
-          if (url) openQrModal(url, title);
+          if (url) openQrModal(url);
         }
 
         if (openValidationBtn) {
           const url = openValidationBtn.getAttribute("data-open-url");
-          if (url) window.location.href = url;
+          if (url) window.location.href = url; // ✅ redirection directe
         }
       });
     }
