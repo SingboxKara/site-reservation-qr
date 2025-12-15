@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="UTF-8" />
   <title>Réserver votre karaoké box à Toulouse | Singbox</title>
@@ -639,14 +638,13 @@
 
     /* ✅ Réduire la teinte rouge sur les créneaux "Réservé" */
     .slot-booked {
-      background-color: rgba(127, 29, 29, 0.55); /* était #7f1d1d */
+      background-color: rgba(127, 29, 29, 0.55);
       color: #FEE2E2;
       cursor: not-allowed;
     }
 
-    /* (optionnel mais cohérent) dot de légende "Réservé" moins rouge aussi */
     .legend-dot.booked {
-      background-color: rgba(127, 29, 29, 0.55); /* était #7f1d1d */
+      background-color: rgba(127, 29, 29, 0.55);
     }
 
     .slot-selected {
@@ -936,6 +934,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- HEADER -->
@@ -1109,18 +1108,8 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
-        <input
-          id="newsletter-email"
-          type="email"
-          placeholder="Entrez votre adresse e-mail"
-          required
-        />
-        <button
-          id="newsletter-submit"
-          type="button"
-        >
-          S'abonner aux actualités
-        </button>
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" required />
+        <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
       <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
     </div>
@@ -1151,30 +1140,18 @@
       <div class="footer-social">
         <p><strong>Réseaux</strong></p>
 
-        <a
-          href="https://www.instagram.com/singboxtoulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
+        <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer" class="social-link">
           <span class="social-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" ry="5"
-                    fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-              <circle cx="12" cy="12" r="4.2"
-                      fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+              <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+              <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
               <circle cx="17" cy="7" r="1.2" fill="currentColor"></circle>
             </svg>
           </span>
           <span>Instagram</span>
         </a>
 
-        <a
-          href="https://www.tiktok.com/@singbox.toulouse/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="social-link"
-        >
+        <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer" class="social-link">
           <span class="social-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-0.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
@@ -1192,12 +1169,71 @@
 
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+    const SLOT_DURATION_MIN = 90;
+    const SLOT_STEP_MIN = 90; // ✅ pas = 1h30 => plus de chevauchement
 
     function toLocalYMD(dateObj) {
       const y = dateObj.getFullYear();
       const m = String(dateObj.getMonth() + 1).padStart(2, "0");
       const d = String(dateObj.getDate()).padStart(2, "0");
       return `${y}-${m}-${d}`;
+    }
+
+    function pad2(n) { return String(n).padStart(2, "0"); }
+
+    function minutesToTimeLabel(totalMin) {
+      const h = Math.floor((totalMin / 60) % 24);
+      const m = totalMin % 60;
+      if (m === 0) return `${pad2(h)}h`;
+      return `${pad2(h)}h${pad2(m)}`;
+    }
+
+    // ✅ Parse robuste: accepte "HH:MM", "HHhMM", "HHh", ou nombre (heure)
+    function parseTimeToMinutes(value) {
+      if (value === null || value === undefined) return null;
+
+      if (typeof value === "number" && !isNaN(value)) {
+        // ancien format: hour = 0..23
+        if (value >= 0 && value <= 23) return value * 60;
+        // ou déjà des minutes
+        if (value >= 0 && value < 24 * 60) return value;
+        return null;
+      }
+
+      if (typeof value !== "string") return null;
+      const v = value.trim();
+
+      // "HH:MM"
+      let m = v.match(/^(\d{1,2}):(\d{2})$/);
+      if (m) {
+        const hh = parseInt(m[1], 10);
+        const mm = parseInt(m[2], 10);
+        if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) return hh * 60 + mm;
+        return null;
+      }
+
+      // "HHhMM" ou "HHh"
+      m = v.match(/^(\d{1,2})h(\d{2})?$/i);
+      if (m) {
+        const hh = parseInt(m[1], 10);
+        const mm = m[2] ? parseInt(m[2], 10) : 0;
+        if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) return hh * 60 + mm;
+        return null;
+      }
+
+      // "8" (string) => 8h
+      if (/^\d{1,2}$/.test(v)) {
+        const hh = parseInt(v, 10);
+        if (hh >= 0 && hh <= 23) return hh * 60;
+      }
+
+      return null;
+    }
+
+    function getItemStartMinutes(item) {
+      if (!item) return null;
+      if (typeof item.startMinutes === "number") return item.startMinutes;
+      return parseTimeToMinutes(item.hour);
     }
 
     function getPanier() {
@@ -1219,21 +1255,15 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    // Format d'une session de 1h30 à partir de l'heure de début (entier)
-    function formatSlotRange(hour) {
-      const startH = hour;
-      const startLabel = String(startH).padStart(2, "0") + "h";
-
-      const totalMinutesEnd = hour * 60 + 90; // +1h30
-      let endH = Math.floor((totalMinutesEnd / 60) % 24);
-      let endM = totalMinutesEnd % 60;
-      const endLabel =
-        String(endH).padStart(2, "0") + "h" + (endM === 0 ? "" : String(endM).padStart(2, "0"));
-
+    // ✅ Format d'une session de 1h30 à partir de minutes (pas d'overlap)
+    function formatSlotRange(startMinutes) {
+      const startLabel = minutesToTimeLabel(startMinutes);
+      const endTotal = startMinutes + SLOT_DURATION_MIN;
+      const endLabel = minutesToTimeLabel(endTotal);
       return startLabel + "–" + endLabel;
     }
 
-    function addSlotToCart(boxId, boxName, dateObj, hour, price, persons) {
+    function addSlotToCart(boxId, boxName, dateObj, startMinutes, price, persons) {
       const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
 
@@ -1241,24 +1271,29 @@
         item.type === "reservation" &&
         item.boxId === boxId &&
         item.date === isoDate &&
-        item.hour === hour
+        getItemStartMinutes(item) === startMinutes
       );
       if (exists) return;
+
+      // ✅ On stocke un format clair + un champ minutes robuste
+      const startLabel = minutesToTimeLabel(startMinutes);
 
       panier.push({
         type: "reservation",
         boxId,
         boxName,
         date: isoDate,
-        hour,
+        hour: startLabel,        // affichage lisible (ex: "05h30")
+        startMinutes: startMinutes, // clé fiable (ex: 330)
         price,
         persons
       });
+
       savePanier(panier);
       updateCartIcon();
 
       const msgEl = document.getElementById("message");
-      const heureLabel = formatSlotRange(hour);
+      const heureLabel = formatSlotRange(startMinutes);
       const prixAffiche = price.toFixed(2).replace(".", ",");
 
       msgEl.innerHTML = "<span>Session ajoutée au panier : <strong>" +
@@ -1288,7 +1323,6 @@
       const day = dateObj.getDay(); // 0 = dimanche, 6 = samedi
       currentDateIsWeekend = (day === 0 || day === 6);
 
-      // Vacances scolaires ? (appel à ton backend)
       try {
         const res = await fetch(`${API_BASE}/api/is-vacances?date=${isoDate}`);
         if (!res.ok) {
@@ -1309,12 +1343,10 @@
       }
     }
 
-    // Prix par personne pour une session de 1h30 :
-    // 7,90 € en creuse (4h–14h) en semaine hors vacances,
-    // 9,90 € sinon (week-end + vacances scolaires).
-    // Facturation minimale 2 personnes.
-    function getSlotPrice(date, hour, persons) {
+    // Prix par personne (heures creuses = 4h–14h, en semaine hors vacances)
+    function getSlotPrice(date, startMinutes, persons) {
       const nb = persons ? Math.max(persons, 2) : 2;
+      const hour = Math.floor(startMinutes / 60);
 
       let baseRate;
       if (currentDateIsWeekend || currentDateIsHoliday) {
@@ -1353,8 +1385,11 @@
         reservations.forEach(r => {
           const start = new Date(r.start_time);
           const h = start.getHours();
+          const m = start.getMinutes();
+          const startMinutes = h * 60 + m;
+
           const boxId = r.box_id;
-          const key = `${boxId}-${h}`;
+          const key = `${boxId}-${startMinutes}`;
           bookedIndex[key] = true;
         });
       } catch (e) {
@@ -1362,8 +1397,8 @@
       }
     }
 
-    function isSlotBooked(boxId, hour) {
-      const key = `${boxId}-${hour}`;
+    function isSlotBooked(boxId, startMinutes) {
+      const key = `${boxId}-${startMinutes}`;
       return !!bookedIndex[key];
     }
 
@@ -1371,9 +1406,7 @@
       td.classList.remove("slot-free");
       td.classList.add("slot-selected");
       const statusSpan = td.querySelector(".slot-status");
-      if (statusSpan) {
-        statusSpan.textContent = "Dans ton panier";
-      }
+      if (statusSpan) statusSpan.textContent = "Dans ton panier";
       td.onclick = null;
     }
 
@@ -1384,7 +1417,7 @@
 
       const parts = currentSlotChoice.date.split("-");
       const dateStr = parts[2] + "/" + parts[1] + "/" + parts[0];
-      const range = formatSlotRange(currentSlotChoice.hour);
+      const range = formatSlotRange(currentSlotChoice.startMinutes);
 
       if (infoEl) {
         infoEl.textContent =
@@ -1397,9 +1430,7 @@
           currentSlotChoice.persons +
           " pers.";
       }
-      if (personsCurrentEl) {
-        personsCurrentEl.textContent = currentSlotChoice.persons;
-      }
+      if (personsCurrentEl) personsCurrentEl.textContent = currentSlotChoice.persons;
     }
 
     function openSlotModal(slot, td) {
@@ -1408,12 +1439,9 @@
 
       const modal = document.getElementById("slot-modal");
       const personsSelect = document.getElementById("modal-persons-select");
-      if (personsSelect) {
-        personsSelect.value = String(slot.persons);
-      }
+      if (personsSelect) personsSelect.value = String(slot.persons);
 
       updateModalSummary();
-
       if (modal) modal.removeAttribute("hidden");
     }
 
@@ -1427,12 +1455,17 @@
     function finalizeSlot(goToCart) {
       if (!currentSlotChoice) return;
       const s = currentSlotChoice;
-      addSlotToCart(s.boxId, s.boxName, s.dateObj, s.hour, s.price, s.persons);
+      addSlotToCart(s.boxId, s.boxName, s.dateObj, s.startMinutes, s.price, s.persons);
       if (currentSlotCell) markCellSelected(currentSlotCell);
       closeSlotModal();
-      if (goToCart) {
-        window.location.href = "panier.html";
-      }
+      if (goToCart) window.location.href = "panier.html";
+    }
+
+    function buildStartMinutesList() {
+      // ✅ Génère des starts toutes les 90 minutes sur 24h
+      const list = [];
+      for (let m = 0; m < 24 * 60; m += SLOT_STEP_MIN) list.push(m);
+      return list;
     }
 
     function buildPlanningTable(date) {
@@ -1443,7 +1476,7 @@
       currentPlanningDateIso = isoDate;
 
       const panier = getPanier();
-      const hours = Array.from({ length: 24 }, (_, h) => h);
+      const startMinutesList = buildStartMinutesList();
       table.innerHTML = "";
 
       const thead = document.createElement("thead");
@@ -1471,34 +1504,37 @@
         date.getMonth() === now.getMonth() &&
         date.getDate() === now.getDate();
 
-      hours.forEach(hour => {
+      startMinutesList.forEach(startMinutes => {
         const tr = document.createElement("tr");
 
         const hourTd = document.createElement("td");
         hourTd.className = "hour-cell";
-        hourTd.textContent = formatSlotRange(hour);
+        hourTd.textContent = formatSlotRange(startMinutes);
         tr.appendChild(hourTd);
 
         BOXES.forEach(box => {
           const td = document.createElement("td");
           td.classList.add("slot-cell");
           td.dataset.boxId = String(box.id);
-          td.dataset.hour = String(hour);
+          td.dataset.startMinutes = String(startMinutes);
           td.dataset.date = isoDate;
 
           const persons = selectedPersons || 2;
-          const totalPrice = getSlotPrice(date, hour, persons);
+          const totalPrice = getSlotPrice(date, startMinutes, persons);
+
+          const hour = Math.floor(startMinutes / 60);
           const perPersonRate =
             (currentDateIsWeekend || currentDateIsHoliday)
               ? 9.90
               : ((hour >= 4 && hour < 14) ? 7.90 : 9.90);
 
-          const booked = isSlotBooked(box.id, hour);
+          const booked = isSlotBooked(box.id, startMinutes);
 
           let isPastToday = false;
           if (isToday) {
             const nowMinutes = now.getHours() * 60 + now.getMinutes();
-            const slotStartMinutes = hour * 60;
+            const slotStartMinutes = startMinutes;
+            // ✅ on bloque si le slot commence maintenant ou avant
             isPastToday = slotStartMinutes <= nowMinutes;
           }
 
@@ -1516,7 +1552,7 @@
               item.type === "reservation" &&
               item.boxId === box.id &&
               item.date === isoDate &&
-              item.hour === hour
+              getItemStartMinutes(item) === startMinutes
             );
 
             const perPersonStr = perPersonRate.toFixed(2).replace(".", ",");
@@ -1535,9 +1571,7 @@
 
             const statusSpan = document.createElement("span");
             statusSpan.className = "slot-status";
-            statusSpan.textContent = alreadyInCart
-              ? "Dans ton panier"
-              : "Libre";
+            statusSpan.textContent = alreadyInCart ? "Dans ton panier" : "Libre";
             wrapper.appendChild(statusSpan);
 
             if (alreadyInCart) {
@@ -1546,14 +1580,14 @@
               td.classList.add("slot-free");
               td.onclick = function () {
                 const personsForSlot = selectedPersons || 1;
-                const priceForSlot = getSlotPrice(date, hour, personsForSlot);
+                const priceForSlot = getSlotPrice(date, startMinutes, personsForSlot);
 
                 const slotInfo = {
                   boxId: box.id,
                   boxName: box.name,
                   date: isoDate,
                   dateObj: date,
-                  hour,
+                  startMinutes,
                   price: priceForSlot,
                   persons: personsForSlot
                 };
@@ -1602,20 +1636,15 @@
 
       if (dateInput) {
         dateInput.min = isoToday;
-        if (urlDate && urlDate >= isoToday) {
-          dateInput.value = urlDate;
-        } else {
-          dateInput.value = isoToday;
-        }
+        if (urlDate && urlDate >= isoToday) dateInput.value = urlDate;
+        else dateInput.value = isoToday;
       }
 
       if (personsSelect) {
         let initialPersons = 2;
         if (urlPeople) {
           const n = parseInt(urlPeople, 10);
-          if (!isNaN(n) && n >= 1 && n <= 8) {
-            initialPersons = n;
-          }
+          if (!isNaN(n) && n >= 1 && n <= 8) initialPersons = n;
         }
         selectedPersons = initialPersons;
         personsSelect.value = String(initialPersons);
@@ -1647,9 +1676,7 @@
         const todayYMD = toLocalYMD(new Date());
         if (iso < todayYMD) {
           const msg = document.getElementById("message");
-          if (msg) {
-            msg.textContent = "Tu ne peux pas réserver à une date passée 🙂";
-          }
+          if (msg) msg.textContent = "Tu ne peux pas réserver à une date passée 🙂";
           return;
         }
 
@@ -1663,14 +1690,13 @@
         await checkDateContext(iso);
         await fetchReservationsForDate(iso);
         buildPlanningTable(theDate);
+
         const msgEl = document.getElementById("message");
         if (msgEl) msgEl.textContent = "";
       }
 
       if (loadButton) {
-        loadButton.addEventListener("click", () => {
-          refreshPlanning();
-        });
+        loadButton.addEventListener("click", () => refreshPlanning());
       }
 
       // Chargement initial
@@ -1687,22 +1713,13 @@
           if (isNaN(n) || n < 1) n = 1;
           if (n > 8) n = 8;
           currentSlotChoice.persons = n;
-          currentSlotChoice.price = getSlotPrice(currentSlotChoice.dateObj, currentSlotChoice.hour, n);
+          currentSlotChoice.price = getSlotPrice(currentSlotChoice.dateObj, currentSlotChoice.startMinutes, n);
           updateModalSummary();
         });
       }
 
-      if (continueBtn) {
-        continueBtn.addEventListener("click", () => {
-          finalizeSlot(false);
-        });
-      }
-
-      if (cartBtn) {
-        cartBtn.addEventListener("click", () => {
-          finalizeSlot(true);
-        });
-      }
+      if (continueBtn) continueBtn.addEventListener("click", () => finalizeSlot(false));
+      if (cartBtn) cartBtn.addEventListener("click", () => finalizeSlot(true));
     });
   </script>
 
@@ -1712,7 +1729,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
       const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
       const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
       const emailInput = document.getElementById("newsletter-email");
@@ -1738,10 +1754,7 @@
           .insert({ email });
 
         if (error) {
-          if (
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"))
-          ) {
+          if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
             messageBox.style.color = "#38bdf8";
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
           } else {
