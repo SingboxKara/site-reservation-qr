@@ -493,7 +493,6 @@
       min-height: 16px;
       margin: 4px 0 10px;
     }
-
     .account-message.ok { color: #BBF7D0; }
 
     /* ====== RÉSERVATIONS ====== */
@@ -655,7 +654,6 @@
     }
 
     /* Carte fidélité droite */
-
     .loyalty-card h3 { font-size: 18px; margin-bottom: 6px; }
 
     .loyalty-pill {
@@ -696,7 +694,6 @@
     .account-cta a:hover { text-decoration: none; }
 
     /* Bloc login */
-
     .login-card-title { font-size: 18px; margin-bottom: 8px; }
     .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
 
@@ -815,7 +812,7 @@
 
     .qr-grid {
       display:grid;
-      grid-template-columns: 160px 1fr;
+      grid-template-columns: 180px 1fr;
       gap: 12px;
       align-items: start;
     }
@@ -824,12 +821,13 @@
       .qr-grid { grid-template-columns: 1fr; }
     }
 
+    /* ✅ IMPORTANT : QR SANS ARRONDIS */
     .qr-img {
-      width: 160px;
-      height: 160px;
-      border-radius: 16px;
+      width: 180px;
+      height: 180px;
+      border-radius: 0;
       border: 1px solid rgba(148,163,184,0.45);
-      background: #0b1228;
+      background: #ffffff;
       display:block;
       object-fit: contain;
     }
@@ -839,16 +837,7 @@
       flex-direction:column;
       gap: 8px;
       min-width:0;
-    }
-
-    .qr-link-box {
-      background: #0b1228;
-      border: 1px solid rgba(148,163,184,0.35);
-      border-radius: 14px;
-      padding: 10px;
-      font-size: 12px;
-      color: #E5E7EB;
-      overflow-wrap: anywhere;
+      justify-content: center;
     }
 
     .modal-actions {
@@ -883,14 +872,6 @@
       background: transparent;
       color: #E5E7EB;
       border: 1px solid rgba(148,163,184,0.6);
-    }
-
-    .modal-copy-status {
-      font-size: 12px;
-      color: #BBF7D0;
-      min-height: 16px;
-      margin-top: 8px;
-      display:none;
     }
 
     /* ======================= FOOTER ======================= */
@@ -1002,9 +983,7 @@
         <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-          ☰
-        </button>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">☰</button>
       </div>
     </div>
   </header>
@@ -1028,20 +1007,17 @@
         <p class="account-header-eyebrow">Espace client</p>
         <h1>Mon compte Singbox</h1>
         <p>
-          Consultez vos prochaines réservations, l’historique de vos séances,
-          votre solde de points de fidélité et récupérez votre QR code de validation.
+          Consultez vos réservations, vos points de fidélité et récupérez votre QR code de validation.
         </p>
       </div>
 
       <div class="account-layout">
-        <!-- Colonne gauche : login + infos -->
         <div class="account-left">
           <!-- Bloc connexion (visible si non connecté) -->
           <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
             <h2 class="login-card-title">Se connecter</h2>
             <p class="login-description">
-              Connectez-vous pour retrouver vos prochaines réservations, l’historique de vos séances
-              et votre solde de points de fidélité.
+              Connectez-vous pour retrouver vos réservations et votre solde de points.
             </p>
 
             <form id="login-form">
@@ -1067,7 +1043,6 @@
           <!-- Carte principale -->
           <div class="card account-main-card">
             <h2>Mes informations</h2>
-
             <p class="account-message" id="account-message"></p>
 
             <div>
@@ -1098,7 +1073,7 @@
             </div>
 
             <p class="account-subtext">
-              Astuce : vous pouvez ouvrir la page de validation ou afficher le QR code directement depuis cette page “Mon compte”.
+              Astuce : vous pouvez afficher le QR et ouvrir la validation depuis vos réservations ci-dessus.
             </p>
 
             <div class="logout-row">
@@ -1107,7 +1082,7 @@
           </div>
         </div>
 
-        <!-- Carte fidélité / info -->
+        <!-- Carte fidélité -->
         <div class="card loyalty-card">
           <div class="loyalty-pill">
             <span>♪</span>
@@ -1115,8 +1090,7 @@
           </div>
           <h3>Comment ça marche&nbsp;?</h3>
           <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
-          <p>À 100 points, vous débloquez une séance offerte à utiliser sur une prochaine réservation (selon disponibilité).</p>
-          <p>Par exemple : une réservation = 10 points. Au bout de 10 réservations, vous obtenez une séance offerte.</p>
+          <p>À 100 points, vous débloquez une séance offerte (selon disponibilité).</p>
           <p class="loyalty-highlight" id="loyalty-highlight-text">
             Il vous reste – points avant votre prochaine séance offerte.
           </p>
@@ -1125,27 +1099,25 @@
           </p>
 
           <p class="account-cta" id="not-logged-cta" style="display:none;">
-            Vous n’êtes pas connecté. Vous pouvez vous connecter ci-contre ou créer un compte
-            lors de votre prochaine réservation depuis la page
-            <a href="panier.html">Panier &amp; Paiement</a>.
+            Vous n’êtes pas connecté. Connectez-vous ou créez un compte lors de votre prochaine réservation.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- MODAL QR -->
+  <!-- MODAL QR (SANS LIEN AFFICHÉ) -->
   <div id="qr-modal" class="modal-backdrop" hidden>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
       <h2 id="qr-modal-title">Votre QR code de validation</h2>
-      <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil (ou ouvrez la page de validation).</p>
+      <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil.</p>
 
       <div class="qr-grid">
         <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
         <div class="qr-info">
-          <div class="qr-link-box" id="qr-link-box"></div>
-          <button class="modal-btn modal-btn-secondary" id="qr-copy-btn" type="button">Copier le lien</button>
-          <div class="modal-copy-status" id="qr-copy-status">Lien copié ✔️</div>
+          <p style="margin:0;color:#9CA3AF;font-size:12px;">
+            Si besoin, vous pouvez aussi ouvrir directement la validation.
+          </p>
         </div>
       </div>
 
@@ -1219,8 +1191,8 @@
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
 
-    // ✅ Page de validation (celle que ton QR code ouvre)
-    // Si ta page a un autre nom (ex: validation-qr.html), change ici.
+    // ✅ Mets ici le bon nom de ta page de validation
+    // Exemple si ton URL est .../validation.html?ref=XXXX
     const VALIDATION_PAGE_PATH = "validation.html";
 
     function updateCartIcon() {
@@ -1241,11 +1213,10 @@
       }
 
       const next = Math.max(0, 100 - points);
-      if (next === 0) {
-        el.textContent = "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte 🎉";
-      } else {
-        el.textContent = `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
-      }
+      el.textContent =
+        next === 0
+          ? "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte."
+          : `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
     }
 
     function setReservationsNotLogged() {
@@ -1265,7 +1236,7 @@
 
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
-      if (msgEl) { msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus pour accéder à vos infos."; msgEl.classList.remove("ok"); }
+      if (msgEl) { msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus."; msgEl.classList.remove("ok"); }
       if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
       if (notLoggedCta) notLoggedCta.style.display = "block";
       if (loginCard) loginCard.style.display = "block";
@@ -1295,8 +1266,8 @@
       if (isNaN(start.getTime())) return "";
 
       const DUREE_MS = 90 * 60 * 1000;
-
       let end;
+
       if (r.end_time) {
         end = new Date(r.end_time);
         if (isNaN(end.getTime())) end = new Date(start.getTime() + DUREE_MS);
@@ -1320,7 +1291,7 @@
       return hoursBefore >= 24;
     }
 
-    // ✅ Récupère une "référence" utilisable pour le QR / validation (selon ce que renvoie ton API)
+    // ✅ Récupère une "référence" utilisable pour le QR / validation
     function getReservationRef(r) {
       return (
         r.qr_ref ||
@@ -1343,12 +1314,12 @@
     function buildValidationUrlFromReservation(r) {
       const ref = getReservationRef(r);
       if (!ref) return null;
-      const base = new URL(VALIDATION_PAGE_PATH, window.location.origin);
-      base.searchParams.set("ref", String(ref));
-      return base.toString();
+      const url = new URL(VALIDATION_PAGE_PATH, window.location.origin);
+      url.searchParams.set("ref", String(ref));
+      return url.toString();
     }
 
-    // ✅ QR Modal helpers
+    /* ===== MODAL QR ===== */
     let currentQrUrl = null;
 
     function openQrModal(validationUrl, subtitleText) {
@@ -1356,21 +1327,16 @@
 
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
-      const linkBox = document.getElementById("qr-link-box");
       const subtitle = document.getElementById("qr-modal-subtitle");
-      const copyStatus = document.getElementById("qr-copy-status");
 
       if (subtitle && subtitleText) subtitle.textContent = subtitleText;
-      if (copyStatus) { copyStatus.style.display = "none"; }
 
-      // QR via service image (simple, robuste)
+      // ✅ QR propre + margin=0 + format png
       const qrImgUrl =
-        "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
+        "https://api.qrserver.com/v1/create-qr-code/?format=png&size=360x360&margin=0&data=" +
         encodeURIComponent(validationUrl);
 
       if (img) img.src = qrImgUrl;
-      if (linkBox) linkBox.textContent = validationUrl;
-
       if (modal) modal.removeAttribute("hidden");
     }
 
@@ -1380,36 +1346,12 @@
       currentQrUrl = null;
     }
 
-    async function copyToClipboard(text) {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return true;
-        }
-      } catch (_) {}
-      // fallback
-      try {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
-        const ok = document.execCommand("copy");
-        document.body.removeChild(ta);
-        return !!ok;
-      } catch (_) {
-        return false;
-      }
-    }
-
     function renderReservations(reservations) {
       const listEl = document.getElementById("reservations-list");
       if (!listEl) return;
 
       if (!reservations || !reservations.length) {
-        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment. Réservez votre première séance depuis la page "Réservation".</p>';
+        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment.</p>';
         return;
       }
 
@@ -1419,7 +1361,6 @@
         item.className = "reservation-item";
 
         const startTimeIso = r.start_time || r.datetime || null;
-
         const date = formatReservationDate(r.date || startTimeIso);
         const plageHeure = formatReservationHoursFromReservation(r);
 
@@ -1439,13 +1380,9 @@
         if (boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
-        const hasValidStart = !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
-        const isInFuture = hasValidStart && new Date(startTimeIso).getTime() > Date.now();
-
         const validationUrl = buildValidationUrlFromReservation(r);
-        const canShowQr = !!validationUrl && (statutClass === "reservation-status-confirmed" || statutClass === "reservation-status-pending");
+        const canShowQr = !!validationUrl;
 
-        // ✅ actions QR / validation (en plus du remboursement)
         let actionsHtml = "";
         if (canShowQr) {
           actionsHtml = `
@@ -1456,21 +1393,19 @@
                 data-qr-title="${(boxName ? "Box " + boxName + " • " : "") + date + (plageHeure ? " • " + plageHeure : "")}"
                 type="button"
               >
-                Voir QR code
+                Afficher le QR
               </button>
-              <a
+
+              <button
                 class="reservation-action-btn reservation-validate-btn"
-                href="${validationUrl}"
-                target="_blank"
-                rel="noopener noreferrer"
-                style="display:inline-flex;align-items:center;justify-content:center;"
+                data-open-url="${validationUrl}"
+                type="button"
               >
-                Ouvrir validation
-              </a>
+                Ouvrir la validation
+              </button>
             </div>
           `;
-        } else if ((statutClass === "reservation-status-confirmed" || statutClass === "reservation-status-pending")) {
-          // On indique juste s'il manque la ref dans la réponse API
+        } else {
           actionsHtml = `
             <div class="reservation-actions-row">
               <button class="reservation-action-btn reservation-qr-btn" type="button" disabled>
@@ -1480,7 +1415,10 @@
           `;
         }
 
-        // bloc remboursement
+        // remboursement (inchangé)
+        const hasValidStart = !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
+        const isInFuture = hasValidStart && new Date(startTimeIso).getTime() > Date.now();
+
         let refundHtml = "";
         if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
           if (isRefundPossible(startTimeIso)) {
@@ -1514,6 +1452,7 @@
               ${statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : ""}
             </div>
           </div>
+
           ${actionsHtml}
           ${refundHtml}
         `;
@@ -1630,7 +1569,7 @@
           }
 
           localStorage.setItem("token", data.token);
-          if (loginMsg) { loginMsg.textContent = "Connexion réussie ✔️"; loginMsg.classList.add("ok"); }
+          if (loginMsg) { loginMsg.textContent = "Connexion réussie."; loginMsg.classList.add("ok"); }
           loadProfile();
         } catch (err) {
           console.error(err);
@@ -1673,10 +1612,10 @@
 
             if (loginRes.ok && loginData.token) {
               localStorage.setItem("token", loginData.token);
-              if (loginMsg) { loginMsg.textContent = "Compte créé et connecté ✔️"; loginMsg.classList.add("ok"); }
+              if (loginMsg) { loginMsg.textContent = "Compte créé et connecté."; loginMsg.classList.add("ok"); }
               loadProfile();
             } else {
-              if (loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué. Essayez de vous connecter avec vos identifiants.";
+              if (loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué.";
             }
           } catch (err) {
             console.error(err);
@@ -1759,55 +1698,48 @@
       });
     }
 
-    // ✅ Gestion QR/validation depuis le compte
+    // ✅ Gestion QR/validation (liste + modal)
     function initQrActions() {
       const listEl = document.getElementById("reservations-list");
-      if (!listEl) return;
-
       const closeBtn = document.getElementById("qr-close-btn");
       const openBtn  = document.getElementById("qr-open-btn");
-      const copyBtn  = document.getElementById("qr-copy-btn");
-      const copyStatus = document.getElementById("qr-copy-status");
       const modal = document.getElementById("qr-modal");
 
       if (closeBtn) closeBtn.addEventListener("click", closeQrModal);
+
       if (modal) {
         modal.addEventListener("click", (e) => {
           if (e.target === modal) closeQrModal();
         });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && !modal.hasAttribute("hidden")) closeQrModal();
-        });
       }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal && !modal.hasAttribute("hidden")) closeQrModal();
+      });
 
       if (openBtn) {
         openBtn.addEventListener("click", () => {
           if (!currentQrUrl) return;
-          window.open(currentQrUrl, "_blank", "noopener,noreferrer");
+          window.location.href = currentQrUrl;
         });
       }
 
-      if (copyBtn) {
-        copyBtn.addEventListener("click", async () => {
-          if (!currentQrUrl) return;
-          const ok = await copyToClipboard(currentQrUrl);
-          if (copyStatus) {
-            copyStatus.style.display = ok ? "block" : "block";
-            copyStatus.style.color = ok ? "#BBF7D0" : "#FCA5A5";
-            copyStatus.textContent = ok ? "Lien copié ✔️" : "Impossible de copier (copiez manuellement le lien).";
-          }
-        });
-      }
+      if (!listEl) return;
 
       listEl.addEventListener("click", (e) => {
         const qrBtn = e.target.closest(".reservation-qr-btn");
-        if (!qrBtn || qrBtn.hasAttribute("disabled")) return;
+        const openValidationBtn = e.target.closest(".reservation-validate-btn");
 
-        const url = qrBtn.getAttribute("data-qr-url");
-        const title = qrBtn.getAttribute("data-qr-title") || "Réservation Singbox";
-        if (!url) return;
+        if (qrBtn && !qrBtn.hasAttribute("disabled")) {
+          const url = qrBtn.getAttribute("data-qr-url");
+          const title = qrBtn.getAttribute("data-qr-title") || "Présentez ce QR code à l’accueil.";
+          if (url) openQrModal(url, title);
+        }
 
-        openQrModal(url, title);
+        if (openValidationBtn) {
+          const url = openValidationBtn.getAttribute("data-open-url");
+          if (url) window.location.href = url;
+        }
       });
     }
 
@@ -1863,14 +1795,14 @@
         if (error) {
           if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
             messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
           } else {
             messageBox.style.color = "#ff6b6b";
             messageBox.textContent = "Erreur : " + error.message;
           }
         } else {
           messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          messageBox.textContent = "Merci ! Vous êtes inscrit.";
           emailInput.value = "";
         }
       });
