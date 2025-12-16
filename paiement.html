@@ -2103,6 +2103,14 @@
   let stripe = null;
   let cardElement = null;
 
+  // ✅ NEW : infos carte enregistrée
+  let savedCardState = {
+    enabled: false,
+    defaultPaymentMethodId: null,
+    card: null,
+    methods: []
+  };
+
   let currentPromo = null;
   let loyaltyUsed = false;
   let currentTotals = {
@@ -2356,6 +2364,160 @@
     currentTotals = { totalTTCNoDiscount, discount, finalTotalTTC };
   }
 
+  // =========================
+  // ✅ NEW : UI carte enregistrée
+  // =========================
+  function renderSavedCardUI() {
+    const block = document.getElementById("saved-card-block");
+    if (!block) return;
+
+    const summary = document.getElementById("saved-card-summary");
+    const payToggle = document.getElementById("pay-with-saved-card");
+    const saveBtn = document.getElementById("save-card-btn");
+    const msg = document.getElementById("save-card-msg");
+
+    const logged = !!getToken();
+
+    if (!logged) {
+      block.style.display = "none";
+      return;
+    }
+
+    // On affiche le bloc si connecté (même si pas de carte, pour montrer "Enregistrer ma carte")
+    block.style.display = "block";
+
+    // Résumé
+    const card = savedCardState.card;
+    if (summary) {
+      if (card && card.last4) {
+        summary.textContent = `Carte enregistrée : ${card.brand || "carte"} •••• ${card.last4} (exp. ${card.exp_month}/${card.exp_year})`;
+      } else {
+        summary.textContent = "Aucune carte enregistrée pour le moment.";
+      }
+    }
+
+    // Toggle payer avec carte enregistrée : activable seulement si on a une carte
+    if (payToggle) {
+      payToggle.disabled = !(card && card.last4);
+      if (payToggle.disabled) payToggle.checked = false;
+    }
+
+    if (msg) msg.textContent = "";
+    if (saveBtn) saveBtn.disabled = false;
+  }
+
+  async function loadSavedCardStateFromMe() {
+    if (!getToken()) return;
+
+    const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (payment)" });
+    if (!r.ok || !r.data) return;
+
+    const payment = r.data.payment || {};
+    const card = payment.card || null;
+
+    savedCardState.card = card;
+    savedCardState.defaultPaymentMethodId = payment.default_payment_method_id || null;
+  }
+
+  async function refreshPaymentMethods() {
+    if (!getToken()) return;
+    const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods" });
+    if (!r.ok || !r.data) return;
+
+    savedCardState.methods = r.data.methods || [];
+    savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
+
+    // si pas de card en /api/me, on peut fallback sur la défaut Stripe
+    if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
+      const found = savedCardState.methods.find((m) => m.id === savedCardState.defaultPaymentMethodId);
+      if (found) savedCardState.card = found;
+    }
+  }
+
+  async function handleSaveCard() {
+    const msg = document.getElementById("save-card-msg");
+    const btn = document.getElementById("save-card-btn");
+    const payToggle = document.getElementById("pay-with-saved-card");
+
+    if (!getToken()) {
+      if (msg) msg.textContent = "Connectez-vous pour enregistrer une carte.";
+      return;
+    }
+    if (!stripe) {
+      if (msg) msg.textContent = "Stripe n’est pas initialisé.";
+      return;
+    }
+
+    try {
+      if (btn) btn.disabled = true;
+      if (msg) msg.textContent = "Préparation de l’enregistrement…";
+
+      // 1) SetupIntent
+      const si = await apiFetch("/api/create-setup-intent", { method: "POST" }, { auth: true, ctx: "POST /api/create-setup-intent" });
+      if (!si.ok || !si.data || !si.data.clientSecret) {
+        if (msg) msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // 2) on utilise le même cardElement déjà monté
+      const setupRes = await stripe.confirmCardSetup(si.data.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: (document.getElementById("prenom")?.value || "").trim() + " " + (document.getElementById("nom")?.value || "").trim(),
+            email: (document.getElementById("email")?.value || "").trim()
+          }
+        }
+      });
+
+      if (setupRes.error) {
+        if (msg) msg.textContent = setupRes.error.message || "Erreur lors de l’enregistrement de la carte.";
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      const paymentMethodId = setupRes.setupIntent && setupRes.setupIntent.payment_method;
+      if (!paymentMethodId) {
+        if (msg) msg.textContent = "Enregistrement incomplet (payment_method manquant).";
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      if (msg) msg.textContent = "Finalisation…";
+
+      // 3) set default + sauvegarde Supabase
+      const sd = await apiFetch(
+        "/api/set-default-payment-method",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentMethodId })
+        },
+        { auth: true, ctx: "POST /api/set-default-payment-method" }
+      );
+
+      if (!sd.ok) {
+        if (msg) msg.textContent = "Carte enregistrée, mais impossible de la définir par défaut.";
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // Refresh état
+      savedCardState.card = null;
+      await loadSavedCardStateFromMe();
+      await refreshPaymentMethods();
+      renderSavedCardUI();
+
+      if (msg) msg.textContent = "Carte enregistrée ✔️";
+      if (payToggle && !payToggle.disabled) payToggle.checked = true;
+    } catch (e) {
+      if (msg) msg.textContent = "Erreur : " + (e?.message || "inconnue");
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", async function () {
     const burgerBtn = document.getElementById("burger-button");
     const mobileNav = document.getElementById("mobile-nav");
@@ -2469,6 +2631,18 @@
 
     await prefillFromBackendIfLogged();
 
+    // =========================
+    // ✅ NEW : init carte enregistrée
+    // =========================
+    await loadSavedCardStateFromMe();
+    await refreshPaymentMethods();
+    renderSavedCardUI();
+
+    const saveCardBtn = document.getElementById("save-card-btn");
+    if (saveCardBtn) {
+      saveCardBtn.addEventListener("click", handleSaveCard);
+    }
+
     // 2) Autosave local (debounce)
     let _saveTimer = null;
     function scheduleSave() {
@@ -2507,7 +2681,6 @@
       if (r.ok) {
         _lastDbPayload = payloadStr;
       } else {
-        // on ne spam pas l’erreur
         console.warn("Autosave profil échoué:", r.status, r.data);
       }
     }
@@ -2845,6 +3018,7 @@
         console.error("Erreur confirm-reservation :", e);
       }
 
+      // caution : inchangé, toujours via cardElement (simple)
       try {
         const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
           method: "POST",
@@ -2993,35 +3167,49 @@
             ? 0
             : Math.round((currentTotals.finalTotalTTC || 0) * 100);
 
+        // ✅ NEW : payer avec carte enregistrée ?
+        const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
+
         submitBtn.disabled = true;
         const originalLabel = submitBtn.textContent;
         submitBtn.textContent = "Paiement en cours...";
 
         try {
+          // =============================
+          // 1) Create PaymentIntent (normal OU saved-card 1 clic)
+          // =============================
+          const body = {
+            panier,
+            customer: {
+              prenom: document.getElementById("prenom").value.trim(),
+              nom: document.getElementById("nom").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              telephone: document.getElementById("telephone").value.trim(),
+              pays: document.getElementById("pays").value,
+              adresse: document.getElementById("adresse").value.trim(),
+              complement: document.getElementById("complement").value.trim(),
+              cp: document.getElementById("cp").value.trim(),
+              ville: document.getElementById("ville").value.trim(),
+              naissance: document.getElementById("naissance").value
+            },
+            promoCode,
+            finalAmountCents,
+            loyaltyUsed
+          };
+
+          if (payWithSaved) {
+            body.useSavedPaymentMethod = true;
+            // optionnel : tu peux forcer un PM
+            // body.paymentMethodId = savedCardState.defaultPaymentMethodId;
+          }
+
           const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
             method: "POST",
             headers: authHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify({
-              panier,
-              customer: {
-                prenom: document.getElementById("prenom").value.trim(),
-                nom: document.getElementById("nom").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                telephone: document.getElementById("telephone").value.trim(),
-                pays: document.getElementById("pays").value,
-                adresse: document.getElementById("adresse").value.trim(),
-                complement: document.getElementById("complement").value.trim(),
-                cp: document.getElementById("cp").value.trim(),
-                ville: document.getElementById("ville").value.trim(),
-                naissance: document.getElementById("naissance").value
-              },
-              promoCode,
-              finalAmountCents,
-              loyaltyUsed
-            })
+            body: JSON.stringify(body)
           });
 
-          const json = await res.json();
+          const json = await res.json().catch(() => ({}));
 
           if (!res.ok) {
             const msg = json.error || "Erreur lors de la création du paiement.";
@@ -3046,6 +3234,61 @@
             return;
           }
 
+          // =============================
+          // 2) Paiement : si saved-card => PI est déjà "confirm" côté backend
+          //    - si requires_action => on fait confirmCardPayment(clientSecret)
+          //    - sinon => on récup PI via confirmCardPayment quand même (safe), ou on bypass
+          // =============================
+          if (payWithSaved) {
+            // Si backend a indiqué requiresAction, on déclenche 3DS ici
+            if (json.requiresAction) {
+              const actionRes = await stripe.confirmCardPayment(json.clientSecret);
+              if (actionRes.error) {
+                if (errorEl) errorEl.textContent = actionRes.error.message;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalLabel;
+                return;
+              }
+              if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
+                if (successEl) successEl.textContent = "Paiement accepté ✔️";
+                await processReservationAndDeposit({ isFree: false, paymentIntentId: actionRes.paymentIntent.id });
+              } else {
+                if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+              }
+            } else {
+              // Paiement déjà fait côté backend (souvent succeeded)
+              // On essaye de récupérer un id fiable :
+              const paymentIntentId = json.paymentIntentId || null;
+
+              if (!paymentIntentId) {
+                // fallback : tente confirmCardPayment (ne devrait rien faire si déjà succeeded)
+                const fallbackRes = await stripe.confirmCardPayment(json.clientSecret);
+                if (fallbackRes.error) {
+                  if (errorEl) errorEl.textContent = fallbackRes.error.message;
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = originalLabel;
+                  return;
+                }
+                if (fallbackRes.paymentIntent && fallbackRes.paymentIntent.status === "succeeded") {
+                  if (successEl) successEl.textContent = "Paiement accepté ✔️";
+                  await processReservationAndDeposit({ isFree: false, paymentIntentId: fallbackRes.paymentIntent.id });
+                } else {
+                  if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+                }
+              } else {
+                if (successEl) successEl.textContent = "Paiement accepté ✔️";
+                await processReservationAndDeposit({ isFree: false, paymentIntentId });
+              }
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+            return;
+          }
+
+          // =============================
+          // Flow normal : saisie CB + confirmCardPayment (inchangé)
+          // =============================
           const result = await stripe.confirmCardPayment(json.clientSecret, {
             payment_method: {
               card: cardElement,
