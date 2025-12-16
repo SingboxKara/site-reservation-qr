@@ -34,7 +34,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="manifest" href="/site.webmanifest" />
 
   <!-- Données structurées JSON-LD -->
   <script type="application/ld+json">
@@ -2042,10 +2041,12 @@
   const QR_CHECK_BASE_URL = `${API_BASE_URL}/api/check`;
 
   // ✅ helper headers auth
-  function authHeaders(base = {}) {
-    const token = localStorage.getItem("token");
-    return token ? { ...base, Authorization: "Bearer " + token } : base;
-  }
+  function authHeaders(extra = {}) {
+  const token = localStorage.getItem("token");
+  return token
+    ? { ...extra, Authorization: "Bearer " + token }
+    : extra;
+}
 
   let stripe = null;
   let cardElement = null;
@@ -2449,10 +2450,10 @@
           };
 
           await fetch(`${API_BASE_URL}/api/me`, {
-            method: "POST",
-            headers: authHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify(payload)
-          });
+  method: "POST",
+  headers: authHeaders({ "Content-Type": "application/json" }),
+  body: JSON.stringify(payload)
+});
         } catch (e) {
           console.warn("Autosave profil /api/me échoué :", e);
         }
@@ -2476,23 +2477,19 @@
     /* ----------------------------------------------------------
        PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
     ---------------------------------------------------------- */
-    async function fetchUserPoints() {
-      const token = localStorage.getItem("token");
-      if (!token) return null;
+  async function fetchUserPoints() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/me`, {
+      headers: authHeaders()
+    });
 
-      try {
-        const res = await fetch(`${API_BASE_URL}/api/me`, {
-          headers: authHeaders()
-        });
-
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.points || 0;
-      } catch (err) {
-        console.error("Erreur points fidélité :", err);
-        return null;
-      }
-    }
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.points ?? 0;
+  } catch {
+    return null;
+  }
+}
 
     async function initLoyalty() {
       const loyaltyBlock = document.getElementById("loyalty-block");
