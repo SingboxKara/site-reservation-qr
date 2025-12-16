@@ -2852,30 +2852,32 @@
       stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
 const elements = stripe.elements({
+  // appearance peut rester, mais ce n’est pas lui qui forcera le Card Element
   appearance: {
     theme: "night",
     variables: {
       colorPrimary: "#F97316",
       colorBackground: "#020617",
-      colorText: "#F9FAFB",              // ✅ texte principal (numéro de carte)
-      colorTextSecondary: "#E5E7EB",
+      colorText: "#F9FAFB",
       colorTextPlaceholder: "#9CA3AF",
-      colorIcon: "#F9FAFB",
-      colorDanger: "#FCA5A5",
       fontFamily: "Montserrat, system-ui, sans-serif",
-      borderRadius: "14px"
+      borderRadius: "14px",
+    }
+  }
+});
+
+cardElement = elements.create("card", {
+  hidePostalCode: true,
+  style: {
+    base: {
+      color: "#F9FAFB", // ✅ force le texte en blanc
+      fontFamily: "Montserrat, system-ui, sans-serif",
+      fontSize: "14px",
+      "::placeholder": { color: "#9CA3AF" },
+      iconColor: "#F9FAFB",
     },
-    rules: {
-      ".Input": {
-        color: "#F9FAFB",               // ✅ force le texte en blanc
-        backgroundColor: "transparent"
-      },
-      ".Input::placeholder": {
-        color: "#9CA3AF"
-      },
-      ".Label": {
-        color: "#E5E7EB"
-      }
+    invalid: {
+      color: "#FCA5A5"
     }
   }
 });
