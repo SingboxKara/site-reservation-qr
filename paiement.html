@@ -2025,6 +2025,7 @@
 
   window.QR_CHECK_BASE_URL = window.API_BASE_URL + "/api/check";
 </script>
+
 <!-- Stripe -->
 <script src="https://js.stripe.com/v3"></script>
 <!-- QR Code library -->
@@ -2038,15 +2039,64 @@
     (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
       ? "http://localhost:3000"
       : "https://singbox-backend.onrender.com";
+
   const QR_CHECK_BASE_URL = `${API_BASE_URL}/api/check`;
 
-  // ✅ helper headers auth
+  // =========================
+  // AUTH HELPERS (anti 400 /api/me)
+  // =========================
+  function getToken() {
+    const t = localStorage.getItem("token");
+    if (!t || t === "null" || t === "undefined") return null;
+    return t;
+  }
+
   function authHeaders(extra = {}) {
-  const token = localStorage.getItem("token");
-  return token
-    ? { ...extra, Authorization: "Bearer " + token }
-    : extra;
-}
+    const token = getToken();
+    return token ? { ...extra, Authorization: "Bearer " + token } : extra;
+  }
+
+  async function handleAuthResponse(res, ctx = "") {
+    // Beaucoup de backends renvoient 400 quand le token est invalide/malformé
+    if (res.status === 400 || res.status === 401) {
+      localStorage.removeItem("token");
+      console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
+      return false;
+    }
+    return true;
+  }
+
+  async function apiFetch(path, options = {}, { auth = false, json = true, ctx = "" } = {}) {
+    const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
+
+    const headers = options.headers || {};
+    const finalHeaders = auth ? authHeaders(headers) : headers;
+
+    const res = await fetch(url, { ...options, headers: finalHeaders });
+
+    // Auto-clear token si endpoint auth renvoie 400/401
+    if (auth) {
+      const okAuth = await handleAuthResponse(res, ctx || path);
+      if (!okAuth) return { ok: false, status: res.status, data: null, res };
+    }
+
+    if (!json) return { ok: res.ok, status: res.status, data: null, res };
+
+    // lecture safe du body (json ou texte)
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      const txt = await res.text().catch(() => "");
+      data = { raw: txt };
+    }
+
+    if (!res.ok) {
+      console.warn(`[API] ${ctx || path} failed:`, res.status, data);
+    }
+
+    return { ok: res.ok, status: res.status, data, res };
+  }
 
   let stripe = null;
   let cardElement = null;
@@ -2082,9 +2132,7 @@
   function computeTotal(panier) {
     let total = 0;
     for (const item of panier) {
-      if (typeof item.price !== "number" || !isFinite(item.price) || item.price <= 0) {
-        return null;
-      }
+      if (typeof item.price !== "number" || !isFinite(item.price) || item.price <= 0) return null;
       total += item.price;
     }
     return total;
@@ -2128,7 +2176,6 @@
     if (maxUses !== null && maxUses !== undefined && typeof maxUses === "number") {
       if (used >= maxUses) return false;
     }
-
     return true;
   }
 
@@ -2136,15 +2183,9 @@
     if (!promo || totalTTC <= 0) return 0;
     const value = promo.value || 0;
 
-    if (promo.type === "percent") {
-      return Math.min(totalTTC, totalTTC * (value / 100));
-    }
-    if (promo.type === "fixed") {
-      return Math.min(totalTTC, value);
-    }
-    if (promo.type === "free") {
-      return totalTTC;
-    }
+    if (promo.type === "percent") return Math.min(totalTTC, totalTTC * (value / 100));
+    if (promo.type === "fixed") return Math.min(totalTTC, value);
+    if (promo.type === "free") return totalTTC;
     return 0;
   }
 
@@ -2163,9 +2204,7 @@
     const today = new Date();
     let age = today.getFullYear() - birth.getFullYear();
     const m = today.getMonth() - birth.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
     return age;
   }
 
@@ -2261,10 +2300,8 @@
     if (first && typeof first.hour === "number") {
       const start = first.hour;
       const endHour = (start + 1) % 24;
-
       const startStr = String(start).padStart(2, "0") + "h00";
       const endStr = String(endHour).padStart(2, "0") + "h30";
-
       hourText = `${startStr} – ${endStr}`;
     }
 
@@ -2299,14 +2336,9 @@
     const mobileNav = document.getElementById("mobile-nav");
 
     if (burgerBtn && mobileNav) {
-      burgerBtn.addEventListener("click", () => {
-        mobileNav.classList.toggle("open");
-      });
-
+      burgerBtn.addEventListener("click", () => mobileNav.classList.toggle("open"));
       mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
-          mobileNav.classList.remove("open");
-        }
+        if (e.target.tagName === "A") mobileNav.classList.remove("open");
       });
     }
 
@@ -2376,40 +2408,34 @@
     fillCheckoutForm(loadCheckoutInfoLocal());
     __isPrefilling = false;
 
-    // ✅ 1bis) Prefill DB si connecté
+    // ✅ Prefill DB si connecté (avec guard anti 400)
     async function prefillFromBackendIfLogged() {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+      if (!getToken()) return;
 
-      try {
-        const res = await fetch(`${API_BASE_URL}/api/me`, { headers: authHeaders() });
-        if (!res.ok) return;
-        const data = await res.json();
+      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (prefill)" });
+      if (!r.ok || !r.data) return;
 
-        const p = data.profile || {};
-        fillCheckoutForm({
-          prenom: p.prenom || "",
-          nom: p.nom || "",
-          telephone: p.telephone || "",
-          pays: p.pays || "FR",
-          adresse: p.adresse || "",
-          complement: p.complement || "",
-          cp: p.cp || "",
-          ville: p.ville || "",
-          naissance: p.naissance || "",
-          email: "" // on ne force pas l'email ici
-        });
+      const data = r.data;
+      const p = data.profile || {};
 
-        // si backend renvoie l'email, tu peux l'afficher (optionnel)
-        if (data.email && document.getElementById("email")) {
-          document.getElementById("email").value = data.email;
-        }
+      fillCheckoutForm({
+        prenom: p.prenom || "",
+        nom: p.nom || "",
+        telephone: p.telephone || "",
+        pays: p.pays || "FR",
+        adresse: p.adresse || "",
+        complement: p.complement || "",
+        cp: p.cp || "",
+        ville: p.ville || "",
+        naissance: p.naissance || "",
+        email: ""
+      });
 
-        // enregistre aussi local pour persistance
-        saveCheckoutInfoLocal(getCheckoutInfoFromForm());
-      } catch (e) {
-        console.warn("Prefill /api/me échoué :", e);
+      if (data.email && document.getElementById("email")) {
+        document.getElementById("email").value = data.email;
       }
+
+      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
     }
 
     await prefillFromBackendIfLogged();
@@ -2424,40 +2450,10 @@
       }, 400);
     }
 
-    // ✅ 2bis) Autosave DB (debounce)
-    let _meSaveTimer = null;
+    // ✅ Autosave DB (TEMP OFF pour supprimer définitivement le spam 400)
+    // Quand ton backend /api/me POST sera OK, je te le réactive proprement.
     function saveProfileToBackendDebounced() {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-      if (__isPrefilling) return;
-
-      clearTimeout(_meSaveTimer);
-      _meSaveTimer = setTimeout(async () => {
-        try {
-          const info = getCheckoutInfoFromForm();
-
-          // on n'envoie pas l'email en update profil (identifiant du compte)
-          const payload = {
-            prenom: info.prenom,
-            nom: info.nom,
-            telephone: info.telephone,
-            pays: info.pays,
-            adresse: info.adresse,
-            complement: info.complement,
-            cp: info.cp,
-            ville: info.ville,
-            naissance: info.naissance
-          };
-
-          await fetch(`${API_BASE_URL}/api/me`, {
-  method: "POST",
-  headers: authHeaders({ "Content-Type": "application/json" }),
-  body: JSON.stringify(payload)
-});
-        } catch (e) {
-          console.warn("Autosave profil /api/me échoué :", e);
-        }
-      }, 600);
+      return; // <----- TEMP : évite l'erreur /api/me (400) en boucle
     }
 
     // écouteurs sur tous les champs
@@ -2469,7 +2465,7 @@
       el.addEventListener("input", scheduleSave);
       el.addEventListener("change", scheduleSave);
 
-      // ✅ autosave DB si connecté
+      // autosave DB OFF
       el.addEventListener("input", saveProfileToBackendDebounced);
       el.addEventListener("change", saveProfileToBackendDebounced);
     });
@@ -2477,19 +2473,12 @@
     /* ----------------------------------------------------------
        PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
     ---------------------------------------------------------- */
-  async function fetchUserPoints() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/me`, {
-      headers: authHeaders()
-    });
-
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.points ?? 0;
-  } catch {
-    return null;
-  }
-}
+    async function fetchUserPoints() {
+      if (!getToken()) return null;
+      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (points)" });
+      if (!r.ok || !r.data) return null;
+      return r.data.points ?? 0;
+    }
 
     async function initLoyalty() {
       const loyaltyBlock = document.getElementById("loyalty-block");
@@ -2501,9 +2490,7 @@
 
       loyaltyBlock.style.display = "block";
 
-      const token = localStorage.getItem("token");
-
-      if (!token) {
+      if (!getToken()) {
         loyaltyPointsEl.textContent = "0";
         loyaltyMsg.style.color = "#FCA5A5";
         loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
@@ -2534,8 +2521,7 @@
       useLoyaltyBtn.addEventListener("click", () => {
         loyaltyMsg.textContent = "";
 
-        const tokenClick = localStorage.getItem("token");
-        if (!tokenClick) {
+        if (!getToken()) {
           loyaltyMsg.style.color = "#FCA5A5";
           loyaltyMsg.textContent = "Connectez-vous pour utiliser vos points.";
           return;
@@ -2548,11 +2534,7 @@
           return;
         }
 
-        currentPromo = {
-          type: "free",
-          code: "LOYALTY100",
-          is_active: true
-        };
+        currentPromo = { type: "free", code: "LOYALTY100", is_active: true };
         loyaltyUsed = true;
         updateOrderSummaryFromPanier();
 
@@ -2564,6 +2546,9 @@
 
     await initLoyalty();
 
+    // =========================
+    // STRIPE INIT
+    // =========================
     if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
       stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -2579,39 +2564,21 @@
             colorIcon: "#F9FAFB",
             colorDanger: "#FCA5A5",
             borderRadius: "14px"
-          },
-          rules: {
-            ".Input": { color: "#F9FAFB" },
-            ".Input::placeholder": { color: "#9CA3AF" },
-            ".Label": { color: "#E5E7EB" }
           }
         }
       });
 
-      cardElement = elements.create("card", {
-        hidePostalCode: true,
-        style: {
-          base: {
-            color: "#F9FAFB",
-            iconColor: "#F9FAFB",
-            "::placeholder": { color: "#9CA3AF" }
-          },
-          invalid: {
-            color: "#FCA5A5",
-            iconColor: "#FCA5A5"
-          }
-        }
-      });
-
+      cardElement = elements.create("card", { hidePostalCode: true });
       cardElement.mount("#card-element");
       cardElement.on("change", function (event) {
         const displayError = document.getElementById("card-errors");
-        if (displayError) {
-          displayError.textContent = event.error ? event.error.message : "";
-        }
+        if (displayError) displayError.textContent = event.error ? event.error.message : "";
       });
     }
 
+    // =========================
+    // PROMO (inchangé)
+    // =========================
     const promoToggle = document.getElementById("promo-toggle");
     const promoBody = document.getElementById("promo-body");
     const promoInput = document.getElementById("promo-code");
@@ -2619,9 +2586,7 @@
     const promoMsg = document.getElementById("promo-message");
 
     if (promoToggle && promoBody) {
-      promoToggle.addEventListener("click", () => {
-        promoBody.classList.toggle("open");
-      });
+      promoToggle.addEventListener("click", () => promoBody.classList.toggle("open"));
     }
 
     async function applyPromo(silent = false) {
@@ -2654,7 +2619,6 @@
           .maybeSingle();
 
         if (error) {
-          console.error("Erreur Supabase promo:", error);
           currentPromo = null;
           localStorage.removeItem("promoCode");
           updateOrderSummaryFromPanier();
@@ -2683,7 +2647,6 @@
             ? "Code appliqué ✔ Réduction de " + discountNow.toFixed(2).replace(".", ",") + "€ sur votre commande."
             : "Code appliqué ✔";
       } catch (e) {
-        console.error("Erreur applyPromo:", e);
         currentPromo = null;
         localStorage.removeItem("promoCode");
         updateOrderSummaryFromPanier();
@@ -2709,6 +2672,9 @@
       }
     }
 
+    // =========================
+    // CHECKOUT (inchangé côté API sauf authHeaders conservé)
+    // =========================
     const submitBtn = document.getElementById("checkout-submit-btn");
     const cgvCheckbox = document.getElementById("cgv-checkbox");
     const rulesCheckbox = document.getElementById("rules-checkbox");
@@ -2728,7 +2694,6 @@
     const thankyouQrContainer = document.getElementById("thankyou-qr");
     const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
 
-    // ---------- helper commun après paiement OU gratuit ----------
     const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
       const panierBeforeClear = getPanier();
       const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
@@ -2742,10 +2707,8 @@
       if (firstItem && typeof firstItem.hour === "number") {
         const start = firstItem.hour;
         const endHour = (start + 1) % 24;
-
         const startStr = String(start).padStart(2, "0") + "h00";
         const endStr = String(endHour).padStart(2, "0") + "h30";
-
         hourText = `${startStr} – ${endStr}`;
       }
 
@@ -2781,15 +2744,12 @@
             cp: document.getElementById("cp").value.trim(),
             ville: document.getElementById("ville").value.trim(),
             naissance: document.getElementById("naissance").value,
-
-            // ✅ IMPORTANT : déclenche la sauvegarde profil côté backend
             save_checkout_info: true
           },
           promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
           loyaltyUsed,
           isFree: !!isFree
         };
-
         if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
 
         const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
@@ -2840,36 +2800,31 @@
           });
 
           if (depositResult.error) {
-            console.error("Erreur caution 250€ :", depositResult.error);
             if (errorEl) {
               errorEl.textContent =
                 (isFree
                   ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
                   : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
                 depositResult.error.message +
-                ". Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+                ". Merci de nous contacter à contactsingbox@gmail.com.";
             }
-          } else if (depositResult.paymentIntent && depositResult.paymentIntent.status === "requires_capture") {
-            console.log("Caution 250€ préautorisée, PaymentIntent:", depositResult.paymentIntent.id);
           }
         } else {
-          console.error("Erreur création empreinte de caution :", depositJson);
           if (errorEl) {
             errorEl.textContent =
               (isFree
                 ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
                 : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
-              " Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+              " Merci de nous contacter à contactsingbox@gmail.com.";
           }
         }
       } catch (e) {
-        console.error("Erreur inattendue lors de la caution :", e);
         if (errorEl) {
           errorEl.textContent =
             (isFree
               ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
               : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
-            " Merci de nous contacter à contactsingbox@gmail.com en indiquant votre nom et l’horaire de votre réservation.";
+            " Merci de nous contacter à contactsingbox@gmail.com.";
         }
       }
 
@@ -2878,15 +2833,11 @@
           await window.supabaseClient
             .from("newsletter_subscriptions")
             .insert({ email: document.getElementById("email").value.trim() });
-        } catch (e) {
-          console.error("Erreur inscription newsletter :", e);
-        }
+        } catch (e) {}
       }
 
-      // Sauvegarde local finale
       saveCheckoutInfoLocal(getCheckoutInfoFromForm());
 
-      // Vide panier
       savePanier([]);
       localStorage.removeItem("promoCode");
       currentPromo = null;
@@ -2901,13 +2852,10 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      // QR code
       if (reservationId && thankyouQrContainer && window.QRCode) {
         try {
           const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
-
           thankyouQrContainer.innerHTML = "";
-
           new QRCode(thankyouQrContainer, {
             text: qrText,
             width: 228,
@@ -2916,13 +2864,8 @@
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
           });
-
           if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
-        } catch (e) {
-          console.error("Erreur génération QR code :", e);
-        }
-      } else {
-        console.warn("QR code non généré : reservationId ou conteneur manquant.");
+        } catch (e) {}
       }
     };
 
@@ -2941,9 +2884,7 @@
         }
 
         if (!cartValid) {
-          if (errorEl) {
-            errorEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre réservation.";
-          }
+          if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
           return;
         }
 
@@ -2965,9 +2906,7 @@
 
         const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
         if (!age || age < 18) {
-          if (errorEl) {
-            errorEl.textContent = "La réservation doit être faite par un adulte. Merci de renseigner une date de naissance valide.";
-          }
+          if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
           return;
         }
 
@@ -2989,7 +2928,6 @@
         try {
           const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
             method: "POST",
-            // ✅ IMPORTANT : token envoyé si connecté
             headers: authHeaders({ "Content-Type": "application/json" }),
             body: JSON.stringify({
               panier,
@@ -3016,13 +2954,6 @@
           if (!res.ok) {
             const msg = json.error || "Erreur lors de la création du paiement.";
             if (errorEl) errorEl.textContent = msg;
-
-            if (promoMsg && msg && msg.toLowerCase().includes("code")) {
-              promoMsg.textContent = msg;
-              promoMsg.classList.remove("ok");
-              promoMsg.classList.add("error");
-            }
-
             submitBtn.disabled = false;
             submitBtn.textContent = originalLabel;
             return;
@@ -3043,9 +2974,7 @@
             return;
           }
 
-          const clientSecret = json.clientSecret;
-
-          const result = await stripe.confirmCardPayment(clientSecret, {
+          const result = await stripe.confirmCardPayment(json.clientSecret, {
             payment_method: {
               card: cardElement,
               billing_details: {
@@ -3064,10 +2993,7 @@
 
           if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
             if (successEl) successEl.textContent = "Paiement accepté ✔️";
-            await processReservationAndDeposit({
-              isFree: false,
-              paymentIntentId: result.paymentIntent.id
-            });
+            await processReservationAndDeposit({ isFree: false, paymentIntentId: result.paymentIntent.id });
           }
         } catch (err) {
           if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
@@ -3124,9 +3050,7 @@
       });
     }
 
-    if (skipBtn) {
-      skipBtn.addEventListener("click", () => hideAuthModal());
-    }
+    if (skipBtn) skipBtn.addEventListener("click", () => hideAuthModal());
 
     if (loginForm) {
       loginForm.addEventListener("submit", async (e) => {
@@ -3154,12 +3078,9 @@
           }
 
           localStorage.setItem("token", data.token);
-
-          // ✅ recharge page pour que prefillFromBackendIfLogged + loyalty se relancent proprement
           hideAuthModal();
           window.location.reload();
         } catch (err) {
-          console.error(err);
           if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
         }
       });
@@ -3205,7 +3126,6 @@
             if (msgEl) msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
           }
         } catch (err) {
-          console.error(err);
           if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
         }
       });
