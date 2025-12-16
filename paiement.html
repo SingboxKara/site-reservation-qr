@@ -2035,12 +2035,9 @@
   const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
   const PRICE_FALLBACK = 10;
 
-  const API_BASE_URL =
-    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-      ? "http://localhost:3000"
-      : "https://singbox-backend.onrender.com";
-
-  const QR_CHECK_BASE_URL = `${API_BASE_URL}/api/check`;
+  // ✅ On évite les doublons : on reprend les globals déjà définis plus haut
+  const API_BASE_URL = window.API_BASE_URL;
+  const QR_CHECK_BASE_URL = window.QR_CHECK_BASE_URL;
 
   // =========================
   // AUTH HELPERS (anti 400 /api/me)
@@ -2057,8 +2054,9 @@
   }
 
   async function handleAuthResponse(res, ctx = "") {
-    // Beaucoup de backends renvoient 400 quand le token est invalide/malformé
-    if (res.status === 400 || res.status === 401) {
+    // ✅ IMPORTANT : on ne supprime PAS le token sur 400
+    // 400 peut être une validation / erreur payload. On le supprime uniquement si non autorisé.
+    if (res.status === 401 || res.status === 403) {
       localStorage.removeItem("token");
       console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
       return false;
@@ -2074,7 +2072,7 @@
 
     const res = await fetch(url, { ...options, headers: finalHeaders });
 
-    // Auto-clear token si endpoint auth renvoie 400/401
+    // Auto-clear token si endpoint auth renvoie 401/403
     if (auth) {
       const okAuth = await handleAuthResponse(res, ctx || path);
       if (!okAuth) return { ok: false, status: res.status, data: null, res };
@@ -2082,13 +2080,17 @@
 
     if (!json) return { ok: res.ok, status: res.status, data: null, res };
 
-    // lecture safe du body (json ou texte)
+    // ✅ lecture safe : res.json() puis fallback texte via clone (sinon body déjà consommé)
     let data = null;
     try {
       data = await res.json();
     } catch {
-      const txt = await res.text().catch(() => "");
-      data = { raw: txt };
+      try {
+        const txt = await res.clone().text();
+        data = { raw: txt };
+      } catch {
+        data = null;
+      }
     }
 
     if (!res.ok) {
@@ -2132,8 +2134,11 @@
   function computeTotal(panier) {
     let total = 0;
     for (const item of panier) {
-      if (typeof item.price !== "number" || !isFinite(item.price) || item.price <= 0) return null;
-      total += item.price;
+      // ✅ robust: fallback si price absent/NaN
+      let p = item && typeof item.price === "number" && isFinite(item.price) ? item.price : PRICE_FALLBACK;
+      // on autorise 0 (cas promo/free côté front)
+      if (!isFinite(p) || p < 0) return null;
+      total += p;
     }
     return total;
   }
@@ -2206,6 +2211,16 @@
     const m = today.getMonth() - birth.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
     return age;
+  }
+
+  function formatTimeFrFromIso(iso) {
+    try {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return "";
+    }
   }
 
   function updateOrderSummaryFromPanier() {
@@ -2296,12 +2311,22 @@
         ? (first.boxName || first.box || first.boxId)
         : "Box privée";
 
+    // ✅ horaire plus fiable : si start_time/end_time existent on les affiche
     let hourText = "";
-    if (first && typeof first.hour === "number") {
-      const start = first.hour;
-      const endHour = (start + 1) % 24;
-      const startStr = String(start).padStart(2, "0") + "h00";
-      const endStr = String(endHour).padStart(2, "0") + "h30";
+    if (first && first.start_time && first.end_time) {
+      const s = formatTimeFrFromIso(first.start_time);
+      const e = formatTimeFrFromIso(first.end_time);
+      if (s && e) hourText = `${s} – ${e}`;
+    } else if (first && typeof first.hour === "number") {
+      const start = first.hour; // ex: 18 ou 18.5
+      const startH = Math.floor(start);
+      const startM = Math.round((start - startH) * 60);
+      const endMinutes = startH * 60 + startM + 90;
+      const endH = Math.floor((endMinutes % 1440) / 60);
+      const endM = (endMinutes % 60);
+
+      const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
+      const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
       hourText = `${startStr} – ${endStr}`;
     }
 
@@ -2408,7 +2433,7 @@
     fillCheckoutForm(loadCheckoutInfoLocal());
     __isPrefilling = false;
 
-    // ✅ Prefill DB si connecté (avec guard anti 400)
+    // ✅ Prefill DB si connecté
     async function prefillFromBackendIfLogged() {
       if (!getToken()) return;
 
@@ -2417,6 +2442,8 @@
 
       const data = r.data;
       const p = data.profile || {};
+
+      __isPrefilling = true;
 
       fillCheckoutForm({
         prenom: p.prenom || "",
@@ -2435,6 +2462,8 @@
         document.getElementById("email").value = data.email;
       }
 
+      __isPrefilling = false;
+
       saveCheckoutInfoLocal(getCheckoutInfoFromForm());
     }
 
@@ -2450,10 +2479,44 @@
       }, 400);
     }
 
-    // ✅ Autosave DB (TEMP OFF pour supprimer définitivement le spam 400)
-    // Quand ton backend /api/me POST sera OK, je te le réactive proprement.
+    // ✅ Autosave DB (RÉACTIVÉ + DEBOUNCE + ANTI-SPAM)
+    let _saveDbTimer = null;
+    let _lastDbPayload = "";
+    async function saveProfileToBackendNow() {
+      const token = getToken();
+      if (!token) return;
+
+      const payload = getCheckoutInfoFromForm();
+
+      // ✅ Le backend met à jour la table users (sauf email). On envoie tout, c’est ok.
+      const payloadStr = JSON.stringify(payload);
+
+      // anti-spam : si rien n’a changé, on ne renvoie pas
+      if (payloadStr === _lastDbPayload) return;
+
+      const r = await apiFetch(
+        "/api/me",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payloadStr
+        },
+        { auth: true, ctx: "POST /api/me (autosave)" }
+      );
+
+      if (r.ok) {
+        _lastDbPayload = payloadStr;
+      } else {
+        // on ne spam pas l’erreur
+        console.warn("Autosave profil échoué:", r.status, r.data);
+      }
+    }
+
     function saveProfileToBackendDebounced() {
-      return; // <----- TEMP : évite l'erreur /api/me (400) en boucle
+      if (__isPrefilling) return;
+      if (!getToken()) return;
+      clearTimeout(_saveDbTimer);
+      _saveDbTimer = setTimeout(saveProfileToBackendNow, 900);
     }
 
     // écouteurs sur tous les champs
@@ -2465,9 +2528,10 @@
       el.addEventListener("input", scheduleSave);
       el.addEventListener("change", scheduleSave);
 
-      // autosave DB OFF
+      // ✅ autosave DB ON
       el.addEventListener("input", saveProfileToBackendDebounced);
       el.addEventListener("change", saveProfileToBackendDebounced);
+      el.addEventListener("blur", saveProfileToBackendDebounced);
     });
 
     /* ----------------------------------------------------------
@@ -2673,7 +2737,7 @@
     }
 
     // =========================
-    // CHECKOUT (inchangé côté API sauf authHeaders conservé)
+    // CHECKOUT
     // =========================
     const submitBtn = document.getElementById("checkout-submit-btn");
     const cgvCheckbox = document.getElementById("cgv-checkbox");
@@ -2704,11 +2768,19 @@
           : "Box privée";
 
       let hourText = "";
-      if (firstItem && typeof firstItem.hour === "number") {
+      if (firstItem && firstItem.start_time && firstItem.end_time) {
+        const s = formatTimeFrFromIso(firstItem.start_time);
+        const e = formatTimeFrFromIso(firstItem.end_time);
+        if (s && e) hourText = `${s} – ${e}`;
+      } else if (firstItem && typeof firstItem.hour === "number") {
         const start = firstItem.hour;
-        const endHour = (start + 1) % 24;
-        const startStr = String(start).padStart(2, "0") + "h00";
-        const endStr = String(endHour).padStart(2, "0") + "h30";
+        const startH = Math.floor(start);
+        const startM = Math.round((start - startH) * 60);
+        const endMinutes = startH * 60 + startM + 90;
+        const endH = Math.floor((endMinutes % 1440) / 60);
+        const endM = (endMinutes % 60);
+        const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
+        const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
         hourText = `${startStr} – ${endStr}`;
       }
 
