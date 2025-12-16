@@ -1857,6 +1857,7 @@
   </footer>
   
 <script>
+  // ✅ Base URL unique et globale (évite les soucis de scope entre scripts)
   window.API_BASE_URL =
     (location.hostname === "localhost" || location.hostname === "127.0.0.1")
       ? "http://localhost:3000"
@@ -1874,7 +1875,7 @@
   const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
   const PRICE_FALLBACK = 10;
 
-  // ✅ On évite les doublons : on reprend les globals déjà définis plus haut
+  // ✅ On reprend les globals déjà définis plus haut
   const API_BASE_URL = window.API_BASE_URL;
   const QR_CHECK_BASE_URL = window.QR_CHECK_BASE_URL;
 
@@ -2634,52 +2635,53 @@
 
     await initLoyalty();
 
-// =========================
-// STRIPE INIT (CORRIGÉ)
-// =========================
-if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
-  stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    // =========================
+    // STRIPE INIT (CORRIGÉ + SAFE)
+    // =========================
+    const cardMount = document.getElementById("card-element"); // ✅ évite un crash si l'ID n'existe pas
+    if (STRIPE_PUBLISHABLE_KEY && window.Stripe && cardMount) {
+      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
-  const elements = stripe.elements({
-    appearance: {
-      theme: "night",
-      variables: {
-        colorPrimary: "#F97316",
-        colorBackground: "#020617",
-        colorText: "#F9FAFB",
-        colorTextPlaceholder: "#9CA3AF",
-        fontFamily: "Montserrat, system-ui, sans-serif",
-        borderRadius: "14px"
-      }
+      const elements = stripe.elements({
+        appearance: {
+          theme: "night",
+          variables: {
+            colorPrimary: "#F97316",
+            colorBackground: "#020617",
+            colorText: "#F9FAFB",
+            colorTextPlaceholder: "#9CA3AF",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            borderRadius: "14px"
+          }
+        }
+      });
+
+      cardElement = elements.create("card", {
+        hidePostalCode: true,
+        style: {
+          base: {
+            color: "#F9FAFB",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            fontSize: "14px",
+            lineHeight: "24px",
+            fontSmoothing: "antialiased",
+            "::placeholder": { color: "#9CA3AF" }
+          },
+          invalid: {
+            color: "#FCA5A5"
+          }
+        }
+      });
+
+      cardElement.mount("#card-element");
+
+      cardElement.on("change", function (event) {
+        const displayError = document.getElementById("card-errors");
+        if (displayError) {
+          displayError.textContent = event.error ? event.error.message : "";
+        }
+      });
     }
-  });
-
-  cardElement = elements.create("card", {
-    hidePostalCode: true,
-    style: {
-      base: {
-        color: "#F9FAFB",
-        fontFamily: "Montserrat, system-ui, sans-serif",
-        fontSize: "14px",
-        lineHeight: "24px",
-        fontSmoothing: "antialiased",
-        "::placeholder": { color: "#9CA3AF" }
-      },
-      invalid: {
-        color: "#FCA5A5"
-      }
-    }
-  });
-
-  cardElement.mount("#card-element");
-
-  cardElement.on("change", function (event) {
-    const displayError = document.getElementById("card-errors");
-    if (displayError) {
-      displayError.textContent = event.error ? event.error.message : "";
-    }
-  });
-}
 
     // =========================
     // PROMO
@@ -2776,189 +2778,432 @@ if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         applyPromo(true);
       }
     }
-// =========================
-// CHECKOUT
-// =========================
-const submitBtn = document.getElementById("checkout-submit-btn");
-const cgvCheckbox = document.getElementById("cgv-checkbox");
-const rulesCheckbox = document.getElementById("rules-checkbox");
-const newsletterCheckbox = document.getElementById("newsletter-optin");
-const errorEl = document.getElementById("checkout-error");
-const successEl = document.getElementById("checkout-success");
-const billingForm = document.getElementById("billing-form");
 
-// ⚠️ IMPORTANT : on garde checkoutLayout mais on ne le cache plus bêtement
-const checkoutLayout = document.querySelector(".checkout-layout");
-const paymentCard = document.querySelector(".payment-card");
+    // =========================
+    // CHECKOUT
+    // =========================
+    const submitBtn = document.getElementById("checkout-submit-btn");
+    const cgvCheckbox = document.getElementById("cgv-checkbox");
+    const rulesCheckbox = document.getElementById("rules-checkbox");
+    const newsletterCheckbox = document.getElementById("newsletter-optin");
+    const errorEl = document.getElementById("checkout-error");
+    const successEl = document.getElementById("checkout-success");
+    const billingForm = document.getElementById("billing-form");
 
-// Merci
-const thankyouSection = document.getElementById("thankyou-section");
-const thankyouName = document.getElementById("thankyou-name");
-const thankyouDate = document.getElementById("thankyou-date");
-const thankyouTime = document.getElementById("thankyou-time");
-const thankyouBox = document.getElementById("thankyou-box");
-const thankyouTotal = document.getElementById("thankyou-total");
-const thankyouRef = document.getElementById("thankyou-ref");
-const thankyouQrContainer = document.getElementById("thankyou-qr");
-const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
+    // ⚠️ IMPORTANT : on garde checkoutLayout mais on ne le cache plus bêtement
+    const checkoutLayout = document.querySelector(".checkout-layout");
+    const paymentCard = document.querySelector(".payment-card");
 
-// ✅ Affichage robuste de la page Merci (marche même si elle est DANS .checkout-layout)
-function showThankYouSection() {
-  if (!thankyouSection) {
-    console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
-    return;
-  }
+    // Merci
+    const thankyouSection = document.getElementById("thankyou-section");
+    const thankyouName = document.getElementById("thankyou-name");
+    const thankyouDate = document.getElementById("thankyou-date");
+    const thankyouTime = document.getElementById("thankyou-time");
+    const thankyouBox = document.getElementById("thankyou-box");
+    const thankyouTotal = document.getElementById("thankyou-total");
+    const thankyouRef = document.getElementById("thankyou-ref");
+    const thankyouQrContainer = document.getElementById("thankyou-qr");
+    const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
 
-  // 1) On s'assure que tous les parents de thankyou ne sont pas cachés
-  let p = thankyouSection;
-  while (p && p !== document.body) {
-    if (p.hidden) p.hidden = false;
-    // si un parent a display:none, on le réactive
-    const st = window.getComputedStyle(p);
-    if (st && st.display === "none") p.style.display = "";
-    p = p.parentElement;
-  }
-
-  // 2) On masque les parties checkout, sans casser le parent
-  const emptyCartState = document.getElementById("empty-cart-state");
-  if (emptyCartState) emptyCartState.style.display = "none";
-
-  // on masque le formulaire + la carte de paiement (les deux principaux responsables)
-  if (billingForm) billingForm.style.display = "none";
-  if (paymentCard) paymentCard.style.display = "none";
-
-  // si thankyou est DANS checkoutLayout, on cache seulement les autres enfants
-  if (checkoutLayout) {
-    const tyInside = checkoutLayout.contains(thankyouSection);
-
-    if (tyInside) {
-      Array.from(checkoutLayout.children).forEach((child) => {
-        if (child === thankyouSection || child.contains(thankyouSection)) return;
-        child.style.display = "none";
-      });
-      // on garde le layout visible
-      checkoutLayout.style.display = "";
-    } else {
-      // sinon on peut cacher le layout, car la page merci est ailleurs
-      checkoutLayout.style.display = "none";
-    }
-  }
-
-  // 3) On affiche la section Merci
-  thankyouSection.style.display = "block";
-  thankyouSection.hidden = false;
-  thankyouSection.classList.remove("hidden");
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
-  const panierBeforeClear = getPanier();
-  const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
-  const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
-  const boxName =
-    firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
-      ? (firstItem.boxName || firstItem.box || firstItem.boxId)
-      : "Box privée";
-
-  let hourText = "";
-  if (firstItem && firstItem.start_time && firstItem.end_time) {
-    const s = formatTimeFrFromIso(firstItem.start_time);
-    const e = formatTimeFrFromIso(firstItem.end_time);
-    if (s && e) hourText = `${s} – ${e}`;
-  } else if (firstItem && typeof firstItem.hour === "number") {
-    const start = firstItem.hour;
-    const startH = Math.floor(start);
-    const startM = Math.round((start - startH) * 60);
-    const endMinutes = startH * 60 + startM + 90;
-    const endH = Math.floor((endMinutes % 1440) / 60);
-    const endM = (endMinutes % 60);
-    const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
-    const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
-    hourText = `${startStr} – ${endStr}`;
-  }
-
-  const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
-  if (thankyouName) thankyouName.textContent = prenomValue;
-  if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
-  if (thankyouTime) thankyouTime.textContent = hourText || "-";
-  if (thankyouBox) thankyouBox.textContent = boxName;
-  if (thankyouTotal) {
-    const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
-    thankyouTotal.textContent = totalLabel;
-  }
-
-  const headerTitle = document.querySelector(".checkout-header h1");
-  const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
-  if (headerTitle) headerTitle.textContent = "Merci pour votre réservation 🎉";
-  if (headerSubtitle) headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
-
-  let reservationId = null;
-
-  try {
-    const body = {
-      panier: getPanier(),
-      customer: {
-        prenom: document.getElementById("prenom").value.trim(),
-        nom: document.getElementById("nom").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        telephone: document.getElementById("telephone").value.trim(),
-        pays: document.getElementById("pays").value,
-        adresse: document.getElementById("adresse").value.trim(),
-        complement: document.getElementById("complement").value.trim(),
-        cp: document.getElementById("cp").value.trim(),
-        ville: document.getElementById("ville").value.trim(),
-        naissance: document.getElementById("naissance").value,
-        save_checkout_info: true
-      },
-      promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
-      loyaltyUsed,
-      isFree: !!isFree
-    };
-    if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
-
-    const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
-      method: "POST",
-      headers: authHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify(body)
-    });
-
-    const confirmJson = await confirmRes.json().catch(() => ({}));
-    if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
-      reservationId = confirmJson.reservations[0].id;
-      if (thankyouRef) thankyouRef.textContent = reservationId;
-    } else {
-      if (errorEl) {
-        errorEl.textContent =
-          confirmJson.error ||
-          "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
+    // ✅ Affichage robuste de la page Merci (marche même si elle est DANS .checkout-layout)
+    function showThankYouSection() {
+      if (!thankyouSection) {
+        console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
+        return;
       }
-    }
-  } catch (e) {
-    console.error("Erreur confirm-reservation :", e);
-  }
 
-  // Caution
-  try {
-    const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-      method: "POST",
-      headers: authHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({
-        reservationId,
-        useSavedPaymentMethod: !!lastPayWithSaved,
-        customer: {
-          prenom: document.getElementById("prenom").value.trim(),
-          nom: document.getElementById("nom").value.trim(),
-          email: document.getElementById("email").value.trim()
+      // 1) On s'assure que tous les parents de thankyou ne sont pas cachés
+      let p = thankyouSection;
+      while (p && p !== document.body) {
+        if (p.hidden) p.hidden = false;
+        const st = window.getComputedStyle(p);
+        if (st && st.display === "none") p.style.display = "";
+        p = p.parentElement;
+      }
+
+      // 2) On masque les parties checkout, sans casser le parent
+      const emptyCartState = document.getElementById("empty-cart-state");
+      if (emptyCartState) emptyCartState.style.display = "none";
+
+      if (billingForm) billingForm.style.display = "none";
+      if (paymentCard) paymentCard.style.display = "none";
+
+      if (checkoutLayout) {
+        const tyInside = checkoutLayout.contains(thankyouSection);
+
+        if (tyInside) {
+          Array.from(checkoutLayout.children).forEach((child) => {
+            if (child === thankyouSection || child.contains(thankyouSection)) return;
+            child.style.display = "none";
+          });
+          checkoutLayout.style.display = "";
+        } else {
+          checkoutLayout.style.display = "none";
         }
-      })
-    });
+      }
 
-    const depositJson = await depositRes.json().catch(() => ({}));
-    if (depositRes.ok && depositJson && depositJson.clientSecret) {
-      const depositResult = lastPayWithSaved
-        ? await stripe.confirmCardPayment(depositJson.clientSecret)
-        : await stripe.confirmCardPayment(depositJson.clientSecret, {
+      // 3) On affiche la section Merci
+      thankyouSection.style.display = "block";
+      thankyouSection.hidden = false;
+      thankyouSection.classList.remove("hidden");
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
+      const panierBeforeClear = getPanier();
+      const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+      const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+      const boxName =
+        firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
+          ? (firstItem.boxName || firstItem.box || firstItem.boxId)
+          : "Box privée";
+
+      let hourText = "";
+      if (firstItem && firstItem.start_time && firstItem.end_time) {
+        const s = formatTimeFrFromIso(firstItem.start_time);
+        const e = formatTimeFrFromIso(firstItem.end_time);
+        if (s && e) hourText = `${s} – ${e}`;
+      } else if (firstItem && typeof firstItem.hour === "number") {
+        const start = firstItem.hour;
+        const startH = Math.floor(start);
+        const startM = Math.round((start - startH) * 60);
+        const endMinutes = startH * 60 + startM + 90;
+        const endH = Math.floor((endMinutes % 1440) / 60);
+        const endM = (endMinutes % 60);
+        const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
+        const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
+        hourText = `${startStr} – ${endStr}`;
+      }
+
+      const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
+      if (thankyouName) thankyouName.textContent = prenomValue;
+      if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
+      if (thankyouTime) thankyouTime.textContent = hourText || "-";
+      if (thankyouBox) thankyouBox.textContent = boxName;
+      if (thankyouTotal) {
+        const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
+        thankyouTotal.textContent = totalLabel;
+      }
+
+      const headerTitle = document.querySelector(".checkout-header h1");
+      const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
+      if (headerTitle) headerTitle.textContent = "Merci pour votre réservation 🎉";
+      if (headerSubtitle) headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
+
+      let reservationId = null;
+
+      try {
+        const body = {
+          panier: getPanier(),
+          customer: {
+            prenom: document.getElementById("prenom").value.trim(),
+            nom: document.getElementById("nom").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            telephone: document.getElementById("telephone").value.trim(),
+            pays: document.getElementById("pays").value,
+            adresse: document.getElementById("adresse").value.trim(),
+            complement: document.getElementById("complement").value.trim(),
+            cp: document.getElementById("cp").value.trim(),
+            ville: document.getElementById("ville").value.trim(),
+            naissance: document.getElementById("naissance").value,
+            save_checkout_info: true
+          },
+          promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+          loyaltyUsed,
+          isFree: !!isFree
+        };
+        if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
+
+        const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify(body)
+        });
+
+        const confirmJson = await confirmRes.json().catch(() => ({}));
+        if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+          reservationId = confirmJson.reservations[0].id;
+          if (thankyouRef) thankyouRef.textContent = reservationId;
+        } else {
+          if (errorEl) {
+            errorEl.textContent =
+              confirmJson.error ||
+              "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
+          }
+        }
+      } catch (e) {
+        console.error("Erreur confirm-reservation :", e);
+      }
+
+      // Caution
+      try {
+        const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            reservationId,
+            useSavedPaymentMethod: !!lastPayWithSaved,
+            customer: {
+              prenom: document.getElementById("prenom").value.trim(),
+              nom: document.getElementById("nom").value.trim(),
+              email: document.getElementById("email").value.trim()
+            }
+          })
+        });
+
+        const depositJson = await depositRes.json().catch(() => ({}));
+
+        if (!depositRes.ok || !depositJson?.clientSecret) {
+          if (errorEl) {
+            errorEl.textContent =
+              (isFree
+                ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
+                : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
+              " Merci de nous contacter à contactsingbox@gmail.com.";
+          }
+          return;
+        }
+
+        // ✅ IMPORTANT : pmId doit exister si on paye avec carte enregistrée
+        const pmId =
+          savedCardState?.defaultPaymentMethodId ||
+          (savedCardState?.card && savedCardState.card.id) ||
+          null;
+
+        if (lastPayWithSaved && !pmId) {
+          lastPayWithSaved = false;
+        }
+
+        const depositResult = lastPayWithSaved
+          ? await stripe.confirmCardPayment(depositJson.clientSecret, { payment_method: pmId })
+          : await stripe.confirmCardPayment(depositJson.clientSecret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: {
+                  name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
+                  email: document.getElementById("email").value.trim()
+                }
+              }
+            });
+
+        if (depositResult?.error && errorEl) {
+          errorEl.textContent =
+            (isFree
+              ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
+              : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
+            depositResult.error.message +
+            ". Merci de nous contacter à contactsingbox@gmail.com.";
+        }
+      } catch (e) {
+        if (errorEl) {
+          errorEl.textContent =
+            (isFree
+              ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
+              : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
+            " Merci de nous contacter à contactsingbox@gmail.com.";
+        }
+      }
+
+      // Newsletter opt-in
+      if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
+        try {
+          await window.supabaseClient
+            .from("newsletter_subscriptions")
+            .insert({ email: document.getElementById("email").value.trim() });
+        } catch (e) {}
+      }
+
+      // Save infos
+      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+
+      // Clear panier
+      savePanier([]);
+      localStorage.removeItem("promoCode");
+      currentPromo = null;
+      updateCartIcon();
+
+      // ✅ AFFICHAGE MERCI (robuste)
+      showThankYouSection();
+
+      // QR code
+      if (reservationId && thankyouQrContainer && window.QRCode) {
+        try {
+          const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
+          thankyouQrContainer.innerHTML = "";
+          new QRCode(thankyouQrContainer, {
+            text: qrText,
+            width: 228,
+            height: 228,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
+        } catch (e) {}
+      }
+    };
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", async () => {
+        if (!billingForm) return;
+
+        // ✅ si Stripe pas monté (ex: #card-element absent), on évite un crash
+        const payWithSavedChecked = !!document.getElementById("pay-with-saved-card")?.checked;
+        if (!stripe || (!cardElement && !payWithSavedChecked)) {
+          if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
+          return;
+        }
+
+        const panier = getPanier();
+        if (!panier || panier.length === 0) {
+          if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+          return;
+        }
+
+        if (!cartValid) {
+          if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
+          return;
+        }
+
+        const valid = billingForm.reportValidity();
+        if (!valid) {
+          if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
+          return;
+        }
+
+        if (!cgvCheckbox || !cgvCheckbox.checked) {
+          if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
+          return;
+        }
+
+        if (!rulesCheckbox || !rulesCheckbox.checked) {
+          if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
+          return;
+        }
+
+        const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
+        if (!age || age < 18) {
+          if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
+          return;
+        }
+
+        if (errorEl) errorEl.textContent = "";
+        if (successEl) successEl.textContent = "";
+
+        updateOrderSummaryFromPanier();
+        const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
+
+        const finalAmountCents =
+          currentPromo && currentPromo.type === "free"
+            ? 0
+            : Math.round((currentTotals.finalTotalTTC || 0) * 100);
+
+        const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
+        lastPayWithSaved = payWithSaved;
+
+        if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
+          lastPayWithSaved = false;
+          const t = document.getElementById("pay-with-saved-card");
+          if (t) t.checked = false;
+          setCardElementHidden(false);
+        }
+
+        submitBtn.disabled = true;
+        const originalLabel = submitBtn.textContent;
+        submitBtn.textContent = "Paiement en cours...";
+
+        try {
+          const body = {
+            panier,
+            customer: {
+              prenom: document.getElementById("prenom").value.trim(),
+              nom: document.getElementById("nom").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              telephone: document.getElementById("telephone").value.trim(),
+              pays: document.getElementById("pays").value,
+              adresse: document.getElementById("adresse").value.trim(),
+              complement: document.getElementById("complement").value.trim(),
+              cp: document.getElementById("cp").value.trim(),
+              ville: document.getElementById("ville").value.trim(),
+              naissance: document.getElementById("naissance").value
+            },
+            promoCode,
+            finalAmountCents,
+            loyaltyUsed
+          };
+
+          if (lastPayWithSaved) body.useSavedPaymentMethod = true;
+
+          const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
+            method: "POST",
+            headers: authHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify(body)
+          });
+
+          const json = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            const msg = json.error || "Erreur lors de la création du paiement.";
+            if (errorEl) errorEl.textContent = msg;
+            return;
+          }
+
+          if (json.isFree) {
+            if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
+            await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
+            return;
+          }
+
+          if (!json.clientSecret) {
+            if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
+            return;
+          }
+
+          // Saved card
+          if (lastPayWithSaved) {
+            const pmId =
+              savedCardState?.defaultPaymentMethodId ||
+              (savedCardState?.card && savedCardState.card.id) ||
+              null;
+
+            if (!pmId) {
+              lastPayWithSaved = false;
+              const t = document.getElementById("pay-with-saved-card");
+              if (t) t.checked = false;
+              setCardElementHidden(false);
+              if (errorEl) errorEl.textContent = "Aucune carte enregistrée détectée. Merci de saisir votre carte.";
+              // on ne return pas : on laisse le flux continuer sur le paiement normal (carte saisie)
+            } else {
+              const actionRes = await stripe.confirmCardPayment(json.clientSecret, {
+                payment_method: pmId
+              });
+
+              if (actionRes.error) {
+                if (errorEl) errorEl.textContent = actionRes.error.message;
+                return;
+              }
+
+              if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
+                if (successEl) successEl.textContent = "Paiement accepté ✔️";
+                await processReservationAndDeposit({
+                  isFree: false,
+                  paymentIntentId: actionRes.paymentIntent.id
+                });
+              } else {
+                if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+              }
+              return;
+            }
+          }
+
+          // Normal
+          if (!cardElement) {
+            if (errorEl) errorEl.textContent = "Merci de saisir une carte (aucun champ carte détecté).";
+            return;
+          }
+
+          const result = await stripe.confirmCardPayment(json.clientSecret, {
             payment_method: {
               card: cardElement,
               billing_details: {
@@ -2968,227 +3213,23 @@ const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
             }
           });
 
-      if (depositResult && depositResult.error && errorEl) {
-        errorEl.textContent =
-          (isFree
-            ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
-            : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
-          depositResult.error.message +
-          ". Merci de nous contacter à contactsingbox@gmail.com.";
-      }
-    } else if (errorEl) {
-      errorEl.textContent =
-        (isFree
-          ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
-          : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
-        " Merci de nous contacter à contactsingbox@gmail.com.";
-    }
-  } catch (e) {
-    if (errorEl) {
-      errorEl.textContent =
-        (isFree
-          ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
-          : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
-        " Merci de nous contacter à contactsingbox@gmail.com.";
-    }
-  }
-
-  // Newsletter opt-in
-  if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
-    try {
-      await window.supabaseClient
-        .from("newsletter_subscriptions")
-        .insert({ email: document.getElementById("email").value.trim() });
-    } catch (e) {}
-  }
-
-  // Save infos
-  saveCheckoutInfoLocal(getCheckoutInfoFromForm());
-
-  // Clear panier
-  savePanier([]);
-  localStorage.removeItem("promoCode");
-  currentPromo = null;
-  updateCartIcon();
-
-  // ✅ AFFICHAGE MERCI (robuste)
-  showThankYouSection();
-
-  // QR code
-  if (reservationId && thankyouQrContainer && window.QRCode) {
-    try {
-      const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
-      thankyouQrContainer.innerHTML = "";
-      new QRCode(thankyouQrContainer, {
-        text: qrText,
-        width: 228,
-        height: 228,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
-      if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
-    } catch (e) {}
-  }
-};
-
-if (submitBtn) {
-  submitBtn.addEventListener("click", async () => {
-    if (!billingForm) return;
-    if (!stripe || !cardElement) {
-      if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
-      return;
-    }
-
-    const panier = getPanier();
-    if (!panier || panier.length === 0) {
-      if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-      return;
-    }
-
-    if (!cartValid) {
-      if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
-      return;
-    }
-
-    const valid = billingForm.reportValidity();
-    if (!valid) {
-      if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
-      return;
-    }
-
-    if (!cgvCheckbox || !cgvCheckbox.checked) {
-      if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
-      return;
-    }
-
-    if (!rulesCheckbox || !rulesCheckbox.checked) {
-      if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
-      return;
-    }
-
-    const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
-    if (!age || age < 18) {
-      if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
-      return;
-    }
-
-    if (errorEl) errorEl.textContent = "";
-    if (successEl) successEl.textContent = "";
-
-    updateOrderSummaryFromPanier();
-    const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
-
-    const finalAmountCents =
-      currentPromo && currentPromo.type === "free"
-        ? 0
-        : Math.round((currentTotals.finalTotalTTC || 0) * 100);
-
-    const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
-    lastPayWithSaved = payWithSaved;
-
-    if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
-      lastPayWithSaved = false;
-      const t = document.getElementById("pay-with-saved-card");
-      if (t) t.checked = false;
-      setCardElementHidden(false);
-    }
-
-    submitBtn.disabled = true;
-    const originalLabel = submitBtn.textContent;
-    submitBtn.textContent = "Paiement en cours...";
-
-    try {
-      const body = {
-        panier,
-        customer: {
-          prenom: document.getElementById("prenom").value.trim(),
-          nom: document.getElementById("nom").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          telephone: document.getElementById("telephone").value.trim(),
-          pays: document.getElementById("pays").value,
-          adresse: document.getElementById("adresse").value.trim(),
-          complement: document.getElementById("complement").value.trim(),
-          cp: document.getElementById("cp").value.trim(),
-          ville: document.getElementById("ville").value.trim(),
-          naissance: document.getElementById("naissance").value
-        },
-        promoCode,
-        finalAmountCents,
-        loyaltyUsed
-      };
-
-      if (lastPayWithSaved) body.useSavedPaymentMethod = true;
-
-      const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
-        method: "POST",
-        headers: authHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify(body)
-      });
-
-      const json = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        const msg = json.error || "Erreur lors de la création du paiement.";
-        if (errorEl) errorEl.textContent = msg;
-        return;
-      }
-
-      if (json.isFree) {
-        if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
-        await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
-        return;
-      }
-
-      if (!json.clientSecret) {
-        if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
-        return;
-      }
-
-      // Saved card
-      if (lastPayWithSaved) {
-        const actionRes = await stripe.confirmCardPayment(json.clientSecret);
-        if (actionRes.error) {
-          if (errorEl) errorEl.textContent = actionRes.error.message;
-          return;
-        }
-        if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
-          if (successEl) successEl.textContent = "Paiement accepté ✔️";
-          await processReservationAndDeposit({ isFree: false, paymentIntentId: actionRes.paymentIntent.id });
-        } else {
-          if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
-        }
-        return;
-      }
-
-      // Normal
-      const result = await stripe.confirmCardPayment(json.clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: {
-            name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
-            email: document.getElementById("email").value.trim()
+          if (result.error) {
+            if (errorEl) errorEl.textContent = result.error.message;
+            return;
           }
+
+          if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+            if (successEl) successEl.textContent = "Paiement accepté ✔️";
+            await processReservationAndDeposit({ isFree: false, paymentIntentId: result.paymentIntent.id });
+          }
+        } catch (err) {
+          if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
         }
       });
-
-      if (result.error) {
-        if (errorEl) errorEl.textContent = result.error.message;
-        return;
-      }
-
-      if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
-        if (successEl) successEl.textContent = "Paiement accepté ✔️";
-        await processReservationAndDeposit({ isFree: false, paymentIntentId: result.paymentIntent.id });
-      }
-    } catch (err) {
-      if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalLabel;
     }
-  });
-}
   });
 </script>
 
@@ -3208,7 +3249,9 @@ if (submitBtn) {
     const backdrop = document.getElementById("auth-modal-backdrop");
     if (!backdrop) return;
 
-    const token = localStorage.getItem("token");
+    // ✅ CORRIGÉ : on utilise le même token "propre" que partout
+    const t = localStorage.getItem("token");
+    const token = (!t || t === "null" || t === "undefined") ? null : t;
     if (!token) showAuthModal();
 
     const btnLoginTab = document.getElementById("auth-btn-login");
@@ -3251,7 +3294,9 @@ if (submitBtn) {
         }
 
         try {
-          const res = await fetch(`${API_BASE_URL}/api/login`, {
+          // ✅ CORRIGÉ : API_BASE_URL scope safe
+          const base = window.API_BASE_URL || API_BASE_URL;
+          const res = await fetch(`${base}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -3285,7 +3330,9 @@ if (submitBtn) {
         }
 
         try {
-          const res = await fetch(`${API_BASE_URL}/api/register`, {
+          // ✅ CORRIGÉ : API_BASE_URL scope safe
+          const base = window.API_BASE_URL || API_BASE_URL;
+          const res = await fetch(`${base}/api/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -3297,7 +3344,7 @@ if (submitBtn) {
             return;
           }
 
-          const loginRes = await fetch(`${API_BASE_URL}/api/login`, {
+          const loginRes = await fetch(`${base}/api/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
