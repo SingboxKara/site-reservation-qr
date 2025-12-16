@@ -81,6 +81,11 @@
       --sb-border-soft: rgba(148, 163, 184, 0.35);
       --sb-container-width: 1180px;
     }
+    
+        /* ✅ Masquage élégant du champ carte quand on paye avec carte enregistrée */
+.card-element-wrapper.is-hidden {
+  display: none;
+}
 
     * { box-sizing: border-box; }
 
@@ -1827,7 +1832,54 @@
               conformément à notre
               <a href="politique-confidentialite.html" target="_blank" rel="noopener noreferrer">politique de confidentialité</a>.
             </p>
+<!-- ✅ Paiement rapide (carte enregistrée) -->
+<div id="saved-card-block" style="display:none; margin: 10px 0 12px;">
+  <div style="
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(148,163,184,0.35);
+    background: rgba(2,6,23,0.75);
+  ">
+    <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+      <div style="min-width:0;">
+        <div style="font-weight:700; font-size:13px; margin-bottom:4px;">
+          Paiement plus rapide
+        </div>
+        <div id="saved-card-summary" style="font-size:12px; color:#9CA3AF;">
+          Aucune carte enregistrée.
+        </div>
+      </div>
 
+      <button id="save-card-btn" type="button" style="
+        border:none;
+        border-radius:999px;
+        padding:8px 12px;
+        background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+        color:#fff;
+        font-weight:700;
+        font-size:12px;
+        cursor:pointer;
+        white-space:nowrap;
+        box-shadow: 0 0 0 1px rgba(248,250,251,0.10), 0 12px 30px rgba(0,0,0,0.7);
+      ">
+        Enregistrer ma carte
+      </button>
+    </div>
+
+    <label style="display:flex; gap:10px; align-items:flex-start; margin-top:10px; font-size:12px; cursor:pointer;">
+      <input type="checkbox" id="use-saved-card" style="margin-top:2px; width:16px; height:16px; accent-color: var(--sb-red);" />
+      <span>
+        Payer avec la carte enregistrée (1 clic)
+        <span style="display:block; font-size:11px; color:#9CA3AF; margin-top:2px;">
+          La 3DS peut s’afficher si nécessaire.
+        </span>
+      </span>
+    </label>
+
+    <div id="saved-card-msg" style="font-size:11px; margin-top:6px; min-height:14px; color:#9CA3AF;"></div>
+  </div>
+</div>
+            
             <div class="card-element-wrapper">
               <div id="card-element"></div>
               <div id="card-errors"></div>
@@ -1865,8 +1917,6 @@
               </button>
             </div>
           </div>
-        </div>
-      </div>
 
       <!-- SECTION MERCI / RÉCAPITULATIF POST-PAIEMENT -->
       <div id="thankyou-section">
@@ -2055,7 +2105,6 @@
 
   async function handleAuthResponse(res, ctx = "") {
     // ✅ IMPORTANT : on ne supprime PAS le token sur 400
-    // 400 peut être une validation / erreur payload. On le supprime uniquement si non autorisé.
     if (res.status === 401 || res.status === 403) {
       localStorage.removeItem("token");
       console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
@@ -2072,7 +2121,6 @@
 
     const res = await fetch(url, { ...options, headers: finalHeaders });
 
-    // Auto-clear token si endpoint auth renvoie 401/403
     if (auth) {
       const okAuth = await handleAuthResponse(res, ctx || path);
       if (!okAuth) return { ok: false, status: res.status, data: null, res };
@@ -2080,7 +2128,6 @@
 
     if (!json) return { ok: res.ok, status: res.status, data: null, res };
 
-    // ✅ lecture safe : res.json() puis fallback texte via clone (sinon body déjà consommé)
     let data = null;
     try {
       data = await res.json();
@@ -2120,6 +2167,9 @@
   };
   let cartValid = true;
 
+  // ✅ NEW : mémorise si le client a choisi "payer avec carte enregistrée"
+  let lastPayWithSaved = false;
+
   function getPanier() {
     try {
       return JSON.parse(localStorage.getItem("panier")) || [];
@@ -2142,9 +2192,7 @@
   function computeTotal(panier) {
     let total = 0;
     for (const item of panier) {
-      // ✅ robust: fallback si price absent/NaN
       let p = item && typeof item.price === "number" && isFinite(item.price) ? item.price : PRICE_FALLBACK;
-      // on autorise 0 (cas promo/free côté front)
       if (!isFinite(p) || p < 0) return null;
       total += p;
     }
@@ -2319,14 +2367,13 @@
         ? (first.boxName || first.box || first.boxId)
         : "Box privée";
 
-    // ✅ horaire plus fiable : si start_time/end_time existent on les affiche
     let hourText = "";
     if (first && first.start_time && first.end_time) {
       const s = formatTimeFrFromIso(first.start_time);
       const e = formatTimeFrFromIso(first.end_time);
       if (s && e) hourText = `${s} – ${e}`;
     } else if (first && typeof first.hour === "number") {
-      const start = first.hour; // ex: 18 ou 18.5
+      const start = first.hour;
       const startH = Math.floor(start);
       const startM = Math.round((start - startH) * 60);
       const endMinutes = startH * 60 + startM + 90;
@@ -2365,8 +2412,38 @@
   }
 
   // =========================
-  // ✅ NEW : UI carte enregistrée
+  // ✅ NEW : UI carte enregistrée + masquage champ CB
   // =========================
+  function setCardElementHidden(hidden) {
+    const wrap = document.querySelector(".card-element-wrapper");
+    if (!wrap) return;
+    wrap.classList.toggle("is-hidden", !!hidden);
+  }
+
+  function initSavedCardToggleBehavior() {
+    const payToggle = document.getElementById("pay-with-saved-card");
+    if (!payToggle) return;
+
+    const sync = () => {
+      // on ne masque le champ CB que si :
+      // - checkbox cochée
+      // - et une carte existe réellement (sinon on laisse visible)
+      const hasCard = !!(savedCardState.card && savedCardState.card.last4);
+      const wantSaved = !!payToggle.checked;
+
+      if (!hasCard) {
+        payToggle.checked = false;
+        setCardElementHidden(false);
+        return;
+      }
+
+      setCardElementHidden(wantSaved);
+    };
+
+    payToggle.addEventListener("change", sync);
+    sync();
+  }
+
   function renderSavedCardUI() {
     const block = document.getElementById("saved-card-block");
     if (!block) return;
@@ -2380,13 +2457,12 @@
 
     if (!logged) {
       block.style.display = "none";
+      setCardElementHidden(false);
       return;
     }
 
-    // On affiche le bloc si connecté (même si pas de carte, pour montrer "Enregistrer ma carte")
     block.style.display = "block";
 
-    // Résumé
     const card = savedCardState.card;
     if (summary) {
       if (card && card.last4) {
@@ -2396,7 +2472,6 @@
       }
     }
 
-    // Toggle payer avec carte enregistrée : activable seulement si on a une carte
     if (payToggle) {
       payToggle.disabled = !(card && card.last4);
       if (payToggle.disabled) payToggle.checked = false;
@@ -2404,6 +2479,9 @@
 
     if (msg) msg.textContent = "";
     if (saveBtn) saveBtn.disabled = false;
+
+    // ✅ resync masque/affiche champ CB
+    initSavedCardToggleBehavior();
   }
 
   async function loadSavedCardStateFromMe() {
@@ -2427,7 +2505,6 @@
     savedCardState.methods = r.data.methods || [];
     savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
 
-    // si pas de card en /api/me, on peut fallback sur la défaut Stripe
     if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
       const found = savedCardState.methods.find((m) => m.id === savedCardState.defaultPaymentMethodId);
       if (found) savedCardState.card = found;
@@ -2443,24 +2520,25 @@
       if (msg) msg.textContent = "Connectez-vous pour enregistrer une carte.";
       return;
     }
-    if (!stripe) {
+    if (!stripe || !cardElement) {
       if (msg) msg.textContent = "Stripe n’est pas initialisé.";
       return;
     }
+
+    // ✅ pour enregistrer une carte il faut voir le champ CB
+    if (payToggle) payToggle.checked = false;
+    setCardElementHidden(false);
 
     try {
       if (btn) btn.disabled = true;
       if (msg) msg.textContent = "Préparation de l’enregistrement…";
 
-      // 1) SetupIntent
       const si = await apiFetch("/api/create-setup-intent", { method: "POST" }, { auth: true, ctx: "POST /api/create-setup-intent" });
       if (!si.ok || !si.data || !si.data.clientSecret) {
         if (msg) msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
-        if (btn) btn.disabled = false;
         return;
       }
 
-      // 2) on utilise le même cardElement déjà monté
       const setupRes = await stripe.confirmCardSetup(si.data.clientSecret, {
         payment_method: {
           card: cardElement,
@@ -2473,20 +2551,17 @@
 
       if (setupRes.error) {
         if (msg) msg.textContent = setupRes.error.message || "Erreur lors de l’enregistrement de la carte.";
-        if (btn) btn.disabled = false;
         return;
       }
 
       const paymentMethodId = setupRes.setupIntent && setupRes.setupIntent.payment_method;
       if (!paymentMethodId) {
         if (msg) msg.textContent = "Enregistrement incomplet (payment_method manquant).";
-        if (btn) btn.disabled = false;
         return;
       }
 
       if (msg) msg.textContent = "Finalisation…";
 
-      // 3) set default + sauvegarde Supabase
       const sd = await apiFetch(
         "/api/set-default-payment-method",
         {
@@ -2499,18 +2574,19 @@
 
       if (!sd.ok) {
         if (msg) msg.textContent = "Carte enregistrée, mais impossible de la définir par défaut.";
-        if (btn) btn.disabled = false;
         return;
       }
 
-      // Refresh état
       savedCardState.card = null;
       await loadSavedCardStateFromMe();
       await refreshPaymentMethods();
       renderSavedCardUI();
 
       if (msg) msg.textContent = "Carte enregistrée ✔️";
-      if (payToggle && !payToggle.disabled) payToggle.checked = true;
+      if (payToggle && !payToggle.disabled) {
+        payToggle.checked = true;
+        initSavedCardToggleBehavior();
+      }
     } catch (e) {
       if (msg) msg.textContent = "Erreur : " + (e?.message || "inconnue");
     } finally {
@@ -2589,13 +2665,11 @@
       } catch {}
     }
 
-    // 1) Prefill local
     let __isPrefilling = false;
     __isPrefilling = true;
     fillCheckoutForm(loadCheckoutInfoLocal());
     __isPrefilling = false;
 
-    // ✅ Prefill DB si connecté
     async function prefillFromBackendIfLogged() {
       if (!getToken()) return;
 
@@ -2625,7 +2699,6 @@
       }
 
       __isPrefilling = false;
-
       saveCheckoutInfoLocal(getCheckoutInfoFromForm());
     }
 
@@ -2639,9 +2712,7 @@
     renderSavedCardUI();
 
     const saveCardBtn = document.getElementById("save-card-btn");
-    if (saveCardBtn) {
-      saveCardBtn.addEventListener("click", handleSaveCard);
-    }
+    if (saveCardBtn) saveCardBtn.addEventListener("click", handleSaveCard);
 
     // 2) Autosave local (debounce)
     let _saveTimer = null;
@@ -2653,7 +2724,7 @@
       }, 400);
     }
 
-    // ✅ Autosave DB (RÉACTIVÉ + DEBOUNCE + ANTI-SPAM)
+    // ✅ Autosave DB (DEBOUNCE + ANTI-SPAM)
     let _saveDbTimer = null;
     let _lastDbPayload = "";
     async function saveProfileToBackendNow() {
@@ -2661,11 +2732,7 @@
       if (!token) return;
 
       const payload = getCheckoutInfoFromForm();
-
-      // ✅ Le backend met à jour la table users (sauf email). On envoie tout, c’est ok.
       const payloadStr = JSON.stringify(payload);
-
-      // anti-spam : si rien n’a changé, on ne renvoie pas
       if (payloadStr === _lastDbPayload) return;
 
       const r = await apiFetch(
@@ -2678,11 +2745,8 @@
         { auth: true, ctx: "POST /api/me (autosave)" }
       );
 
-      if (r.ok) {
-        _lastDbPayload = payloadStr;
-      } else {
-        console.warn("Autosave profil échoué:", r.status, r.data);
-      }
+      if (r.ok) _lastDbPayload = payloadStr;
+      else console.warn("Autosave profil échoué:", r.status, r.data);
     }
 
     function saveProfileToBackendDebounced() {
@@ -2692,7 +2756,6 @@
       _saveDbTimer = setTimeout(saveProfileToBackendNow, 900);
     }
 
-    // écouteurs sur tous les champs
     [
       "prenom", "nom", "pays", "adresse", "complement", "cp", "ville", "telephone", "email", "naissance"
     ].forEach((id) => {
@@ -2701,7 +2764,6 @@
       el.addEventListener("input", scheduleSave);
       el.addEventListener("change", scheduleSave);
 
-      // ✅ autosave DB ON
       el.addEventListener("input", saveProfileToBackendDebounced);
       el.addEventListener("change", saveProfileToBackendDebounced);
       el.addEventListener("blur", saveProfileToBackendDebounced);
@@ -2814,7 +2876,7 @@
     }
 
     // =========================
-    // PROMO (inchangé)
+    // PROMO
     // =========================
     const promoToggle = document.getElementById("promo-toggle");
     const promoBody = document.getElementById("promo-body");
@@ -3018,13 +3080,15 @@
         console.error("Erreur confirm-reservation :", e);
       }
 
-      // caution : inchangé, toujours via cardElement (simple)
+      // ✅ CAUTION : si lastPayWithSaved = true, on laisse le backend essayer d’utiliser la carte par défaut
+      // (si ton backend ne gère pas encore useSavedPaymentMethod sur la caution, il peut ignorer et ça marchera comme avant)
       try {
         const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: authHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify({
             reservationId,
+            useSavedPaymentMethod: !!lastPayWithSaved,
             customer: {
               prenom: document.getElementById("prenom").value.trim(),
               nom: document.getElementById("nom").value.trim(),
@@ -3033,19 +3097,22 @@
           })
         });
 
-        const depositJson = await depositRes.json();
+        const depositJson = await depositRes.json().catch(() => ({}));
         if (depositRes.ok && depositJson && depositJson.clientSecret) {
-          const depositResult = await stripe.confirmCardPayment(depositJson.clientSecret, {
-            payment_method: {
-              card: cardElement,
-              billing_details: {
-                name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
-                email: document.getElementById("email").value.trim()
-              }
-            }
-          });
+          // Si le PI de caution est déjà confirmé côté backend (saved card), confirmCardPayment() sans payment_method gère 3DS si besoin
+          const depositResult = lastPayWithSaved
+            ? await stripe.confirmCardPayment(depositJson.clientSecret)
+            : await stripe.confirmCardPayment(depositJson.clientSecret, {
+                payment_method: {
+                  card: cardElement,
+                  billing_details: {
+                    name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
+                    email: document.getElementById("email").value.trim()
+                  }
+                }
+              });
 
-          if (depositResult.error) {
+          if (depositResult && depositResult.error) {
             if (errorEl) {
               errorEl.textContent =
                 (isFree
@@ -3167,17 +3234,22 @@
             ? 0
             : Math.round((currentTotals.finalTotalTTC || 0) * 100);
 
-        // ✅ NEW : payer avec carte enregistrée ?
         const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
+        lastPayWithSaved = payWithSaved;
+
+        // ✅ sécurité : si l’utilisateur coche mais qu’il n’y a pas de carte => on repasse en mode normal
+        if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
+          lastPayWithSaved = false;
+          const t = document.getElementById("pay-with-saved-card");
+          if (t) t.checked = false;
+          setCardElementHidden(false);
+        }
 
         submitBtn.disabled = true;
         const originalLabel = submitBtn.textContent;
         submitBtn.textContent = "Paiement en cours...";
 
         try {
-          // =============================
-          // 1) Create PaymentIntent (normal OU saved-card 1 clic)
-          // =============================
           const body = {
             panier,
             customer: {
@@ -3197,10 +3269,8 @@
             loyaltyUsed
           };
 
-          if (payWithSaved) {
+          if (lastPayWithSaved) {
             body.useSavedPaymentMethod = true;
-            // optionnel : tu peux forcer un PM
-            // body.paymentMethodId = savedCardState.defaultPaymentMethodId;
           }
 
           const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
@@ -3214,39 +3284,26 @@
           if (!res.ok) {
             const msg = json.error || "Erreur lors de la création du paiement.";
             if (errorEl) errorEl.textContent = msg;
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
             return;
           }
 
           if (json.isFree) {
             if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
             await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
             return;
           }
 
           if (!json.clientSecret) {
             if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
             return;
           }
 
-          // =============================
-          // 2) Paiement : si saved-card => PI est déjà "confirm" côté backend
-          //    - si requires_action => on fait confirmCardPayment(clientSecret)
-          //    - sinon => on récup PI via confirmCardPayment quand même (safe), ou on bypass
-          // =============================
-          if (payWithSaved) {
-            // Si backend a indiqué requiresAction, on déclenche 3DS ici
+          // ✅ flow saved-card
+          if (lastPayWithSaved) {
             if (json.requiresAction) {
               const actionRes = await stripe.confirmCardPayment(json.clientSecret);
               if (actionRes.error) {
                 if (errorEl) errorEl.textContent = actionRes.error.message;
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalLabel;
                 return;
               }
               if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
@@ -3256,17 +3313,11 @@
                 if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
               }
             } else {
-              // Paiement déjà fait côté backend (souvent succeeded)
-              // On essaye de récupérer un id fiable :
               const paymentIntentId = json.paymentIntentId || null;
-
               if (!paymentIntentId) {
-                // fallback : tente confirmCardPayment (ne devrait rien faire si déjà succeeded)
                 const fallbackRes = await stripe.confirmCardPayment(json.clientSecret);
                 if (fallbackRes.error) {
                   if (errorEl) errorEl.textContent = fallbackRes.error.message;
-                  submitBtn.disabled = false;
-                  submitBtn.textContent = originalLabel;
                   return;
                 }
                 if (fallbackRes.paymentIntent && fallbackRes.paymentIntent.status === "succeeded") {
@@ -3280,15 +3331,10 @@
                 await processReservationAndDeposit({ isFree: false, paymentIntentId });
               }
             }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
             return;
           }
 
-          // =============================
-          // Flow normal : saisie CB + confirmCardPayment (inchangé)
-          // =============================
+          // ✅ flow normal
           const result = await stripe.confirmCardPayment(json.clientSecret, {
             payment_method: {
               card: cardElement,
@@ -3301,8 +3347,6 @@
 
           if (result.error) {
             if (errorEl) errorEl.textContent = result.error.message;
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
             return;
           }
 
@@ -3386,7 +3430,7 @@
             body: JSON.stringify({ email, password })
           });
 
-          const data = await res.json();
+          const data = await res.json().catch(() => ({}));
           if (!res.ok) {
             if (msgEl) msgEl.textContent = data.error || "Erreur de connexion.";
             return;
@@ -3420,7 +3464,7 @@
             body: JSON.stringify({ email, password })
           });
 
-          const data = await res.json();
+          const data = await res.json().catch(() => ({}));
           if (!res.ok) {
             if (msgEl) msgEl.textContent = data.error || "Erreur lors de la création du compte.";
             return;
@@ -3432,7 +3476,7 @@
             body: JSON.stringify({ email, password })
           });
 
-          const loginData = await loginRes.json();
+          const loginData = await loginRes.json().catch(() => ({}));
           if (loginRes.ok) {
             localStorage.setItem("token", loginData.token);
             hideAuthModal();
