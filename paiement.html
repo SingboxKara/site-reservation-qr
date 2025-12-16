@@ -2313,6 +2313,89 @@
       updateCartIcon();
       updateOrderSummaryFromPanier();
 
+// =========================
+// SAVE / PREFILL CHECKOUT INFO (localStorage)
+// =========================
+const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
+
+function getCheckoutInfoFromForm() {
+  const get = (id) => (document.getElementById(id)?.value || "").trim();
+  return {
+    prenom: get("prenom"),
+    nom: get("nom"),
+    pays: document.getElementById("pays")?.value || "FR",
+    adresse: get("adresse"),
+    complement: get("complement"),
+    cp: get("cp"),
+    ville: get("ville"),
+    telephone: get("telephone"),
+    email: get("email"),
+    naissance: document.getElementById("naissance")?.value || ""
+  };
+}
+
+function fillCheckoutForm(info) {
+  if (!info) return;
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (!el || val === undefined || val === null) return;
+    el.value = val;
+  };
+
+  set("prenom", info.prenom);
+  set("nom", info.nom);
+  if (document.getElementById("pays") && info.pays) document.getElementById("pays").value = info.pays;
+
+  set("adresse", info.adresse);
+  set("complement", info.complement);
+  set("cp", info.cp);
+  set("ville", info.ville);
+  set("telephone", info.telephone);
+  set("email", info.email);
+  if (document.getElementById("naissance") && info.naissance) document.getElementById("naissance").value = info.naissance;
+}
+
+function loadCheckoutInfoLocal() {
+  try {
+    const raw = localStorage.getItem(CHECKOUT_INFO_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCheckoutInfoLocal(info) {
+  try {
+    localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify(info));
+  } catch {}
+}
+
+// 1) Prefill au chargement
+let __isPrefilling = false;
+__isPrefilling = true;
+fillCheckoutForm(loadCheckoutInfoLocal());
+__isPrefilling = false;
+
+// 2) Autosave en live (avec un petit debounce)
+let _saveTimer = null;
+function scheduleSave() {
+  if (__isPrefilling) return;
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => {
+    saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+  }, 400);
+}
+
+// écouteurs sur tous les champs
+[
+  "prenom","nom","pays","adresse","complement","cp","ville","telephone","email","naissance"
+].forEach((id) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener("input", scheduleSave);
+  el.addEventListener("change", scheduleSave);
+});
+      
       /* ----------------------------------------------------------
          PROGRAMME FIDÉLITÉ — RÉCUPÉRATION + APPLICATION
       ---------------------------------------------------------- */
@@ -2761,7 +2844,8 @@
             console.error("Erreur inscription newsletter :", e);
           }
         }
-
+        
+saveCheckoutInfoLocal(getCheckoutInfoFromForm());
         savePanier([]);
         localStorage.removeItem("promoCode");
         currentPromo = null;
