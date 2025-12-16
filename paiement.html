@@ -2851,21 +2851,34 @@
     if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
       stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
-      const elements = stripe.elements({
-        appearance: {
-          theme: "night",
-          variables: {
-            colorPrimary: "#F97316",
-            colorBackground: "#020617",
-            colorText: "#F9FAFB",
-            colorTextSecondary: "#E5E7EB",
-            colorTextPlaceholder: "#9CA3AF",
-            colorIcon: "#F9FAFB",
-            colorDanger: "#FCA5A5",
-            borderRadius: "14px"
-          }
-        }
-      });
+const elements = stripe.elements({
+  appearance: {
+    theme: "night",
+    variables: {
+      colorPrimary: "#F97316",
+      colorBackground: "#020617",
+      colorText: "#F9FAFB",              // ✅ texte principal (numéro de carte)
+      colorTextSecondary: "#E5E7EB",
+      colorTextPlaceholder: "#9CA3AF",
+      colorIcon: "#F9FAFB",
+      colorDanger: "#FCA5A5",
+      fontFamily: "Montserrat, system-ui, sans-serif",
+      borderRadius: "14px"
+    },
+    rules: {
+      ".Input": {
+        color: "#F9FAFB",               // ✅ force le texte en blanc
+        backgroundColor: "transparent"
+      },
+      ".Input::placeholder": {
+        color: "#9CA3AF"
+      },
+      ".Label": {
+        color: "#E5E7EB"
+      }
+    }
+  }
+});
 
       cardElement = elements.create("card", { hidePostalCode: true });
       cardElement.mount("#card-element");
