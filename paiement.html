@@ -21,7 +21,6 @@
   <meta property="og:description" content="Réglez en ligne votre séance de karaoké privé chez Singbox à Toulouse : créneaux flexibles, paiement sécurisé et codes promo disponibles." />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:url" content="https://www.singbox.fr/paiement" />
-  <!-- À adapter avec votre visuel de partage -->
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Twitter Card -->
@@ -81,11 +80,9 @@
       --sb-border-soft: rgba(148, 163, 184, 0.35);
       --sb-container-width: 1180px;
     }
-    
-        /* ✅ Masquage élégant du champ carte quand on paye avec carte enregistrée */
-.card-element-wrapper.is-hidden {
-  display: none;
-}
+
+    /* ✅ Masquage élégant du champ carte quand on paye avec carte enregistrée */
+    .card-element-wrapper.is-hidden { display: none; }
 
     * { box-sizing: border-box; }
 
@@ -210,9 +207,7 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
-      width: 100%;
-    }
+    .main-nav a:hover::after { width: 100%; }
 
     .main-nav a:hover {
       color: #ffb96f;
@@ -316,69 +311,22 @@
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
-    /* --------- HEADER RESPONSIVE --------- */
     @media (max-width: 900px) {
-      .header-inner {
-        padding: 8px 10px;
-        gap: 8px;
-      }
-
-      nav.main-nav {
-        display: none;
-      }
-
-      .brand-logo {
-        width: 58px;
-      }
-
-      .brand-text {
-        font-size: 15px;
-        letter-spacing: 0.11em;
-      }
-
-      .nav-cta {
-        padding: 6px 12px;
-        font-size: 11px;
-      }
-
-      .cart-icon,
-      .burger-button {
-        width: 32px;
-        height: 32px;
-        font-size: 18px;
-      }
-
-      .burger-button {
-        display: flex;
-      }
+      .header-inner { padding: 8px 10px; gap: 8px; }
+      nav.main-nav { display: none; }
+      .brand-logo { width: 58px; }
+      .brand-text { font-size: 15px; letter-spacing: 0.11em; }
+      .nav-cta { padding: 6px 12px; font-size: 11px; }
+      .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
+      .burger-button { display: flex; }
     }
 
     @media (max-width: 480px) {
-      .header-inner {
-        padding: 8px 8px;
-        gap: 6px;
-      }
-
-      .brand-logo {
-        width: 50px;
-      }
-
-      .brand-text {
-        font-size: 13px;
-        letter-spacing: 0.09em;
-      }
-
-      .nav-cta {
-        padding: 5px 10px;
-        font-size: 10px;
-      }
-
-      .cart-icon,
-      .burger-button {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-      }
+      .header-inner { padding: 8px 8px; gap: 6px; }
+      .brand-logo { width: 50px; }
+      .brand-text { font-size: 13px; letter-spacing: 0.09em; }
+      .nav-cta { padding: 5px 10px; font-size: 10px; }
+      .cart-icon, .burger-button { width: 30px; height: 30px; font-size: 16px; }
     }
 
     /* ======================= SECTION PANIER / PAIEMENT ======================= */
@@ -428,10 +376,7 @@
       margin-bottom: 8px;
     }
 
-    .checkout-header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+    .checkout-header h1 { font-size: 30px; margin-bottom: 8px; }
 
     .checkout-header p {
       margin: 0;
@@ -463,21 +408,14 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background:
-        radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
       opacity: 0.6;
       mix-blend-mode: soft-light;
     }
 
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
+    .card > * { position: relative; z-index: 1; }
 
-    .billing-card h2 {
-      font-size: 22px;
-      margin-bottom: 14px;
-    }
+    .billing-card h2 { font-size: 22px; margin-bottom: 14px; }
 
     .billing-form-grid-2 {
       display: grid;
@@ -486,10 +424,7 @@
       margin-bottom: 0.9rem;
     }
 
-    .billing-field {
-      margin-bottom: 0.9rem;
-      font-size: 13px;
-    }
+    .billing-field { margin-bottom: 0.9rem; font-size: 13px; }
 
     .billing-field label {
       display: block;
@@ -531,9 +466,7 @@
       background-repeat: no-repeat;
     }
 
-    .billing-field input::placeholder {
-      color: rgba(156,163,175,0.9);
-    }
+    .billing-field input::placeholder { color: rgba(156,163,175,0.9); }
 
     .billing-field input:focus,
     .billing-field select:focus {
@@ -572,9 +505,7 @@
       pointer-events: none;
     }
 
-    .billing-type-option span {
-      position: relative;
-    }
+    .billing-type-option span { position: relative; }
 
     .billing-type-option input:checked + span {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
@@ -593,10 +524,7 @@
       gap: 1rem;
     }
 
-    .order-card h2 {
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
+    .order-card h2 { font-size: 20px; margin-bottom: 12px; }
 
     .order-lines {
       font-size: 13px;
@@ -605,10 +533,7 @@
       margin-bottom: 0.75rem;
     }
 
-    .order-product-name {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+    .order-product-name { font-weight: 600; margin-bottom: 4px; }
 
     .order-meta {
       margin: 0;
@@ -616,10 +541,7 @@
       line-height: 1.5;
     }
 
-    .order-totals {
-      font-size: 13px;
-      margin-top: 0.5rem;
-    }
+    .order-totals { font-size: 13px; margin-top: 0.5rem; }
 
     .order-row {
       display: flex;
@@ -643,9 +565,7 @@
 
     /* Code promo bloc */
 
-    .promo-card {
-      font-size: 12px;
-    }
+    .promo-card { font-size: 12px; }
 
     .promo-header {
       display: flex;
@@ -655,10 +575,7 @@
       margin-bottom: 6px;
     }
 
-    .promo-header span {
-      font-weight: 600;
-      font-size: 13px;
-    }
+    .promo-header span { font-weight: 600; font-size: 13px; }
 
     .promo-toggle {
       font-size: 12px;
@@ -671,9 +588,7 @@
       padding: 0;
     }
 
-    .promo-toggle:hover {
-      text-decoration: none;
-    }
+    .promo-toggle:hover { text-decoration: none; }
 
     .promo-body {
       margin-top: 6px;
@@ -682,9 +597,7 @@
       transition: max-height 0.25s ease;
     }
 
-    .promo-body.open {
-      max-height: 200px;
-    }
+    .promo-body.open { max-height: 200px; }
 
     .promo-input-group {
       display: flex;
@@ -705,9 +618,7 @@
       outline:none;
     }
 
-    .promo-input-group input::placeholder {
-      color: rgba(156,163,175,0.9);
-    }
+    .promo-input-group input::placeholder { color: rgba(156,163,175,0.9); }
 
     .promo-input-group button {
       border-radius: 999px;
@@ -764,15 +675,8 @@
       background: #FACC15;
     }
 
-    .payment-logo.visa {
-      background: #1D4ED8;
-      color: #F9FAFB;
-    }
-
-    .payment-logo.mc {
-      background: linear-gradient(90deg,#F97316,#EF4444);
-      color:#F9FAFB;
-    }
+    .payment-logo.visa { background: #1D4ED8; color: #F9FAFB; }
+    .payment-logo.mc { background: linear-gradient(90deg,#F97316,#EF4444); color:#F9FAFB; }
 
     .payment-info {
       font-size: 11px;
@@ -781,17 +685,10 @@
       margin-bottom: 10px;
     }
 
-    .payment-info a {
-      color: #F97316;
-      text-decoration: underline;
-    }
-    .payment-info a:hover {
-      text-decoration: none;
-    }
+    .payment-info a { color: #F97316; text-decoration: underline; }
+    .payment-info a:hover { text-decoration: none; }
 
-    .card-element-wrapper {
-      margin-bottom: 10px;
-    }
+    .card-element-wrapper { margin-bottom: 10px; }
 
     #card-element {
       padding: 0.65rem 0.8rem;
@@ -834,14 +731,8 @@
       flex-shrink: 0;
     }
 
-    .payment-consents a {
-      color: #F97316;
-      text-decoration: underline;
-    }
-
-    .payment-consents a:hover {
-      text-decoration: none;
-    }
+    .payment-consents a { color: #F97316; text-decoration: underline; }
+    .payment-consents a:hover { text-decoration: none; }
 
     .payment-warning {
       font-size: 12px;
@@ -856,9 +747,7 @@
       gap: 8px;
     }
 
-    .payment-warning span:first-child {
-      font-size: 16px;
-    }
+    .payment-warning span:first-child { font-size: 16px; }
 
     .checkout-error {
       font-size: 13px;
@@ -907,10 +796,7 @@
         0 26px 65px rgba(0,0,0,1);
     }
 
-    .checkout-submit button[disabled] {
-      opacity: 0.6;
-      cursor: progress;
-    }
+    .checkout-submit button[disabled] { opacity: 0.6; cursor: progress; }
 
     /* ======================= EMPTY CART STATE ======================= */
 
@@ -919,16 +805,8 @@
       margin: 0 auto 32px;
       text-align: center;
     }
-    .empty-cart-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .empty-cart-text {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 14px;
-    }
+    .empty-cart-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .empty-cart-text { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 14px; }
     .empty-cart-actions {
       display: flex;
       flex-wrap: wrap;
@@ -966,9 +844,7 @@
       color: #E5E7EB;
       border-color: rgba(148,163,184,0.6);
     }
-    .empty-cart-btn-secondary:hover {
-      border-color: rgba(248,250,251,0.9);
-    }
+    .empty-cart-btn-secondary:hover { border-color: rgba(248,250,251,0.9); }
 
     /* ======================= PAGE MERCI (POST-PAIEMENT) ======================= */
 
@@ -980,21 +856,9 @@
       display: none;
     }
 
-    .thankyou-card {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .thankyou-title {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    .thankyou-subtitle {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-    }
+    .thankyou-card { display: flex; flex-direction: column; gap: 1.25rem; }
+    .thankyou-title { font-size: 24px; margin-bottom: 4px; }
+    .thankyou-subtitle { font-size: 13px; color: var(--sb-text-muted); }
 
     .thankyou-highlight-name {
       background: radial-gradient(circle at 0 0, rgba(249,115,22,0.25), transparent 55%);
@@ -1019,14 +883,9 @@
       gap: 4px;
     }
 
-    .thankyou-summary li strong {
-      font-weight: 600;
-    }
+    .thankyou-summary li strong { font-weight: 600; }
 
-    .thankyou-qr {
-      display: flex;
-      align-items: stretch;
-    }
+    .thankyou-qr { display: flex; align-items: stretch; }
 
     .thankyou-qr-inner {
       border-radius: 18px;
@@ -1044,34 +903,39 @@
       color: var(--sb-text-muted);
       margin-bottom: 6px;
     }
-    
-.thankyou-qr-frame{
-  width: 260px;                 /* cadre total */
-  aspect-ratio: 1/1;
-  background:#fff;
-  padding:16px;                  /* quiet zone */
-  border-radius:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto;
-  box-sizing:border-box;
-  position:relative;             /* utile pour fallback */
-}
 
-/* Le QR doit prendre 100% de la zone intérieure (= 228px) */
-#thankyou-qr canvas {
-  display: block;
-}
-#thankyou-qr-fallback{
-  position:absolute;
-  bottom:10px;
-  left:0;
-  right:0;
-  text-align:center;
-  font-size:11px;
-  color:rgba(156,163,175,0.9);
-}
+    .thankyou-qr-frame{
+      width: 260px;
+      aspect-ratio: 1/1;
+      background:#fff;
+      padding:16px;
+      border-radius:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto;
+      box-sizing:border-box;
+      position:relative;
+    }
+
+    /* ✅ IMPORTANT: canvas/img du QR en 100% */
+    #thankyou-qr canvas,
+    #thankyou-qr img {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
+    #thankyou-qr-fallback{
+      position:absolute;
+      bottom:10px;
+      left:0;
+      right:0;
+      text-align:center;
+      font-size:11px;
+      color:rgba(156,163,175,0.9);
+    }
+
     .thankyou-qr-note {
       margin-top: 6px;
       font-size: 11px;
@@ -1087,10 +951,7 @@
       line-height: 1.5;
     }
 
-    .thankyou-deposit strong {
-      display: block;
-      margin-bottom: 4px;
-    }
+    .thankyou-deposit strong { display: block; margin-bottom: 4px; }
 
     .thankyou-practical {
       font-size: 12px;
@@ -1101,10 +962,7 @@
       line-height: 1.5;
     }
 
-    .thankyou-practical strong {
-      display: block;
-      margin-bottom: 4px;
-    }
+    .thankyou-practical strong { display: block; margin-bottom: 4px; }
 
     .thankyou-practical ul {
       margin: 4px 0 0 1.1rem;
@@ -1155,24 +1013,15 @@
         0 24px 65px rgba(0,0,0,1);
     }
 
-    .thankyou-btn-secondary:hover {
-      border-color: rgba(248,250,251,0.9);
-    }
+    .thankyou-btn-secondary:hover { border-color: rgba(248,250,251,0.9); }
 
     @media (max-width: 900px) {
-      .thankyou-summary {
-        grid-template-columns: minmax(0,1fr);
-      }
+      .thankyou-summary { grid-template-columns: minmax(0,1fr); }
     }
 
     @media (max-width: 640px) {
-      #thankyou-section {
-        margin-top: 2rem;
-      }
-
-      .thankyou-card {
-        padding: 1.55rem 1.45rem;
-      }
+      #thankyou-section { margin-top: 2rem; }
+      .thankyou-card { padding: 1.55rem 1.45rem; }
     }
 
     /* ======================= FOOTER ======================= */
@@ -1189,9 +1038,7 @@
       text-align:center;
     }
 
-    .newsletter-container h3 {
-      margin-bottom: 6px;
-    }
+    .newsletter-container h3 { margin-bottom: 6px; }
 
     .newsletter-container p {
       margin-top: 0;
@@ -1219,9 +1066,7 @@
       outline: none;
     }
 
-    footer input[type=email]::placeholder {
-      color: rgba(156,163,175,0.9);
-    }
+    footer input[type=email]::placeholder { color: rgba(156,163,175,0.9); }
 
     footer button {
       padding:10px 18px;
@@ -1253,11 +1098,7 @@
       gap:10px;
     }
 
-    .footer-brand img {
-      height:80px;
-      width:auto;
-      display:block;
-    }
+    .footer-brand img { height:80px; width:auto; display:block; }
 
     .footer-columns p { margin:4px 0; }
 
@@ -1271,30 +1112,17 @@
       border-top:1px solid #111827;
     }
 
-    /* ======================= RESPONSIVE ======================= */
-
     @media (max-width: 900px) {
-      #checkout {
-        padding-top: 10rem;
-      }
-
-      .checkout-layout {
-        grid-template-columns: minmax(0,1fr);
-      }
+      #checkout { padding-top: 10rem; }
+      .checkout-layout { grid-template-columns: minmax(0,1fr); }
     }
 
     @media (max-width: 640px) {
-      .billing-form-grid-2 {
-        grid-template-columns: minmax(0,1fr);
-      }
-
-      .card {
-        padding: 1.55rem 1.45rem;
-      }
+      .billing-form-grid-2 { grid-template-columns: minmax(0,1fr); }
+      .card { padding: 1.55rem 1.45rem; }
     }
 
     /* ======================= MODAL AUTH FIDÉLITÉ ======================= */
-
     .auth-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -1307,9 +1135,7 @@
       padding: 16px;
     }
 
-    .auth-modal-backdrop.open {
-      display: flex;
-    }
+    .auth-modal-backdrop.open { display: flex; }
 
     .auth-modal {
       width: 100%;
@@ -1332,15 +1158,11 @@
       position:absolute;
       inset:0;
       pointer-events:none;
-      background:
-        radial-gradient(circle at 0 0, rgba(248,250,252,0.05), transparent 55%);
+      background: radial-gradient(circle at 0 0, rgba(248,250,252,0.05), transparent 55%);
       mix-blend-mode: soft-light;
     }
 
-    .auth-modal > * {
-      position: relative;
-      z-index: 1;
-    }
+    .auth-modal > * { position: relative; z-index: 1; }
 
     .auth-modal-eyebrow {
       font-size: 11px;
@@ -1350,10 +1172,7 @@
       margin-bottom: 4px;
     }
 
-    .auth-modal h2 {
-      font-size: 20px;
-      margin-bottom: 6px;
-    }
+    .auth-modal h2 { font-size: 20px; margin-bottom: 6px; }
 
     .auth-modal-subtext {
       font-size: 12px;
@@ -1416,18 +1235,10 @@
         0 14px 34px rgba(0,0,0,0.9);
     }
 
-    .auth-form {
-      font-size:12px;
-      margin-bottom:10px;
-    }
+    .auth-form { font-size:12px; margin-bottom:10px; }
+    .auth-form.hidden { display:none; }
 
-    .auth-form.hidden {
-      display:none;
-    }
-
-    .auth-field {
-      margin-bottom:8px;
-    }
+    .auth-field { margin-bottom:8px; }
 
     .auth-field label {
       display:block;
@@ -1449,9 +1260,7 @@
       transition:border-color 0.16s ease, box-shadow 0.16s ease;
     }
 
-    .auth-field input::placeholder {
-      color:rgba(156,163,175,0.9);
-    }
+    .auth-field input::placeholder { color:rgba(156,163,175,0.9); }
 
     .auth-field input:focus {
       border-color:var(--sb-orange);
@@ -1487,12 +1296,7 @@
         0 22px 52px rgba(0,0,0,1);
     }
 
-    .auth-modal-message {
-      min-height:14px;
-      font-size:11px;
-      margin-bottom:6px;
-      color:#FCA5A5;
-    }
+    .auth-modal-message { min-height:14px; font-size:11px; margin-bottom:6px; color:#FCA5A5; }
 
     .auth-modal-footer {
       display:flex;
@@ -1513,15 +1317,8 @@
       text-decoration:underline;
     }
 
-    .auth-modal-skip:hover {
-      color:#E5E7EB;
-      text-decoration:none;
-    }
-
-    .auth-modal-small {
-      font-size:10px;
-      color:var(--sb-text-muted);
-    }
+    .auth-modal-skip:hover { color:#E5E7EB; text-decoration:none; }
+    .auth-modal-small { font-size:10px; color:var(--sb-text-muted); }
   </style>
 </head>
 <body>
@@ -1647,7 +1444,8 @@
         </div>
       </div>
 
-      <div class="checkout-layout">
+      <!-- ✅ IMPORTANT : on donne un id au layout pour ton JS -->
+      <div class="checkout-layout" id="checkout-layout">
         <!-- COLONNE GAUCHE : FACTURATION -->
         <div class="billing-card card">
           <h2>Détails de facturation</h2>
@@ -1832,54 +1630,55 @@
               conformément à notre
               <a href="politique-confidentialite.html" target="_blank" rel="noopener noreferrer">politique de confidentialité</a>.
             </p>
-<!-- ✅ Paiement rapide (carte enregistrée) -->
-<div id="saved-card-block" style="display:none; margin: 10px 0 12px;">
-  <div style="
-    padding: 10px 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(148,163,184,0.35);
-    background: rgba(2,6,23,0.75);
-  ">
-    <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
-      <div style="min-width:0;">
-        <div style="font-weight:700; font-size:13px; margin-bottom:4px;">
-          Paiement plus rapide
-        </div>
-        <div id="saved-card-summary" style="font-size:12px; color:#9CA3AF;">
-          Aucune carte enregistrée.
-        </div>
-      </div>
 
-      <button id="save-card-btn" type="button" style="
-        border:none;
-        border-radius:999px;
-        padding:8px 12px;
-        background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-        color:#fff;
-        font-weight:700;
-        font-size:12px;
-        cursor:pointer;
-        white-space:nowrap;
-        box-shadow: 0 0 0 1px rgba(248,250,251,0.10), 0 12px 30px rgba(0,0,0,0.7);
-      ">
-        Enregistrer ma carte
-      </button>
-    </div>
+            <!-- ✅ Paiement rapide (carte enregistrée) -->
+            <div id="saved-card-block" style="display:none; margin: 10px 0 12px;">
+              <div style="
+                padding: 10px 12px;
+                border-radius: 14px;
+                border: 1px solid rgba(148,163,184,0.35);
+                background: rgba(2,6,23,0.75);
+              ">
+                <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+                  <div style="min-width:0;">
+                    <div style="font-weight:700; font-size:13px; margin-bottom:4px;">
+                      Paiement plus rapide
+                    </div>
+                    <div id="saved-card-summary" style="font-size:12px; color:#9CA3AF;">
+                      Aucune carte enregistrée.
+                    </div>
+                  </div>
 
-    <label style="display:flex; gap:10px; align-items:flex-start; margin-top:10px; font-size:12px; cursor:pointer;">
-      <input type="checkbox" id="pay-with-saved-card" style="margin-top:2px; width:16px; height:16px; accent-color: var(--sb-red);" />
-      <span>
-        Payer avec la carte enregistrée (1 clic)
-        <span style="display:block; font-size:11px; color:#9CA3AF; margin-top:2px;">
-          La 3DS peut s’afficher si nécessaire.
-        </span>
-      </span>
-    </label>
+                  <button id="save-card-btn" type="button" style="
+                    border:none;
+                    border-radius:999px;
+                    padding:8px 12px;
+                    background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+                    color:#fff;
+                    font-weight:700;
+                    font-size:12px;
+                    cursor:pointer;
+                    white-space:nowrap;
+                    box-shadow: 0 0 0 1px rgba(248,250,251,0.10), 0 12px 30px rgba(0,0,0,0.7);
+                  ">
+                    Enregistrer ma carte
+                  </button>
+                </div>
 
-    <div id="save-card-msg" style="font-size:11px; margin-top:6px; min-height:14px; color:#9CA3AF;"></div>
-  </div>
-</div>
-            
+                <label style="display:flex; gap:10px; align-items:flex-start; margin-top:10px; font-size:12px; cursor:pointer;">
+                  <input type="checkbox" id="pay-with-saved-card" style="margin-top:2px; width:16px; height:16px; accent-color: var(--sb-red);" />
+                  <span>
+                    Payer avec la carte enregistrée (1 clic)
+                    <span style="display:block; font-size:11px; color:#9CA3AF; margin-top:2px;">
+                      La 3DS peut s’afficher si nécessaire.
+                    </span>
+                  </span>
+                </label>
+
+                <div id="save-card-msg" style="font-size:11px; margin-top:6px; min-height:14px; color:#9CA3AF;"></div>
+              </div>
+            </div>
+
             <div class="card-element-wrapper">
               <div id="card-element"></div>
               <div id="card-errors"></div>
@@ -1917,8 +1716,10 @@
               </button>
             </div>
           </div>
+        </div> <!-- ✅ FIN .summary-column -->
+      </div> <!-- ✅ FIN .checkout-layout -->
 
-      <!-- SECTION MERCI / RÉCAPITULATIF POST-PAIEMENT -->
+      <!-- ✅ SECTION MERCI (DOIT ÊTRE EN DEHORS DE checkout-layout) -->
       <div id="thankyou-section">
         <div class="card thankyou-card">
           <div>
@@ -1941,6 +1742,7 @@
                 <li><strong>Référence réservation :</strong> <span id="thankyou-ref">-</span></li>
               </ul>
             </div>
+
             <div class="thankyou-qr">
               <div class="thankyou-qr-inner">
                 <p class="thankyou-qr-label">QR CODE DE RÉSERVATION</p>
@@ -1999,17 +1801,8 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
-        <input
-          id="newsletter-email"
-          type="email"
-          placeholder="Entrez votre adresse e-mail"
-        />
-        <button
-          id="newsletter-submit"
-          type="button"
-        >
-          S'abonner aux actualités
-        </button>
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
       <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
     </div>
@@ -2046,18 +1839,14 @@
             <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
             <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
           </svg>
-          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </p>
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
           </svg>
-          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
-            TikTok
-          </a>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">TikTok</a>
         </p>
       </div>
     </div>
@@ -2987,372 +2776,189 @@ if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
         applyPromo(true);
       }
     }
+// =========================
+// CHECKOUT
+// =========================
+const submitBtn = document.getElementById("checkout-submit-btn");
+const cgvCheckbox = document.getElementById("cgv-checkbox");
+const rulesCheckbox = document.getElementById("rules-checkbox");
+const newsletterCheckbox = document.getElementById("newsletter-optin");
+const errorEl = document.getElementById("checkout-error");
+const successEl = document.getElementById("checkout-success");
+const billingForm = document.getElementById("billing-form");
 
-    // =========================
-    // CHECKOUT
-    // =========================
-    const submitBtn = document.getElementById("checkout-submit-btn");
-    const cgvCheckbox = document.getElementById("cgv-checkbox");
-    const rulesCheckbox = document.getElementById("rules-checkbox");
-    const newsletterCheckbox = document.getElementById("newsletter-optin");
-    const errorEl = document.getElementById("checkout-error");
-    const successEl = document.getElementById("checkout-success");
-    const billingForm = document.getElementById("billing-form");
+// ⚠️ IMPORTANT : on garde checkoutLayout mais on ne le cache plus bêtement
+const checkoutLayout = document.querySelector(".checkout-layout");
+const paymentCard = document.querySelector(".payment-card");
 
-    const checkoutLayout = document.querySelector(".checkout-layout");
-    const thankyouSection = document.getElementById("thankyou-section");
-    const thankyouName = document.getElementById("thankyou-name");
-    const thankyouDate = document.getElementById("thankyou-date");
-    const thankyouTime = document.getElementById("thankyou-time");
-    const thankyouBox = document.getElementById("thankyou-box");
-    const thankyouTotal = document.getElementById("thankyou-total");
-    const thankyouRef = document.getElementById("thankyou-ref");
-    const thankyouQrContainer = document.getElementById("thankyou-qr");
-    const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
+// Merci
+const thankyouSection = document.getElementById("thankyou-section");
+const thankyouName = document.getElementById("thankyou-name");
+const thankyouDate = document.getElementById("thankyou-date");
+const thankyouTime = document.getElementById("thankyou-time");
+const thankyouBox = document.getElementById("thankyou-box");
+const thankyouTotal = document.getElementById("thankyou-total");
+const thankyouRef = document.getElementById("thankyou-ref");
+const thankyouQrContainer = document.getElementById("thankyou-qr");
+const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
 
-    const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
-      const panierBeforeClear = getPanier();
-      const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
-      const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
-      const boxName =
-        firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
-          ? (firstItem.boxName || firstItem.box || firstItem.boxId)
-          : "Box privée";
+// ✅ Affichage robuste de la page Merci (marche même si elle est DANS .checkout-layout)
+function showThankYouSection() {
+  if (!thankyouSection) {
+    console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
+    return;
+  }
 
-      let hourText = "";
-      if (firstItem && firstItem.start_time && firstItem.end_time) {
-        const s = formatTimeFrFromIso(firstItem.start_time);
-        const e = formatTimeFrFromIso(firstItem.end_time);
-        if (s && e) hourText = `${s} – ${e}`;
-      } else if (firstItem && typeof firstItem.hour === "number") {
-        const start = firstItem.hour;
-        const startH = Math.floor(start);
-        const startM = Math.round((start - startH) * 60);
-        const endMinutes = startH * 60 + startM + 90;
-        const endH = Math.floor((endMinutes % 1440) / 60);
-        const endM = (endMinutes % 60);
-        const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
-        const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
-        hourText = `${startStr} – ${endStr}`;
-      }
+  // 1) On s'assure que tous les parents de thankyou ne sont pas cachés
+  let p = thankyouSection;
+  while (p && p !== document.body) {
+    if (p.hidden) p.hidden = false;
+    // si un parent a display:none, on le réactive
+    const st = window.getComputedStyle(p);
+    if (st && st.display === "none") p.style.display = "";
+    p = p.parentElement;
+  }
 
-      const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
-      if (thankyouName) thankyouName.textContent = prenomValue;
+  // 2) On masque les parties checkout, sans casser le parent
+  const emptyCartState = document.getElementById("empty-cart-state");
+  if (emptyCartState) emptyCartState.style.display = "none";
 
-      if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
-      if (thankyouTime) thankyouTime.textContent = hourText || "-";
-      if (thankyouBox) thankyouBox.textContent = boxName;
-      if (thankyouTotal) {
-        const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
-        thankyouTotal.textContent = totalLabel;
-      }
+  // on masque le formulaire + la carte de paiement (les deux principaux responsables)
+  if (billingForm) billingForm.style.display = "none";
+  if (paymentCard) paymentCard.style.display = "none";
 
-      const headerTitle = document.querySelector(".checkout-header h1");
-      const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
-      if (headerTitle) headerTitle.textContent = "Merci pour votre réservation 🎉";
-      if (headerSubtitle) headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
+  // si thankyou est DANS checkoutLayout, on cache seulement les autres enfants
+  if (checkoutLayout) {
+    const tyInside = checkoutLayout.contains(thankyouSection);
 
-      let reservationId = null;
+    if (tyInside) {
+      Array.from(checkoutLayout.children).forEach((child) => {
+        if (child === thankyouSection || child.contains(thankyouSection)) return;
+        child.style.display = "none";
+      });
+      // on garde le layout visible
+      checkoutLayout.style.display = "";
+    } else {
+      // sinon on peut cacher le layout, car la page merci est ailleurs
+      checkoutLayout.style.display = "none";
+    }
+  }
 
-      try {
-        const body = {
-          panier: getPanier(),
-          customer: {
-            prenom: document.getElementById("prenom").value.trim(),
-            nom: document.getElementById("nom").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            telephone: document.getElementById("telephone").value.trim(),
-            pays: document.getElementById("pays").value,
-            adresse: document.getElementById("adresse").value.trim(),
-            complement: document.getElementById("complement").value.trim(),
-            cp: document.getElementById("cp").value.trim(),
-            ville: document.getElementById("ville").value.trim(),
-            naissance: document.getElementById("naissance").value,
-            save_checkout_info: true
-          },
-          promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
-          loyaltyUsed,
-          isFree: !!isFree
-        };
-        if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
+  // 3) On affiche la section Merci
+  thankyouSection.style.display = "block";
+  thankyouSection.hidden = false;
+  thankyouSection.classList.remove("hidden");
 
-        const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
-          method: "POST",
-          headers: authHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify(body)
-        });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-        const confirmJson = await confirmRes.json().catch(() => ({}));
-        if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
-          reservationId = confirmJson.reservations[0].id;
-          if (thankyouRef) thankyouRef.textContent = reservationId;
-        } else {
-          if (errorEl) {
-            errorEl.textContent =
-              confirmJson.error ||
-              "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
-          }
-        }
-      } catch (e) {
-        console.error("Erreur confirm-reservation :", e);
-      }
+const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
+  const panierBeforeClear = getPanier();
+  const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+  const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+  const boxName =
+    firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
+      ? (firstItem.boxName || firstItem.box || firstItem.boxId)
+      : "Box privée";
 
-      // ✅ CAUTION : si lastPayWithSaved = true, on laisse le backend essayer d’utiliser la carte par défaut
-      // (si ton backend ne gère pas encore useSavedPaymentMethod sur la caution, il peut ignorer et ça marchera comme avant)
-      try {
-        const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-          method: "POST",
-          headers: authHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({
-            reservationId,
-            useSavedPaymentMethod: !!lastPayWithSaved,
-            customer: {
-              prenom: document.getElementById("prenom").value.trim(),
-              nom: document.getElementById("nom").value.trim(),
-              email: document.getElementById("email").value.trim()
-            }
-          })
-        });
+  let hourText = "";
+  if (firstItem && firstItem.start_time && firstItem.end_time) {
+    const s = formatTimeFrFromIso(firstItem.start_time);
+    const e = formatTimeFrFromIso(firstItem.end_time);
+    if (s && e) hourText = `${s} – ${e}`;
+  } else if (firstItem && typeof firstItem.hour === "number") {
+    const start = firstItem.hour;
+    const startH = Math.floor(start);
+    const startM = Math.round((start - startH) * 60);
+    const endMinutes = startH * 60 + startM + 90;
+    const endH = Math.floor((endMinutes % 1440) / 60);
+    const endM = (endMinutes % 60);
+    const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
+    const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
+    hourText = `${startStr} – ${endStr}`;
+  }
 
-        const depositJson = await depositRes.json().catch(() => ({}));
-        if (depositRes.ok && depositJson && depositJson.clientSecret) {
-          // Si le PI de caution est déjà confirmé côté backend (saved card), confirmCardPayment() sans payment_method gère 3DS si besoin
-          const depositResult = lastPayWithSaved
-            ? await stripe.confirmCardPayment(depositJson.clientSecret)
-            : await stripe.confirmCardPayment(depositJson.clientSecret, {
-                payment_method: {
-                  card: cardElement,
-                  billing_details: {
-                    name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
-                    email: document.getElementById("email").value.trim()
-                  }
-                }
-              });
+  const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
+  if (thankyouName) thankyouName.textContent = prenomValue;
+  if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
+  if (thankyouTime) thankyouTime.textContent = hourText || "-";
+  if (thankyouBox) thankyouBox.textContent = boxName;
+  if (thankyouTotal) {
+    const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
+    thankyouTotal.textContent = totalLabel;
+  }
 
-          if (depositResult && depositResult.error) {
-            if (errorEl) {
-              errorEl.textContent =
-                (isFree
-                  ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
-                  : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
-                depositResult.error.message +
-                ". Merci de nous contacter à contactsingbox@gmail.com.";
-            }
-          }
-        } else {
-          if (errorEl) {
-            errorEl.textContent =
-              (isFree
-                ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
-                : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
-              " Merci de nous contacter à contactsingbox@gmail.com.";
-          }
-        }
-      } catch (e) {
-        if (errorEl) {
-          errorEl.textContent =
-            (isFree
-              ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
-              : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
-            " Merci de nous contacter à contactsingbox@gmail.com.";
-        }
-      }
+  const headerTitle = document.querySelector(".checkout-header h1");
+  const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
+  if (headerTitle) headerTitle.textContent = "Merci pour votre réservation 🎉";
+  if (headerSubtitle) headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
 
-      if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
-        try {
-          await window.supabaseClient
-            .from("newsletter_subscriptions")
-            .insert({ email: document.getElementById("email").value.trim() });
-        } catch (e) {}
-      }
+  let reservationId = null;
 
-      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
-
-      savePanier([]);
-      localStorage.removeItem("promoCode");
-      currentPromo = null;
-      updateCartIcon();
-
-      const emptyCartState = document.getElementById("empty-cart-state");
-      if (emptyCartState) emptyCartState.style.display = "none";
-
-      if (checkoutLayout && thankyouSection) {
-        checkoutLayout.style.display = "none";
-        thankyouSection.style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
-      if (reservationId && thankyouQrContainer && window.QRCode) {
-        try {
-          const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
-          thankyouQrContainer.innerHTML = "";
-          new QRCode(thankyouQrContainer, {
-            text: qrText,
-            width: 228,
-            height: 228,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-          });
-          if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
-        } catch (e) {}
-      }
+  try {
+    const body = {
+      panier: getPanier(),
+      customer: {
+        prenom: document.getElementById("prenom").value.trim(),
+        nom: document.getElementById("nom").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        telephone: document.getElementById("telephone").value.trim(),
+        pays: document.getElementById("pays").value,
+        adresse: document.getElementById("adresse").value.trim(),
+        complement: document.getElementById("complement").value.trim(),
+        cp: document.getElementById("cp").value.trim(),
+        ville: document.getElementById("ville").value.trim(),
+        naissance: document.getElementById("naissance").value,
+        save_checkout_info: true
+      },
+      promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+      loyaltyUsed,
+      isFree: !!isFree
     };
+    if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
 
-    if (submitBtn) {
-      submitBtn.addEventListener("click", async () => {
-        if (!billingForm) return;
-        if (!stripe || !cardElement) {
-          if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
-          return;
+    const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify(body)
+    });
+
+    const confirmJson = await confirmRes.json().catch(() => ({}));
+    if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+      reservationId = confirmJson.reservations[0].id;
+      if (thankyouRef) thankyouRef.textContent = reservationId;
+    } else {
+      if (errorEl) {
+        errorEl.textContent =
+          confirmJson.error ||
+          "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
+      }
+    }
+  } catch (e) {
+    console.error("Erreur confirm-reservation :", e);
+  }
+
+  // Caution
+  try {
+    const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+      method: "POST",
+      headers: authHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({
+        reservationId,
+        useSavedPaymentMethod: !!lastPayWithSaved,
+        customer: {
+          prenom: document.getElementById("prenom").value.trim(),
+          nom: document.getElementById("nom").value.trim(),
+          email: document.getElementById("email").value.trim()
         }
+      })
+    });
 
-        const panier = getPanier();
-        if (!panier || panier.length === 0) {
-          if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-          return;
-        }
-
-        if (!cartValid) {
-          if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
-          return;
-        }
-
-        const valid = billingForm.reportValidity();
-        if (!valid) {
-          if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
-          return;
-        }
-
-        if (!cgvCheckbox || !cgvCheckbox.checked) {
-          if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
-          return;
-        }
-
-        if (!rulesCheckbox || !rulesCheckbox.checked) {
-          if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
-          return;
-        }
-
-        const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
-        if (!age || age < 18) {
-          if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
-          return;
-        }
-
-        if (errorEl) errorEl.textContent = "";
-        if (successEl) successEl.textContent = "";
-
-        updateOrderSummaryFromPanier();
-        const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
-
-        const finalAmountCents =
-          currentPromo && currentPromo.type === "free"
-            ? 0
-            : Math.round((currentTotals.finalTotalTTC || 0) * 100);
-
-        const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
-        lastPayWithSaved = payWithSaved;
-
-        // ✅ sécurité : si l’utilisateur coche mais qu’il n’y a pas de carte => on repasse en mode normal
-        if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
-          lastPayWithSaved = false;
-          const t = document.getElementById("pay-with-saved-card");
-          if (t) t.checked = false;
-          setCardElementHidden(false);
-        }
-
-        submitBtn.disabled = true;
-        const originalLabel = submitBtn.textContent;
-        submitBtn.textContent = "Paiement en cours...";
-
-        try {
-          const body = {
-            panier,
-            customer: {
-              prenom: document.getElementById("prenom").value.trim(),
-              nom: document.getElementById("nom").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              telephone: document.getElementById("telephone").value.trim(),
-              pays: document.getElementById("pays").value,
-              adresse: document.getElementById("adresse").value.trim(),
-              complement: document.getElementById("complement").value.trim(),
-              cp: document.getElementById("cp").value.trim(),
-              ville: document.getElementById("ville").value.trim(),
-              naissance: document.getElementById("naissance").value
-            },
-            promoCode,
-            finalAmountCents,
-            loyaltyUsed
-          };
-
-          if (lastPayWithSaved) {
-            body.useSavedPaymentMethod = true;
-          }
-
-          const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
-            method: "POST",
-            headers: authHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify(body)
-          });
-
-          const json = await res.json().catch(() => ({}));
-
-          if (!res.ok) {
-            const msg = json.error || "Erreur lors de la création du paiement.";
-            if (errorEl) errorEl.textContent = msg;
-            return;
-          }
-
-          if (json.isFree) {
-            if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
-            await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
-            return;
-          }
-
-          if (!json.clientSecret) {
-            if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
-            return;
-          }
-
-          // ✅ flow saved-card
-          if (lastPayWithSaved) {
-            if (json.requiresAction) {
-              const actionRes = await stripe.confirmCardPayment(json.clientSecret);
-              if (actionRes.error) {
-                if (errorEl) errorEl.textContent = actionRes.error.message;
-                return;
-              }
-              if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
-                if (successEl) successEl.textContent = "Paiement accepté ✔️";
-                await processReservationAndDeposit({ isFree: false, paymentIntentId: actionRes.paymentIntent.id });
-              } else {
-                if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
-              }
-            } else {
-              const paymentIntentId = json.paymentIntentId || null;
-              if (!paymentIntentId) {
-                const fallbackRes = await stripe.confirmCardPayment(json.clientSecret);
-                if (fallbackRes.error) {
-                  if (errorEl) errorEl.textContent = fallbackRes.error.message;
-                  return;
-                }
-                if (fallbackRes.paymentIntent && fallbackRes.paymentIntent.status === "succeeded") {
-                  if (successEl) successEl.textContent = "Paiement accepté ✔️";
-                  await processReservationAndDeposit({ isFree: false, paymentIntentId: fallbackRes.paymentIntent.id });
-                } else {
-                  if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
-                }
-              } else {
-                if (successEl) successEl.textContent = "Paiement accepté ✔️";
-                await processReservationAndDeposit({ isFree: false, paymentIntentId });
-              }
-            }
-            return;
-          }
-
-          // ✅ flow normal
-          const result = await stripe.confirmCardPayment(json.clientSecret, {
+    const depositJson = await depositRes.json().catch(() => ({}));
+    if (depositRes.ok && depositJson && depositJson.clientSecret) {
+      const depositResult = lastPayWithSaved
+        ? await stripe.confirmCardPayment(depositJson.clientSecret)
+        : await stripe.confirmCardPayment(depositJson.clientSecret, {
             payment_method: {
               card: cardElement,
               billing_details: {
@@ -3362,23 +2968,227 @@ if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
             }
           });
 
-          if (result.error) {
-            if (errorEl) errorEl.textContent = result.error.message;
-            return;
-          }
+      if (depositResult && depositResult.error && errorEl) {
+        errorEl.textContent =
+          (isFree
+            ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
+            : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
+          depositResult.error.message +
+          ". Merci de nous contacter à contactsingbox@gmail.com.";
+      }
+    } else if (errorEl) {
+      errorEl.textContent =
+        (isFree
+          ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
+          : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
+        " Merci de nous contacter à contactsingbox@gmail.com.";
+    }
+  } catch (e) {
+    if (errorEl) {
+      errorEl.textContent =
+        (isFree
+          ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
+          : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
+        " Merci de nous contacter à contactsingbox@gmail.com.";
+    }
+  }
 
-          if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
-            if (successEl) successEl.textContent = "Paiement accepté ✔️";
-            await processReservationAndDeposit({ isFree: false, paymentIntentId: result.paymentIntent.id });
+  // Newsletter opt-in
+  if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
+    try {
+      await window.supabaseClient
+        .from("newsletter_subscriptions")
+        .insert({ email: document.getElementById("email").value.trim() });
+    } catch (e) {}
+  }
+
+  // Save infos
+  saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+
+  // Clear panier
+  savePanier([]);
+  localStorage.removeItem("promoCode");
+  currentPromo = null;
+  updateCartIcon();
+
+  // ✅ AFFICHAGE MERCI (robuste)
+  showThankYouSection();
+
+  // QR code
+  if (reservationId && thankyouQrContainer && window.QRCode) {
+    try {
+      const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
+      thankyouQrContainer.innerHTML = "";
+      new QRCode(thankyouQrContainer, {
+        text: qrText,
+        width: 228,
+        height: 228,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
+    } catch (e) {}
+  }
+};
+
+if (submitBtn) {
+  submitBtn.addEventListener("click", async () => {
+    if (!billingForm) return;
+    if (!stripe || !cardElement) {
+      if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
+      return;
+    }
+
+    const panier = getPanier();
+    if (!panier || panier.length === 0) {
+      if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+      return;
+    }
+
+    if (!cartValid) {
+      if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
+      return;
+    }
+
+    const valid = billingForm.reportValidity();
+    if (!valid) {
+      if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
+      return;
+    }
+
+    if (!cgvCheckbox || !cgvCheckbox.checked) {
+      if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
+      return;
+    }
+
+    if (!rulesCheckbox || !rulesCheckbox.checked) {
+      if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
+      return;
+    }
+
+    const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
+    if (!age || age < 18) {
+      if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
+      return;
+    }
+
+    if (errorEl) errorEl.textContent = "";
+    if (successEl) successEl.textContent = "";
+
+    updateOrderSummaryFromPanier();
+    const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
+
+    const finalAmountCents =
+      currentPromo && currentPromo.type === "free"
+        ? 0
+        : Math.round((currentTotals.finalTotalTTC || 0) * 100);
+
+    const payWithSaved = !!document.getElementById("pay-with-saved-card")?.checked;
+    lastPayWithSaved = payWithSaved;
+
+    if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
+      lastPayWithSaved = false;
+      const t = document.getElementById("pay-with-saved-card");
+      if (t) t.checked = false;
+      setCardElementHidden(false);
+    }
+
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = "Paiement en cours...";
+
+    try {
+      const body = {
+        panier,
+        customer: {
+          prenom: document.getElementById("prenom").value.trim(),
+          nom: document.getElementById("nom").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          telephone: document.getElementById("telephone").value.trim(),
+          pays: document.getElementById("pays").value,
+          adresse: document.getElementById("adresse").value.trim(),
+          complement: document.getElementById("complement").value.trim(),
+          cp: document.getElementById("cp").value.trim(),
+          ville: document.getElementById("ville").value.trim(),
+          naissance: document.getElementById("naissance").value
+        },
+        promoCode,
+        finalAmountCents,
+        loyaltyUsed
+      };
+
+      if (lastPayWithSaved) body.useSavedPaymentMethod = true;
+
+      const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify(body)
+      });
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const msg = json.error || "Erreur lors de la création du paiement.";
+        if (errorEl) errorEl.textContent = msg;
+        return;
+      }
+
+      if (json.isFree) {
+        if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
+        await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
+        return;
+      }
+
+      if (!json.clientSecret) {
+        if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
+        return;
+      }
+
+      // Saved card
+      if (lastPayWithSaved) {
+        const actionRes = await stripe.confirmCardPayment(json.clientSecret);
+        if (actionRes.error) {
+          if (errorEl) errorEl.textContent = actionRes.error.message;
+          return;
+        }
+        if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
+          if (successEl) successEl.textContent = "Paiement accepté ✔️";
+          await processReservationAndDeposit({ isFree: false, paymentIntentId: actionRes.paymentIntent.id });
+        } else {
+          if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+        }
+        return;
+      }
+
+      // Normal
+      const result = await stripe.confirmCardPayment(json.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: document.getElementById("prenom").value.trim() + " " + document.getElementById("nom").value.trim(),
+            email: document.getElementById("email").value.trim()
           }
-        } catch (err) {
-          if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalLabel;
         }
       });
+
+      if (result.error) {
+        if (errorEl) errorEl.textContent = result.error.message;
+        return;
+      }
+
+      if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+        if (successEl) successEl.textContent = "Paiement accepté ✔️";
+        await processReservationAndDeposit({ isFree: false, paymentIntentId: result.paymentIntent.id });
+      }
+    } catch (err) {
+      if (errorEl) errorEl.textContent = "Erreur inattendue : " + err.message;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
     }
+  });
+}
   });
 </script>
 
