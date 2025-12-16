@@ -2845,50 +2845,52 @@
 
     await initLoyalty();
 
-    // =========================
-    // STRIPE INIT
-    // =========================
-    if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
-      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+// =========================
+// STRIPE INIT (CORRIGÉ)
+// =========================
+if (STRIPE_PUBLISHABLE_KEY && window.Stripe) {
+  stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
-const elements = stripe.elements({
-  // appearance peut rester, mais ce n’est pas lui qui forcera le Card Element
-  appearance: {
-    theme: "night",
-    variables: {
-      colorPrimary: "#F97316",
-      colorBackground: "#020617",
-      colorText: "#F9FAFB",
-      colorTextPlaceholder: "#9CA3AF",
-      fontFamily: "Montserrat, system-ui, sans-serif",
-      borderRadius: "14px",
+  const elements = stripe.elements({
+    appearance: {
+      theme: "night",
+      variables: {
+        colorPrimary: "#F97316",
+        colorBackground: "#020617",
+        colorText: "#F9FAFB",
+        colorTextPlaceholder: "#9CA3AF",
+        fontFamily: "Montserrat, system-ui, sans-serif",
+        borderRadius: "14px"
+      }
     }
-  }
-});
+  });
 
-cardElement = elements.create("card", {
-  hidePostalCode: true,
-  style: {
-    base: {
-      color: "#F9FAFB", // ✅ force le texte en blanc
-      fontFamily: "Montserrat, system-ui, sans-serif",
-      fontSize: "14px",
-      "::placeholder": { color: "#9CA3AF" },
-      iconColor: "#F9FAFB",
-    },
-    invalid: {
-      color: "#FCA5A5"
+  cardElement = elements.create("card", {
+    hidePostalCode: true,
+    style: {
+      base: {
+        color: "#F9FAFB",
+        fontFamily: "Montserrat, system-ui, sans-serif",
+        fontSize: "14px",
+        lineHeight: "24px",
+        fontSmoothing: "antialiased",
+        "::placeholder": { color: "#9CA3AF" }
+      },
+      invalid: {
+        color: "#FCA5A5"
+      }
     }
-  }
-});
+  });
 
-      cardElement = elements.create("card", { hidePostalCode: true });
-      cardElement.mount("#card-element");
-      cardElement.on("change", function (event) {
-        const displayError = document.getElementById("card-errors");
-        if (displayError) displayError.textContent = event.error ? event.error.message : "";
-      });
+  cardElement.mount("#card-element");
+
+  cardElement.on("change", function (event) {
+    const displayError = document.getElementById("card-errors");
+    if (displayError) {
+      displayError.textContent = event.error ? event.error.message : "";
     }
+  });
+}
 
     // =========================
     // PROMO
