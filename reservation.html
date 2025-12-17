@@ -526,7 +526,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      min-width: 640px; /* évite l’écrasement */
+      min-width: 640px;
       color: #F9FAFB;
       table-layout: fixed;
     }
@@ -823,11 +823,14 @@
       white-space: nowrap;
     }
 
+    /* ✅ CENTRAGE + rendu plus clean sur mobile */
     .mobile-slot-grid {
-      padding: 12px 12px 14px;
+      padding: 14px 12px 16px;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      justify-content: center;   /* ✅ centre les pills */
+      align-items: stretch;
     }
 
     .mobile-slot-pill {
@@ -835,11 +838,17 @@
       background: rgba(2, 44, 34, 0.75);
       color: #ECFDF5;
       border-radius: 999px;
-      padding: 10px 12px;
-      min-width: 154px;
+      padding: 12px 14px;
+      min-width: 180px;          /* ✅ plus homogène */
+      max-width: 240px;
       cursor: pointer;
       user-select: none;
       transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+
+      display: flex;             /* ✅ centre le texte */
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .mobile-slot-pill:active { transform: scale(0.98); }
@@ -851,21 +860,23 @@
 
     .mobile-slot-time {
       font-weight: 800;
-      font-size: 13px;
+      font-size: 14px;
       letter-spacing: 0.02em;
+      line-height: 1.15;
     }
 
     .mobile-slot-price {
-      margin-top: 3px;
-      font-size: 12px;
+      margin-top: 6px;
+      font-size: 13px;
       color: rgba(236,253,245,0.92);
       line-height: 1.15;
     }
 
     .mobile-slot-sub {
-      margin-top: 2px;
-      font-size: 11px;
+      margin-top: 4px;
+      font-size: 12px;
       color: rgba(156,163,175,0.95);
+      line-height: 1.15;
     }
 
     .mobile-slot-pill.selected {
@@ -1505,7 +1516,6 @@
       if (currentSlotCell) {
         markCellSelected(currentSlotCell);
       } else {
-        // Vue mobile: pas de <td> à marquer, on refresh pour afficher "selected"
         if (typeof refreshPlanningGlobal === "function") refreshPlanningGlobal();
       }
 
@@ -1570,6 +1580,13 @@
         date.getDate() === now.getDate();
 
       startMinutesList.forEach(startMinutes => {
+        // ✅ PC : si le créneau est passé aujourd’hui, on n’affiche PAS la ligne du tout
+        if (isToday) {
+          const nowMinutes = now.getHours() * 60 + now.getMinutes();
+          const isPastToday = startMinutes <= nowMinutes;
+          if (isPastToday) return;
+        }
+
         const tr = document.createElement("tr");
 
         const hourTd = document.createElement("td");
@@ -1595,20 +1612,14 @@
 
           const booked = isSlotBooked(box.id, startMinutes);
 
-          let isPastToday = false;
-          if (isToday) {
-            const nowMinutes = now.getHours() * 60 + now.getMinutes();
-            isPastToday = startMinutes <= nowMinutes;
-          }
-
           const wrapper = document.createElement("div");
           wrapper.className = "slot-label";
 
-          if (booked || isPastToday) {
+          if (booked) {
             td.classList.add("slot-booked");
             const statusSpan = document.createElement("span");
             statusSpan.className = "slot-status";
-            statusSpan.textContent = isPastToday ? "Passé" : "Réservé";
+            statusSpan.textContent = "Réservé";
             wrapper.appendChild(statusSpan);
           } else {
             const alreadyInCart = panier.some(item =>
@@ -1670,7 +1681,7 @@
       table.appendChild(tbody);
     }
 
-    // ✅ Vue mobile "cartes" : uniquement les créneaux dispo (et ceux déjà au panier)
+    // Vue mobile "cartes" : uniquement les créneaux dispo (et ceux déjà au panier)
     function buildMobileSlots(date) {
       const container = document.getElementById("mobile-slots");
       if (!container) return;
@@ -1727,7 +1738,6 @@
             getItemStartMinutes(item) === startMinutes
           );
 
-          // On affiche uniquement les dispos + ceux déjà au panier (sur mobile)
           if (booked || isPastToday) return;
           countShown++;
 
@@ -1904,7 +1914,6 @@
       if (continueBtn) continueBtn.addEventListener("click", () => finalizeSlot(false));
       if (cartBtn) cartBtn.addEventListener("click", () => finalizeSlot(true));
 
-      // fermer modal si on clique en dehors
       const modal = document.getElementById("slot-modal");
       if (modal) {
         modal.addEventListener("click", (e) => {
