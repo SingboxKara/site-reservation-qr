@@ -533,6 +533,7 @@
       background: #020617;
       box-shadow: inset 0 0 0 1px rgba(15,23,42,0.8);
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .table-scroll-hint {
@@ -558,13 +559,13 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      min-width: 540px;
+      min-width: 640px; /* ✅ évite l’écrasement => plus de chevauchement */
       color: #F9FAFB;
-      table-layout: fixed;
+      table-layout: fixed; /* ✅ fonctionne très bien avec colgroup */
     }
 
     th, td {
-      padding: 0.45rem 0.5rem;
+      padding: 0.55rem 0.6rem;
       text-align: center;
       font-size: 12px;
       border-bottom: 1px solid rgba(31,41,55,0.9);
@@ -585,26 +586,23 @@
       background: linear-gradient(to right, rgba(15,23,42,1), rgba(30,64,175,0.35));
     }
 
+    /* ✅ IMPORTANT: on autorise le wrap uniquement dans le header */
+    thead th {
+      white-space: normal;
+      line-height: 1.15;
+      word-break: keep-all;
+    }
+
     .hour-cell {
       background: #020617;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 12px;
       color: #E5E7EB;
       position: sticky;
       left: 0;
-      z-index: 1;
-    }
-
-    th:nth-child(1),
-    td:nth-child(1) {
-      width: 18%;
-    }
-
-    th:nth-child(2),
-    td:nth-child(2),
-    th:nth-child(3),
-    td:nth-child(3) {
-      width: 41%;
+      z-index: 3; /* ✅ au-dessus pour ne pas "coller" visuellement */
+      border-right: 1px solid rgba(31,41,55,0.95);
+      box-shadow: 8px 0 18px rgba(0,0,0,0.35); /* ✅ séparation visuelle */
     }
 
     .slot-cell {
@@ -636,7 +634,6 @@
       transform: translateY(-1px);
     }
 
-    /* ✅ Réduire la teinte rouge sur les créneaux "Réservé" */
     .slot-booked {
       background-color: rgba(127, 29, 29, 0.55);
       color: #FEE2E2;
@@ -716,11 +713,7 @@
       min-height: 1em;
     }
 
-    #slot-modal[hidden] {
-      display: none;
-    }
-
-    /* ===================== MODAL (amélioré lisibilité) ===================== */
+    #slot-modal[hidden] { display: none; }
 
     .modal-backdrop {
       position: fixed;
@@ -731,14 +724,14 @@
       justify-content: center;
       z-index: 60;
       backdrop-filter: blur(4px);
-      padding: 18px; /* ✅ laisse de l’air sur mobile */
+      padding: 18px;
     }
 
     .modal-dialog {
       background: #020617;
       border-radius: 22px;
       padding: 1.85rem 1.85rem 1.6rem;
-      max-width: 520px; /* ✅ un peu plus large */
+      max-width: 520px;
       width: 100%;
       box-shadow: 0 24px 70px rgba(0,0,0,0.95);
       border: 1px solid rgba(248,250,251,0.12);
@@ -750,7 +743,6 @@
       letter-spacing: 0.02em;
     }
 
-    /* ✅ Paragraphes plus lisibles / moins compacts */
     .modal-dialog p {
       font-size: 13.5px;
       color: rgba(229,231,235,0.92);
@@ -771,7 +763,6 @@
       margin: 0 0 12px;
     }
 
-    /* ✅ petit séparateur discret */
     .modal-divider {
       height: 1px;
       background: rgba(148,163,184,0.18);
@@ -781,7 +772,7 @@
 
     .modal-persons-row {
       display: flex;
-      flex-direction: column; /* ✅ label au-dessus */
+      flex-direction: column;
       align-items: stretch;
       gap: 8px;
       margin: 10px 0 16px;
@@ -815,7 +806,7 @@
     .modal-actions button {
       border-radius: 999px;
       border: none;
-      padding: 0.85rem 1.2rem; /* ✅ plus “tap friendly” */
+      padding: 0.85rem 1.2rem;
       font-size: 14px;
       cursor: pointer;
       white-space: nowrap;
@@ -836,7 +827,6 @@
       border: 1px solid rgba(148,163,184,0.6);
     }
 
-    /* ✅ sur petit écran : boutons en colonne et modal pleine largeur */
     @media (max-width: 520px) {
       .modal-dialog {
         padding: 1.55rem 1.35rem 1.25rem;
@@ -965,12 +955,8 @@
     }
 
     @media (max-width: 600px) {
-      .hero-resa {
-        padding-top: 9rem;
-      }
-      .hero-resa h1 {
-        font-size: 26px;
-      }
+      .hero-resa { padding-top: 9rem; }
+      .hero-resa h1 { font-size: 26px; }
     }
   </style>
 </head>
@@ -1001,9 +987,7 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
-          ☰
-        </button>
+        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">☰</button>
       </div>
     </div>
   </header>
@@ -1071,17 +1055,10 @@
           Heures creuses seulement en semaine hors vacances scolaires.
         </p>
 
-        <!-- ✅ LÉGENDE AU-DESSUS DU TABLEAU -->
         <div class="resa-legend" aria-label="Légende des statuts">
-          <div class="legend-item">
-            <span class="legend-dot free"></span> <span>Libre</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot booked"></span> <span>Réservé</span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot selected"></span> <span>Dans ton panier</span>
-          </div>
+          <div class="legend-item"><span class="legend-dot free"></span> <span>Libre</span></div>
+          <div class="legend-item"><span class="legend-dot booked"></span> <span>Réservé</span></div>
+          <div class="legend-item"><span class="legend-dot selected"></span> <span>Dans ton panier</span></div>
         </div>
 
         <p class="table-scroll-hint">
@@ -1204,9 +1181,7 @@
       </div>
     </div>
 
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
-    </div>
+    <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
   <script>
@@ -1230,14 +1205,11 @@
       return `${pad2(h)}h${pad2(m)}`;
     }
 
-    // ✅ Parse robuste: accepte "HH:MM", "HHhMM", "HHh", ou nombre (heure)
     function parseTimeToMinutes(value) {
       if (value === null || value === undefined) return null;
 
       if (typeof value === "number" && !isNaN(value)) {
-        // ancien format: hour = 0..23
         if (value >= 0 && value <= 23) return value * 60;
-        // ou déjà des minutes
         if (value >= 0 && value < 24 * 60) return value;
         return null;
       }
@@ -1245,7 +1217,6 @@
       if (typeof value !== "string") return null;
       const v = value.trim();
 
-      // "HH:MM"
       let m = v.match(/^(\d{1,2}):(\d{2})$/);
       if (m) {
         const hh = parseInt(m[1], 10);
@@ -1254,7 +1225,6 @@
         return null;
       }
 
-      // "HHhMM" ou "HHh"
       m = v.match(/^(\d{1,2})h(\d{2})?$/i);
       if (m) {
         const hh = parseInt(m[1], 10);
@@ -1263,7 +1233,6 @@
         return null;
       }
 
-      // "8" (string) => 8h
       if (/^\d{1,2}$/.test(v)) {
         const hh = parseInt(v, 10);
         if (hh >= 0 && hh <= 23) return hh * 60;
@@ -1297,7 +1266,6 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    // ✅ Format d'une session de 1h30 à partir de minutes (pas d'overlap)
     function formatSlotRange(startMinutes) {
       const startLabel = minutesToTimeLabel(startMinutes);
       const endTotal = startMinutes + SLOT_DURATION_MIN;
@@ -1317,7 +1285,6 @@
       );
       if (exists) return;
 
-      // ✅ On stocke un format clair + un champ minutes robuste
       const startLabel = minutesToTimeLabel(startMinutes);
 
       panier.push({
@@ -1325,8 +1292,8 @@
         boxId,
         boxName,
         date: isoDate,
-        hour: startLabel,        // affichage lisible (ex: "05h30")
-        startMinutes: startMinutes, // clé fiable (ex: 330)
+        hour: startLabel,
+        startMinutes: startMinutes,
         price,
         persons
       });
@@ -1349,8 +1316,6 @@
         " pers.</span>";
     }
 
-    // ======== CONTEXTE DATE (week-end / vacances scolaires) ========
-
     let currentDateIsWeekend = false;
     let currentDateIsHoliday = false;
 
@@ -1362,7 +1327,7 @@
         parseInt(parts[2], 10)
       );
 
-      const day = dateObj.getDay(); // 0 = dimanche, 6 = samedi
+      const day = dateObj.getDay();
       currentDateIsWeekend = (day === 0 || day === 6);
 
       try {
@@ -1385,7 +1350,6 @@
       }
     }
 
-    // Prix par personne (heures creuses = 4h–14h, en semaine hors vacances)
     function getSlotPrice(date, startMinutes, persons) {
       const nb = persons ? Math.max(persons, 2) : 2;
       const hour = Math.floor(startMinutes / 60);
@@ -1409,7 +1373,6 @@
     ];
     let currentPlanningDateIso = null;
 
-    // état pour la popup
     let currentSlotChoice = null;
     let currentSlotCell = null;
 
@@ -1504,7 +1467,6 @@
     }
 
     function buildStartMinutesList() {
-      // ✅ Génère des starts toutes les 90 minutes sur 24h
       const list = [];
       for (let m = 0; m < 24 * 60; m += SLOT_STEP_MIN) list.push(m);
       return list;
@@ -1520,6 +1482,20 @@
       const panier = getPanier();
       const startMinutesList = buildStartMinutesList();
       table.innerHTML = "";
+
+      /* ✅ FIX CHEVAUCHEMENT: colgroup avec largeurs en px */
+      const colgroup = document.createElement("colgroup");
+      const colHour = document.createElement("col");
+      colHour.style.width = "170px";
+      colgroup.appendChild(colHour);
+
+      BOXES.forEach(() => {
+        const c = document.createElement("col");
+        c.style.width = "235px";
+        colgroup.appendChild(c);
+      });
+
+      table.appendChild(colgroup);
 
       const thead = document.createElement("thead");
       const headRow = document.createElement("tr");
@@ -1575,9 +1551,7 @@
           let isPastToday = false;
           if (isToday) {
             const nowMinutes = now.getHours() * 60 + now.getMinutes();
-            const slotStartMinutes = startMinutes;
-            // ✅ on bloque si le slot commence maintenant ou avant
-            isPastToday = slotStartMinutes <= nowMinutes;
+            isPastToday = startMinutes <= nowMinutes;
           }
 
           const wrapper = document.createElement("div");
@@ -1653,9 +1627,7 @@
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
       if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
+        burgerBtn.addEventListener("click", () => mobileNav.classList.toggle("open"));
         mobileNav.addEventListener("click", (e) => {
           if (e.target.tagName === "A") mobileNav.classList.remove("open");
         });
@@ -1671,7 +1643,6 @@
       const today = new Date();
       const isoToday = toLocalYMD(today);
 
-      // récupération paramètres URL (?date=...&people=...)
       const params = new URLSearchParams(window.location.search);
       const urlDate = params.get("date");
       const urlPeople = params.get("people");
@@ -1741,7 +1712,6 @@
         loadButton.addEventListener("click", () => refreshPlanning());
       }
 
-      // Chargement initial
       refreshPlanning();
 
       const continueBtn = document.getElementById("modal-continue");
