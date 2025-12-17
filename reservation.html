@@ -720,6 +720,8 @@
       display: none;
     }
 
+    /* ===================== MODAL (amélioré lisibilité) ===================== */
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -729,72 +731,95 @@
       justify-content: center;
       z-index: 60;
       backdrop-filter: blur(4px);
+      padding: 18px; /* ✅ laisse de l’air sur mobile */
     }
 
     .modal-dialog {
       background: #020617;
-      border-radius: 20px;
-      padding: 1.5rem 1.75rem 1.4rem;
-      max-width: 440px;
+      border-radius: 22px;
+      padding: 1.85rem 1.85rem 1.6rem;
+      max-width: 520px; /* ✅ un peu plus large */
       width: 100%;
       box-shadow: 0 24px 70px rgba(0,0,0,0.95);
       border: 1px solid rgba(248,250,251,0.12);
     }
 
     .modal-dialog h2 {
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
     }
 
+    /* ✅ Paragraphes plus lisibles / moins compacts */
     .modal-dialog p {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 8px;
+      font-size: 13.5px;
+      color: rgba(229,231,235,0.92);
+      line-height: 1.7;
+      margin: 0 0 12px;
+    }
+
+    #modal-slot-info {
+      color: rgba(249,250,251,0.95);
+      font-weight: 600;
+      margin-bottom: 14px;
     }
 
     .modal-extra-text {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-bottom: 6px;
+      font-size: 13px;
+      color: rgba(156,163,175,0.95);
+      line-height: 1.75;
+      margin: 0 0 12px;
+    }
+
+    /* ✅ petit séparateur discret */
+    .modal-divider {
+      height: 1px;
+      background: rgba(148,163,184,0.18);
+      margin: 14px 0 14px;
+      border-radius: 999px;
     }
 
     .modal-persons-row {
       display: flex;
-      align-items: center;
+      flex-direction: column; /* ✅ label au-dessus */
+      align-items: stretch;
       gap: 8px;
-      margin: 8px 0 14px;
+      margin: 10px 0 16px;
     }
 
     .modal-persons-row label {
       font-size: 13px;
       color: #E5E7EB;
+      font-weight: 600;
     }
 
     #modal-persons-select {
-      padding: 6px 10px;
+      padding: 10px 14px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,184,0.6);
       background: #020617;
       color: #F9FAFB;
-      font-size: 13px;
+      font-size: 14px;
       outline: none;
-      min-width: 80px;
+      width: 100%;
     }
 
     .modal-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       justify-content: flex-end;
+      margin-top: 4px;
     }
 
     .modal-actions button {
       border-radius: 999px;
       border: none;
-      padding: 0.55rem 1.2rem;
-      font-size: 13px;
+      padding: 0.85rem 1.2rem; /* ✅ plus “tap friendly” */
+      font-size: 14px;
       cursor: pointer;
       white-space: nowrap;
+      min-height: 44px;
     }
 
     #modal-cart {
@@ -809,6 +834,21 @@
       background: transparent;
       color: #E5E7EB;
       border: 1px solid rgba(148,163,184,0.6);
+    }
+
+    /* ✅ sur petit écran : boutons en colonne et modal pleine largeur */
+    @media (max-width: 520px) {
+      .modal-dialog {
+        padding: 1.55rem 1.35rem 1.25rem;
+        max-width: 100%;
+        border-radius: 20px;
+      }
+      .modal-actions {
+        flex-direction: column;
+      }
+      .modal-actions button {
+        width: 100%;
+      }
     }
 
     footer {
@@ -1081,8 +1121,10 @@
         Les box peuvent accueillir jusqu’à 8 personnes.
       </p>
 
+      <div class="modal-divider"></div>
+
       <div class="modal-persons-row">
-        <label for="modal-persons-select">Modifier le nombre de personnes :</label>
+        <label for="modal-persons-select">Modifier le nombre de personnes</label>
         <select id="modal-persons-select">
           <option value="1">1 personne</option>
           <option value="2">2 personnes</option>
