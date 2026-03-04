@@ -696,47 +696,78 @@
       return n.toString().padStart(2, "0");
     }
 
+    function getCountdownEls() {
+      return {
+        daysEl: document.getElementById("days"),
+        hoursEl: document.getElementById("hours"),
+        minutesEl: document.getElementById("minutes"),
+        secondsEl: document.getElementById("seconds"),
+        chipEl: document.getElementById("opening-chip"),
+      };
+    }
+
+    function getChipTextSpan(chipEl) {
+      if (!chipEl) return null;
+      return chipEl.querySelector("span:nth-child(2)");
+    }
+
+    function setCountdownZeros(els) {
+      if (els.daysEl) els.daysEl.textContent = "00";
+      if (els.hoursEl) els.hoursEl.textContent = "00";
+      if (els.minutesEl) els.minutesEl.textContent = "00";
+      if (els.secondsEl) els.secondsEl.textContent = "00";
+    }
+
+    function setChipText(chipEl, text) {
+      const textSpan = getChipTextSpan(chipEl);
+      if (textSpan) textSpan.textContent = text;
+    }
+
+    function getFrenchLaunchDateString() {
+      const options = { weekday: "long", day: "2-digit", month: "long", year: "numeric" };
+      return LAUNCH_DATE.toLocaleDateString("fr-FR", options);
+    }
+
+    function renderOpenedState(els) {
+      setCountdownZeros(els);
+      setChipText(
+        els.chipEl,
+        "Singbox est ouvert 🎉 Le site complet arrive dans quelques instants."
+      );
+    }
+
+    function getTimeParts(diffMs) {
+      const totalSeconds = Math.floor(diffMs / 1000);
+      return {
+        days: Math.floor(totalSeconds / (60 * 60 * 24)),
+        hours: Math.floor((totalSeconds / (60 * 60)) % 24),
+        minutes: Math.floor((totalSeconds / 60) % 60),
+        seconds: totalSeconds % 60,
+      };
+    }
+
+    function renderCountdown(els, parts) {
+      if (els.daysEl) els.daysEl.textContent = pad(parts.days);
+      if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
+      if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
+      if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
+
+      setChipText(els.chipEl, "Ouverture prévue le " + getFrenchLaunchDateString());
+    }
+
     function updateCountdown() {
       const now = new Date();
       const diff = LAUNCH_DATE - now;
 
-      const daysEl    = document.getElementById("days");
-      const hoursEl   = document.getElementById("hours");
-      const minutesEl = document.getElementById("minutes");
-      const secondsEl = document.getElementById("seconds");
-      const chipEl    = document.getElementById("opening-chip");
+      const els = getCountdownEls();
 
       if (diff <= 0) {
-        // Ouverture atteinte
-        if (daysEl)    daysEl.textContent    = "00";
-        if (hoursEl)   hoursEl.textContent   = "00";
-        if (minutesEl) minutesEl.textContent = "00";
-        if (secondsEl) secondsEl.textContent = "00";
-        if (chipEl) {
-          chipEl.querySelector("span:nth-child(2)").textContent =
-            "Singbox est ouvert 🎉 Le site complet arrive dans quelques instants.";
-        }
+        renderOpenedState(els);
         return;
       }
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days    = Math.floor(totalSeconds / (60 * 60 * 24));
-      const hours   = Math.floor((totalSeconds / (60 * 60)) % 24);
-      const minutes = Math.floor((totalSeconds / 60) % 60);
-      const seconds = totalSeconds % 60;
-
-      if (daysEl)    daysEl.textContent    = pad(days);
-      if (hoursEl)   hoursEl.textContent   = pad(hours);
-      if (minutesEl) minutesEl.textContent = pad(minutes);
-      if (secondsEl) secondsEl.textContent = pad(seconds);
-
-      // Met à jour le texte de la pastille avec la vraie date en français
-      if (chipEl) {
-        const options = { weekday: "long", day: "2-digit", month: "long", year: "numeric" };
-        const dateStr = LAUNCH_DATE.toLocaleDateString("fr-FR", options);
-        chipEl.querySelector("span:nth-child(2)").textContent =
-          "Ouverture prévue le " + dateStr;
-      }
+      const parts = getTimeParts(diff);
+      renderCountdown(els, parts);
     }
 
     updateCountdown();
