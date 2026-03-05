@@ -1484,6 +1484,57 @@
       }
     }
 
+    // ---------- Helpers login/register (refactor Sonar) ----------
+    function setLoginMessage(loginMsgEl, text, isOk = false) {
+      if (!loginMsgEl) return;
+      loginMsgEl.textContent = text || "";
+      loginMsgEl.classList.toggle("ok", !!isOk);
+    }
+
+    function getLoginCredentials() {
+      const emailEl = document.getElementById("login-email");
+      const passEl = document.getElementById("login-password");
+      return {
+        email: (emailEl?.value || "").trim(),
+        password: passEl?.value || ""
+      };
+    }
+
+    async function safeJson(res) {
+      try { return await res.json(); } catch (_) { return {}; }
+    }
+
+    async function postJson(url, payload) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await safeJson(res);
+      return { res, data };
+    }
+
+    async function doLogin(email, password) {
+      const { res, data } = await postJson(API_BASE + "/api/login", { email, password });
+      const token = data?.token;
+      return { ok: res.ok && !!token, token, error: data?.error };
+    }
+
+    async function doRegister(email, password) {
+      const { res, data } = await postJson(API_BASE + "/api/register", { email, password });
+      return { ok: res.ok, error: data?.error };
+    }
+
+    async function registerThenLogin(email, password) {
+      const reg = await doRegister(email, password);
+      if (!reg.ok) return { ok: false, step: "register", error: reg.error || "Erreur lors de la création du compte." };
+
+      const log = await doLogin(email, password);
+      if (!log.ok) return { ok: false, step: "login", error: "Compte créé, mais la connexion a échoué." };
+
+      return { ok: true, token: log.token };
+    }
+
     function initLoginForm() {
       const loginForm = document.getElementById("login-form");
       const loginMsg  = document.getElementById("login-message");
@@ -1492,80 +1543,54 @@
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
+        setLoginMessage(loginMsg, "", false);
 
-        const email = document.getElementById("login-email").value.trim();
-        const password = document.getElementById("login-password").value;
-
-        if (!email || !password) { if (loginMsg) loginMsg.textContent = "Merci de renseigner votre email et votre mot de passe."; return; }
+        const { email, password } = getLoginCredentials();
+        if (!email || !password) {
+          setLoginMessage(loginMsg, "Merci de renseigner votre email et votre mot de passe.", false);
+          return;
+        }
 
         try {
-          const res = await fetch(API_BASE + "/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-          });
-
-          let data = {};
-          try { data = await res.json(); } catch (_) {}
-
-          if (!res.ok || !data.token) {
-            if (loginMsg) loginMsg.textContent = data.error || "Erreur de connexion. Vérifiez vos identifiants.";
+          const result = await doLogin(email, password);
+          if (!result.ok) {
+            setLoginMessage(loginMsg, result.error || "Erreur de connexion. Vérifiez vos identifiants.", false);
             return;
           }
 
-          localStorage.setItem("token", data.token);
-          if (loginMsg) { loginMsg.textContent = "Connexion réussie."; loginMsg.classList.add("ok"); }
+          localStorage.setItem("token", result.token);
+          setLoginMessage(loginMsg, "Connexion réussie.", true);
           loadProfile();
         } catch (err) {
           console.error(err);
-          if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+          setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", false);
         }
       });
 
       if (createBtn) {
         createBtn.addEventListener("click", async () => {
-          if (loginMsg) { loginMsg.textContent = ""; loginMsg.classList.remove("ok"); }
+          setLoginMessage(loginMsg, "", false);
 
-          const email = document.getElementById("login-email").value.trim();
-          const password = document.getElementById("login-password").value;
-
+          const { email, password } = getLoginCredentials();
           if (!email || !password) {
-            if (loginMsg) loginMsg.textContent = "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».";
+            setLoginMessage(loginMsg, "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».", false);
             return;
           }
 
           try {
-            const res = await fetch(API_BASE + "/api/register", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
+            const result = await registerThenLogin(email, password);
 
-            let data = {};
-            try { data = await res.json(); } catch (_) {}
-
-            if (!res.ok) { if (loginMsg) loginMsg.textContent = data.error || "Erreur lors de la création du compte."; return; }
-
-            const loginRes = await fetch(API_BASE + "/api/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
-
-            let loginData = {};
-            try { loginData = await loginRes.json(); } catch (_) {}
-
-            if (loginRes.ok && loginData.token) {
-              localStorage.setItem("token", loginData.token);
-              if (loginMsg) { loginMsg.textContent = "Compte créé et connecté."; loginMsg.classList.add("ok"); }
-              loadProfile();
-            } else {
-              if (loginMsg) loginMsg.textContent = "Compte créé, mais la connexion a échoué.";
+            if (!result.ok) {
+              setLoginMessage(loginMsg, result.error || "Erreur lors de la création du compte.", false);
+              return;
             }
+
+            localStorage.setItem("token", result.token);
+            setLoginMessage(loginMsg, "Compte créé et connecté.", true);
+            loadProfile();
           } catch (err) {
             console.error(err);
-            if (loginMsg) loginMsg.textContent = "Erreur réseau. Veuillez réessayer.";
+            setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", false);
           }
         });
       }
@@ -1624,8 +1649,7 @@
             body: JSON.stringify({ reservationId }),
           });
 
-          let data = {};
-          try { data = await res.json(); } catch (_) {}
+          const data = await safeJson(res);
 
           if (!res.ok || data.success !== true) {
             btn.disabled = false;
@@ -1698,7 +1722,8 @@
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
-    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // ✅ évite "assign to global variable"
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
       const emailInput = document.getElementById("newsletter-email");
@@ -1719,7 +1744,7 @@
           return;
         }
 
-        const { error } = await window.supabaseClient
+        const { error } = await supabaseClient
           .from("newsletter_subscriptions")
           .insert({ email });
 
