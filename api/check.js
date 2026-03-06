@@ -6,7 +6,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
   try {
-    const id = req.query.id;
+    const { id } = req.query;
 
     if (!id) {
       res.statusCode = 400;
@@ -28,6 +28,14 @@ module.exports = async (req, res) => {
     const start = new Date(data.start_time);
     const end = new Date(data.end_time);
 
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+      res.statusCode = 500;
+      return res.json({
+        valid: false,
+        error: "Dates de réservation invalides.",
+      });
+    }
+
     const marginBeforeMinutes = 5;    // accès 5 min AVANT le début
     const marginBeforeEndMinutes = 5; // stop 5 min AVANT la fin
 
@@ -38,8 +46,8 @@ module.exports = async (req, res) => {
       end.getTime() - marginBeforeEndMinutes * 60000
     );
 
-    let access = false;
-    let reason = "OK";
+    let access;
+    let reason;
 
     if (now < startWithMargin) {
       access = false;
