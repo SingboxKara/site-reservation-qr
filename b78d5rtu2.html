@@ -5,7 +5,6 @@
   <title>Singbox - Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -16,13 +15,18 @@
   <style>
     :root{
       --sb-bg-main:#020617;
-      --sb-bg-card:#020617;
-      --sb-border-soft: rgba(148,163,184,0.35);
+      --sb-bg-card:#0b1220;
+      --sb-bg-soft:#111827;
+      --sb-border-soft:rgba(148,163,184,0.35);
+      --sb-border-strong:rgba(226,232,240,0.18);
       --sb-text-main:#F9FAFB;
-      --sb-text-muted:#CBD5E1;
-      --sb-text-soft:#E2E8F0;
+      --sb-text-muted:#D1D5DB;
+      --sb-text-soft:#E5E7EB;
       --sb-accent:#C94C35;
       --sb-accent-2:#F97316;
+      --sb-success:#4ade80;
+      --sb-danger:#f87171;
+      --sb-warning:#FED7AA;
       --sb-container-width:1100px;
     }
 
@@ -31,7 +35,9 @@
     body{
       margin:0;
       font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      background:
+        radial-gradient(circle at 0 0, rgba(201,76,53,0.35), transparent 55%),
+        linear-gradient(180deg, #020617 0%, #08111f 100%);
       color:var(--sb-text-main);
       min-height:100vh;
     }
@@ -41,9 +47,12 @@
       letter-spacing:.06em;
       text-transform:uppercase;
       margin:0;
+      color:var(--sb-text-main);
     }
 
+    p{color:var(--sb-text-soft)}
     a{color:inherit;text-decoration:none}
+    code{color:#fde68a}
 
     .admin-container{
       max-width:var(--sb-container-width);
@@ -95,7 +104,7 @@
       border-radius:999px;
       border:1px solid rgba(148,163,184,0.6);
       background:transparent;
-      color:#E5E7EB;
+      color:var(--sb-text-soft);
       font-size:12px;
       padding:.4rem .9rem;
       cursor:pointer;
@@ -108,8 +117,10 @@
       font-size:11px;
       text-transform:uppercase;
       letter-spacing:.07em;
-      background: radial-gradient(circle at 0 0, rgba(249,115,22,0.45), transparent 55%), #020617;
-      color:#FED7AA;
+      background:
+        radial-gradient(circle at 0 0, rgba(249,115,22,0.45), transparent 55%),
+        #0b1220;
+      color:var(--sb-warning);
       white-space:nowrap;
     }
 
@@ -125,11 +136,13 @@
     #login-card{
       max-width:420px;
       width:100%;
-      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      background:
+        radial-gradient(circle at 0 0, rgba(201,76,53,0.32), transparent 55%),
+        #0b1220;
       border-radius:20px;
       padding:1.8rem 1.8rem 1.6rem;
       box-shadow:0 22px 60px rgba(0,0,0,0.9);
-      border:1px solid rgba(148,163,184,0.5);
+      border:1px solid rgba(148,163,184,0.45);
     }
 
     #login-card h1{
@@ -149,6 +162,7 @@
       display:block;
       font-size:12px;
       margin-bottom:4px;
+      color:var(--sb-text-soft);
     }
 
     .login-field input{
@@ -160,6 +174,11 @@
       color:var(--sb-text-main);
       font-size:13px;
       outline:none;
+    }
+
+    .login-field input::placeholder{
+      color:#cbd5e1;
+      opacity:.9;
     }
 
     .login-actions{
@@ -194,8 +213,8 @@
       color:var(--sb-text-soft);
     }
 
-    .status-message.ok{color:#4ade80}
-    .status-message.error{color:#f97373}
+    .status-message.ok{color:var(--sb-success)}
+    .status-message.error{color:var(--sb-danger)}
 
     /* ADMIN */
     #admin-screen{display:none}
@@ -219,7 +238,9 @@
     }
 
     .tab-button.active{
-      background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
+      background:
+        radial-gradient(circle at 0 0, rgba(201,76,53,0.28), transparent 55%),
+        #0b1220;
       color:#F9FAFB;
       border-bottom:2px solid var(--sb-accent-2);
     }
@@ -232,7 +253,7 @@
       border-radius:18px;
       padding:1.4rem 1.5rem 1.5rem;
       box-shadow:0 22px 60px rgba(0,0,0,0.9);
-      border:1px solid rgba(148,163,184,0.4);
+      border:1px solid var(--sb-border-strong);
       margin-bottom:1.6rem;
     }
 
@@ -272,6 +293,7 @@
     .form-field label{
       display:block;
       margin-bottom:3px;
+      color:var(--sb-text-soft);
     }
 
     .form-field input,
@@ -285,6 +307,12 @@
       color:var(--sb-text-main);
       font-size:12px;
       outline:none;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder{
+      color:#cbd5e1;
+      opacity:.92;
     }
 
     .form-field textarea{
@@ -305,7 +333,7 @@
       border:1px solid rgba(148,163,184,0.6);
       padding:.55rem 1.2rem;
       background:transparent;
-      color:#E5E7EB;
+      color:var(--sb-text-soft);
       cursor:pointer;
       font-size:13px;
     }
@@ -336,13 +364,14 @@
       border-bottom:1px solid rgba(31,41,55,0.9);
       text-align:left;
       white-space:nowrap;
+      color:var(--sb-text-soft);
     }
 
     th{
       text-transform:uppercase;
       letter-spacing:.08em;
       font-size:11px;
-      color:#E5E7EB;
+      color:#F8FAFC;
     }
 
     .badge{
@@ -357,13 +386,13 @@
 
     .badge-active{
       background:rgba(22,163,74,.15);
-      color:#4ade80;
+      color:#86efac;
       border:1px solid rgba(74,222,128,.6);
     }
 
     .badge-inactive{
       background:rgba(75,85,99,.4);
-      color:#e5e7eb;
+      color:#f1f5f9;
       border:1px solid rgba(148,163,184,.6);
     }
 
@@ -400,7 +429,9 @@
       border-radius:18px;
       border:1px solid rgba(148,163,184,0.4);
       padding:.9rem 1rem;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
+      background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.12), transparent 60%),
+        #0b1220;
     }
 
     .kpi-label{
@@ -414,6 +445,7 @@
     .kpi-value{
       font-size:18px;
       font-weight:700;
+      color:#ffffff;
     }
 
     .kpi-sub{
@@ -438,6 +470,7 @@
       border-radius:14px;
       border:1px solid rgba(148,163,184,0.35);
       background:#020617;
+      color:var(--sb-text-soft);
     }
 
     .inline-check input{width:auto}
@@ -813,7 +846,6 @@
     </div>
   </div>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
@@ -847,14 +879,21 @@
     function setMsg(id, text, ok = false) {
       const el = document.getElementById(id);
       if (!el) return;
+
       el.textContent = text || "";
-      el.className = "status-message" + (text ? (ok ? " ok" : " error") : "");
+      el.className = "status-message";
+
+      if (!text) return;
+      if (ok) el.classList.add("ok");
+      else el.classList.add("error");
     }
 
     function withTimeout(promise, ms = 12000) {
       return Promise.race([
         promise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms))
+        new Promise((_, reject) => {
+          setTimeout(() => reject(new Error("timeout")), ms);
+        })
       ]);
     }
 
@@ -867,6 +906,7 @@
       if (!dateStr) return "-";
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return dateStr;
+
       return d.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
@@ -878,11 +918,60 @@
       if (!ts) return "-";
       const d = new Date(ts);
       if (Number.isNaN(d.getTime())) return "-";
+
       return (
         d.toLocaleDateString("fr-FR") +
         " " +
-        d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+        d.toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        })
       );
+    }
+
+    function getTimeLabelFromStartTime(startTime) {
+      if (!startTime) return "-";
+      const parsed = new Date(startTime);
+      if (Number.isNaN(parsed.getTime())) return "-";
+
+      return parsed.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function buildPromoTypeLabel(row) {
+      if (!row || !row.type) return "-";
+      if (row.type === "free") return "Gratuit (free)";
+      if (row.type === "percent") return "Pourcentage";
+      if (row.type === "fixed") return "Montant fixe";
+      return row.type;
+    }
+
+    function buildPromoValueLabel(row) {
+      if (!row) return "-";
+      if (row.type === "percent") return (row.value || 0) + " %";
+      if (row.type === "fixed") return (row.value || 0) + " €";
+      return "-";
+    }
+
+    function buildPromoConditionsLabel(row) {
+      const typeLabel = buildPromoTypeLabel(row);
+      const extras = [];
+
+      if (row.note) extras.push(row.note);
+      if (row.first_session_only) extras.push("1ère session");
+      if (row.max_uses_per_user) extras.push(row.max_uses_per_user + "x / email");
+      if (row.email_domain) extras.push("@" + row.email_domain);
+
+      if (extras.length === 0) return typeLabel;
+      return typeLabel + " · " + extras.join(" · ");
+    }
+
+    function getArticlePublicationIso(dateLocal, isPublished) {
+      if (dateLocal) return new Date(dateLocal).toISOString();
+      if (isPublished) return new Date().toISOString();
+      return null;
     }
 
     // -------------------------
@@ -895,16 +984,16 @@
       authRefreshing = true;
 
       try {
-        const { data: sessionData } = await withTimeout(supabaseClient.auth.getSession(), 8000);
-        const session = sessionData?.session || null;
+        const sessionResponse = await withTimeout(supabaseClient.auth.getSession(), 8000);
+        const session = sessionResponse?.data?.session || null;
 
         if (!session) {
           showLogin();
           return;
         }
 
-        const { data: userData } = await withTimeout(supabaseClient.auth.getUser(), 10000);
-        const user = userData?.user || null;
+        const userResponse = await withTimeout(supabaseClient.auth.getUser(), 10000);
+        const user = userResponse?.data?.user || null;
 
         if (!user) {
           showLogin();
@@ -947,14 +1036,14 @@
       btn.textContent = "Connexion...";
 
       try {
-        const { error } = await withTimeout(
+        const loginResponse = await withTimeout(
           supabaseClient.auth.signInWithPassword({ email, password }),
           12000
         );
 
-        if (error) {
-          console.error(error);
-          setMsg("login-error", "Connexion refusée : " + (error.message || "erreur"), false);
+        if (loginResponse.error) {
+          console.error(loginResponse.error);
+          setMsg("login-error", "Connexion refusée : " + (loginResponse.error.message || "erreur"), false);
           return;
         }
 
@@ -963,6 +1052,7 @@
         await refreshAuthUI();
       } catch (e) {
         console.error("login error:", e);
+
         if (String(e?.message || "") === "timeout") {
           setMsg("login-error", "Connexion Supabase : timeout (réseau ou config).", false);
         } else {
@@ -980,6 +1070,7 @@
       } catch (e) {
         console.error("logout error:", e);
       }
+
       showLogin();
       setMsg("login-error", "");
     }
@@ -1028,7 +1119,7 @@
         const firstDateStr = toISODate(firstDay);
         const nextDateStr = toISODate(nextMonth);
 
-        const { data, error } = await withTimeout(
+        const response = await withTimeout(
           supabaseClient
             .from("reservations")
             .select("status, date")
@@ -1037,15 +1128,16 @@
           12000
         );
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur dashboard : " + (error.message || "");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur dashboard : " + (response.error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
-        const total = data?.length || 0;
-        const confirmed = (data || []).filter((r) => r.status === "confirmed").length;
+        const data = response.data || [];
+        const total = data.length;
+        const confirmed = data.filter((r) => r.status === "confirmed").length;
         const rate = total > 0 ? Math.round((confirmed / total) * 100) : 0;
 
         if (kpiConfirmed) kpiConfirmed.textContent = confirmed;
@@ -1087,16 +1179,18 @@
         if (dateTo) query = query.lte("date", dateTo);
         if (status) query = query.eq("status", status);
 
-        const { data, error } = await withTimeout(query, 12000);
+        const response = await withTimeout(query, 12000);
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur chargement réservations : " + (error.message || "");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur chargement réservations : " + (response.error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
-        if (!data || data.length === 0) {
+        const data = response.data || [];
+
+        if (data.length === 0) {
           msgEl.textContent = "Aucune réservation trouvée.";
           msgEl.classList.add("error");
           return;
@@ -1110,11 +1204,7 @@
           tr.appendChild(tdDate);
 
           const tdTime = document.createElement("td");
-          const dTime = row.start_time ? new Date(row.start_time) : null;
-          tdTime.textContent =
-            dTime && !Number.isNaN(dTime.getTime())
-              ? dTime.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-              : "-";
+          tdTime.textContent = getTimeLabelFromStartTime(row.start_time);
           tr.appendChild(tdTime);
 
           const tdClient = document.createElement("td");
@@ -1169,7 +1259,7 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await withTimeout(
+        const response = await withTimeout(
           supabaseClient
             .from("reservations")
             .select("name, email, start_time")
@@ -1177,26 +1267,28 @@
           12000
         );
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur chargement clients : " + (error.message || "");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur chargement clients : " + (response.error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
-        if (!data || data.length === 0) {
+        const data = response.data || [];
+
+        if (data.length === 0) {
           msgEl.textContent = "Aucun client trouvé (pas de réservations).";
           msgEl.classList.add("error");
           return;
         }
 
-        const map = new Map();
+        const clientsMap = new Map();
 
         data.forEach((row) => {
           const email = row.email || "inconnu";
 
-          if (!map.has(email)) {
-            map.set(email, {
+          if (!clientsMap.has(email)) {
+            clientsMap.set(email, {
               name: row.name || "-",
               email,
               reservationsCount: 0,
@@ -1204,16 +1296,22 @@
             });
           }
 
-          const entry = map.get(email);
+          const entry = clientsMap.get(email);
           entry.reservationsCount += 1;
 
-          const d = row.start_time ? new Date(row.start_time) : null;
-          if (d && !Number.isNaN(d.getTime()) && (!entry.lastDate || d > entry.lastDate)) {
-            entry.lastDate = d;
+          const parsedDate = row.start_time ? new Date(row.start_time) : null;
+          if (parsedDate && !Number.isNaN(parsedDate.getTime())) {
+            if (!entry.lastDate || parsedDate > entry.lastDate) {
+              entry.lastDate = parsedDate;
+            }
           }
         });
 
-        const clients = Array.from(map.values()).sort((a, b) => (b.lastDate || 0) - (a.lastDate || 0));
+        const clients = Array.from(clientsMap.values()).sort((a, b) => {
+          const aValue = a.lastDate ? a.lastDate.getTime() : 0;
+          const bValue = b.lastDate ? b.lastDate.getTime() : 0;
+          return bValue - aValue;
+        });
 
         clients.forEach((client) => {
           const tr = document.createElement("tr");
@@ -1281,7 +1379,7 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await withTimeout(
+        const response = await withTimeout(
           supabaseClient
             .from("actualites")
             .select("id, titre, slug, categorie, publie, date_publication, created_at")
@@ -1289,14 +1387,16 @@
           12000
         );
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur chargement actualités : " + (error.message || "");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur chargement actualités : " + (response.error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
-        if (!data || data.length === 0) {
+        const data = response.data || [];
+
+        if (data.length === 0) {
           msgEl.textContent = "Aucun article pour le moment.";
           msgEl.classList.add("error");
           return;
@@ -1380,7 +1480,7 @@
     async function loadArticleIntoForm(id) {
       setMsg("article-form-message", "Chargement de l’article...", true);
 
-      const { data, error } = await withTimeout(
+      const response = await withTimeout(
         supabaseClient
           .from("actualites")
           .select("*")
@@ -1389,11 +1489,13 @@
         12000
       );
 
-      if (error || !data) {
-        console.error(error);
+      if (response.error || !response.data) {
+        console.error(response.error);
         setMsg("article-form-message", "Impossible de charger l’article.", false);
         return;
       }
+
+      const data = response.data;
 
       document.getElementById("a-id").value = data.id || "";
       document.getElementById("a-titre").value = data.titre || "";
@@ -1405,20 +1507,22 @@
       document.getElementById("a-publie").checked = !!data.publie;
 
       if (data.date_publication) {
-        const d = new Date(data.date_publication);
-        if (!Number.isNaN(d.getTime())) {
+        const parsedDate = new Date(data.date_publication);
+
+        if (!Number.isNaN(parsedDate.getTime())) {
           const pad = (n) => String(n).padStart(2, "0");
-          const value =
-            d.getFullYear() +
+          const formattedValue =
+            parsedDate.getFullYear() +
             "-" +
-            pad(d.getMonth() + 1) +
+            pad(parsedDate.getMonth() + 1) +
             "-" +
-            pad(d.getDate()) +
+            pad(parsedDate.getDate()) +
             "T" +
-            pad(d.getHours()) +
+            pad(parsedDate.getHours()) +
             ":" +
-            pad(d.getMinutes());
-          document.getElementById("a-datepub").value = value;
+            pad(parsedDate.getMinutes());
+
+          document.getElementById("a-datepub").value = formattedValue;
         }
       } else {
         document.getElementById("a-datepub").value = "";
@@ -1428,22 +1532,22 @@
     }
 
     async function upsertArticle(payload, id) {
-      if (payload.publie && !payload.date_publication) {
-        payload.date_publication = new Date().toISOString();
-      }
-
       const msgId = "article-form-message";
       setMsg(msgId, "Enregistrement en cours...", true);
 
       try {
         const query = supabaseClient.from("actualites");
-        const res = id
-          ? await withTimeout(query.update(payload).eq("id", id), 12000)
-          : await withTimeout(query.insert([payload]), 12000);
+        let response;
 
-        if (res.error) {
-          console.error(res.error);
-          setMsg(msgId, "Erreur : " + (res.error.message || "impossible"), false);
+        if (id) {
+          response = await withTimeout(query.update(payload).eq("id", id), 12000);
+        } else {
+          response = await withTimeout(query.insert([payload]), 12000);
+        }
+
+        if (response.error) {
+          console.error(response.error);
+          setMsg(msgId, "Erreur : " + (response.error.message || "impossible"), false);
           return;
         }
 
@@ -1461,14 +1565,14 @@
       msgEl.textContent = "Suppression en cours...";
       msgEl.className = "status-message";
 
-      const { error } = await withTimeout(
+      const response = await withTimeout(
         supabaseClient.from("actualites").delete().eq("id", id),
         12000
       );
 
-      if (error) {
-        console.error(error);
-        msgEl.textContent = "Erreur suppression : " + (error.message || "");
+      if (response.error) {
+        console.error(response.error);
+        msgEl.textContent = "Erreur suppression : " + (response.error.message || "");
         msgEl.classList.add("error");
         return;
       }
@@ -1532,14 +1636,14 @@
       msgEl.textContent = "Enregistrement en cours...";
 
       try {
-        const { error } = await withTimeout(
+        const response = await withTimeout(
           supabaseClient.from("promo_codes").upsert(payload, { onConflict: "code" }),
           12000
         );
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur : " + (error.message || "enregistrement impossible.");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur : " + (response.error.message || "enregistrement impossible.");
           msgEl.classList.add("error");
         } else {
           msgEl.textContent = "Code enregistré ✅";
@@ -1563,21 +1667,22 @@
       msgEl.className = "status-message";
 
       try {
-        const { data, error } = await withTimeout(
+        const response = await withTimeout(
           supabaseClient.from("promo_codes").select("*").order("code", { ascending: true }),
           12000
         );
 
-        if (error) {
-          console.error(error);
-          msgEl.textContent = "Erreur chargement : " + (error.message || "");
+        if (response.error) {
+          console.error(response.error);
+          msgEl.textContent = "Erreur chargement : " + (response.error.message || "");
           msgEl.classList.add("error");
           return;
         }
 
+        const data = response.data || [];
         msgEl.textContent = "";
 
-        if (!data || data.length === 0) {
+        if (data.length === 0) {
           msgEl.textContent = "Aucun code promo.";
           msgEl.classList.add("error");
           return;
@@ -1591,24 +1696,11 @@
           tr.appendChild(tdCode);
 
           const tdType = document.createElement("td");
-          let typeLabel = row.type || "-";
-          if (row.type === "free") typeLabel = "Gratuit (free)";
-          if (row.type === "percent") typeLabel = "Pourcentage";
-          if (row.type === "fixed") typeLabel = "Montant fixe";
-
-          const extras = [];
-          if (row.note) extras.push(row.note);
-          if (row.first_session_only) extras.push("1ère session");
-          if (row.max_uses_per_user) extras.push(row.max_uses_per_user + "x / email");
-          if (row.email_domain) extras.push("@" + row.email_domain);
-
-          tdType.textContent = extras.length ? typeLabel + " · " + extras.join(" · ") : typeLabel;
+          tdType.textContent = buildPromoConditionsLabel(row);
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
-          if (row.type === "percent") tdValue.textContent = (row.value || 0) + " %";
-          else if (row.type === "fixed") tdValue.textContent = (row.value || 0) + " €";
-          else tdValue.textContent = "-";
+          tdValue.textContent = buildPromoValueLabel(row);
           tr.appendChild(tdValue);
 
           const tdFrom = document.createElement("td");
@@ -1675,14 +1767,14 @@
       msgEl.textContent = "Mise à jour...";
       msgEl.className = "status-message";
 
-      const { error } = await withTimeout(
+      const response = await withTimeout(
         supabaseClient.from("promo_codes").update({ is_active: newStatus }).eq("id", id),
         12000
       );
 
-      if (error) {
-        console.error(error);
-        msgEl.textContent = "Erreur : " + (error.message || "");
+      if (response.error) {
+        console.error(response.error);
+        msgEl.textContent = "Erreur : " + (response.error.message || "");
         msgEl.classList.add("error");
         return;
       }
@@ -1697,14 +1789,14 @@
       msgEl.textContent = "Suppression...";
       msgEl.className = "status-message";
 
-      const { error } = await withTimeout(
+      const response = await withTimeout(
         supabaseClient.from("promo_codes").delete().eq("id", id),
         12000
       );
 
-      if (error) {
-        console.error(error);
-        msgEl.textContent = "Erreur : " + (error.message || "");
+      if (response.error) {
+        console.error(response.error);
+        msgEl.textContent = "Erreur : " + (response.error.message || "");
         msgEl.classList.add("error");
         return;
       }
@@ -1721,7 +1813,9 @@
       showLogin();
 
       const emailEl = document.getElementById("admin-email");
-      if (emailEl && !emailEl.value) emailEl.value = "contactsingbox@gmail.com";
+      if (emailEl && !emailEl.value) {
+        emailEl.value = "contactsingbox@gmail.com";
+      }
 
       initTabs();
 
@@ -1777,7 +1871,7 @@
           contenu,
           categorie,
           publie,
-          date_publication: dateLocal ? new Date(dateLocal).toISOString() : null
+          date_publication: getArticlePublicationIso(dateLocal, publie)
         };
 
         await upsertArticle(payload, id);
