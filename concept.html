@@ -237,7 +237,6 @@
       transition: 0.25s ease;
     }
 
-    /* Lien actif pour la page concept */
     .main-nav a[href="concept.html"]::after {
       width: 100%;
     }
@@ -298,6 +297,7 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
     .burger-button {
@@ -395,6 +395,7 @@
       color: rgba(148,163,184,0.12);
       pointer-events: none;
     }
+
     #concept-intro::after {
       content: "✦";
       position: absolute;
@@ -851,8 +852,8 @@
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
-        <ul>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul aria-label="Liens principaux du site">
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="box.html">Les box</a></li>
@@ -864,7 +865,7 @@
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -874,9 +875,9 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE (Mon compte présent, pas de bouton Réserver séparé) -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul>
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+    <ul aria-label="Liens du menu mobile">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
       <li><a href="box.html">Les box</a></li>
@@ -914,7 +915,7 @@
     <div class="concept-block">
       <div class="concept-grid">
         <div class="concept-text">
-          <h2>Des salons privés (& insonorisés)</h2>
+          <h2>Des salons privés (&amp; insonorisés)</h2>
           <p>
             Chaque box Singbox est pensée comme un cocon : lumières, banquettes confortables, écran et micros…
             le tout dans un espace insonorisé, sans aucun regard extérieur.
@@ -1065,6 +1066,7 @@
       </p>
       <button
         class="concept-cta-button"
+        type="button"
         onclick="window.location.href='reservation.html'"
       >
         Réserver maintenant
@@ -1083,6 +1085,7 @@
           id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
+          aria-label="Adresse e-mail pour la newsletter"
         />
         <button
           id="newsletter-submit"
