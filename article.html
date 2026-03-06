@@ -293,14 +293,14 @@
 
     /* =============== CONTENU ARTICLE =============== */
 
-   main {
-  padding-top: 180px; /* augmente encore */
-  padding-bottom: 80px;
-}
+    main {
+      padding-top: 180px;
+      padding-bottom: 80px;
+    }
 
-#article-wrapper {
-  margin-top: 60px;  /* espace supplémentaire sous le header */
-}
+    #article-wrapper {
+      margin-top: 60px;
+    }
 
     .article-card {
       background: var(--sb-card);
@@ -499,7 +499,7 @@
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
+      <nav class="main-nav" aria-label="Navigation principale">
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
@@ -512,7 +512,7 @@
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -523,7 +523,7 @@
   </header>
 
   <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
@@ -537,8 +537,8 @@
 
   <main>
     <div class="container">
-      <div id="article-wrapper" class="article-card" style="display:none;">
-        <span id="article-badge" class="article-badge"></span>
+      <article id="article-wrapper" class="article-card" style="display:none;" aria-labelledby="article-title">
+        <p id="article-badge" class="article-badge"></p>
         <h1 id="article-title" class="article-title"></h1>
         <p id="article-meta" class="article-meta"></p>
         <img id="article-image" class="article-image" alt="" style="display:none;" />
@@ -548,7 +548,7 @@
         <a href="actualites.html" class="article-back">
           ← Retour aux actualités
         </a>
-      </div>
+      </article>
 
       <p id="article-message" class="article-message"></p>
     </div>
@@ -557,7 +557,7 @@
   <!-- FOOTER IDENTIQUE -->
   <footer>
     <div class="newsletter-container" id="newsletter-section">
-      <h3>Inscrivez-vous à notre newsletter</h3>
+      <h2>Inscrivez-vous à notre newsletter</h2>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <form class="newsletter-row" id="newsletter-form">
         <input
@@ -665,7 +665,7 @@
     function formatDateFr(dateStr) {
       if (!dateStr) return "";
       const d = new Date(dateStr);
-      if (isNaN(d)) return dateStr;
+      if (Number.isNaN(d.getTime())) return dateStr;
       return d.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
@@ -673,10 +673,62 @@
       });
     }
 
+    function setArticleMeta(data) {
+      if (data.titre) {
+        document.title = data.titre + " | Actualités Singbox";
+      }
+
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute(
+          "content",
+          data.chapeau ||
+            "Article d’actualités Singbox : promos, coulisses, nouveautés et idées de soirées autour du karaoké box privatif à Toulouse."
+        );
+      }
+    }
+
+    function renderArticle(data) {
+      const wrapper = document.getElementById("article-wrapper");
+      const msgEl = document.getElementById("article-message");
+      const badge = document.getElementById("article-badge");
+      const titleEl = document.getElementById("article-title");
+      const metaEl = document.getElementById("article-meta");
+      const imgEl = document.getElementById("article-image");
+      const chapEl = document.getElementById("article-chapeau");
+      const contentEl = document.getElementById("article-content");
+
+      const catSlug = data.categorie || "autre";
+      badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
+
+      titleEl.textContent = data.titre || "Sans titre";
+
+      const dateTxt = data.date_publication ? formatDateFr(data.date_publication) : "";
+      const catLabel = CATEGORY_LABELS[catSlug] || "";
+      metaEl.textContent =
+        (dateTxt ? "Publié le " + dateTxt : "") +
+        (catLabel ? " • Catégorie : " + catLabel : "");
+
+      if (data.image_url) {
+        imgEl.src = data.image_url;
+        imgEl.alt = data.titre || "Illustration de l’article";
+        imgEl.style.display = "block";
+      } else {
+        imgEl.removeAttribute("src");
+        imgEl.alt = "";
+        imgEl.style.display = "none";
+      }
+
+      chapEl.textContent = data.chapeau || "";
+      contentEl.innerHTML = data.contenu || "";
+
+      msgEl.textContent = "";
+      wrapper.style.display = "block";
+    }
+
     async function loadArticle() {
       const slug = getSlugFromUrl();
       const msgEl = document.getElementById("article-message");
-      const wrapper = document.getElementById("article-wrapper");
 
       if (!slug) {
         msgEl.textContent = "Aucun article spécifié.";
@@ -704,124 +756,92 @@
           return;
         }
 
-        // Title dynamique
-        if (data.titre) {
-          document.title = data.titre + " | Actualités Singbox";
-        }
-
-        const badge = document.getElementById("article-badge");
-        const titleEl = document.getElementById("article-title");
-        const metaEl = document.getElementById("article-meta");
-        const imgEl = document.getElementById("article-image");
-        const chapEl = document.getElementById("article-chapeau");
-        const contentEl = document.getElementById("article-content");
-
-        const catSlug = data.categorie || "autre";
-        badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
-
-        titleEl.textContent = data.titre || "Sans titre";
-
-        const dateTxt = data.date_publication ? formatDateFr(data.date_publication) : "";
-        const catLabel = CATEGORY_LABELS[catSlug] || "";
-        metaEl.textContent =
-          (dateTxt ? "Publié le " + dateTxt : "") +
-          (catLabel ? " • Catégorie : " + catLabel : "");
-
-        if (data.image_url) {
-          imgEl.src = data.image_url;
-          imgEl.alt = data.titre || "Illustration de l’article";
-          imgEl.style.display = "block";
-        } else {
-          imgEl.style.display = "none";
-        }
-
-        chapEl.textContent = data.chapeau || "";
-
-        if (data.contenu) {
-          contentEl.innerHTML = data.contenu;
-        } else {
-          contentEl.textContent = "";
-        }
-
-        msgEl.textContent = "";
-        wrapper.style.display = "block";
+        setArticleMeta(data);
+        renderArticle(data);
       } catch (err) {
         console.error(err);
         msgEl.textContent = "Erreur réseau lors du chargement de l’article.";
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Burger / mobile
+    function initMobileMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
-      }
 
-      updateCartIcon();
-      loadArticle();
+      if (!burgerBtn || !mobileNav) return;
 
-      // ----- Newsletter footer -----
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("open");
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          mobileNav.classList.remove("open");
+        }
+      });
+    }
+
+    function initNewsletter() {
       const newsletterForm = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("newsletter-email");
       const messageEl = document.getElementById("newsletter-message");
       const submitBtn = document.getElementById("newsletter-submit");
 
-      if (newsletterForm && emailInput && messageEl && submitBtn) {
-        newsletterForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
+      if (!newsletterForm || !emailInput || !messageEl || !submitBtn) return;
 
-          const email = emailInput.value.trim();
+      newsletterForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
-            messageEl.style.color = "#f97373";
-            return;
-          }
+        const email = emailInput.value.trim();
 
-          submitBtn.disabled = true;
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Envoi...";
-          messageEl.textContent = "";
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+          messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
+          messageEl.style.color = "#f97373";
+          return;
+        }
 
-          try {
-            const { error } = await supabaseClient
-              .from("newsletter_subscriptions")
-              .insert([{ email }]);
+        submitBtn.disabled = true;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "Envoi...";
+        messageEl.textContent = "";
 
-            if (error) {
-              console.error(error);
-              if (error.code === "23505") {
-                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
-              } else {
-                messageEl.textContent =
-                  "Oups, une erreur est survenue. Réessaie dans quelques instants.";
-              }
-              messageEl.style.color = "#f97373";
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
+
+          if (error) {
+            console.error(error);
+            if (error.code === "23505") {
+              messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
             } else {
-              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
-              messageEl.style.color = "#4ade80";
-              newsletterForm.reset();
+              messageEl.textContent =
+                "Oups, une erreur est survenue. Réessaie dans quelques instants.";
             }
-          } catch (err) {
-            console.error(err);
-            messageEl.textContent =
-              "Erreur réseau, vérifie ta connexion et réessaie.";
             messageEl.style.color = "#f97373";
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+          } else {
+            messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
+            messageEl.style.color = "#4ade80";
+            newsletterForm.reset();
           }
-        });
-      }
+        } catch (err) {
+          console.error(err);
+          messageEl.textContent =
+            "Erreur réseau, vérifie ta connexion et réessaie.";
+          messageEl.style.color = "#f97373";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initMobileMenu();
+      updateCartIcon();
+      loadArticle();
+      initNewsletter();
     });
   </script>
 </body>
