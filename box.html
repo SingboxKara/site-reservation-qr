@@ -189,7 +189,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Bloc marque */
     .brand {
       display: flex;
       align-items: center;
@@ -221,7 +220,6 @@
       align-items: center;
     }
 
-    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -269,12 +267,10 @@
       transition: 0.25s ease;
     }
 
-    /* Lien actif pour cette page */
     .main-nav a[href="box.html"]::after {
       width: 100%;
     }
 
-    /* Actions à droite */
     .header-actions {
       display: flex;
       align-items: center;
@@ -331,9 +327,9 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
-    /* Burger + menu mobile */
     .burger-button {
       display: none;
       width: 36px;
@@ -401,6 +397,7 @@
       .brand-logo {
         width: 72px;
       }
+
       .brand-text {
         font-size: 18px;
         letter-spacing: 0.1em;
@@ -429,6 +426,7 @@
       color: rgba(148,163,184,0.12);
       pointer-events: none;
     }
+
     #concept-intro::after {
       content: "✦";
       position: absolute;
@@ -596,7 +594,6 @@
         0 24px 60px rgba(0,0,0,1);
     }
 
-    /* Texte SEO supplémentaire + FAQ */
     .boxes-extra {
       padding: 3rem 0 4rem;
       background:#030712;
@@ -616,7 +613,6 @@
     .boxes-extra-inner p {
       font-size: 14px;
       color: var(--sb-text-muted);
-      /* max-width retiré pour aligner le texte avec les cartes */
     }
 
     .boxes-faq {
@@ -632,7 +628,6 @@
       font-size: 14px;
       margin: 0;
       color: var(--sb-text-muted);
-      /* max-width retiré pour aligner la FAQ */
     }
 
     /* ---------- FOOTER ---------- */
@@ -738,27 +733,25 @@
   <!-- ================= HEADER ================= -->
   <header class="site-header">
     <div class="header-inner">
-      <!-- Bloc marque : logo + texte -->
       <a href="index.html" class="brand">
         <img src="logo.png" alt="Logo Singbox karaoké box à Toulouse" class="brand-logo">
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
-        <ul>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul aria-label="Liens principaux du site">
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
-          <li><a href="box.html">Les box</a></li>
+          <li><a href="box.html" aria-current="page">Les box</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <!-- NOUVEL ONGLET MON COMPTE -->
           <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Voir le panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -769,14 +762,13 @@
   </header>
 
   <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+    <ul aria-label="Liens du menu mobile">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
-      <li><a href="box.html">Les box</a></li>
+      <li><a href="box.html" aria-current="page">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <!-- NOUVEL ONGLET MON COMPTE MOBILE -->
       <li><a href="mon-compte.html">Mon compte</a></li>
       <li><a href="reservation.html">Réserver</a></li>
     </ul>
@@ -797,7 +789,6 @@
   <!-- ---------- SECTION LISTE DES BOX (cartes) ---------- -->
   <section class="boxes-section">
     <div class="container">
-
       <div class="boxes-grid">
         <!-- Box 1 : Nuit étoilée -->
         <article class="box-card">
@@ -807,10 +798,11 @@
               <span class="box-badge-capacity">8 pers max</span>
             </div>
           </div>
+
           <div class="box-card-body">
             <h3 class="box-card-title">Nuit étoilée</h3>
 
-            <div class="box-card-features">
+            <div class="box-card-features" aria-label="Équipements et caractéristiques de la box Nuit étoilée">
               <div class="box-feature">
                 <span class="box-feature-icon">📱</span>
                 <span class="box-feature-text">Commande via tablette</span>
@@ -842,6 +834,7 @@
 
             <button
               class="box-card-button"
+              type="button"
               onclick="window.location.href='reservation.html?box=nuit-etoilee'"
             >
               Réserver cette box
@@ -857,10 +850,11 @@
               <span class="box-badge-capacity">8 pers max</span>
             </div>
           </div>
+
           <div class="box-card-body">
             <h3 class="box-card-title">Ambiance Sunset</h3>
 
-            <div class="box-card-features">
+            <div class="box-card-features" aria-label="Équipements et caractéristiques de la box Ambiance Sunset">
               <div class="box-feature">
                 <span class="box-feature-icon">📱</span>
                 <span class="box-feature-text">Commande via tablette</span>
@@ -892,6 +886,7 @@
 
             <button
               class="box-card-button"
+              type="button"
               onclick="window.location.href='reservation.html?box=ambiance-sunset'"
             >
               Réserver cette box
@@ -954,6 +949,7 @@
           id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
+          aria-label="Adresse e-mail pour la newsletter"
         />
         <button
           id="newsletter-submit"
@@ -962,6 +958,7 @@
           S'abonner
         </button>
       </div>
+
       <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
@@ -991,7 +988,6 @@
       <div>
         <p><strong>Réseaux</strong></p>
 
-        <!-- Instagram -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -1003,7 +999,6 @@
           </a>
         </p>
 
-        <!-- TikTok -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
@@ -1028,7 +1023,6 @@
 
     const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    // Helpers panier
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -1062,7 +1056,6 @@
 
       updateCartIcon();
 
-      // ----- Newsletter -----
       const emailInput = document.getElementById("newsletter-email");
       const messageEl = document.getElementById("newsletter-message");
       const submitBtn = document.getElementById("newsletter-submit");
