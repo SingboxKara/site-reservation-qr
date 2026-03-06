@@ -19,12 +19,15 @@
       --sb-bg-card:#020617;
       --sb-border-soft: rgba(148,163,184,0.35);
       --sb-text-main:#F9FAFB;
-      --sb-text-muted:#9CA3AF;
+      --sb-text-muted:#CBD5E1;
+      --sb-text-soft:#E2E8F0;
       --sb-accent:#C94C35;
       --sb-accent-2:#F97316;
       --sb-container-width:1100px;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -32,12 +35,14 @@
       color:var(--sb-text-main);
       min-height:100vh;
     }
+
     h1,h2,h3{
       font-family:"League Spartan",system-ui,sans-serif;
       letter-spacing:.06em;
       text-transform:uppercase;
       margin:0;
     }
+
     a{color:inherit;text-decoration:none}
 
     .admin-container{
@@ -45,6 +50,7 @@
       margin:0 auto;
       padding:2.5rem 1.5rem 3rem;
     }
+
     .admin-header{
       display:flex;
       justify-content:space-between;
@@ -53,53 +59,98 @@
       gap:1rem;
       flex-wrap:wrap;
     }
+
     .admin-header-left{
       display:flex;
       align-items:center;
       gap:12px;
       flex-wrap:wrap;
     }
+
     .admin-logo{
-      width:56px;height:56px;border-radius:999px;object-fit:cover;
+      width:56px;
+      height:56px;
+      border-radius:999px;
+      object-fit:cover;
       box-shadow:0 0 0 2px rgba(249,250,251,0.12), 0 16px 40px rgba(0,0,0,0.9);
     }
+
     .admin-title-main{font-size:20px}
-    .admin-subtitle{font-size:13px;color:var(--sb-text-muted);margin-top:4px}
+
+    .admin-subtitle{
+      font-size:13px;
+      color:var(--sb-text-muted);
+      margin-top:4px;
+    }
+
     .admin-header-right{
-      display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:flex-end;
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
+
     .admin-header-right button{
-      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
-      background:transparent;color:#E5E7EB;font-size:12px;padding:.4rem .9rem;cursor:pointer;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      background:transparent;
+      color:#E5E7EB;
+      font-size:12px;
+      padding:.4rem .9rem;
+      cursor:pointer;
     }
+
     .deposit-badge{
-      border-radius:999px;border:1px solid rgba(248,250,251,0.2);
-      padding:.25rem .7rem;font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+      border-radius:999px;
+      border:1px solid rgba(248,250,251,0.2);
+      padding:.25rem .7rem;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.07em;
       background: radial-gradient(circle at 0 0, rgba(249,115,22,0.45), transparent 55%), #020617;
-      color:#FED7AA;white-space:nowrap;
+      color:#FED7AA;
+      white-space:nowrap;
     }
 
     /* LOGIN */
     #login-screen{
-      display:flex; /* ✅ IMPORTANT : on l’affiche par défaut */
+      display:flex;
       min-height:100vh;
       align-items:center;
       justify-content:center;
       padding:2rem 1.5rem;
     }
+
     #login-card{
-      max-width:420px;width:100%;
+      max-width:420px;
+      width:100%;
       background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
       border-radius:20px;
       padding:1.8rem 1.8rem 1.6rem;
       box-shadow:0 22px 60px rgba(0,0,0,0.9);
       border:1px solid rgba(148,163,184,0.5);
     }
-    #login-card h1{font-size:18px;margin-bottom:.6rem}
-    #login-card p{font-size:13px;color:var(--sb-text-muted);margin-bottom:1.2rem}
+
+    #login-card h1{
+      font-size:18px;
+      margin-bottom:.6rem;
+    }
+
+    #login-card p{
+      font-size:13px;
+      color:var(--sb-text-muted);
+      margin-bottom:1.2rem;
+    }
 
     .login-field{margin-bottom:1rem}
-    .login-field label{display:block;font-size:12px;margin-bottom:4px}
+
+    .login-field label{
+      display:block;
+      font-size:12px;
+      margin-bottom:4px;
+    }
+
     .login-field input{
       width:100%;
       padding:.55rem .8rem;
@@ -110,9 +161,18 @@
       font-size:13px;
       outline:none;
     }
-    .login-actions{display:flex;justify-content:flex-end;align-items:center;gap:.6rem;margin-top:.3rem}
+
+    .login-actions{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap:.6rem;
+      margin-top:.3rem;
+    }
+
     .btn-primary{
-      border-radius:999px;border:none;
+      border-radius:999px;
+      border:none;
       padding:.6rem 1.4rem;
       background:linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
       color:#F9FAFB;
@@ -121,33 +181,49 @@
       cursor:pointer;
       box-shadow:0 0 0 1px rgba(248,250,251,0.1), 0 16px 40px rgba(0,0,0,0.9);
     }
+
     .btn-primary:disabled{
       opacity:.65;
       cursor:not-allowed;
     }
-    .status-message{font-size:12px;margin-top:.4rem;min-height:1.2em}
+
+    .status-message{
+      font-size:12px;
+      margin-top:.4rem;
+      min-height:1.2em;
+      color:var(--sb-text-soft);
+    }
+
     .status-message.ok{color:#4ade80}
     .status-message.error{color:#f97373}
 
     /* ADMIN */
     #admin-screen{display:none}
+
     .tabs{
-      display:flex;gap:8px;flex-wrap:wrap;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
       border-bottom:1px solid rgba(31,41,55,0.9);
       margin-bottom:1.5rem;
     }
+
     .tab-button{
       border-radius:999px 999px 0 0;
-      border:none;padding:.5rem 1rem;
+      border:none;
+      padding:.5rem 1rem;
       background:transparent;
-      font-size:13px;color:var(--sb-text-muted);
+      font-size:13px;
+      color:var(--sb-text-muted);
       cursor:pointer;
     }
+
     .tab-button.active{
       background: radial-gradient(circle at 0 0, rgba(201,76,53,0.4), transparent 55%), #020617;
       color:#F9FAFB;
       border-bottom:2px solid var(--sb-accent-2);
     }
+
     .tab-content{display:none}
     .tab-content.active{display:block}
 
@@ -159,17 +235,48 @@
       border:1px solid rgba(148,163,184,0.4);
       margin-bottom:1.6rem;
     }
-    .card h2{font-size:16px;margin-bottom:.4rem}
-    .card-subtitle{font-size:12px;color:var(--sb-text-muted);margin-bottom:1.1rem}
 
-    .form-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-bottom:.75rem}
-    .form-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin-bottom:.75rem}
-    @media(max-width:768px){
-      .form-grid-3,.form-grid-2{grid-template-columns:minmax(0,1fr)}
+    .card h2{
+      font-size:16px;
+      margin-bottom:.4rem;
     }
+
+    .card-subtitle{
+      font-size:12px;
+      color:var(--sb-text-muted);
+      margin-bottom:1.1rem;
+    }
+
+    .form-grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.75rem;
+      margin-bottom:.75rem;
+    }
+
+    .form-grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:.75rem;
+      margin-bottom:.75rem;
+    }
+
+    @media(max-width:768px){
+      .form-grid-3,.form-grid-2{
+        grid-template-columns:minmax(0,1fr);
+      }
+    }
+
     .form-field{font-size:12px}
-    .form-field label{display:block;margin-bottom:3px}
-    .form-field input,.form-field select,.form-field textarea{
+
+    .form-field label{
+      display:block;
+      margin-bottom:3px;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea{
       width:100%;
       padding:.45rem .7rem;
       border-radius:14px;
@@ -179,53 +286,160 @@
       font-size:12px;
       outline:none;
     }
-    .form-field textarea{min-height:160px;resize:vertical}
 
-    .form-actions{display:flex;justify-content:flex-end;gap:.6rem;margin-top:.6rem;flex-wrap:wrap}
+    .form-field textarea{
+      min-height:160px;
+      resize:vertical;
+    }
+
+    .form-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:.6rem;
+      margin-top:.6rem;
+      flex-wrap:wrap;
+    }
+
     .btn-secondary{
-      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
-      padding:.55rem 1.2rem;background:transparent;color:#E5E7EB;cursor:pointer;font-size:13px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      padding:.55rem 1.2rem;
+      background:transparent;
+      color:#E5E7EB;
+      cursor:pointer;
+      font-size:13px;
     }
 
     .table-wrapper{
-      border-radius:16px;border:1px solid rgba(31,41,55,0.9);
-      overflow:auto;max-height:520px;
+      border-radius:16px;
+      border:1px solid rgba(31,41,55,0.9);
+      overflow:auto;
+      max-height:520px;
     }
-    table{width:100%;border-collapse:collapse;font-size:12px;min-width:860px}
-    thead{background:#020617;position:sticky;top:0;z-index:1}
-    th,td{padding:.4rem .6rem;border-bottom:1px solid rgba(31,41,55,0.9);text-align:left;white-space:nowrap}
-    th{text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:#E5E7EB}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      min-width:860px;
+    }
+
+    thead{
+      background:#020617;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    th,td{
+      padding:.4rem .6rem;
+      border-bottom:1px solid rgba(31,41,55,0.9);
+      text-align:left;
+      white-space:nowrap;
+    }
+
+    th{
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:11px;
+      color:#E5E7EB;
+    }
+
     .badge{
-      display:inline-flex;align-items:center;
-      padding:2px 6px;border-radius:999px;font-size:10px;
-      text-transform:uppercase;letter-spacing:.08em;
+      display:inline-flex;
+      align-items:center;
+      padding:2px 6px;
+      border-radius:999px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
     }
-    .badge-active{background:rgba(22,163,74,.15);color:#4ade80;border:1px solid rgba(74,222,128,.6)}
-    .badge-inactive{background:rgba(75,85,99,.4);color:#e5e7eb;border:1px solid rgba(148,163,184,.6)}
+
+    .badge-active{
+      background:rgba(22,163,74,.15);
+      color:#4ade80;
+      border:1px solid rgba(74,222,128,.6);
+    }
+
+    .badge-inactive{
+      background:rgba(75,85,99,.4);
+      color:#e5e7eb;
+      border:1px solid rgba(148,163,184,.6);
+    }
 
     .small-btn{
-      border-radius:999px;border:1px solid rgba(148,163,184,0.6);
-      padding:2px 8px;font-size:11px;background:transparent;color:#E5E7EB;cursor:pointer;margin-right:6px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      padding:2px 8px;
+      font-size:11px;
+      background:transparent;
+      color:#E5E7EB;
+      cursor:pointer;
+      margin-right:6px;
     }
-    .small-btn.danger{border-color:rgba(248,113,113,.8);color:#fecaca}
 
-    .helper-text{font-size:11px;color:var(--sb-text-muted);margin-top:4px}
-    .kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
-    .kpi-card{
-      border-radius:18px;border:1px solid rgba(148,163,184,0.4);
-      padding:.9rem 1rem;background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
+    .small-btn.danger{
+      border-color:rgba(248,113,113,.8);
+      color:#fecaca;
     }
-    .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--sb-text-muted);margin-bottom:.25rem}
-    .kpi-value{font-size:18px;font-weight:700}
-    .kpi-sub{font-size:11px;color:var(--sb-text-muted);margin-top:.25rem}
-    @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:600px){.kpi-grid{grid-template-columns:minmax(0,1fr)}}
+
+    .helper-text{
+      font-size:11px;
+      color:var(--sb-text-muted);
+      margin-top:4px;
+    }
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1rem;
+      margin-bottom:1rem;
+    }
+
+    .kpi-card{
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.4);
+      padding:.9rem 1rem;
+      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.15), transparent 60%), #020617;
+    }
+
+    .kpi-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.09em;
+      color:var(--sb-text-muted);
+      margin-bottom:.25rem;
+    }
+
+    .kpi-value{
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .kpi-sub{
+      font-size:11px;
+      color:var(--sb-text-muted);
+      margin-top:.25rem;
+    }
+
+    @media(max-width:900px){
+      .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media(max-width:600px){
+      .kpi-grid{grid-template-columns:minmax(0,1fr)}
+    }
 
     .inline-check{
-      display:flex;align-items:center;gap:10px;
-      padding:.5rem .7rem;border-radius:14px;border:1px solid rgba(148,163,184,0.35);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:.5rem .7rem;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,0.35);
       background:#020617;
     }
+
     .inline-check input{width:auto}
   </style>
 </head>
@@ -248,7 +462,7 @@
         <input type="password" id="admin-password" autocomplete="current-password" />
       </div>
 
-      <div id="login-error" class="status-message"></div>
+      <div id="login-error" class="status-message" aria-live="polite"></div>
 
       <div class="login-actions">
         <button id="login-button" class="btn-primary" type="button">Se connecter</button>
@@ -274,16 +488,16 @@
         </div>
       </header>
 
-      <div class="tabs">
-        <button class="tab-button active" data-tab="tab-dashboard" type="button">Dashboard</button>
-        <button class="tab-button" data-tab="tab-actualites" type="button">Actualités</button>
-        <button class="tab-button" data-tab="tab-reservations" type="button">Réservations</button>
-        <button class="tab-button" data-tab="tab-clients" type="button">Clients</button>
-        <button class="tab-button" data-tab="tab-promo" type="button">Codes promo</button>
+      <div class="tabs" role="tablist" aria-label="Navigation admin">
+        <button class="tab-button active" data-tab="tab-dashboard" id="tab-btn-dashboard" role="tab" aria-selected="true" aria-controls="tab-dashboard" type="button">Dashboard</button>
+        <button class="tab-button" data-tab="tab-actualites" id="tab-btn-actualites" role="tab" aria-selected="false" aria-controls="tab-actualites" type="button">Actualités</button>
+        <button class="tab-button" data-tab="tab-reservations" id="tab-btn-reservations" role="tab" aria-selected="false" aria-controls="tab-reservations" type="button">Réservations</button>
+        <button class="tab-button" data-tab="tab-clients" id="tab-btn-clients" role="tab" aria-selected="false" aria-controls="tab-clients" type="button">Clients</button>
+        <button class="tab-button" data-tab="tab-promo" id="tab-btn-promo" role="tab" aria-selected="false" aria-controls="tab-promo" type="button">Codes promo</button>
       </div>
 
       <!-- DASHBOARD -->
-      <section id="tab-dashboard" class="tab-content active">
+      <section id="tab-dashboard" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-dashboard">
         <div class="card">
           <h2>Dashboard</h2>
           <p class="card-subtitle">Vue rapide du mois en cours (table <code>reservations</code>).</p>
@@ -306,12 +520,12 @@
             </div>
           </div>
 
-          <div id="dashboard-message" class="status-message"></div>
+          <div id="dashboard-message" class="status-message" aria-live="polite"></div>
         </div>
       </section>
 
       <!-- ACTUALITES -->
-      <section id="tab-actualites" class="tab-content">
+      <section id="tab-actualites" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-actualites">
         <div class="card">
           <h2>Nouvel article / édition</h2>
           <p class="card-subtitle">CRUD table <code>actualites</code>. Le slug doit être unique.</p>
@@ -342,7 +556,7 @@
 
             <div class="form-field">
               <label for="a-contenu">Contenu</label>
-              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML (ex: <br>, <strong>)"></textarea>
+              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML (ex: &lt;br&gt;, &lt;strong&gt;)"></textarea>
             </div>
 
             <div class="form-grid-3" style="margin-top:.75rem">
@@ -358,7 +572,7 @@
               </div>
 
               <div class="form-field">
-                <label>Article publié</label>
+                <label for="a-publie">Article publié</label>
                 <div class="inline-check">
                   <input id="a-publie" type="checkbox" />
                   <span>Visible côté site</span>
@@ -380,7 +594,7 @@
             </div>
           </form>
 
-          <div id="article-form-message" class="status-message"></div>
+          <div id="article-form-message" class="status-message" aria-live="polite"></div>
         </div>
 
         <div class="card">
@@ -391,10 +605,10 @@
             <button id="btn-refresh-articles" class="btn-primary" type="button">Actualiser</button>
           </div>
 
-          <div id="articles-list-message" class="status-message"></div>
+          <div id="articles-list-message" class="status-message" aria-live="polite"></div>
 
           <div class="table-wrapper">
-            <table>
+            <table aria-label="Liste des articles">
               <thead>
                 <tr>
                   <th>Titre</th>
@@ -413,7 +627,7 @@
       </section>
 
       <!-- RESERVATIONS -->
-      <section id="tab-reservations" class="tab-content">
+      <section id="tab-reservations" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-reservations">
         <div class="card">
           <h2>Réservations</h2>
           <p class="card-subtitle">Lecture admin (table <code>reservations</code>).</p>
@@ -442,10 +656,10 @@
             <button id="btn-refresh-reservations" class="btn-primary" type="button">Actualiser</button>
           </div>
 
-          <div id="reservations-list-message" class="status-message"></div>
+          <div id="reservations-list-message" class="status-message" aria-live="polite"></div>
 
           <div class="table-wrapper">
-            <table>
+            <table aria-label="Liste des réservations">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -462,7 +676,7 @@
       </section>
 
       <!-- CLIENTS -->
-      <section id="tab-clients" class="tab-content">
+      <section id="tab-clients" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-clients">
         <div class="card">
           <h2>Clients</h2>
           <p class="card-subtitle">Vue clients construite depuis <code>reservations</code> (groupé par email).</p>
@@ -471,10 +685,10 @@
             <button id="btn-refresh-clients" class="btn-primary" type="button">Actualiser</button>
           </div>
 
-          <div id="clients-list-message" class="status-message"></div>
+          <div id="clients-list-message" class="status-message" aria-live="polite"></div>
 
           <div class="table-wrapper">
-            <table>
+            <table aria-label="Liste des clients">
               <thead>
                 <tr>
                   <th>Nom</th>
@@ -490,7 +704,7 @@
       </section>
 
       <!-- PROMO -->
-      <section id="tab-promo" class="tab-content">
+      <section id="tab-promo" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-promo">
         <div class="card">
           <h2>Créer un code promo</h2>
           <p class="card-subtitle">CRUD table <code>promo_codes</code>.</p>
@@ -537,10 +751,11 @@
               </div>
 
               <div class="form-field">
-                <label>
+                <label for="promo-first-session">Première session uniquement</label>
+                <div class="inline-check">
                   <input type="checkbox" id="promo-first-session" />
-                  Réservé à la <strong>première session</strong>
-                </label>
+                  <span>Réservé à la <strong>première session</strong></span>
+                </div>
                 <div class="helper-text">Valable si l'email n'a jamais réservé.</div>
               </div>
 
@@ -562,7 +777,7 @@
             </div>
           </form>
 
-          <div id="promo-form-message" class="status-message"></div>
+          <div id="promo-form-message" class="status-message" aria-live="polite"></div>
         </div>
 
         <div class="card">
@@ -573,10 +788,10 @@
             <button id="btn-refresh-promo" class="btn-primary" type="button">Actualiser</button>
           </div>
 
-          <div id="promo-list-message" class="status-message"></div>
+          <div id="promo-list-message" class="status-message" aria-live="polite"></div>
 
           <div class="table-wrapper">
-            <table>
+            <table aria-label="Liste des codes promo">
               <thead>
                 <tr>
                   <th>Code</th>
@@ -598,7 +813,7 @@
     </div>
   </div>
 
-  <!-- ✅ Supabase (UNE SEULE FOIS) -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
@@ -629,7 +844,7 @@
       document.getElementById("admin-screen").style.display = "block";
     }
 
-    function setMsg(id, text, ok=false) {
+    function setMsg(id, text, ok = false) {
       const el = document.getElementById(id);
       if (!el) return;
       el.textContent = text || "";
@@ -651,19 +866,27 @@
     function formatDateFr(dateStr) {
       if (!dateStr) return "-";
       const d = new Date(dateStr);
-      if (isNaN(d)) return dateStr;
-      return d.toLocaleDateString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric" });
+      if (Number.isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
     }
 
     function formatDateTimeFr(ts) {
       if (!ts) return "-";
       const d = new Date(ts);
-      if (isNaN(d)) return "-";
-      return d.toLocaleDateString("fr-FR") + " " + d.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" });
+      if (Number.isNaN(d.getTime())) return "-";
+      return (
+        d.toLocaleDateString("fr-FR") +
+        " " +
+        d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+      );
     }
 
     // -------------------------
-    // AUTH (ROBUSTE)
+    // AUTH
     // -------------------------
     let authRefreshing = false;
 
@@ -672,36 +895,30 @@
       authRefreshing = true;
 
       try {
-        // 1) On tente d’abord la session locale (rapide)
         const { data: sessionData } = await withTimeout(supabaseClient.auth.getSession(), 8000);
         const session = sessionData?.session || null;
 
         if (!session) {
           showLogin();
-          authRefreshing = false;
           return;
         }
 
-        // 2) On récupère l'user (peut être réseau)
         const { data: userData } = await withTimeout(supabaseClient.auth.getUser(), 10000);
         const user = userData?.user || null;
 
         if (!user) {
           showLogin();
-          authRefreshing = false;
           return;
         }
 
         showAdmin();
         document.getElementById("user-badge").textContent = "Connecté : " + (user.email || "admin");
 
-        // Charge tout
         await loadDashboard();
         await loadArticles();
         await loadReservations();
         await loadClients();
         await loadPromoCodes();
-
       } catch (e) {
         console.error("refreshAuthUI error:", e);
         showLogin();
@@ -730,7 +947,7 @@
       btn.textContent = "Connexion...";
 
       try {
-        const { data, error } = await withTimeout(
+        const { error } = await withTimeout(
           supabaseClient.auth.signInWithPassword({ email, password }),
           12000
         );
@@ -741,11 +958,9 @@
           return;
         }
 
-        // OK
         passEl.value = "";
         setMsg("login-error", "", true);
         await refreshAuthUI();
-
       } catch (e) {
         console.error("login error:", e);
         if (String(e?.message || "") === "timeout") {
@@ -762,7 +977,7 @@
     async function handleLogout() {
       try {
         await withTimeout(supabaseClient.auth.signOut(), 8000);
-      } catch(e) {
+      } catch (e) {
         console.error("logout error:", e);
       }
       showLogin();
@@ -773,11 +988,20 @@
     // TABS
     // -------------------------
     function initTabs() {
-      document.querySelectorAll(".tab-button").forEach(btn => {
+      document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-          document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+          document.querySelectorAll(".tab-button").forEach((b) => {
+            b.classList.remove("active");
+            b.setAttribute("aria-selected", "false");
+          });
+
+          document.querySelectorAll(".tab-content").forEach((tab) => {
+            tab.classList.remove("active");
+          });
+
           btn.classList.add("active");
+          btn.setAttribute("aria-selected", "true");
+
           const target = document.getElementById(btn.dataset.tab);
           if (target) target.classList.add("active");
         });
@@ -821,7 +1045,7 @@
         }
 
         const total = data?.length || 0;
-        const confirmed = (data || []).filter(r => r.status === "confirmed").length;
+        const confirmed = (data || []).filter((r) => r.status === "confirmed").length;
         const rate = total > 0 ? Math.round((confirmed / total) * 100) : 0;
 
         if (kpiConfirmed) kpiConfirmed.textContent = confirmed;
@@ -887,9 +1111,10 @@
 
           const tdTime = document.createElement("td");
           const dTime = row.start_time ? new Date(row.start_time) : null;
-          tdTime.textContent = dTime
-            ? dTime.toLocaleTimeString("fr-FR", { hour:"2-digit", minute:"2-digit" })
-            : "-";
+          tdTime.textContent =
+            dTime && !Number.isNaN(dTime.getTime())
+              ? dTime.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+              : "-";
           tr.appendChild(tdTime);
 
           const tdClient = document.createElement("td");
@@ -903,13 +1128,23 @@
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.status === "confirmed") { badge.classList.add("badge-active"); badge.textContent = "Confirmée"; }
-          else if (row.status === "cancelled") { badge.classList.add("badge-inactive"); badge.textContent = "Annulée"; }
-          else if (row.status === "pending") { badge.classList.add("badge-inactive"); badge.textContent = "En attente"; }
-          else { badge.classList.add("badge-inactive"); badge.textContent = row.status || "Autre"; }
+
+          if (row.status === "confirmed") {
+            badge.classList.add("badge-active");
+            badge.textContent = "Confirmée";
+          } else if (row.status === "cancelled") {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Annulée";
+          } else if (row.status === "pending") {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "En attente";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = row.status || "Autre";
+          }
+
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
-
           tbody.appendChild(tr);
         });
 
@@ -956,25 +1191,49 @@
         }
 
         const map = new Map();
+
         data.forEach((row) => {
           const email = row.email || "inconnu";
+
           if (!map.has(email)) {
-            map.set(email, { name: row.name || "-", email, reservationsCount: 0, lastDate: null });
+            map.set(email, {
+              name: row.name || "-",
+              email,
+              reservationsCount: 0,
+              lastDate: null
+            });
           }
+
           const entry = map.get(email);
           entry.reservationsCount += 1;
+
           const d = row.start_time ? new Date(row.start_time) : null;
-          if (d && (!entry.lastDate || d > entry.lastDate)) entry.lastDate = d;
+          if (d && !Number.isNaN(d.getTime()) && (!entry.lastDate || d > entry.lastDate)) {
+            entry.lastDate = d;
+          }
         });
 
-        const clients = Array.from(map.values()).sort((a,b) => (b.lastDate||0) - (a.lastDate||0));
+        const clients = Array.from(map.values()).sort((a, b) => (b.lastDate || 0) - (a.lastDate || 0));
 
-        clients.forEach((c) => {
+        clients.forEach((client) => {
           const tr = document.createElement("tr");
-          const tdName = document.createElement("td"); tdName.textContent = c.name; tr.appendChild(tdName);
-          const tdEmail = document.createElement("td"); tdEmail.textContent = c.email; tr.appendChild(tdEmail);
-          const tdCount = document.createElement("td"); tdCount.textContent = c.reservationsCount; tr.appendChild(tdCount);
-          const tdLast = document.createElement("td"); tdLast.textContent = c.lastDate ? formatDateTimeFr(c.lastDate) : "-"; tr.appendChild(tdLast);
+
+          const tdName = document.createElement("td");
+          tdName.textContent = client.name;
+          tr.appendChild(tdName);
+
+          const tdEmail = document.createElement("td");
+          tdEmail.textContent = client.email;
+          tr.appendChild(tdEmail);
+
+          const tdCount = document.createElement("td");
+          tdCount.textContent = client.reservationsCount;
+          tr.appendChild(tdCount);
+
+          const tdLast = document.createElement("td");
+          tdLast.textContent = client.lastDate ? formatDateTimeFr(client.lastDate) : "-";
+          tr.appendChild(tdLast);
+
           tbody.appendChild(tr);
         });
 
@@ -1002,14 +1261,14 @@
       setMsg("article-form-message", "");
     }
 
-    function normalizeSlug(s) {
-      return (s || "")
+    function normalizeSlug(value) {
+      return (value || "")
         .trim()
         .toLowerCase()
         .replace(/\s+/g, "-")
-        .replace(/[^\w\-]/g, "")
-        .replace(/\-+/g, "-")
-        .replace(/^\-+|\-+$/g, "");
+        .replace(/[^\w-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
     async function loadArticles() {
@@ -1045,11 +1304,16 @@
 
         msgEl.textContent = "";
 
-        data.forEach(row => {
+        data.forEach((row) => {
           const tr = document.createElement("tr");
 
-          const tdTitre = document.createElement("td"); tdTitre.textContent = row.titre || "-"; tr.appendChild(tdTitre);
-          const tdSlug = document.createElement("td"); tdSlug.textContent = row.slug || "-"; tr.appendChild(tdSlug);
+          const tdTitre = document.createElement("td");
+          tdTitre.textContent = row.titre || "-";
+          tr.appendChild(tdTitre);
+
+          const tdSlug = document.createElement("td");
+          tdSlug.textContent = row.slug || "-";
+          tr.appendChild(tdSlug);
 
           const tdCat = document.createElement("td");
           tdCat.textContent = CATEGORY_LABELS[row.categorie] || row.categorie || "-";
@@ -1066,8 +1330,15 @@
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.publie) { badge.classList.add("badge-active"); badge.textContent = "Publié"; }
-          else { badge.classList.add("badge-inactive"); badge.textContent = "Brouillon"; }
+
+          if (row.publie) {
+            badge.classList.add("badge-active");
+            badge.textContent = "Publié";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Brouillon";
+          }
+
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
 
@@ -1079,7 +1350,8 @@
           editBtn.textContent = "Éditer";
           editBtn.addEventListener("click", async () => {
             await loadArticleIntoForm(row.id);
-            document.querySelector('.tab-button[data-tab="tab-actualites"]').click();
+            const actualitesTab = document.querySelector('.tab-button[data-tab="tab-actualites"]');
+            if (actualitesTab) actualitesTab.click();
             window.scrollTo({ top: 0, behavior: "smooth" });
           });
           tdActions.appendChild(editBtn);
@@ -1089,7 +1361,7 @@
           delBtn.type = "button";
           delBtn.textContent = "Supprimer";
           delBtn.addEventListener("click", async () => {
-            if (confirm("Supprimer l’article \"" + (row.titre || row.slug) + "\" ?")) {
+            if (confirm(`Supprimer l’article "${row.titre || row.slug}" ?`)) {
               await deleteArticle(row.id);
             }
           });
@@ -1098,7 +1370,6 @@
           tr.appendChild(tdActions);
           tbody.appendChild(tr);
         });
-
       } catch (err) {
         console.error(err);
         msgEl.textContent = "Erreur réseau chargement actualités.";
@@ -1135,10 +1406,19 @@
 
       if (data.date_publication) {
         const d = new Date(data.date_publication);
-        if (!isNaN(d)) {
-          const pad = (n) => String(n).padStart(2,"0");
-          const v = d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes());
-          document.getElementById("a-datepub").value = v;
+        if (!Number.isNaN(d.getTime())) {
+          const pad = (n) => String(n).padStart(2, "0");
+          const value =
+            d.getFullYear() +
+            "-" +
+            pad(d.getMonth() + 1) +
+            "-" +
+            pad(d.getDate()) +
+            "T" +
+            pad(d.getHours()) +
+            ":" +
+            pad(d.getMinutes());
+          document.getElementById("a-datepub").value = value;
         }
       } else {
         document.getElementById("a-datepub").value = "";
@@ -1156,10 +1436,10 @@
       setMsg(msgId, "Enregistrement en cours...", true);
 
       try {
-        let q = supabaseClient.from("actualites");
+        const query = supabaseClient.from("actualites");
         const res = id
-          ? await withTimeout(q.update(payload).eq("id", id), 12000)
-          : await withTimeout(q.insert([payload]), 12000);
+          ? await withTimeout(query.update(payload).eq("id", id), 12000)
+          : await withTimeout(query.insert([payload]), 12000);
 
         if (res.error) {
           console.error(res.error);
@@ -1192,6 +1472,7 @@
         msgEl.classList.add("error");
         return;
       }
+
       msgEl.textContent = "Article supprimé.";
       msgEl.classList.add("ok");
       await loadArticles();
@@ -1218,10 +1499,20 @@
 
       const code = (codeInput.value || "").trim().toUpperCase();
       const type = typeInput.value;
-      let numericValue = valueInput.value ? parseFloat(valueInput.value) : 0;
+      let numericValue = valueInput.value ? Number.parseFloat(valueInput.value) : 0;
 
-      if (!code) { msgEl.textContent = "Merci de saisir un code."; msgEl.classList.add("error"); return; }
-      if (type !== "free" && (!numericValue || numericValue <= 0)) { msgEl.textContent = "Merci de mettre une valeur > 0."; msgEl.classList.add("error"); return; }
+      if (!code) {
+        msgEl.textContent = "Merci de saisir un code.";
+        msgEl.classList.add("error");
+        return;
+      }
+
+      if (type !== "free" && (!numericValue || numericValue <= 0)) {
+        msgEl.textContent = "Merci de mettre une valeur > 0.";
+        msgEl.classList.add("error");
+        return;
+      }
+
       if (type === "free") numericValue = 0;
 
       const payload = {
@@ -1230,8 +1521,8 @@
         value: numericValue,
         valid_from: validFromInput.value || null,
         valid_to: validToInput.value || null,
-        max_uses: maxUsesInput.value ? parseInt(maxUsesInput.value, 10) : null,
-        max_uses_per_user: maxPerEmailInput.value ? parseInt(maxPerEmailInput.value, 10) : null,
+        max_uses: maxUsesInput.value ? Number.parseInt(maxUsesInput.value, 10) : null,
+        max_uses_per_user: maxPerEmailInput.value ? Number.parseInt(maxPerEmailInput.value, 10) : null,
         first_session_only: !!(firstSessionInput && firstSessionInput.checked),
         email_domain: (emailDomainInput.value || "").trim() || null,
         note: (noteInput.value || "").trim() || null,
@@ -1239,6 +1530,7 @@
       };
 
       msgEl.textContent = "Enregistrement en cours...";
+
       try {
         const { error } = await withTimeout(
           supabaseClient.from("promo_codes").upsert(payload, { onConflict: "code" }),
@@ -1284,8 +1576,9 @@
         }
 
         msgEl.textContent = "";
+
         if (!data || data.length === 0) {
-          msgEl.textContent = "Aucun codede promo.";
+          msgEl.textContent = "Aucun code promo.";
           msgEl.classList.add("error");
           return;
         }
@@ -1299,7 +1592,7 @@
 
           const tdType = document.createElement("td");
           let typeLabel = row.type || "-";
-          if (row.type === "free") typeLabel = 'Gratuit (free)';
+          if (row.type === "free") typeLabel = "Gratuit (free)";
           if (row.type === "percent") typeLabel = "Pourcentage";
           if (row.type === "fixed") typeLabel = "Montant fixe";
 
@@ -1309,7 +1602,7 @@
           if (row.max_uses_per_user) extras.push(row.max_uses_per_user + "x / email");
           if (row.email_domain) extras.push("@" + row.email_domain);
 
-          tdType.textContent = extras.length ? (typeLabel + " · " + extras.join(" · ")) : typeLabel;
+          tdType.textContent = extras.length ? typeLabel + " · " + extras.join(" · ") : typeLabel;
           tr.appendChild(tdType);
 
           const tdValue = document.createElement("td");
@@ -1318,8 +1611,13 @@
           else tdValue.textContent = "-";
           tr.appendChild(tdValue);
 
-          const tdFrom = document.createElement("td"); tdFrom.textContent = row.valid_from || "-"; tr.appendChild(tdFrom);
-          const tdTo = document.createElement("td"); tdTo.textContent = row.valid_to || "-"; tr.appendChild(tdTo);
+          const tdFrom = document.createElement("td");
+          tdFrom.textContent = row.valid_from || "-";
+          tr.appendChild(tdFrom);
+
+          const tdTo = document.createElement("td");
+          tdTo.textContent = row.valid_to || "-";
+          tr.appendChild(tdTo);
 
           const tdUses = document.createElement("td");
           tdUses.textContent = (row.used_count || 0) + " / " + (row.max_uses || "∞");
@@ -1328,8 +1626,15 @@
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
           badge.classList.add("badge");
-          if (row.is_active) { badge.classList.add("badge-active"); badge.textContent = "Actif"; }
-          else { badge.classList.add("badge-inactive"); badge.textContent = "Inactif"; }
+
+          if (row.is_active) {
+            badge.classList.add("badge-active");
+            badge.textContent = "Actif";
+          } else {
+            badge.classList.add("badge-inactive");
+            badge.textContent = "Inactif";
+          }
+
           tdStatus.appendChild(badge);
           tr.appendChild(tdStatus);
 
@@ -1358,7 +1663,6 @@
           tr.appendChild(tdActions);
           tbody.appendChild(tr);
         });
-
       } catch (err) {
         console.error(err);
         msgEl.textContent = "Erreur réseau.";
@@ -1382,6 +1686,7 @@
         msgEl.classList.add("error");
         return;
       }
+
       msgEl.textContent = "Statut mis à jour.";
       msgEl.classList.add("ok");
       await loadPromoCodes();
@@ -1403,6 +1708,7 @@
         msgEl.classList.add("error");
         return;
       }
+
       msgEl.textContent = "Code supprimé.";
       msgEl.classList.add("ok");
       await loadPromoCodes();
@@ -1412,10 +1718,8 @@
     // INIT
     // -------------------------
     document.addEventListener("DOMContentLoaded", async () => {
-      // ✅ login sûr au départ
       showLogin();
 
-      // ✅ email pré-rempli
       const emailEl = document.getElementById("admin-email");
       if (emailEl && !emailEl.value) emailEl.value = "contactsingbox@gmail.com";
 
@@ -1427,6 +1731,7 @@
       document.getElementById("admin-password").addEventListener("keyup", (e) => {
         if (e.key === "Enter") handleLogin();
       });
+
       document.getElementById("admin-email").addEventListener("keyup", (e) => {
         if (e.key === "Enter") handleLogin();
       });
@@ -1436,8 +1741,11 @@
 
       document.getElementById("a-titre").addEventListener("input", () => {
         const slugEl = document.getElementById("a-slug");
-        if (!slugEl.value.trim()) slugEl.value = normalizeSlug(document.getElementById("a-titre").value);
+        if (slugEl && !slugEl.value.trim()) {
+          slugEl.value = normalizeSlug(document.getElementById("a-titre").value);
+        }
       });
+
       document.getElementById("a-slug").addEventListener("blur", () => {
         const slugEl = document.getElementById("a-slug");
         slugEl.value = normalizeSlug(slugEl.value);
@@ -1482,18 +1790,16 @@
         e.preventDefault();
         await handlePromoFormSubmit();
       });
+
       document.getElementById("btn-refresh-promo").addEventListener("click", loadPromoCodes);
 
-      // ✅ Important : on écoute l’état mais sans boucle
-      supabaseClient.auth.onAuthStateChange((_event) => {
-        // SIGNED_IN / SIGNED_OUT / TOKEN_REFRESHED
+      supabaseClient.auth.onAuthStateChange(() => {
         refreshAuthUI();
       });
 
       await refreshAuthUI();
     });
 
-    // ✅ Si une promesse plante sans catch → on affiche au moins le login
     window.addEventListener("unhandledrejection", (e) => {
       console.error("Unhandled rejection:", e.reason);
       showLogin();
