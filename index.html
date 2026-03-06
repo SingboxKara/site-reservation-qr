@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- SEO de base -->
@@ -78,7 +78,7 @@
       --sb-bg-soft: #030712;
       --sb-card: rgba(2, 6, 23, 0.96);
       --sb-text-main: #F9FAFB;
-      --sb-text-muted: #9CA3AF;
+      --sb-text-muted: #CBD5E1;
       --sb-red: #C94C35;
       --sb-orange: #F97316;
       --sb-border-soft: rgba(148, 163, 184, 0.25);
@@ -184,9 +184,6 @@
       font-size: 14px;
     }
 
-    .navbar a,
-    .nav-links a,
-    .header-nav a,
     .main-nav a {
       font-weight: 600;
       letter-spacing: 0.3px;
@@ -197,9 +194,6 @@
       white-space: nowrap;
     }
 
-    .navbar a::after,
-    .nav-links a::after,
-    .header-nav a::after,
     .main-nav a::after {
       content: "";
       position: absolute;
@@ -212,17 +206,13 @@
       border-radius: 6px;
     }
 
-    .navbar a:hover::after,
-    .nav-links a:hover::after,
-    .header-nav a:hover::after,
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
-    .navbar a:hover,
-    .nav-links a:hover,
-    .header-nav a:hover,
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -248,7 +238,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -276,14 +267,15 @@
       top: -6px;
       right: -6px;
       background: var(--sb-red);
-      color:#fff;
-      border-radius:999px;
-      font-size:10px;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 10px;
       padding: 2px 5px;
       min-width: 18px;
-      text-align:center;
+      text-align: center;
     }
-    #cart-count:empty { display:none; }
+
+    #cart-count:empty { display: none; }
 
     .burger-button {
       display: none;
@@ -292,7 +284,7 @@
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.25);
       background: transparent;
-      color:#fff;
+      color: #fff;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -340,17 +332,12 @@
       content: "♪ ✦";
       position: absolute;
       font-size: 32px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(203,213,225,0.14);
       pointer-events: none;
     }
-    .hero::before {
-      top: 16%;
-      right: 8%;
-    }
-    .hero::after {
-      bottom: 10%;
-      left: 6%;
-    }
+
+    .hero::before { top: 16%; right: 8%; }
+    .hero::after { bottom: 10%; left: 6%; }
 
     .hero-inner {
       display: grid;
@@ -361,7 +348,8 @@
 
     .hero-eyebrow {
       font-size: 14px;
-      color: #38BDF8;
+      color: #7DD3FC;
+      font-weight: 600;
       margin-bottom: 10px;
     }
 
@@ -374,7 +362,7 @@
 
     .hero .subtitle {
       font-size: 17px;
-      color: rgba(249,250,251,0.8);
+      color: rgba(249,250,251,0.9);
       margin-bottom: 28px;
       max-width: 520px;
     }
@@ -384,7 +372,7 @@
     .resa-bar {
       background: var(--sb-card);
       border-radius: 24px;
-      padding: 20px 20px;
+      padding: 20px;
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
@@ -406,12 +394,13 @@
       font-size: 13px;
     }
 
-    .resa-field .label {
+    .resa-field label {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #9CA3AF;
+      color: #D1D5DB;
       margin-bottom: 4px;
+      font-weight: 700;
     }
 
     .resa-field input,
@@ -464,7 +453,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .resa-button:hover {
+    .resa-button:hover,
+    .resa-button:focus-visible {
       transform: translateY(-1px);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
@@ -474,8 +464,7 @@
     .hero-image-card {
       border-radius: 24px;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 0%, rgba(248,250,252,0.06), transparent 60%),
-                  #020617;
+      background: radial-gradient(circle at 50% 0%, rgba(248,250,252,0.06), transparent 60%), #020617;
       box-shadow:
         0 30px 80px rgba(0,0,0,0.9),
         0 0 0 1px rgba(148,163,184,0.4);
@@ -493,7 +482,7 @@
 
     /* ---------- SECTION 3 ÉTAPES ---------- */
     .section-steps {
-      padding: 96px 0 96px;
+      padding: 96px 0;
       background:
         radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 55%),
         radial-gradient(circle at 100% 0%, rgba(201,76,53,0.22), transparent 55%),
@@ -507,7 +496,7 @@
       bottom: 18%;
       right: 8%;
       font-size: 32px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(203,213,225,0.12);
       pointer-events: none;
     }
 
@@ -520,7 +509,7 @@
     .section-subtitle-center {
       text-align: center;
       font-size: 14px;
-      color: var(--sb-text-muted);
+      color: #D1D5DB;
       margin-bottom: 32px;
     }
 
@@ -550,7 +539,7 @@
       right: 12px;
       bottom: 8px;
       font-size: 24px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(203,213,225,0.12);
     }
 
     .step-icon {
@@ -574,11 +563,12 @@
     .step-content p {
       margin: 0;
       font-size: 13px;
-      color: var(--sb-text-muted);
+      color: #E5E7EB;
       line-height: 1.5;
     }
 
-    .step-card:hover {
+    .step-card:hover,
+    .step-card:focus-visible {
       transform: translateY(-4px);
       box-shadow: 0 24px 60px rgba(0,0,0,0.95);
       border-color: rgba(201,76,53,0.6);
@@ -590,7 +580,7 @@
 
     /* ---------- SECTION OCCASIONS (cartes + contact) ---------- */
     .section-occasions {
-      padding: 4.5rem 0 4.5rem;
+      padding: 4.5rem 0;
       background: #050814;
       color: #F9FAFB;
     }
@@ -615,7 +605,7 @@
     .occasions-subtitle {
       margin: 0;
       font-size: 0.95rem;
-      color: #9CA3AF;
+      color: #D1D5DB;
       max-width: 540px;
     }
 
@@ -645,6 +635,7 @@
         box-shadow 0.2s ease,
         border-color 0.2s ease;
       cursor: pointer;
+      display: block;
     }
 
     .occasion-card h3 {
@@ -657,6 +648,7 @@
       margin: 0;
       font-size: 0.9rem;
       color: #E5E7EB;
+      line-height: 1.5;
     }
 
     .occasion-card::after {
@@ -665,11 +657,12 @@
       top: 0.7rem;
       right: 0.9rem;
       font-size: 1.4rem;
-      opacity: 0.14;
+      opacity: 0.18;
       pointer-events: none;
     }
 
-    .occasion-card:hover {
+    .occasion-card:hover,
+    .occasion-card:focus-visible {
       transform: translateY(-3px);
       box-shadow: 0 22px 55px rgba(0, 0, 0, 0.9);
       border-color: rgba(201, 76, 53, 0.55);
@@ -690,8 +683,7 @@
       content: "";
       position: absolute;
       inset: -30%;
-      background:
-        radial-gradient(circle at 0 0, rgba(201, 76, 53, 0.35), transparent 55%);
+      background: radial-gradient(circle at 0 0, rgba(201, 76, 53, 0.35), transparent 55%);
       opacity: 0.5;
       pointer-events: none;
       mix-blend-mode: screen;
@@ -767,7 +759,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .contact-cta:hover {
+    .contact-cta:hover,
+    .contact-cta:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
@@ -795,7 +788,7 @@
 
     .reviews-meta {
       font-size: 0.95rem;
-      color: #9CA3AF;
+      color: #D1D5DB;
     }
 
     .reviews-meta strong {
@@ -828,12 +821,13 @@
     .review-text {
       color: #E5E7EB;
       line-height: 1.5;
+      margin: 0;
     }
 
     .review-footer {
       margin-top: 0.4rem;
       font-size: 0.8rem;
-      color: #9CA3AF;
+      color: #D1D5DB;
       display: flex;
       justify-content: space-between;
       gap: 0.75rem;
@@ -866,6 +860,7 @@
     .section-faq p {
       font-size: 0.95rem;
       color: #E5E7EB;
+      line-height: 1.6;
     }
 
     /* ---------- FOOTER ---------- */
@@ -912,6 +907,13 @@
       cursor:pointer;
     }
 
+    .newsletter-message {
+      font-size: 12px;
+      margin-top: 6px;
+      min-height: 16px;
+      color: #D1D5DB;
+    }
+
     .footer-columns {
       max-width:var(--sb-container-width);
       margin:0 auto;
@@ -942,7 +944,7 @@
       padding-top:8px;
       font-size:11px;
       text-align:center;
-      color:#9CA3AF;
+      color:#CBD5E1;
       border-top:1px solid #111827;
     }
 
@@ -952,16 +954,20 @@
         grid-template-columns: minmax(0, 1fr);
         align-items: stretch;
       }
+
       .hero-image-card {
         margin-top: 18px;
         min-height: 260px;
       }
+
       .steps-grid {
         grid-template-columns: minmax(0,1fr);
       }
+
       .occasions-layout {
         grid-template-columns: minmax(0,1fr);
       }
+
       .reviews-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
       }
@@ -1009,6 +1015,20 @@
       }
     }
 
+    @media (max-width: 640px) {
+      .occasion-grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+
+      .occasion-card--large {
+        grid-column: span 1;
+      }
+
+      .occasions-title {
+        font-size: 1.6rem;
+      }
+    }
+
     @media (max-width: 420px) {
       .header-inner {
         padding: 8px 14px;
@@ -1030,21 +1050,10 @@
       .resa-button-wrapper {
         width: 100%;
       }
+
       .resa-button {
         width: 100%;
         text-align: center;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .occasion-grid {
-        grid-template-columns: minmax(0,1fr);
-      }
-      .occasion-card--large {
-        grid-column: span 1;
-      }
-      .occasions-title {
-        font-size: 1.6rem;
       }
     }
   </style>
@@ -1058,8 +1067,8 @@
         <span class="brand-text">Singbox</span>
       </a>
 
-      <nav class="main-nav">
-        <ul>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul aria-label="Liens principaux du site">
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="box.html">Les box</a></li>
@@ -1071,7 +1080,7 @@
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon">
+        <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
           🛒<span id="cart-count"></span>
         </a>
         <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
@@ -1082,8 +1091,8 @@
   </header>
 
   <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <ul>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+    <ul aria-label="Liens du menu mobile">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
       <li><a href="box.html">Les box</a></li>
@@ -1108,12 +1117,12 @@
         <div class="resa-bar-wrapper">
           <div class="resa-bar">
             <div class="resa-field">
-              <span class="label">Date</span>
+              <label for="date-input">Date</label>
               <input type="date" id="date-input">
             </div>
 
             <div class="resa-field">
-              <span class="label">Nombre de personnes</span>
+              <label for="people-input">Nombre de personnes</label>
               <select id="people-input">
                 <option value="">Non défini</option>
                 <option value="1">1 personne</option>
@@ -1128,14 +1137,14 @@
             </div>
 
             <div class="resa-button-wrapper">
-              <button class="resa-button" onclick="goToReservation()">Voir les créneaux</button>
+              <button class="resa-button" type="button" onclick="goToReservation()">Voir les créneaux</button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="hero-right">
-        <div class="hero-image-card hero-image-groupe"></div>
+        <div class="hero-image-card hero-image-groupe" aria-hidden="true"></div>
       </div>
     </div>
   </section>
@@ -1147,19 +1156,16 @@
       <p class="section-subtitle-center">Réservez votre karaoké box privative à Toulouse en 3 étapes simples.</p>
 
       <div class="steps-grid">
-        <div
-          class="step-card step-card--clickable"
-          onclick="window.location.href='reservation.html'"
-        >
-          <div class="step-icon">📅</div>
+        <a class="step-card step-card--clickable" href="reservation.html" aria-label="Choisir votre date et accéder à la réservation">
+          <div class="step-icon" aria-hidden="true">📅</div>
           <div class="step-content">
             <h3>Choisissez votre date</h3>
             <p>Sélectionnez le jour et le créneau qui vous arrangent directement en ligne.</p>
           </div>
-        </div>
+        </a>
 
         <div class="step-card">
-          <div class="step-icon">📦</div>
+          <div class="step-icon" aria-hidden="true">📦</div>
           <div class="step-content">
             <h3>Sélectionnez votre box</h3>
             <p>Choisissez la box adaptée à votre groupe et à l’ambiance souhaitée.</p>
@@ -1167,7 +1173,7 @@
         </div>
 
         <div class="step-card">
-          <div class="step-icon">🎤</div>
+          <div class="step-icon" aria-hidden="true">🎤</div>
           <div class="step-content">
             <h3>Chantez</h3>
             <p>Vous arrivez, vous scannez, vous chantez. Le reste ? On s’en occupe.</p>
@@ -1190,59 +1196,65 @@
       <div class="occasions-layout">
         <div class="occasions-left">
           <div class="occasion-grid">
-            <article
+            <a
               class="occasion-card occasion-card--large occasion-card--friends"
               data-icon="🎧"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké entre amis"
             >
               <h3>Entre amis</h3>
               <p>Blind tests, défis, hits des années 2000… votre QG de soirée.</p>
-            </article>
+            </a>
 
-            <article
+            <a
               class="occasion-card"
               data-icon="👨‍👩‍👧"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké en famille"
             >
               <h3>En famille</h3>
               <p>Des classiques pour toutes les générations.</p>
-            </article>
+            </a>
 
-            <article
+            <a
               class="occasion-card"
               data-icon="🎂"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké pour un anniversaire"
             >
               <h3>Anniversaire</h3>
               <p>Une box privatisée pour souffler vos bougies en musique.</p>
-            </article>
+            </a>
 
-            <article
+            <a
               class="occasion-card"
               data-icon="🏢"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké pour un team building"
             >
               <h3>Team building</h3>
               <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
-            </article>
+            </a>
 
-            <article
+            <a
               class="occasion-card"
               data-icon="💍"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké pour un EVJF ou EVG"
             >
               <h3>EVJF / EVG</h3>
               <p>Une parenthèse 100&nbsp;% fun avant le grand jour.</p>
-            </article>
+            </a>
 
-            <article
+            <a
               class="occasion-card"
               data-icon="✨"
-              onclick="window.location.href='reservation.html'"
+              href="reservation.html"
+              aria-label="Réserver une box karaoké pour une autre occasion"
             >
               <h3>Et plus encore…</h3>
               <p>Afterworks, lendemains de match… toutes les excuses sont bonnes.</p>
-            </article>
+            </a>
           </div>
         </div>
 
@@ -1260,23 +1272,23 @@
           </div>
 
           <div class="contact-row">
-            <div class="contact-icon">📍</div>
+            <div class="contact-icon" aria-hidden="true">📍</div>
             <p><strong>Adresse&nbsp;:</strong> [à compléter]</p>
           </div>
           <div class="contact-row">
-            <div class="contact-icon">🕒</div>
+            <div class="contact-icon" aria-hidden="true">🕒</div>
             <p><strong>Horaires&nbsp;:</strong> 24h/24 7j/7</p>
           </div>
           <div class="contact-row">
-            <div class="contact-icon">📧</div>
+            <div class="contact-icon" aria-hidden="true">📧</div>
             <p><strong>Email&nbsp;:</strong> contact@singbox.fr</p>
           </div>
           <div class="contact-row">
-            <div class="contact-icon">📞</div>
+            <div class="contact-icon" aria-hidden="true">📞</div>
             <p><strong>Téléphone&nbsp;:</strong> 06 00 00 00 00</p>
           </div>
 
-          <button class="contact-cta" onclick="window.location.href='reservation.html'">
+          <button class="contact-cta" type="button" onclick="window.location.href='reservation.html'">
             Réserver maintenant
           </button>
         </aside>
@@ -1331,11 +1343,13 @@
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
+
       <div class="newsletter-row">
         <input
           id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
+          aria-label="Adresse e-mail pour la newsletter"
         />
         <button
           id="newsletter-submit"
@@ -1344,7 +1358,7 @@
           S'abonner
         </button>
       </div>
-      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
+      <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
     <div class="footer-columns">
@@ -1373,7 +1387,6 @@
       <div>
         <p><strong>Réseaux</strong></p>
 
-        <!-- Instagram -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -1385,7 +1398,6 @@
           </a>
         </p>
 
-        <!-- TikTok -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
@@ -1402,9 +1414,14 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     function goToReservation() {
-      const date   = document.getElementById("date-input").value;
+      const date = document.getElementById("date-input").value;
       const people = document.getElementById("people-input").value;
 
       if (!date) {
@@ -1414,6 +1431,7 @@
 
       const params = new URLSearchParams();
       params.set("date", date);
+
       if (people) {
         params.set("people", people);
       }
@@ -1421,12 +1439,13 @@
       window.location.href = "reservation.html?" + params.toString();
     }
 
-    (function initHomeDate() {
+    function initHomeDate() {
       const input = document.getElementById("date-input");
       if (!input) return;
+
       const today = new Date();
       input.value = today.toISOString().split("T")[0];
-    })();
+    }
 
     function getPanier() {
       try {
@@ -1443,131 +1462,163 @@
       el.textContent = panier.length ? panier.length : "";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function initBurgerMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
+      if (!burgerBtn || !mobileNav) return;
 
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
-      }
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("open");
+      });
 
-      updateCartIcon();
-    });
-  </script>
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          mobileNav.classList.remove("open");
+        }
+      });
+    }
 
-  <!-- Supabase Newsletter + Avis -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-      // ----- Newsletter -----
+    function initNewsletter() {
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (emailInput && submitBtn) {
-        submitBtn.addEventListener("click", async () => {
-          const email = emailInput.value.trim();
+      if (!emailInput || !submitBtn || !messageBox) return;
 
-          messageBox.style.color = "#e5e7eb";
-          messageBox.textContent = "Envoi en cours...";
+      submitBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
 
-          if (!email || !email.includes("@")) {
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+        messageBox.style.color = "#E5E7EB";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (!email || !email.includes("@")) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
+
+          if (error) {
+            if (
+              error.code === "23505" ||
+              (error.message && error.message.includes("duplicate key value"))
+            ) {
+              messageBox.style.color = "#38bdf8";
+              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+            } else {
+              messageBox.style.color = "#ff6b6b";
+              messageBox.textContent = "Erreur : " + error.message;
+            }
             return;
           }
 
-          const { error } = await supabaseClient
-            .from("newsletter_subscriptions")
-            .insert({ email });
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        } catch (err) {
+          console.error("Erreur newsletter :", err);
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur réseau, merci de réessayer.";
+        }
+      });
+    }
 
-          if (error) {
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message;
-          } else {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-            emailInput.value = "";
-          }
-        });
-      }
+    async function loadReviews() {
+      const reviewsGrid = document.getElementById("reviews-grid");
+      const avgEl = document.getElementById("reviews-average");
+      const countEl = document.getElementById("reviews-count");
 
-      // ----- Avis (reviews) -----
-      const reviewsGrid   = document.getElementById("reviews-grid");
-      const avgEl         = document.getElementById("reviews-average");
-      const countEl       = document.getElementById("reviews-count");
+      if (!reviewsGrid) return;
 
-      async function loadReviews() {
-        if (!reviewsGrid) return;
-
-        // Adapte le nom de la table / des colonnes à ta BDD Supabase
+      try {
         const { data, error } = await supabaseClient
-          .from("reviews")          // table "reviews"
+          .from("reviews")
           .select("*")
           .order("created_at", { ascending: false })
           .limit(6);
 
         if (error) {
           console.error("Erreur chargement avis:", error);
-          reviewsGrid.innerHTML = "<p style='color:#9CA3AF;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
+          reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
           return;
         }
 
         if (!data || !data.length) {
-          reviewsGrid.innerHTML = "<p style='color:#9CA3AF;font-size:0.9rem;'>Les premiers avis arrivent bientôt.</p>";
+          reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Les premiers avis arrivent bientôt.</p>";
+          if (avgEl) avgEl.textContent = "5.0";
+          if (countEl) countEl.textContent = "0";
           return;
         }
 
-        // calcul moyenne
         let sum = 0;
-        data.forEach(r => {
+        data.forEach((r) => {
           sum += Number(r.rating || 5);
         });
-        const avg   = (sum / data.length).toFixed(1);
+
+        const avg = (sum / data.length).toFixed(1);
         const count = data.length;
 
-        if (avgEl)   avgEl.textContent   = avg;
-        if (countEl) countEl.textContent = count;
+        if (avgEl) avgEl.textContent = avg;
+        if (countEl) countEl.textContent = String(count);
 
-        // rendu cartes
         reviewsGrid.innerHTML = "";
-        data.forEach(review => {
-          const rating = Number(review.rating || 5);
-          const stars  = "★".repeat(rating) + "☆".repeat(5 - rating);
+
+        data.forEach((review) => {
+          const rating = Math.max(0, Math.min(5, Number(review.rating || 5)));
+          const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
           const author = review.author || "Client Singbox";
-          const text   = review.comment || review.message || "";
-          const date   = review.created_at
+          const text = review.comment || review.message || "";
+          const date = review.created_at
             ? new Date(review.created_at).toLocaleDateString("fr-FR")
             : "";
 
           const card = document.createElement("article");
           card.className = "review-card";
-          card.innerHTML = `
-            <div class="review-stars">${stars}</div>
-            <p class="review-text">${text}</p>
-            <div class="review-footer">
-              <span class="review-author">${author}</span>
-              <span class="review-date">${date}</span>
-            </div>
-          `;
+
+          const starsEl = document.createElement("div");
+          starsEl.className = "review-stars";
+          starsEl.textContent = stars;
+
+          const textEl = document.createElement("p");
+          textEl.className = "review-text";
+          textEl.textContent = text;
+
+          const footerEl = document.createElement("div");
+          footerEl.className = "review-footer";
+
+          const authorEl = document.createElement("span");
+          authorEl.className = "review-author";
+          authorEl.textContent = author;
+
+          const dateEl = document.createElement("span");
+          dateEl.className = "review-date";
+          dateEl.textContent = date;
+
+          footerEl.appendChild(authorEl);
+          footerEl.appendChild(dateEl);
+
+          card.appendChild(starsEl);
+          card.appendChild(textEl);
+          card.appendChild(footerEl);
+
           reviewsGrid.appendChild(card);
         });
+      } catch (err) {
+        console.error("Erreur réseau avis :", err);
+        reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
       }
+    }
 
+    document.addEventListener("DOMContentLoaded", () => {
+      initHomeDate();
+      initBurgerMenu();
+      updateCartIcon();
+      initNewsletter();
       loadReviews();
     });
   </script>
