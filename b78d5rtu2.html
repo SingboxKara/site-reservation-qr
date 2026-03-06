@@ -24,7 +24,7 @@
       --sb-text-soft:#E5E7EB;
       --sb-accent:#C94C35;
       --sb-accent-2:#F97316;
-      --sb-success:#4ade80;
+      --sb-success:#dcfce7;
       --sb-danger:#f87171;
       --sb-warning:#FED7AA;
       --sb-container-width:1100px;
@@ -240,9 +240,10 @@
     .tab-button.active{
       background:
         radial-gradient(circle at 0 0, rgba(201,76,53,0.28), transparent 55%),
-        #0b1220;
-      color:#F9FAFB;
+        #172033;
+      color:#ffffff;
       border-bottom:2px solid var(--sb-accent-2);
+      box-shadow:inset 0 0 0 1px rgba(248,250,251,0.08);
     }
 
     .tab-content{display:none}
@@ -385,13 +386,13 @@
     }
 
     .badge-active{
-      background:rgba(22,163,74,.15);
-      color:#86efac;
-      border:1px solid rgba(74,222,128,.6);
+      background:rgba(20,83,45,0.88);
+      color:#f0fdf4;
+      border:1px solid rgba(134,239,172,0.55);
     }
 
     .badge-inactive{
-      background:rgba(75,85,99,.4);
+      background:rgba(75,85,99,.55);
       color:#f1f5f9;
       border:1px solid rgba(148,163,184,.6);
     }
@@ -974,9 +975,6 @@
       return null;
     }
 
-    // -------------------------
-    // AUTH
-    // -------------------------
     let authRefreshing = false;
 
     async function refreshAuthUI() {
@@ -1075,9 +1073,6 @@
       setMsg("login-error", "");
     }
 
-    // -------------------------
-    // TABS
-    // -------------------------
     function initTabs() {
       document.querySelectorAll(".tab-button").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1099,9 +1094,6 @@
       });
     }
 
-    // -------------------------
-    // DASHBOARD
-    // -------------------------
     async function loadDashboard() {
       const msgEl = document.getElementById("dashboard-message");
       msgEl.textContent = "Chargement du dashboard...";
@@ -1153,9 +1145,6 @@
       }
     }
 
-    // -------------------------
-    // RESERVATIONS
-    // -------------------------
     async function loadReservations() {
       const tbody = document.getElementById("reservations-table-body");
       const msgEl = document.getElementById("reservations-list-message");
@@ -1246,9 +1235,6 @@
       }
     }
 
-    // -------------------------
-    // CLIENTS
-    // -------------------------
     async function loadClients() {
       const tbody = document.getElementById("clients-table-body");
       const msgEl = document.getElementById("clients-list-message");
@@ -1343,9 +1329,6 @@
       }
     }
 
-    // -------------------------
-    // ACTUALITES
-    // -------------------------
     function resetArticleForm() {
       document.getElementById("a-id").value = "";
       document.getElementById("a-titre").value = "";
@@ -1582,9 +1565,6 @@
       await loadArticles();
     }
 
-    // -------------------------
-    // PROMO CODES
-    // -------------------------
     async function handlePromoFormSubmit() {
       const codeInput = document.getElementById("promo-code");
       const typeInput = document.getElementById("promo-type");
@@ -1806,9 +1786,6 @@
       await loadPromoCodes();
     }
 
-    // -------------------------
-    // INIT
-    // -------------------------
     document.addEventListener("DOMContentLoaded", async () => {
       showLogin();
 
