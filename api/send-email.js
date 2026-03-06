@@ -2,9 +2,8 @@ const { createClient } = require("@supabase/supabase-js");
 const nodemailer = require("nodemailer");
 const QRCode = require("qrcode");
 
-// ✅ AJOUTS LOGO
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // ----------------------------------------------------
 // Config Supabase
@@ -37,19 +36,17 @@ const transporter = nodemailer.createTransport({
 });
 
 // ----------------------------------------------------
-// ✅ Helper logo : lit le fichier et renvoie un buffer
+// Helper logo : lit le fichier et renvoie un buffer
 // ----------------------------------------------------
 function getLogoBuffer() {
-  // Option 1 : chemin via env (prod) ex: LOGO_PATH=logo.png ou assets/logo.png
   if (process.env.LOGO_PATH) {
-    const p = path.resolve(process.cwd(), process.env.LOGO_PATH);
-    if (fs.existsSync(p)) {
-      console.log("✅ Logo trouvé via LOGO_PATH :", p);
-      return fs.readFileSync(p);
+    const logoPathFromEnv = path.resolve(process.cwd(), process.env.LOGO_PATH);
+    if (fs.existsSync(logoPathFromEnv)) {
+      console.log("✅ Logo trouvé via LOGO_PATH :", logoPathFromEnv);
+      return fs.readFileSync(logoPathFromEnv);
     }
   }
 
-  // Option 2 : chemins probables
   const candidates = [
     path.resolve(process.cwd(), "logo.png"),
     path.resolve(process.cwd(), "assets", "logo.png"),
@@ -59,15 +56,33 @@ function getLogoBuffer() {
     path.resolve(__dirname, "..", "logo.png"),
   ];
 
-  for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      console.log("✅ Logo trouvé :", p);
-      return fs.readFileSync(p);
+  for (const candidatePath of candidates) {
+    if (fs.existsSync(candidatePath)) {
+      console.log("✅ Logo trouvé :", candidatePath);
+      return fs.readFileSync(candidatePath);
     }
   }
 
   console.warn("⚠️ Logo introuvable. cwd=", process.cwd(), "dirname=", __dirname);
   return null;
+}
+
+// ----------------------------------------------------
+// Helper date
+// ----------------------------------------------------
+function formatDateTime(date) {
+  if (!date || Number.isNaN(date.getTime())) {
+    return "N/A";
+  }
+
+  return date.toLocaleString("fr-FR", {
+    timeZone: "Europe/Paris",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 // ----------------------------------------------------
@@ -80,6 +95,7 @@ module.exports = async (req, res) => {
   }
 
   const { reservationId } = req.body || {};
+
   if (!reservationId) {
     res.statusCode = 400;
     return res.json({ error: "reservationId manquant" });
@@ -89,6 +105,11 @@ module.exports = async (req, res) => {
     if (!supabase) {
       res.statusCode = 500;
       return res.json({ error: "Supabase non configuré" });
+    }
+
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      res.statusCode = 500;
+      return res.json({ error: "SMTP non configuré" });
     }
 
     // 1) Récupérer la réservation
@@ -111,7 +132,6 @@ module.exports = async (req, res) => {
     }
 
     // 2) QR code
-    // ✅ Mieux: un lien de check (tu peux remplacer BACKEND_BASE_URL par ton domaine)
     const backendBase =
       process.env.BACKEND_BASE_URL || "https://singbox-backend.onrender.com";
     const qrText = `${backendBase}/api/check?id=${encodeURIComponent(
@@ -122,25 +142,13 @@ module.exports = async (req, res) => {
     const base64Data = qrDataUrl.split(",")[1];
     const qrBuffer = Buffer.from(base64Data, "base64");
 
-    // ✅ Logo
+    // Logo
     const logoBuffer = getLogoBuffer();
     const logoCid = "logo@singbox";
 
     // 3) Contenu email
     const start = reservation.start_time ? new Date(reservation.start_time) : null;
     const end = reservation.end_time ? new Date(reservation.end_time) : null;
-
-    const formatDateTime = (d) =>
-      d
-        ? d.toLocaleString("fr-FR", {
-            timeZone: "Europe/Paris",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : "N/A";
 
     const startStr = formatDateTime(start);
     const endStr = formatDateTime(end);
