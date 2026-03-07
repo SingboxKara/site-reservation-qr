@@ -7,9 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation." />
+  <meta
+    name="description"
+    content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation."
+  />
   <meta name="author" content="Singbox" />
-  <meta name="keywords" content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse" />
+  <meta
+    name="keywords"
+    content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse"
+  />
   <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
 
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -17,14 +23,20 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:title" content="Mon compte Singbox | Espace client & points de fidélité" />
-  <meta property="og:description" content="Connectez-vous à votre espace client Singbox pour consulter vos informations, vos réservations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse." />
+  <meta
+    property="og:description"
+    content="Connectez-vous à votre espace client Singbox pour consulter vos informations, vos réservations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse."
+  />
   <meta property="og:url" content="https://www.singbox.fr/mon-compte" />
   <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
   <meta property="og:locale" content="fr_FR" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
-  <meta name="twitter:description" content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse." />
+  <meta
+    name="twitter:description"
+    content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse."
+  />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
   <script type="application/ld+json">
@@ -50,12 +62,12 @@
   }
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
@@ -63,35 +75,52 @@
       --sb-bg-deep: #020617;
       --sb-bg-soft: #030712;
       --sb-card: #050b18;
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #9CA3AF;
-      --sb-red: #C94C35;
-      --sb-orange: #F97316;
+      --sb-text-main: #f9fafb;
+      --sb-text-muted: #d1d5db;
+      --sb-red: #c94c35;
+      --sb-orange: #f97316;
       --sb-border-soft: rgba(148, 163, 184, 0.35);
       --sb-border-white: rgba(255, 255, 255, 0.85);
       --sb-container-width: 1180px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
     h1, h2, h3, h4 {
       font-family: "League Spartan", system-ui, sans-serif;
       letter-spacing: 0.03em;
       margin: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .container {
@@ -110,9 +139,9 @@
       z-index: 50;
       background: #020617;
       color: #fff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
       height: auto;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .header-inner {
@@ -131,7 +160,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      text-decoration: none;
       flex-shrink: 0;
     }
 
@@ -142,8 +170,8 @@
       display: block;
       object-fit: contain;
       filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.16))
-        drop-shadow(0 0 20px rgba(201,76,53,0.6));
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.16))
+        drop-shadow(0 0 20px rgba(201, 76, 53, 0.6));
     }
 
     .brand-text {
@@ -151,7 +179,7 @@
       font-weight: 600;
       letter-spacing: 0.15em;
       font-size: 26px;
-      color: #F9FAFB;
+      color: #f9fafb;
       text-transform: uppercase;
       white-space: nowrap;
       display: flex;
@@ -196,10 +224,20 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after { width: 100%; }
-    .main-nav a:hover { color: #ffb96f; transition: 0.25s ease; }
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
+      width: 100%;
+    }
 
-    .main-nav a[href="mon-compte.html"]::after { width: 100%; }
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
+      color: #ffb96f;
+      transition: 0.25s ease;
+    }
+
+    .main-nav a[href="mon-compte.html"]::after {
+      width: 100%;
+    }
 
     .header-actions {
       display: flex;
@@ -214,34 +252,35 @@
       border-radius: 999px;
       font-weight: 600;
       font-size: 14px;
-      color: #F9FAFB;
+      color: #f9fafb;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
-        0 10px 28px rgba(0,0,0,0.7);
+        0 0 0 1px rgba(249, 250, 251, 0.08),
+        0 10px 28px rgba(0, 0, 0, 0.7);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
-        0 16px 38px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(249, 250, 251, 0.18),
+        0 16px 38px rgba(0, 0, 0, 0.9);
     }
 
     .cart-icon {
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
       position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      background: radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.16), rgba(15, 23, 42, 0.85));
       backdrop-filter: blur(6px);
     }
 
@@ -250,23 +289,26 @@
       top: -6px;
       right: -6px;
       background: var(--sb-red);
-      color:#fff;
-      border-radius:999px;
-      font-size:10px;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 10px;
       padding: 2px 5px;
       min-width: 18px;
-      text-align:center;
+      text-align: center;
     }
-    #cart-count:empty { display:none; }
+
+    #cart-count:empty {
+      display: none;
+    }
 
     .burger-button {
       display: none;
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       background: transparent;
-      color:#fff;
+      color: #fff;
       align-items: center;
       justify-content: center;
       cursor: pointer;
@@ -282,7 +324,7 @@
       background: #020617;
       padding: 12px 24px 16px;
       z-index: 40;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .mobile-nav ul {
@@ -295,25 +337,76 @@
       font-size: 15px;
     }
 
-    .mobile-nav a { color:#fff; }
-    .mobile-nav.open { display:block; }
+    .mobile-nav a {
+      color: #fff;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
 
     @media (max-width: 900px) {
-      .header-inner { padding: 8px 10px; gap: 8px; }
-      nav.main-nav { display: none; }
-      .brand-logo { width: 58px; }
-      .brand-text { font-size: 15px; letter-spacing: 0.11em; }
-      .nav-cta { padding: 6px 12px; font-size: 11px; }
-      .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
-      .burger-button { display: flex; }
+      .header-inner {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+
+      nav.main-nav {
+        display: none;
+      }
+
+      .brand-logo {
+        width: 58px;
+      }
+
+      .brand-text {
+        font-size: 15px;
+        letter-spacing: 0.11em;
+      }
+
+      .nav-cta {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+      }
+
+      .burger-button {
+        display: flex;
+      }
     }
 
     @media (max-width: 480px) {
-      .header-inner { padding: 8px 8px; gap: 6px; }
-      .brand-logo { width: 50px; }
-      .brand-text { font-size: 13px; letter-spacing: 0.09em; }
-      .nav-cta { padding: 5px 10px; font-size: 10px; }
-      .cart-icon, .burger-button { width: 30px; height: 30px; font-size: 16px; }
+      .header-inner {
+        padding: 8px 8px;
+        gap: 6px;
+      }
+
+      .brand-logo {
+        width: 50px;
+      }
+
+      .brand-text {
+        font-size: 13px;
+        letter-spacing: 0.09em;
+      }
+
+      .nav-cta {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .cart-icon,
+      .burger-button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+      }
     }
 
     /* ======================= SECTION MON COMPTE ======================= */
@@ -322,8 +415,8 @@
       position: relative;
       padding: 10rem 0 64px;
       background:
-        radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
+        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
         #050814;
       color: var(--sb-text-main);
       overflow: hidden;
@@ -335,7 +428,7 @@
       top: 16%;
       left: 8%;
       font-size: 32px;
-      color: rgba(148,163,184,0.1);
+      color: rgba(148, 163, 184, 0.1);
       pointer-events: none;
     }
 
@@ -345,7 +438,7 @@
       bottom: 14%;
       right: 8%;
       font-size: 30px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(148, 163, 184, 0.08);
       pointer-events: none;
     }
 
@@ -359,7 +452,7 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: #9CA3AF;
+      color: #9ca3af;
       margin-bottom: 8px;
     }
 
@@ -371,7 +464,7 @@
     .account-header p {
       margin: 0;
       font-size: 14px;
-      color: rgba(249,250,251,0.85);
+      color: rgba(249, 250, 251, 0.85);
     }
 
     .account-layout {
@@ -384,7 +477,9 @@
     }
 
     @media (max-width: 820px) {
-      .account-layout { grid-template-columns: minmax(0, 1fr); }
+      .account-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     .card {
@@ -392,9 +487,9 @@
       border-radius: 24px;
       padding: 1.75rem 1.9rem;
       box-shadow:
-        0 24px 60px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(148,163,184,0.3);
-      border: 1px solid rgba(255,255,255,0.20); /* ✅ bordure blanche */
+        0 24px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
     }
@@ -404,12 +499,15 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.1), transparent 60%);
       opacity: 0.6;
       mix-blend-mode: soft-light;
     }
 
-    .card > * { position: relative; z-index: 1; }
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
 
     .account-main-card h2 {
       font-size: 22px;
@@ -434,21 +532,21 @@
       gap: 8px;
       padding: 6px 12px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(255,255,255,0.20); /* ✅ bordure blanche */
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       font-size: 12px;
       margin-top: 6px;
     }
 
     .badge-points span:first-child {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:20px;
-      height:20px;
-      border-radius:999px;
-      background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
-      font-size:12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      font-size: 12px;
     }
 
     .account-subtext {
@@ -471,35 +569,42 @@
       border-radius: 999px;
       padding: 0.55rem 1.2rem;
       background: #111827;
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.35),
-        0 10px 28px rgba(0,0,0,0.8);
+        0 0 0 1px rgba(255, 255, 255, 0.35),
+        0 10px 28px rgba(0, 0, 0, 0.8);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .logout-btn:hover {
+    .logout-btn:hover,
+    .logout-btn:focus-visible {
       background: #1f2937;
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.55),
-        0 14px 34px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(255, 255, 255, 0.55),
+        0 14px 34px rgba(0, 0, 0, 0.95);
     }
 
     .account-message {
       font-size: 12px;
-      color: #FCA5A5;
+      color: #fca5a5;
       min-height: 16px;
       margin: 4px 0 10px;
     }
-    .account-message.ok { color: #BBF7D0; }
+
+    .account-message.ok {
+      color: #bbf7d0;
+    }
 
     /* ====== RÉSERVATIONS ====== */
 
-    .reservations-block { margin-top: 18px; font-size: 13px; }
+    .reservations-block {
+      margin-top: 18px;
+      font-size: 13px;
+    }
 
     .reservations-list {
       margin-top: 6px;
@@ -517,7 +622,7 @@
     .reservation-item {
       background: #020617;
       border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.25); /* ✅ bordure blanche */
+      border: 1px solid rgba(255, 255, 255, 0.25);
       padding: 9px 11px;
       display: flex;
       flex-direction: column;
@@ -531,8 +636,15 @@
       gap: 12px;
     }
 
-    .reservation-date { font-weight: 600; font-size: 13px; }
-    .reservation-meta { font-size: 12px; color: var(--sb-text-muted); }
+    .reservation-date {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .reservation-meta {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
 
     .reservation-side {
       text-align: right;
@@ -543,32 +655,44 @@
       gap: 3px;
     }
 
-    .reservation-price { font-weight: 600; }
+    .reservation-price {
+      font-weight: 600;
+    }
 
     .reservation-status {
       padding: 2px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.35); /* ✅ bordure blanche */
+      border: 1px solid rgba(255, 255, 255, 0.35);
       font-size: 11px;
     }
 
-    .reservation-status-confirmed { border-color: rgba(52,211,153,0.8); color: #6ee7b7; }
-    .reservation-status-pending { border-color: rgba(251,191,36,0.8); color: #facc15; }
-    .reservation-status-annulee { border-color: rgba(248,113,113,0.85); color: #fecaca; }
+    .reservation-status-confirmed {
+      border-color: rgba(52, 211, 153, 0.8);
+      color: #6ee7b7;
+    }
 
-    /* === Bouton QR uniquement === */
+    .reservation-status-pending {
+      border-color: rgba(251, 191, 36, 0.8);
+      color: #facc15;
+    }
+
+    .reservation-status-annulee {
+      border-color: rgba(248, 113, 113, 0.85);
+      color: #fecaca;
+    }
+
     .reservation-actions-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:flex-end;
-      align-items:center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
       margin-top: 2px;
     }
 
     .reservation-action-btn {
-      border:none;
-      border-radius:999px;
+      border: none;
+      border-radius: 999px;
       padding: 6px 10px;
       font-size: 11px;
       font-weight: 700;
@@ -576,23 +700,24 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.25),
-        0 10px 28px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 10px 28px rgba(0, 0, 0, 0.9);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
     }
 
-    .reservation-action-btn:hover {
+    .reservation-action-btn:hover,
+    .reservation-action-btn:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.35),
-        0 16px 40px rgba(0,0,0,1);
+        0 0 0 1px rgba(255, 255, 255, 0.35),
+        0 16px 40px rgba(0, 0, 0, 1);
     }
 
     .reservation-qr-btn {
       background: linear-gradient(90deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     .reservation-action-btn[disabled] {
@@ -600,11 +725,10 @@
       cursor: not-allowed;
       transform: none;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.15),
-        0 6px 16px rgba(0,0,0,0.45);
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 6px 16px rgba(0, 0, 0, 0.45);
     }
 
-    /* === Remboursement === */
     .reservation-refund-row {
       margin-top: 6px;
       display: flex;
@@ -613,6 +737,7 @@
       gap: 8px;
       font-size: 11px;
       color: var(--sb-text-muted);
+      flex-wrap: wrap;
     }
 
     .reservation-refund-btn {
@@ -620,25 +745,26 @@
       border-radius: 999px;
       padding: 5px 10px;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 10px 28px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 10px 28px rgba(0, 0, 0, 0.9);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
     }
 
-    .reservation-refund-btn:hover {
+    .reservation-refund-btn:hover,
+    .reservation-refund-btn:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.25),
-        0 16px 40px rgba(0,0,0,1);
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 16px 40px rgba(0, 0, 0, 1);
     }
 
     .reservation-refund-btn[disabled] {
@@ -646,12 +772,14 @@
       cursor: not-allowed;
       transform: none;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 6px 16px rgba(0,0,0,0.5);
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 6px 16px rgba(0, 0, 0, 0.5);
     }
 
-    /* Carte fidélité droite */
-    .loyalty-card h3 { font-size: 18px; margin-bottom: 6px; }
+    .loyalty-card h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
 
     .loyalty-pill {
       display: inline-flex;
@@ -660,20 +788,20 @@
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(255,255,255,0.20); /* ✅ bordure blanche */
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       margin-bottom: 10px;
     }
 
     .loyalty-pill span:first-child {
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:18px;
-      height:18px;
-      border-radius:999px;
-      background:linear-gradient(135deg,var(--sb-red),var(--sb-orange));
-      font-size:11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      font-size: 11px;
     }
 
     .loyalty-card p {
@@ -683,154 +811,221 @@
       margin-bottom: 8px;
     }
 
-    .loyalty-highlight { font-size: 13px; margin-top: 4px; color: #F9FAFB; }
-    .loyalty-next { font-size: 12px; margin-top: 4px; color: #BFDBFE; }
+    .loyalty-highlight {
+      font-size: 13px;
+      margin-top: 4px;
+      color: #f9fafb;
+    }
 
-    .account-cta { font-size: 12px; margin-top: 10px; color: #F97316; }
-    .account-cta a { color: #F97316; text-decoration: underline; }
-    .account-cta a:hover { text-decoration: none; }
+    .loyalty-next {
+      font-size: 12px;
+      margin-top: 4px;
+      color: #bfdbfe;
+    }
 
-    /* Bloc login */
-    .login-card-title { font-size: 18px; margin-bottom: 8px; }
-    .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
+    .account-cta {
+      font-size: 12px;
+      margin-top: 10px;
+      color: #f97316;
+    }
 
-    .login-field { margin-bottom: 8px; font-size: 13px; }
-    .login-field label { display:block; margin-bottom:3px; color:#E5E7EB; font-size:12px; }
+    .account-cta a {
+      color: #f97316;
+      text-decoration: underline;
+    }
+
+    .account-cta a:hover,
+    .account-cta a:focus-visible {
+      text-decoration: none;
+    }
+
+    .login-card-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .login-description {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin-bottom: 10px;
+    }
+
+    .login-field {
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .login-field label {
+      display: block;
+      margin-bottom: 3px;
+      color: #e5e7eb;
+      font-size: 12px;
+    }
 
     .login-field input {
-      width:100%;
-      font-family:inherit;
-      font-size:13px;
-      color:#F9FAFB;
-      background:#020617;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.22); /* ✅ bordure blanche */
-      padding:0.55rem 0.85rem;
-      outline:none;
-      transition:border-color 0.16s ease, box-shadow 0.16s ease;
+      width: 100%;
+      font-family: inherit;
+      font-size: 13px;
+      color: #f9fafb;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 0.55rem 0.85rem;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
     }
 
-    .login-field input::placeholder { color:rgba(156,163,175,0.9); }
+    .login-field input::placeholder {
+      color: rgba(156, 163, 175, 0.9);
+    }
 
     .login-field input:focus {
-      border-color:var(--sb-orange);
+      border-color: var(--sb-orange);
       box-shadow:
-        0 0 0 1px rgba(249,115,22,0.8),
-        0 0 22px rgba(249,115,22,0.25);
+        0 0 0 1px rgba(249, 115, 22, 0.8),
+        0 0 22px rgba(249, 115, 22, 0.25);
     }
 
-    .login-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .login-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
 
     .login-submit-btn {
-      border:none;
-      border-radius:999px;
-      padding:0.6rem 1rem;
-      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color:#F9FAFB;
-      font-size:13px;
-      font-weight:600;
-      cursor:pointer;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 16px 40px rgba(0,0,0,0.9);
-      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 16px 40px rgba(0, 0, 0, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       flex: 1 1 140px;
     }
 
-    .login-submit-btn:hover {
-      transform:translateY(-1px);
-      filter:brightness(1.03);
+    .login-submit-btn:hover,
+    .login-submit-btn:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.25),
-        0 22px 52px rgba(0,0,0,1);
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 22px 52px rgba(0, 0, 0, 1);
     }
 
     .login-secondary-btn {
-      border:none;
-      border-radius:999px;
-      padding:0.6rem 1rem;
-      background:#111827;
-      color:#F9FAFB;
-      font-size:13px;
-      font-weight:500;
-      cursor:pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      background: #111827;
+      color: #f9fafb;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.25),
-        0 10px 28px rgba(0,0,0,0.8);
-      transition:background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+        0 0 0 1px rgba(255, 255, 255, 0.25),
+        0 10px 28px rgba(0, 0, 0, 0.8);
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
       flex: 1 1 140px;
       white-space: nowrap;
     }
 
-    .login-secondary-btn:hover {
-      background:#1f2937;
+    .login-secondary-btn:hover,
+    .login-secondary-btn:focus-visible {
+      background: #1f2937;
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.35),
-        0 14px 34px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(255, 255, 255, 0.35),
+        0 14px 34px rgba(0, 0, 0, 0.95);
     }
 
-    .login-links { margin: 8px 0 0; font-size: 12px; }
-    .login-forgot { color: #F97316; text-decoration: underline; }
-    .login-forgot:hover { text-decoration: none; }
+    .login-links {
+      margin: 8px 0 0;
+      font-size: 12px;
+    }
 
-    .login-message { font-size: 12px; margin-top: 6px; min-height: 16px; color: #FCA5A5; }
-    .login-message.ok { color: #BBF7D0; }
+    .login-forgot {
+      color: #f97316;
+      text-decoration: underline;
+    }
+
+    .login-forgot:hover,
+    .login-forgot:focus-visible {
+      text-decoration: none;
+    }
+
+    .login-message {
+      font-size: 12px;
+      margin-top: 6px;
+      min-height: 16px;
+      color: #fca5a5;
+    }
+
+    .login-message.ok {
+      color: #bbf7d0;
+    }
 
     /* ======================= MODAL QR ======================= */
-    #qr-modal[hidden] { display:none; }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15,23,42,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 80;
-      backdrop-filter: blur(4px);
-      padding: 16px;
-    }
-
-    .modal-dialog {
+    dialog.modal-dialog {
       background: #020617;
       border-radius: 20px;
       padding: 1.2rem 1.25rem 1.1rem;
       max-width: 420px;
-      width: 100%;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
-      border: 1px solid rgba(255,255,255,0.25); /* ✅ bordure blanche */
+      width: calc(100% - 32px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #f9fafb;
     }
 
-    .modal-dialog h2 { font-size: 18px; margin-bottom: 6px; }
-    .modal-dialog p { font-size: 12px; color: var(--sb-text-muted); margin: 0 0 10px; }
+    dialog.modal-dialog::backdrop {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-dialog h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .modal-dialog p {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin: 0 0 10px;
+    }
 
     .qr-only-wrap {
-      display:flex;
-      justify-content:center;
-      align-items:center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 10px 0 4px;
     }
 
-    /* ✅ QR : PNG, margin=0, >= 300x300, fond blanc, PAS d'arrondis */
     .qr-img {
       width: 320px;
       height: 320px;
       border-radius: 0;
-      border: 2px solid #ffffff; /* ✅ bordure blanche autour du QR */
+      border: 2px solid #ffffff;
       background: #ffffff;
-      display:block;
+      display: block;
       object-fit: contain;
       image-rendering: pixelated;
+      max-width: 100%;
+      max-height: calc(100vw - 80px);
     }
 
     .modal-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:flex-end;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
       margin-top: 12px;
     }
 
@@ -848,25 +1043,28 @@
 
     .modal-btn-secondary {
       background: transparent;
-      color: #E5E7EB;
-      border: 1px solid rgba(255,255,255,0.35);
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.35);
     }
 
     /* ======================= FOOTER ======================= */
+
     footer {
-      background:#020617;
-      color:#e5e7eb;
-      padding:32px 24px 18px;
-      border-top: 1px solid rgba(255,255,255,0.15);
+      background: #020617;
+      color: #e5e7eb;
+      padding: 32px 24px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .newsletter-container {
-      max-width:var(--sb-container-width);
-      margin:0 auto 24px;
-      text-align:center;
+      max-width: var(--sb-container-width);
+      margin: 0 auto 24px;
+      text-align: center;
     }
 
-    .newsletter-container h3 { margin-bottom: 6px; }
+    .newsletter-container h3 {
+      margin-bottom: 6px;
+    }
 
     .newsletter-container p {
       margin-top: 0;
@@ -875,63 +1073,77 @@
     }
 
     .newsletter-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
       margin-top: 8px;
     }
 
-    footer input[type=email] {
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.22);
-      min-width:240px;
-      max-width:360px;
-      font-size:14px;
-      background:#020617;
-      color:#F9FAFB;
+    footer input[type="email"] {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      min-width: 240px;
+      max-width: 360px;
+      font-size: 14px;
+      background: #020617;
+      color: #f9fafb;
       outline: none;
     }
 
-    footer input[type=email]::placeholder { color: rgba(156,163,175,0.9); }
+    footer input[type="email"]::placeholder {
+      color: rgba(156, 163, 175, 0.9);
+    }
 
     footer button {
-      padding:10px 18px;
-      border:none;
-      border-radius:999px;
-      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color:#F9FAFB;
-      font-weight:600;
-      font-size:14px;
-      cursor:pointer;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.18),
-        0 16px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 16px 40px rgba(0, 0, 0, 0.9);
     }
 
     .footer-columns {
-      max-width:var(--sb-container-width);
-      margin:0 auto;
-      display:flex;
-      flex-wrap:wrap;
-      gap:24px;
-      justify-content:space-between;
-      font-size:13px;
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: space-between;
+      font-size: 13px;
     }
 
-    .footer-brand { display:flex; align-items:center; gap:10px; }
-    .footer-brand img { height:80px; width:auto; display:block; }
-    .footer-columns p { margin:4px 0; }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand img {
+      height: 80px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-columns p {
+      margin: 4px 0;
+    }
 
     .footer-bottom {
-      max-width:var(--sb-container-width);
-      margin:20px auto 0;
-      padding-top:8px;
-      font-size:11px;
-      text-align:center;
-      color:#9CA3AF;
-      border-top:1px solid rgba(255,255,255,0.15);
+      max-width: var(--sb-container-width);
+      margin: 20px auto 0;
+      padding-top: 8px;
+      font-size: 11px;
+      text-align: center;
+      color: #9ca3af;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
   </style>
 </head>
@@ -941,7 +1153,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo" />
         <span class="brand-text">Singbox</span>
       </a>
 
@@ -961,7 +1173,16 @@
         <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">☰</button>
+        <button
+          class="burger-button"
+          id="burger-button"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
+          ☰
+        </button>
       </div>
     </div>
   </header>
@@ -978,127 +1199,127 @@
     </ul>
   </nav>
 
-  <!-- SECTION MON COMPTE -->
-  <section id="account">
-    <div class="container">
-      <div class="account-header">
-        <p class="account-header-eyebrow">Espace client</p>
-        <h1>Mon compte Singbox</h1>
-        <p>
-          Consultez vos réservations, vos points de fidélité et récupérez votre QR code.
-        </p>
-      </div>
+  <main>
+    <!-- SECTION MON COMPTE -->
+    <section id="account">
+      <div class="container">
+        <div class="account-header">
+          <p class="account-header-eyebrow">Espace client</p>
+          <h1>Mon compte Singbox</h1>
+          <p>
+            Consultez vos réservations, vos points de fidélité et récupérez votre QR code.
+          </p>
+        </div>
 
-      <div class="account-layout">
-        <div class="account-left">
-          <!-- Bloc connexion (visible si non connecté) -->
-          <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
-            <h2 class="login-card-title">Se connecter</h2>
-            <p class="login-description">
-              Connectez-vous pour retrouver vos réservations et votre solde de points.
-            </p>
-
-            <form id="login-form">
-              <div class="login-field">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="vous@email.fr" required />
-              </div>
-              <div class="login-field">
-                <label for="login-password">Mot de passe</label>
-                <input type="password" id="login-password" placeholder="Mot de passe" required />
-              </div>
-              <div class="login-actions">
-                <button type="submit" class="login-submit-btn">Connexion</button>
-                <button type="button" id="create-account-btn" class="login-secondary-btn">Créer mon compte</button>
-              </div>
-              <p class="login-links">
-                <a href="mot-de-passe-oublie.html" class="login-forgot">Mot de passe oublié&nbsp;?</a>
+        <div class="account-layout">
+          <div class="account-left">
+            <!-- Bloc connexion -->
+            <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
+              <h2 class="login-card-title">Se connecter</h2>
+              <p class="login-description">
+                Connectez-vous pour retrouver vos réservations et votre solde de points.
               </p>
-            </form>
-            <div id="login-message" class="login-message"></div>
+
+              <form id="login-form">
+                <div class="login-field">
+                  <label for="login-email">Email</label>
+                  <input type="email" id="login-email" placeholder="vous@email.fr" required />
+                </div>
+                <div class="login-field">
+                  <label for="login-password">Mot de passe</label>
+                  <input type="password" id="login-password" placeholder="Mot de passe" required />
+                </div>
+                <div class="login-actions">
+                  <button type="submit" class="login-submit-btn">Connexion</button>
+                  <button type="button" id="create-account-btn" class="login-secondary-btn">Créer mon compte</button>
+                </div>
+                <p class="login-links">
+                  <a href="mot-de-passe-oublie.html" class="login-forgot">Mot de passe oublié&nbsp;?</a>
+                </p>
+              </form>
+              <div id="login-message" class="login-message"></div>
+            </div>
+
+            <!-- Carte principale -->
+            <div class="card account-main-card">
+              <h2>Mes informations</h2>
+              <p class="account-message" id="account-message"></p>
+
+              <div>
+                <div class="account-field-label">Email</div>
+                <div class="account-field-value" id="user-email">–</div>
+              </div>
+
+              <div>
+                <div class="account-field-label">Points de fidélité</div>
+                <div class="account-field-value" id="user-points">–</div>
+
+                <div class="badge-points">
+                  <span>★</span>
+                  <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+                </div>
+              </div>
+
+              <div class="reservations-block">
+                <div class="account-field-label">Mes réservations</div>
+
+                <div id="reservations-list" class="reservations-list">
+                  <p class="reservations-empty">
+                    Connectez-vous pour retrouver vos réservations passées et à venir.
+                  </p>
+                </div>
+
+                <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
+              </div>
+
+              <p class="account-subtext">
+                Astuce : cliquez sur “Afficher le QR” et présentez-le à l’accueil.
+              </p>
+
+              <div class="logout-row">
+                <button id="logout-btn" class="logout-btn" type="button">Se déconnecter</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Carte principale -->
-          <div class="card account-main-card">
-            <h2>Mes informations</h2>
-            <p class="account-message" id="account-message"></p>
-
-            <div>
-              <div class="account-field-label">Email</div>
-              <div class="account-field-value" id="user-email">–</div>
+          <!-- Carte fidélité -->
+          <div class="card loyalty-card">
+            <div class="loyalty-pill">
+              <span>♪</span>
+              <span>Programme fidélité Singbox</span>
             </div>
-
-            <div>
-              <div class="account-field-label">Points de fidélité</div>
-              <div class="account-field-value" id="user-points">–</div>
-
-              <div class="badge-points">
-                <span>★</span>
-                <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
-              </div>
-            </div>
-
-            <div class="reservations-block">
-              <div class="account-field-label">Mes réservations</div>
-
-              <div id="reservations-list" class="reservations-list">
-                <p class="reservations-empty">
-                  Connectez-vous pour retrouver vos réservations passées et à venir.
-                </p>
-              </div>
-
-              <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
-            </div>
-
-            <p class="account-subtext">
-              Astuce : cliquez sur “Afficher le QR” et présentez-le à l’accueil.
+            <h3>Comment ça marche&nbsp;?</h3>
+            <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
+            <p>À 100 points, vous débloquez une séance offerte (selon disponibilité).</p>
+            <p class="loyalty-highlight" id="loyalty-highlight-text">
+              Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.
+            </p>
+            <p class="loyalty-next">
+              Réservez depuis <a href="reservation.html">Réservation</a> ou finalisez depuis votre <a href="panier.html">panier</a>.
             </p>
 
-            <div class="logout-row">
-              <button id="logout-btn" class="logout-btn">Se déconnecter</button>
-            </div>
+            <p class="account-cta" id="not-logged-cta" style="display:none;">
+              Vous n’êtes pas connecté. Connectez-vous ou créez un compte lors de votre prochaine réservation.
+            </p>
           </div>
         </div>
-
-        <!-- Carte fidélité -->
-        <div class="card loyalty-card">
-          <div class="loyalty-pill">
-            <span>♪</span>
-            <span>Programme fidélité Singbox</span>
-          </div>
-          <h3>Comment ça marche&nbsp;?</h3>
-          <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
-          <p>À 100 points, vous débloquez une séance offerte (selon disponibilité).</p>
-          <p class="loyalty-highlight" id="loyalty-highlight-text">
-            Il vous reste – points avant votre prochaine séance offerte.
-          </p>
-          <p class="loyalty-next">
-            Réservez depuis <a href="reservation.html">Réservation</a> ou finalisez depuis votre <a href="panier.html">panier</a>.
-          </p>
-
-          <p class="account-cta" id="not-logged-cta" style="display:none;">
-            Vous n’êtes pas connecté. Connectez-vous ou créez un compte lors de votre prochaine réservation.
-          </p>
-        </div>
       </div>
+    </section>
+  </main>
+
+  <!-- MODAL QR -->
+  <dialog id="qr-modal" class="modal-dialog" aria-labelledby="qr-modal-title">
+    <h2 id="qr-modal-title">Votre QR code</h2>
+    <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil.</p>
+
+    <div class="qr-only-wrap">
+      <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
     </div>
-  </section>
 
-  <!-- MODAL QR (UNIQUEMENT : QR + Fermer) -->
-  <div id="qr-modal" class="modal-backdrop" hidden>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
-      <h2 id="qr-modal-title">Votre QR code</h2>
-      <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil.</p>
-
-      <div class="qr-only-wrap">
-        <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
-      </div>
-
-      <div class="modal-actions">
-        <button class="modal-btn modal-btn-secondary" id="qr-close-btn" type="button">Fermer</button>
-      </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-secondary" id="qr-close-btn" type="button">Fermer</button>
     </div>
-  </div>
+  </dialog>
 
   <!-- FOOTER -->
   <footer>
@@ -1106,6 +1327,7 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
+        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
         <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
@@ -1140,16 +1362,16 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
           </svg>
           <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </p>
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
           </svg>
           <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">TikTok</a>
         </p>
@@ -1162,40 +1384,49 @@
   <!-- JS PRINCIPAL -->
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
-
-    // ✅ SOURCE DE VÉRITÉ : EXACTEMENT comme dans sendReservationEmail()
-    // QR text = https://singbox-backend.onrender.com/api/check?id=<reservation.id>
     const CHECK_ENDPOINT = "https://singbox-backend.onrender.com/api/check";
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
       if (!el) return;
+
       let panier = [];
-      try { panier = JSON.parse(localStorage.getItem("panier")) || []; } catch (e) {}
+      try {
+        panier = JSON.parse(localStorage.getItem("panier")) || [];
+      } catch (e) {
+        panier = [];
+      }
+
       el.textContent = panier.length ? panier.length : "";
+    }
+
+    function getLoyaltyText(points) {
+      if (typeof points !== "number") {
+        return "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
+      }
+
+      const next = Math.max(0, 100 - points);
+
+      if (next === 0) {
+        return "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte.";
+      }
+
+      const suffix = next > 1 ? "s" : "";
+      return `Il vous reste ${next} point${suffix} avant votre prochaine séance offerte.`;
     }
 
     function updateLoyaltyHighlight(points) {
       const el = document.getElementById("loyalty-highlight-text");
       if (!el) return;
-
-      if (typeof points !== "number") {
-        el.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
-        return;
-      }
-
-      const next = Math.max(0, 100 - points);
-      el.textContent =
-        next === 0
-          ? "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte."
-          : `Il vous reste ${next} point${next > 1 ? "s" : ""} avant votre prochaine séance offerte.`;
+      el.textContent = getLoyaltyText(points);
     }
 
     function setReservationsNotLogged() {
       const listEl = document.getElementById("reservations-list");
-      if (listEl) {
-        listEl.innerHTML = '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
-      }
+      if (!listEl) return;
+
+      listEl.innerHTML =
+        '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
     }
 
     function showNotLoggedState() {
@@ -1208,8 +1439,14 @@
 
       if (emailEl) emailEl.textContent = "Non connecté";
       if (pointsEl) pointsEl.textContent = "—";
-      if (msgEl) { msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus."; msgEl.classList.remove("ok"); }
-      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
+      if (msgEl) {
+        msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus.";
+        msgEl.classList.remove("ok");
+      }
+      if (refundMsgEl) {
+        refundMsgEl.textContent = "";
+        refundMsgEl.classList.remove("ok");
+      }
       if (notLoggedCta) notLoggedCta.style.display = "block";
       if (loginCard) loginCard.style.display = "block";
 
@@ -1217,12 +1454,18 @@
       updateLoyaltyHighlight(null);
     }
 
-    function formatReservationDate(dateStr) {
-      if (!dateStr) return "Date à confirmer";
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
+    function parseDateOrNull(dateStr) {
+      if (!dateStr) return null;
+      const date = new Date(dateStr);
+      if (Number.isNaN(date.getTime())) return null;
+      return date;
+    }
 
-      return d.toLocaleDateString("fr-FR", {
+    function formatReservationDate(dateStr) {
+      const date = parseDateOrNull(dateStr);
+      if (!date) return dateStr || "Date à confirmer";
+
+      return date.toLocaleDateString("fr-FR", {
         weekday: "short",
         day: "2-digit",
         month: "short",
@@ -1230,72 +1473,108 @@
       });
     }
 
-    function formatReservationHoursFromReservation(r) {
-      const startStr = r.start_time || r.datetime || null;
-      if (!startStr) return "";
+    function formatReservationHoursFromReservation(reservation) {
+      const startStr = reservation.start_time || reservation.datetime || null;
+      const start = parseDateOrNull(startStr);
+      if (!start) return "";
 
-      const start = new Date(startStr);
-      if (isNaN(start.getTime())) return "";
+      const defaultDurationMs = 90 * 60 * 1000;
+      let end = parseDateOrNull(reservation.end_time);
 
-      const DUREE_MS = 90 * 60 * 1000;
-      let end;
-
-      if (r.end_time) {
-        end = new Date(r.end_time);
-        if (isNaN(end.getTime())) end = new Date(start.getTime() + DUREE_MS);
-      } else {
-        end = new Date(start.getTime() + DUREE_MS);
+      if (!end) {
+        end = new Date(start.getTime() + defaultDurationMs);
       }
 
-      const formatTime = (d) =>
-        d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h");
+      const formatTime = (date) =>
+        date
+          .toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+          .replace(":", "h");
 
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
 
     function isRefundPossible(startTimeIso) {
-      if (!startTimeIso) return false;
-      const start = new Date(startTimeIso);
-      if (isNaN(start.getTime())) return false;
+      const start = parseDateOrNull(startTimeIso);
+      if (!start) return false;
+
       const now = new Date();
       const diffMs = start.getTime() - now.getTime();
       const hoursBefore = diffMs / (1000 * 60 * 60);
       return hoursBefore >= 24;
     }
 
-    // ✅ ID = seule valeur acceptée par /api/check?id=
-    function getReservationIdForQr(r) {
-      return r?.id || null;
+    function getReservationIdForQr(reservation) {
+      return reservation?.id || null;
     }
 
-    // ✅ URL encodée DANS le QR (strictement identique au backend/email)
     function buildCheckUrlFromReservationId(id) {
       if (!id) return null;
       return `${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}`;
     }
 
+    function getReservationStatusClass(statusRaw) {
+      const normalized = (statusRaw || "").toString().toLowerCase();
+
+      if (normalized.includes("confirme") || normalized === "confirmed") {
+        return "reservation-status-confirmed";
+      }
+
+      if (normalized.includes("attente") || normalized === "pending") {
+        return "reservation-status-pending";
+      }
+
+      if (
+        normalized.includes("annul") ||
+        normalized === "cancelled" ||
+        normalized === "canceled"
+      ) {
+        return "reservation-status-annulee";
+      }
+
+      return "";
+    }
+
     /* ===== MODAL QR ===== */
+
     function openQrModal(checkUrl, subtitleText) {
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
       const subtitle = document.getElementById("qr-modal-subtitle");
 
-      if (subtitle && subtitleText) subtitle.textContent = subtitleText;
+      if (!modal || !img) return;
 
-      // ✅ QR PNG, margin=0, >= 300x300, pas d'overlay, pas d'arrondi
+      if (subtitle && subtitleText) {
+        subtitle.textContent = subtitleText;
+      }
+
       const qrImgUrl =
         "https://api.qrserver.com/v1/create-qr-code/?format=png&size=360x360&margin=0&data=" +
         encodeURIComponent(checkUrl);
 
-      if (img) img.src = qrImgUrl;
-      if (modal) modal.removeAttribute("hidden");
+      img.src = qrImgUrl;
+
+      if (typeof modal.showModal === "function") {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "open");
+      }
     }
 
     function closeQrModal() {
       const modal = document.getElementById("qr-modal");
-      if (modal) modal.setAttribute("hidden", "true");
       const img = document.getElementById("qr-image");
-      if (img) img.removeAttribute("src");
+
+      if (!modal) return;
+
+      if (typeof modal.close === "function" && modal.open) {
+        modal.close();
+      } else {
+        modal.removeAttribute("open");
+      }
+
+      if (img) {
+        img.removeAttribute("src");
+      }
     }
 
     function renderReservations(reservations) {
@@ -1308,43 +1587,39 @@
       }
 
       listEl.innerHTML = "";
-      reservations.forEach((r) => {
+
+      reservations.forEach((reservation) => {
         const item = document.createElement("div");
         item.className = "reservation-item";
 
-        const startTimeIso = r.start_time || r.datetime || null;
-        const date = formatReservationDate(r.date || startTimeIso);
-        const plageHeure = formatReservationHoursFromReservation(r);
+        const startTimeIso = reservation.start_time || reservation.datetime || null;
+        const date = formatReservationDate(reservation.date || startTimeIso);
+        const plageHeure = formatReservationHoursFromReservation(reservation);
 
-        const boxName = r.box_name || r.box || r.box_id || "";
-        const montant = r.montant || r.total || r.total_price || "";
-        const statutRaw = (r.statut || r.status || "").toString();
+        const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
+        const montant = reservation.montant || reservation.total || reservation.total_price || "";
+        const statutRaw = (reservation.statut || reservation.status || "").toString();
         const statut = statutRaw || "";
-        let statutClass = "";
-
-        const s = statutRaw.toLowerCase();
-        if (s.includes("confirme") || s === "confirmed") statutClass = "reservation-status-confirmed";
-        else if (s.includes("attente") || s === "pending") statutClass = "reservation-status-pending";
-        else if (s.includes("annul") || s === "cancelled" || s === "canceled") statutClass = "reservation-status-annulee";
+        const statutClass = getReservationStatusClass(statutRaw);
 
         const metaPieces = [];
         if (plageHeure) metaPieces.push(plageHeure);
         if (boxName) metaPieces.push(`Box ${boxName}`);
         const metaText = metaPieces.join(" • ");
 
-        // ✅ CHECK URL identique au backend/email
-        const reservationId = getReservationIdForQr(r);
+        const reservationId = getReservationIdForQr(reservation);
         const checkUrl = buildCheckUrlFromReservationId(reservationId);
-        const canShowQr = !!checkUrl;
+        const canShowQr = Boolean(checkUrl);
 
         let actionsHtml = "";
         if (canShowQr) {
+          const qrTitle = `${boxName ? `Box ${boxName} • ` : ""}${date}${plageHeure ? ` • ${plageHeure}` : ""}`;
           actionsHtml = `
             <div class="reservation-actions-row">
               <button
                 class="reservation-action-btn reservation-qr-btn"
                 data-qr-url="${checkUrl}"
-                data-qr-title="${(boxName ? "Box " + boxName + " • " : "") + date + (plageHeure ? " • " + plageHeure : "")}"
+                data-qr-title="${qrTitle}"
                 type="button"
               >
                 Afficher le QR
@@ -1361,9 +1636,9 @@
           `;
         }
 
-        // remboursement (inchangé)
-        const hasValidStart = !!startTimeIso && !isNaN(new Date(startTimeIso).getTime());
-        const isInFuture = hasValidStart && new Date(startTimeIso).getTime() > Date.now();
+        const hasValidStart = Boolean(parseDateOrNull(startTimeIso));
+        const parsedStart = parseDateOrNull(startTimeIso);
+        const isInFuture = Boolean(parsedStart && parsedStart.getTime() > Date.now());
 
         let refundHtml = "";
         if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
@@ -1371,9 +1646,12 @@
             refundHtml = `
               <div class="reservation-refund-row">
                 <span>Remboursement possible jusqu'à 24h avant la séance.</span>
-                <button class="reservation-refund-btn"
-                        data-reservation-id="${r.id}"
-                        data-start-time="${startTimeIso}">
+                <button
+                  class="reservation-refund-btn"
+                  data-reservation-id="${reservation.id}"
+                  data-start-time="${startTimeIso}"
+                  type="button"
+                >
                   Demander un remboursement
                 </button>
               </div>
@@ -1413,29 +1691,37 @@
       const refundMsgEl = document.getElementById("refund-message");
       if (!listEl) return;
 
-      if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
+      if (refundMsgEl) {
+        refundMsgEl.textContent = "";
+        refundMsgEl.classList.remove("ok");
+      }
 
-      if (!token) { setReservationsNotLogged(); return; }
+      if (!token) {
+        setReservationsNotLogged();
+        return;
+      }
 
       listEl.innerHTML = '<p class="reservations-empty">Chargement de vos réservations...</p>';
 
       try {
-        const res = await fetch(API_BASE + "/api/my-reservations", {
+        const response = await fetch(API_BASE + "/api/my-reservations", {
           headers: { Authorization: "Bearer " + token }
         });
 
-        if (!res.ok) {
-          console.error("Erreur chargement réservations", res.status);
-          listEl.innerHTML = '<p class="reservations-empty">Impossible de charger vos réservations pour le moment.</p>';
+        if (!response.ok) {
+          console.error("Erreur chargement réservations", response.status);
+          listEl.innerHTML =
+            '<p class="reservations-empty">Impossible de charger vos réservations pour le moment.</p>';
           return;
         }
 
-        const data = await res.json();
+        const data = await response.json();
         const reservations = Array.isArray(data) ? data : (data.reservations || []);
         renderReservations(reservations);
       } catch (err) {
         console.error(err);
-        listEl.innerHTML = '<p class="reservations-empty">Erreur de chargement de vos réservations.</p>';
+        listEl.innerHTML =
+          '<p class="reservations-empty">Erreur de chargement de vos réservations.</p>';
       }
     }
 
@@ -1445,23 +1731,29 @@
       const notLoggedCta = document.getElementById("not-logged-cta");
       const msgEl = document.getElementById("account-message");
 
-      if (!token) { showNotLoggedState(); return; }
+      if (!token) {
+        showNotLoggedState();
+        return;
+      }
 
-      if (msgEl) { msgEl.textContent = "Chargement de vos informations..."; msgEl.classList.remove("ok"); }
+      if (msgEl) {
+        msgEl.textContent = "Chargement de vos informations...";
+        msgEl.classList.remove("ok");
+      }
 
       try {
-        const res = await fetch(API_BASE + "/api/me", {
-          headers: { Authorization: "Bearer " + token },
+        const response = await fetch(API_BASE + "/api/me", {
+          headers: { Authorization: "Bearer " + token }
         });
 
-        if (!res.ok) {
-          console.warn("API /api/me non OK :", res.status);
+        if (!response.ok) {
+          console.warn("API /api/me non OK :", response.status);
           localStorage.removeItem("token");
           showNotLoggedState();
           return;
         }
 
-        const user = await res.json();
+        const user = await response.json();
 
         const emailEl = document.getElementById("user-email");
         const pointsEl = document.getElementById("user-points");
@@ -1469,7 +1761,10 @@
         if (emailEl) emailEl.textContent = user.email || "—";
         if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
 
-        if (msgEl) { msgEl.textContent = "Profil chargé avec succès."; msgEl.classList.add("ok"); }
+        if (msgEl) {
+          msgEl.textContent = "Profil chargé avec succès.";
+          msgEl.classList.add("ok");
+        }
 
         if (loginCard) loginCard.style.display = "none";
         if (notLoggedCta) notLoggedCta.style.display = "none";
@@ -1478,66 +1773,100 @@
         loadReservations();
       } catch (err) {
         console.error("Erreur /api/me :", err);
-        if (msgEl) { msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter."; msgEl.classList.remove("ok"); }
+        if (msgEl) {
+          msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter.";
+          msgEl.classList.remove("ok");
+        }
         localStorage.removeItem("token");
         showNotLoggedState();
       }
     }
 
-    // ---------- Helpers login/register (refactor Sonar) ----------
+    // ---------- Helpers login/register ----------
+
     function setLoginMessage(loginMsgEl, text, isOk = false) {
       if (!loginMsgEl) return;
       loginMsgEl.textContent = text || "";
-      loginMsgEl.classList.toggle("ok", !!isOk);
+      loginMsgEl.classList.toggle("ok", Boolean(isOk));
     }
 
     function getLoginCredentials() {
       const emailEl = document.getElementById("login-email");
       const passEl = document.getElementById("login-password");
+
       return {
         email: (emailEl?.value || "").trim(),
         password: passEl?.value || ""
       };
     }
 
-    async function safeJson(res) {
-      try { return await res.json(); } catch (_) { return {}; }
+    async function safeJson(response) {
+      try {
+        return await response.json();
+      } catch (_) {
+        return {};
+      }
     }
 
     async function postJson(url, payload) {
-      const res = await fetch(url, {
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
-      const data = await safeJson(res);
-      return { res, data };
+
+      const data = await safeJson(response);
+      return { response, data };
     }
 
     async function doLogin(email, password) {
-      const { res, data } = await postJson(API_BASE + "/api/login", { email, password });
+      const { response, data } = await postJson(API_BASE + "/api/login", { email, password });
       const token = data?.token;
-      return { ok: res.ok && !!token, token, error: data?.error };
+
+      return {
+        ok: response.ok && Boolean(token),
+        token,
+        error: data?.error
+      };
     }
 
     async function doRegister(email, password) {
-      const { res, data } = await postJson(API_BASE + "/api/register", { email, password });
-      return { ok: res.ok, error: data?.error };
+      const { response, data } = await postJson(API_BASE + "/api/register", { email, password });
+
+      return {
+        ok: response.ok,
+        error: data?.error
+      };
     }
 
     async function registerThenLogin(email, password) {
-      const reg = await doRegister(email, password);
-      if (!reg.ok) return { ok: false, step: "register", error: reg.error || "Erreur lors de la création du compte." };
+      const registerResult = await doRegister(email, password);
+      if (!registerResult.ok) {
+        return {
+          ok: false,
+          step: "register",
+          error: registerResult.error || "Erreur lors de la création du compte."
+        };
+      }
 
-      const log = await doLogin(email, password);
-      if (!log.ok) return { ok: false, step: "login", error: "Compte créé, mais la connexion a échoué." };
+      const loginResult = await doLogin(email, password);
+      if (!loginResult.ok) {
+        return {
+          ok: false,
+          step: "login",
+          error: "Compte créé, mais la connexion a échoué."
+        };
+      }
 
-      return { ok: true, token: log.token };
+      return {
+        ok: true,
+        token: loginResult.token
+      };
     }
 
     function initLoginForm() {
       const loginForm = document.getElementById("login-form");
-      const loginMsg  = document.getElementById("login-message");
+      const loginMsg = document.getElementById("login-message");
       const createBtn = document.getElementById("create-account-btn");
       if (!loginForm) return;
 
@@ -1554,7 +1883,11 @@
         try {
           const result = await doLogin(email, password);
           if (!result.ok) {
-            setLoginMessage(loginMsg, result.error || "Erreur de connexion. Vérifiez vos identifiants.", false);
+            setLoginMessage(
+              loginMsg,
+              result.error || "Erreur de connexion. Vérifiez vos identifiants.",
+              false
+            );
             return;
           }
 
@@ -1573,7 +1906,11 @@
 
           const { email, password } = getLoginCredentials();
           if (!email || !password) {
-            setLoginMessage(loginMsg, "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».", false);
+            setLoginMessage(
+              loginMsg,
+              "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».",
+              false
+            );
             return;
           }
 
@@ -1598,16 +1935,26 @@
 
     function initLogout() {
       const logoutBtn = document.getElementById("logout-btn");
-      if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-          localStorage.removeItem("token");
-          const msgEl = document.getElementById("account-message");
-          const refundMsgEl = document.getElementById("refund-message");
-          if (msgEl) { msgEl.textContent = "Vous avez été déconnecté."; msgEl.classList.remove("ok"); }
-          if (refundMsgEl) { refundMsgEl.textContent = ""; refundMsgEl.classList.remove("ok"); }
-          showNotLoggedState();
-        });
-      }
+      if (!logoutBtn) return;
+
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+
+        const msgEl = document.getElementById("account-message");
+        const refundMsgEl = document.getElementById("refund-message");
+
+        if (msgEl) {
+          msgEl.textContent = "Vous avez été déconnecté.";
+          msgEl.classList.remove("ok");
+        }
+
+        if (refundMsgEl) {
+          refundMsgEl.textContent = "";
+          refundMsgEl.classList.remove("ok");
+        }
+
+        showNotLoggedState();
+      });
     }
 
     function initRefundButtons() {
@@ -1618,21 +1965,28 @@
       listEl.addEventListener("click", async (e) => {
         const btn = e.target.closest(".reservation-refund-btn");
         if (!btn) return;
+        if (!refundMsgEl) return;
 
         const reservationId = btn.getAttribute("data-reservation-id");
         const startTime = btn.getAttribute("data-start-time");
         const token = localStorage.getItem("token");
 
-        if (!refundMsgEl) return;
-
         refundMsgEl.classList.remove("ok");
         refundMsgEl.textContent = "";
 
-        if (!token) { refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement."; return; }
-        if (!reservationId) { refundMsgEl.textContent = "Réservation introuvable."; return; }
+        if (!token) {
+          refundMsgEl.textContent = "Vous devez être connecté pour demander un remboursement.";
+          return;
+        }
+
+        if (!reservationId) {
+          refundMsgEl.textContent = "Réservation introuvable.";
+          return;
+        }
 
         if (!isRefundPossible(startTime)) {
-          refundMsgEl.textContent = "Le remboursement n'est plus possible (moins de 24h avant la séance).";
+          refundMsgEl.textContent =
+            "Le remboursement n'est plus possible (moins de 24h avant la séance).";
           return;
         }
 
@@ -1640,24 +1994,26 @@
         refundMsgEl.textContent = "Demande de remboursement en cours...";
 
         try {
-          const res = await fetch(API_BASE + "/api/refund-reservation", {
+          const response = await fetch(API_BASE + "/api/refund-reservation", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
+              Authorization: "Bearer " + token
             },
-            body: JSON.stringify({ reservationId }),
+            body: JSON.stringify({ reservationId })
           });
 
-          const data = await safeJson(res);
+          const data = await safeJson(response);
 
-          if (!res.ok || data.success !== true) {
+          if (!response.ok || data.success !== true) {
             btn.disabled = false;
-            refundMsgEl.textContent = data.error || "Impossible de procéder au remboursement.";
+            refundMsgEl.textContent =
+              data.error || "Impossible de procéder au remboursement.";
             return;
           }
 
-          refundMsgEl.textContent = "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
+          refundMsgEl.textContent =
+            "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
           refundMsgEl.classList.add("ok");
           loadReservations();
         } catch (err) {
@@ -1668,45 +2024,77 @@
       });
     }
 
-    // ✅ Gestion QR (liste + modal)
     function initQrActions() {
       const listEl = document.getElementById("reservations-list");
       const closeBtn = document.getElementById("qr-close-btn");
       const modal = document.getElementById("qr-modal");
 
-      if (closeBtn) closeBtn.addEventListener("click", closeQrModal);
+      if (closeBtn) {
+        closeBtn.addEventListener("click", closeQrModal);
+      }
 
       if (modal) {
         modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeQrModal();
+          const rect = modal.getBoundingClientRect();
+          const isInDialog =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width;
+
+          if (!isInDialog) {
+            closeQrModal();
+          }
+        });
+
+        modal.addEventListener("cancel", (e) => {
+          e.preventDefault();
+          closeQrModal();
         });
       }
 
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal && !modal.hasAttribute("hidden")) closeQrModal();
+        if (e.key !== "Escape") return;
+        if (!modal || !modal.open) return;
+        closeQrModal();
       });
 
       if (!listEl) return;
 
       listEl.addEventListener("click", (e) => {
         const qrBtn = e.target.closest(".reservation-qr-btn");
-        if (qrBtn && !qrBtn.hasAttribute("disabled")) {
-          const url = qrBtn.getAttribute("data-qr-url");
-          const title = qrBtn.getAttribute("data-qr-title") || "Présentez ce QR code à l’accueil.";
-          if (url) openQrModal(url, title);
+        if (!qrBtn || qrBtn.hasAttribute("disabled")) return;
+
+        const url = qrBtn.getAttribute("data-qr-url");
+        const title =
+          qrBtn.getAttribute("data-qr-title") || "Présentez ce QR code à l’accueil.";
+
+        if (url) {
+          openQrModal(url, title);
         }
       });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function initMobileMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
+      if (!burgerBtn || !mobileNav) return;
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => { mobileNav.classList.toggle("open"); });
-        mobileNav.addEventListener("click", (e) => { if (e.target.tagName === "A") mobileNav.classList.remove("open"); });
-      }
+      burgerBtn.addEventListener("click", () => {
+        const willOpen = !mobileNav.classList.contains("open");
+        mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
 
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target.tagName !== "A") return;
+        mobileNav.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initMobileMenu();
       updateCartIcon();
       initLoginForm();
       initLogout();
@@ -1721,8 +2109,6 @@
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-    // ✅ évite "assign to global variable"
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1749,18 +2135,24 @@
           .insert({ email });
 
         if (error) {
-          if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
+          const isDuplicate =
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"));
+
+          if (isDuplicate) {
             messageBox.style.color = "#38bdf8";
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
-          } else {
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message;
+            return;
           }
-        } else {
-          messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci ! Vous êtes inscrit.";
-          emailInput.value = "";
+
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur : " + error.message;
+          return;
         }
+
+        messageBox.style.color = "#38bdf8";
+        messageBox.textContent = "Merci ! Vous êtes inscrit.";
+        emailInput.value = "";
       });
     });
   </script>
