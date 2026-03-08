@@ -120,8 +120,6 @@
       padding: 0 1.5rem;
     }
 
-    /* ======================= HEADER GLOBAL ======================= */
-
     .site-header {
       position: fixed;
       top: 0;
@@ -277,6 +275,7 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
     .burger-button {
@@ -304,6 +303,7 @@
       z-index:40;
       border-bottom:1px solid #111827;
     }
+
     .mobile-nav ul {
       list-style:none;
       padding:0;
@@ -313,6 +313,7 @@
       gap:12px;
       font-size:15px;
     }
+
     .mobile-nav a { color:#fff; }
     .mobile-nav.open { display:block; }
 
@@ -329,7 +330,6 @@
       .brand-logo { width: 64px; }
     }
 
-    /* ---------- HERO RÉSERVATION ---------- */
     .hero-resa {
       position: relative;
       padding: 12rem 0 3.25rem;
@@ -399,7 +399,6 @@
       margin-bottom: 0.75rem;
     }
 
-    /* ===== HEADER FORM ===== */
     .resa-header {
       display: flex;
       flex-wrap: wrap;
@@ -658,18 +657,16 @@
       min-height: 1em;
     }
 
-    #slot-modal[hidden] { display: none; }
+    dialog#slot-modal {
+      border: none;
+      padding: 0;
+      background: transparent;
+      max-width: 100%;
+    }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
+    dialog#slot-modal::backdrop {
       background: rgba(15,23,42,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 60;
       backdrop-filter: blur(4px);
-      padding: 18px;
     }
 
     .modal-dialog {
@@ -677,9 +674,10 @@
       border-radius: 22px;
       padding: 1.85rem 1.85rem 1.6rem;
       max-width: 520px;
-      width: 100%;
+      width: min(520px, calc(100vw - 36px));
       box-shadow: 0 24px 70px rgba(0,0,0,0.95);
       border: 1px solid rgba(248,250,251,0.12);
+      color: #F9FAFB;
     }
 
     .modal-dialog h2 {
@@ -782,10 +780,6 @@
       .modal-actions button { width: 100%; }
     }
 
-    /* =======================
-       VUE MOBILE : créneaux en cartes (plus lisible)
-       ======================= */
-
     .mobile-slots {
       display: none;
       margin-top: 14px;
@@ -823,13 +817,12 @@
       white-space: nowrap;
     }
 
-    /* ✅ CENTRAGE + rendu plus clean sur mobile */
     .mobile-slot-grid {
       padding: 14px 12px 16px;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      justify-content: center;   /* ✅ centre les pills */
+      justify-content: center;
       align-items: stretch;
     }
 
@@ -839,13 +832,12 @@
       color: #ECFDF5;
       border-radius: 999px;
       padding: 12px 14px;
-      min-width: 180px;          /* ✅ plus homogène */
+      min-width: 180px;
       max-width: 240px;
       cursor: pointer;
       user-select: none;
       transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-
-      display: flex;             /* ✅ centre le texte */
+      display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
@@ -910,7 +902,9 @@
       margin:0 auto 24px;
       text-align:center;
     }
+
     .newsletter-container h3 { margin-bottom:6px; }
+
     .newsletter-container p {
       margin-top: 0;
       font-size: 13px;
@@ -1006,7 +1000,6 @@
 
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -1030,12 +1023,20 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">☰</button>
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -1047,7 +1048,6 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
   <section class="hero-resa">
     <div class="hero-inner">
       <p class="hero-eyebrow">RÉSERVATION KARAOKÉ BOX</p>
@@ -1115,7 +1115,6 @@
           </table>
         </div>
 
-        <!-- ✅ Vue mobile (plus lisible) -->
         <div id="mobile-slots" class="mobile-slots" aria-label="Créneaux disponibles (vue mobile)"></div>
 
         <p class="resa-pricing-rules">
@@ -1129,10 +1128,10 @@
     </div>
   </main>
 
-  <!-- MODAL CONFIRMATION CRÉNEAU -->
-  <div id="slot-modal" class="modal-backdrop" hidden>
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-slot-info">
-      <h2>Session ajoutée au panier</h2>
+  <!-- MODAL -->
+  <dialog id="slot-modal" aria-labelledby="modal-title" aria-describedby="modal-slot-info">
+    <div class="modal-dialog">
+      <h2 id="modal-title">Session ajoutée au panier</h2>
       <p id="modal-slot-info"></p>
 
       <p class="modal-extra-text">
@@ -1165,9 +1164,8 @@
         <button id="modal-cart" type="button">Valider mon panier</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -1244,7 +1242,9 @@
       return `${y}-${m}-${d}`;
     }
 
-    function pad2(n) { return String(n).padStart(2, "0"); }
+    function pad2(n) {
+      return String(n).padStart(2, "0");
+    }
 
     function minutesToTimeLabel(totalMin) {
       const h = Math.floor((totalMin / 60) % 24);
@@ -1256,7 +1256,7 @@
     function parseTimeToMinutes(value) {
       if (value === null || value === undefined) return null;
 
-      if (typeof value === "number" && !isNaN(value)) {
+      if (typeof value === "number" && !Number.isNaN(value)) {
         if (value >= 0 && value <= 23) return value * 60;
         if (value >= 0 && value < 24 * 60) return value;
         return null;
@@ -1265,24 +1265,24 @@
       if (typeof value !== "string") return null;
       const v = value.trim();
 
-      let m = v.match(/^(\d{1,2}):(\d{2})$/);
-      if (m) {
-        const hh = parseInt(m[1], 10);
-        const mm = parseInt(m[2], 10);
+      let matchResult = v.match(/^(\d{1,2}):(\d{2})$/);
+      if (matchResult) {
+        const hh = Number.parseInt(matchResult[1], 10);
+        const mm = Number.parseInt(matchResult[2], 10);
         if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) return hh * 60 + mm;
         return null;
       }
 
-      m = v.match(/^(\d{1,2})h(\d{2})?$/i);
-      if (m) {
-        const hh = parseInt(m[1], 10);
-        const mm = m[2] ? parseInt(m[2], 10) : 0;
+      matchResult = v.match(/^(\d{1,2})h(\d{2})?$/i);
+      if (matchResult) {
+        const hh = Number.parseInt(matchResult[1], 10);
+        const mm = matchResult[2] ? Number.parseInt(matchResult[2], 10) : 0;
         if (hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59) return hh * 60 + mm;
         return null;
       }
 
       if (/^\d{1,2}$/.test(v)) {
-        const hh = parseInt(v, 10);
+        const hh = Number.parseInt(v, 10);
         if (hh >= 0 && hh <= 23) return hh * 60;
       }
 
@@ -1298,7 +1298,7 @@
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+      } catch (error) {
         return [];
       }
     }
@@ -1325,12 +1325,13 @@
       const isoDate = toLocalYMD(dateObj);
       const panier = getPanier();
 
-      const exists = panier.some(item =>
+      const exists = panier.some((item) =>
         item.type === "reservation" &&
         item.boxId === boxId &&
         item.date === isoDate &&
         getItemStartMinutes(item) === startMinutes
       );
+
       if (exists) return;
 
       const startLabel = minutesToTimeLabel(startMinutes);
@@ -1341,7 +1342,7 @@
         boxName,
         date: isoDate,
         hour: startLabel,
-        startMinutes: startMinutes,
+        startMinutes,
         price,
         persons
       });
@@ -1354,7 +1355,8 @@
       const prixAffiche = price.toFixed(2).replace(".", ",");
 
       if (msgEl) {
-        msgEl.innerHTML = "<span>Session ajoutée au panier : <strong>" +
+        msgEl.innerHTML =
+          "<span>Session ajoutée au panier : <strong>" +
           boxName +
           "</strong> – " +
           heureLabel +
@@ -1372,9 +1374,9 @@
     async function checkDateContext(isoDate) {
       const parts = isoDate.split("-");
       const dateObj = new Date(
-        parseInt(parts[0], 10),
-        parseInt(parts[1], 10) - 1,
-        parseInt(parts[2], 10)
+        Number.parseInt(parts[0], 10),
+        Number.parseInt(parts[1], 10) - 1,
+        Number.parseInt(parts[2], 10)
       );
 
       const day = dateObj.getDay();
@@ -1387,74 +1389,85 @@
           currentDateIsHoliday = false;
           return;
         }
+
         const data = await res.json();
-        currentDateIsHoliday = !!(
+        const holidayValue =
           data.vacances ??
           data.is_vacances ??
           data.isHoliday ??
-          data.holiday
-        );
-      } catch (e) {
-        console.error("Erreur fetch vacances :", e);
+          data.holiday;
+
+        currentDateIsHoliday = Boolean(holidayValue);
+      } catch (error) {
+        console.error("Erreur fetch vacances :", error);
         currentDateIsHoliday = false;
       }
     }
 
-    function getSlotPrice(date, startMinutes, persons) {
-      const nb = persons ? Math.max(persons, 2) : 2;
+    function getPerPersonRate(startMinutes) {
       const hour = Math.floor(startMinutes / 60);
 
-      let baseRate;
       if (currentDateIsWeekend || currentDateIsHoliday) {
-        baseRate = 9.90;
-      } else {
-        baseRate = (hour >= 4 && hour < 14) ? 7.90 : 9.90;
+        return 9.90;
       }
 
+      if (hour >= 4 && hour < 14) {
+        return 7.90;
+      }
+
+      return 9.90;
+    }
+
+    function getSlotPrice(_date, startMinutes, persons) {
+      const nb = persons ? Math.max(persons, 2) : 2;
+      const baseRate = getPerPersonRate(startMinutes);
       const total = baseRate * nb;
       return Number(total.toFixed(2));
     }
 
     let bookedIndex = {};
     let selectedPersons = 2;
+
     const BOXES = [
       { id: 1, name: "Nuit étoilée" },
       { id: 2, name: "Ambiance Sunset" }
     ];
-    let currentPlanningDateIso = null;
 
+    let currentPlanningDateIso = null;
     let currentSlotChoice = null;
     let currentSlotCell = null;
 
     async function fetchReservationsForDate(isoDate) {
       bookedIndex = {};
+
       try {
         const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
         if (!res.ok) {
           console.error("Erreur HTTP /api/slots :", res.status);
           return;
         }
+
         const json = await res.json();
         const reservations = json.reservations || [];
 
-        reservations.forEach(r => {
-          const start = new Date(r.start_time);
+        reservations.forEach((reservation) => {
+          const start = new Date(reservation.start_time);
           const h = start.getHours();
           const m = start.getMinutes();
           const startMinutes = h * 60 + m;
 
-          const boxId = r.box_id;
+          const boxId = reservation.box_id;
           const key = `${boxId}-${startMinutes}`;
           bookedIndex[key] = true;
         });
-      } catch (e) {
-        console.error("Erreur fetchReservationsForDate :", e);
+      } catch (error) {
+        console.error("Erreur fetchReservationsForDate :", error);
       }
     }
 
     function isSlotBooked(boxId, startMinutes) {
       const key = `${boxId}-${startMinutes}`;
-      return !!bookedIndex[key];
+      return Boolean(bookedIndex[key]);
     }
 
     function markCellSelected(td) {
@@ -1467,6 +1480,7 @@
 
     function updateModalSummary() {
       if (!currentSlotChoice) return;
+
       const infoEl = document.getElementById("modal-slot-info");
       const personsCurrentEl = document.getElementById("modal-persons-current");
 
@@ -1485,7 +1499,10 @@
           currentSlotChoice.persons +
           " pers.";
       }
-      if (personsCurrentEl) personsCurrentEl.textContent = currentSlotChoice.persons;
+
+      if (personsCurrentEl) {
+        personsCurrentEl.textContent = currentSlotChoice.persons;
+      }
     }
 
     function openSlotModal(slot, tdOrNull) {
@@ -1494,38 +1511,62 @@
 
       const modal = document.getElementById("slot-modal");
       const personsSelect = document.getElementById("modal-persons-select");
-      if (personsSelect) personsSelect.value = String(slot.persons);
+
+      if (personsSelect) {
+        personsSelect.value = String(slot.persons);
+      }
 
       updateModalSummary();
-      if (modal) modal.removeAttribute("hidden");
+
+      if (modal && typeof modal.showModal === "function") {
+        modal.showModal();
+      }
     }
 
     function closeSlotModal() {
       const modal = document.getElementById("slot-modal");
-      if (modal) modal.setAttribute("hidden", "true");
+      if (modal && typeof modal.close === "function" && modal.open) {
+        modal.close();
+      }
+
       currentSlotChoice = null;
       currentSlotCell = null;
     }
 
     function finalizeSlot(goToCart) {
       if (!currentSlotChoice) return;
-      const s = currentSlotChoice;
 
-      addSlotToCart(s.boxId, s.boxName, s.dateObj, s.startMinutes, s.price, s.persons);
+      const slotChoice = currentSlotChoice;
+
+      addSlotToCart(
+        slotChoice.boxId,
+        slotChoice.boxName,
+        slotChoice.dateObj,
+        slotChoice.startMinutes,
+        slotChoice.price,
+        slotChoice.persons
+      );
 
       if (currentSlotCell) {
         markCellSelected(currentSlotCell);
-      } else {
-        if (typeof refreshPlanningGlobal === "function") refreshPlanningGlobal();
+      }
+
+      if (!currentSlotCell && typeof refreshPlanningGlobal === "function") {
+        refreshPlanningGlobal();
       }
 
       closeSlotModal();
-      if (goToCart) window.location.href = "panier.html";
+
+      if (goToCart) {
+        window.location.href = "panier.html";
+      }
     }
 
     function buildStartMinutesList() {
       const list = [];
-      for (let m = 0; m < 24 * 60; m += SLOT_STEP_MIN) list.push(m);
+      for (let m = 0; m < 24 * 60; m += SLOT_STEP_MIN) {
+        list.push(m);
+      }
       return list;
     }
 
@@ -1540,16 +1581,15 @@
       const startMinutesList = buildStartMinutesList();
       table.innerHTML = "";
 
-      // colgroup fixe (anti chevauchement header)
       const colgroup = document.createElement("colgroup");
       const colHour = document.createElement("col");
       colHour.style.width = "170px";
       colgroup.appendChild(colHour);
 
       BOXES.forEach(() => {
-        const c = document.createElement("col");
-        c.style.width = "235px";
-        colgroup.appendChild(c);
+        const col = document.createElement("col");
+        col.style.width = "235px";
+        colgroup.appendChild(col);
       });
 
       table.appendChild(colgroup);
@@ -1560,11 +1600,13 @@
       const hourTh = document.createElement("th");
       hourTh.textContent = "Heure (session 1h30)";
       hourTh.className = "hour-cell";
+      hourTh.setAttribute("scope", "col");
       headRow.appendChild(hourTh);
 
-      BOXES.forEach(box => {
+      BOXES.forEach((box) => {
         const th = document.createElement("th");
         th.textContent = box.name;
+        th.setAttribute("scope", "col");
         headRow.appendChild(th);
       });
 
@@ -1579,8 +1621,7 @@
         date.getMonth() === now.getMonth() &&
         date.getDate() === now.getDate();
 
-      startMinutesList.forEach(startMinutes => {
-        // ✅ PC : si le créneau est passé aujourd’hui, on n’affiche PAS la ligne du tout
+      startMinutesList.forEach((startMinutes) => {
         if (isToday) {
           const nowMinutes = now.getHours() * 60 + now.getMinutes();
           const isPastToday = startMinutes <= nowMinutes;
@@ -1589,12 +1630,13 @@
 
         const tr = document.createElement("tr");
 
-        const hourTd = document.createElement("td");
-        hourTd.className = "hour-cell";
-        hourTd.textContent = formatSlotRange(startMinutes);
-        tr.appendChild(hourTd);
+        const hourHeader = document.createElement("th");
+        hourHeader.className = "hour-cell";
+        hourHeader.textContent = formatSlotRange(startMinutes);
+        hourHeader.setAttribute("scope", "row");
+        tr.appendChild(hourHeader);
 
-        BOXES.forEach(box => {
+        BOXES.forEach((box) => {
           const td = document.createElement("td");
           td.classList.add("slot-cell");
           td.dataset.boxId = String(box.id);
@@ -1603,13 +1645,7 @@
 
           const persons = selectedPersons || 2;
           const totalPrice = getSlotPrice(date, startMinutes, persons);
-
-          const hour = Math.floor(startMinutes / 60);
-          const perPersonRate =
-            (currentDateIsWeekend || currentDateIsHoliday)
-              ? 9.90
-              : ((hour >= 4 && hour < 14) ? 7.90 : 9.90);
-
+          const perPersonRate = getPerPersonRate(startMinutes);
           const booked = isSlotBooked(box.id, startMinutes);
 
           const wrapper = document.createElement("div");
@@ -1622,7 +1658,7 @@
             statusSpan.textContent = "Réservé";
             wrapper.appendChild(statusSpan);
           } else {
-            const alreadyInCart = panier.some(item =>
+            const alreadyInCart = panier.some((item) =>
               item.type === "reservation" &&
               item.boxId === box.id &&
               item.date === isoDate &&
@@ -1681,7 +1717,6 @@
       table.appendChild(tbody);
     }
 
-    // Vue mobile "cartes" : uniquement les créneaux dispo (et ceux déjà au panier)
     function buildMobileSlots(date) {
       const container = document.getElementById("mobile-slots");
       if (!container) return;
@@ -1698,7 +1733,7 @@
 
       container.innerHTML = "";
 
-      BOXES.forEach(box => {
+      BOXES.forEach((box) => {
         const card = document.createElement("div");
         card.className = "mobile-box-card";
 
@@ -1722,7 +1757,7 @@
 
         let countShown = 0;
 
-        startMinutesList.forEach(startMinutes => {
+        startMinutesList.forEach((startMinutes) => {
           const booked = isSlotBooked(box.id, startMinutes);
 
           let isPastToday = false;
@@ -1731,7 +1766,7 @@
             isPastToday = startMinutes <= nowMinutes;
           }
 
-          const alreadyInCart = panier.some(item =>
+          const alreadyInCart = panier.some((item) =>
             item.type === "reservation" &&
             item.boxId === box.id &&
             item.date === isoDate &&
@@ -1743,12 +1778,7 @@
 
           const personsForSlot = selectedPersons || 1;
           const priceForSlot = getSlotPrice(date, startMinutes, personsForSlot);
-
-          const hour = Math.floor(startMinutes / 60);
-          const perPersonRate =
-            (currentDateIsWeekend || currentDateIsHoliday)
-              ? 9.90
-              : ((hour >= 4 && hour < 14) ? 7.90 : 9.90);
+          const perPersonRate = getPerPersonRate(startMinutes);
 
           const pill = document.createElement("div");
           pill.className = "mobile-slot-pill" + (alreadyInCart ? " selected" : "");
@@ -1792,10 +1822,11 @@
           empty.className = "mobile-empty";
           empty.textContent = "Aucun créneau disponible pour cette box à cette date.";
           card.appendChild(empty);
-        } else {
-          card.appendChild(grid);
+          container.appendChild(card);
+          return;
         }
 
+        card.appendChild(grid);
         container.appendChild(card);
       });
     }
@@ -1803,10 +1834,19 @@
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
+
       if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => mobileNav.classList.toggle("open"));
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") mobileNav.classList.remove("open");
+        burgerBtn.addEventListener("click", () => {
+          mobileNav.classList.toggle("open");
+          const isExpanded = mobileNav.classList.contains("open");
+          burgerBtn.setAttribute("aria-expanded", String(isExpanded));
+        });
+
+        mobileNav.addEventListener("click", (event) => {
+          if (event.target.tagName === "A") {
+            mobileNav.classList.remove("open");
+            burgerBtn.setAttribute("aria-expanded", "false");
+          }
         });
       }
 
@@ -1826,18 +1866,26 @@
 
       if (dateInput) {
         dateInput.min = isoToday;
-        if (urlDate && urlDate >= isoToday) dateInput.value = urlDate;
-        else dateInput.value = isoToday;
+        if (urlDate && urlDate >= isoToday) {
+          dateInput.value = urlDate;
+        } else {
+          dateInput.value = isoToday;
+        }
       }
 
       if (personsSelect) {
         let initialPersons = 2;
+
         if (urlPeople) {
-          const n = parseInt(urlPeople, 10);
-          if (!isNaN(n) && n >= 1 && n <= 8) initialPersons = n;
+          const peopleValue = Number.parseInt(urlPeople, 10);
+          if (!Number.isNaN(peopleValue) && peopleValue >= 1 && peopleValue <= 8) {
+            initialPersons = peopleValue;
+          }
         }
+
         selectedPersons = initialPersons;
         personsSelect.value = String(initialPersons);
+
         if (personsIndicator) {
           personsIndicator.textContent =
             "– " + initialPersons + " personne" + (initialPersons > 1 ? "s" : "") +
@@ -1845,14 +1893,22 @@
         }
 
         personsSelect.addEventListener("change", () => {
-          let n = parseInt(personsSelect.value, 10);
-          if (isNaN(n) || n < 1) n = 1;
-          if (n > 8) n = 8;
-          selectedPersons = n;
+          let peopleCount = Number.parseInt(personsSelect.value, 10);
+
+          if (Number.isNaN(peopleCount) || peopleCount < 1) {
+            peopleCount = 1;
+          }
+
+          if (peopleCount > 8) {
+            peopleCount = 8;
+          }
+
+          selectedPersons = peopleCount;
 
           if (personsIndicator) {
             personsIndicator.textContent =
-              "– " + n + " personne" + (n > 1 ? "s" : "") + " (facturation min. 2)";
+              "– " + peopleCount + " personne" + (peopleCount > 1 ? "s" : "") +
+              " (facturation min. 2)";
           }
 
           refreshPlanning();
@@ -1864,6 +1920,7 @@
 
         const iso = dateInput.value;
         const todayYMD = toLocalYMD(new Date());
+
         if (iso < todayYMD) {
           const msg = document.getElementById("message");
           if (msg) msg.textContent = "Tu ne peux pas réserver à une date passée 🙂";
@@ -1872,9 +1929,9 @@
 
         const parts = iso.split("-");
         const theDate = new Date(
-          parseInt(parts[0], 10),
-          parseInt(parts[1], 10) - 1,
-          parseInt(parts[2], 10)
+          Number.parseInt(parts[0], 10),
+          Number.parseInt(parts[1], 10) - 1,
+          Number.parseInt(parts[2], 10)
         );
 
         await checkDateContext(iso);
@@ -1884,13 +1941,17 @@
         buildMobileSlots(theDate);
 
         const msgEl = document.getElementById("message");
-        if (msgEl) msgEl.textContent = "";
+        if (msgEl) {
+          msgEl.textContent = "";
+        }
       }
 
       refreshPlanningGlobal = refreshPlanning;
 
       if (loadButton) {
-        loadButton.addEventListener("click", () => refreshPlanning());
+        loadButton.addEventListener("click", () => {
+          refreshPlanning();
+        });
       }
 
       refreshPlanning();
@@ -1902,28 +1963,59 @@
       if (modalPersonsSelect) {
         modalPersonsSelect.addEventListener("change", () => {
           if (!currentSlotChoice) return;
-          let n = parseInt(modalPersonsSelect.value, 10);
-          if (isNaN(n) || n < 1) n = 1;
-          if (n > 8) n = 8;
-          currentSlotChoice.persons = n;
-          currentSlotChoice.price = getSlotPrice(currentSlotChoice.dateObj, currentSlotChoice.startMinutes, n);
+
+          let peopleCount = Number.parseInt(modalPersonsSelect.value, 10);
+
+          if (Number.isNaN(peopleCount) || peopleCount < 1) {
+            peopleCount = 1;
+          }
+
+          if (peopleCount > 8) {
+            peopleCount = 8;
+          }
+
+          currentSlotChoice.persons = peopleCount;
+          currentSlotChoice.price = getSlotPrice(
+            currentSlotChoice.dateObj,
+            currentSlotChoice.startMinutes,
+            peopleCount
+          );
+
           updateModalSummary();
         });
       }
 
-      if (continueBtn) continueBtn.addEventListener("click", () => finalizeSlot(false));
-      if (cartBtn) cartBtn.addEventListener("click", () => finalizeSlot(true));
+      if (continueBtn) {
+        continueBtn.addEventListener("click", () => finalizeSlot(false));
+      }
+
+      if (cartBtn) {
+        cartBtn.addEventListener("click", () => finalizeSlot(true));
+      }
 
       const modal = document.getElementById("slot-modal");
       if (modal) {
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeSlotModal();
+        modal.addEventListener("click", (event) => {
+          const rect = modal.getBoundingClientRect();
+          const isInDialog =
+            rect.top <= event.clientY &&
+            event.clientY <= rect.top + rect.height &&
+            rect.left <= event.clientX &&
+            event.clientX <= rect.left + rect.width;
+
+          if (!isInDialog) {
+            closeSlotModal();
+          }
+        });
+
+        modal.addEventListener("cancel", (event) => {
+          event.preventDefault();
+          closeSlotModal();
         });
       }
     });
   </script>
 
-  <!-- Supabase Newsletter Script -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
