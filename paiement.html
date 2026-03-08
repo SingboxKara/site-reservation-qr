@@ -84,11 +84,11 @@
       --sb-bg-deep: #020617;
       --sb-bg-soft: #030712;
       --sb-card: #050b18;
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #CBD5E1;
-      --sb-text-soft: #E5E7EB;
-      --sb-red: #C94C35;
-      --sb-orange: #F97316;
+      --sb-text-main: #f9fafb;
+      --sb-text-muted: #cbd5e1;
+      --sb-text-soft: #e5e7eb;
+      --sb-red: #c94c35;
+      --sb-orange: #f97316;
       --sb-border-soft: rgba(148, 163, 184, 0.35);
       --sb-container-width: 1180px;
     }
@@ -122,6 +122,18 @@
       font-family: "League Spartan", system-ui, sans-serif;
       letter-spacing: 0.03em;
       margin: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .container {
@@ -178,7 +190,7 @@
       font-weight: 600;
       letter-spacing: 0.15em;
       font-size: 26px;
-      color: #F9FAFB;
+      color: #f9fafb;
       text-transform: uppercase;
       white-space: nowrap;
       display: flex;
@@ -223,11 +235,13 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -245,7 +259,7 @@
       border-radius: 999px;
       font-weight: 600;
       font-size: 14px;
-      color: #F9FAFB;
+      color: #f9fafb;
       white-space: nowrap;
       box-shadow:
         0 0 0 1px rgba(249,250,251,0.08),
@@ -253,7 +267,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -442,7 +457,7 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: #D1D5DB;
+      color: #d1d5db;
       margin-bottom: 8px;
     }
 
@@ -454,7 +469,7 @@
     .checkout-header p {
       margin: 0;
       font-size: 14px;
-      color: #E5E7EB;
+      color: #e5e7eb;
     }
 
     .checkout-layout {
@@ -511,7 +526,7 @@
     .billing-field label {
       display: block;
       margin-bottom: 4px;
-      color: #F3F4F6;
+      color: #f3f4f6;
     }
 
     .billing-field .field-help {
@@ -525,7 +540,7 @@
       width: 100%;
       font-family: inherit;
       font-size: 13px;
-      color: #F9FAFB;
+      color: #f9fafb;
       background: #020617;
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
@@ -539,8 +554,8 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       background-image:
-        linear-gradient(45deg, transparent 50%, #CBD5E1 50%),
-        linear-gradient(135deg, #CBD5E1 50%, transparent 50%);
+        linear-gradient(45deg, transparent 50%, #cbd5e1 50%),
+        linear-gradient(135deg, #cbd5e1 50%, transparent 50%);
       background-position:
         calc(100% - 14px) calc(50% - 3px),
         calc(100% - 8px) calc(50% - 3px);
@@ -549,7 +564,7 @@
     }
 
     .billing-field input::placeholder {
-      color: #CBD5E1;
+      color: #cbd5e1;
     }
 
     .billing-field input:focus,
@@ -579,7 +594,7 @@
       padding: 6px 14px;
       border-radius: 999px;
       cursor: pointer;
-      color: #F3F4F6;
+      color: #f3f4f6;
       transition: background 0.15s ease, color 0.15s ease;
     }
 
@@ -652,7 +667,7 @@
 
     .order-note {
       font-size: 11px;
-      color: #D1D5DB;
+      color: #d1d5db;
       margin-top: 2px;
     }
 
@@ -675,17 +690,20 @@
 
     .promo-toggle {
       font-size: 12px;
-      color: #FDBA74;
+      color: #ffddb8;
       text-decoration: underline;
       cursor: pointer;
       white-space: nowrap;
       background: transparent;
       border: none;
       padding: 0;
+      font-weight: 600;
     }
 
-    .promo-toggle:hover {
+    .promo-toggle:hover,
+    .promo-toggle:focus-visible {
       text-decoration: none;
+      color: #fff2e4;
     }
 
     .promo-body {
@@ -713,13 +731,13 @@
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 13px;
       outline: none;
     }
 
     .promo-input-group input::placeholder {
-      color: #CBD5E1;
+      color: #cbd5e1;
     }
 
     .promo-input-group button {
@@ -729,7 +747,7 @@
       font-size: 12px;
       cursor: pointer;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-weight: 600;
       white-space: nowrap;
       box-shadow:
@@ -740,15 +758,15 @@
     .promo-message {
       margin-top: 4px;
       font-size: 11px;
-      color: #D1D5DB;
+      color: #d1d5db;
     }
 
     .promo-message.ok {
-      color: #D1FAE5;
+      color: #d1fae5;
     }
 
     .promo-message.error {
-      color: #FECACA;
+      color: #fecaca;
     }
 
     .payment-card h3 {
@@ -777,33 +795,36 @@
       font-size: 11px;
       font-weight: 700;
       color: #020617;
-      background: #FACC15;
+      background: #facc15;
     }
 
     .payment-logo.visa {
-      background: #1D4ED8;
-      color: #F9FAFB;
+      background: #1d4ed8;
+      color: #f9fafb;
     }
 
     .payment-logo.mc {
-      background: linear-gradient(90deg,#F97316,#EF4444);
-      color: #F9FAFB;
+      background: linear-gradient(90deg,#f97316,#ef4444);
+      color: #f9fafb;
     }
 
     .payment-info {
       font-size: 11px;
-      color: #E5E7EB;
+      color: #e5e7eb;
       line-height: 1.6;
       margin-bottom: 10px;
     }
 
     .payment-info a {
-      color: #FDBA74;
+      color: #ffddb8;
       text-decoration: underline;
+      font-weight: 600;
     }
 
-    .payment-info a:hover {
+    .payment-info a:hover,
+    .payment-info a:focus-visible {
       text-decoration: none;
+      color: #fff2e4;
     }
 
     .card-element-wrapper {
@@ -819,7 +840,7 @@
 
     #card-errors {
       font-size: 11px;
-      color: #FECACA;
+      color: #fecaca;
       margin-top: 4px;
       min-height: 1em;
     }
@@ -838,7 +859,7 @@
       align-items: flex-start;
       gap: 8px;
       cursor: pointer;
-      color: #F3F4F6;
+      color: #f3f4f6;
     }
 
     .payment-consents input[type="checkbox"] {
@@ -853,12 +874,15 @@
     }
 
     .payment-consents a {
-      color: #FDBA74;
+      color: #ffddb8;
       text-decoration: underline;
+      font-weight: 600;
     }
 
-    .payment-consents a:hover {
+    .payment-consents a:hover,
+    .payment-consents a:focus-visible {
       text-decoration: none;
+      color: #fff2e4;
     }
 
     .payment-warning {
@@ -867,7 +891,7 @@
       border: 1px solid rgba(248,113,113,0.8);
       background: rgba(127,29,29,0.65);
       padding: 6px 10px;
-      color: #FEE2E2;
+      color: #fee2e2;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
@@ -880,7 +904,7 @@
 
     .checkout-error {
       font-size: 13px;
-      color: #FECACA;
+      color: #fecaca;
       margin-top: 8px;
       min-height: 1.2em;
       font-weight: 500;
@@ -888,7 +912,7 @@
 
     .checkout-success {
       font-size: 11px;
-      color: #D1FAE5;
+      color: #d1fae5;
       margin-top: 4px;
       min-height: 1em;
     }
@@ -905,7 +929,7 @@
       border-radius: 999px;
       padding: 0.85rem 1.4rem;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
@@ -917,7 +941,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .checkout-submit button:hover:not([disabled]) {
+    .checkout-submit button:hover:not([disabled]),
+    .checkout-submit button:focus-visible:not([disabled]) {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
@@ -971,13 +996,14 @@
 
     .empty-cart-btn-primary {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.14),
         0 18px 45px rgba(0,0,0,0.95);
     }
 
-    .empty-cart-btn-primary:hover {
+    .empty-cart-btn-primary:hover,
+    .empty-cart-btn-primary:focus-visible {
       filter: brightness(1.04);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
@@ -986,11 +1012,12 @@
 
     .empty-cart-btn-secondary {
       background: transparent;
-      color: #E5E7EB;
+      color: #e5e7eb;
       border-color: rgba(148,163,184,0.6);
     }
 
-    .empty-cart-btn-secondary:hover {
+    .empty-cart-btn-secondary:hover,
+    .empty-cart-btn-secondary:focus-visible {
       border-color: rgba(248,250,251,0.9);
     }
 
@@ -1111,7 +1138,7 @@
       border: 1px solid rgba(248,250,251,0.08);
       background: rgba(15,23,42,0.9);
       line-height: 1.5;
-      color: #F3F4F6;
+      color: #f3f4f6;
     }
 
     .thankyou-deposit strong {
@@ -1126,7 +1153,7 @@
       border: 1px solid rgba(148,163,184,0.4);
       background: rgba(15,23,42,0.8);
       line-height: 1.5;
-      color: #F3F4F6;
+      color: #f3f4f6;
     }
 
     .thankyou-practical strong {
@@ -1164,7 +1191,7 @@
 
     .thankyou-btn-primary {
       background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.14),
         0 18px 45px rgba(0,0,0,0.95);
@@ -1172,18 +1199,20 @@
 
     .thankyou-btn-secondary {
       background: transparent;
-      color: #E5E7EB;
+      color: #e5e7eb;
       border-color: rgba(148,163,184,0.6);
     }
 
-    .thankyou-btn-primary:hover {
+    .thankyou-btn-primary:hover,
+    .thankyou-btn-primary:focus-visible {
       filter: brightness(1.04);
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
         0 24px 65px rgba(0,0,0,1);
     }
 
-    .thankyou-btn-secondary:hover {
+    .thankyou-btn-secondary:hover,
+    .thankyou-btn-secondary:focus-visible {
       border-color: rgba(248,250,251,0.9);
     }
 
@@ -1242,12 +1271,12 @@
       max-width: 360px;
       font-size: 14px;
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       outline: none;
     }
 
     footer input[type="email"]::placeholder {
-      color: #CBD5E1;
+      color: #cbd5e1;
     }
 
     footer button {
@@ -1255,7 +1284,7 @@
       border: none;
       border-radius: 999px;
       background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
@@ -1296,7 +1325,7 @@
       padding-top: 8px;
       font-size: 11px;
       text-align: center;
-      color: #CBD5E1;
+      color: #cbd5e1;
       border-top: 1px solid #111827;
     }
 
@@ -1320,25 +1349,8 @@
       }
     }
 
-    .auth-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.96));
-      backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 80;
-      padding: 16px;
-    }
-
-    .auth-modal-backdrop.open {
-      display: flex;
-    }
-
-    .auth-modal {
-      width: 100%;
-      max-width: 440px;
+    dialog.auth-modal {
+      width: min(440px, calc(100% - 32px));
       background:
         radial-gradient(circle at 10% 0%, rgba(249,115,22,0.18), transparent 55%),
         radial-gradient(circle at 90% 0%, rgba(37,99,235,0.22), transparent 60%),
@@ -1351,6 +1363,12 @@
       padding: 20px 22px 18px;
       position: relative;
       overflow: hidden;
+      color: #f9fafb;
+    }
+
+    dialog.auth-modal::backdrop {
+      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.96));
+      backdrop-filter: blur(10px);
     }
 
     .auth-modal::after {
@@ -1371,7 +1389,7 @@
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #D1D5DB;
+      color: #d1d5db;
       margin-bottom: 4px;
     }
 
@@ -1382,7 +1400,7 @@
 
     .auth-modal-subtext {
       font-size: 12px;
-      color: #E5E7EB;
+      color: #e5e7eb;
       margin-bottom: 10px;
     }
 
@@ -1396,7 +1414,7 @@
       background: rgba(15,23,42,0.9);
       border: 1px solid rgba(248,250,251,0.12);
       margin-bottom: 12px;
-      color: #F3F4F6;
+      color: #f3f4f6;
     }
 
     .auth-loyalty-pill span:first-child {
@@ -1427,7 +1445,7 @@
       border-radius: 999px;
       padding: 6px 10px;
       background: transparent;
-      color: #E5E7EB;
+      color: #e5e7eb;
       font-size: 12px;
       font-weight: 500;
       cursor: pointer;
@@ -1436,7 +1454,7 @@
 
     .auth-tab-btn.active {
       background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.16),
         0 14px 34px rgba(0,0,0,0.9);
@@ -1458,7 +1476,7 @@
     .auth-field label {
       display: block;
       margin-bottom: 3px;
-      color: #E5E7EB;
+      color: #e5e7eb;
       font-size: 12px;
     }
 
@@ -1466,7 +1484,7 @@
       width: 100%;
       font-family: inherit;
       font-size: 12px;
-      color: #F9FAFB;
+      color: #f9fafb;
       background: #020617;
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
@@ -1476,7 +1494,7 @@
     }
 
     .auth-field input::placeholder {
-      color: #CBD5E1;
+      color: #cbd5e1;
     }
 
     .auth-field input:focus {
@@ -1492,7 +1510,7 @@
       border-radius: 999px;
       padding: 0.55rem 1rem;
       background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -1505,7 +1523,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .auth-submit-btn:hover {
+    .auth-submit-btn:hover,
+    .auth-submit-btn:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.03);
       box-shadow:
@@ -1517,7 +1536,7 @@
       min-height: 14px;
       font-size: 11px;
       margin-bottom: 6px;
-      color: #FECACA;
+      color: #fecaca;
     }
 
     .auth-modal-footer {
@@ -1527,26 +1546,27 @@
       gap: 8px;
       margin-top: 6px;
       font-size: 11px;
-      color: #D1D5DB;
+      color: #d1d5db;
     }
 
     .auth-modal-skip {
       border: none;
       background: transparent;
-      color: #D1D5DB;
+      color: #d1d5db;
       font-size: 11px;
       cursor: pointer;
       text-decoration: underline;
     }
 
-    .auth-modal-skip:hover {
-      color: #F3F4F6;
+    .auth-modal-skip:hover,
+    .auth-modal-skip:focus-visible {
+      color: #f3f4f6;
       text-decoration: none;
     }
 
     .auth-modal-small {
       font-size: 10px;
-      color: #D1D5DB;
+      color: #d1d5db;
     }
   </style>
 </head>
@@ -1603,61 +1623,59 @@
   </nav>
 
   <!-- MODAL CONNEXION / FIDÉLITÉ -->
-  <div id="auth-modal-backdrop" class="auth-modal-backdrop">
-    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-      <div class="auth-modal-eyebrow">Programme fidélité</div>
-      <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
-      <p class="auth-modal-subtext">
-        Créez votre compte ou connectez-vous pour cumuler des points à chaque session.
-      </p>
-      <div class="auth-loyalty-pill">
-        <span>★</span>
-        <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
-      </div>
-
-      <div class="auth-tabs">
-        <button type="button" id="auth-btn-login" class="auth-tab-btn active">Se connecter</button>
-        <button type="button" id="auth-btn-register" class="auth-tab-btn">Créer un compte</button>
-      </div>
-
-      <div id="auth-modal-message" class="auth-modal-message"></div>
-
-      <!-- Formulaire LOGIN -->
-      <form id="auth-login-form" class="auth-form">
-        <div class="auth-field">
-          <label for="auth-login-email">Email</label>
-          <input type="email" id="auth-login-email" placeholder="vous@email.fr" required />
-        </div>
-        <div class="auth-field">
-          <label for="auth-login-password">Mot de passe</label>
-          <input type="password" id="auth-login-password" placeholder="Mot de passe" required />
-        </div>
-        <button type="submit" class="auth-submit-btn">Connexion</button>
-      </form>
-
-      <!-- Formulaire REGISTER -->
-      <form id="auth-register-form" class="auth-form hidden">
-        <div class="auth-field">
-          <label for="auth-register-email">Email</label>
-          <input type="email" id="auth-register-email" placeholder="vous@email.fr" required />
-        </div>
-        <div class="auth-field">
-          <label for="auth-register-password">Mot de passe</label>
-          <input type="password" id="auth-register-password" placeholder="Mot de passe" required />
-        </div>
-        <button type="submit" class="auth-submit-btn">Créer mon compte</button>
-      </form>
-
-      <div class="auth-modal-footer">
-        <button type="button" id="auth-modal-continue" class="auth-modal-skip">
-          Continuer sans compte (pas de points)
-        </button>
-        <span class="auth-modal-small">
-          Vous pourrez retrouver vos points et vos réservations dans l’espace “Mon compte”.
-        </span>
-      </div>
+  <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title">
+    <div class="auth-modal-eyebrow">Programme fidélité</div>
+    <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
+    <p class="auth-modal-subtext">
+      Créez votre compte ou connectez-vous pour cumuler des points à chaque session.
+    </p>
+    <div class="auth-loyalty-pill">
+      <span>★</span>
+      <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
     </div>
-  </div>
+
+    <div class="auth-tabs">
+      <button type="button" id="auth-btn-login" class="auth-tab-btn active">Se connecter</button>
+      <button type="button" id="auth-btn-register" class="auth-tab-btn">Créer un compte</button>
+    </div>
+
+    <div id="auth-modal-message" class="auth-modal-message"></div>
+
+    <!-- Formulaire LOGIN -->
+    <form id="auth-login-form" class="auth-form">
+      <div class="auth-field">
+        <label for="auth-login-email">Email</label>
+        <input type="email" id="auth-login-email" placeholder="vous@email.fr" required />
+      </div>
+      <div class="auth-field">
+        <label for="auth-login-password">Mot de passe</label>
+        <input type="password" id="auth-login-password" placeholder="Mot de passe" required />
+      </div>
+      <button type="submit" class="auth-submit-btn">Connexion</button>
+    </form>
+
+    <!-- Formulaire REGISTER -->
+    <form id="auth-register-form" class="auth-form hidden">
+      <div class="auth-field">
+        <label for="auth-register-email">Email</label>
+        <input type="email" id="auth-register-email" placeholder="vous@email.fr" required />
+      </div>
+      <div class="auth-field">
+        <label for="auth-register-password">Mot de passe</label>
+        <input type="password" id="auth-register-password" placeholder="Mot de passe" required />
+      </div>
+      <button type="submit" class="auth-submit-btn">Créer mon compte</button>
+    </form>
+
+    <div class="auth-modal-footer">
+      <button type="button" id="auth-modal-continue" class="auth-modal-skip">
+        Continuer sans compte (pas de points)
+      </button>
+      <span class="auth-modal-small">
+        Vous pourrez retrouver vos points et vos réservations dans l’espace “Mon compte”.
+      </span>
+    </div>
+  </dialog>
 
   <!-- MAIN CHECKOUT -->
   <section id="checkout">
@@ -2069,6 +2087,7 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
+        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
         <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
@@ -2125,12 +2144,12 @@
   </footer>
 
   <script>
-    window.API_BASE_URL =
-      (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    globalThis.API_BASE_URL =
+      (globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1")
         ? "http://localhost:3000"
         : "https://singbox-backend.onrender.com";
 
-    window.QR_CHECK_BASE_URL = window.API_BASE_URL + "/api/check";
+    globalThis.QR_CHECK_BASE_URL = globalThis.API_BASE_URL + "/api/check";
   </script>
 
   <!-- Stripe -->
@@ -2141,41 +2160,57 @@
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
     const PRICE_FALLBACK = 10;
+    const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
 
-    const API_BASE_URL = window.API_BASE_URL;
-    const QR_CHECK_BASE_URL = window.QR_CHECK_BASE_URL;
+    const API_BASE_URL = globalThis.API_BASE_URL;
+    const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
+
+    let stripe = null;
+    let cardElement = null;
+    let currentPromo = null;
+    let loyaltyUsed = false;
+    let cartValid = true;
+    let lastPayWithSaved = false;
+    let isPrefilling = false;
+
+    let savedCardState = {
+      enabled: false,
+      defaultPaymentMethodId: null,
+      card: null,
+      methods: []
+    };
+
+    let currentTotals = {
+      totalTTCNoDiscount: 0,
+      discount: 0,
+      finalTotalTTC: 0
+    };
 
     function getToken() {
       const token = localStorage.getItem("token");
-      if (!token || token === "null" || token === "undefined") {
-        return null;
-      }
-      return token;
+      return (!token || token === "null" || token === "undefined") ? null : token;
     }
 
     function authHeaders(extra = {}) {
       const token = getToken();
-      if (!token) {
-        return extra;
-      }
-      return { ...extra, Authorization: "Bearer " + token };
+      return token ? { ...extra, Authorization: "Bearer " + token } : extra;
     }
 
     async function handleAuthResponse(res, ctx = "") {
-      if (res.status === 401 || res.status === 403) {
-        localStorage.removeItem("token");
-        console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
-        return false;
+      if (res.status !== 401 && res.status !== 403) {
+        return true;
       }
-      return true;
+
+      localStorage.removeItem("token");
+      console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
+      return false;
     }
 
-    async function apiFetch(path, options = {}, { auth = false, json = true, ctx = "" } = {}) {
+    async function apiFetch(path, options = {}, config = {}) {
+      const { auth = false, json = true, ctx = "" } = config;
       const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
-
       const headers = options.headers || {};
       const finalHeaders = auth ? authHeaders(headers) : headers;
-
       const res = await fetch(url, { ...options, headers: finalHeaders });
 
       if (auth) {
@@ -2190,7 +2225,6 @@
       }
 
       let data = null;
-
       try {
         data = await res.json();
       } catch {
@@ -2209,26 +2243,6 @@
       return { ok: res.ok, status: res.status, data, res };
     }
 
-    let stripe = null;
-    let cardElement = null;
-
-    let savedCardState = {
-      enabled: false,
-      defaultPaymentMethodId: null,
-      card: null,
-      methods: []
-    };
-
-    let currentPromo = null;
-    let loyaltyUsed = false;
-    let currentTotals = {
-      totalTTCNoDiscount: 0,
-      discount: 0,
-      finalTotalTTC: 0
-    };
-    let cartValid = true;
-    let lastPayWithSaved = false;
-
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
@@ -2246,6 +2260,7 @@
       if (!el) {
         return;
       }
+
       const panier = getPanier();
       el.textContent = panier.length ? panier.length : "";
     }
@@ -2255,7 +2270,7 @@
 
       for (const item of panier) {
         const hasNumericPrice = item && typeof item.price === "number" && Number.isFinite(item.price);
-        let price = hasNumericPrice ? item.price : PRICE_FALLBACK;
+        const price = hasNumericPrice ? item.price : PRICE_FALLBACK;
 
         if (!Number.isFinite(price) || price < 0) {
           return null;
@@ -2295,16 +2310,11 @@
     }
 
     function isPromoCurrentlyValid(promo) {
-      if (!promo) {
-        return false;
-      }
-
-      if (!promo.is_active) {
+      if (!promo || !promo.is_active) {
         return false;
       }
 
       const today = getTodayISO();
-
       if (promo.valid_from && promo.valid_from > today) {
         return false;
       }
@@ -2315,12 +2325,9 @@
 
       const maxUses = promo.max_uses;
       const used = promo.used_count || 0;
+      const hasMaxUses = maxUses !== null && maxUses !== undefined && typeof maxUses === "number";
 
-      if (maxUses !== null && maxUses !== undefined && typeof maxUses === "number" && used >= maxUses) {
-        return false;
-      }
-
-      return true;
+      return !(hasMaxUses && used >= maxUses);
     }
 
     function computeDiscountFromPromo(promo, totalTTC) {
@@ -2358,8 +2365,8 @@
       const year = Number.parseInt(parts[0], 10);
       const month = Number.parseInt(parts[1], 10) - 1;
       const day = Number.parseInt(parts[2], 10);
-
       const birth = new Date(year, month, day);
+
       if (Number.isNaN(birth.getTime())) {
         return null;
       }
@@ -2387,141 +2394,83 @@
       }
     }
 
-    function updateOrderSummaryFromPanier() {
-      const panier = getPanier();
-      const nameEl = document.getElementById("order-product-name");
-      const metaEl = document.getElementById("order-meta");
-      const subEl = document.getElementById("order-subtotal");
-      const tvaEl = document.getElementById("order-tva");
-      const totalEl = document.getElementById("order-total");
-      const discountRow = document.getElementById("order-discount-row");
-      const discountEl = document.getElementById("order-discount");
+    function getCheckoutEls() {
+      return {
+        nameEl: document.getElementById("order-product-name"),
+        metaEl: document.getElementById("order-meta"),
+        subEl: document.getElementById("order-subtotal"),
+        tvaEl: document.getElementById("order-tva"),
+        totalEl: document.getElementById("order-total"),
+        discountRow: document.getElementById("order-discount-row"),
+        discountEl: document.getElementById("order-discount"),
+        emptyState: document.getElementById("empty-cart-state"),
+        checkoutLayout: document.querySelector(".checkout-layout"),
+        paymentCard: document.querySelector(".payment-card"),
+        submitBtn: document.getElementById("checkout-submit-btn")
+      };
+    }
 
-      if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) {
-        return;
+    function toggleEmptyCartUI(isEmpty, els) {
+      const { emptyState, checkoutLayout, paymentCard, submitBtn } = els;
+
+      if (emptyState) {
+        emptyState.style.display = isEmpty ? "block" : "none";
       }
-
-      const emptyState = document.getElementById("empty-cart-state");
-      const checkoutLayout = document.querySelector(".checkout-layout");
-      const paymentCard = document.querySelector(".payment-card");
-      const submitBtn = document.getElementById("checkout-submit-btn");
-
-      function setEmptyCartUI(isEmpty) {
-        if (emptyState) {
-          emptyState.style.display = isEmpty ? "block" : "none";
-        }
-        if (checkoutLayout) {
-          checkoutLayout.style.display = isEmpty ? "none" : "grid";
-        }
-        if (paymentCard) {
-          paymentCard.style.display = isEmpty ? "none" : "";
-        }
-        if (submitBtn) {
-          submitBtn.disabled = isEmpty;
-        }
+      if (checkoutLayout) {
+        checkoutLayout.style.display = isEmpty ? "none" : "grid";
       }
-
-      if (panier.length === 0) {
-        nameEl.textContent = "Aucune réservation";
-        metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-        subEl.textContent = "0€";
-        tvaEl.textContent = "0€";
-        totalEl.textContent = "0€";
-
-        if (discountRow) {
-          discountRow.style.display = "none";
-        }
-
-        currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
-        cartValid = false;
-        setEmptyCartUI(true);
-        return;
+      if (paymentCard) {
+        paymentCard.style.display = isEmpty ? "none" : "";
       }
-
-      const totalTTCNoDiscount = computeTotal(panier);
-
-      if (totalTTCNoDiscount === null) {
-        nameEl.textContent = "Erreur sur votre panier";
-        metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
-        subEl.textContent = "—";
-        tvaEl.textContent = "—";
-        totalEl.textContent = "—";
-
-        if (discountRow) {
-          discountRow.style.display = "none";
-        }
-
-        currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
-        cartValid = false;
-
-        if (submitBtn) {
-          submitBtn.disabled = true;
-        }
-
-        setEmptyCartUI(false);
-        return;
-      }
-
-      cartValid = true;
-
       if (submitBtn) {
-        submitBtn.disabled = false;
+        submitBtn.disabled = isEmpty;
+      }
+    }
+
+    function renderEmptyOrderSummary(els) {
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow } = els;
+
+      nameEl.textContent = "Aucune réservation";
+      metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+      subEl.textContent = "0€";
+      tvaEl.textContent = "0€";
+      totalEl.textContent = "0€";
+
+      if (discountRow) {
+        discountRow.style.display = "none";
       }
 
-      setEmptyCartUI(false);
+      currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
+      cartValid = false;
+    }
 
-      const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
-      const tvaNoDiscount = totalTTCNoDiscount - totalHTNoDiscount;
+    function renderInvalidCartSummary(els) {
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow, submitBtn } = els;
 
-      let discount = 0;
+      nameEl.textContent = "Erreur sur votre panier";
+      metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
+      subEl.textContent = "—";
+      tvaEl.textContent = "—";
+      totalEl.textContent = "—";
 
-      if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
-        discount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
-      } else {
-        currentPromo = null;
+      if (discountRow) {
+        discountRow.style.display = "none";
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
       }
 
-      if (discount < 0) {
-        discount = 0;
-      }
+      currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
+      cartValid = false;
+    }
 
-      if (discount > totalTTCNoDiscount) {
-        discount = totalTTCNoDiscount;
-      }
-
-      const discountHT = discount / 1.2;
-      const discountTVA = discount - discountHT;
-
-      let totalHT = totalHTNoDiscount - discountHT;
-      let tva = tvaNoDiscount - discountTVA;
-      let finalTotalTTC = totalTTCNoDiscount - discount;
-
-      if (totalHT < 0) {
-        totalHT = 0;
-      }
-
-      if (tva < 0) {
-        tva = 0;
-      }
-
-      if (finalTotalTTC < 0) {
-        finalTotalTTC = 0;
-      }
-
-      const first = panier[0];
+    function buildOrderMeta(first, panierLength) {
       const dateLabel = first && first.date ? formatDateFr(first.date) : "";
-
-      let boxName = "Box privée";
-      if (first && (first.boxName || first.box || first.boxId)) {
-        boxName = first.boxName || first.box || first.boxId;
-      }
-
       let hourText = "";
 
       if (first && first.start_time && first.end_time) {
         const startTime = formatTimeFrFromIso(first.start_time);
         const endTime = formatTimeFrFromIso(first.end_time);
-
         if (startTime && endTime) {
           hourText = `${startTime} – ${endTime}`;
         }
@@ -2532,19 +2481,73 @@
         const endMinutes = startH * 60 + startM + 90;
         const endH = Math.floor((endMinutes % 1440) / 60);
         const endM = endMinutes % 60;
-
         const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
         const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
         hourText = `${startStr} – ${endStr}`;
       }
 
-      const extraCount = panier.length - 1;
+      return {
+        dateLabel,
+        hourText
+      };
+    }
 
-      if (extraCount > 0) {
-        nameEl.textContent = `Box ${boxName} + ${extraCount} autre(s) créneau(x)`;
-      } else {
-        nameEl.textContent = `Box ${boxName}`;
+    function updateOrderSummaryFromPanier() {
+      const els = getCheckoutEls();
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow, discountEl, submitBtn } = els;
+
+      if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) {
+        return;
       }
+
+      const panier = getPanier();
+      if (panier.length === 0) {
+        renderEmptyOrderSummary(els);
+        toggleEmptyCartUI(true, els);
+        return;
+      }
+
+      const totalTTCNoDiscount = computeTotal(panier);
+      if (totalTTCNoDiscount === null) {
+        renderInvalidCartSummary(els);
+        toggleEmptyCartUI(false, els);
+        return;
+      }
+
+      cartValid = true;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+      }
+      toggleEmptyCartUI(false, els);
+
+      const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
+      const tvaNoDiscount = totalTTCNoDiscount - totalHTNoDiscount;
+
+      let discount = 0;
+      if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
+        discount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
+      } else {
+        currentPromo = null;
+      }
+
+      discount = Math.max(0, Math.min(discount, totalTTCNoDiscount));
+
+      const discountHT = discount / 1.2;
+      const discountTVA = discount - discountHT;
+      const totalHT = Math.max(0, totalHTNoDiscount - discountHT);
+      const tva = Math.max(0, tvaNoDiscount - discountTVA);
+      const finalTotalTTC = Math.max(0, totalTTCNoDiscount - discount);
+
+      const first = panier[0];
+      const boxName = first && (first.boxName || first.box || first.boxId)
+        ? (first.boxName || first.box || first.boxId)
+        : "Box privée";
+      const extraCount = panier.length - 1;
+      const { dateLabel, hourText } = buildOrderMeta(first, panier.length);
+
+      nameEl.textContent = extraCount > 0
+        ? `Box ${boxName} + ${extraCount} autre(s) créneau(x)`
+        : `Box ${boxName}`;
 
       metaEl.innerHTML =
         (dateLabel ? `Date : ${dateLabel}<br>` : "") +
@@ -2575,27 +2578,34 @@
       wrap.classList.toggle("is-hidden", Boolean(hidden));
     }
 
-    function initSavedCardToggleBehavior() {
+    function syncSavedCardToggleState() {
       const payToggle = document.getElementById("pay-with-saved-card");
       if (!payToggle) {
         return;
       }
 
-      function syncSavedCardToggle() {
-        const hasCard = Boolean(savedCardState.card && savedCardState.card.last4);
-        const wantSaved = Boolean(payToggle.checked);
+      const hasCard = Boolean(savedCardState.card && savedCardState.card.last4);
+      const wantsSavedCard = Boolean(payToggle.checked);
 
-        if (!hasCard) {
-          payToggle.checked = false;
-          setCardElementHidden(false);
-          return;
-        }
-
-        setCardElementHidden(wantSaved);
+      if (!hasCard) {
+        payToggle.checked = false;
+        setCardElementHidden(false);
+        return;
       }
 
-      payToggle.addEventListener("change", syncSavedCardToggle);
-      syncSavedCardToggle();
+      setCardElementHidden(wantsSavedCard);
+    }
+
+    function initSavedCardToggleBehavior() {
+      const payToggle = document.getElementById("pay-with-saved-card");
+      if (!payToggle || payToggle.dataset.bound === "true") {
+        syncSavedCardToggleState();
+        return;
+      }
+
+      payToggle.addEventListener("change", syncSavedCardToggleState);
+      payToggle.dataset.bound = "true";
+      syncSavedCardToggleState();
     }
 
     function renderSavedCardUI() {
@@ -2621,11 +2631,9 @@
       const card = savedCardState.card;
 
       if (summary) {
-        if (card && card.last4) {
-          summary.textContent = `Carte enregistrée : ${card.brand || "carte"} •••• ${card.last4} (exp. ${card.exp_month}/${card.exp_year})`;
-        } else {
-          summary.textContent = "Aucune carte enregistrée pour le moment.";
-        }
+        summary.textContent = (card && card.last4)
+          ? `Carte enregistrée : ${card.brand || "carte"} •••• ${card.last4} (exp. ${card.exp_month}/${card.exp_year})`
+          : "Aucune carte enregistrée pour le moment.";
       }
 
       if (payToggle) {
@@ -2638,7 +2646,6 @@
       if (msg) {
         msg.textContent = "";
       }
-
       if (saveBtn) {
         saveBtn.disabled = false;
       }
@@ -2682,6 +2689,17 @@
       }
     }
 
+    function buildBillingDetails() {
+      const firstName = (document.getElementById("prenom")?.value || "").trim();
+      const lastName = (document.getElementById("nom")?.value || "").trim();
+      const email = (document.getElementById("email")?.value || "").trim();
+
+      return {
+        name: `${firstName} ${lastName}`.trim(),
+        email
+      };
+    }
+
     async function handleSaveCard() {
       const msg = document.getElementById("save-card-msg");
       const btn = document.getElementById("save-card-btn");
@@ -2715,7 +2733,6 @@
         }
 
         const si = await apiFetch("/api/create-setup-intent", { method: "POST" }, { auth: true, ctx: "POST /api/create-setup-intent" });
-
         if (!si.ok || !si.data || !si.data.clientSecret) {
           if (msg) {
             msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
@@ -2726,13 +2743,7 @@
         const setupRes = await stripe.confirmCardSetup(si.data.clientSecret, {
           payment_method: {
             card: cardElement,
-            billing_details: {
-              name:
-                (document.getElementById("prenom")?.value || "").trim() +
-                " " +
-                (document.getElementById("nom")?.value || "").trim(),
-              email: (document.getElementById("email")?.value || "").trim()
-            }
+            billing_details: buildBillingDetails()
           }
         });
 
@@ -2783,7 +2794,7 @@
 
         if (payToggle && !payToggle.disabled) {
           payToggle.checked = true;
-          initSavedCardToggleBehavior();
+          syncSavedCardToggleState();
         }
       } catch (e) {
         if (msg) {
@@ -2796,147 +2807,112 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", async function () {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
+    function getCheckoutInfoFromForm() {
+      const get = (id) => (document.getElementById(id)?.value || "").trim();
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-          const isExpanded = mobileNav.classList.contains("open");
-          burgerBtn.setAttribute("aria-expanded", String(isExpanded));
-        });
+      return {
+        prenom: get("prenom"),
+        nom: get("nom"),
+        pays: document.getElementById("pays")?.value || "FR",
+        adresse: get("adresse"),
+        complement: get("complement"),
+        cp: get("cp"),
+        ville: get("ville"),
+        telephone: get("telephone"),
+        email: get("email"),
+        naissance: document.getElementById("naissance")?.value || ""
+      };
+    }
 
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-            burgerBtn.setAttribute("aria-expanded", "false");
-          }
-        });
+    function fillCheckoutForm(info) {
+      if (!info) {
+        return;
       }
 
-      updateCartIcon();
-      updateOrderSummaryFromPanier();
-
-      const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
-
-      function getCheckoutInfoFromForm() {
-        const get = (id) => (document.getElementById(id)?.value || "").trim();
-        return {
-          prenom: get("prenom"),
-          nom: get("nom"),
-          pays: document.getElementById("pays")?.value || "FR",
-          adresse: get("adresse"),
-          complement: get("complement"),
-          cp: get("cp"),
-          ville: get("ville"),
-          telephone: get("telephone"),
-          email: get("email"),
-          naissance: document.getElementById("naissance")?.value || ""
-        };
-      }
-
-      function fillCheckoutForm(info) {
-        if (!info) {
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (!el || val === undefined || val === null) {
           return;
         }
+        el.value = val;
+      };
 
-        const set = (id, val) => {
-          const el = document.getElementById(id);
-          if (!el || val === undefined || val === null) {
-            return;
-          }
-          el.value = val;
-        };
+      set("prenom", info.prenom);
+      set("nom", info.nom);
+      set("adresse", info.adresse);
+      set("complement", info.complement);
+      set("cp", info.cp);
+      set("ville", info.ville);
+      set("telephone", info.telephone);
+      set("email", info.email);
 
-        set("prenom", info.prenom);
-        set("nom", info.nom);
+      if (document.getElementById("pays") && info.pays) {
+        document.getElementById("pays").value = info.pays;
+      }
+      if (document.getElementById("naissance") && info.naissance) {
+        document.getElementById("naissance").value = info.naissance;
+      }
+    }
 
-        if (document.getElementById("pays") && info.pays) {
-          document.getElementById("pays").value = info.pays;
-        }
+    function loadCheckoutInfoLocal() {
+      try {
+        const raw = localStorage.getItem(CHECKOUT_INFO_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
 
-        set("adresse", info.adresse);
-        set("complement", info.complement);
-        set("cp", info.cp);
-        set("ville", info.ville);
-        set("telephone", info.telephone);
-        set("email", info.email);
+    function saveCheckoutInfoLocal(info) {
+      try {
+        localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify(info));
+      } catch {
+        // no-op
+      }
+    }
 
-        if (document.getElementById("naissance") && info.naissance) {
-          document.getElementById("naissance").value = info.naissance;
-        }
+    async function prefillFromBackendIfLogged() {
+      if (!getToken()) {
+        return;
       }
 
-      function loadCheckoutInfoLocal() {
-        try {
-          const raw = localStorage.getItem(CHECKOUT_INFO_KEY);
-          return raw ? JSON.parse(raw) : null;
-        } catch {
-          return null;
-        }
+      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (prefill)" });
+      if (!r.ok || !r.data) {
+        return;
       }
 
-      function saveCheckoutInfoLocal(info) {
-        try {
-          localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify(info));
-        } catch {}
-      }
+      const data = r.data;
+      const profile = data.profile || {};
 
-      let isPrefilling = false;
       isPrefilling = true;
-      fillCheckoutForm(loadCheckoutInfoLocal());
+
+      fillCheckoutForm({
+        prenom: profile.prenom || "",
+        nom: profile.nom || "",
+        telephone: profile.telephone || "",
+        pays: profile.pays || "FR",
+        adresse: profile.adresse || "",
+        complement: profile.complement || "",
+        cp: profile.cp || "",
+        ville: profile.ville || "",
+        naissance: profile.naissance || "",
+        email: ""
+      });
+
+      if (data.email && document.getElementById("email")) {
+        document.getElementById("email").value = data.email;
+      }
+
       isPrefilling = false;
+      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+    }
 
-      async function prefillFromBackendIfLogged() {
-        if (!getToken()) {
-          return;
-        }
-
-        const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (prefill)" });
-        if (!r.ok || !r.data) {
-          return;
-        }
-
-        const data = r.data;
-        const profile = data.profile || {};
-
-        isPrefilling = true;
-
-        fillCheckoutForm({
-          prenom: profile.prenom || "",
-          nom: profile.nom || "",
-          telephone: profile.telephone || "",
-          pays: profile.pays || "FR",
-          adresse: profile.adresse || "",
-          complement: profile.complement || "",
-          cp: profile.cp || "",
-          ville: profile.ville || "",
-          naissance: profile.naissance || "",
-          email: ""
-        });
-
-        if (data.email && document.getElementById("email")) {
-          document.getElementById("email").value = data.email;
-        }
-
-        isPrefilling = false;
-        saveCheckoutInfoLocal(getCheckoutInfoFromForm());
-      }
-
-      await prefillFromBackendIfLogged();
-      await loadSavedCardStateFromMe();
-      await refreshPaymentMethods();
-      renderSavedCardUI();
-
-      const saveCardBtn = document.getElementById("save-card-btn");
-      if (saveCardBtn) {
-        saveCardBtn.addEventListener("click", handleSaveCard);
-      }
-
+    function bindAutosave() {
       let saveTimer = null;
+      let saveDbTimer = null;
+      let lastDbPayload = "";
 
-      function scheduleSave() {
+      function scheduleLocalSave() {
         if (isPrefilling) {
           return;
         }
@@ -2946,9 +2922,6 @@
           saveCheckoutInfoLocal(getCheckoutInfoFromForm());
         }, 400);
       }
-
-      let saveDbTimer = null;
-      let lastDbPayload = "";
 
       async function saveProfileToBackendNow() {
         const token = getToken();
@@ -2997,141 +2970,149 @@
           return;
         }
 
-        el.addEventListener("input", scheduleSave);
-        el.addEventListener("change", scheduleSave);
-
+        el.addEventListener("input", scheduleLocalSave);
+        el.addEventListener("change", scheduleLocalSave);
         el.addEventListener("input", saveProfileToBackendDebounced);
         el.addEventListener("change", saveProfileToBackendDebounced);
         el.addEventListener("blur", saveProfileToBackendDebounced);
       });
+    }
 
-      async function fetchUserPoints() {
-        if (!getToken()) {
-          return null;
-        }
-
-        const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (points)" });
-        if (!r.ok || !r.data) {
-          return null;
-        }
-
-        return r.data.points ?? 0;
+    async function fetchUserPoints() {
+      if (!getToken()) {
+        return null;
       }
 
-      async function initLoyalty() {
-        const loyaltyBlock = document.getElementById("loyalty-block");
-        const loyaltyPointsEl = document.getElementById("loyalty-points");
-        const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
-        const loyaltyMsg = document.getElementById("loyalty-msg");
+      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (points)" });
+      if (!r.ok || !r.data) {
+        return null;
+      }
 
-        if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) {
+      return r.data.points ?? 0;
+    }
+
+    async function initLoyalty() {
+      const loyaltyBlock = document.getElementById("loyalty-block");
+      const loyaltyPointsEl = document.getElementById("loyalty-points");
+      const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
+      const loyaltyMsg = document.getElementById("loyalty-msg");
+
+      if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) {
+        return;
+      }
+
+      loyaltyBlock.style.display = "block";
+
+      if (!getToken()) {
+        loyaltyPointsEl.textContent = "0";
+        loyaltyMsg.style.color = "#FECACA";
+        loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
+        useLoyaltyBtn.style.display = "none";
+        return;
+      }
+
+      const points = await fetchUserPoints();
+      if (points === null) {
+        loyaltyPointsEl.textContent = "0";
+        useLoyaltyBtn.style.display = "none";
+        loyaltyMsg.style.color = "#FECACA";
+        loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
+        return;
+      }
+
+      loyaltyPointsEl.textContent = points;
+
+      if (points >= 100) {
+        useLoyaltyBtn.style.display = "block";
+        loyaltyMsg.style.color = "#D1FAE5";
+        loyaltyMsg.textContent = "Vous pouvez utiliser vos points pour une séance gratuite.";
+      } else {
+        useLoyaltyBtn.style.display = "none";
+        loyaltyMsg.style.color = "#CBD5E1";
+        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, 100 - points)} point(s) pour une séance gratuite.`;
+      }
+
+      if (useLoyaltyBtn.dataset.bound === "true") {
+        return;
+      }
+
+      useLoyaltyBtn.addEventListener("click", () => {
+        loyaltyMsg.textContent = "";
+
+        if (!getToken()) {
+          loyaltyMsg.style.color = "#FECACA";
+          loyaltyMsg.textContent = "Connectez-vous pour utiliser vos points.";
           return;
         }
 
-        loyaltyBlock.style.display = "block";
-
-        if (!getToken()) {
-          loyaltyPointsEl.textContent = "0";
+        const currentPoints = Number.parseInt(loyaltyPointsEl.textContent || "0", 10);
+        if (currentPoints < 100) {
           loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
-          useLoyaltyBtn.style.display = "none";
+          loyaltyMsg.textContent = "Vous n'avez pas encore assez de points pour une séance gratuite.";
           return;
         }
 
-        const points = await fetchUserPoints();
+        currentPromo = { type: "free", code: "LOYALTY100", is_active: true };
+        loyaltyUsed = true;
+        updateOrderSummaryFromPanier();
 
-        if (points !== null) {
-          loyaltyPointsEl.textContent = points;
+        loyaltyMsg.style.color = "#D1FAE5";
+        loyaltyMsg.textContent = "🎉 Séance gratuite activée. Les points seront débités après validation du paiement.";
+        useLoyaltyBtn.disabled = true;
+      });
 
-          if (points >= 100) {
-            useLoyaltyBtn.style.display = "block";
-            loyaltyMsg.style.color = "#D1FAE5";
-            loyaltyMsg.textContent = "Vous pouvez utiliser vos points pour une séance gratuite.";
-          } else {
-            useLoyaltyBtn.style.display = "none";
-            loyaltyMsg.style.color = "#CBD5E1";
-            loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, 100 - points)} point(s) pour une séance gratuite.`;
-          }
-        } else {
-          loyaltyPointsEl.textContent = "0";
-          useLoyaltyBtn.style.display = "none";
-          loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
-        }
+      useLoyaltyBtn.dataset.bound = "true";
+    }
 
-        useLoyaltyBtn.addEventListener("click", () => {
-          loyaltyMsg.textContent = "";
-
-          if (!getToken()) {
-            loyaltyMsg.style.color = "#FECACA";
-            loyaltyMsg.textContent = "Connectez-vous pour utiliser vos points.";
-            return;
-          }
-
-          const currentPoints = Number.parseInt(loyaltyPointsEl.textContent || "0", 10);
-          if (currentPoints < 100) {
-            loyaltyMsg.style.color = "#FECACA";
-            loyaltyMsg.textContent = "Vous n'avez pas encore assez de points pour une séance gratuite.";
-            return;
-          }
-
-          currentPromo = { type: "free", code: "LOYALTY100", is_active: true };
-          loyaltyUsed = true;
-          updateOrderSummaryFromPanier();
-
-          loyaltyMsg.style.color = "#D1FAE5";
-          loyaltyMsg.textContent = "🎉 Séance gratuite activée. Les points seront débités après validation du paiement.";
-          useLoyaltyBtn.disabled = true;
-        });
-      }
-
-      await initLoyalty();
-
+    function initStripeCard() {
       const cardMount = document.getElementById("card-element");
-      if (STRIPE_PUBLISHABLE_KEY && window.Stripe && cardMount) {
-        stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-
-        const elements = stripe.elements({
-          appearance: {
-            theme: "night",
-            variables: {
-              colorPrimary: "#F97316",
-              colorBackground: "#020617",
-              colorText: "#F9FAFB",
-              colorTextPlaceholder: "#CBD5E1",
-              fontFamily: "Montserrat, system-ui, sans-serif",
-              borderRadius: "14px"
-            }
-          }
-        });
-
-        cardElement = elements.create("card", {
-          hidePostalCode: true,
-          style: {
-            base: {
-              color: "#F9FAFB",
-              fontFamily: "Montserrat, system-ui, sans-serif",
-              fontSize: "14px",
-              lineHeight: "24px",
-              fontSmoothing: "antialiased",
-              "::placeholder": { color: "#CBD5E1" }
-            },
-            invalid: {
-              color: "#FECACA"
-            }
-          }
-        });
-
-        cardElement.mount("#card-element");
-
-        cardElement.on("change", function (event) {
-          const displayError = document.getElementById("card-errors");
-          if (displayError) {
-            displayError.textContent = event.error ? event.error.message : "";
-          }
-        });
+      if (!STRIPE_PUBLISHABLE_KEY || !globalThis.Stripe || !cardMount) {
+        return;
       }
 
+      stripe = globalThis.Stripe(STRIPE_PUBLISHABLE_KEY);
+
+      const elements = stripe.elements({
+        appearance: {
+          theme: "night",
+          variables: {
+            colorPrimary: "#F97316",
+            colorBackground: "#020617",
+            colorText: "#F9FAFB",
+            colorTextPlaceholder: "#CBD5E1",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            borderRadius: "14px"
+          }
+        }
+      });
+
+      cardElement = elements.create("card", {
+        hidePostalCode: true,
+        style: {
+          base: {
+            color: "#F9FAFB",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            fontSize: "14px",
+            lineHeight: "24px",
+            fontSmoothing: "antialiased",
+            "::placeholder": { color: "#CBD5E1" }
+          },
+          invalid: {
+            color: "#FECACA"
+          }
+        }
+      });
+
+      cardElement.mount("#card-element");
+      cardElement.on("change", (event) => {
+        const displayError = document.getElementById("card-errors");
+        if (displayError) {
+          displayError.textContent = event.error ? event.error.message : "";
+        }
+      });
+    }
+
+    function initPromo() {
       const promoToggle = document.getElementById("promo-toggle");
       const promoBody = document.getElementById("promo-body");
       const promoInput = document.getElementById("promo-code");
@@ -3163,7 +3144,7 @@
           return;
         }
 
-        if (!window.supabaseClient) {
+        if (!globalThis.supabaseClient) {
           promoMsg.textContent = "Erreur : service promo indisponible.";
           promoMsg.classList.add("error");
           return;
@@ -3172,7 +3153,7 @@
         promoMsg.textContent = "Vérification du code...";
 
         try {
-          const { data, error } = await window.supabaseClient
+          const { data, error } = await globalThis.supabaseClient
             .from("promo_codes")
             .select("*")
             .eq("code", code)
@@ -3203,12 +3184,9 @@
 
           const discountNow = currentTotals.discount || 0;
           promoMsg.classList.add("ok");
-
-          if (discountNow > 0) {
-            promoMsg.textContent = "Code appliqué ✔ Réduction de " + discountNow.toFixed(2).replace(".", ",") + "€ sur votre commande.";
-          } else {
-            promoMsg.textContent = "Code appliqué ✔";
-          }
+          promoMsg.textContent = discountNow > 0
+            ? "Code appliqué ✔ Réduction de " + discountNow.toFixed(2).replace(".", ",") + "€ sur votre commande."
+            : "Code appliqué ✔";
         } catch {
           currentPromo = null;
           localStorage.removeItem("promoCode");
@@ -3236,560 +3214,796 @@
           applyPromo(true);
         }
       }
+    }
 
-      const submitBtn = document.getElementById("checkout-submit-btn");
-      const cgvCheckbox = document.getElementById("cgv-checkbox");
-      const rulesCheckbox = document.getElementById("rules-checkbox");
-      const newsletterCheckbox = document.getElementById("newsletter-optin");
-      const errorEl = document.getElementById("checkout-error");
-      const successEl = document.getElementById("checkout-success");
-      const billingForm = document.getElementById("billing-form");
-      const checkoutLayout = document.querySelector(".checkout-layout");
-      const paymentCard = document.querySelector(".payment-card");
-
+    function showThankYouSection() {
       const thankyouSection = document.getElementById("thankyou-section");
+      const billingForm = document.getElementById("billing-form");
+      const paymentCard = document.querySelector(".payment-card");
+      const checkoutLayout = document.querySelector(".checkout-layout");
+      const emptyCartState = document.getElementById("empty-cart-state");
+
+      if (!thankyouSection) {
+        console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
+        return;
+      }
+
+      let parent = thankyouSection;
+      while (parent && parent !== document.body) {
+        if (parent.hidden) {
+          parent.hidden = false;
+        }
+        const st = globalThis.getComputedStyle(parent);
+        if (st && st.display === "none") {
+          parent.style.display = "";
+        }
+        parent = parent.parentElement;
+      }
+
+      if (emptyCartState) {
+        emptyCartState.style.display = "none";
+      }
+      if (billingForm) {
+        billingForm.style.display = "none";
+      }
+      if (paymentCard) {
+        paymentCard.style.display = "none";
+      }
+
+      if (checkoutLayout) {
+        const tyInside = checkoutLayout.contains(thankyouSection);
+
+        if (tyInside) {
+          Array.from(checkoutLayout.children).forEach((child) => {
+            if (child === thankyouSection || child.contains(thankyouSection)) {
+              return;
+            }
+            child.style.display = "none";
+          });
+          checkoutLayout.style.display = "";
+        } else {
+          checkoutLayout.style.display = "none";
+        }
+      }
+
+      thankyouSection.style.display = "block";
+      thankyouSection.hidden = false;
+      thankyouSection.classList.remove("hidden");
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function fillThankYouData() {
+      const panierBeforeClear = getPanier();
+      const firstItem = panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+
       const thankyouName = document.getElementById("thankyou-name");
       const thankyouDate = document.getElementById("thankyou-date");
       const thankyouTime = document.getElementById("thankyou-time");
       const thankyouBox = document.getElementById("thankyou-box");
       const thankyouTotal = document.getElementById("thankyou-total");
-      const thankyouRef = document.getElementById("thankyou-ref");
-      const thankyouQrContainer = document.getElementById("thankyou-qr");
-      const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
 
-      function showThankYouSection() {
-        if (!thankyouSection) {
-          console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
-          return;
-        }
+      const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+      const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
+        ? (firstItem.boxName || firstItem.box || firstItem.boxId)
+        : "Box privée";
 
-        let parent = thankyouSection;
-        while (parent && parent !== document.body) {
-          if (parent.hidden) {
-            parent.hidden = false;
-          }
+      const { hourText } = buildOrderMeta(firstItem, panierBeforeClear.length);
+      const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
 
-          const st = window.getComputedStyle(parent);
-          if (st && st.display === "none") {
-            parent.style.display = "";
-          }
-
-          parent = parent.parentElement;
-        }
-
-        const emptyCartState = document.getElementById("empty-cart-state");
-        if (emptyCartState) {
-          emptyCartState.style.display = "none";
-        }
-
-        if (billingForm) {
-          billingForm.style.display = "none";
-        }
-
-        if (paymentCard) {
-          paymentCard.style.display = "none";
-        }
-
-        if (checkoutLayout) {
-          const tyInside = checkoutLayout.contains(thankyouSection);
-
-          if (tyInside) {
-            Array.from(checkoutLayout.children).forEach((child) => {
-              if (child === thankyouSection || child.contains(thankyouSection)) {
-                return;
-              }
-              child.style.display = "none";
-            });
-            checkoutLayout.style.display = "";
-          } else {
-            checkoutLayout.style.display = "none";
-          }
-        }
-
-        thankyouSection.style.display = "block";
-        thankyouSection.hidden = false;
-        thankyouSection.classList.remove("hidden");
-
-        window.scrollTo({ top: 0, behavior: "smooth" });
+      if (thankyouName) {
+        thankyouName.textContent = prenomValue;
+      }
+      if (thankyouDate) {
+        thankyouDate.textContent = dateLabel || "-";
+      }
+      if (thankyouTime) {
+        thankyouTime.textContent = hourText || "-";
+      }
+      if (thankyouBox) {
+        thankyouBox.textContent = boxName;
+      }
+      if (thankyouTotal) {
+        thankyouTotal.textContent = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
       }
 
-      const processReservationAndDeposit = async ({ isFree, paymentIntentId }) => {
-        const panierBeforeClear = getPanier();
-        const firstItem = panierBeforeClear && panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
-        const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
+      const headerTitle = document.querySelector(".checkout-header h1");
+      const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
 
-        let boxName = "Box privée";
-        if (firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)) {
-          boxName = firstItem.boxName || firstItem.box || firstItem.boxId;
+      if (headerTitle) {
+        headerTitle.textContent = "Merci pour votre réservation 🎉";
+      }
+      if (headerSubtitle) {
+        headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
+      }
+    }
+
+    function getCustomerPayload(includeSaveCheckoutInfo = false) {
+      const payload = {
+        prenom: document.getElementById("prenom").value.trim(),
+        nom: document.getElementById("nom").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        telephone: document.getElementById("telephone").value.trim(),
+        pays: document.getElementById("pays").value,
+        adresse: document.getElementById("adresse").value.trim(),
+        complement: document.getElementById("complement").value.trim(),
+        cp: document.getElementById("cp").value.trim(),
+        ville: document.getElementById("ville").value.trim(),
+        naissance: document.getElementById("naissance").value
+      };
+
+      if (includeSaveCheckoutInfo) {
+        payload.save_checkout_info = true;
+      }
+
+      return payload;
+    }
+
+    async function confirmReservation(isFree, paymentIntentId, errorEl) {
+      let reservationId = null;
+      const thankyouRef = document.getElementById("thankyou-ref");
+
+      try {
+        const body = {
+          panier: getPanier(),
+          customer: getCustomerPayload(true),
+          promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+          loyaltyUsed,
+          isFree: Boolean(isFree)
+        };
+
+        if (!isFree && paymentIntentId) {
+          body.paymentIntentId = paymentIntentId;
         }
 
-        let hourText = "";
-        if (firstItem && firstItem.start_time && firstItem.end_time) {
-          const s = formatTimeFrFromIso(firstItem.start_time);
-          const e = formatTimeFrFromIso(firstItem.end_time);
-          if (s && e) {
-            hourText = `${s} – ${e}`;
+        const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify(body)
+        });
+
+        const confirmJson = await confirmRes.json().catch(() => ({}));
+
+        if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+          reservationId = confirmJson.reservations[0].id;
+          if (thankyouRef) {
+            thankyouRef.textContent = reservationId;
           }
-        } else if (firstItem && typeof firstItem.hour === "number") {
-          const start = firstItem.hour;
-          const startH = Math.floor(start);
-          const startM = Math.round((start - startH) * 60);
-          const endMinutes = startH * 60 + startM + 90;
-          const endH = Math.floor((endMinutes % 1440) / 60);
-          const endM = endMinutes % 60;
-          const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
-          const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
-          hourText = `${startStr} – ${endStr}`;
+        } else if (errorEl) {
+          errorEl.textContent =
+            confirmJson.error ||
+            "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
         }
+      } catch (e) {
+        console.error("Erreur confirm-reservation :", e);
+      }
 
-        const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
+      return reservationId;
+    }
 
-        if (thankyouName) {
-          thankyouName.textContent = prenomValue;
-        }
-        if (thankyouDate) {
-          thankyouDate.textContent = dateLabel || "-";
-        }
-        if (thankyouTime) {
-          thankyouTime.textContent = hourText || "-";
-        }
-        if (thankyouBox) {
-          thankyouBox.textContent = boxName;
-        }
-        if (thankyouTotal) {
-          const totalLabel = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
-          thankyouTotal.textContent = totalLabel;
-        }
+    function getSavedPaymentMethodId() {
+      return savedCardState?.defaultPaymentMethodId ||
+        (savedCardState?.card && savedCardState.card.id) ||
+        null;
+    }
 
-        const headerTitle = document.querySelector(".checkout-header h1");
-        const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
-        if (headerTitle) {
-          headerTitle.textContent = "Merci pour votre réservation 🎉";
-        }
-        if (headerSubtitle) {
-          headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
-        }
-
-        let reservationId = null;
-
-        try {
-          const body = {
-            panier: getPanier(),
+    async function confirmDepositIntent(reservationId, isFree, errorEl) {
+      try {
+        const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            reservationId,
+            useSavedPaymentMethod: Boolean(lastPayWithSaved),
             customer: {
               prenom: document.getElementById("prenom").value.trim(),
               nom: document.getElementById("nom").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              telephone: document.getElementById("telephone").value.trim(),
-              pays: document.getElementById("pays").value,
-              adresse: document.getElementById("adresse").value.trim(),
-              complement: document.getElementById("complement").value.trim(),
-              cp: document.getElementById("cp").value.trim(),
-              ville: document.getElementById("ville").value.trim(),
-              naissance: document.getElementById("naissance").value,
-              save_checkout_info: true
-            },
-            promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
-            loyaltyUsed,
-            isFree: Boolean(isFree)
-          };
-
-          if (!isFree && paymentIntentId) {
-            body.paymentIntentId = paymentIntentId;
-          }
-
-          const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
-            method: "POST",
-            headers: authHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify(body)
-          });
-
-          const confirmJson = await confirmRes.json().catch(() => ({}));
-
-          if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
-            reservationId = confirmJson.reservations[0].id;
-            if (thankyouRef) {
-              thankyouRef.textContent = reservationId;
+              email: document.getElementById("email").value.trim()
             }
-          } else if (errorEl) {
-            errorEl.textContent =
-              confirmJson.error ||
-              "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
-          }
-        } catch (e) {
-          console.error("Erreur confirm-reservation :", e);
-        }
+          })
+        });
 
-        try {
-          const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-            method: "POST",
-            headers: authHeaders({ "Content-Type": "application/json" }),
-            body: JSON.stringify({
-              reservationId,
-              useSavedPaymentMethod: Boolean(lastPayWithSaved),
-              customer: {
-                prenom: document.getElementById("prenom").value.trim(),
-                nom: document.getElementById("nom").value.trim(),
-                email: document.getElementById("email").value.trim()
-              }
-            })
-          });
+        const depositJson = await depositRes.json().catch(() => ({}));
 
-          const depositJson = await depositRes.json().catch(() => ({}));
-
-          if (!depositRes.ok || !depositJson?.clientSecret) {
-            if (errorEl) {
-              errorEl.textContent =
-                (isFree
-                  ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
-                  : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
-                " Merci de nous contacter à contactsingbox@gmail.com.";
-            }
-            return;
-          }
-
-          const pmId =
-            savedCardState?.defaultPaymentMethodId ||
-            (savedCardState?.card && savedCardState.card.id) ||
-            null;
-
-          if (lastPayWithSaved && !pmId) {
-            lastPayWithSaved = false;
-          }
-
-          const depositResult = lastPayWithSaved
-            ? await stripe.confirmCardPayment(depositJson.clientSecret, { payment_method: pmId })
-            : await stripe.confirmCardPayment(depositJson.clientSecret, {
-                payment_method: {
-                  card: cardElement,
-                  billing_details: {
-                    name:
-                      document.getElementById("prenom").value.trim() +
-                      " " +
-                      document.getElementById("nom").value.trim(),
-                    email: document.getElementById("email").value.trim()
-                  }
-                }
-              });
-
-          if (depositResult?.error && errorEl) {
-            errorEl.textContent =
-              (isFree
-                ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
-                : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
-              depositResult.error.message +
-              ". Merci de nous contacter à contactsingbox@gmail.com.";
-          }
-        } catch {
+        if (!depositRes.ok || !depositJson?.clientSecret) {
           if (errorEl) {
             errorEl.textContent =
               (isFree
-                ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
-                : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
+                ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
+                : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
               " Merci de nous contacter à contactsingbox@gmail.com.";
           }
+          return;
         }
 
-        if (newsletterCheckbox && newsletterCheckbox.checked && window.supabaseClient) {
-          try {
-            await window.supabaseClient
-              .from("newsletter_subscriptions")
-              .insert({ email: document.getElementById("email").value.trim() });
-          } catch {}
+        let pmId = getSavedPaymentMethodId();
+        if (lastPayWithSaved && !pmId) {
+          lastPayWithSaved = false;
+          pmId = null;
         }
 
-        saveCheckoutInfoLocal(getCheckoutInfoFromForm());
-        savePanier([]);
-        localStorage.removeItem("promoCode");
-        currentPromo = null;
-        updateCartIcon();
-        showThankYouSection();
-
-        if (reservationId && thankyouQrContainer && window.QRCode) {
-          try {
-            const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
-            thankyouQrContainer.innerHTML = "";
-            new QRCode(thankyouQrContainer, {
-              text: qrText,
-              width: 228,
-              height: 228,
-              colorDark: "#000000",
-              colorLight: "#ffffff",
-              correctLevel: QRCode.CorrectLevel.H
-            });
-            if (thankyouQrFallback) {
-              thankyouQrFallback.style.display = "none";
-            }
-          } catch {}
-        }
-      };
-
-      if (submitBtn) {
-        submitBtn.addEventListener("click", async () => {
-          if (!billingForm) {
-            return;
-          }
-
-          const payWithSavedChecked = Boolean(document.getElementById("pay-with-saved-card")?.checked);
-
-          if (!stripe || (!cardElement && !payWithSavedChecked)) {
-            if (errorEl) {
-              errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
-            }
-            return;
-          }
-
-          const panier = getPanier();
-
-          if (!panier || panier.length === 0) {
-            if (errorEl) {
-              errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-            }
-            return;
-          }
-
-          if (!cartValid) {
-            if (errorEl) {
-              errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
-            }
-            return;
-          }
-
-          const valid = billingForm.reportValidity();
-          if (!valid) {
-            if (errorEl) {
-              errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
-            }
-            return;
-          }
-
-          if (!cgvCheckbox || !cgvCheckbox.checked) {
-            if (errorEl) {
-              errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
-            }
-            return;
-          }
-
-          if (!rulesCheckbox || !rulesCheckbox.checked) {
-            if (errorEl) {
-              errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
-            }
-            return;
-          }
-
-          const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
-          if (!age || age < 18) {
-            if (errorEl) {
-              errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
-            }
-            return;
-          }
-
-          if (errorEl) {
-            errorEl.textContent = "";
-          }
-          if (successEl) {
-            successEl.textContent = "";
-          }
-
-          updateOrderSummaryFromPanier();
-
-          const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
-          const finalAmountCents =
-            currentPromo && currentPromo.type === "free"
-              ? 0
-              : Math.round((currentTotals.finalTotalTTC || 0) * 100);
-
-          const payWithSaved = Boolean(document.getElementById("pay-with-saved-card")?.checked);
-          lastPayWithSaved = payWithSaved;
-
-          if (payWithSaved && !(savedCardState.card && savedCardState.card.last4)) {
-            lastPayWithSaved = false;
-            const toggle = document.getElementById("pay-with-saved-card");
-            if (toggle) {
-              toggle.checked = false;
-            }
-            setCardElementHidden(false);
-          }
-
-          submitBtn.disabled = true;
-          const originalLabel = submitBtn.textContent;
-          submitBtn.textContent = "Paiement en cours...";
-
-          try {
-            const body = {
-              panier,
-              customer: {
-                prenom: document.getElementById("prenom").value.trim(),
-                nom: document.getElementById("nom").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                telephone: document.getElementById("telephone").value.trim(),
-                pays: document.getElementById("pays").value,
-                adresse: document.getElementById("adresse").value.trim(),
-                complement: document.getElementById("complement").value.trim(),
-                cp: document.getElementById("cp").value.trim(),
-                ville: document.getElementById("ville").value.trim(),
-                naissance: document.getElementById("naissance").value
-              },
-              promoCode,
-              finalAmountCents,
-              loyaltyUsed
-            };
-
-            if (lastPayWithSaved) {
-              body.useSavedPaymentMethod = true;
-            }
-
-            const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
-              method: "POST",
-              headers: authHeaders({ "Content-Type": "application/json" }),
-              body: JSON.stringify(body)
-            });
-
-            const json = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-              const msg = json.error || "Erreur lors de la création du paiement.";
-              if (errorEl) {
-                errorEl.textContent = msg;
-              }
-              return;
-            }
-
-            if (json.isFree) {
-              if (successEl) {
-                successEl.textContent = "Réservation gratuite validée ✔️";
-              }
-              await processReservationAndDeposit({ isFree: true, paymentIntentId: null });
-              return;
-            }
-
-            if (!json.clientSecret) {
-              if (errorEl) {
-                errorEl.textContent = "Réponse inattendue du serveur de paiement.";
-              }
-              return;
-            }
-
-            if (lastPayWithSaved) {
-              const pmId =
-                savedCardState?.defaultPaymentMethodId ||
-                (savedCardState?.card && savedCardState.card.id) ||
-                null;
-
-              if (!pmId) {
-                lastPayWithSaved = false;
-                const toggle = document.getElementById("pay-with-saved-card");
-                if (toggle) {
-                  toggle.checked = false;
-                }
-                setCardElementHidden(false);
-
-                if (errorEl) {
-                  errorEl.textContent = "Aucune carte enregistrée détectée. Merci de saisir votre carte.";
-                }
-              } else {
-                const actionRes = await stripe.confirmCardPayment(json.clientSecret, {
-                  payment_method: pmId
-                });
-
-                if (actionRes.error) {
-                  if (errorEl) {
-                    errorEl.textContent = actionRes.error.message;
-                  }
-                  return;
-                }
-
-                if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
-                  if (successEl) {
-                    successEl.textContent = "Paiement accepté ✔️";
-                  }
-                  await processReservationAndDeposit({
-                    isFree: false,
-                    paymentIntentId: actionRes.paymentIntent.id
-                  });
-                } else if (errorEl) {
-                  errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
-                }
-
-                return;
-              }
-            }
-
-            if (!cardElement) {
-              if (errorEl) {
-                errorEl.textContent = "Merci de saisir une carte (aucun champ carte détecté).";
-              }
-              return;
-            }
-
-            const result = await stripe.confirmCardPayment(json.clientSecret, {
+        const depositResult = lastPayWithSaved
+          ? await stripe.confirmCardPayment(depositJson.clientSecret, { payment_method: pmId })
+          : await stripe.confirmCardPayment(depositJson.clientSecret, {
               payment_method: {
                 card: cardElement,
-                billing_details: {
-                  name:
-                    document.getElementById("prenom").value.trim() +
-                    " " +
-                    document.getElementById("nom").value.trim(),
-                  email: document.getElementById("email").value.trim()
-                }
+                billing_details: buildBillingDetails()
               }
             });
 
-            if (result.error) {
-              if (errorEl) {
-                errorEl.textContent = result.error.message;
-              }
-              return;
-            }
-
-            if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
-              if (successEl) {
-                successEl.textContent = "Paiement accepté ✔️";
-              }
-              await processReservationAndDeposit({
-                isFree: false,
-                paymentIntentId: result.paymentIntent.id
-              });
-            }
-          } catch (err) {
-            if (errorEl) {
-              errorEl.textContent = "Erreur inattendue : " + err.message;
-            }
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalLabel;
-          }
-        });
+        if (depositResult?.error && errorEl) {
+          errorEl.textContent =
+            (isFree
+              ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
+              : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
+            depositResult.error.message +
+            ". Merci de nous contacter à contactsingbox@gmail.com.";
+        }
+      } catch {
+        if (errorEl) {
+          errorEl.textContent =
+            (isFree
+              ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
+              : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
+            " Merci de nous contacter à contactsingbox@gmail.com.";
+        }
       }
-    });
+    }
+
+    async function saveNewsletterOptin() {
+      const newsletterCheckbox = document.getElementById("newsletter-optin");
+      if (!newsletterCheckbox || !newsletterCheckbox.checked || !globalThis.supabaseClient) {
+        return;
+      }
+
+      try {
+        await globalThis.supabaseClient
+          .from("newsletter_subscriptions")
+          .insert({ email: document.getElementById("email").value.trim() });
+      } catch {
+        // no-op
+      }
+    }
+
+    function cleanupAfterReservation() {
+      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+      savePanier([]);
+      localStorage.removeItem("promoCode");
+      currentPromo = null;
+      updateCartIcon();
+    }
+
+    function renderThankYouQr(reservationId) {
+      const thankyouQrContainer = document.getElementById("thankyou-qr");
+      const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
+
+      if (!reservationId || !thankyouQrContainer || !globalThis.QRCode) {
+        return;
+      }
+
+      try {
+        const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
+        thankyouQrContainer.innerHTML = "";
+        new globalThis.QRCode(thankyouQrContainer, {
+          text: qrText,
+          width: 228,
+          height: 228,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: globalThis.QRCode.CorrectLevel.H
+        });
+
+        if (thankyouQrFallback) {
+          thankyouQrFallback.style.display = "none";
+        }
+      } catch {
+        // no-op
+      }
+    }
+
+    async function processReservationAndDeposit({ isFree, paymentIntentId, errorEl }) {
+      fillThankYouData();
+      const reservationId = await confirmReservation(isFree, paymentIntentId, errorEl);
+      await confirmDepositIntent(reservationId, isFree, errorEl);
+      await saveNewsletterOptin();
+      cleanupAfterReservation();
+      showThankYouSection();
+      renderThankYouQr(reservationId);
+    }
+
+    function hasStripeReadyForPayment(payWithSavedChecked) {
+      if (!stripe) {
+        return false;
+      }
+
+      if (payWithSavedChecked) {
+        return true;
+      }
+
+      return Boolean(cardElement);
+    }
+
+    function validateCheckoutBeforePayment() {
+      const billingForm = document.getElementById("billing-form");
+      const cgvCheckbox = document.getElementById("cgv-checkbox");
+      const rulesCheckbox = document.getElementById("rules-checkbox");
+      const errorEl = document.getElementById("checkout-error");
+      const panier = getPanier();
+
+      if (!billingForm) {
+        return false;
+      }
+
+      if (!panier || panier.length === 0) {
+        if (errorEl) {
+          errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+        }
+        return false;
+      }
+
+      if (!cartValid) {
+        if (errorEl) {
+          errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
+        }
+        return false;
+      }
+
+      if (!billingForm.reportValidity()) {
+        if (errorEl) {
+          errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
+        }
+        return false;
+      }
+
+      if (!cgvCheckbox || !cgvCheckbox.checked) {
+        if (errorEl) {
+          errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
+        }
+        return false;
+      }
+
+      if (!rulesCheckbox || !rulesCheckbox.checked) {
+        if (errorEl) {
+          errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
+        }
+        return false;
+      }
+
+      const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
+      if (!age || age < 18) {
+        if (errorEl) {
+          errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
+        }
+        return false;
+      }
+
+      return true;
+    }
+
+    function resetFeedbackMessages() {
+      const errorEl = document.getElementById("checkout-error");
+      const successEl = document.getElementById("checkout-success");
+
+      if (errorEl) {
+        errorEl.textContent = "";
+      }
+      if (successEl) {
+        successEl.textContent = "";
+      }
+    }
+
+    function normalizeSavedCardChoice() {
+      const toggle = document.getElementById("pay-with-saved-card");
+      const hasSavedCard = Boolean(savedCardState.card && savedCardState.card.last4);
+
+      lastPayWithSaved = Boolean(toggle?.checked);
+
+      if (!lastPayWithSaved || hasSavedCard) {
+        return;
+      }
+
+      lastPayWithSaved = false;
+      if (toggle) {
+        toggle.checked = false;
+      }
+      setCardElementHidden(false);
+    }
+
+    async function createPaymentIntentRequest() {
+      const panier = getPanier();
+      const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
+      const finalAmountCents = currentPromo && currentPromo.type === "free"
+        ? 0
+        : Math.round((currentTotals.finalTotalTTC || 0) * 100);
+
+      const body = {
+        panier,
+        customer: getCustomerPayload(false),
+        promoCode,
+        finalAmountCents,
+        loyaltyUsed
+      };
+
+      if (lastPayWithSaved) {
+        body.useSavedPaymentMethod = true;
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify(body)
+      });
+
+      const json = await res.json().catch(() => ({}));
+      return { res, json };
+    }
+
+    async function confirmSavedCardPayment(clientSecret, errorEl, successEl) {
+      const pmId = getSavedPaymentMethodId();
+
+      if (!pmId) {
+        lastPayWithSaved = false;
+        const toggle = document.getElementById("pay-with-saved-card");
+        if (toggle) {
+          toggle.checked = false;
+        }
+        setCardElementHidden(false);
+
+        if (errorEl) {
+          errorEl.textContent = "Aucune carte enregistrée détectée. Merci de saisir votre carte.";
+        }
+        return null;
+      }
+
+      const actionRes = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: pmId
+      });
+
+      if (actionRes.error) {
+        if (errorEl) {
+          errorEl.textContent = actionRes.error.message;
+        }
+        return null;
+      }
+
+      if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
+        if (successEl) {
+          successEl.textContent = "Paiement accepté ✔️";
+        }
+        return actionRes.paymentIntent.id;
+      }
+
+      if (errorEl) {
+        errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+      }
+      return null;
+    }
+
+    async function confirmStandardCardPayment(clientSecret, errorEl, successEl) {
+      if (!cardElement) {
+        if (errorEl) {
+          errorEl.textContent = "Merci de saisir une carte (aucun champ carte détecté).";
+        }
+        return null;
+      }
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: buildBillingDetails()
+        }
+      });
+
+      if (result.error) {
+        if (errorEl) {
+          errorEl.textContent = result.error.message;
+        }
+        return null;
+      }
+
+      if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+        if (successEl) {
+          successEl.textContent = "Paiement accepté ✔️";
+        }
+        return result.paymentIntent.id;
+      }
+
+      if (errorEl) {
+        errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+      }
+      return null;
+    }
+
+    async function handleCheckoutSubmit() {
+      const submitBtn = document.getElementById("checkout-submit-btn");
+      const errorEl = document.getElementById("checkout-error");
+      const successEl = document.getElementById("checkout-success");
+      const payWithSavedChecked = Boolean(document.getElementById("pay-with-saved-card")?.checked);
+
+      if (!hasStripeReadyForPayment(payWithSavedChecked)) {
+        if (errorEl) {
+          errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
+        }
+        return;
+      }
+
+      if (!validateCheckoutBeforePayment()) {
+        return;
+      }
+
+      resetFeedbackMessages();
+      updateOrderSummaryFromPanier();
+      normalizeSavedCardChoice();
+
+      const originalLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Paiement en cours...";
+
+      try {
+        const { res, json } = await createPaymentIntentRequest();
+
+        if (!res.ok) {
+          if (errorEl) {
+            errorEl.textContent = json.error || "Erreur lors de la création du paiement.";
+          }
+          return;
+        }
+
+        if (json.isFree) {
+          if (successEl) {
+            successEl.textContent = "Réservation gratuite validée ✔️";
+          }
+          await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
+          return;
+        }
+
+        if (!json.clientSecret) {
+          if (errorEl) {
+            errorEl.textContent = "Réponse inattendue du serveur de paiement.";
+          }
+          return;
+        }
+
+        const paymentIntentId = lastPayWithSaved
+          ? await confirmSavedCardPayment(json.clientSecret, errorEl, successEl)
+          : await confirmStandardCardPayment(json.clientSecret, errorEl, successEl);
+
+        if (!paymentIntentId) {
+          return;
+        }
+
+        await processReservationAndDeposit({
+          isFree: false,
+          paymentIntentId,
+          errorEl
+        });
+      } catch (err) {
+        if (errorEl) {
+          errorEl.textContent = "Erreur inattendue : " + err.message;
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    }
+
+    function initCheckoutSubmit() {
+      const submitBtn = document.getElementById("checkout-submit-btn");
+      if (!submitBtn) {
+        return;
+      }
+
+      submitBtn.addEventListener("click", handleCheckoutSubmit);
+    }
+
+    function initMobileMenu() {
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
+
+      if (!burgerBtn || !mobileNav) {
+        return;
+      }
+
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.toggle("open");
+        const isExpanded = mobileNav.classList.contains("open");
+        burgerBtn.setAttribute("aria-expanded", String(isExpanded));
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    async function initPaymentPage() {
+      initMobileMenu();
+      updateCartIcon();
+      updateOrderSummaryFromPanier();
+
+      isPrefilling = true;
+      fillCheckoutForm(loadCheckoutInfoLocal());
+      isPrefilling = false;
+
+      await prefillFromBackendIfLogged();
+      await loadSavedCardStateFromMe();
+      await refreshPaymentMethods();
+
+      renderSavedCardUI();
+      bindAutosave();
+      await initLoyalty();
+      initStripeCard();
+      initPromo();
+      initCheckoutSubmit();
+
+      const saveCardBtn = document.getElementById("save-card-btn");
+      if (saveCardBtn) {
+        saveCardBtn.addEventListener("click", handleSaveCard);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initPaymentPage);
   </script>
 
   <!-- POPUP AUTH / FIDÉLITÉ JS -->
   <script>
     function showAuthModal() {
-      const backdrop = document.getElementById("auth-modal-backdrop");
-      if (backdrop) {
-        backdrop.classList.add("open");
+      const modal = document.getElementById("auth-modal");
+      if (!modal) {
+        return;
+      }
+
+      if (typeof modal.showModal === "function" && !modal.open) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "open");
       }
     }
 
     function hideAuthModal() {
-      const backdrop = document.getElementById("auth-modal-backdrop");
-      if (backdrop) {
-        backdrop.classList.remove("open");
+      const modal = document.getElementById("auth-modal");
+      if (!modal) {
+        return;
+      }
+
+      if (typeof modal.close === "function" && modal.open) {
+        modal.close();
+      } else {
+        modal.removeAttribute("open");
+      }
+    }
+
+    function clearAuthMessage() {
+      const msgEl = document.getElementById("auth-modal-message");
+      if (msgEl) {
+        msgEl.textContent = "";
+      }
+    }
+
+    function switchAuthTab(mode) {
+      const btnLoginTab = document.getElementById("auth-btn-login");
+      const btnRegisterTab = document.getElementById("auth-btn-register");
+      const loginForm = document.getElementById("auth-login-form");
+      const registerForm = document.getElementById("auth-register-form");
+
+      if (!btnLoginTab || !btnRegisterTab || !loginForm || !registerForm) {
+        return;
+      }
+
+      const isLogin = mode === "login";
+
+      btnLoginTab.classList.toggle("active", isLogin);
+      btnRegisterTab.classList.toggle("active", !isLogin);
+      loginForm.classList.toggle("hidden", !isLogin);
+      registerForm.classList.toggle("hidden", isLogin);
+      clearAuthMessage();
+    }
+
+    async function handleAuthLoginSubmit(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById("auth-modal-message");
+      const email = document.getElementById("auth-login-email").value.trim();
+      const password = document.getElementById("auth-login-password").value;
+
+      clearAuthMessage();
+
+      if (!email || !password) {
+        if (msgEl) {
+          msgEl.textContent = "Merci de renseigner vos identifiants.";
+        }
+        return;
+      }
+
+      try {
+        const base = globalThis.API_BASE_URL || API_BASE_URL;
+        const res = await fetch(`${base}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          if (msgEl) {
+            msgEl.textContent = data.error || "Erreur de connexion.";
+          }
+          return;
+        }
+
+        localStorage.setItem("token", data.token);
+        hideAuthModal();
+        globalThis.location.reload();
+      } catch {
+        if (msgEl) {
+          msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+        }
+      }
+    }
+
+    async function handleAuthRegisterSubmit(e) {
+      e.preventDefault();
+      const msgEl = document.getElementById("auth-modal-message");
+      const email = document.getElementById("auth-register-email").value.trim();
+      const password = document.getElementById("auth-register-password").value;
+
+      clearAuthMessage();
+
+      if (!email || !password) {
+        if (msgEl) {
+          msgEl.textContent = "Merci de renseigner un email et un mot de passe.";
+        }
+        return;
+      }
+
+      try {
+        const base = globalThis.API_BASE_URL || API_BASE_URL;
+
+        const res = await fetch(`${base}/api/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          if (msgEl) {
+            msgEl.textContent = data.error || "Erreur lors de la création du compte.";
+          }
+          return;
+        }
+
+        const loginRes = await fetch(`${base}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const loginData = await loginRes.json().catch(() => ({}));
+
+        if (loginRes.ok) {
+          localStorage.setItem("token", loginData.token);
+          hideAuthModal();
+          globalThis.location.reload();
+        } else if (msgEl) {
+          msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
+        }
+      } catch {
+        if (msgEl) {
+          msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+        }
       }
     }
 
     function initAuthModal() {
-      const backdrop = document.getElementById("auth-modal-backdrop");
-      if (!backdrop) {
+      const modal = document.getElementById("auth-modal");
+      if (!modal) {
         return;
       }
 
-      const rawToken = localStorage.getItem("token");
-      const token = (!rawToken || rawToken === "null" || rawToken === "undefined") ? null : rawToken;
-
-      if (!token) {
+      if (!getToken()) {
         showAuthModal();
       }
 
@@ -3797,139 +4011,41 @@
       const btnRegisterTab = document.getElementById("auth-btn-register");
       const loginForm = document.getElementById("auth-login-form");
       const registerForm = document.getElementById("auth-register-form");
-      const msgEl = document.getElementById("auth-modal-message");
       const skipBtn = document.getElementById("auth-modal-continue");
 
-      if (btnLoginTab && btnRegisterTab && loginForm && registerForm) {
-        btnLoginTab.addEventListener("click", () => {
-          btnLoginTab.classList.add("active");
-          btnRegisterTab.classList.remove("active");
-          loginForm.classList.remove("hidden");
-          registerForm.classList.add("hidden");
-          if (msgEl) {
-            msgEl.textContent = "";
-          }
-        });
-
-        btnRegisterTab.addEventListener("click", () => {
-          btnRegisterTab.classList.add("active");
-          btnLoginTab.classList.remove("active");
-          registerForm.classList.remove("hidden");
-          loginForm.classList.add("hidden");
-          if (msgEl) {
-            msgEl.textContent = "";
-          }
-        });
+      if (btnLoginTab) {
+        btnLoginTab.addEventListener("click", () => switchAuthTab("login"));
       }
-
+      if (btnRegisterTab) {
+        btnRegisterTab.addEventListener("click", () => switchAuthTab("register"));
+      }
       if (skipBtn) {
-        skipBtn.addEventListener("click", () => hideAuthModal());
+        skipBtn.addEventListener("click", hideAuthModal);
       }
-
       if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          if (msgEl) {
-            msgEl.textContent = "";
-          }
-
-          const email = document.getElementById("auth-login-email").value.trim();
-          const password = document.getElementById("auth-login-password").value;
-
-          if (!email || !password) {
-            if (msgEl) {
-              msgEl.textContent = "Merci de renseigner vos identifiants.";
-            }
-            return;
-          }
-
-          try {
-            const base = window.API_BASE_URL || API_BASE_URL;
-            const res = await fetch(`${base}/api/login`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
-
-            const data = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-              if (msgEl) {
-                msgEl.textContent = data.error || "Erreur de connexion.";
-              }
-              return;
-            }
-
-            localStorage.setItem("token", data.token);
-            hideAuthModal();
-            window.location.reload();
-          } catch {
-            if (msgEl) {
-              msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
-            }
-          }
-        });
+        loginForm.addEventListener("submit", handleAuthLoginSubmit);
       }
-
       if (registerForm) {
-        registerForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          if (msgEl) {
-            msgEl.textContent = "";
-          }
-
-          const email = document.getElementById("auth-register-email").value.trim();
-          const password = document.getElementById("auth-register-password").value;
-
-          if (!email || !password) {
-            if (msgEl) {
-              msgEl.textContent = "Merci de renseigner un email et un mot de passe.";
-            }
-            return;
-          }
-
-          try {
-            const base = window.API_BASE_URL || API_BASE_URL;
-
-            const res = await fetch(`${base}/api/register`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
-
-            const data = await res.json().catch(() => ({}));
-
-            if (!res.ok) {
-              if (msgEl) {
-                msgEl.textContent = data.error || "Erreur lors de la création du compte.";
-              }
-              return;
-            }
-
-            const loginRes = await fetch(`${base}/api/login`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password })
-            });
-
-            const loginData = await loginRes.json().catch(() => ({}));
-
-            if (loginRes.ok) {
-              localStorage.setItem("token", loginData.token);
-              hideAuthModal();
-              window.location.reload();
-            } else if (msgEl) {
-              msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
-            }
-          } catch {
-            if (msgEl) {
-              msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
-            }
-          }
-        });
+        registerForm.addEventListener("submit", handleAuthRegisterSubmit);
       }
+
+      modal.addEventListener("cancel", (e) => {
+        e.preventDefault();
+        hideAuthModal();
+      });
+
+      modal.addEventListener("click", (e) => {
+        const rect = modal.getBoundingClientRect();
+        const isInDialog =
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width;
+
+        if (!isInDialog) {
+          hideAuthModal();
+        }
+      });
     }
 
     document.addEventListener("DOMContentLoaded", initAuthModal);
@@ -3941,7 +4057,7 @@
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
-    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    globalThis.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
       const emailInput = document.getElementById("newsletter-email");
@@ -3964,23 +4080,29 @@
           return;
         }
 
-        const { error } = await window.supabaseClient
+        const { error } = await globalThis.supabaseClient
           .from("newsletter_subscriptions")
           .insert({ email });
 
         if (error) {
-          if (error.code === "23505" || (error.message && error.message.includes("duplicate key value"))) {
+          const isDuplicate =
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"));
+
+          if (isDuplicate) {
             messageBox.style.color = "#38bdf8";
             messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
-          } else {
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message;
+            return;
           }
-        } else {
-          messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-          emailInput.value = "";
+
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur : " + error.message;
+          return;
         }
+
+        messageBox.style.color = "#38bdf8";
+        messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+        emailInput.value = "";
       });
     });
   </script>
