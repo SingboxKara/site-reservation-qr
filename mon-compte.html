@@ -129,8 +129,6 @@
       padding: 0 24px;
     }
 
-    /* ======================= HEADER GLOBAL ======================= */
-
     .site-header {
       position: fixed;
       top: 0;
@@ -409,8 +407,6 @@
       }
     }
 
-    /* ======================= SECTION MON COMPTE ======================= */
-
     #account {
       position: relative;
       padding: 10rem 0 64px;
@@ -598,8 +594,6 @@
     .account-message.ok {
       color: #bbf7d0;
     }
-
-    /* ====== RÉSERVATIONS ====== */
 
     .reservations-block {
       margin-top: 18px;
@@ -972,8 +966,6 @@
       color: #bbf7d0;
     }
 
-    /* ======================= MODAL QR ======================= */
-
     dialog.modal-dialog {
       background: #020617;
       border-radius: 20px;
@@ -1046,8 +1038,6 @@
       color: #e5e7eb;
       border: 1px solid rgba(255, 255, 255, 0.35);
     }
-
-    /* ======================= FOOTER ======================= */
 
     footer {
       background: #020617;
@@ -1200,7 +1190,6 @@
   </nav>
 
   <main>
-    <!-- SECTION MON COMPTE -->
     <section id="account">
       <div class="container">
         <div class="account-header">
@@ -1386,14 +1375,32 @@
     const API_BASE = "https://singbox-backend.onrender.com";
     const CHECK_ENDPOINT = "https://singbox-backend.onrender.com/api/check";
 
+    function getStoredToken() {
+      const token = localStorage.getItem("token");
+      if (!token || token === "null" || token === "undefined") {
+        return null;
+      }
+      return token;
+    }
+
+    function getAuthHeaders() {
+      const token = getStoredToken();
+      if (!token) {
+        return {};
+      }
+      return { Authorization: "Bearer " + token };
+    }
+
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
-      if (!el) return;
+      if (!el) {
+        return;
+      }
 
       let panier = [];
       try {
         panier = JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+      } catch {
         panier = [];
       }
 
@@ -1417,13 +1424,17 @@
 
     function updateLoyaltyHighlight(points) {
       const el = document.getElementById("loyalty-highlight-text");
-      if (!el) return;
+      if (!el) {
+        return;
+      }
       el.textContent = getLoyaltyText(points);
     }
 
     function setReservationsNotLogged() {
       const listEl = document.getElementById("reservations-list");
-      if (!listEl) return;
+      if (!listEl) {
+        return;
+      }
 
       listEl.innerHTML =
         '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
@@ -1437,8 +1448,12 @@
       const loginCard = document.getElementById("login-card");
       const refundMsgEl = document.getElementById("refund-message");
 
-      if (emailEl) emailEl.textContent = "Non connecté";
-      if (pointsEl) pointsEl.textContent = "—";
+      if (emailEl) {
+        emailEl.textContent = "Non connecté";
+      }
+      if (pointsEl) {
+        pointsEl.textContent = "—";
+      }
       if (msgEl) {
         msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus.";
         msgEl.classList.remove("ok");
@@ -1447,23 +1462,34 @@
         refundMsgEl.textContent = "";
         refundMsgEl.classList.remove("ok");
       }
-      if (notLoggedCta) notLoggedCta.style.display = "block";
-      if (loginCard) loginCard.style.display = "block";
+      if (notLoggedCta) {
+        notLoggedCta.style.display = "block";
+      }
+      if (loginCard) {
+        loginCard.style.display = "block";
+      }
 
       setReservationsNotLogged();
       updateLoyaltyHighlight(null);
     }
 
     function parseDateOrNull(dateStr) {
-      if (!dateStr) return null;
+      if (!dateStr) {
+        return null;
+      }
+
       const date = new Date(dateStr);
-      if (Number.isNaN(date.getTime())) return null;
+      if (Number.isNaN(date.getTime())) {
+        return null;
+      }
       return date;
     }
 
     function formatReservationDate(dateStr) {
       const date = parseDateOrNull(dateStr);
-      if (!date) return dateStr || "Date à confirmer";
+      if (!date) {
+        return dateStr || "Date à confirmer";
+      }
 
       return date.toLocaleDateString("fr-FR", {
         weekday: "short",
@@ -1476,7 +1502,10 @@
     function formatReservationHoursFromReservation(reservation) {
       const startStr = reservation.start_time || reservation.datetime || null;
       const start = parseDateOrNull(startStr);
-      if (!start) return "";
+
+      if (!start) {
+        return "";
+      }
 
       const defaultDurationMs = 90 * 60 * 1000;
       let end = parseDateOrNull(reservation.end_time);
@@ -1485,17 +1514,20 @@
         end = new Date(start.getTime() + defaultDurationMs);
       }
 
-      const formatTime = (date) =>
-        date
+      function formatTime(date) {
+        return date
           .toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
           .replace(":", "h");
+      }
 
       return `${formatTime(start)} - ${formatTime(end)}`;
     }
 
     function isRefundPossible(startTimeIso) {
       const start = parseDateOrNull(startTimeIso);
-      if (!start) return false;
+      if (!start) {
+        return false;
+      }
 
       const now = new Date();
       const diffMs = start.getTime() - now.getTime();
@@ -1508,7 +1540,9 @@
     }
 
     function buildCheckUrlFromReservationId(id) {
-      if (!id) return null;
+      if (!id) {
+        return null;
+      }
       return `${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}`;
     }
 
@@ -1534,14 +1568,162 @@
       return "";
     }
 
-    /* ===== MODAL QR ===== */
+    function buildReservationMetaText(reservation) {
+      const metaPieces = [];
+      const timeRange = formatReservationHoursFromReservation(reservation);
+      const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
+
+      if (timeRange) {
+        metaPieces.push(timeRange);
+      }
+
+      if (boxName) {
+        metaPieces.push("Box " + boxName);
+      }
+
+      return metaPieces.join(" • ");
+    }
+
+    function buildQrButtonHtml(canShowQr, checkUrl, qrTitle) {
+      if (!canShowQr) {
+        return [
+          '<div class="reservation-actions-row">',
+          '  <button class="reservation-action-btn reservation-qr-btn" type="button" disabled>',
+          "    QR indisponible",
+          "  </button>",
+          "</div>"
+        ].join("");
+      }
+
+      return [
+        '<div class="reservation-actions-row">',
+        '  <button',
+        '    class="reservation-action-btn reservation-qr-btn"',
+        `    data-qr-url="${checkUrl}"`,
+        `    data-qr-title="${qrTitle}"`,
+        '    type="button"',
+        "  >",
+        "    Afficher le QR",
+        "  </button>",
+        "</div>"
+      ].join("");
+    }
+
+    function buildRefundHtml(canRefund, reservationId, startTimeIso, isFutureConfirmed) {
+      if (!isFutureConfirmed) {
+        return "";
+      }
+
+      if (canRefund) {
+        return [
+          '<div class="reservation-refund-row">',
+          "  <span>Remboursement possible jusqu'à 24h avant la séance.</span>",
+          '  <button',
+          '    class="reservation-refund-btn"',
+          `    data-reservation-id="${reservationId}"`,
+          `    data-start-time="${startTimeIso}"`,
+          '    type="button"',
+          "  >",
+          "    Demander un remboursement",
+          "  </button>",
+          "</div>"
+        ].join("");
+      }
+
+      return [
+        '<div class="reservation-refund-row">',
+        "  <span>Le remboursement n'est plus possible (moins de 24h avant la séance).</span>",
+        "</div>"
+      ].join("");
+    }
+
+    function createReservationItemElement(reservation) {
+      const item = document.createElement("div");
+      item.className = "reservation-item";
+
+      const startTimeIso = reservation.start_time || reservation.datetime || null;
+      const date = formatReservationDate(reservation.date || startTimeIso);
+      const metaText = buildReservationMetaText(reservation);
+      const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
+      const montant = reservation.montant || reservation.total || reservation.total_price || "";
+      const statutRaw = (reservation.statut || reservation.status || "").toString();
+      const statut = statutRaw || "";
+      const statutClass = getReservationStatusClass(statutRaw);
+
+      const reservationId = getReservationIdForQr(reservation);
+      const checkUrl = buildCheckUrlFromReservationId(reservationId);
+      const canShowQr = Boolean(checkUrl);
+
+      const qrTitleParts = [];
+      if (boxName) {
+        qrTitleParts.push(`Box ${boxName}`);
+      }
+      qrTitleParts.push(date);
+
+      const plageHeure = formatReservationHoursFromReservation(reservation);
+      if (plageHeure) {
+        qrTitleParts.push(plageHeure);
+      }
+
+      const qrTitle = qrTitleParts.join(" • ");
+
+      const parsedStart = parseDateOrNull(startTimeIso);
+      const hasValidStart = Boolean(parsedStart);
+      const isInFuture = Boolean(parsedStart && parsedStart.getTime() > Date.now());
+      const isFutureConfirmed = statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture;
+      const canRefund = isRefundPossible(startTimeIso);
+
+      const priceHtml = montant ? `<div class="reservation-price">${montant} €</div>` : "";
+      const statusHtml = statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : "";
+      const actionsHtml = buildQrButtonHtml(canShowQr, checkUrl, qrTitle);
+      const refundHtml = buildRefundHtml(canRefund, reservation.id, startTimeIso, isFutureConfirmed);
+
+      item.innerHTML = `
+        <div class="reservation-main-row">
+          <div>
+            <div class="reservation-date">${date}</div>
+            <div class="reservation-meta">${metaText}</div>
+          </div>
+          <div class="reservation-side">
+            ${priceHtml}
+            ${statusHtml}
+          </div>
+        </div>
+
+        ${actionsHtml}
+        ${refundHtml}
+      `;
+
+      return item;
+    }
+
+    function renderReservations(reservations) {
+      const listEl = document.getElementById("reservations-list");
+      if (!listEl) {
+        return;
+      }
+
+      if (!Array.isArray(reservations) || reservations.length === 0) {
+        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment.</p>';
+        return;
+      }
+
+      listEl.innerHTML = "";
+
+      for (const reservation of reservations) {
+        const item = createReservationItemElement(reservation);
+        listEl.appendChild(item);
+      }
+    }
 
     function openQrModal(checkUrl, subtitleText) {
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
       const subtitle = document.getElementById("qr-modal-subtitle");
 
-      if (!modal || !img) return;
+      if (!modal || !img) {
+        return;
+      }
 
       if (subtitle && subtitleText) {
         subtitle.textContent = subtitleText;
@@ -1564,7 +1746,9 @@
       const modal = document.getElementById("qr-modal");
       const img = document.getElementById("qr-image");
 
-      if (!modal) return;
+      if (!modal) {
+        return;
+      }
 
       if (typeof modal.close === "function" && modal.open) {
         modal.close();
@@ -1577,119 +1761,22 @@
       }
     }
 
-    function renderReservations(reservations) {
-      const listEl = document.getElementById("reservations-list");
-      if (!listEl) return;
-
-      if (!reservations || !reservations.length) {
-        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment.</p>';
-        return;
+    async function safeJson(response) {
+      try {
+        return await response.json();
+      } catch {
+        return {};
       }
-
-      listEl.innerHTML = "";
-
-      reservations.forEach((reservation) => {
-        const item = document.createElement("div");
-        item.className = "reservation-item";
-
-        const startTimeIso = reservation.start_time || reservation.datetime || null;
-        const date = formatReservationDate(reservation.date || startTimeIso);
-        const plageHeure = formatReservationHoursFromReservation(reservation);
-
-        const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
-        const montant = reservation.montant || reservation.total || reservation.total_price || "";
-        const statutRaw = (reservation.statut || reservation.status || "").toString();
-        const statut = statutRaw || "";
-        const statutClass = getReservationStatusClass(statutRaw);
-
-        const metaPieces = [];
-        if (plageHeure) metaPieces.push(plageHeure);
-        if (boxName) metaPieces.push(`Box ${boxName}`);
-        const metaText = metaPieces.join(" • ");
-
-        const reservationId = getReservationIdForQr(reservation);
-        const checkUrl = buildCheckUrlFromReservationId(reservationId);
-        const canShowQr = Boolean(checkUrl);
-
-        let actionsHtml = "";
-        if (canShowQr) {
-          const qrTitle = `${boxName ? `Box ${boxName} • ` : ""}${date}${plageHeure ? ` • ${plageHeure}` : ""}`;
-          actionsHtml = `
-            <div class="reservation-actions-row">
-              <button
-                class="reservation-action-btn reservation-qr-btn"
-                data-qr-url="${checkUrl}"
-                data-qr-title="${qrTitle}"
-                type="button"
-              >
-                Afficher le QR
-              </button>
-            </div>
-          `;
-        } else {
-          actionsHtml = `
-            <div class="reservation-actions-row">
-              <button class="reservation-action-btn reservation-qr-btn" type="button" disabled>
-                QR indisponible
-              </button>
-            </div>
-          `;
-        }
-
-        const hasValidStart = Boolean(parseDateOrNull(startTimeIso));
-        const parsedStart = parseDateOrNull(startTimeIso);
-        const isInFuture = Boolean(parsedStart && parsedStart.getTime() > Date.now());
-
-        let refundHtml = "";
-        if (statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture) {
-          if (isRefundPossible(startTimeIso)) {
-            refundHtml = `
-              <div class="reservation-refund-row">
-                <span>Remboursement possible jusqu'à 24h avant la séance.</span>
-                <button
-                  class="reservation-refund-btn"
-                  data-reservation-id="${reservation.id}"
-                  data-start-time="${startTimeIso}"
-                  type="button"
-                >
-                  Demander un remboursement
-                </button>
-              </div>
-            `;
-          } else {
-            refundHtml = `
-              <div class="reservation-refund-row">
-                <span>Le remboursement n'est plus possible (moins de 24h avant la séance).</span>
-              </div>
-            `;
-          }
-        }
-
-        item.innerHTML = `
-          <div class="reservation-main-row">
-            <div>
-              <div class="reservation-date">${date}</div>
-              <div class="reservation-meta">${metaText}</div>
-            </div>
-            <div class="reservation-side">
-              ${montant ? `<div class="reservation-price">${montant} €</div>` : ""}
-              ${statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : ""}
-            </div>
-          </div>
-
-          ${actionsHtml}
-          ${refundHtml}
-        `;
-
-        listEl.appendChild(item);
-      });
     }
 
     async function loadReservations() {
-      const token = localStorage.getItem("token");
+      const token = getStoredToken();
       const listEl = document.getElementById("reservations-list");
       const refundMsgEl = document.getElementById("refund-message");
-      if (!listEl) return;
+
+      if (!listEl) {
+        return;
+      }
 
       if (refundMsgEl) {
         refundMsgEl.textContent = "";
@@ -1715,7 +1802,7 @@
           return;
         }
 
-        const data = await response.json();
+        const data = await safeJson(response);
         const reservations = Array.isArray(data) ? data : (data.reservations || []);
         renderReservations(reservations);
       } catch (err) {
@@ -1726,7 +1813,7 @@
     }
 
     async function loadProfile() {
-      const token = localStorage.getItem("token");
+      const token = getStoredToken();
       const loginCard = document.getElementById("login-card");
       const notLoggedCta = document.getElementById("not-logged-cta");
       const msgEl = document.getElementById("account-message");
@@ -1743,7 +1830,7 @@
 
       try {
         const response = await fetch(API_BASE + "/api/me", {
-          headers: { Authorization: "Bearer " + token }
+          headers: getAuthHeaders()
         });
 
         if (!response.ok) {
@@ -1753,39 +1840,51 @@
           return;
         }
 
-        const user = await response.json();
+        const user = await safeJson(response);
 
         const emailEl = document.getElementById("user-email");
         const pointsEl = document.getElementById("user-points");
 
-        if (emailEl) emailEl.textContent = user.email || "—";
-        if (pointsEl) pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
+        if (emailEl) {
+          emailEl.textContent = user.email || "—";
+        }
+
+        if (pointsEl) {
+          pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
+        }
 
         if (msgEl) {
           msgEl.textContent = "Profil chargé avec succès.";
           msgEl.classList.add("ok");
         }
 
-        if (loginCard) loginCard.style.display = "none";
-        if (notLoggedCta) notLoggedCta.style.display = "none";
+        if (loginCard) {
+          loginCard.style.display = "none";
+        }
+
+        if (notLoggedCta) {
+          notLoggedCta.style.display = "none";
+        }
 
         updateLoyaltyHighlight(user.points ?? 0);
         loadReservations();
       } catch (err) {
         console.error("Erreur /api/me :", err);
+
         if (msgEl) {
           msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter.";
           msgEl.classList.remove("ok");
         }
+
         localStorage.removeItem("token");
         showNotLoggedState();
       }
     }
 
-    // ---------- Helpers login/register ----------
-
     function setLoginMessage(loginMsgEl, text, isOk = false) {
-      if (!loginMsgEl) return;
+      if (!loginMsgEl) {
+        return;
+      }
       loginMsgEl.textContent = text || "";
       loginMsgEl.classList.toggle("ok", Boolean(isOk));
     }
@@ -1798,14 +1897,6 @@
         email: (emailEl?.value || "").trim(),
         password: passEl?.value || ""
       };
-    }
-
-    async function safeJson(response) {
-      try {
-        return await response.json();
-      } catch (_) {
-        return {};
-      }
     }
 
     async function postJson(url, payload) {
@@ -1841,6 +1932,7 @@
 
     async function registerThenLogin(email, password) {
       const registerResult = await doRegister(email, password);
+
       if (!registerResult.ok) {
         return {
           ok: false,
@@ -1850,6 +1942,7 @@
       }
 
       const loginResult = await doLogin(email, password);
+
       if (!loginResult.ok) {
         return {
           ok: false,
@@ -1868,13 +1961,17 @@
       const loginForm = document.getElementById("login-form");
       const loginMsg = document.getElementById("login-message");
       const createBtn = document.getElementById("create-account-btn");
-      if (!loginForm) return;
+
+      if (!loginForm) {
+        return;
+      }
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         setLoginMessage(loginMsg, "", false);
 
         const { email, password } = getLoginCredentials();
+
         if (!email || !password) {
           setLoginMessage(loginMsg, "Merci de renseigner votre email et votre mot de passe.", false);
           return;
@@ -1882,6 +1979,7 @@
 
         try {
           const result = await doLogin(email, password);
+
           if (!result.ok) {
             setLoginMessage(
               loginMsg,
@@ -1905,6 +2003,7 @@
           setLoginMessage(loginMsg, "", false);
 
           const { email, password } = getLoginCredentials();
+
           if (!email || !password) {
             setLoginMessage(
               loginMsg,
@@ -1918,7 +2017,11 @@
             const result = await registerThenLogin(email, password);
 
             if (!result.ok) {
-              setLoginMessage(loginMsg, result.error || "Erreur lors de la création du compte.", false);
+              setLoginMessage(
+                loginMsg,
+                result.error || "Erreur lors de la création du compte.",
+                false
+              );
               return;
             }
 
@@ -1935,7 +2038,9 @@
 
     function initLogout() {
       const logoutBtn = document.getElementById("logout-btn");
-      if (!logoutBtn) return;
+      if (!logoutBtn) {
+        return;
+      }
 
       logoutBtn.addEventListener("click", () => {
         localStorage.removeItem("token");
@@ -1960,16 +2065,19 @@
     function initRefundButtons() {
       const listEl = document.getElementById("reservations-list");
       const refundMsgEl = document.getElementById("refund-message");
-      if (!listEl) return;
+
+      if (!listEl || !refundMsgEl) {
+        return;
+      }
 
       listEl.addEventListener("click", async (e) => {
         const btn = e.target.closest(".reservation-refund-btn");
-        if (!btn) return;
-        if (!refundMsgEl) return;
+        if (!btn) {
+          return;
+        }
 
-        const reservationId = btn.getAttribute("data-reservation-id");
-        const startTime = btn.getAttribute("data-start-time");
-        const token = localStorage.getItem("token");
+        const { reservationId, startTime } = btn.dataset;
+        const token = getStoredToken();
 
         refundMsgEl.classList.remove("ok");
         refundMsgEl.textContent = "";
@@ -2054,23 +2162,30 @@
       }
 
       document.addEventListener("keydown", (e) => {
-        if (e.key !== "Escape") return;
-        if (!modal || !modal.open) return;
+        if (e.key !== "Escape") {
+          return;
+        }
+        if (!modal || !modal.open) {
+          return;
+        }
         closeQrModal();
       });
 
-      if (!listEl) return;
+      if (!listEl) {
+        return;
+      }
 
       listEl.addEventListener("click", (e) => {
         const qrBtn = e.target.closest(".reservation-qr-btn");
-        if (!qrBtn || qrBtn.hasAttribute("disabled")) return;
+        if (!qrBtn || qrBtn.hasAttribute("disabled")) {
+          return;
+        }
 
-        const url = qrBtn.getAttribute("data-qr-url");
-        const title =
-          qrBtn.getAttribute("data-qr-title") || "Présentez ce QR code à l’accueil.";
+        const { qrUrl, qrTitle } = qrBtn.dataset;
+        const title = qrTitle || "Présentez ce QR code à l’accueil.";
 
-        if (url) {
-          openQrModal(url, title);
+        if (qrUrl) {
+          openQrModal(qrUrl, title);
         }
       });
     }
@@ -2078,7 +2193,10 @@
     function initMobileMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
-      if (!burgerBtn || !mobileNav) return;
+
+      if (!burgerBtn || !mobileNav) {
+        return;
+      }
 
       burgerBtn.addEventListener("click", () => {
         const willOpen = !mobileNav.classList.contains("open");
@@ -2087,7 +2205,9 @@
       });
 
       mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName !== "A") return;
+        if (e.target.tagName !== "A") {
+          return;
+        }
         mobileNav.classList.remove("open");
         burgerBtn.setAttribute("aria-expanded", "false");
       });
@@ -2116,7 +2236,9 @@
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn || !messageBox) return;
+      if (!emailInput || !submitBtn || !messageBox) {
+        return;
+      }
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
