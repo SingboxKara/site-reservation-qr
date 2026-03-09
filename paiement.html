@@ -93,6 +93,10 @@
       --sb-container-width: 1180px;
     }
 
+    html {
+      color-scheme: dark;
+    }
+
     .card-element-wrapper.is-hidden {
       display: none;
     }
@@ -106,8 +110,8 @@
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
       overflow-x: hidden;
@@ -150,7 +154,7 @@
       z-index: 50;
       background: #020617;
       color: #fff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
       height: auto;
     }
 
@@ -181,8 +185,8 @@
       display: block;
       object-fit: contain;
       filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.16))
-        drop-shadow(0 0 20px rgba(201,76,53,0.6));
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.16))
+        drop-shadow(0 0 20px rgba(201, 76, 53, 0.6));
     }
 
     .brand-text {
@@ -242,7 +246,7 @@
 
     .main-nav a:hover,
     .main-nav a:focus-visible {
-      color: #ffb96f;
+      color: #ffcf9a;
       transition: 0.25s ease;
     }
 
@@ -262,8 +266,8 @@
       color: #f9fafb;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
-        0 10px 28px rgba(0,0,0,0.7);
+        0 0 0 1px rgba(249, 250, 251, 0.08),
+        0 10px 28px rgba(0, 0, 0, 0.7);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -272,22 +276,22 @@
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
-        0 16px 38px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(249, 250, 251, 0.18),
+        0 16px 38px rgba(0, 0, 0, 0.9);
     }
 
     .cart-icon {
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
       position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      background: radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.16), rgba(15, 23, 42, 0.85));
       backdrop-filter: blur(6px);
     }
 
@@ -313,7 +317,7 @@
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       background: transparent;
       color: #fff;
       align-items: center;
@@ -390,7 +394,7 @@
 
     @media (max-width: 480px) {
       .header-inner {
-        padding: 8px 8px;
+        padding: 8px;
         gap: 6px;
       }
 
@@ -420,8 +424,8 @@
       position: relative;
       padding: 12rem 0 64px;
       background:
-        radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
+        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
         #050814;
       color: var(--sb-text-main);
       overflow: hidden;
@@ -433,7 +437,7 @@
       top: 16%;
       left: 8%;
       font-size: 32px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(148, 163, 184, 0.08);
       pointer-events: none;
     }
 
@@ -443,7 +447,7 @@
       bottom: 14%;
       right: 10%;
       font-size: 30px;
-      color: rgba(148,163,184,0.08);
+      color: rgba(148, 163, 184, 0.08);
       pointer-events: none;
     }
 
@@ -484,9 +488,9 @@
       border-radius: 24px;
       padding: 1.75rem 1.9rem;
       box-shadow:
-        0 24px 60px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(148,163,184,0.3);
-      border: 1px solid rgba(255,255,255,0.04);
+        0 24px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.04);
       position: relative;
       overflow: hidden;
     }
@@ -496,7 +500,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(148,163,184,0.1), transparent 60%);
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.1), transparent 60%);
       opacity: 0.6;
       mix-blend-mode: soft-light;
     }
@@ -513,7 +517,7 @@
 
     .billing-form-grid-2 {
       display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 0.9rem;
       margin-bottom: 0.9rem;
     }
@@ -571,8 +575,8 @@
     .billing-field select:focus {
       border-color: var(--sb-orange);
       box-shadow:
-        0 0 0 1px rgba(249,115,22,0.9),
-        0 0 28px rgba(249,115,22,0.35);
+        0 0 0 1px rgba(249, 115, 22, 0.9),
+        0 0 28px rgba(249, 115, 22, 0.35);
     }
 
     .billing-type-toggle {
@@ -580,7 +584,7 @@
       padding: 3px;
       border-radius: 999px;
       background: #020617;
-      border: 1px solid rgba(148,163,184,0.35);
+      border: 1px solid rgba(148, 163, 184, 0.35);
       margin-bottom: 14px;
       font-size: 12px;
       gap: 4px;
@@ -606,15 +610,18 @@
 
     .billing-type-option span {
       position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 6px 14px;
     }
 
     .billing-type-option input:checked + span {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      border-radius: 999px;
-      padding: 6px 14px;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 12px 30px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 12px 30px rgba(0, 0, 0, 0.9);
     }
 
     .summary-column {
@@ -630,7 +637,7 @@
 
     .order-lines {
       font-size: 13px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
       padding-bottom: 0.75rem;
       margin-bottom: 0.75rem;
     }
@@ -655,12 +662,13 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 4px;
+      gap: 12px;
     }
 
     .order-row.total {
       margin-top: 6px;
       padding-top: 6px;
-      border-top: 1px solid rgba(31,41,55,0.9);
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
       font-size: 15px;
       font-weight: 700;
     }
@@ -751,8 +759,8 @@
       font-weight: 600;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.08),
-        0 12px 30px rgba(0,0,0,0.8);
+        0 0 0 1px rgba(248, 250, 251, 0.08),
+        0 12px 30px rgba(0, 0, 0, 0.8);
     }
 
     .promo-message {
@@ -804,7 +812,7 @@
     }
 
     .payment-logo.mc {
-      background: linear-gradient(90deg,#f97316,#ef4444);
+      background: linear-gradient(90deg, #f97316, #ef4444);
       color: #f9fafb;
     }
 
@@ -888,8 +896,8 @@
     .payment-warning {
       font-size: 12px;
       border-radius: 14px;
-      border: 1px solid rgba(248,113,113,0.8);
-      background: rgba(127,29,29,0.65);
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      background: rgba(127, 29, 29, 0.65);
       padding: 6px 10px;
       color: #fee2e2;
       margin-bottom: 12px;
@@ -936,8 +944,8 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.14),
-        0 20px 50px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(248, 250, 251, 0.14),
+        0 20px 50px rgba(0, 0, 0, 0.95);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
@@ -946,8 +954,8 @@
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 26px 65px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 26px 65px rgba(0, 0, 0, 1);
     }
 
     .checkout-submit button[disabled] {
@@ -998,27 +1006,27 @@
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.14),
-        0 18px 45px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(248, 250, 251, 0.14),
+        0 18px 45px rgba(0, 0, 0, 0.95);
     }
 
     .empty-cart-btn-primary:hover,
     .empty-cart-btn-primary:focus-visible {
       filter: brightness(1.04);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 24px 65px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 24px 65px rgba(0, 0, 0, 1);
     }
 
     .empty-cart-btn-secondary {
       background: transparent;
       color: #e5e7eb;
-      border-color: rgba(148,163,184,0.6);
+      border-color: rgba(148, 163, 184, 0.6);
     }
 
     .empty-cart-btn-secondary:hover,
     .empty-cart-btn-secondary:focus-visible {
-      border-color: rgba(248,250,251,0.9);
+      border-color: rgba(248, 250, 251, 0.9);
     }
 
     #thankyou-section {
@@ -1046,7 +1054,7 @@
     }
 
     .thankyou-highlight-name {
-      background: radial-gradient(circle at 0 0, rgba(249,115,22,0.25), transparent 55%);
+      background: radial-gradient(circle at 0 0, rgba(249, 115, 22, 0.25), transparent 55%);
       padding: 2px 8px;
       border-radius: 999px;
     }
@@ -1079,8 +1087,8 @@
 
     .thankyou-qr-inner {
       border-radius: 18px;
-      border: 1px dashed rgba(148,163,184,0.5);
-      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.98));
+      border: 1px dashed rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at 10% 0%, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.98));
       padding: 10px 12px;
       width: 100%;
       text-align: center;
@@ -1096,7 +1104,7 @@
 
     .thankyou-qr-frame {
       width: 260px;
-      aspect-ratio: 1/1;
+      aspect-ratio: 1 / 1;
       background: #fff;
       padding: 16px;
       border-radius: 0;
@@ -1122,7 +1130,7 @@
       right: 0;
       text-align: center;
       font-size: 11px;
-      color: rgba(71,85,105,0.95);
+      color: rgba(71, 85, 105, 0.95);
     }
 
     .thankyou-qr-note {
@@ -1135,8 +1143,8 @@
       font-size: 12px;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(248,250,251,0.08);
-      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(248, 250, 251, 0.08);
+      background: rgba(15, 23, 42, 0.9);
       line-height: 1.5;
       color: #f3f4f6;
     }
@@ -1150,8 +1158,8 @@
       font-size: 12px;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.8);
       line-height: 1.5;
       color: #f3f4f6;
     }
@@ -1190,35 +1198,35 @@
     }
 
     .thankyou-btn-primary {
-      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.14),
-        0 18px 45px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(248, 250, 251, 0.14),
+        0 18px 45px rgba(0, 0, 0, 0.95);
     }
 
     .thankyou-btn-secondary {
       background: transparent;
       color: #e5e7eb;
-      border-color: rgba(148,163,184,0.6);
+      border-color: rgba(148, 163, 184, 0.6);
     }
 
     .thankyou-btn-primary:hover,
     .thankyou-btn-primary:focus-visible {
       filter: brightness(1.04);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 24px 65px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 24px 65px rgba(0, 0, 0, 1);
     }
 
     .thankyou-btn-secondary:hover,
     .thankyou-btn-secondary:focus-visible {
-      border-color: rgba(248,250,251,0.9);
+      border-color: rgba(248, 250, 251, 0.9);
     }
 
     @media (max-width: 900px) {
       .thankyou-summary {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
@@ -1266,7 +1274,7 @@
     footer input[type="email"] {
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
+      border: 1px solid rgba(148, 163, 184, 0.4);
       min-width: 240px;
       max-width: 360px;
       font-size: 14px;
@@ -1283,14 +1291,14 @@
       padding: 10px 18px;
       border: none;
       border-radius: 999px;
-      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 16px 40px rgba(0, 0, 0, 0.9);
     }
 
     .footer-columns {
@@ -1335,13 +1343,13 @@
       }
 
       .checkout-layout {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     @media (max-width: 640px) {
       .billing-form-grid-2 {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .card {
@@ -1352,14 +1360,14 @@
     dialog.auth-modal {
       width: min(440px, calc(100% - 32px));
       background:
-        radial-gradient(circle at 10% 0%, rgba(249,115,22,0.18), transparent 55%),
-        radial-gradient(circle at 90% 0%, rgba(37,99,235,0.22), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(249, 115, 22, 0.18), transparent 55%),
+        radial-gradient(circle at 90% 0%, rgba(37, 99, 235, 0.22), transparent 60%),
         #020617;
       border-radius: 24px;
-      border: 1px solid rgba(148,163,184,0.45);
+      border: 1px solid rgba(148, 163, 184, 0.45);
       box-shadow:
-        0 24px 70px rgba(0,0,0,0.95),
-        0 0 0 1px rgba(15,23,42,0.9);
+        0 24px 70px rgba(0, 0, 0, 0.95),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
       padding: 20px 22px 18px;
       position: relative;
       overflow: hidden;
@@ -1367,7 +1375,7 @@
     }
 
     dialog.auth-modal::backdrop {
-      background: radial-gradient(circle at 10% 0%, rgba(15,23,42,0.9), rgba(2,6,23,0.96));
+      background: radial-gradient(circle at 10% 0%, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.96));
       backdrop-filter: blur(10px);
     }
 
@@ -1376,7 +1384,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(248,250,252,0.05), transparent 55%);
+      background: radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.05), transparent 55%);
       mix-blend-mode: soft-light;
     }
 
@@ -1411,8 +1419,8 @@
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(248,250,251,0.12);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(248, 250, 251, 0.12);
       margin-bottom: 12px;
       color: #f3f4f6;
     }
@@ -1424,7 +1432,7 @@
       width: 18px;
       height: 18px;
       border-radius: 999px;
-      background: linear-gradient(135deg,var(--sb-red),var(--sb-orange));
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
       font-size: 11px;
     }
 
@@ -1436,7 +1444,7 @@
       background: #020617;
       border-radius: 999px;
       padding: 3px;
-      border: 1px solid rgba(148,163,184,0.35);
+      border: 1px solid rgba(148, 163, 184, 0.35);
     }
 
     .auth-tab-btn {
@@ -1453,11 +1461,11 @@
     }
 
     .auth-tab-btn.active {
-      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.16),
-        0 14px 34px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.16),
+        0 14px 34px rgba(0, 0, 0, 0.9);
     }
 
     .auth-form {
@@ -1500,8 +1508,8 @@
     .auth-field input:focus {
       border-color: var(--sb-orange);
       box-shadow:
-        0 0 0 1px rgba(249,115,22,0.8),
-        0 0 22px rgba(249,115,22,0.25);
+        0 0 0 1px rgba(249, 115, 22, 0.8),
+        0 0 22px rgba(249, 115, 22, 0.25);
     }
 
     .auth-submit-btn {
@@ -1509,7 +1517,7 @@
       border: none;
       border-radius: 999px;
       padding: 0.55rem 1rem;
-      background: linear-gradient(90deg,var(--sb-red),var(--sb-orange));
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       font-size: 12px;
       font-weight: 600;
@@ -1518,8 +1526,8 @@
       text-transform: uppercase;
       margin-top: 4px;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 16px 40px rgba(0, 0, 0, 0.9);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
@@ -1528,8 +1536,8 @@
       transform: translateY(-1px);
       filter: brightness(1.03);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 22px 52px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 22px 52px rgba(0, 0, 0, 1);
     }
 
     .auth-modal-message {
@@ -1571,7 +1579,6 @@
   </style>
 </head>
 <body>
-
   <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
@@ -2156,11 +2163,15 @@
   <script src="https://js.stripe.com/v3"></script>
   <!-- QR Code library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
     const PRICE_FALLBACK = 10;
     const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
@@ -2186,6 +2197,10 @@
       finalTotalTTC: 0
     };
 
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
     function getToken() {
       const token = localStorage.getItem("token");
       return (!token || token === "null" || token === "undefined") ? null : token;
@@ -2206,11 +2221,26 @@
       return false;
     }
 
+    async function parseResponseData(res) {
+      try {
+        return await res.json();
+      } catch {
+        try {
+          const cloned = res.clone();
+          const txt = await cloned.text();
+          return { raw: txt };
+        } catch {
+          return null;
+        }
+      }
+    }
+
     async function apiFetch(path, options = {}, config = {}) {
       const { auth = false, json = true, ctx = "" } = config;
       const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
       const headers = options.headers || {};
       const finalHeaders = auth ? authHeaders(headers) : headers;
+
       const res = await fetch(url, { ...options, headers: finalHeaders });
 
       if (auth) {
@@ -2224,17 +2254,7 @@
         return { ok: res.ok, status: res.status, data: null, res };
       }
 
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        try {
-          const txt = await res.clone().text();
-          data = { raw: txt };
-        } catch {
-          data = null;
-        }
-      }
+      const data = await parseResponseData(res);
 
       if (!res.ok) {
         console.warn(`[API] ${ctx || path} failed:`, res.status, data);
@@ -2245,24 +2265,25 @@
 
     function getPanier() {
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
+        const panier = JSON.parse(localStorage.getItem("panier"));
+        return Array.isArray(panier) ? panier : [];
       } catch {
         return [];
       }
     }
 
     function savePanier(panier) {
-      localStorage.setItem("panier", JSON.stringify(panier));
+      localStorage.setItem("panier", JSON.stringify(Array.isArray(panier) ? panier : []));
     }
 
     function updateCartIcon() {
-      const el = document.getElementById("cart-count");
+      const el = getEl("cart-count");
       if (!el) {
         return;
       }
 
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     function computeTotal(panier) {
@@ -2280,6 +2301,10 @@
       }
 
       return total;
+    }
+
+    function formatMoney(value) {
+      return `${Number(value || 0).toFixed(2).replace(".", ",")}€`;
     }
 
     function formatDateFr(iso) {
@@ -2315,6 +2340,7 @@
       }
 
       const today = getTodayISO();
+
       if (promo.valid_from && promo.valid_from > today) {
         return false;
       }
@@ -2337,19 +2363,16 @@
 
       const value = promo.value || 0;
 
-      if (promo.type === "percent") {
-        return Math.min(totalTTC, totalTTC * (value / 100));
+      switch (promo.type) {
+        case "percent":
+          return Math.min(totalTTC, totalTTC * (value / 100));
+        case "fixed":
+          return Math.min(totalTTC, value);
+        case "free":
+          return totalTTC;
+        default:
+          return 0;
       }
-
-      if (promo.type === "fixed") {
-        return Math.min(totalTTC, value);
-      }
-
-      if (promo.type === "free") {
-        return totalTTC;
-      }
-
-      return 0;
     }
 
     function calculateAgeFromBirthdate(isoDate) {
@@ -2396,17 +2419,17 @@
 
     function getCheckoutEls() {
       return {
-        nameEl: document.getElementById("order-product-name"),
-        metaEl: document.getElementById("order-meta"),
-        subEl: document.getElementById("order-subtotal"),
-        tvaEl: document.getElementById("order-tva"),
-        totalEl: document.getElementById("order-total"),
-        discountRow: document.getElementById("order-discount-row"),
-        discountEl: document.getElementById("order-discount"),
-        emptyState: document.getElementById("empty-cart-state"),
+        nameEl: getEl("order-product-name"),
+        metaEl: getEl("order-meta"),
+        subEl: getEl("order-subtotal"),
+        tvaEl: getEl("order-tva"),
+        totalEl: getEl("order-total"),
+        discountRow: getEl("order-discount-row"),
+        discountEl: getEl("order-discount"),
+        emptyState: getEl("empty-cart-state"),
         checkoutLayout: document.querySelector(".checkout-layout"),
         paymentCard: document.querySelector(".payment-card"),
-        submitBtn: document.getElementById("checkout-submit-btn")
+        submitBtn: getEl("checkout-submit-btn")
       };
     }
 
@@ -2416,12 +2439,15 @@
       if (emptyState) {
         emptyState.style.display = isEmpty ? "block" : "none";
       }
+
       if (checkoutLayout) {
         checkoutLayout.style.display = isEmpty ? "none" : "grid";
       }
+
       if (paymentCard) {
         paymentCard.style.display = isEmpty ? "none" : "";
       }
+
       if (submitBtn) {
         submitBtn.disabled = isEmpty;
       }
@@ -2430,11 +2456,11 @@
     function renderEmptyOrderSummary(els) {
       const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow } = els;
 
-      nameEl.textContent = "Aucune réservation";
-      metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-      subEl.textContent = "0€";
-      tvaEl.textContent = "0€";
-      totalEl.textContent = "0€";
+      if (nameEl) nameEl.textContent = "Aucune réservation";
+      if (metaEl) metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
+      if (subEl) subEl.textContent = "0€";
+      if (tvaEl) tvaEl.textContent = "0€";
+      if (totalEl) totalEl.textContent = "0€";
 
       if (discountRow) {
         discountRow.style.display = "none";
@@ -2447,15 +2473,16 @@
     function renderInvalidCartSummary(els) {
       const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow, submitBtn } = els;
 
-      nameEl.textContent = "Erreur sur votre panier";
-      metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
-      subEl.textContent = "—";
-      tvaEl.textContent = "—";
-      totalEl.textContent = "—";
+      if (nameEl) nameEl.textContent = "Erreur sur votre panier";
+      if (metaEl) metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
+      if (subEl) subEl.textContent = "—";
+      if (tvaEl) tvaEl.textContent = "—";
+      if (totalEl) totalEl.textContent = "—";
 
       if (discountRow) {
         discountRow.style.display = "none";
       }
+
       if (submitBtn) {
         submitBtn.disabled = true;
       }
@@ -2464,7 +2491,7 @@
       cartValid = false;
     }
 
-    function buildOrderMeta(first, panierLength) {
+    function buildOrderMeta(first) {
       const dateLabel = first && first.date ? formatDateFr(first.date) : "";
       let hourText = "";
 
@@ -2486,10 +2513,14 @@
         hourText = `${startStr} – ${endStr}`;
       }
 
-      return {
-        dateLabel,
-        hourText
-      };
+      return { dateLabel, hourText };
+    }
+
+    function getDisplayBoxName(first) {
+      if (!first) {
+        return "Box privée";
+      }
+      return first.boxName || first.box || first.boxId || "Box privée";
     }
 
     function updateOrderSummaryFromPanier() {
@@ -2501,6 +2532,7 @@
       }
 
       const panier = getPanier();
+
       if (panier.length === 0) {
         renderEmptyOrderSummary(els);
         toggleEmptyCartUI(true, els);
@@ -2508,6 +2540,7 @@
       }
 
       const totalTTCNoDiscount = computeTotal(panier);
+
       if (totalTTCNoDiscount === null) {
         renderInvalidCartSummary(els);
         toggleEmptyCartUI(false, els);
@@ -2518,6 +2551,7 @@
       if (submitBtn) {
         submitBtn.disabled = false;
       }
+
       toggleEmptyCartUI(false, els);
 
       const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
@@ -2539,11 +2573,9 @@
       const finalTotalTTC = Math.max(0, totalTTCNoDiscount - discount);
 
       const first = panier[0];
-      const boxName = first && (first.boxName || first.box || first.boxId)
-        ? (first.boxName || first.box || first.boxId)
-        : "Box privée";
+      const boxName = getDisplayBoxName(first);
       const extraCount = panier.length - 1;
-      const { dateLabel, hourText } = buildOrderMeta(first, panier.length);
+      const { dateLabel, hourText } = buildOrderMeta(first);
 
       nameEl.textContent = extraCount > 0
         ? `Box ${boxName} + ${extraCount} autre(s) créneau(x)`
@@ -2554,14 +2586,14 @@
         (hourText ? `Créneau : ${hourText}<br>` : "") +
         `Nombre de créneaux : ${panier.length}`;
 
-      subEl.textContent = totalHT.toFixed(2).replace(".", ",") + "€";
-      tvaEl.textContent = tva.toFixed(2).replace(".", ",") + "€";
-      totalEl.textContent = finalTotalTTC.toFixed(2).replace(".", ",") + "€";
+      subEl.textContent = formatMoney(totalHT);
+      tvaEl.textContent = formatMoney(tva);
+      totalEl.textContent = formatMoney(finalTotalTTC);
 
       if (discountRow && discountEl) {
         if (discount > 0) {
           discountRow.style.display = "flex";
-          discountEl.textContent = "-" + discount.toFixed(2).replace(".", ",") + "€";
+          discountEl.textContent = "-" + formatMoney(discount);
         } else {
           discountRow.style.display = "none";
         }
@@ -2579,7 +2611,7 @@
     }
 
     function syncSavedCardToggleState() {
-      const payToggle = document.getElementById("pay-with-saved-card");
+      const payToggle = getEl("pay-with-saved-card");
       if (!payToggle) {
         return;
       }
@@ -2597,8 +2629,12 @@
     }
 
     function initSavedCardToggleBehavior() {
-      const payToggle = document.getElementById("pay-with-saved-card");
-      if (!payToggle || payToggle.dataset.bound === "true") {
+      const payToggle = getEl("pay-with-saved-card");
+      if (!payToggle) {
+        return;
+      }
+
+      if (payToggle.dataset.bound === "true") {
         syncSavedCardToggleState();
         return;
       }
@@ -2609,15 +2645,15 @@
     }
 
     function renderSavedCardUI() {
-      const block = document.getElementById("saved-card-block");
+      const block = getEl("saved-card-block");
       if (!block) {
         return;
       }
 
-      const summary = document.getElementById("saved-card-summary");
-      const payToggle = document.getElementById("pay-with-saved-card");
-      const saveBtn = document.getElementById("save-card-btn");
-      const msg = document.getElementById("save-card-msg");
+      const summary = getEl("saved-card-summary");
+      const payToggle = getEl("pay-with-saved-card");
+      const saveBtn = getEl("save-card-btn");
+      const msg = getEl("save-card-msg");
       const logged = Boolean(getToken());
 
       if (!logged) {
@@ -2646,6 +2682,7 @@
       if (msg) {
         msg.textContent = "";
       }
+
       if (saveBtn) {
         saveBtn.disabled = false;
       }
@@ -2678,7 +2715,7 @@
         return;
       }
 
-      savedCardState.methods = r.data.methods || [];
+      savedCardState.methods = Array.isArray(r.data.methods) ? r.data.methods : [];
       savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
 
       if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
@@ -2690,9 +2727,9 @@
     }
 
     function buildBillingDetails() {
-      const firstName = (document.getElementById("prenom")?.value || "").trim();
-      const lastName = (document.getElementById("nom")?.value || "").trim();
-      const email = (document.getElementById("email")?.value || "").trim();
+      const firstName = (getEl("prenom")?.value || "").trim();
+      const lastName = (getEl("nom")?.value || "").trim();
+      const email = (getEl("email")?.value || "").trim();
 
       return {
         name: `${firstName} ${lastName}`.trim(),
@@ -2701,9 +2738,9 @@
     }
 
     async function handleSaveCard() {
-      const msg = document.getElementById("save-card-msg");
-      const btn = document.getElementById("save-card-btn");
-      const payToggle = document.getElementById("pay-with-saved-card");
+      const msg = getEl("save-card-msg");
+      const btn = getEl("save-card-btn");
+      const payToggle = getEl("pay-with-saved-card");
 
       if (!getToken()) {
         if (msg) {
@@ -2725,18 +2762,17 @@
       setCardElementHidden(false);
 
       try {
-        if (btn) {
-          btn.disabled = true;
-        }
-        if (msg) {
-          msg.textContent = "Préparation de l’enregistrement…";
-        }
+        if (btn) btn.disabled = true;
+        if (msg) msg.textContent = "Préparation de l’enregistrement…";
 
-        const si = await apiFetch("/api/create-setup-intent", { method: "POST" }, { auth: true, ctx: "POST /api/create-setup-intent" });
+        const si = await apiFetch(
+          "/api/create-setup-intent",
+          { method: "POST" },
+          { auth: true, ctx: "POST /api/create-setup-intent" }
+        );
+
         if (!si.ok || !si.data || !si.data.clientSecret) {
-          if (msg) {
-            msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
-          }
+          if (msg) msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
           return;
         }
 
@@ -2748,23 +2784,17 @@
         });
 
         if (setupRes.error) {
-          if (msg) {
-            msg.textContent = setupRes.error.message || "Erreur lors de l’enregistrement de la carte.";
-          }
+          if (msg) msg.textContent = setupRes.error.message || "Erreur lors de l’enregistrement de la carte.";
           return;
         }
 
         const paymentMethodId = setupRes.setupIntent && setupRes.setupIntent.payment_method;
         if (!paymentMethodId) {
-          if (msg) {
-            msg.textContent = "Enregistrement incomplet (payment_method manquant).";
-          }
+          if (msg) msg.textContent = "Enregistrement incomplet (payment_method manquant).";
           return;
         }
 
-        if (msg) {
-          msg.textContent = "Finalisation…";
-        }
+        if (msg) msg.textContent = "Finalisation…";
 
         const sd = await apiFetch(
           "/api/set-default-payment-method",
@@ -2777,9 +2807,7 @@
         );
 
         if (!sd.ok) {
-          if (msg) {
-            msg.textContent = "Carte enregistrée, mais impossible de la définir par défaut.";
-          }
+          if (msg) msg.textContent = "Carte enregistrée, mais impossible de la définir par défaut.";
           return;
         }
 
@@ -2788,9 +2816,7 @@
         await refreshPaymentMethods();
         renderSavedCardUI();
 
-        if (msg) {
-          msg.textContent = "Carte enregistrée ✔️";
-        }
+        if (msg) msg.textContent = "Carte enregistrée ✔️";
 
         if (payToggle && !payToggle.disabled) {
           payToggle.checked = true;
@@ -2801,26 +2827,24 @@
           msg.textContent = "Erreur : " + (e?.message || "inconnue");
         }
       } finally {
-        if (btn) {
-          btn.disabled = false;
-        }
+        if (btn) btn.disabled = false;
       }
     }
 
     function getCheckoutInfoFromForm() {
-      const get = (id) => (document.getElementById(id)?.value || "").trim();
+      const get = (id) => (getEl(id)?.value || "").trim();
 
       return {
         prenom: get("prenom"),
         nom: get("nom"),
-        pays: document.getElementById("pays")?.value || "FR",
+        pays: getEl("pays")?.value || "FR",
         adresse: get("adresse"),
         complement: get("complement"),
         cp: get("cp"),
         ville: get("ville"),
         telephone: get("telephone"),
         email: get("email"),
-        naissance: document.getElementById("naissance")?.value || ""
+        naissance: getEl("naissance")?.value || ""
       };
     }
 
@@ -2830,7 +2854,7 @@
       }
 
       const set = (id, val) => {
-        const el = document.getElementById(id);
+        const el = getEl(id);
         if (!el || val === undefined || val === null) {
           return;
         }
@@ -2845,12 +2869,11 @@
       set("ville", info.ville);
       set("telephone", info.telephone);
       set("email", info.email);
+      set("naissance", info.naissance);
 
-      if (document.getElementById("pays") && info.pays) {
-        document.getElementById("pays").value = info.pays;
-      }
-      if (document.getElementById("naissance") && info.naissance) {
-        document.getElementById("naissance").value = info.naissance;
+      const paysEl = getEl("pays");
+      if (paysEl && info.pays) {
+        paysEl.value = info.pays;
       }
     }
 
@@ -2896,12 +2919,8 @@
         cp: profile.cp || "",
         ville: profile.ville || "",
         naissance: profile.naissance || "",
-        email: ""
+        email: data.email || ""
       });
-
-      if (data.email && document.getElementById("email")) {
-        document.getElementById("email").value = data.email;
-      }
 
       isPrefilling = false;
       saveCheckoutInfoLocal(getCheckoutInfoFromForm());
@@ -2965,7 +2984,7 @@
       [
         "prenom", "nom", "pays", "adresse", "complement", "cp", "ville", "telephone", "email", "naissance"
       ].forEach((id) => {
-        const el = document.getElementById(id);
+        const el = getEl(id);
         if (!el) {
           return;
         }
@@ -2991,36 +3010,22 @@
       return r.data.points ?? 0;
     }
 
-    async function initLoyalty() {
-      const loyaltyBlock = document.getElementById("loyalty-block");
-      const loyaltyPointsEl = document.getElementById("loyalty-points");
-      const useLoyaltyBtn = document.getElementById("use-loyalty-btn");
-      const loyaltyMsg = document.getElementById("loyalty-msg");
+    function renderLoyaltyLoggedOut(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
+      loyaltyPointsEl.textContent = "0";
+      loyaltyMsg.style.color = "#FECACA";
+      loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
+      useLoyaltyBtn.style.display = "none";
+    }
 
-      if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) {
-        return;
-      }
+    function renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
+      loyaltyPointsEl.textContent = "0";
+      useLoyaltyBtn.style.display = "none";
+      loyaltyMsg.style.color = "#FECACA";
+      loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
+    }
 
-      loyaltyBlock.style.display = "block";
-
-      if (!getToken()) {
-        loyaltyPointsEl.textContent = "0";
-        loyaltyMsg.style.color = "#FECACA";
-        loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
-        useLoyaltyBtn.style.display = "none";
-        return;
-      }
-
-      const points = await fetchUserPoints();
-      if (points === null) {
-        loyaltyPointsEl.textContent = "0";
-        useLoyaltyBtn.style.display = "none";
-        loyaltyMsg.style.color = "#FECACA";
-        loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
-        return;
-      }
-
-      loyaltyPointsEl.textContent = points;
+    function renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
+      loyaltyPointsEl.textContent = String(points);
 
       if (points >= 100) {
         useLoyaltyBtn.style.display = "block";
@@ -3031,7 +3036,9 @@
         loyaltyMsg.style.color = "#CBD5E1";
         loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, 100 - points)} point(s) pour une séance gratuite.`;
       }
+    }
 
+    function bindLoyaltyButton(useLoyaltyBtn, loyaltyPointsEl, loyaltyMsg) {
       if (useLoyaltyBtn.dataset.bound === "true") {
         return;
       }
@@ -3046,6 +3053,7 @@
         }
 
         const currentPoints = Number.parseInt(loyaltyPointsEl.textContent || "0", 10);
+
         if (currentPoints < 100) {
           loyaltyMsg.style.color = "#FECACA";
           loyaltyMsg.textContent = "Vous n'avez pas encore assez de points pour une séance gratuite.";
@@ -3064,8 +3072,36 @@
       useLoyaltyBtn.dataset.bound = "true";
     }
 
+    async function initLoyalty() {
+      const loyaltyBlock = getEl("loyalty-block");
+      const loyaltyPointsEl = getEl("loyalty-points");
+      const useLoyaltyBtn = getEl("use-loyalty-btn");
+      const loyaltyMsg = getEl("loyalty-msg");
+
+      if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) {
+        return;
+      }
+
+      loyaltyBlock.style.display = "block";
+
+      if (!getToken()) {
+        renderLoyaltyLoggedOut(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
+        return;
+      }
+
+      const points = await fetchUserPoints();
+
+      if (points === null) {
+        renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
+        return;
+      }
+
+      renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
+      bindLoyaltyButton(useLoyaltyBtn, loyaltyPointsEl, loyaltyMsg);
+    }
+
     function initStripeCard() {
-      const cardMount = document.getElementById("card-element");
+      const cardMount = getEl("card-element");
       if (!STRIPE_PUBLISHABLE_KEY || !globalThis.Stripe || !cardMount) {
         return;
       }
@@ -3105,19 +3141,102 @@
 
       cardElement.mount("#card-element");
       cardElement.on("change", (event) => {
-        const displayError = document.getElementById("card-errors");
+        const displayError = getEl("card-errors");
         if (displayError) {
           displayError.textContent = event.error ? event.error.message : "";
         }
       });
     }
 
+    async function fetchPromoByCode(code) {
+      if (!globalThis.supabaseClient) {
+        return { errorMessage: "Erreur : service promo indisponible." };
+      }
+
+      try {
+        const { data, error } = await globalThis.supabaseClient
+          .from("promo_codes")
+          .select("*")
+          .eq("code", code)
+          .limit(1)
+          .maybeSingle();
+
+        if (error) {
+          return { errorMessage: "Erreur lors de la vérification du code." };
+        }
+
+        if (!data || !isPromoCurrentlyValid(data)) {
+          return { errorMessage: "Ce code n’existe pas ou n’est plus valable." };
+        }
+
+        return { promo: data };
+      } catch {
+        return { errorMessage: "Erreur réseau lors de la vérification du code." };
+      }
+    }
+
+    function clearPromo() {
+      currentPromo = null;
+      localStorage.removeItem("promoCode");
+      updateOrderSummaryFromPanier();
+    }
+
+    function setPromoMessage(message, type = "") {
+      const promoMsg = getEl("promo-message");
+      if (!promoMsg) {
+        return;
+      }
+
+      promoMsg.classList.remove("ok", "error");
+      promoMsg.textContent = message;
+
+      if (type) {
+        promoMsg.classList.add(type);
+      }
+    }
+
+    async function applyPromoCode(silent = false) {
+      const promoInput = getEl("promo-code");
+      if (!promoInput) {
+        return;
+      }
+
+      const code = promoInput.value.trim().toUpperCase();
+
+      if (!code) {
+        clearPromo();
+        setPromoMessage(silent ? "" : "Saisissez un code promo.", silent ? "" : "error");
+        return;
+      }
+
+      setPromoMessage("Vérification du code...");
+
+      const result = await fetchPromoByCode(code);
+
+      if (result.errorMessage) {
+        clearPromo();
+        setPromoMessage(result.errorMessage, "error");
+        return;
+      }
+
+      currentPromo = result.promo;
+      localStorage.setItem("promoCode", result.promo.code);
+      updateOrderSummaryFromPanier();
+
+      const discountNow = currentTotals.discount || 0;
+      setPromoMessage(
+        discountNow > 0
+          ? "Code appliqué ✔ Réduction de " + formatMoney(discountNow) + " sur votre commande."
+          : "Code appliqué ✔",
+        "ok"
+      );
+    }
+
     function initPromo() {
-      const promoToggle = document.getElementById("promo-toggle");
-      const promoBody = document.getElementById("promo-body");
-      const promoInput = document.getElementById("promo-code");
-      const promoBtn = document.getElementById("apply-promo");
-      const promoMsg = document.getElementById("promo-message");
+      const promoToggle = getEl("promo-toggle");
+      const promoBody = getEl("promo-body");
+      const promoInput = getEl("promo-code");
+      const promoBtn = getEl("apply-promo");
 
       if (promoToggle && promoBody) {
         promoToggle.addEventListener("click", () => {
@@ -3125,110 +3244,28 @@
         });
       }
 
-      async function applyPromo(silent = false) {
-        if (!promoInput || !promoMsg) {
-          return;
-        }
-
-        const code = promoInput.value.trim().toUpperCase();
-        promoMsg.classList.remove("ok", "error");
-
-        if (!code) {
-          currentPromo = null;
-          localStorage.removeItem("promoCode");
-          updateOrderSummaryFromPanier();
-          promoMsg.textContent = silent ? "" : "Saisissez un code promo.";
-          if (!silent) {
-            promoMsg.classList.add("error");
-          }
-          return;
-        }
-
-        if (!globalThis.supabaseClient) {
-          promoMsg.textContent = "Erreur : service promo indisponible.";
-          promoMsg.classList.add("error");
-          return;
-        }
-
-        promoMsg.textContent = "Vérification du code...";
-
-        try {
-          const { data, error } = await globalThis.supabaseClient
-            .from("promo_codes")
-            .select("*")
-            .eq("code", code)
-            .limit(1)
-            .maybeSingle();
-
-          if (error) {
-            currentPromo = null;
-            localStorage.removeItem("promoCode");
-            updateOrderSummaryFromPanier();
-            promoMsg.textContent = "Erreur lors de la vérification du code.";
-            promoMsg.classList.add("error");
-            return;
-          }
-
-          if (!data || !isPromoCurrentlyValid(data)) {
-            currentPromo = null;
-            localStorage.removeItem("promoCode");
-            updateOrderSummaryFromPanier();
-            promoMsg.textContent = "Ce code n’existe pas ou n’est plus valable.";
-            promoMsg.classList.add("error");
-            return;
-          }
-
-          currentPromo = data;
-          localStorage.setItem("promoCode", data.code);
-          updateOrderSummaryFromPanier();
-
-          const discountNow = currentTotals.discount || 0;
-          promoMsg.classList.add("ok");
-          promoMsg.textContent = discountNow > 0
-            ? "Code appliqué ✔ Réduction de " + discountNow.toFixed(2).replace(".", ",") + "€ sur votre commande."
-            : "Code appliqué ✔";
-        } catch {
-          currentPromo = null;
-          localStorage.removeItem("promoCode");
-          updateOrderSummaryFromPanier();
-          promoMsg.textContent = "Erreur réseau lors de la vérification du code.";
-          promoMsg.classList.add("error");
-        }
-      }
-
       if (promoBtn) {
-        promoBtn.addEventListener("click", () => applyPromo(false));
+        promoBtn.addEventListener("click", () => applyPromoCode(false));
       }
 
       if (promoInput) {
         promoInput.addEventListener("keydown", (e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            applyPromo(false);
+            applyPromoCode(false);
           }
         });
 
         const stored = localStorage.getItem("promoCode");
         if (stored) {
           promoInput.value = stored;
-          applyPromo(true);
+          applyPromoCode(true);
         }
       }
     }
 
-    function showThankYouSection() {
-      const thankyouSection = document.getElementById("thankyou-section");
-      const billingForm = document.getElementById("billing-form");
-      const paymentCard = document.querySelector(".payment-card");
-      const checkoutLayout = document.querySelector(".checkout-layout");
-      const emptyCartState = document.getElementById("empty-cart-state");
-
-      if (!thankyouSection) {
-        console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
-        return;
-      }
-
-      let parent = thankyouSection;
+    function revealHiddenAncestors(node) {
+      let parent = node;
       while (parent && parent !== document.body) {
         if (parent.hidden) {
           parent.hidden = false;
@@ -3239,16 +3276,25 @@
         }
         parent = parent.parentElement;
       }
+    }
 
-      if (emptyCartState) {
-        emptyCartState.style.display = "none";
+    function showThankYouSection() {
+      const thankyouSection = getEl("thankyou-section");
+      const billingForm = getEl("billing-form");
+      const paymentCard = document.querySelector(".payment-card");
+      const checkoutLayout = document.querySelector(".checkout-layout");
+      const emptyCartState = getEl("empty-cart-state");
+
+      if (!thankyouSection) {
+        console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
+        return;
       }
-      if (billingForm) {
-        billingForm.style.display = "none";
-      }
-      if (paymentCard) {
-        paymentCard.style.display = "none";
-      }
+
+      revealHiddenAncestors(thankyouSection);
+
+      if (emptyCartState) emptyCartState.style.display = "none";
+      if (billingForm) billingForm.style.display = "none";
+      if (paymentCard) paymentCard.style.display = "none";
 
       if (checkoutLayout) {
         const tyInside = checkoutLayout.contains(thankyouSection);
@@ -3276,35 +3322,22 @@
       const panierBeforeClear = getPanier();
       const firstItem = panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
 
-      const thankyouName = document.getElementById("thankyou-name");
-      const thankyouDate = document.getElementById("thankyou-date");
-      const thankyouTime = document.getElementById("thankyou-time");
-      const thankyouBox = document.getElementById("thankyou-box");
-      const thankyouTotal = document.getElementById("thankyou-total");
+      const thankyouName = getEl("thankyou-name");
+      const thankyouDate = getEl("thankyou-date");
+      const thankyouTime = getEl("thankyou-time");
+      const thankyouBox = getEl("thankyou-box");
+      const thankyouTotal = getEl("thankyou-total");
 
       const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
-      const boxName = firstItem && (firstItem.boxName || firstItem.box || firstItem.boxId)
-        ? (firstItem.boxName || firstItem.box || firstItem.boxId)
-        : "Box privée";
+      const boxName = getDisplayBoxName(firstItem);
+      const { hourText } = buildOrderMeta(firstItem);
+      const prenomValue = (getEl("prenom")?.value || "").trim();
 
-      const { hourText } = buildOrderMeta(firstItem, panierBeforeClear.length);
-      const prenomValue = document.getElementById("prenom") ? document.getElementById("prenom").value.trim() : "";
-
-      if (thankyouName) {
-        thankyouName.textContent = prenomValue;
-      }
-      if (thankyouDate) {
-        thankyouDate.textContent = dateLabel || "-";
-      }
-      if (thankyouTime) {
-        thankyouTime.textContent = hourText || "-";
-      }
-      if (thankyouBox) {
-        thankyouBox.textContent = boxName;
-      }
-      if (thankyouTotal) {
-        thankyouTotal.textContent = (currentTotals.finalTotalTTC || 0).toFixed(2).replace(".", ",") + "€";
-      }
+      if (thankyouName) thankyouName.textContent = prenomValue;
+      if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
+      if (thankyouTime) thankyouTime.textContent = hourText || "-";
+      if (thankyouBox) thankyouBox.textContent = boxName;
+      if (thankyouTotal) thankyouTotal.textContent = formatMoney(currentTotals.finalTotalTTC || 0);
 
       const headerTitle = document.querySelector(".checkout-header h1");
       const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
@@ -3319,16 +3352,16 @@
 
     function getCustomerPayload(includeSaveCheckoutInfo = false) {
       const payload = {
-        prenom: document.getElementById("prenom").value.trim(),
-        nom: document.getElementById("nom").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        telephone: document.getElementById("telephone").value.trim(),
-        pays: document.getElementById("pays").value,
-        adresse: document.getElementById("adresse").value.trim(),
-        complement: document.getElementById("complement").value.trim(),
-        cp: document.getElementById("cp").value.trim(),
-        ville: document.getElementById("ville").value.trim(),
-        naissance: document.getElementById("naissance").value
+        prenom: getEl("prenom")?.value.trim() || "",
+        nom: getEl("nom")?.value.trim() || "",
+        email: getEl("email")?.value.trim() || "",
+        telephone: getEl("telephone")?.value.trim() || "",
+        pays: getEl("pays")?.value || "FR",
+        adresse: getEl("adresse")?.value.trim() || "",
+        complement: getEl("complement")?.value.trim() || "",
+        cp: getEl("cp")?.value.trim() || "",
+        ville: getEl("ville")?.value.trim() || "",
+        naissance: getEl("naissance")?.value || ""
       };
 
       if (includeSaveCheckoutInfo) {
@@ -3340,7 +3373,7 @@
 
     async function confirmReservation(isFree, paymentIntentId, errorEl) {
       let reservationId = null;
-      const thankyouRef = document.getElementById("thankyou-ref");
+      const thankyouRef = getEl("thankyou-ref");
 
       try {
         const body = {
@@ -3363,7 +3396,7 @@
 
         const confirmJson = await confirmRes.json().catch(() => ({}));
 
-        if (confirmRes.ok && confirmJson && confirmJson.reservations && confirmJson.reservations.length > 0) {
+        if (confirmRes.ok && confirmJson && Array.isArray(confirmJson.reservations) && confirmJson.reservations.length > 0) {
           reservationId = confirmJson.reservations[0].id;
           if (thankyouRef) {
             thankyouRef.textContent = reservationId;
@@ -3387,6 +3420,10 @@
     }
 
     async function confirmDepositIntent(reservationId, isFree, errorEl) {
+      if (!reservationId || !stripe) {
+        return;
+      }
+
       try {
         const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
           method: "POST",
@@ -3395,9 +3432,9 @@
             reservationId,
             useSavedPaymentMethod: Boolean(lastPayWithSaved),
             customer: {
-              prenom: document.getElementById("prenom").value.trim(),
-              nom: document.getElementById("nom").value.trim(),
-              email: document.getElementById("email").value.trim()
+              prenom: getEl("prenom")?.value.trim() || "",
+              nom: getEl("nom")?.value.trim() || "",
+              email: getEl("email")?.value.trim() || ""
             }
           })
         });
@@ -3416,6 +3453,7 @@
         }
 
         let pmId = getSavedPaymentMethodId();
+
         if (lastPayWithSaved && !pmId) {
           lastPayWithSaved = false;
           pmId = null;
@@ -3450,15 +3488,17 @@
     }
 
     async function saveNewsletterOptin() {
-      const newsletterCheckbox = document.getElementById("newsletter-optin");
-      if (!newsletterCheckbox || !newsletterCheckbox.checked || !globalThis.supabaseClient) {
+      const newsletterCheckbox = getEl("newsletter-optin");
+      const email = getEl("email")?.value.trim() || "";
+
+      if (!newsletterCheckbox || !newsletterCheckbox.checked || !globalThis.supabaseClient || !email) {
         return;
       }
 
       try {
         await globalThis.supabaseClient
           .from("newsletter_subscriptions")
-          .insert({ email: document.getElementById("email").value.trim() });
+          .insert({ email });
       } catch {
         // no-op
       }
@@ -3473,8 +3513,8 @@
     }
 
     function renderThankYouQr(reservationId) {
-      const thankyouQrContainer = document.getElementById("thankyou-qr");
-      const thankyouQrFallback = document.getElementById("thankyou-qr-fallback");
+      const thankyouQrContainer = getEl("thankyou-qr");
+      const thankyouQrFallback = getEl("thankyou-qr-fallback");
 
       if (!reservationId || !thankyouQrContainer || !globalThis.QRCode) {
         return;
@@ -3483,6 +3523,7 @@
       try {
         const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
         thankyouQrContainer.innerHTML = "";
+
         new globalThis.QRCode(thankyouQrContainer, {
           text: qrText,
           width: 228,
@@ -3523,10 +3564,10 @@
     }
 
     function validateCheckoutBeforePayment() {
-      const billingForm = document.getElementById("billing-form");
-      const cgvCheckbox = document.getElementById("cgv-checkbox");
-      const rulesCheckbox = document.getElementById("rules-checkbox");
-      const errorEl = document.getElementById("checkout-error");
+      const billingForm = getEl("billing-form");
+      const cgvCheckbox = getEl("cgv-checkbox");
+      const rulesCheckbox = getEl("rules-checkbox");
+      const errorEl = getEl("checkout-error");
       const panier = getPanier();
 
       if (!billingForm) {
@@ -3568,7 +3609,7 @@
         return false;
       }
 
-      const age = calculateAgeFromBirthdate(document.getElementById("naissance").value);
+      const age = calculateAgeFromBirthdate(getEl("naissance")?.value || "");
       if (!age || age < 18) {
         if (errorEl) {
           errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
@@ -3580,19 +3621,15 @@
     }
 
     function resetFeedbackMessages() {
-      const errorEl = document.getElementById("checkout-error");
-      const successEl = document.getElementById("checkout-success");
+      const errorEl = getEl("checkout-error");
+      const successEl = getEl("checkout-success");
 
-      if (errorEl) {
-        errorEl.textContent = "";
-      }
-      if (successEl) {
-        successEl.textContent = "";
-      }
+      if (errorEl) errorEl.textContent = "";
+      if (successEl) successEl.textContent = "";
     }
 
     function normalizeSavedCardChoice() {
-      const toggle = document.getElementById("pay-with-saved-card");
+      const toggle = getEl("pay-with-saved-card");
       const hasSavedCard = Boolean(savedCardState.card && savedCardState.card.last4);
 
       lastPayWithSaved = Boolean(toggle?.checked);
@@ -3642,7 +3679,7 @@
 
       if (!pmId) {
         lastPayWithSaved = false;
-        const toggle = document.getElementById("pay-with-saved-card");
+        const toggle = getEl("pay-with-saved-card");
         if (toggle) {
           toggle.checked = false;
         }
@@ -3713,11 +3750,60 @@
       return null;
     }
 
+    function getCheckoutSubmitContext() {
+      return {
+        submitBtn: getEl("checkout-submit-btn"),
+        errorEl: getEl("checkout-error"),
+        successEl: getEl("checkout-success"),
+        payWithSavedChecked: Boolean(getEl("pay-with-saved-card")?.checked)
+      };
+    }
+
+    function prepareCheckoutSubmit(submitBtn) {
+      const originalLabel = submitBtn ? submitBtn.textContent : "Commander";
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Paiement en cours...";
+      }
+
+      return originalLabel;
+    }
+
+    function restoreCheckoutSubmit(submitBtn, originalLabel) {
+      if (!submitBtn) {
+        return;
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
+
+    async function handleFreeCheckout(successEl, errorEl) {
+      if (successEl) {
+        successEl.textContent = "Réservation gratuite validée ✔️";
+      }
+      await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
+    }
+
+    async function handlePaidCheckout(clientSecret, errorEl, successEl) {
+      const paymentIntentId = lastPayWithSaved
+        ? await confirmSavedCardPayment(clientSecret, errorEl, successEl)
+        : await confirmStandardCardPayment(clientSecret, errorEl, successEl);
+
+      if (!paymentIntentId) {
+        return;
+      }
+
+      await processReservationAndDeposit({
+        isFree: false,
+        paymentIntentId,
+        errorEl
+      });
+    }
+
     async function handleCheckoutSubmit() {
-      const submitBtn = document.getElementById("checkout-submit-btn");
-      const errorEl = document.getElementById("checkout-error");
-      const successEl = document.getElementById("checkout-success");
-      const payWithSavedChecked = Boolean(document.getElementById("pay-with-saved-card")?.checked);
+      const { submitBtn, errorEl, successEl, payWithSavedChecked } = getCheckoutSubmitContext();
 
       if (!hasStripeReadyForPayment(payWithSavedChecked)) {
         if (errorEl) {
@@ -3734,9 +3820,7 @@
       updateOrderSummaryFromPanier();
       normalizeSavedCardChoice();
 
-      const originalLabel = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Paiement en cours...";
+      const originalLabel = prepareCheckoutSubmit(submitBtn);
 
       try {
         const { res, json } = await createPaymentIntentRequest();
@@ -3749,10 +3833,7 @@
         }
 
         if (json.isFree) {
-          if (successEl) {
-            successEl.textContent = "Réservation gratuite validée ✔️";
-          }
-          await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
+          await handleFreeCheckout(successEl, errorEl);
           return;
         }
 
@@ -3763,31 +3844,18 @@
           return;
         }
 
-        const paymentIntentId = lastPayWithSaved
-          ? await confirmSavedCardPayment(json.clientSecret, errorEl, successEl)
-          : await confirmStandardCardPayment(json.clientSecret, errorEl, successEl);
-
-        if (!paymentIntentId) {
-          return;
-        }
-
-        await processReservationAndDeposit({
-          isFree: false,
-          paymentIntentId,
-          errorEl
-        });
+        await handlePaidCheckout(json.clientSecret, errorEl, successEl);
       } catch (err) {
         if (errorEl) {
-          errorEl.textContent = "Erreur inattendue : " + err.message;
+          errorEl.textContent = "Erreur inattendue : " + (err?.message || "inconnue");
         }
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalLabel;
+        restoreCheckoutSubmit(submitBtn, originalLabel);
       }
     }
 
     function initCheckoutSubmit() {
-      const submitBtn = document.getElementById("checkout-submit-btn");
+      const submitBtn = getEl("checkout-submit-btn");
       if (!submitBtn) {
         return;
       }
@@ -3796,8 +3864,8 @@
     }
 
     function initMobileMenu() {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
 
       if (!burgerBtn || !mobileNav) {
         return;
@@ -3810,46 +3878,16 @@
       });
 
       mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
+        const target = e.target;
+        if (target && target.tagName === "A") {
           mobileNav.classList.remove("open");
           burgerBtn.setAttribute("aria-expanded", "false");
         }
       });
     }
 
-    async function initPaymentPage() {
-      initMobileMenu();
-      updateCartIcon();
-      updateOrderSummaryFromPanier();
-
-      isPrefilling = true;
-      fillCheckoutForm(loadCheckoutInfoLocal());
-      isPrefilling = false;
-
-      await prefillFromBackendIfLogged();
-      await loadSavedCardStateFromMe();
-      await refreshPaymentMethods();
-
-      renderSavedCardUI();
-      bindAutosave();
-      await initLoyalty();
-      initStripeCard();
-      initPromo();
-      initCheckoutSubmit();
-
-      const saveCardBtn = document.getElementById("save-card-btn");
-      if (saveCardBtn) {
-        saveCardBtn.addEventListener("click", handleSaveCard);
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", initPaymentPage);
-  </script>
-
-  <!-- POPUP AUTH / FIDÉLITÉ JS -->
-  <script>
     function showAuthModal() {
-      const modal = document.getElementById("auth-modal");
+      const modal = getEl("auth-modal");
       if (!modal) {
         return;
       }
@@ -3862,7 +3900,7 @@
     }
 
     function hideAuthModal() {
-      const modal = document.getElementById("auth-modal");
+      const modal = getEl("auth-modal");
       if (!modal) {
         return;
       }
@@ -3875,17 +3913,17 @@
     }
 
     function clearAuthMessage() {
-      const msgEl = document.getElementById("auth-modal-message");
+      const msgEl = getEl("auth-modal-message");
       if (msgEl) {
         msgEl.textContent = "";
       }
     }
 
     function switchAuthTab(mode) {
-      const btnLoginTab = document.getElementById("auth-btn-login");
-      const btnRegisterTab = document.getElementById("auth-btn-register");
-      const loginForm = document.getElementById("auth-login-form");
-      const registerForm = document.getElementById("auth-register-form");
+      const btnLoginTab = getEl("auth-btn-login");
+      const btnRegisterTab = getEl("auth-btn-register");
+      const loginForm = getEl("auth-login-form");
+      const registerForm = getEl("auth-register-form");
 
       if (!btnLoginTab || !btnRegisterTab || !loginForm || !registerForm) {
         return;
@@ -3902,9 +3940,9 @@
 
     async function handleAuthLoginSubmit(e) {
       e.preventDefault();
-      const msgEl = document.getElementById("auth-modal-message");
-      const email = document.getElementById("auth-login-email").value.trim();
-      const password = document.getElementById("auth-login-password").value;
+      const msgEl = getEl("auth-modal-message");
+      const email = getEl("auth-login-email")?.value.trim() || "";
+      const password = getEl("auth-login-password")?.value || "";
 
       clearAuthMessage();
 
@@ -3944,9 +3982,9 @@
 
     async function handleAuthRegisterSubmit(e) {
       e.preventDefault();
-      const msgEl = document.getElementById("auth-modal-message");
-      const email = document.getElementById("auth-register-email").value.trim();
-      const password = document.getElementById("auth-register-password").value;
+      const msgEl = getEl("auth-modal-message");
+      const email = getEl("auth-register-email")?.value.trim() || "";
+      const password = getEl("auth-register-password")?.value || "";
 
       clearAuthMessage();
 
@@ -3998,7 +4036,7 @@
     }
 
     function initAuthModal() {
-      const modal = document.getElementById("auth-modal");
+      const modal = getEl("auth-modal");
       if (!modal) {
         return;
       }
@@ -4007,11 +4045,11 @@
         showAuthModal();
       }
 
-      const btnLoginTab = document.getElementById("auth-btn-login");
-      const btnRegisterTab = document.getElementById("auth-btn-register");
-      const loginForm = document.getElementById("auth-login-form");
-      const registerForm = document.getElementById("auth-register-form");
-      const skipBtn = document.getElementById("auth-modal-continue");
+      const btnLoginTab = getEl("auth-btn-login");
+      const btnRegisterTab = getEl("auth-btn-register");
+      const loginForm = getEl("auth-login-form");
+      const registerForm = getEl("auth-register-form");
+      const skipBtn = getEl("auth-modal-continue");
 
       if (btnLoginTab) {
         btnLoginTab.addEventListener("click", () => switchAuthTab("login"));
@@ -4048,21 +4086,19 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", initAuthModal);
-  </script>
+    function initSupabaseClient() {
+      if (!globalThis.supabase || typeof globalThis.supabase.createClient !== "function") {
+        console.warn("Supabase non disponible.");
+        return;
+      }
 
-  <!-- Supabase Newsletter & client global -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+      globalThis.supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
 
-    globalThis.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
+    function initNewsletter() {
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
+      const messageBox = getEl("newsletter-message");
 
       if (!emailInput || !submitBtn || !messageBox) {
         return;
@@ -4077,6 +4113,12 @@
         if (!email || !email.includes("@")) {
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        if (!globalThis.supabaseClient) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Service newsletter indisponible.";
           return;
         }
 
@@ -4104,7 +4146,39 @@
         messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
         emailInput.value = "";
       });
-    });
+    }
+
+    async function initPaymentPage() {
+      initSupabaseClient();
+      initMobileMenu();
+      initAuthModal();
+      initNewsletter();
+
+      updateCartIcon();
+      updateOrderSummaryFromPanier();
+
+      isPrefilling = true;
+      fillCheckoutForm(loadCheckoutInfoLocal());
+      isPrefilling = false;
+
+      await prefillFromBackendIfLogged();
+      await loadSavedCardStateFromMe();
+      await refreshPaymentMethods();
+
+      renderSavedCardUI();
+      bindAutosave();
+      await initLoyalty();
+      initStripeCard();
+      initPromo();
+      initCheckoutSubmit();
+
+      const saveCardBtn = getEl("save-card-btn");
+      if (saveCardBtn) {
+        saveCardBtn.addEventListener("click", handleSaveCard);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initPaymentPage);
   </script>
 </body>
 </html>
