@@ -292,6 +292,7 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
     .burger-button {
@@ -361,6 +362,7 @@
       .brand-logo {
         width: 72px;
       }
+
       .brand-text {
         font-size: 18px;
         letter-spacing: 0.1em;
@@ -778,9 +780,11 @@
         grid-template-columns: minmax(0,1fr);
         margin-top: -4px;
       }
+
       #news-intro {
         padding: 9rem 0 32px;
       }
+
       #news-list {
         padding: 24px 0 72px;
       }
@@ -817,7 +821,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
           ☰
         </button>
       </div>
@@ -936,7 +947,6 @@
       <div>
         <p><strong>Réseaux</strong></p>
 
-        <!-- Instagram -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -948,7 +958,6 @@
           </a>
         </p>
 
-        <!-- TikTok -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
@@ -971,7 +980,7 @@
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     const CATEGORY_LABELS = {
       "coulisses-travaux": "Coulisses & travaux",
@@ -984,25 +993,32 @@
     let allArticles = [];
     let currentCategory = "all";
 
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
     function getPanier() {
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsed = JSON.parse(localStorage.getItem("panier"));
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
         return [];
       }
     }
 
     function updateCartIcon() {
-      const el = document.getElementById("cart-count");
+      const el = getEl("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     function formatDateFr(dateStr) {
       if (!dateStr) return "";
+
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return dateStr;
+
       return d.toLocaleDateString("fr-FR", {
         day: "2-digit",
         month: "2-digit",
@@ -1010,9 +1026,15 @@
       });
     }
 
+    function buildExcerpt(article) {
+      const baseText = article.chapeau || article.contenu || "";
+      return baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
+    }
+
     function createArticleCard(article, isFeatured) {
       const card = document.createElement("article");
       card.className = "news-card" + (isFeatured ? " news-card--featured" : "");
+
       const catSlug = article.categorie || "autre";
       card.dataset.category = catSlug;
 
@@ -1030,14 +1052,14 @@
       meta.className = "news-meta";
       const dateTxt = article.date_publication ? formatDateFr(article.date_publication) : "";
       const catLabel = CATEGORY_LABELS[catSlug] || "";
-      meta.textContent = (dateTxt ? "Publié le " + dateTxt : "") +
+      meta.textContent =
+        (dateTxt ? "Publié le " + dateTxt : "") +
         (catLabel ? " • Catégorie : " + catLabel : "");
       card.appendChild(meta);
 
       const excerpt = document.createElement("p");
       excerpt.className = "news-excerpt";
-      const baseText = article.chapeau || article.contenu || "";
-      excerpt.textContent = baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
+      excerpt.textContent = buildExcerpt(article);
       card.appendChild(excerpt);
 
       const link = document.createElement("a");
@@ -1050,24 +1072,41 @@
       return card;
     }
 
+    function getFilteredArticles() {
+      if (currentCategory === "all") {
+        return allArticles.slice();
+      }
+
+      return allArticles.filter((article) => (article.categorie || "autre") === currentCategory);
+    }
+
+    function renderEmptyArticlesState(message) {
+      const grid = getEl("news-grid");
+      const emptyEl = getEl("news-empty");
+      const mainCol = getEl("news-main-column");
+      const sideCol = getEl("news-side-column");
+
+      if (mainCol) mainCol.innerHTML = "";
+      if (sideCol) sideCol.innerHTML = "";
+      if (grid) grid.style.display = "none";
+      if (emptyEl) emptyEl.textContent = message;
+    }
+
     function renderArticles() {
-      const grid = document.getElementById("news-grid");
-      const mainCol = document.getElementById("news-main-column");
-      const sideCol = document.getElementById("news-side-column");
-      const emptyEl = document.getElementById("news-empty");
+      const grid = getEl("news-grid");
+      const mainCol = getEl("news-main-column");
+      const sideCol = getEl("news-side-column");
+      const emptyEl = getEl("news-empty");
+
       if (!grid || !mainCol || !sideCol || !emptyEl) return;
 
-      let articles = allArticles.slice();
-      if (currentCategory !== "all") {
-        articles = articles.filter(a => (a.categorie || "autre") === currentCategory);
-      }
+      const articles = getFilteredArticles();
 
       mainCol.innerHTML = "";
       sideCol.innerHTML = "";
 
       if (!articles.length) {
-        grid.style.display = "none";
-        emptyEl.textContent = "Aucune actualité dans cette catégorie pour le moment.";
+        renderEmptyArticlesState("Aucune actualité dans cette catégorie pour le moment.");
         return;
       }
 
@@ -1075,27 +1114,41 @@
       grid.style.display = "grid";
 
       const [featured, ...others] = articles;
+
       if (featured) {
         mainCol.appendChild(createArticleCard(featured, true));
       }
-      others.forEach(a => {
-        sideCol.appendChild(createArticleCard(a, false));
+
+      others.forEach((article) => {
+        sideCol.appendChild(createArticleCard(article, false));
       });
     }
 
+    async function fetchPublishedArticles() {
+      return supabaseClient
+        .from("actualites")
+        .select("*")
+        .eq("publie", true)
+        .order("date_publication", { ascending: false });
+    }
+
+    function handleArticlesLoadError(error, emptyEl) {
+      console.error("Erreur réseau actualités :", error);
+      if (emptyEl) {
+        emptyEl.textContent = "Erreur réseau lors du chargement des actualités.";
+      }
+    }
+
     async function loadArticles() {
-      const emptyEl = document.getElementById("news-empty");
+      const emptyEl = getEl("news-empty");
+
       if (emptyEl) {
         emptyEl.textContent = "Chargement des actualités...";
         emptyEl.style.display = "block";
       }
 
       try {
-        const { data, error } = await supabaseClient
-          .from("actualites")
-          .select("*")
-          .eq("publie", true)
-          .order("date_publication", { ascending: false });
+        const { data, error } = await fetchPublishedArticles();
 
         if (error) {
           console.error("Erreur chargement actualités :", error);
@@ -1105,42 +1158,44 @@
           return;
         }
 
-        allArticles = data || [];
-        if (!allArticles.length && emptyEl) {
-          emptyEl.textContent = "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
+        allArticles = Array.isArray(data) ? data : [];
+
+        if (!allArticles.length) {
+          if (emptyEl) {
+            emptyEl.textContent = "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
+          }
           return;
         }
 
         renderArticles();
-      } catch (err) {
-        console.error("Erreur réseau actualités :", err);
-        if (emptyEl) {
-          emptyEl.textContent = "Erreur réseau lors du chargement des actualités.";
-        }
+      } catch (error) {
+        handleArticlesLoadError(error, emptyEl);
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Burger / menu mobile
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
+    function initMobileMenu() {
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
 
-        mobileNav.addEventListener("click", (e) => {
-          const target = e.target;
-          if (target instanceof HTMLElement && target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
-      }
+      if (!burgerBtn || !mobileNav) return;
 
-      updateCartIcon();
+      burgerBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(isOpen));
+      });
 
-      // Filtres catégories
+      mobileNav.addEventListener("click", (e) => {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    function initCategoryFilters() {
       const filterPills = document.querySelectorAll(".filter-pill");
+
       filterPills.forEach((pill) => {
         pill.addEventListener("click", () => {
           filterPills.forEach((p) => p.classList.remove("active"));
@@ -1149,73 +1204,119 @@
           renderArticles();
         });
       });
+    }
 
-      // CTA "S’abonner aux actualités"
-      const ctaBtn = document.getElementById("news-cta-button");
-      const newsletterSection = document.getElementById("newsletter-section");
-      const newsletterEmail = document.getElementById("newsletter-email");
-      if (ctaBtn && newsletterSection) {
-        ctaBtn.addEventListener("click", () => {
-          newsletterSection.scrollIntoView({ behavior: "smooth" });
-          if (newsletterEmail) {
-            setTimeout(() => newsletterEmail.focus(), 600);
-          }
-        });
+    function initNewsCta() {
+      const ctaBtn = getEl("news-cta-button");
+      const newsletterSection = getEl("newsletter-section");
+      const newsletterEmail = getEl("newsletter-email");
+
+      if (!ctaBtn || !newsletterSection) return;
+
+      ctaBtn.addEventListener("click", () => {
+        newsletterSection.scrollIntoView({ behavior: "smooth" });
+
+        if (newsletterEmail) {
+          setTimeout(() => newsletterEmail.focus(), 600);
+        }
+      });
+    }
+
+    function isValidEmail(email) {
+      return /^\S+@\S+\.\S+$/.test(email);
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value")))
+      );
+    }
+
+    function setNewsletterMessage(message, color) {
+      const messageEl = getEl("newsletter-message");
+      if (!messageEl) return;
+      messageEl.textContent = message;
+      messageEl.style.color = color;
+    }
+
+    function setNewsletterSubmitting(submitBtn, isSubmitting) {
+      if (!submitBtn) return;
+
+      if (isSubmitting) {
+        submitBtn.dataset.originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi...";
+        return;
       }
 
-      // Newsletter
-      const newsletterForm = document.getElementById("newsletter-form");
-      const emailInput = document.getElementById("newsletter-email");
-      const messageEl = document.getElementById("newsletter-message");
-      const submitBtn = document.getElementById("newsletter-submit");
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.originalText || "S'abonner";
+    }
 
-      if (newsletterForm && emailInput && messageEl && submitBtn) {
-        newsletterForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
+    }
 
-          const email = emailInput.value.trim();
-          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
-            messageEl.style.color = "#f97373";
+    function initNewsletterForm() {
+      const newsletterForm = getEl("newsletter-form");
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
+
+      if (!newsletterForm || !emailInput || !submitBtn) return;
+
+      newsletterForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+
+        if (!isValidEmail(email)) {
+          setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
+          return;
+        }
+
+        setNewsletterSubmitting(submitBtn, true);
+        setNewsletterMessage("", "#9CA3AF");
+
+        try {
+          const { error } = await subscribeNewsletter(email);
+
+          if (error) {
+            console.error(error);
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage("Tu es déjà inscrit à la newsletter 🎤", "#f97373");
+            } else {
+              setNewsletterMessage("Oups, une erreur est survenue. Réessaie dans quelques instants.", "#f97373");
+            }
+
             return;
           }
 
-          submitBtn.disabled = true;
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Envoi...";
-          messageEl.textContent = "";
+          setNewsletterMessage("Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
+          newsletterForm.reset();
+        } catch (error) {
+          console.error(error);
+          setNewsletterMessage("Erreur réseau, vérifie ta connexion et réessaie.", "#f97373");
+        } finally {
+          setNewsletterSubmitting(submitBtn, false);
+        }
+      });
+    }
 
-          try {
-            const { error } = await supabaseClient
-              .from("newsletter_subscriptions")
-              .insert([{ email }]);
-
-            if (error) {
-              console.error(error);
-              if (error.code === "23505") {
-                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
-              } else {
-                messageEl.textContent = "Oups, une erreur est survenue. Réessaie dans quelques instants.";
-              }
-              messageEl.style.color = "#f97373";
-            } else {
-              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
-              messageEl.style.color = "#4ade80";
-              newsletterForm.reset();
-            }
-          } catch (err) {
-            console.error(err);
-            messageEl.textContent = "Erreur réseau, vérifie ta connexion et réessaie.";
-            messageEl.style.color = "#f97373";
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          }
-        });
-      }
-
+    function initActualitesPage() {
+      initMobileMenu();
+      updateCartIcon();
+      initCategoryFilters();
+      initNewsCta();
+      initNewsletterForm();
       loadArticles();
-    });
+    }
+
+    document.addEventListener("DOMContentLoaded", initActualitesPage);
   </script>
 </body>
 </html>
