@@ -137,7 +137,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Bloc marque */
     .brand {
       display: flex;
       align-items: center;
@@ -169,7 +168,6 @@
       align-items: center;
     }
 
-    /* NAV centrale */
     nav.main-nav {
       flex: 1;
       display: flex;
@@ -217,12 +215,10 @@
       transition: 0.25s ease;
     }
 
-    /* lien actif pour la page Contact */
     .main-nav a[href="contact.html"]::after {
       width: 100%;
     }
 
-    /* Actions à droite */
     .header-actions {
       display: flex;
       align-items: center;
@@ -279,9 +275,9 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
-    /* Burger + menu mobile */
     .burger-button {
       display: none;
       width: 36px;
@@ -349,6 +345,7 @@
       .brand-logo {
         width: 72px;
       }
+
       .brand-text {
         font-size: 18px;
         letter-spacing: 0.1em;
@@ -449,7 +446,6 @@
       align-items: flex-start;
     }
 
-    /* Colonne gauche : formulaire */
     .contact-card {
       background: var(--sb-card);
       border-radius: 24px;
@@ -631,7 +627,6 @@
         0 24px 60px rgba(0,0,0,1);
     }
 
-    /* Colonne droite : visuel ambiance avec image */
     .contact-visual-card {
       border-radius: 24px;
       box-shadow:
@@ -640,8 +635,6 @@
       min-height: 320px;
       position: relative;
       overflow: hidden;
-
-      /* Image hero corrigée en .jpg */
       background-image: url("hero-groupe-karaoke.jpg");
       background-size: cover;
       background-position: center;
@@ -680,7 +673,6 @@
       align-items: stretch;
     }
 
-    /* MAP CARD avec iframe */
     .map-card {
       border-radius: 24px;
       min-height: 260px;
@@ -867,6 +859,7 @@
       .contact-card {
         padding: 1.6rem 1.5rem;
       }
+
       .contact-visual-card {
         min-height: 260px;
       }
@@ -898,7 +891,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
           ☰
         </button>
       </div>
@@ -943,14 +943,11 @@
               On vous répond rapidement par e-mail ou téléphone.
             </p>
 
-            <!-- FORMULAIRE AVEC ID POUR LA VALIDATION -->
             <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-              <!-- Clé API Web3Forms -->
               <input type="hidden" name="access_key" value="6dc5cb1e-a12d-42e2-8647-2c80a1a3fdf1" />
               <input type="hidden" name="from_name" value="Site Singbox" />
               <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
 
-              <!-- Type Particulier / Entreprise -->
               <div class="contact-type-toggle">
                 <label class="contact-type-option">
                   <input type="radio" name="type" value="Particulier" checked />
@@ -1000,7 +997,6 @@
                 </label>
               </div>
 
-              <!-- hCaptcha (Web3Forms proxy) -->
               <div class="h-captcha" data-captcha="true"></div>
 
               <div class="contact-submit">
@@ -1009,7 +1005,7 @@
             </form>
           </div>
 
-          <!-- Colonne droite : visuel ambiance (image en fond) -->
+          <!-- Colonne droite : visuel ambiance -->
           <div class="contact-visual-card" aria-hidden="true"></div>
         </div>
       </div>
@@ -1019,7 +1015,6 @@
     <section id="contact-location">
       <div class="container">
         <div class="contact-location-grid">
-          <!-- Carte / plan -->
           <div class="map-card">
             <iframe title="Localisation Singbox - 66 Rue de la République, 31300 Toulouse"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.409555157161!2d1.429969312174704!3d43.59801347098417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb7042b187f7%3A0xbc636c1c094d90d3!2s66%20Rue%20de%20la%20R%C3%A9publique%2C%2031300%20Toulouse!5e0!3m2!1sfr!2sfr!4v1764513486844!5m2!1sfr!2sfr"
@@ -1027,7 +1022,6 @@
               referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
 
-          <!-- Infos pratiques -->
           <div class="visit-card">
             <h3>Nous retrouver à Toulouse</h3>
 
@@ -1096,7 +1090,7 @@
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
-      <!-- Formulaire newsletter -->
+
       <form class="newsletter-row" id="newsletter-form">
         <input
           type="email"
@@ -1136,7 +1130,6 @@
       <div>
         <p><strong>Réseaux</strong></p>
 
-        <!-- Instagram -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
@@ -1148,7 +1141,6 @@
           </a>
         </p>
 
-        <!-- TikTok -->
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
@@ -1174,102 +1166,141 @@
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    function getEl(id) {
+      return document.getElementById(id);
+    }
 
-    // Helpers panier
     function getPanier() {
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsed = JSON.parse(localStorage.getItem("panier"));
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
         return [];
       }
     }
 
     function updateCartIcon() {
-      const el = document.getElementById("cart-count");
+      const el = getEl("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
+    function initMobileMenu() {
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
+      if (!burgerBtn || !mobileNav) return;
 
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
+      burgerBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    function isValidEmail(email) {
+      return /^\S+@\S+\.\S+$/.test(email);
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value")))
+      );
+    }
+
+    function setNewsletterMessage(message, color) {
+      const messageEl = getEl("newsletter-message");
+      if (!messageEl) return;
+      messageEl.textContent = message;
+      messageEl.style.color = color;
+    }
+
+    function setNewsletterSubmitting(submitBtn, isSubmitting) {
+      if (!submitBtn) return;
+
+      if (isSubmitting) {
+        submitBtn.dataset.originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi...";
+        return;
       }
 
-      updateCartIcon();
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.originalText || "S'abonner aux actualités";
+    }
 
-      // ----- Newsletter Supabase -----
-      const newsletterForm = document.getElementById("newsletter-form");
-      const emailInput = document.getElementById("newsletter-email");
-      const messageEl = document.getElementById("newsletter-message");
-      const submitBtn = document.getElementById("newsletter-submit");
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
+    }
 
-      if (newsletterForm && emailInput && messageEl && submitBtn) {
-        newsletterForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
+    function initNewsletterForm() {
+      const newsletterForm = getEl("newsletter-form");
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
 
-          const email = emailInput.value.trim();
+      if (!newsletterForm || !emailInput || !submitBtn) return;
 
-          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
-            messageEl.style.color = "#f97373";
+      newsletterForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+
+        if (!isValidEmail(email)) {
+          setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
+          return;
+        }
+
+        setNewsletterSubmitting(submitBtn, true);
+        setNewsletterMessage("", "#9CA3AF");
+
+        try {
+          const { error } = await subscribeNewsletter(email);
+
+          if (error) {
+            console.error(error);
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage("Tu es déjà inscrit à la newsletter 🎤", "#f97373");
+            } else {
+              setNewsletterMessage(
+                "Oups, une erreur est survenue. Réessaie dans quelques instants.",
+                "#f97373"
+              );
+            }
+
             return;
           }
 
-          submitBtn.disabled = true;
-          const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Envoi...";
-          messageEl.textContent = "";
+          setNewsletterMessage("Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
+          newsletterForm.reset();
+        } catch (err) {
+          console.error(err);
+          setNewsletterMessage("Erreur réseau, vérifie ta connexion et réessaie.", "#f97373");
+        } finally {
+          setNewsletterSubmitting(submitBtn, false);
+        }
+      });
+    }
 
-          try {
-            const { data, error } = await supabaseClient
-              .from("newsletter_subscriptions")
-              .insert([{ email }]);
+    function initContactFormCaptchaValidation() {
+      const form = getEl("contact-form");
+      if (!form) return;
 
-            if (error) {
-              console.error(error);
-              if (error.code === "23505") {
-                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
-              } else {
-                messageEl.textContent =
-                  "Oups, une erreur est survenue. Réessaie dans quelques instants.";
-              }
-              messageEl.style.color = "#f97373";
-            } else {
-              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
-              messageEl.style.color = "#4ade80";
-              newsletterForm.reset();
-            }
-          } catch (err) {
-            console.error(err);
-            messageEl.textContent =
-              "Erreur réseau, vérifie ta connexion et réessaie.";
-            messageEl.style.color = "#f97373";
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          }
-        });
-      }
-    });
-
-    // Validation côté client pour hCaptcha (Web3Forms)
-    const form = document.getElementById('contact-form');
-    if (form) {
-      form.addEventListener('submit', function (e) {
+      form.addEventListener("submit", function (e) {
         const hCaptcha = form.querySelector('textarea[name="h-captcha-response"]');
         if (!hCaptcha || !hCaptcha.value) {
           e.preventDefault();
@@ -1277,6 +1308,15 @@
         }
       });
     }
+
+    function initContactPage() {
+      initMobileMenu();
+      updateCartIcon();
+      initNewsletterForm();
+      initContactFormCaptchaValidation();
+    }
+
+    document.addEventListener("DOMContentLoaded", initContactPage);
   </script>
 </body>
 </html>
