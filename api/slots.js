@@ -1,49 +1,87 @@
 const { createClient } = require("@supabase/supabase-js");
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// ----------------------------------------------------
+// Config Supabase
+// ----------------------------------------------------
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-module.exports = async (req, res) => {
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  console.warn("⚠️ SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY manquante");
+}
+
+const supabase =
+  SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+    ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+    : null;
+
+// ----------------------------------------------------
+// Helpers
+// ----------------------------------------------------
+function sendJson(res, statusCode, payload) {
+  res.statusCode = statusCode;
+  return res.json(payload);
+}
+
+function buildDayRange(dateString) {
+  const dayStartLocal = new Date(`${dateString}T00:00:00`);
+  const dayEndLocal = new Date(`${dateString}T23:59:59`);
+
+  return {
+    startIso: dayStartLocal.toISOString(),
+    endIso: dayEndLocal.toISOString(),
+  };
+}
+
+// ----------------------------------------------------
+// Handler principal
+// ----------------------------------------------------
+module.exports = async function getReservationSlots(req, res) {
   if (req.method !== "GET") {
-    res.statusCode = 405;
-    return res.json({ error: "Méthode non autorisée" });
+    return sendJson(res, 405, { error: "Méthode non autorisée" });
   }
 
-  const date = req.query.date; // format attendu : "2025-11-27"
+  const date = req.query.date; // format attendu : YYYY-MM-DD
 
   if (!date) {
-    res.statusCode = 400;
-    return res.json({ error: "Paramètre 'date' manquant (YYYY-MM-DD)" });
+    return sendJson(res, 400, {
+      error: "Paramètre 'date' manquant (YYYY-MM-DD)",
+    });
+  }
+
+  if (!supabase) {
+    return sendJson(res, 500, {
+      error: "Supabase non configuré",
+    });
   }
 
   try {
-    // Début et fin de la journée locale
-    const dayStartLocal = new Date(`${date}T00:00:00`);
-    const dayEndLocal = new Date(`${date}T23:59:59`);
+    const { startIso, endIso } = buildDayRange(date);
 
-    const dayStartIso = dayStartLocal.toISOString();
-    const dayEndIso = dayEndLocal.toISOString();
-
-    // On récupère toutes les réservations qui commencent ce jour-là
+    // ------------------------------------------------
+    // Récupérer réservations du jour
+    // ------------------------------------------------
     const { data, error } = await supabase
       .from("reservations")
       .select("id, box_id, start_time, end_time")
-      .gte("start_time", dayStartIso)
-      .lte("start_time", dayEndIso);
+      .gte("start_time", startIso)
+      .lte("start_time", endIso);
 
     if (error) {
       console.error("Erreur /api/slots Supabase :", error);
-      res.statusCode = 500;
-      return res.json({ error: "Erreur serveur Supabase" });
+      return sendJson(res, 500, {
+        error: "Erreur serveur Supabase",
+      });
     }
 
-    // On renvoie la liste brute, le front fera la grille
-    res.statusCode = 200;
-    return res.json({ reservations: data || [] });
-  } catch (e) {
-    console.error("Erreur /api/slots :", e);
-    res.statusCode = 500;
-    return res.json({ error: "Erreur serveur" });
+    return sendJson(res, 200, {
+      reservations: data || [],
+    });
+  } catch (error) {
+    console.error("Erreur /api/slots :", error);
+
+    return sendJson(res, 500, {
+      error: "Erreur serveur",
+    });
   }
 };
