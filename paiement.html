@@ -725,13 +725,14 @@
     }
 
     async function parseResponseData(res) {
+      const cloned = res.clone();
+
       try {
         return await res.json();
       } catch {
         try {
-          const cloned = res.clone();
           const txt = await cloned.text();
-          return { raw: txt };
+          return txt ? { raw: txt } : null;
         } catch {
           return null;
         }
@@ -1167,87 +1168,127 @@
       };
     }
 
-    async function handleSaveCard() {
-      const msg = getEl("save-card-msg");
-      const btn = getEl("save-card-btn");
-      const payToggle = getEl("pay-with-saved-card");
+    function getSaveCardUi() {
+      return {
+        msg: getEl("save-card-msg"),
+        btn: getEl("save-card-btn"),
+        payToggle: getEl("pay-with-saved-card")
+      };
+    }
 
+    function setSaveCardMessage(msgEl, text) {
+      if (msgEl) msgEl.textContent = text;
+    }
+
+    function prepareSaveCardFlow(btn, payToggle) {
+      if (payToggle) payToggle.checked = false;
+      setCardElementHidden(false);
+      if (btn) btn.disabled = true;
+    }
+
+    function canStartSaveCard(msgEl) {
       if (!getToken()) {
-        if (msg) msg.textContent = "Connectez-vous pour enregistrer une carte.";
-        return;
+        setSaveCardMessage(msgEl, "Connectez-vous pour enregistrer une carte.");
+        return false;
       }
 
       if (!stripe || !cardElement) {
-        if (msg) msg.textContent = "Stripe n’est pas initialisé.";
-        return;
+        setSaveCardMessage(msgEl, "Stripe n’est pas initialisé.");
+        return false;
       }
 
-      if (payToggle) payToggle.checked = false;
-      setCardElementHidden(false);
+      return true;
+    }
+
+    async function requestSetupIntent() {
+      return apiFetch(
+        "/api/create-setup-intent",
+        { method: "POST" },
+        { auth: true, ctx: "POST /api/create-setup-intent" }
+      );
+    }
+
+    async function confirmCardSetupIntent(clientSecret) {
+      return stripe.confirmCardSetup(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: buildBillingDetails()
+        }
+      });
+    }
+
+    async function setDefaultPaymentMethod(paymentMethodId) {
+      return apiFetch(
+        "/api/set-default-payment-method",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentMethodId })
+        },
+        { auth: true, ctx: "POST /api/set-default-payment-method" }
+      );
+    }
+
+    async function refreshSavedCardAfterSetup() {
+      savedCardState.card = null;
+      await loadSavedCardStateFromMe();
+      await refreshPaymentMethods();
+      renderSavedCardUI();
+    }
+
+    function finalizeSaveCardSuccess(msgEl, payToggle) {
+      setSaveCardMessage(msgEl, "Carte enregistrée ✔️");
+
+      if (payToggle && !payToggle.disabled) {
+        payToggle.checked = true;
+        syncSavedCardToggleState();
+      }
+    }
+
+    async function handleSaveCard() {
+      const { msg, btn, payToggle } = getSaveCardUi();
+
+      if (!canStartSaveCard(msg)) return;
 
       try {
-        if (btn) btn.disabled = true;
-        if (msg) msg.textContent = "Préparation de l’enregistrement…";
+        prepareSaveCardFlow(btn, payToggle);
+        setSaveCardMessage(msg, "Préparation de l’enregistrement…");
 
-        const si = await apiFetch(
-          "/api/create-setup-intent",
-          { method: "POST" },
-          { auth: true, ctx: "POST /api/create-setup-intent" }
-        );
+        const si = await requestSetupIntent();
+        const clientSecret = si?.data?.clientSecret;
 
-        if (!si.ok || !si.data || !si.data.clientSecret) {
-          if (msg) msg.textContent = "Impossible de préparer l’enregistrement de la carte.";
+        if (!si.ok || !clientSecret) {
+          setSaveCardMessage(msg, "Impossible de préparer l’enregistrement de la carte.");
           return;
         }
 
-        const setupRes = await stripe.confirmCardSetup(si.data.clientSecret, {
-          payment_method: {
-            card: cardElement,
-            billing_details: buildBillingDetails()
-          }
-        });
+        const setupRes = await confirmCardSetupIntent(clientSecret);
 
         if (setupRes.error) {
-          if (msg) msg.textContent = setupRes.error.message || "Erreur lors de l’enregistrement de la carte.";
+          setSaveCardMessage(msg, setupRes.error.message || "Erreur lors de l’enregistrement de la carte.");
           return;
         }
 
         const paymentMethodId = setupRes.setupIntent && setupRes.setupIntent.payment_method;
+
         if (!paymentMethodId) {
-          if (msg) msg.textContent = "Enregistrement incomplet (payment_method manquant).";
+          setSaveCardMessage(msg, "Enregistrement incomplet (payment_method manquant).");
           return;
         }
 
-        if (msg) msg.textContent = "Finalisation…";
+        setSaveCardMessage(msg, "Finalisation…");
 
-        const sd = await apiFetch(
-          "/api/set-default-payment-method",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ paymentMethodId })
-          },
-          { auth: true, ctx: "POST /api/set-default-payment-method" }
-        );
+        const sd = await setDefaultPaymentMethod(paymentMethodId);
 
         if (!sd.ok) {
-          if (msg) msg.textContent = "Carte enregistrée, mais impossible de la définir par défaut.";
+          setSaveCardMessage(msg, "Carte enregistrée, mais impossible de la définir par défaut.");
           return;
         }
 
-        savedCardState.card = null;
-        await loadSavedCardStateFromMe();
-        await refreshPaymentMethods();
-        renderSavedCardUI();
-
-        if (msg) msg.textContent = "Carte enregistrée ✔️";
-
-        if (payToggle && !payToggle.disabled) {
-          payToggle.checked = true;
-          syncSavedCardToggleState();
-        }
+        await refreshSavedCardAfterSetup();
+        finalizeSaveCardSuccess(msg, payToggle);
       } catch (e) {
-        if (msg) msg.textContent = "Erreur : " + (e?.message || "inconnue");
+        setSaveCardMessage(msg, "Erreur : " + (e?.message || "inconnue"));
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -1906,51 +1947,70 @@
       renderThankYouQr(reservationId);
     }
 
+    function isFreeCheckoutFlow() {
+      return Number(currentTotals.finalTotalTTC || 0) <= 0;
+    }
+
     function hasStripeReadyForPayment(payWithSavedChecked) {
+      if (isFreeCheckoutFlow()) return true;
       if (!stripe) return false;
       if (payWithSavedChecked) return true;
       return Boolean(cardElement);
     }
 
-    function validateCheckoutBeforePayment() {
-      const billingForm = getEl("billing-form");
-      const cgvCheckbox = getEl("cgv-checkbox");
-      const rulesCheckbox = getEl("rules-checkbox");
+    function setCheckoutError(message) {
       const errorEl = getEl("checkout-error");
-      const panier = getPanier();
+      if (errorEl) errorEl.textContent = message;
+      return false;
+    }
 
-      if (!billingForm) return false;
-
+    function validatePanierForCheckout(panier) {
       if (!panier || panier.length === 0) {
-        if (errorEl) errorEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-        return false;
+        return setCheckoutError("Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.");
       }
 
       if (!cartValid) {
-        if (errorEl) errorEl.textContent = "Erreur panier. Revenez au panier et recommencez.";
-        return false;
+        return setCheckoutError("Erreur panier. Revenez au panier et recommencez.");
       }
+
+      return true;
+    }
+
+    function validateBillingFormPresenceAndFields() {
+      const billingForm = getEl("billing-form");
+      if (!billingForm) return false;
 
       if (!billingForm.reportValidity()) {
-        if (errorEl) errorEl.textContent = "Merci de compléter tous les champs obligatoires de facturation.";
-        return false;
+        return setCheckoutError("Merci de compléter tous les champs obligatoires de facturation.");
       }
 
-      if (!cgvCheckbox || !cgvCheckbox.checked) {
-        if (errorEl) errorEl.textContent = "Vous devez accepter les conditions générales de vente pour continuer.";
-        return false;
-      }
+      return true;
+    }
 
-      if (!rulesCheckbox || !rulesCheckbox.checked) {
-        if (errorEl) errorEl.textContent = "Merci de confirmer que vous respecterez les règles dans les box.";
-        return false;
+    function validateRequiredConsent(id, message) {
+      const checkbox = getEl(id);
+      if (!checkbox || !checkbox.checked) {
+        return setCheckoutError(message);
       }
+      return true;
+    }
 
+    function validateMajority() {
       const age = calculateAgeFromBirthdate(getEl("naissance")?.value || "");
       if (!age || age < 18) {
-        if (errorEl) errorEl.textContent = "La réservation doit être faite par un adulte (date de naissance invalide).";
-        return false;
+        return setCheckoutError("La réservation doit être faite par un adulte (date de naissance invalide).");
       }
+      return true;
+    }
+
+    function validateCheckoutBeforePayment() {
+      const panier = getPanier();
+
+      if (!validatePanierForCheckout(panier)) return false;
+      if (!validateBillingFormPresenceAndFields()) return false;
+      if (!validateRequiredConsent("cgv-checkbox", "Vous devez accepter les conditions générales de vente pour continuer.")) return false;
+      if (!validateRequiredConsent("rules-checkbox", "Merci de confirmer que vous respecterez les règles dans les box.")) return false;
+      if (!validateMajority()) return false;
 
       return true;
     }
@@ -2111,19 +2171,24 @@
       });
     }
 
+    function ensureStripeReadyForSubmit(payWithSavedChecked, errorEl) {
+      if (hasStripeReadyForPayment(payWithSavedChecked)) return true;
+
+      if (errorEl) {
+        errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
+      }
+      return false;
+    }
+
     async function handleCheckoutSubmit() {
       const { submitBtn, errorEl, successEl, payWithSavedChecked } = getCheckoutSubmitContext();
-
-      if (!hasStripeReadyForPayment(payWithSavedChecked)) {
-        if (errorEl) errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
-        return;
-      }
-
-      if (!validateCheckoutBeforePayment()) return;
 
       resetFeedbackMessages();
       updateOrderSummaryFromPanier();
       normalizeSavedCardChoice();
+
+      if (!validateCheckoutBeforePayment()) return;
+      if (!ensureStripeReadyForSubmit(payWithSavedChecked, errorEl)) return;
 
       const originalLabel = prepareCheckoutSubmit(submitBtn);
 
