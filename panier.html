@@ -101,7 +101,7 @@
       --sb-bg-deep: #020617;
       --sb-card: #050b18;
       --sb-text-main: #f9fafb;
-      --sb-text-muted: #9ca3af;
+      --sb-text-muted: #cbd5e1;
       --sb-red: #c94c35;
       --sb-orange: #f97316;
       --sb-border-soft: rgba(148, 163, 184, 0.35);
@@ -110,6 +110,10 @@
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: dark;
     }
 
     body {
@@ -248,7 +252,8 @@
     }
 
     .main-nav a:hover::after,
-    .main-nav a:focus-visible::after {
+    .main-nav a:focus-visible::after,
+    .main-nav a[aria-current="page"]::after {
       width: 100%;
     }
 
@@ -423,7 +428,7 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: #9ca3af;
+      color: #cbd5e1;
       margin-bottom: 10px;
     }
 
@@ -435,7 +440,7 @@
     .hero-panier p {
       margin: 0;
       font-size: 14px;
-      color: rgba(249, 250, 251, 0.9);
+      color: rgba(249, 250, 251, 0.92);
     }
 
     /* ---------- MAIN / PANIER ---------- */
@@ -510,6 +515,7 @@
     .cart-extra {
       color: var(--sb-text-muted);
       font-size: 12px;
+      line-height: 1.45;
     }
 
     .cart-item-right {
@@ -528,6 +534,7 @@
     .cart-price-sub {
       font-size: 11px;
       color: var(--sb-text-muted);
+      text-align: right;
     }
 
     .cart-remove {
@@ -589,7 +596,7 @@
 
     .btn-ghost {
       background: transparent;
-      border: 1px solid rgba(148, 163, 184, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.7);
       color: #e5e7eb;
     }
 
@@ -684,7 +691,7 @@
     footer input[type="email"] {
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.5);
       min-width: 240px;
       max-width: 360px;
       font-size: 14px;
@@ -694,7 +701,7 @@
     }
 
     footer input[type="email"]::placeholder {
-      color: rgba(156, 163, 175, 0.9);
+      color: #cbd5e1;
     }
 
     footer button {
@@ -743,7 +750,7 @@
       padding-top: 8px;
       font-size: 11px;
       text-align: center;
-      color: #9ca3af;
+      color: #cbd5e1;
       border-top: 1px solid #111827;
     }
 
@@ -799,7 +806,7 @@
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
         <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier de réservation">
-          🛒<span id="cart-count"></span>
+          <span aria-hidden="true">🛒</span><span id="cart-count"></span>
         </a>
         <button
           class="burger-button"
@@ -942,7 +949,8 @@
     function getPanier() {
       try {
         return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+      } catch (error) {
+        console.error("Erreur lecture panier depuis localStorage :", error);
         return [];
       }
     }
@@ -982,7 +990,8 @@
           month: "2-digit",
           year: "numeric"
         });
-      } catch (_) {
+      } catch (error) {
+        console.error("Erreur formatDateFr :", error);
         return isoDate;
       }
     }
@@ -1032,7 +1041,7 @@
             : `${rawPersons} personnes prévues`;
       }
 
-      let personnesFactureesText = "2 personnes facturées (minimum 2)";
+      let personnesFactureesText;
       if (personsFacturees === 1) {
         personnesFactureesText = "1 personne facturée (minimum 2)";
       } else {
@@ -1224,6 +1233,24 @@
       });
     }
 
+    async function safeReadText(response) {
+      try {
+        return await response.text();
+      } catch (error) {
+        console.error("Impossible de lire response.text() :", error);
+        return "";
+      }
+    }
+
+    async function safeReadJson(response) {
+      try {
+        return await response.json();
+      } catch (error) {
+        console.error("Impossible de lire response.json() :", error);
+        return null;
+      }
+    }
+
     async function verifyCartBeforePayment(panier) {
       const response = await fetch(`${API_BASE}/api/verify-cart`, {
         method: "POST",
@@ -1245,7 +1272,7 @@
     }
 
     function goToPaymentPage() {
-      window.location.href = "paiement.html";
+      globalThis.location.href = "paiement.html";
     }
 
     function initConfirmCart() {
@@ -1264,12 +1291,12 @@
           const response = await verifyCartBeforePayment(panier);
 
           if (!response.ok) {
-            const errorText = await response.text().catch(() => "");
+            const errorText = await safeReadText(response);
             showCartVerificationError(errorText);
             return;
           }
 
-          const data = await response.json().catch(() => null);
+          const data = await safeReadJson(response);
           if (data && Array.isArray(data.items)) {
             savePanier(data.items);
             renderPanier();
@@ -1328,29 +1355,35 @@
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert({ email });
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
 
-        if (error) {
-          const isDuplicate =
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"));
+          if (error) {
+            const isDuplicate =
+              error.code === "23505" ||
+              (error.message && error.message.includes("duplicate key value"));
 
-          if (isDuplicate) {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+            if (isDuplicate) {
+              messageBox.style.color = "#38bdf8";
+              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+              return;
+            }
+
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
             return;
           }
 
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        } catch (error) {
+          console.error("Erreur Supabase newsletter :", error);
           messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
-          return;
+          messageBox.textContent = "Erreur réseau. Merci de réessayer.";
         }
-
-        messageBox.style.color = "#38bdf8";
-        messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-        emailInput.value = "";
       });
     });
   </script>
