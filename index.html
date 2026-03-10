@@ -6,33 +6,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
 
   <!-- SEO de base -->
-  <meta name="description" content="Réservez votre karaoké box privative à Toulouse chez Singbox. Box privées 24h/24 et 7j/7 pour chanter entre amis, en famille ou entre collègues : anniversaires, EVJF/EVG, team building, afterworks.">
+  <meta
+    name="description"
+    content="Réservez votre karaoké box privative à Toulouse chez Singbox. Box privées 24h/24 et 7j/7 pour chanter entre amis, en famille ou entre collègues : anniversaires, EVJF/EVG, team building, afterworks."
+  />
 
   <!-- Open Graph / Réseaux sociaux -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Karaoké box privative à Toulouse – Singbox">
-  <meta property="og:description" content="Réservez votre séance de karaoké dans une box privatisée à Toulouse. Créneaux 24/7, réservation en ligne, soirées entre amis, familles et entreprises.">
-  <meta property="og:image" content="https://tondomaine.fr/OG-image.png">
-  <meta property="og:locale" content="fr_FR">
-  <meta property="og:site_name" content="Singbox">
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Karaoké box privative à Toulouse – Singbox" />
+  <meta
+    property="og:description"
+    content="Réservez votre séance de karaoké dans une box privatisée à Toulouse. Créneaux 24/7, réservation en ligne, soirées entre amis, familles et entreprises."
+  />
+  <meta property="og:image" content="https://tondomaine.fr/OG-image.png" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="Singbox" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Karaoké box privative à Toulouse – Singbox">
-  <meta name="twitter:description" content="Réservez votre box karaoké privative à Toulouse 24/7 chez Singbox. Entre amis, en famille ou entre collègues.">
-  <meta name="twitter:image" content="https://tondomaine.fr/OG-image.png">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Karaoké box privative à Toulouse – Singbox" />
+  <meta
+    name="twitter:description"
+    content="Réservez votre box karaoké privative à Toulouse 24/7 chez Singbox. Entre amis, en famille ou entre collègues."
+  />
+  <meta name="twitter:image" content="https://tondomaine.fr/OG-image.png" />
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <!-- Schema.org LocalBusiness -->
   <script type="application/ld+json">
@@ -59,7 +68,7 @@
     "openingHoursSpecification": [{
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
-        "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
       ],
       "opens": "00:00",
       "closes": "23:59"
@@ -77,34 +86,58 @@
       --sb-bg-deep: #020617;
       --sb-bg-soft: #030712;
       --sb-card: rgba(2, 6, 23, 0.96);
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #CBD5E1;
-      --sb-red: #C94C35;
-      --sb-orange: #F97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.25);
+      --sb-text-main: #f9fafb;
+      --sb-text-muted: #d8e1ec;
+      --sb-text-soft: #edf2f7;
+      --sb-red: #c94c35;
+      --sb-orange: #f97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.32);
       --sb-container-width: 1180px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: dark;
+    }
 
     body {
       margin: 0;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       font-family: "League Spartan", system-ui, sans-serif;
       letter-spacing: 0.03em;
       margin: 0;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
     }
 
     .container {
@@ -122,7 +155,7 @@
       z-index: 50;
       background: #020617;
       color: #fff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
       height: auto;
     }
 
@@ -152,8 +185,8 @@
       display: block;
       object-fit: contain;
       filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.16))
-        drop-shadow(0 0 20px rgba(201,76,53,0.6));
+        drop-shadow(0 0 12px rgba(255, 255, 255, 0.16))
+        drop-shadow(0 0 20px rgba(201, 76, 53, 0.6));
     }
 
     .brand-text {
@@ -161,7 +194,7 @@
       font-weight: 600;
       letter-spacing: 0.15em;
       font-size: 26px;
-      color: #F9FAFB;
+      color: #f9fafb;
       text-transform: uppercase;
       white-space: nowrap;
       display: flex;
@@ -188,7 +221,6 @@
       font-weight: 600;
       letter-spacing: 0.3px;
       color: #ffffff;
-      text-decoration: none;
       position: relative;
       padding-bottom: 4px;
       white-space: nowrap;
@@ -213,7 +245,7 @@
 
     .main-nav a:hover,
     .main-nav a:focus-visible {
-      color: #ffb96f;
+      color: #ffd4a5;
       transition: 0.25s ease;
     }
 
@@ -230,11 +262,11 @@
       border-radius: 999px;
       font-weight: 600;
       font-size: 14px;
-      color: #F9FAFB;
+      color: #f9fafb;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
-        0 10px 28px rgba(0,0,0,0.7);
+        0 0 0 1px rgba(249, 250, 251, 0.08),
+        0 10px 28px rgba(0, 0, 0, 0.7);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -243,22 +275,22 @@
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
-        0 16px 38px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(249, 250, 251, 0.18),
+        0 16px 38px rgba(0, 0, 0, 0.9);
     }
 
     .cart-icon {
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       cursor: pointer;
       position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
+      background: radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.16), rgba(15, 23, 42, 0.85));
       backdrop-filter: blur(6px);
     }
 
@@ -275,14 +307,16 @@
       text-align: center;
     }
 
-    #cart-count:empty { display: none; }
+    #cart-count:empty {
+      display: none;
+    }
 
     .burger-button {
       display: none;
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       background: transparent;
       color: #fff;
       align-items: center;
@@ -313,8 +347,13 @@
       font-size: 15px;
     }
 
-    .mobile-nav a { color:#fff; }
-    .mobile-nav.open { display:block; }
+    .mobile-nav a {
+      color: #fff;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
 
     /* ---------- HERO ---------- */
     .hero {
@@ -322,7 +361,7 @@
       padding: 12rem 0 96px;
       background:
         radial-gradient(circle at 30% 0%, #6b1220 0, transparent 50%),
-        radial-gradient(circle at 80% 0%, rgba(17,24,39,0.8), transparent 60%),
+        radial-gradient(circle at 80% 0%, rgba(17, 24, 39, 0.8), transparent 60%),
         #050814;
       overflow: hidden;
     }
@@ -332,12 +371,19 @@
       content: "♪ ✦";
       position: absolute;
       font-size: 32px;
-      color: rgba(203,213,225,0.14);
+      color: rgba(216, 225, 236, 0.16);
       pointer-events: none;
     }
 
-    .hero::before { top: 16%; right: 8%; }
-    .hero::after { bottom: 10%; left: 6%; }
+    .hero::before {
+      top: 16%;
+      right: 8%;
+    }
+
+    .hero::after {
+      bottom: 10%;
+      left: 6%;
+    }
 
     .hero-inner {
       display: grid;
@@ -348,8 +394,8 @@
 
     .hero-eyebrow {
       font-size: 14px;
-      color: #7DD3FC;
-      font-weight: 600;
+      color: #93dbff;
+      font-weight: 700;
       margin-bottom: 10px;
     }
 
@@ -362,12 +408,14 @@
 
     .hero .subtitle {
       font-size: 17px;
-      color: rgba(249,250,251,0.9);
+      color: rgba(249, 250, 251, 0.94);
       margin-bottom: 28px;
       max-width: 520px;
     }
 
-    .resa-bar-wrapper { max-width: 640px; }
+    .resa-bar-wrapper {
+      max-width: 640px;
+    }
 
     .resa-bar {
       background: var(--sb-card);
@@ -377,11 +425,11 @@
       flex-wrap: wrap;
       gap: 16px;
       align-items: center;
-      border: 1px solid rgba(148,163,184,0.2);
+      border: 1px solid rgba(148, 163, 184, 0.22);
       box-shadow:
-        0 0 0 1px rgba(148,163,184,0.18),
-        0 0 40px rgba(201,76,53,0.55),
-        0 26px 70px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(148, 163, 184, 0.18),
+        0 0 40px rgba(201, 76, 53, 0.55),
+        0 26px 70px rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(18px);
     }
 
@@ -398,7 +446,7 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #D1D5DB;
+      color: #e2e8f0;
       margin-bottom: 4px;
       font-weight: 700;
     }
@@ -407,10 +455,10 @@
     .resa-field select {
       padding: 9px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.45);
+      border: 1px solid rgba(148, 163, 184, 0.5);
       font-size: 14px;
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       outline: none;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-weight: 500;
@@ -420,14 +468,14 @@
     .resa-field select:focus {
       border-color: var(--sb-red);
       box-shadow:
-        0 0 0 1px rgba(201,76,53,0.8),
-        0 0 25px rgba(201,76,53,0.5);
+        0 0 0 1px rgba(201, 76, 53, 0.8),
+        0 0 25px rgba(201, 76, 53, 0.5);
     }
 
     input[type="date"] {
       color-scheme: dark;
       background-color: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     input[type="date"]::-webkit-calendar-picker-indicator {
@@ -435,21 +483,23 @@
       cursor: pointer;
     }
 
-    .resa-button-wrapper { flex: 0 0 auto; }
+    .resa-button-wrapper {
+      flex: 0 0 auto;
+    }
 
     .resa-button {
       border: none;
       padding: 11px 28px;
       border-radius: 999px;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 18px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 18px 40px rgba(0, 0, 0, 0.9);
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -457,17 +507,17 @@
     .resa-button:focus-visible {
       transform: translateY(-1px);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 24px 55px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 24px 55px rgba(0, 0, 0, 1);
     }
 
     .hero-image-card {
       border-radius: 24px;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 0%, rgba(248,250,252,0.06), transparent 60%), #020617;
+      background: radial-gradient(circle at 50% 0%, rgba(248, 250, 252, 0.06), transparent 60%), #020617;
       box-shadow:
-        0 30px 80px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(148,163,184,0.4);
+        0 30px 80px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.4);
       min-height: 320px;
       height: 100%;
       position: relative;
@@ -484,8 +534,8 @@
     .section-steps {
       padding: 96px 0;
       background:
-        radial-gradient(circle at 0% 0%, rgba(56,189,248,0.12), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(201,76,53,0.22), transparent 55%),
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.12), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(201, 76, 53, 0.22), transparent 55%),
         #030712;
       position: relative;
     }
@@ -496,7 +546,7 @@
       bottom: 18%;
       right: 8%;
       font-size: 32px;
-      color: rgba(203,213,225,0.12);
+      color: rgba(216, 225, 236, 0.14);
       pointer-events: none;
     }
 
@@ -509,7 +559,7 @@
     .section-subtitle-center {
       text-align: center;
       font-size: 14px;
-      color: #D1D5DB;
+      color: var(--sb-text-muted);
       margin-bottom: 32px;
     }
 
@@ -524,7 +574,7 @@
       border-radius: 20px;
       padding: 20px 22px;
       border: 1px solid var(--sb-border-soft);
-      box-shadow: 0 18px 46px rgba(0,0,0,0.75);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.75);
       display: flex;
       gap: 14px;
       align-items: flex-start;
@@ -539,14 +589,14 @@
       right: 12px;
       bottom: 8px;
       font-size: 24px;
-      color: rgba(203,213,225,0.12);
+      color: rgba(216, 225, 236, 0.12);
     }
 
     .step-icon {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: rgba(201,76,53,0.16);
+      background: rgba(201, 76, 53, 0.16);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -563,26 +613,26 @@
     .step-content p {
       margin: 0;
       font-size: 13px;
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
       line-height: 1.5;
     }
 
     .step-card:hover,
     .step-card:focus-visible {
       transform: translateY(-4px);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.95);
-      border-color: rgba(201,76,53,0.6);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+      border-color: rgba(201, 76, 53, 0.6);
     }
 
     .step-card--clickable {
       cursor: pointer;
     }
 
-    /* ---------- SECTION OCCASIONS (cartes + contact) ---------- */
+    /* ---------- SECTION OCCASIONS ---------- */
     .section-occasions {
       padding: 4.5rem 0;
       background: #050814;
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     .occasions-container {
@@ -605,7 +655,7 @@
     .occasions-subtitle {
       margin: 0;
       font-size: 0.95rem;
-      color: #D1D5DB;
+      color: var(--sb-text-muted);
       max-width: 540px;
     }
 
@@ -647,7 +697,7 @@
     .occasion-card p {
       margin: 0;
       font-size: 0.9rem;
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
       line-height: 1.5;
     }
 
@@ -727,7 +777,7 @@
       align-items: center;
       gap: 0.5rem;
       font-size: 0.9rem;
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
     }
 
     .contact-icon {
@@ -748,8 +798,8 @@
       border: none;
       border-radius: 999px;
       padding: 0.65rem 1.6rem;
-      background: linear-gradient(90deg, #C94C35, #F97316);
-      color: #F9FAFB;
+      background: linear-gradient(90deg, #c94c35, #f97316);
+      color: #f9fafb;
       font-weight: 600;
       font-size: 0.95rem;
       cursor: pointer;
@@ -772,7 +822,7 @@
     .section-reviews {
       padding: 4rem 0 4.5rem;
       background: #030712;
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     .reviews-header {
@@ -788,11 +838,11 @@
 
     .reviews-meta {
       font-size: 0.95rem;
-      color: #D1D5DB;
+      color: var(--sb-text-muted);
     }
 
     .reviews-meta strong {
-      color: #FBBF24;
+      color: #fbbf24;
     }
 
     .reviews-grid {
@@ -805,8 +855,8 @@
       background: rgba(2, 6, 23, 0.96);
       border-radius: 18px;
       padding: 1.25rem 1.5rem 1.5rem;
-      border: 1px solid rgba(148,163,184,0.3);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.75);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
       font-size: 0.9rem;
       display: flex;
       flex-direction: column;
@@ -814,12 +864,12 @@
     }
 
     .review-stars {
-      color: #FBBF24;
+      color: #fbbf24;
       font-size: 0.95rem;
     }
 
     .review-text {
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
       line-height: 1.5;
       margin: 0;
     }
@@ -827,7 +877,7 @@
     .review-footer {
       margin-top: 0.4rem;
       font-size: 0.8rem;
-      color: #D1D5DB;
+      color: var(--sb-text-muted);
       display: flex;
       justify-content: space-between;
       gap: 0.75rem;
@@ -836,14 +886,22 @@
 
     .review-author {
       font-weight: 600;
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
     }
 
-    /* ---------- SECTION FAQ (SEO) ---------- */
+    .review-empty {
+      grid-column: 1 / -1;
+      color: var(--sb-text-muted);
+      font-size: 0.95rem;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    /* ---------- SECTION FAQ ---------- */
     .section-faq {
       padding: 4rem 0;
       background: #030712;
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     .section-faq h2 {
@@ -859,93 +917,115 @@
 
     .section-faq p {
       font-size: 0.95rem;
-      color: #E5E7EB;
+      color: var(--sb-text-soft);
       line-height: 1.6;
     }
 
     /* ---------- FOOTER ---------- */
     footer {
-      background:#020617;
-      color:#e5e7eb;
-      padding:32px 24px 18px;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 32px 24px 18px;
       border-top: 1px solid #111827;
     }
 
     .newsletter-container {
-      max-width:var(--sb-container-width);
-      margin:0 auto 24px;
-      text-align:center;
+      max-width: var(--sb-container-width);
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+
+    .newsletter-container h3 {
+      margin-bottom: 6px;
+    }
+
+    .newsletter-container p {
+      color: var(--sb-text-muted);
     }
 
     .newsletter-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
       margin-top: 8px;
     }
 
-    footer input[type=email] {
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.4);
-      min-width:240px;
-      max-width:360px;
-      font-size:14px;
-      background:#020617;
-      color:#F9FAFB;
+    footer input[type="email"] {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      min-width: 240px;
+      max-width: 360px;
+      font-size: 14px;
+      background: #020617;
+      color: #f9fafb;
+      outline: none;
+    }
+
+    footer input[type="email"]::placeholder {
+      color: #d8e1ec;
+    }
+
+    footer input[type="email"]:focus {
+      border-color: var(--sb-orange);
+      box-shadow:
+        0 0 0 1px rgba(249, 115, 22, 0.8),
+        0 0 20px rgba(249, 115, 22, 0.25);
     }
 
     footer button {
-      padding:10px 18px;
-      border:none;
-      border-radius:999px;
-      background:var(--sb-red);
-      color:#F9FAFB;
-      font-weight:600;
-      font-size:14px;
-      cursor:pointer;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 999px;
+      background: var(--sb-red);
+      color: #f9fafb;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .newsletter-message {
       font-size: 12px;
       margin-top: 6px;
       min-height: 16px;
-      color: #D1D5DB;
+      color: var(--sb-text-muted);
     }
 
     .footer-columns {
-      max-width:var(--sb-container-width);
-      margin:0 auto;
-      display:flex;
-      flex-wrap:wrap;
-      gap:24px;
-      justify-content:space-between;
-      font-size:13px;
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: space-between;
+      font-size: 13px;
     }
 
     .footer-brand {
-      display:flex;
-      align-items:center;
-      gap:10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .footer-brand img {
-      height:80px;
-      width:auto;
-      display:block;
+      height: 80px;
+      width: auto;
+      display: block;
     }
 
-    .footer-columns p { margin:4px 0; }
+    .footer-columns p {
+      margin: 4px 0;
+    }
 
     .footer-bottom {
-      max-width:var(--sb-container-width);
-      margin:20px auto 0;
-      padding-top:8px;
-      font-size:11px;
-      text-align:center;
-      color:#CBD5E1;
-      border-top:1px solid #111827;
+      max-width: var(--sb-container-width);
+      margin: 20px auto 0;
+      padding-top: 8px;
+      font-size: 11px;
+      text-align: center;
+      color: #d8e1ec;
+      border-top: 1px solid #111827;
     }
 
     /* ---------- RESPONSIVE ---------- */
@@ -961,15 +1041,15 @@
       }
 
       .steps-grid {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .occasions-layout {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .reviews-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -979,10 +1059,12 @@
         gap: 1rem;
       }
 
-      nav.main-nav { display:none; }
+      nav.main-nav {
+        display: none;
+      }
 
       .burger-button {
-        display:flex;
+        display: flex;
       }
 
       .brand-logo {
@@ -1007,17 +1089,22 @@
         padding: 9rem 0 80px;
       }
 
-      .hero h1 { font-size: 34px; }
-      .hero .subtitle { font-size: 15px; }
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .hero .subtitle {
+        font-size: 15px;
+      }
 
       .reviews-grid {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     @media (max-width: 640px) {
       .occasion-grid {
-        grid-template-columns: minmax(0,1fr);
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .occasion-card--large {
@@ -1063,12 +1150,12 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
         <span class="brand-text">Singbox</span>
       </a>
 
       <nav class="main-nav" aria-label="Navigation principale">
-        <ul aria-label="Liens principaux du site">
+        <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="box.html">Les box</a></li>
@@ -1080,10 +1167,19 @@
 
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
+
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
           ☰
         </button>
       </div>
@@ -1092,7 +1188,7 @@
 
   <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
-    <ul aria-label="Liens du menu mobile">
+    <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
       <li><a href="box.html">Les box</a></li>
@@ -1102,263 +1198,276 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container hero-inner">
-      <div class="hero-left">
-        <p class="hero-eyebrow">Le karaoké box nouvelle génération</p>
-        <h1>Réservez votre karaoké box privative à Toulouse</h1>
-        <p class="subtitle">
-          Réservez en quelques clics votre karaoké box privative à Toulouse&nbsp;: choisissez votre date,
-          découvrez les créneaux disponibles et venez chanter entre amis, en famille ou entre collègues,
-          24h/24 et 7j/7.
-        </p>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-left">
+          <p class="hero-eyebrow">Le karaoké box nouvelle génération</p>
+          <h1>Réservez votre karaoké box privative à Toulouse</h1>
+          <p class="subtitle">
+            Réservez en quelques clics votre karaoké box privative à Toulouse&nbsp;: choisissez votre date,
+            découvrez les créneaux disponibles et venez chanter entre amis, en famille ou entre collègues,
+            24h/24 et 7j/7.
+          </p>
 
-        <div class="resa-bar-wrapper">
-          <div class="resa-bar">
-            <div class="resa-field">
-              <label for="date-input">Date</label>
-              <input type="date" id="date-input">
+          <div class="resa-bar-wrapper">
+            <div class="resa-bar">
+              <div class="resa-field">
+                <label for="date-input">Date</label>
+                <input type="date" id="date-input" />
+              </div>
+
+              <div class="resa-field">
+                <label for="people-input">Nombre de personnes</label>
+                <select id="people-input">
+                  <option value="">Non défini</option>
+                  <option value="1">1 personne</option>
+                  <option value="2">2 personnes</option>
+                  <option value="3">3 personnes</option>
+                  <option value="4">4 personnes</option>
+                  <option value="5">5 personnes</option>
+                  <option value="6">6 personnes</option>
+                  <option value="7">7 personnes</option>
+                  <option value="8">8 personnes</option>
+                </select>
+              </div>
+
+              <div class="resa-button-wrapper">
+                <button
+                  class="resa-button"
+                  type="button"
+                  onclick="goToReservation()"
+                  aria-label="Voir les créneaux disponibles"
+                >
+                  Voir les créneaux
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-image-card hero-image-groupe" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION ÉTAPES -->
+    <section class="section-steps">
+      <div class="container">
+        <h2 class="section-title-center">Comment fonctionne Singbox&nbsp;?</h2>
+        <p class="section-subtitle-center">Réservez votre karaoké box privative à Toulouse en 3 étapes simples.</p>
+
+        <div class="steps-grid">
+          <a class="step-card step-card--clickable" href="reservation.html" aria-label="Choisir votre date et accéder à la réservation">
+            <div class="step-icon" aria-hidden="true">📅</div>
+            <div class="step-content">
+              <h3>Choisissez votre date</h3>
+              <p>Sélectionnez le jour et le créneau qui vous arrangent directement en ligne.</p>
+            </div>
+          </a>
+
+          <div class="step-card">
+            <div class="step-icon" aria-hidden="true">📦</div>
+            <div class="step-content">
+              <h3>Sélectionnez votre box</h3>
+              <p>Choisissez la box adaptée à votre groupe et à l’ambiance souhaitée.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-icon" aria-hidden="true">🎤</div>
+            <div class="step-content">
+              <h3>Chantez</h3>
+              <p>Vous arrivez, vous scannez, vous chantez. Le reste ? On s’en occupe.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION OCCASIONS + CONTACT -->
+    <section id="occasions" class="section-occasions">
+      <div class="occasions-container">
+        <header class="occasions-header">
+          <h2 class="occasions-title">Karaoké box à Toulouse pour toutes les occasions</h2>
+          <p class="occasions-subtitle">
+            Entre amis, en famille ou entre collègues, Singbox s’adapte à toutes vos envies.
+          </p>
+        </header>
+
+        <div class="occasions-layout">
+          <div class="occasions-left">
+            <div class="occasion-grid">
+              <a
+                class="occasion-card occasion-card--large occasion-card--friends"
+                data-icon="🎧"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké entre amis"
+              >
+                <h3>Entre amis</h3>
+                <p>Blind tests, défis, hits des années 2000… votre QG de soirée.</p>
+              </a>
+
+              <a
+                class="occasion-card"
+                data-icon="👨‍👩‍👧"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké en famille"
+              >
+                <h3>En famille</h3>
+                <p>Des classiques pour toutes les générations.</p>
+              </a>
+
+              <a
+                class="occasion-card"
+                data-icon="🎂"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké pour un anniversaire"
+              >
+                <h3>Anniversaire</h3>
+                <p>Une box privatisée pour souffler vos bougies en musique.</p>
+              </a>
+
+              <a
+                class="occasion-card"
+                data-icon="🏢"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké pour un team building"
+              >
+                <h3>Team building</h3>
+                <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
+              </a>
+
+              <a
+                class="occasion-card"
+                data-icon="💍"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké pour un EVJF ou EVG"
+              >
+                <h3>EVJF / EVG</h3>
+                <p>Une parenthèse 100&nbsp;% fun avant le grand jour.</p>
+              </a>
+
+              <a
+                class="occasion-card"
+                data-icon="✨"
+                href="reservation.html"
+                aria-label="Réserver une box karaoké pour une autre occasion"
+              >
+                <h3>Et plus encore…</h3>
+                <p>Afterworks, lendemains de match… toutes les excuses sont bonnes.</p>
+              </a>
+            </div>
+          </div>
+
+          <aside class="occasion-contact-card" aria-labelledby="contact-card-title">
+            <h3 id="contact-card-title">Venez chanter chez Singbox</h3>
+
+            <div class="mini-map">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.409555157161!2d1.429969312174704!3d43.59801347098417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb7042b187f7%3A0xbc636c1c094d90d3!2s66%20Rue%20de%20la%20R%C3%A9publique%2C%2031300%20Toulouse!5e0!3m2!1sfr!2sfr!4v1764513486844!5m2!1sfr!2sfr"
+                loading="lazy"
+                allowfullscreen=""
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Localisation de Singbox, karaoké box privative à Toulouse"
+              ></iframe>
             </div>
 
-            <div class="resa-field">
-              <label for="people-input">Nombre de personnes</label>
-              <select id="people-input">
-                <option value="">Non défini</option>
-                <option value="1">1 personne</option>
-                <option value="2">2 personnes</option>
-                <option value="3">3 personnes</option>
-                <option value="4">4 personnes</option>
-                <option value="5">5 personnes</option>
-                <option value="6">6 personnes</option>
-                <option value="7">7 personnes</option>
-                <option value="8">8 personnes</option>
-              </select>
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">📍</div>
+              <p><strong>Adresse&nbsp;:</strong> [à compléter]</p>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">🕒</div>
+              <p><strong>Horaires&nbsp;:</strong> 24h/24 7j/7</p>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">📧</div>
+              <p><strong>Email&nbsp;:</strong> contact@singbox.fr</p>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon" aria-hidden="true">📞</div>
+              <p><strong>Téléphone&nbsp;:</strong> 06 00 00 00 00</p>
             </div>
 
-            <div class="resa-button-wrapper">
-              <button class="resa-button" type="button" onclick="goToReservation()">Voir les créneaux</button>
-            </div>
-          </div>
+            <button class="contact-cta" type="button" onclick="window.location.href='reservation.html'">
+              Réserver maintenant
+            </button>
+          </aside>
         </div>
       </div>
+    </section>
 
-      <div class="hero-right">
-        <div class="hero-image-card hero-image-groupe" aria-hidden="true"></div>
-      </div>
-    </div>
-  </section>
+    <!-- SECTION AVIS -->
+    <section class="section-reviews" id="avis" aria-labelledby="reviews-title">
+      <div class="occasions-container">
+        <header class="reviews-header">
+          <h2 class="reviews-title" id="reviews-title">Ils ont chanté chez Singbox</h2>
+          <p class="reviews-meta">
+            Note moyenne <strong><span id="reviews-average">5.0</span>/5</strong>
+            sur <span id="reviews-count">0</span> avis.
+          </p>
+        </header>
 
-  <!-- SECTION ÉTAPES -->
-  <section class="section-steps">
-    <div class="container">
-      <h2 class="section-title-center">Comment fonctionne Singbox&nbsp;?</h2>
-      <p class="section-subtitle-center">Réservez votre karaoké box privative à Toulouse en 3 étapes simples.</p>
-
-      <div class="steps-grid">
-        <a class="step-card step-card--clickable" href="reservation.html" aria-label="Choisir votre date et accéder à la réservation">
-          <div class="step-icon" aria-hidden="true">📅</div>
-          <div class="step-content">
-            <h3>Choisissez votre date</h3>
-            <p>Sélectionnez le jour et le créneau qui vous arrangent directement en ligne.</p>
-          </div>
-        </a>
-
-        <div class="step-card">
-          <div class="step-icon" aria-hidden="true">📦</div>
-          <div class="step-content">
-            <h3>Sélectionnez votre box</h3>
-            <p>Choisissez la box adaptée à votre groupe et à l’ambiance souhaitée.</p>
-          </div>
-        </div>
-
-        <div class="step-card">
-          <div class="step-icon" aria-hidden="true">🎤</div>
-          <div class="step-content">
-            <h3>Chantez</h3>
-            <p>Vous arrivez, vous scannez, vous chantez. Le reste ? On s’en occupe.</p>
-          </div>
+        <div id="reviews-grid" class="reviews-grid" aria-live="polite">
+          <p class="review-empty">Chargement des avis…</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SECTION OCCASIONS + CONTACT -->
-  <section id="occasions" class="section-occasions">
-    <div class="occasions-container">
-      <header class="occasions-header">
-        <h2 class="occasions-title">Karaoké box à Toulouse pour toutes les occasions</h2>
-        <p class="occasions-subtitle">
-          Entre amis, en famille ou entre collègues, Singbox s’adapte à toutes vos envies.
+    <!-- SECTION FAQ SEO -->
+    <section class="section-faq" aria-labelledby="faq-title">
+      <div class="occasions-container">
+        <h2 id="faq-title">FAQ</h2>
+
+        <h3>Comment réserver une box karaoké chez Singbox&nbsp;?</h3>
+        <p>
+          La réservation se fait directement en ligne&nbsp;: choisissez votre date, indiquez le nombre de personnes,
+          sélectionnez votre box et validez votre créneau. Vous recevez ensuite votre confirmation et votre QR Code par e-mail à présenter sur place.
         </p>
-      </header>
 
-      <div class="occasions-layout">
-        <div class="occasions-left">
-          <div class="occasion-grid">
-            <a
-              class="occasion-card occasion-card--large occasion-card--friends"
-              data-icon="🎧"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké entre amis"
-            >
-              <h3>Entre amis</h3>
-              <p>Blind tests, défis, hits des années 2000… votre QG de soirée.</p>
-            </a>
-
-            <a
-              class="occasion-card"
-              data-icon="👨‍👩‍👧"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké en famille"
-            >
-              <h3>En famille</h3>
-              <p>Des classiques pour toutes les générations.</p>
-            </a>
-
-            <a
-              class="occasion-card"
-              data-icon="🎂"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké pour un anniversaire"
-            >
-              <h3>Anniversaire</h3>
-              <p>Une box privatisée pour souffler vos bougies en musique.</p>
-            </a>
-
-            <a
-              class="occasion-card"
-              data-icon="🏢"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké pour un team building"
-            >
-              <h3>Team building</h3>
-              <p>Créez des souvenirs communs et brisez la glace entre collègues.</p>
-            </a>
-
-            <a
-              class="occasion-card"
-              data-icon="💍"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké pour un EVJF ou EVG"
-            >
-              <h3>EVJF / EVG</h3>
-              <p>Une parenthèse 100&nbsp;% fun avant le grand jour.</p>
-            </a>
-
-            <a
-              class="occasion-card"
-              data-icon="✨"
-              href="reservation.html"
-              aria-label="Réserver une box karaoké pour une autre occasion"
-            >
-              <h3>Et plus encore…</h3>
-              <p>Afterworks, lendemains de match… toutes les excuses sont bonnes.</p>
-            </a>
-          </div>
-        </div>
-
-        <aside class="occasion-contact-card">
-          <h3>Venez chanter chez Singbox</h3>
-
-          <div class="mini-map">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.409555157161!2d1.429969312174704!3d43.59801347098417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebb7042b187f7%3A0xbc636c1c094d90d3!2s66%20Rue%20de%20la%20R%C3%A9publique%2C%2031300%20Toulouse!5e0!3m2!1sfr!2sfr!4v1764513486844!5m2!1sfr!2sfr"
-              loading="lazy"
-              allowfullscreen=""
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Localisation de Singbox, karaoké box privative à Toulouse">
-            </iframe>
-          </div>
-
-          <div class="contact-row">
-            <div class="contact-icon" aria-hidden="true">📍</div>
-            <p><strong>Adresse&nbsp;:</strong> [à compléter]</p>
-          </div>
-          <div class="contact-row">
-            <div class="contact-icon" aria-hidden="true">🕒</div>
-            <p><strong>Horaires&nbsp;:</strong> 24h/24 7j/7</p>
-          </div>
-          <div class="contact-row">
-            <div class="contact-icon" aria-hidden="true">📧</div>
-            <p><strong>Email&nbsp;:</strong> contact@singbox.fr</p>
-          </div>
-          <div class="contact-row">
-            <div class="contact-icon" aria-hidden="true">📞</div>
-            <p><strong>Téléphone&nbsp;:</strong> 06 00 00 00 00</p>
-          </div>
-
-          <button class="contact-cta" type="button" onclick="window.location.href='reservation.html'">
-            Réserver maintenant
-          </button>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION AVIS -->
-  <section class="section-reviews" id="avis">
-    <div class="occasions-container">
-      <header class="reviews-header">
-        <h2 class="reviews-title">Ils ont chanté chez Singbox</h2>
-        <p class="reviews-meta">
-          Note moyenne <strong><span id="reviews-average">5.0</span>/5</strong>
-          sur <span id="reviews-count">0</span> avis.
+        <h3>Combien de personnes peuvent venir chanter dans une box&nbsp;?</h3>
+        <p>
+          Nos box karaoké à Toulouse accueillent des petits et moyens groupes allant de 1 à 8 personnes. Selon la box choisie, vous pouvez venir
+          en famille ou avec tout votre groupe d’amis ou des collègues pour un anniversaire, un EVJF/EVG ou un team building.
         </p>
-      </header>
 
-      <div id="reviews-grid" class="reviews-grid">
-        <!-- Avis chargés en JS depuis Supabase -->
+        <h3>Où se situe Singbox à Toulouse&nbsp;?</h3>
+        <p>
+          Singbox est situé au 66 Rue de la République, 31300 Toulouse. Notre emplacement est facilement accessible en
+          transports en commun et à pied, la carte ci-dessus vous permet de nous retrouver facilement via Google Maps.
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- SECTION FAQ SEO -->
-  <section class="section-faq">
-    <div class="occasions-container">
-      <h2>FAQ</h2>
-
-      <h3>Comment réserver une box karaoké chez Singbox&nbsp;?</h3>
-      <p>
-        La réservation se fait directement en ligne&nbsp;: choisissez votre date, indiquez le nombre de personnes,
-        sélectionnez votre box et validez votre créneau. Vous recevez ensuite votre confirmation et votre QR Code par e-mail à présenter sur place.
-      </p>
-
-      <h3>Combien de personnes peuvent venir chanter dans une box&nbsp;?</h3>
-      <p>
-        Nos box karaoké à Toulouse accueillent des petits et moyens groupes allant de 1 à 8 personnes. Selon la box choisie, vous pouvez venir
-        en famille ou avec tout votre groupe d’amis ou des collègues pour un anniversaire, un EVJF/EVG ou un team building.
-      </p>
-
-      <h3>Où se situe Singbox à Toulouse&nbsp;?</h3>
-      <p>
-        Singbox est situé au 66 Rue de la République, 31300 Toulouse. Notre emplacement est facilement accessible en
-        transports en commun et à pied, la carte ci-dessus vous permet de nous retrouver facilement via Google Maps.
-      </p>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
-      <h3>Inscrivez-vous à notre newsletter</h3>
+      <h3 id="newsletter-title">Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
 
-      <div class="newsletter-row">
+      <form class="newsletter-row" id="newsletter-form" aria-labelledby="newsletter-title">
+        <label class="sr-only" for="newsletter-email">Adresse e-mail</label>
         <input
           id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
-          aria-label="Adresse e-mail pour la newsletter"
+          autocomplete="email"
+          required
         />
         <button
           id="newsletter-submit"
-          type="button"
+          type="submit"
+          aria-label="S'abonner à la newsletter"
         >
           S'abonner
         </button>
-      </div>
-      <p id="newsletter-message" class="newsletter-message"></p>
+      </form>
+
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite"></p>
     </div>
 
     <div class="footer-columns">
@@ -1389,9 +1498,9 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
           </svg>
           <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
             Instagram
@@ -1400,7 +1509,7 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
           </svg>
           <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
             TikTok
@@ -1459,7 +1568,7 @@
       const el = document.getElementById("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     function initBurgerMenu() {
@@ -1469,32 +1578,44 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        mobileNav.classList.toggle("open");
+        const isOpen = mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(isOpen));
       });
 
       mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
           mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
         }
       });
     }
 
+    function isValidEmail(email) {
+      return /^\S+@\S+\.\S+$/.test(email);
+    }
+
     function initNewsletter() {
+      const form = document.getElementById("newsletter-form");
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn || !messageBox) return;
+      if (!form || !emailInput || !submitBtn || !messageBox) return;
 
-      submitBtn.addEventListener("click", async () => {
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
         const email = emailInput.value.trim();
 
-        messageBox.style.color = "#E5E7EB";
+        messageBox.style.color = "#D8E1EC";
         messageBox.textContent = "Envoi en cours...";
+        submitBtn.disabled = true;
 
-        if (!email || !email.includes("@")) {
-          messageBox.style.color = "#ff6b6b";
+        if (!isValidEmail(email)) {
+          messageBox.style.color = "#fecaca";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          submitBtn.disabled = false;
           return;
         }
 
@@ -1508,22 +1629,25 @@
               error.code === "23505" ||
               (error.message && error.message.includes("duplicate key value"))
             ) {
-              messageBox.style.color = "#38bdf8";
+              messageBox.style.color = "#93dbff";
               messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
             } else {
-              messageBox.style.color = "#ff6b6b";
+              messageBox.style.color = "#fecaca";
               messageBox.textContent = "Erreur : " + error.message;
             }
+            submitBtn.disabled = false;
             return;
           }
 
-          messageBox.style.color = "#38bdf8";
+          messageBox.style.color = "#86efac";
           messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
           emailInput.value = "";
         } catch (err) {
           console.error("Erreur newsletter :", err);
-          messageBox.style.color = "#ff6b6b";
+          messageBox.style.color = "#fecaca";
           messageBox.textContent = "Erreur réseau, merci de réessayer.";
+        } finally {
+          submitBtn.disabled = false;
         }
       });
     }
@@ -1544,12 +1668,12 @@
 
         if (error) {
           console.error("Erreur chargement avis:", error);
-          reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
+          reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
           return;
         }
 
         if (!data || !data.length) {
-          reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Les premiers avis arrivent bientôt.</p>";
+          reviewsGrid.innerHTML = "<p class='review-empty'>Les premiers avis arrivent bientôt.</p>";
           if (avgEl) avgEl.textContent = "5.0";
           if (countEl) countEl.textContent = "0";
           return;
@@ -1572,7 +1696,7 @@
           const rating = Math.max(0, Math.min(5, Number(review.rating || 5)));
           const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
           const author = review.author || "Client Singbox";
-          const text = review.comment || review.message || "";
+          const text = (review.comment || review.message || "Super expérience chez Singbox.").trim();
           const date = review.created_at
             ? new Date(review.created_at).toLocaleDateString("fr-FR")
             : "";
@@ -1582,6 +1706,7 @@
 
           const starsEl = document.createElement("div");
           starsEl.className = "review-stars";
+          starsEl.setAttribute("aria-label", `${rating} sur 5`);
           starsEl.textContent = stars;
 
           const textEl = document.createElement("p");
@@ -1610,7 +1735,7 @@
         });
       } catch (err) {
         console.error("Erreur réseau avis :", err);
-        reviewsGrid.innerHTML = "<p style='color:#CBD5E1;font-size:0.9rem;'>Impossible de charger les avis pour le moment.</p>";
+        reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
       }
     }
 
