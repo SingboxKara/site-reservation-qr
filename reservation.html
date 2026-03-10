@@ -26,8 +26,8 @@
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
 
   <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
@@ -73,12 +73,12 @@
   </script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
@@ -86,7 +86,7 @@
       --sb-bg-deep: #020617;
       --sb-card: #050b18;
       --sb-text-main: #F9FAFB;
-      --sb-text-muted: #9CA3AF;
+      --sb-text-muted: #CBD5E1;
       --sb-red: #C94C35;
       --sb-orange: #F97316;
       --sb-border-soft: rgba(148, 163, 184, 0.35);
@@ -118,6 +118,18 @@
       max-width: var(--sb-container-width);
       margin: 0 auto;
       padding: 0 1.5rem;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
     }
 
     .site-header {
@@ -210,14 +222,17 @@
       transition: width 0.3s ease;
     }
 
-    .main-nav a:hover::after { width: 100%; }
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after,
+    .main-nav a[href="reservation.html"]::after {
+      width: 100%;
+    }
 
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
-
-    .main-nav a[href="reservation.html"]::after { width: 100%; }
 
     .header-actions {
       display: flex;
@@ -240,7 +255,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -352,7 +368,7 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: #9CA3AF;
+      color: var(--sb-text-muted);
       margin-bottom: 10px;
     }
 
@@ -364,7 +380,7 @@
     .hero-resa p {
       margin:0;
       font-size:14px;
-      color: rgba(249,250,251,0.85);
+      color: rgba(249,250,251,0.88);
     }
 
     main {
@@ -473,7 +489,8 @@
       align-self: center;
     }
 
-    .resa-header button:hover {
+    .resa-header button:hover,
+    .resa-header button:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
@@ -485,6 +502,7 @@
       font-size: 12px;
       color: var(--sb-text-muted);
       margin-top: 4px;
+      line-height: 1.5;
     }
 
     @media (max-width: 900px) {
@@ -647,6 +665,7 @@
       margin-top: 0.4rem;
       font-size: 11px;
       color: var(--sb-text-muted);
+      line-height: 1.55;
     }
 
     #message {
@@ -995,18 +1014,6 @@
       .hero-resa { padding-top: 9rem; }
       .hero-resa h1 { font-size: 26px; }
     }
-
-    .sr-only {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-    }
   </style>
 </head>
 
@@ -1033,7 +1040,7 @@
       <div class="header-actions">
         <a href="reservation.html" class="nav-cta">Réserver</a>
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
-          🛒<span id="cart-count"></span>
+          <span aria-hidden="true">🛒</span><span id="cart-count"></span>
         </a>
         <button
           class="burger-button"
@@ -1124,7 +1131,19 @@
         <div class="table-wrapper">
           <table id="planning-table" aria-label="Tableau des créneaux de réservation pour les box Singbox">
             <caption class="sr-only">Créneaux de réservation des box Singbox</caption>
-            <!-- Table générée en JS -->
+            <thead>
+              <tr>
+                <th scope="col">Heure (session 1h30)</th>
+                <th scope="col">Nuit étoilée</th>
+                <th scope="col">Ambiance Sunset</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Chargement</th>
+                <td colspan="2">Créneaux en cours de chargement…</td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
@@ -1184,6 +1203,7 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
+        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
         <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" required />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
@@ -1353,7 +1373,8 @@
       try {
         const parsed = JSON.parse(localStorage.getItem("panier"));
         return Array.isArray(parsed) ? parsed : [];
-      } catch {
+      } catch (error) {
+        console.error("Erreur lecture panier :", error);
         return [];
       }
     }
@@ -1739,6 +1760,11 @@
       const now = new Date();
 
       table.innerHTML = "";
+
+      const caption = document.createElement("caption");
+      caption.className = "sr-only";
+      caption.textContent = "Créneaux de réservation des box Singbox";
+      table.appendChild(caption);
 
       const colgroup = document.createElement("colgroup");
       const colHour = document.createElement("col");
@@ -2142,29 +2168,35 @@
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert({ email });
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
 
-        if (error) {
-          const isDuplicate =
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"));
+          if (error) {
+            const isDuplicate =
+              error.code === "23505" ||
+              (error.message && error.message.includes("duplicate key value"));
 
-          if (isDuplicate) {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+            if (isDuplicate) {
+              messageBox.style.color = "#38bdf8";
+              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+              return;
+            }
+
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
             return;
           }
 
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+        } catch (error) {
+          console.error("Erreur newsletter :", error);
           messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
-          return;
+          messageBox.textContent = "Erreur réseau. Merci de réessayer.";
         }
-
-        messageBox.style.color = "#38bdf8";
-        messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-        emailInput.value = "";
       });
     }
 
