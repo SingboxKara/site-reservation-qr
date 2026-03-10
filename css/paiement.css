@@ -4,11 +4,11 @@
   --sb-bg-soft: #030712;
   --sb-card: #050b18;
   --sb-text-main: #f9fafb;
-  --sb-text-muted: #cbd5e1;
-  --sb-text-soft: #e5e7eb;
+  --sb-text-muted: #d6deea;
+  --sb-text-soft: #eef2f7;
   --sb-red: #c94c35;
   --sb-orange: #f97316;
-  --sb-border-soft: rgba(148, 163, 184, 0.35);
+  --sb-border-soft: rgba(148, 163, 184, 0.4);
   --sb-container-width: 1180px;
 }
 
@@ -165,7 +165,7 @@ nav.main-nav {
 
 .main-nav a:hover,
 .main-nav a:focus-visible {
-  color: #ffcf9a;
+  color: #ffe3bf;
   transition: 0.25s ease;
 }
 
@@ -356,7 +356,7 @@ nav.main-nav {
   top: 16%;
   left: 8%;
   font-size: 32px;
-  color: rgba(148, 163, 184, 0.08);
+  color: rgba(148, 163, 184, 0.1);
   pointer-events: none;
 }
 
@@ -366,7 +366,7 @@ nav.main-nav {
   bottom: 14%;
   right: 10%;
   font-size: 30px;
-  color: rgba(148, 163, 184, 0.08);
+  color: rgba(148, 163, 184, 0.1);
   pointer-events: none;
 }
 
@@ -380,7 +380,7 @@ nav.main-nav {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: #d1d5db;
+  color: #e5e7eb;
   margin-bottom: 8px;
 }
 
@@ -392,7 +392,7 @@ nav.main-nav {
 .checkout-header p {
   margin: 0;
   font-size: 14px;
-  color: #e5e7eb;
+  color: #eef2f7;
 }
 
 .checkout-layout {
@@ -477,8 +477,8 @@ nav.main-nav {
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, #cbd5e1 50%),
-    linear-gradient(135deg, #cbd5e1 50%, transparent 50%);
+    linear-gradient(45deg, transparent 50%, #d6deea 50%),
+    linear-gradient(135deg, #d6deea 50%, transparent 50%);
   background-position:
     calc(100% - 14px) calc(50% - 3px),
     calc(100% - 8px) calc(50% - 3px);
@@ -487,7 +487,7 @@ nav.main-nav {
 }
 
 .billing-field input::placeholder {
-  color: #cbd5e1;
+  color: #d6deea;
 }
 
 .billing-field input:focus,
@@ -594,7 +594,7 @@ nav.main-nav {
 
 .order-note {
   font-size: 11px;
-  color: #d1d5db;
+  color: #eef2f7;
   margin-top: 2px;
 }
 
@@ -617,7 +617,7 @@ nav.main-nav {
 
 .promo-toggle {
   font-size: 12px;
-  color: #ffddb8;
+  color: #ffe9cc;
   text-decoration: underline;
   cursor: pointer;
   white-space: nowrap;
@@ -630,7 +630,7 @@ nav.main-nav {
 .promo-toggle:hover,
 .promo-toggle:focus-visible {
   text-decoration: none;
-  color: #fff2e4;
+  color: #ffffff;
 }
 
 .promo-body {
@@ -664,7 +664,7 @@ nav.main-nav {
 }
 
 .promo-input-group input::placeholder {
-  color: #cbd5e1;
+  color: #d6deea;
 }
 
 .promo-input-group button {
@@ -685,15 +685,15 @@ nav.main-nav {
 .promo-message {
   margin-top: 4px;
   font-size: 11px;
-  color: #d1d5db;
+  color: #eef2f7;
 }
 
 .promo-message.ok {
-  color: #d1fae5;
+  color: #dcfce7;
 }
 
 .promo-message.error {
-  color: #fecaca;
+  color: #fee2e2;
 }
 
 .payment-card h3 {
@@ -737,13 +737,13 @@ nav.main-nav {
 
 .payment-info {
   font-size: 11px;
-  color: #e5e7eb;
+  color: #eef2f7;
   line-height: 1.6;
   margin-bottom: 10px;
 }
 
 .payment-info a {
-  color: #ffddb8;
+  color: #ffe9cc;
   text-decoration: underline;
   font-weight: 600;
 }
@@ -751,7 +751,7 @@ nav.main-nav {
 .payment-info a:hover,
 .payment-info a:focus-visible {
   text-decoration: none;
-  color: #fff2e4;
+  color: #ffffff;
 }
 
 .card-element-wrapper {
@@ -767,7 +767,7 @@ nav.main-nav {
 
 #card-errors {
   font-size: 11px;
-  color: #fecaca;
+  color: #fee2e2;
   margin-top: 4px;
   min-height: 1em;
 }
@@ -801,7 +801,7 @@ nav.main-nav {
 }
 
 .payment-consents a {
-  color: #ffddb8;
+  color: #ffe9cc;
   text-decoration: underline;
   font-weight: 600;
 }
@@ -809,16 +809,16 @@ nav.main-nav {
 .payment-consents a:hover,
 .payment-consents a:focus-visible {
   text-decoration: none;
-  color: #fff2e4;
+  color: #ffffff;
 }
 
 .payment-warning {
   font-size: 12px;
   border-radius: 14px;
-  border: 1px solid rgba(248, 113, 113, 0.8);
-  background: rgba(127, 29, 29, 0.65);
+  border: 1px solid rgba(248, 113, 113, 0.85);
+  background: rgba(127, 29, 29, 0.72);
   padding: 6px 10px;
-  color: #fee2e2;
+  color: #fff1f2;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -831,7 +831,7 @@ nav.main-nav {
 
 .checkout-error {
   font-size: 13px;
-  color: #fecaca;
+  color: #fee2e2;
   margin-top: 8px;
   min-height: 1.2em;
   font-weight: 500;
@@ -839,7 +839,7 @@ nav.main-nav {
 
 .checkout-success {
   font-size: 11px;
-  color: #d1fae5;
+  color: #dcfce7;
   margin-top: 4px;
   min-height: 1em;
 }
@@ -939,13 +939,13 @@ nav.main-nav {
 
 .empty-cart-btn-secondary {
   background: transparent;
-  color: #e5e7eb;
-  border-color: rgba(148, 163, 184, 0.6);
+  color: #eef2f7;
+  border-color: rgba(148, 163, 184, 0.75);
 }
 
 .empty-cart-btn-secondary:hover,
 .empty-cart-btn-secondary:focus-visible {
-  border-color: rgba(248, 250, 251, 0.9);
+  border-color: rgba(248, 250, 251, 0.95);
 }
 
 #thankyou-section {
@@ -1017,7 +1017,7 @@ nav.main-nav {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--sb-text-muted);
+  color: #d6deea;
   margin-bottom: 6px;
 }
 
@@ -1049,7 +1049,7 @@ nav.main-nav {
   right: 0;
   text-align: center;
   font-size: 11px;
-  color: rgba(71, 85, 105, 0.95);
+  color: rgba(51, 65, 85, 0.95);
 }
 
 .thankyou-qr-note {
@@ -1126,8 +1126,8 @@ nav.main-nav {
 
 .thankyou-btn-secondary {
   background: transparent;
-  color: #e5e7eb;
-  border-color: rgba(148, 163, 184, 0.6);
+  color: #eef2f7;
+  border-color: rgba(148, 163, 184, 0.75);
 }
 
 .thankyou-btn-primary:hover,
@@ -1140,7 +1140,7 @@ nav.main-nav {
 
 .thankyou-btn-secondary:hover,
 .thankyou-btn-secondary:focus-visible {
-  border-color: rgba(248, 250, 251, 0.9);
+  border-color: rgba(248, 250, 251, 0.95);
 }
 
 @media (max-width: 900px) {
@@ -1203,7 +1203,7 @@ footer input[type="email"] {
 }
 
 footer input[type="email"]::placeholder {
-  color: #cbd5e1;
+  color: #d6deea;
 }
 
 footer button {
@@ -1252,7 +1252,7 @@ footer button {
   padding-top: 8px;
   font-size: 11px;
   text-align: center;
-  color: #cbd5e1;
+  color: #d6deea;
   border-top: 1px solid #111827;
 }
 
@@ -1316,7 +1316,7 @@ dialog.auth-modal::backdrop {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: #d1d5db;
+  color: #e5e7eb;
   margin-bottom: 4px;
 }
 
@@ -1327,7 +1327,7 @@ dialog.auth-modal::backdrop {
 
 .auth-modal-subtext {
   font-size: 12px;
-  color: #e5e7eb;
+  color: #eef2f7;
   margin-bottom: 10px;
 }
 
@@ -1372,7 +1372,7 @@ dialog.auth-modal::backdrop {
   border-radius: 999px;
   padding: 6px 10px;
   background: transparent;
-  color: #e5e7eb;
+  color: #eef2f7;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -1403,7 +1403,7 @@ dialog.auth-modal::backdrop {
 .auth-field label {
   display: block;
   margin-bottom: 3px;
-  color: #e5e7eb;
+  color: #eef2f7;
   font-size: 12px;
 }
 
@@ -1421,7 +1421,7 @@ dialog.auth-modal::backdrop {
 }
 
 .auth-field input::placeholder {
-  color: #cbd5e1;
+  color: #d6deea;
 }
 
 .auth-field input:focus {
@@ -1463,7 +1463,7 @@ dialog.auth-modal::backdrop {
   min-height: 14px;
   font-size: 11px;
   margin-bottom: 6px;
-  color: #fecaca;
+  color: #fee2e2;
 }
 
 .auth-modal-footer {
@@ -1473,13 +1473,13 @@ dialog.auth-modal::backdrop {
   gap: 8px;
   margin-top: 6px;
   font-size: 11px;
-  color: #d1d5db;
+  color: #e5e7eb;
 }
 
 .auth-modal-skip {
   border: none;
   background: transparent;
-  color: #d1d5db;
+  color: #e5e7eb;
   font-size: 11px;
   cursor: pointer;
   text-decoration: underline;
@@ -1487,11 +1487,11 @@ dialog.auth-modal::backdrop {
 
 .auth-modal-skip:hover,
 .auth-modal-skip:focus-visible {
-  color: #f3f4f6;
+  color: #ffffff;
   text-decoration: none;
 }
 
 .auth-modal-small {
   font-size: 10px;
-  color: #d1d5db;
+  color: #e5e7eb;
 }
