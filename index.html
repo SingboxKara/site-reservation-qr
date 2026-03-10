@@ -87,11 +87,11 @@
       --sb-bg-soft: #030712;
       --sb-card: rgba(2, 6, 23, 0.96);
       --sb-text-main: #f9fafb;
-      --sb-text-muted: #d8e1ec;
-      --sb-text-soft: #edf2f7;
+      --sb-text-muted: #e2e8f0;
+      --sb-text-soft: #f1f5f9;
       --sb-red: #c94c35;
       --sb-orange: #f97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.32);
+      --sb-border-soft: rgba(148, 163, 184, 0.36);
       --sb-container-width: 1180px;
     }
 
@@ -239,13 +239,14 @@
     }
 
     .main-nav a:hover::after,
-    .main-nav a:focus-visible::after {
+    .main-nav a:focus-visible::after,
+    .main-nav a[aria-current="page"]::after {
       width: 100%;
     }
 
     .main-nav a:hover,
     .main-nav a:focus-visible {
-      color: #ffd4a5;
+      color: #ffe2be;
       transition: 0.25s ease;
     }
 
@@ -371,7 +372,7 @@
       content: "♪ ✦";
       position: absolute;
       font-size: 32px;
-      color: rgba(216, 225, 236, 0.16);
+      color: rgba(226, 232, 240, 0.16);
       pointer-events: none;
     }
 
@@ -394,7 +395,7 @@
 
     .hero-eyebrow {
       font-size: 14px;
-      color: #93dbff;
+      color: #a7e6ff;
       font-weight: 700;
       margin-bottom: 10px;
     }
@@ -408,7 +409,7 @@
 
     .hero .subtitle {
       font-size: 17px;
-      color: rgba(249, 250, 251, 0.94);
+      color: rgba(249, 250, 251, 0.96);
       margin-bottom: 28px;
       max-width: 520px;
     }
@@ -446,7 +447,7 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: #e2e8f0;
+      color: #eef2f7;
       margin-bottom: 4px;
       font-weight: 700;
     }
@@ -455,7 +456,7 @@
     .resa-field select {
       padding: 9px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.55);
       font-size: 14px;
       background: #020617;
       color: #f9fafb;
@@ -546,7 +547,7 @@
       bottom: 18%;
       right: 8%;
       font-size: 32px;
-      color: rgba(216, 225, 236, 0.14);
+      color: rgba(226, 232, 240, 0.14);
       pointer-events: none;
     }
 
@@ -589,7 +590,7 @@
       right: 12px;
       bottom: 8px;
       font-size: 24px;
-      color: rgba(216, 225, 236, 0.12);
+      color: rgba(226, 232, 240, 0.12);
     }
 
     .step-icon {
@@ -954,7 +955,7 @@
     footer input[type="email"] {
       padding: 10px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.5);
       min-width: 240px;
       max-width: 360px;
       font-size: 14px;
@@ -964,7 +965,7 @@
     }
 
     footer input[type="email"]::placeholder {
-      color: #d8e1ec;
+      color: #e2e8f0;
     }
 
     footer input[type="email"]:focus {
@@ -1024,7 +1025,7 @@
       padding-top: 8px;
       font-size: 11px;
       text-align: center;
-      color: #d8e1ec;
+      color: #e2e8f0;
       border-top: 1px solid #111827;
     }
 
@@ -1156,7 +1157,7 @@
 
       <nav class="main-nav" aria-label="Navigation principale">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html" aria-current="page">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="box.html">Les box</a></li>
           <li><a href="actualites.html">Actualités</a></li>
@@ -1169,7 +1170,7 @@
         <a href="reservation.html" class="nav-cta">Réserver</a>
 
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
-          🛒<span id="cart-count"></span>
+          <span aria-hidden="true">🛒</span><span id="cart-count"></span>
         </a>
 
         <button
@@ -1189,7 +1190,7 @@
   <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
     <ul>
-      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html" aria-current="page">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
@@ -1200,11 +1201,11 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-inner">
         <div class="hero-left">
           <p class="hero-eyebrow">Le karaoké box nouvelle génération</p>
-          <h1>Réservez votre karaoké box privative à Toulouse</h1>
+          <h1 id="hero-title">Réservez votre karaoké box privative à Toulouse</h1>
           <p class="subtitle">
             Réservez en quelques clics votre karaoké box privative à Toulouse&nbsp;: choisissez votre date,
             découvrez les créneaux disponibles et venez chanter entre amis, en famille ou entre collègues,
@@ -1254,9 +1255,9 @@
     </section>
 
     <!-- SECTION ÉTAPES -->
-    <section class="section-steps">
+    <section class="section-steps" aria-labelledby="steps-title">
       <div class="container">
-        <h2 class="section-title-center">Comment fonctionne Singbox&nbsp;?</h2>
+        <h2 class="section-title-center" id="steps-title">Comment fonctionne Singbox&nbsp;?</h2>
         <p class="section-subtitle-center">Réservez votre karaoké box privative à Toulouse en 3 étapes simples.</p>
 
         <div class="steps-grid">
@@ -1288,10 +1289,10 @@
     </section>
 
     <!-- SECTION OCCASIONS + CONTACT -->
-    <section id="occasions" class="section-occasions">
+    <section id="occasions" class="section-occasions" aria-labelledby="occasions-title">
       <div class="occasions-container">
         <header class="occasions-header">
-          <h2 class="occasions-title">Karaoké box à Toulouse pour toutes les occasions</h2>
+          <h2 class="occasions-title" id="occasions-title">Karaoké box à Toulouse pour toutes les occasions</h2>
           <p class="occasions-subtitle">
             Entre amis, en famille ou entre collègues, Singbox s’adapte à toutes vos envies.
           </p>
@@ -1445,7 +1446,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="newsletter-container">
+    <section class="newsletter-container" aria-labelledby="newsletter-title">
       <h3 id="newsletter-title">Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
 
@@ -1468,7 +1469,7 @@
       </form>
 
       <p id="newsletter-message" class="newsletter-message" aria-live="polite"></p>
-    </div>
+    </section>
 
     <div class="footer-columns">
       <div class="footer-brand">
@@ -1608,7 +1609,7 @@
 
         const email = emailInput.value.trim();
 
-        messageBox.style.color = "#D8E1EC";
+        messageBox.style.color = "#E2E8F0";
         messageBox.textContent = "Envoi en cours...";
         submitBtn.disabled = true;
 
