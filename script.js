@@ -4,7 +4,13 @@ const HOURS = Array.from({ length: 24 }, (_, i) => i); // 00h -> 23h
 
 // ===================== PANIER (localStorage) =====================
 function getPanier() {
-  return JSON.parse(localStorage.getItem("panier")) || [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem("panier"));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Erreur lecture panier :", error);
+    return [];
+  }
 }
 
 function savePanier(panier) {
@@ -16,7 +22,7 @@ function updateCartIcon() {
   const el = document.getElementById("cart-count");
   if (!el) return;
   const panier = getPanier();
-  el.textContent = panier.length > 0 ? panier.length : "";
+  el.textContent = panier.length > 0 ? String(panier.length) : "";
 }
 
 // Mettre à jour l'icône panier au chargement de la page
@@ -41,7 +47,7 @@ let qrCode = null;
   }
 
   // 1) Récupérer une date depuis l'URL si présente
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(globalThis.location.search);
   const dateFromUrl = params.get("date");
 
   if (dateFromUrl) {
@@ -195,7 +201,7 @@ async function handleSlotClick(date, boxId, hour) {
     email,
     start_time,
     end_time,
-    box_id: boxId,
+    box_id: boxId
   };
 
   message.textContent = "Création de la réservation...";
@@ -207,7 +213,7 @@ async function handleSlotClick(date, boxId, hour) {
     const res = await fetch("/api/reservation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     const json = await res.json();
@@ -216,7 +222,7 @@ async function handleSlotClick(date, boxId, hour) {
     }
 
     const reservation = json.reservation;
-    const reservationId = reservation && reservation.id;
+    const reservationId = reservation?.id;
 
     message.textContent = "Réservation enregistrée ✅";
 
@@ -230,7 +236,7 @@ async function handleSlotClick(date, boxId, hour) {
         name,
         email,
         start_time,
-        end_time,
+        end_time
       };
 
       const panier = getPanier();
@@ -243,7 +249,7 @@ async function handleSlotClick(date, boxId, hour) {
       qrCode = new QRCode(qrContainer, {
         text: reservationId,
         width: 128,
-        height: 128,
+        height: 128
       });
       message.textContent += "\nQR code généré ci-dessous 👇";
     }
@@ -253,7 +259,7 @@ async function handleSlotClick(date, boxId, hour) {
       fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reservationId }),
+        body: JSON.stringify({ reservationId })
       }).catch((err) => {
         console.error("Erreur /api/send-email :", err);
       });
