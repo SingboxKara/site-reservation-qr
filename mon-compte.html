@@ -1485,6 +1485,16 @@
       return date;
     }
 
+    function formatTime(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+        return "";
+      }
+
+      return date
+        .toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+        .replace(":", "h");
+    }
+
     function formatReservationDate(dateStr) {
       const date = parseDateOrNull(dateStr);
       if (!date) {
@@ -1512,12 +1522,6 @@
 
       if (!end) {
         end = new Date(start.getTime() + defaultDurationMs);
-      }
-
-      function formatTime(date) {
-        return date
-          .toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-          .replace(":", "h");
       }
 
       return `${formatTime(start)} - ${formatTime(end)}`;
@@ -2254,7 +2258,7 @@
 
         const { error } = await supabaseClient
           .from("newsletter_subscriptions")
-          .insert({ email });
+          .insert([{ email }]);
 
         if (error) {
           const isDuplicate =
