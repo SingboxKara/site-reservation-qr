@@ -11,11 +11,11 @@
   <link rel="canonical" href="https://www.singbox.fr/cgv" />
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#050814">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#050814" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Conditions Générales de Vente Singbox | Karaoké box à Toulouse" />
@@ -75,12 +75,12 @@
   </script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
@@ -223,14 +223,22 @@
     .navbar a:hover::after,
     .nav-links a:hover::after,
     .header-nav a:hover::after,
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .navbar a:focus-visible::after,
+    .nav-links a:focus-visible::after,
+    .header-nav a:focus-visible::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
     .navbar a:hover,
     .nav-links a:hover,
     .header-nav a:hover,
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .navbar a:focus-visible,
+    .nav-links a:focus-visible,
+    .header-nav a:focus-visible,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -256,7 +264,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -509,7 +518,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox, karaoké box à Toulouse" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox, karaoké box à Toulouse" class="brand-logo" />
         <span class="brand-text">Singbox</span>
       </a>
 
@@ -528,7 +537,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        <button
+          class="burger-button"
+          id="burger-button"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
           ☰
         </button>
       </div>
@@ -821,9 +837,16 @@
 
   <script>
     function getPanier() {
+      const rawPanier = localStorage.getItem("panier");
+      if (!rawPanier) {
+        return [];
+      }
+
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsedPanier = JSON.parse(rawPanier);
+        return Array.isArray(parsedPanier) ? parsedPanier : [];
+      } catch (error) {
+        console.error("Impossible de lire le panier depuis le localStorage :", error);
         return [];
       }
     }
@@ -832,7 +855,7 @@
       const el = document.getElementById("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -841,12 +864,14 @@
 
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
+          const isOpen = mobileNav.classList.toggle("open");
+          burgerBtn.setAttribute("aria-expanded", String(isOpen));
         });
 
         mobileNav.addEventListener("click", (e) => {
           if (e.target.tagName === "A") {
             mobileNav.classList.remove("open");
+            burgerBtn.setAttribute("aria-expanded", "false");
           }
         });
       }
