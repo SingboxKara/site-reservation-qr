@@ -554,7 +554,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu" type="button">
+        <button
+          class="burger-button"
+          id="burger-button"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
           ☰
         </button>
       </div>
@@ -790,9 +797,16 @@
 
   <script>
     function getPanier() {
+      const rawPanier = localStorage.getItem("panier");
+      if (!rawPanier) {
+        return [];
+      }
+
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsedPanier = JSON.parse(rawPanier);
+        return Array.isArray(parsedPanier) ? parsedPanier : [];
+      } catch (error) {
+        console.error("Impossible de lire le panier depuis le localStorage :", error);
         return [];
       }
     }
@@ -801,7 +815,7 @@
       const el = document.getElementById("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -810,12 +824,14 @@
 
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", function () {
-          mobileNav.classList.toggle("open");
+          const isOpen = mobileNav.classList.toggle("open");
+          burgerBtn.setAttribute("aria-expanded", String(isOpen));
         });
 
         mobileNav.addEventListener("click", function (e) {
           if (e.target.tagName === "A") {
             mobileNav.classList.remove("open");
+            burgerBtn.setAttribute("aria-expanded", "false");
           }
         });
       }
