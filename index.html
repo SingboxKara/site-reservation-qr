@@ -781,6 +781,10 @@
       color: var(--sb-text-soft);
     }
 
+    .contact-row p {
+      margin: 0;
+    }
+
     .contact-icon {
       width: 24px;
       height: 24px;
@@ -793,22 +797,22 @@
       flex-shrink: 0;
     }
 
-.contact-cta {
-  margin-top: 0.75rem;
-  align-self: flex-start;
-  border: none;
-  border-radius: 999px;
-  padding: 0.65rem 1.6rem;
-  background: linear-gradient(90deg, #8f2f1f, #b45309);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow:
-    0 0 0 1px rgba(248, 250, 251, 0.15),
-    0 18px 42px rgba(0, 0, 0, 0.9);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
+    .contact-cta {
+      margin-top: 0.75rem;
+      align-self: flex-start;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.6rem;
+      background: linear-gradient(90deg, #8f2f1f, #b45309);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(248, 250, 251, 0.15),
+        0 18px 42px rgba(0, 0, 0, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
 
     .contact-cta:hover,
     .contact-cta:focus-visible {
@@ -1030,35 +1034,35 @@
     }
 
     .reviews-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
 
-.reviews-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 0.8rem 1.6rem;
-  background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-  color: #f9fafb;
-  font-weight: 700;
-  font-size: 0.95rem;
-  box-shadow:
-    0 0 0 1px rgba(248, 250, 251, 0.12),
-    0 18px 40px rgba(0, 0, 0, 0.9);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-}
+    .reviews-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.8rem 1.6rem;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow:
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 18px 40px rgba(0, 0, 0, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
 
-.reviews-cta:hover,
-.reviews-cta:focus-visible {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-  box-shadow:
-    0 0 0 1px rgba(248, 250, 251, 0.18),
-    0 24px 55px rgba(0, 0, 0, 1);
-}
+    .reviews-cta:hover,
+    .reviews-cta:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 24px 55px rgba(0, 0, 0, 1);
+    }
 
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
@@ -1432,28 +1436,26 @@
       </div>
     </section>
 
-<!-- SECTION AVIS -->
-<section class="section-reviews" id="avis" aria-labelledby="reviews-title">
-  <div class="occasions-container">
+    <!-- SECTION AVIS -->
+    <section class="section-reviews" id="avis" aria-labelledby="reviews-title">
+      <div class="occasions-container">
+        <header class="reviews-header">
+          <h2 class="reviews-title" id="reviews-title">Ils ont chanté chez Singbox</h2>
+          <p class="reviews-meta">
+            Note moyenne <strong><span id="reviews-average">5.0</span>/5</strong>
+            sur <span id="reviews-count">0</span> avis.
+          </p>
+        </header>
 
-    <header class="reviews-header">
-      <h2 class="reviews-title" id="reviews-title">Ils ont chanté chez Singbox</h2>
-      <p class="reviews-meta">
-        Note moyenne <strong><span id="reviews-average">5.0</span>/5</strong>
-        sur <span id="reviews-count">0</span> avis.
-      </p>
-    </header>
+        <div id="reviews-grid" class="reviews-grid" aria-live="polite">
+          <p class="review-empty">Chargement des avis…</p>
+        </div>
 
-    <div id="reviews-grid" class="reviews-grid" aria-live="polite">
-      <p class="review-empty">Chargement des avis…</p>
-    </div>
-
-    <div class="reviews-actions">
-      <a href="avis.html" class="reviews-cta">Donner son avis</a>
-    </div>
-
-  </div>
-</section>
+        <div class="reviews-actions">
+          <a href="avis.html" class="reviews-cta">Donner son avis</a>
+        </div>
+      </div>
+    </section>
 
     <!-- SECTION FAQ SEO -->
     <section class="section-faq" aria-labelledby="faq-title">
@@ -1588,28 +1590,35 @@
 
     function initHomeDate() {
       const input = document.getElementById("date-input");
-      if (!input) return;
+      if (!input) {
+        return;
+      }
 
       const today = new Date();
       input.value = today.toISOString().split("T")[0];
     }
 
-   function getPanier() {
-  try {
-    const rawValue = globalThis.localStorage.getItem("panier");
-    if (!rawValue) return [];
+    function getPanier() {
+      try {
+        const rawValue = globalThis.localStorage.getItem("panier");
+        if (!rawValue) {
+          return [];
+        }
 
-    const parsed = JSON.parse(rawValue);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    console.error("Erreur lecture panier :", error);
-    return [];
-  }
-}
+        const parsed = JSON.parse(rawValue);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error("Erreur lecture panier :", error);
+        return [];
+      }
+    }
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
-      if (!el) return;
+      if (!el) {
+        return;
+      }
+
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
     }
@@ -1618,15 +1627,17 @@
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
-      if (!burgerBtn || !mobileNav) return;
+      if (!burgerBtn || !mobileNav) {
+        return;
+      }
 
       burgerBtn.addEventListener("click", () => {
         const isOpen = mobileNav.classList.toggle("open");
         burgerBtn.setAttribute("aria-expanded", String(isOpen));
       });
 
-      mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
+      mobileNav.addEventListener("click", (event) => {
+        const target = event.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
           mobileNav.classList.remove("open");
           burgerBtn.setAttribute("aria-expanded", "false");
@@ -1635,24 +1646,28 @@
     }
 
     function isValidEmail(email) {
-  if (typeof email !== "string") return false;
+      if (typeof email !== "string") {
+        return false;
+      }
 
-  const value = email.trim();
+      const value = email.trim();
 
-  if (!value || value.includes(" ")) return false;
+      if (!value || value.includes(" ")) {
+        return false;
+      }
 
-  const atIndex = value.indexOf("@");
-  const lastAtIndex = value.lastIndexOf("@");
-  const dotIndex = value.lastIndexOf(".");
+      const atIndex = value.indexOf("@");
+      const lastAtIndex = value.lastIndexOf("@");
+      const dotIndex = value.lastIndexOf(".");
 
-  return (
-    value.length >= 6 &&
-    atIndex > 0 &&
-    atIndex === lastAtIndex &&
-    dotIndex > atIndex + 1 &&
-    dotIndex < value.length - 1
-  );
-}
+      return (
+        value.length >= 6 &&
+        atIndex > 0 &&
+        atIndex === lastAtIndex &&
+        dotIndex > atIndex + 1 &&
+        dotIndex < value.length - 1
+      );
+    }
 
     function initNewsletter() {
       const form = document.getElementById("newsletter-form");
@@ -1660,7 +1675,9 @@
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!form || !emailInput || !submitBtn || !messageBox) return;
+      if (!form || !emailInput || !submitBtn || !messageBox) {
+        return;
+      }
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -1694,6 +1711,7 @@
               messageBox.style.color = "#fecaca";
               messageBox.textContent = "Erreur : " + error.message;
             }
+
             submitBtn.disabled = false;
             return;
           }
@@ -1711,49 +1729,27 @@
       });
     }
 
-    async function loadReviews() {
-  const reviewsGrid = document.getElementById("reviews-grid");
-  const avgEl = document.getElementById("reviews-average");
-  const countEl = document.getElementById("reviews-count");
+    function setReviewsFallback(reviewsGrid, avgEl, countEl, message, average = "-", count = "0") {
+      reviewsGrid.innerHTML = `<p class="review-empty">${message}</p>`;
 
-  if (!reviewsGrid) return;
+      if (avgEl) {
+        avgEl.textContent = average;
+      }
 
-  try {
-    const { data, error } = await supabaseClient
-      .from("reviews")
-      .select("id, name, rating, comment, created_at")
-      .order("created_at", { ascending: false })
-      .limit(6);
-
-    if (error) {
-      console.error("Erreur chargement avis :", error);
-      reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
-      if (avgEl) avgEl.textContent = "-";
-      if (countEl) countEl.textContent = "0";
-      return;
+      if (countEl) {
+        countEl.textContent = count;
+      }
     }
 
-    if (!data || !data.length) {
-      reviewsGrid.innerHTML = "<p class='review-empty'>Les premiers avis arrivent bientôt.</p>";
-      if (avgEl) avgEl.textContent = "5.0";
-      if (countEl) countEl.textContent = "0";
-      return;
+    function calculateReviewStats(reviews) {
+      const total = reviews.reduce((sum, review) => sum + Number(review.rating || 5), 0);
+      const count = reviews.length;
+      const average = (total / count).toFixed(1);
+
+      return { average, count };
     }
 
-    let sum = 0;
-    data.forEach((r) => {
-      sum += Number(r.rating || 5);
-    });
-
-    const avg = (sum / data.length).toFixed(1);
-    const count = data.length;
-
-    if (avgEl) avgEl.textContent = avg;
-    if (countEl) countEl.textContent = String(count);
-
-    reviewsGrid.innerHTML = "";
-
-    data.forEach((review) => {
+    function createReviewCard(review) {
       const rating = Math.max(0, Math.min(5, Number(review.rating || 5)));
       const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
       const author = review.name || "Client Singbox";
@@ -1792,15 +1788,82 @@
       card.appendChild(textEl);
       card.appendChild(footerEl);
 
-      reviewsGrid.appendChild(card);
-    });
-  } catch (err) {
-    console.error("Erreur réseau avis :", err);
-    reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
-    if (avgEl) avgEl.textContent = "-";
-    if (countEl) countEl.textContent = "0";
-  }
-}
+      return card;
+    }
+
+    function renderReviews(reviewsGrid, reviews) {
+      reviewsGrid.innerHTML = "";
+      reviews.forEach((review) => {
+        reviewsGrid.appendChild(createReviewCard(review));
+      });
+    }
+
+    async function fetchReviews() {
+      const { data, error } = await supabaseClient
+        .from("reviews")
+        .select("id, name, rating, comment, created_at")
+        .order("created_at", { ascending: false })
+        .limit(6);
+
+      return { data, error };
+    }
+
+    async function loadReviews() {
+      const reviewsGrid = document.getElementById("reviews-grid");
+      const avgEl = document.getElementById("reviews-average");
+      const countEl = document.getElementById("reviews-count");
+
+      if (!reviewsGrid) {
+        return;
+      }
+
+      try {
+        const { data, error } = await fetchReviews();
+
+        if (error) {
+          console.error("Erreur chargement avis :", error);
+          setReviewsFallback(
+            reviewsGrid,
+            avgEl,
+            countEl,
+            "Impossible de charger les avis pour le moment."
+          );
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          setReviewsFallback(
+            reviewsGrid,
+            avgEl,
+            countEl,
+            "Les premiers avis arrivent bientôt.",
+            "5.0",
+            "0"
+          );
+          return;
+        }
+
+        const { average, count } = calculateReviewStats(data);
+
+        if (avgEl) {
+          avgEl.textContent = average;
+        }
+
+        if (countEl) {
+          countEl.textContent = String(count);
+        }
+
+        renderReviews(reviewsGrid, data);
+      } catch (err) {
+        console.error("Erreur réseau avis :", err);
+        setReviewsFallback(
+          reviewsGrid,
+          avgEl,
+          countEl,
+          "Impossible de charger les avis pour le moment."
+        );
+      }
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       initHomeDate();
