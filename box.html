@@ -258,11 +258,13 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -292,7 +294,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -586,7 +589,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .box-card-button:hover {
+    .box-card-button:hover,
+    .box-card-button:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
@@ -1032,7 +1036,7 @@
 
     function getPanier() {
       try {
-        const raw = localStorage.getItem("panier");
+        const raw = globalThis.localStorage.getItem("panier");
         const parsed = raw ? JSON.parse(raw) : [];
         return Array.isArray(parsed) ? parsed : [];
       } catch (error) {
@@ -1044,8 +1048,51 @@
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
       if (!el) return;
+
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+
+      const value = email.trim();
+
+      if (!value || value.includes(" ")) return false;
+
+      const atIndex = value.indexOf("@");
+      const lastAtIndex = value.lastIndexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        value.length >= 6 &&
+        atIndex > 0 &&
+        atIndex === lastAtIndex &&
+        dotIndex > atIndex + 1 &&
+        dotIndex < value.length - 1
+      );
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    function setNewsletterMessage(messageEl, message, color) {
+      if (!messageEl) return;
+      messageEl.style.color = color;
+      messageEl.textContent = message;
+    }
+
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -1077,41 +1124,41 @@
         submitBtn.addEventListener("click", async () => {
           const email = emailInput.value.trim();
 
-          messageEl.style.color = "#e5e7eb";
-          messageEl.textContent = "Envoi en cours...";
+          setNewsletterMessage(messageEl, "Envoi en cours...", "#e5e7eb");
 
-          if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-            messageEl.style.color = "#ff6b6b";
-            messageEl.textContent = "Merci d'entrer une adresse e-mail valide 🙂";
+          if (!isValidEmail(email)) {
+            setNewsletterMessage(messageEl, "Merci d'entrer une adresse e-mail valide 🙂", "#ff6b6b");
             return;
           }
 
           submitBtn.disabled = true;
 
           try {
-            const { error } = await supabaseClient
-              .from("newsletter_subscriptions")
-              .insert([{ email }]);
+            const { error } = await subscribeNewsletter(email);
 
             if (error) {
               console.error(error);
-              if (error.code === "23505") {
-                messageEl.textContent = "Tu es déjà inscrit à la newsletter 🎤";
+
+              if (isDuplicateNewsletterError(error)) {
+                setNewsletterMessage(messageEl, "Tu es déjà inscrit à la newsletter 🎤", "#f97373");
               } else {
-                messageEl.textContent =
-                  "Oups, une erreur est survenue. Réessaie dans quelques instants.";
+                setNewsletterMessage(
+                  messageEl,
+                  "Oups, une erreur est survenue. Réessaie dans quelques instants.",
+                  "#f97373"
+                );
               }
-              messageEl.style.color = "#f97373";
             } else {
-              messageEl.textContent = "Merci ! Tu es bien inscrit à notre newsletter 🧡";
-              messageEl.style.color = "#4ade80";
+              setNewsletterMessage(messageEl, "Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
               emailInput.value = "";
             }
-          } catch (err) {
-            console.error(err);
-            messageEl.textContent =
-              "Erreur réseau, vérifie ta connexion et réessaie.";
-            messageEl.style.color = "#f97373";
+          } catch (error) {
+            console.error(error);
+            setNewsletterMessage(
+              messageEl,
+              "Erreur réseau, vérifie ta connexion et réessaie.",
+              "#f97373"
+            );
           } finally {
             submitBtn.disabled = false;
           }
