@@ -173,11 +173,13 @@
       border-radius: 6px;
     }
 
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -203,7 +205,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -413,7 +416,8 @@
       cursor: pointer;
     }
 
-    .article-back:hover {
+    .article-back:hover,
+    .article-back:focus-visible {
       text-decoration: underline;
     }
 
@@ -697,9 +701,13 @@
 
     function getPanier() {
       try {
-        const data = JSON.parse(localStorage.getItem("panier"));
+        const rawValue = globalThis.localStorage.getItem("panier");
+        if (!rawValue) return [];
+
+        const data = JSON.parse(rawValue);
         return Array.isArray(data) ? data : [];
-      } catch {
+      } catch (error) {
+        console.error("Erreur lecture panier :", error);
         return [];
       }
     }
@@ -707,8 +715,9 @@
     function updateCartIcon() {
       const el = getEl("cart-count");
       if (!el) return;
+
       const panier = getPanier();
-      el.textContent = panier.length ? String(panier.length) : "";
+      el.textContent = panier.length > 0 ? String(panier.length) : "";
     }
 
     function getSlugFromUrl() {
@@ -731,7 +740,7 @@
 
     function setArticleMeta(data) {
       if (data.titre) {
-        document.title = data.titre + " | Actualités Singbox";
+        document.title = `${data.titre} | Actualités Singbox`;
       }
 
       const metaDescription = document.querySelector('meta[name="description"]');
@@ -747,18 +756,21 @@
     function setArticleLoadingState(isLoading) {
       const wrapper = getEl("article-wrapper");
       if (!wrapper) return;
+
       wrapper.setAttribute("aria-busy", isLoading ? "true" : "false");
     }
 
     function showArticleWrapper() {
       const wrapper = getEl("article-wrapper");
       if (!wrapper) return;
+
       wrapper.hidden = false;
     }
 
     function hideArticleWrapper() {
       const wrapper = getEl("article-wrapper");
       if (!wrapper) return;
+
       wrapper.hidden = true;
     }
 
@@ -784,14 +796,13 @@
       const catLabel = CATEGORY_LABELS[catSlug] || "";
 
       const parts = [];
-      if (dateTxt) parts.push("Publié le " + dateTxt);
-      if (catLabel) parts.push("Catégorie : " + catLabel);
+      if (dateTxt) parts.push(`Publié le ${dateTxt}`);
+      if (catLabel) parts.push(`Catégorie : ${catLabel}`);
 
       metaEl.textContent = parts.join(" • ");
     }
 
     function renderArticle(data) {
-      const wrapper = getEl("article-wrapper");
       const msgEl = getEl("article-message");
       const badge = getEl("article-badge");
       const titleEl = getEl("article-title");
@@ -800,11 +811,12 @@
       const chapEl = getEl("article-chapeau");
       const contentEl = getEl("article-content");
 
-      if (!wrapper || !msgEl || !badge || !titleEl || !metaEl || !imgEl || !chapEl || !contentEl) {
+      if (!msgEl || !badge || !titleEl || !metaEl || !imgEl || !chapEl || !contentEl) {
         return;
       }
 
       const catSlug = data.categorie || "autre";
+
       badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
       titleEl.textContent = data.titre || "Sans titre";
 
@@ -821,7 +833,9 @@
 
     function setArticleMessage(message) {
       const msgEl = getEl("article-message");
-      if (msgEl) msgEl.textContent = message;
+      if (!msgEl) return;
+
+      msgEl.textContent = message;
     }
 
     async function fetchArticleBySlug(slug) {
@@ -850,7 +864,7 @@
         const { data, error } = await fetchArticleBySlug(slug);
 
         if (error) {
-          console.error(error);
+          console.error("Erreur chargement article :", error);
           hideArticleWrapper();
           setArticleLoadingState(false);
           setArticleMessage("Erreur lors du chargement de l’article.");
@@ -866,8 +880,8 @@
 
         setArticleMeta(data);
         renderArticle(data);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Erreur réseau chargement article :", error);
         hideArticleWrapper();
         setArticleLoadingState(false);
         setArticleMessage("Erreur réseau lors du chargement de l’article.");
@@ -885,8 +899,8 @@
         burgerBtn.setAttribute("aria-expanded", String(isOpen));
       });
 
-      mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
+      mobileNav.addEventListener("click", (event) => {
+        const target = event.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
           mobileNav.classList.remove("open");
           burgerBtn.setAttribute("aria-expanded", "false");
@@ -895,12 +909,29 @@
     }
 
     function isValidEmail(email) {
-      return /^\S+@\S+\.\S+$/.test(email);
+      if (typeof email !== "string") return false;
+
+      const value = email.trim();
+
+      if (!value || value.includes(" ")) return false;
+
+      const atIndex = value.indexOf("@");
+      const lastAtIndex = value.lastIndexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        value.length >= 6 &&
+        atIndex > 0 &&
+        atIndex === lastAtIndex &&
+        dotIndex > atIndex + 1 &&
+        dotIndex < value.length - 1
+      );
     }
 
     function setNewsletterMessage(message, color) {
       const messageEl = getEl("newsletter-message");
       if (!messageEl) return;
+
       messageEl.textContent = message;
       messageEl.style.color = color;
     }
@@ -909,7 +940,10 @@
       if (!submitBtn) return;
 
       if (isSubmitting) {
-        submitBtn.dataset.originalText = submitBtn.textContent;
+        if (!submitBtn.dataset.originalText) {
+          submitBtn.dataset.originalText = submitBtn.textContent;
+        }
+
         submitBtn.disabled = true;
         submitBtn.textContent = "Envoi...";
         return;
@@ -923,7 +957,7 @@
       return Boolean(
         error &&
         (error.code === "23505" ||
-          (error.message && error.message.includes("duplicate key value")))
+          (typeof error.message === "string" && error.message.includes("duplicate key value")))
       );
     }
 
@@ -940,8 +974,8 @@
 
       if (!newsletterForm || !emailInput || !submitBtn) return;
 
-      newsletterForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      newsletterForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
         const email = emailInput.value.trim();
 
@@ -957,7 +991,7 @@
           const { error } = await subscribeNewsletter(email);
 
           if (error) {
-            console.error(error);
+            console.error("Erreur inscription newsletter :", error);
 
             if (isDuplicateNewsletterError(error)) {
               setNewsletterMessage("Tu es déjà inscrit à la newsletter 🎤", "#f97373");
@@ -973,8 +1007,8 @@
 
           setNewsletterMessage("Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
           newsletterForm.reset();
-        } catch (err) {
-          console.error(err);
+        } catch (error) {
+          console.error("Erreur réseau newsletter :", error);
           setNewsletterMessage("Erreur réseau, vérifie ta connexion et réessaie.", "#f97373");
         } finally {
           setNewsletterSubmitting(submitBtn, false);
