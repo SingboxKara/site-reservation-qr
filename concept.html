@@ -868,7 +868,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder à mon panier">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
           ☰
         </button>
       </div>
@@ -1152,82 +1159,146 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     function getPanier() {
+      const rawPanier = localStorage.getItem("panier");
+
+      if (!rawPanier) {
+        return [];
+      }
+
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsedPanier = JSON.parse(rawPanier);
+        return Array.isArray(parsedPanier) ? parsedPanier : [];
+      } catch (error) {
+        console.error("Impossible de lire le panier depuis le localStorage :", error);
         return [];
       }
     }
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
-      if (!el) return;
+      if (!el) {
+        return;
+      }
+
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function initBurgerMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
-        });
-
-        mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-          }
-        });
+      if (!burgerBtn || !mobileNav) {
+        return;
       }
 
-      updateCartIcon();
+      burgerBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(isOpen));
+      });
 
+      mobileNav.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") {
+        return false;
+      }
+
+      const value = email.trim();
+
+      if (!value || value.includes(" ")) {
+        return false;
+      }
+
+      const atIndex = value.indexOf("@");
+      const lastAtIndex = value.lastIndexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        value.length >= 6 &&
+        atIndex > 0 &&
+        atIndex === lastAtIndex &&
+        dotIndex > atIndex + 1 &&
+        dotIndex < value.length - 1
+      );
+    }
+
+    function createSupabaseClient() {
       const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
       const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+      return supabase.createClient(supabaseUrl, supabaseKey);
+    }
 
-      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
+    function initNewsletter() {
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn || !messageBox) return;
+      if (!emailInput || !submitBtn || !messageBox) {
+        return;
+      }
+
+      const supabaseClient = createSupabaseClient();
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
 
         messageBox.style.color = "#e5e7eb";
         messageBox.textContent = "Envoi en cours...";
+        submitBtn.disabled = true;
 
-        if (!email || !email.includes("@")) {
+        if (!isValidEmail(email)) {
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          submitBtn.disabled = false;
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert({ email });
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
 
-        if (error) {
-          if (
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"))
-          ) {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
-          } else {
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message;
+          if (error) {
+            if (
+              error.code === "23505" ||
+              (error.message && error.message.includes("duplicate key value"))
+            ) {
+              messageBox.style.color = "#38bdf8";
+              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+            } else {
+              messageBox.style.color = "#ff6b6b";
+              messageBox.textContent = "Erreur : " + error.message;
+            }
+
+            submitBtn.disabled = false;
+            return;
           }
-        } else {
+
           messageBox.style.color = "#38bdf8";
           messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
           emailInput.value = "";
+        } catch (error) {
+          console.error("Erreur newsletter :", error);
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur réseau, merci de réessayer.";
+        } finally {
+          submitBtn.disabled = false;
         }
       });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initBurgerMenu();
+      updateCartIcon();
+      initNewsletter();
     });
   </script>
 </body>
