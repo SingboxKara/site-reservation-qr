@@ -1546,7 +1546,7 @@
         params.set("people", people);
       }
 
-      window.location.href = "reservation.html?" + params.toString();
+      globalThis.location.href = "reservation.html?" + params.toString();
     }
 
     function initHomeDate() {
@@ -1558,12 +1558,13 @@
     }
 
     function getPanier() {
-      try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
-        return [];
-      }
-    }
+  try {
+    return JSON.parse(localStorage.getItem("panier")) || [];
+  } catch (error) {
+    console.error("Erreur lecture panier :", error);
+    return [];
+  }
+}
 
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
