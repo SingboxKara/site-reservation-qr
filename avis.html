@@ -19,6 +19,13 @@
     rel="stylesheet"
   />
 
+  <!-- Cloudflare Turnstile -->
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+
   <style>
     :root {
       --sb-bg-main: #050814;
@@ -292,6 +299,19 @@
         0 0 20px rgba(201, 76, 53, 0.25);
     }
 
+    .review-helper {
+      margin-top: -2px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
+    .turnstile-wrapper {
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
     .review-form-actions {
       display: flex;
       justify-content: space-between;
@@ -314,6 +334,11 @@
       color: #f9fafb;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    .review-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
     .review-message {
@@ -411,16 +436,21 @@
             </div>
 
             <div class="review-form-field">
-              <label for="review-rating">Note</label>
-              <select id="review-rating" required>
-                <option value="">Choisir une note</option>
-                <option value="5">5 / 5</option>
-                <option value="4">4 / 5</option>
-                <option value="3">3 / 5</option>
-                <option value="2">2 / 5</option>
-                <option value="1">1 / 5</option>
-              </select>
+              <label for="review-email">E-mail</label>
+              <input id="review-email" type="email" maxlength="120" autocomplete="email" required />
             </div>
+          </div>
+
+          <div class="review-form-field">
+            <label for="review-rating">Note</label>
+            <select id="review-rating" required>
+              <option value="">Choisir une note</option>
+              <option value="5">5 / 5</option>
+              <option value="4">4 / 5</option>
+              <option value="3">3 / 5</option>
+              <option value="2">2 / 5</option>
+              <option value="1">1 / 5</option>
+            </select>
           </div>
 
           <div class="review-form-field">
@@ -431,6 +461,17 @@
               placeholder="Dites-nous comment s’est passée votre expérience…"
               required
             ></textarea>
+          </div>
+
+          <p class="review-helper">
+            Un seul avis par adresse e-mail. Votre avis pourra être vérifié avant affichage.
+          </p>
+
+          <div class="turnstile-wrapper">
+            <div
+              class="cf-turnstile"
+              data-sitekey="TON_SITE_KEY_TURNSTILE"
+            ></div>
           </div>
 
           <div class="review-form-actions">
@@ -448,11 +489,9 @@
     Réalisé avec ♥ pour Singbox
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_PROJECT_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const REVIEW_FUNCTION_URL = `${SUPABASE_PROJECT_URL}/functions/v1/submit-review`;
 
     function getEl(id) {
       return document.getElementById(id);
@@ -476,6 +515,26 @@
           burgerBtn.setAttribute("aria-expanded", "false");
         }
       });
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+
+      const value = email.trim();
+
+      if (!value || value.includes(" ")) return false;
+
+      const atIndex = value.indexOf("@");
+      const lastAtIndex = value.lastIndexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        value.length >= 6 &&
+        atIndex > 0 &&
+        atIndex === lastAtIndex &&
+        dotIndex > atIndex + 1 &&
+        dotIndex < value.length - 1
+      );
     }
 
     function setReviewMessage(message, color) {
@@ -502,32 +561,65 @@
       btn.textContent = btn.dataset.originalText || "Envoyer mon avis";
     }
 
+    function getTurnstileToken() {
+      const input = document.querySelector('input[name="cf-turnstile-response"]');
+      return input ? input.value : "";
+    }
+
     async function submitReview(payload) {
-      return supabaseClient.from("reviews").insert([payload]);
+      const response = await fetch(REVIEW_FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erreur lors de l'envoi de l'avis.");
+      }
+
+      return data;
+    }
+
+    function resetTurnstileWidget() {
+      if (globalThis.turnstile && typeof globalThis.turnstile.reset === "function") {
+        globalThis.turnstile.reset();
+      }
     }
 
     function initReviewForm() {
       const form = getEl("review-form");
       const nameInput = getEl("review-name");
+      const emailInput = getEl("review-email");
       const ratingInput = getEl("review-rating");
       const commentInput = getEl("review-comment");
 
-      if (!form || !nameInput || !ratingInput || !commentInput) return;
+      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput) return;
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         const name = nameInput.value.trim();
+        const email = emailInput.value.trim().toLowerCase();
         const rating = Number(ratingInput.value);
         const comment = commentInput.value.trim();
+        const captchaToken = getTurnstileToken();
 
-        if (!name || !rating || !comment) {
+        if (!name || !email || !rating || !comment) {
           setReviewMessage("Merci de remplir tous les champs.", "#fecaca");
           return;
         }
 
         if (name.length < 2) {
           setReviewMessage("Le prénom est trop court.", "#fecaca");
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          setReviewMessage("Merci d'entrer une adresse e-mail valide.", "#fecaca");
           return;
         }
 
@@ -541,27 +633,33 @@
           return;
         }
 
+        if (!captchaToken) {
+          setReviewMessage("Merci de valider le captcha.", "#fecaca");
+          return;
+        }
+
         setReviewSubmitting(true);
         setReviewMessage("Envoi en cours...", "#e2e8f0");
 
         try {
-          const { error } = await submitReview({
+          const result = await submitReview({
             name,
+            email,
             rating,
-            comment
+            comment,
+            captchaToken
           });
 
-          if (error) {
-            console.error("Erreur envoi avis :", error);
-            setReviewMessage("Impossible d'envoyer l'avis pour le moment.", "#fecaca");
-            return;
-          }
-
           form.reset();
-          setReviewMessage("Merci ! Votre avis a bien été envoyé 🧡", "#86efac");
+          resetTurnstileWidget();
+
+          setReviewMessage(
+            result.message || "Merci ! Votre avis a bien été envoyé 🧡",
+            "#86efac"
+          );
         } catch (error) {
-          console.error("Erreur réseau avis :", error);
-          setReviewMessage("Erreur réseau, merci de réessayer.", "#fecaca");
+          console.error("Erreur envoi avis :", error);
+          setReviewMessage(error.message || "Impossible d'envoyer l'avis pour le moment.", "#fecaca");
         } finally {
           setReviewSubmitting(false);
         }
