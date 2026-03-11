@@ -36,7 +36,7 @@
         const res = await fetch(API_BASE + "/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password })
         });
 
         const data = await res.json();
@@ -51,7 +51,7 @@
 
         document.getElementById("login-message").textContent = "Connecté !";
         // Rediriger vers la page compte
-        window.location.href = "mon-compte.html";
+        globalThis.location.href = "mon-compte.html";
       } catch (err) {
         console.error(err);
         document.getElementById("login-message").textContent = "Erreur réseau";
