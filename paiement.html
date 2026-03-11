@@ -1825,69 +1825,115 @@
         null;
     }
 
+    function getDepositFailureMessagePrefix(isFree) {
+      return isFree
+        ? "Votre réservation est confirmée"
+        : "Votre séance est payée";
+    }
+
+    function setDepositErrorMessage(errorEl, text) {
+      if (errorEl) {
+        errorEl.textContent = text;
+      }
+    }
+
+    async function createDepositIntentRequest(reservationId) {
+      return fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
+        method: "POST",
+        headers: authHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({
+          reservationId,
+          useSavedPaymentMethod: Boolean(lastPayWithSaved),
+          customer: {
+            prenom: getEl("prenom")?.value.trim() || "",
+            nom: getEl("nom")?.value.trim() || "",
+            email: getEl("email")?.value.trim() || ""
+          }
+        })
+      });
+    }
+
+    async function parseDepositIntentResponse(reservationId, isFree, errorEl) {
+      const depositRes = await createDepositIntentRequest(reservationId);
+      const depositJson = await depositRes.json().catch(() => ({}));
+
+      if (!depositRes.ok || !depositJson?.clientSecret) {
+        setDepositErrorMessage(
+          errorEl,
+          `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com.`
+        );
+        return null;
+      }
+
+      return depositJson.clientSecret;
+    }
+
+    function normalizeSavedCardPaymentMethod() {
+      let paymentMethodId = getSavedPaymentMethodId();
+
+      if (lastPayWithSaved && !paymentMethodId) {
+        lastPayWithSaved = false;
+        const toggle = getEl("pay-with-saved-card");
+        if (toggle) toggle.checked = false;
+        setCardElementHidden(false);
+      }
+
+      return paymentMethodId;
+    }
+
+    async function confirmDepositWithSavedCard(clientSecret, paymentMethodId) {
+      return stripe.confirmCardPayment(clientSecret, {
+        payment_method: paymentMethodId
+      });
+    }
+
+    async function confirmDepositWithCardElement(clientSecret) {
+      return stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: buildBillingDetails()
+        }
+      });
+    }
+
+    async function confirmDepositPayment(clientSecret, paymentMethodId) {
+      if (lastPayWithSaved) {
+        return confirmDepositWithSavedCard(clientSecret, paymentMethodId);
+      }
+
+      return confirmDepositWithCardElement(clientSecret);
+    }
+
+    function handleDepositStripeError(depositResult, isFree, errorEl) {
+      if (!depositResult?.error) return;
+
+      setDepositErrorMessage(
+        errorEl,
+        `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être préautorisée : ${depositResult.error.message}. Merci de nous contacter à contactsingbox@gmail.com.`
+      );
+    }
+
+    function handleDepositUnexpectedError(isFree, errorEl) {
+      setDepositErrorMessage(
+        errorEl,
+        `${getDepositFailureMessagePrefix(isFree)}, mais une erreur est survenue lors de la création de la caution. Merci de nous contacter à contactsingbox@gmail.com.`
+      );
+    }
+
     async function confirmDepositIntent(reservationId, isFree, errorEl) {
       if (!reservationId || !stripe) return;
 
       try {
-        const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-          method: "POST",
-          headers: authHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({
-            reservationId,
-            useSavedPaymentMethod: Boolean(lastPayWithSaved),
-            customer: {
-              prenom: getEl("prenom")?.value.trim() || "",
-              nom: getEl("nom")?.value.trim() || "",
-              email: getEl("email")?.value.trim() || ""
-            }
-          })
-        });
+        const clientSecret = await parseDepositIntentResponse(reservationId, isFree, errorEl);
+        if (!clientSecret) return;
 
-        const depositJson = await depositRes.json().catch(() => ({}));
+        const paymentMethodId = normalizeSavedCardPaymentMethod();
+        const depositResult = await confirmDepositPayment(clientSecret, paymentMethodId);
 
-        if (!depositRes.ok || !depositJson?.clientSecret) {
-          if (errorEl) {
-            errorEl.textContent =
-              (isFree
-                ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être créée."
-                : "Votre séance est payée, mais la caution de 250€ n'a pas pu être créée.") +
-              " Merci de nous contacter à contactsingbox@gmail.com.";
-          }
-          return;
-        }
-
-        let pmId = getSavedPaymentMethodId();
-
-        if (lastPayWithSaved && !pmId) {
-          lastPayWithSaved = false;
-          pmId = null;
-        }
-
-        const depositResult = lastPayWithSaved
-          ? await stripe.confirmCardPayment(depositJson.clientSecret, { payment_method: pmId })
-          : await stripe.confirmCardPayment(depositJson.clientSecret, {
-              payment_method: {
-                card: cardElement,
-                billing_details: buildBillingDetails()
-              }
-            });
-
-        if (depositResult?.error && errorEl) {
-          errorEl.textContent =
-            (isFree
-              ? "Votre réservation est confirmée, mais la caution de 250€ n'a pas pu être préautorisée : "
-              : "Votre séance est payée, mais la caution de 250€ n'a pas pu être préautorisée : ") +
-            depositResult.error.message +
-            ". Merci de nous contacter à contactsingbox@gmail.com.";
-        }
-      } catch {
-        if (errorEl) {
-          errorEl.textContent =
-            (isFree
-              ? "Votre réservation est confirmée, mais une erreur est survenue lors de la création de la caution."
-              : "Votre séance est payée, mais une erreur est survenue lors de la création de la caution.") +
-            " Merci de nous contacter à contactsingbox@gmail.com.";
-        }
+        handleDepositStripeError(depositResult, isFree, errorEl);
+      } catch (error) {
+        console.error("Erreur confirmDepositIntent :", error);
+        handleDepositUnexpectedError(isFree, errorEl);
       }
     }
 
