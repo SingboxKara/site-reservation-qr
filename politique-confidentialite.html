@@ -26,8 +26,8 @@
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
 
   <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
@@ -73,12 +73,12 @@
   </script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
@@ -221,14 +221,22 @@
     .navbar a:hover::after,
     .nav-links a:hover::after,
     .header-nav a:hover::after,
-    .main-nav a:hover::after {
+    .main-nav a:hover::after,
+    .navbar a:focus-visible::after,
+    .nav-links a:focus-visible::after,
+    .header-nav a:focus-visible::after,
+    .main-nav a:focus-visible::after {
       width: 100%;
     }
 
     .navbar a:hover,
     .nav-links a:hover,
     .header-nav a:hover,
-    .main-nav a:hover {
+    .main-nav a:hover,
+    .navbar a:focus-visible,
+    .nav-links a:focus-visible,
+    .header-nav a:focus-visible,
+    .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
     }
@@ -254,7 +262,8 @@
       transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .nav-cta:hover {
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
       background: #d55a40;
       transform: translateY(-1px);
       box-shadow:
@@ -289,6 +298,7 @@
       min-width: 18px;
       text-align:center;
     }
+
     #cart-count:empty { display:none; }
 
     .burger-button {
@@ -457,7 +467,8 @@
       text-decoration: none;
     }
 
-    .footer-social .social-link:hover {
+    .footer-social .social-link:hover,
+    .footer-social .social-link:focus-visible {
       color: #f97316;
     }
 
@@ -537,7 +548,7 @@
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
-          <li><a href="boxs.html">Les boxs</a></li>
+          <li><a href="box.html">Les box</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -548,7 +559,14 @@
         <a href="panier.html" class="cart-icon" aria-label="Accéder au panier Singbox">
           🛒<span id="cart-count"></span>
         </a>
-        <button class="burger-button" id="burger-button" aria-label="Ouvrir le menu">
+        <button
+          class="burger-button"
+          id="burger-button"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
           ☰
         </button>
       </div>
@@ -560,7 +578,7 @@
     <ul>
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
-      <li><a href="boxs.html">Les boxs</a></li>
+      <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="reservation.html">Réserver</a></li>
@@ -741,8 +759,8 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" />
-        <button>S'abonner</button>
+        <input type="email" placeholder="Entrez votre adresse e-mail" aria-label="Adresse e-mail newsletter" />
+        <button type="button">S'abonner</button>
       </div>
     </div>
 
@@ -779,7 +797,6 @@
           class="social-link"
         >
           <span class="social-icon">
-            <!-- Logo Instagram contour -->
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="5" ry="5"
                     fill="none" stroke="currentColor" stroke-width="1.8"></rect>
@@ -798,9 +815,8 @@
           class="social-link"
         >
           <span class="social-icon">
-            <!-- Logo TikTok -->
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-0.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
+              <path d="M15.5 5.1c.7.8 1.6 1.4 2.6 1.7v2.6c-1.1-.1-2.1-.4-3-.9v5.3c0 2.8-2.3 5.1-5.2 5.1S4.8 16.6 4.8 13.8c0-2.6 1.9-4.8 4.5-5.1v2.7c-1 .3-1.7 1.2-1.7 2.3 0 1.3 1 2.3 2.3 2.3s2.3-1 2.3-2.3V4.5h3.3v.6z"></path>
             </svg>
           </span>
           <span>TikTok</span>
@@ -815,9 +831,16 @@
 
   <script>
     function getPanier() {
+      const rawPanier = localStorage.getItem("panier");
+      if (!rawPanier) {
+        return [];
+      }
+
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
-      } catch (e) {
+        const parsedPanier = JSON.parse(rawPanier);
+        return Array.isArray(parsedPanier) ? parsedPanier : [];
+      } catch (error) {
+        console.error("Impossible de lire le panier depuis le localStorage :", error);
         return [];
       }
     }
@@ -826,7 +849,7 @@
       const el = document.getElementById("cart-count");
       if (!el) return;
       const panier = getPanier();
-      el.textContent = panier.length ? panier.length : "";
+      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -834,13 +857,15 @@
       const mobileNav = document.getElementById("mobile-nav");
 
       if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", () => {
-          mobileNav.classList.toggle("open");
+        burgerBtn.addEventListener("click", function () {
+          const isOpen = mobileNav.classList.toggle("open");
+          burgerBtn.setAttribute("aria-expanded", String(isOpen));
         });
 
-        mobileNav.addEventListener("click", (e) => {
+        mobileNav.addEventListener("click", function (e) {
           if (e.target.tagName === "A") {
             mobileNav.classList.remove("open");
+            burgerBtn.setAttribute("aria-expanded", "false");
           }
         });
       }
