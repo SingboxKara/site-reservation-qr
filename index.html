@@ -1675,91 +1675,95 @@
     }
 
     async function loadReviews() {
-      const reviewsGrid = document.getElementById("reviews-grid");
-      const avgEl = document.getElementById("reviews-average");
-      const countEl = document.getElementById("reviews-count");
+  const reviewsGrid = document.getElementById("reviews-grid");
+  const avgEl = document.getElementById("reviews-average");
+  const countEl = document.getElementById("reviews-count");
 
-      if (!reviewsGrid) return;
+  if (!reviewsGrid) return;
 
-      try {
-        const { data, error } = await supabaseClient
-          .from("reviews")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(6);
+  try {
+    const { data, error } = await supabaseClient
+      .from("reviews")
+      .select("id, name, rating, comment, created_at")
+      .order("created_at", { ascending: false })
+      .limit(6);
 
-        if (error) {
-          console.error("Erreur chargement avis:", error);
-          reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
-          return;
-        }
-
-        if (!data || !data.length) {
-          reviewsGrid.innerHTML = "<p class='review-empty'>Les premiers avis arrivent bientôt.</p>";
-          if (avgEl) avgEl.textContent = "5.0";
-          if (countEl) countEl.textContent = "0";
-          return;
-        }
-
-        let sum = 0;
-        data.forEach((r) => {
-          sum += Number(r.rating || 5);
-        });
-
-        const avg = (sum / data.length).toFixed(1);
-        const count = data.length;
-
-        if (avgEl) avgEl.textContent = avg;
-        if (countEl) countEl.textContent = String(count);
-
-        reviewsGrid.innerHTML = "";
-
-        data.forEach((review) => {
-          const rating = Math.max(0, Math.min(5, Number(review.rating || 5)));
-          const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
-          const author = review.author || "Client Singbox";
-          const text = (review.comment || review.message || "Super expérience chez Singbox.").trim();
-          const date = review.created_at
-            ? new Date(review.created_at).toLocaleDateString("fr-FR")
-            : "";
-
-          const card = document.createElement("article");
-          card.className = "review-card";
-
-          const starsEl = document.createElement("div");
-          starsEl.className = "review-stars";
-          starsEl.setAttribute("aria-label", `${rating} sur 5`);
-          starsEl.textContent = stars;
-
-          const textEl = document.createElement("p");
-          textEl.className = "review-text";
-          textEl.textContent = text;
-
-          const footerEl = document.createElement("div");
-          footerEl.className = "review-footer";
-
-          const authorEl = document.createElement("span");
-          authorEl.className = "review-author";
-          authorEl.textContent = author;
-
-          const dateEl = document.createElement("span");
-          dateEl.className = "review-date";
-          dateEl.textContent = date;
-
-          footerEl.appendChild(authorEl);
-          footerEl.appendChild(dateEl);
-
-          card.appendChild(starsEl);
-          card.appendChild(textEl);
-          card.appendChild(footerEl);
-
-          reviewsGrid.appendChild(card);
-        });
-      } catch (err) {
-        console.error("Erreur réseau avis :", err);
-        reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
-      }
+    if (error) {
+      console.error("Erreur chargement avis :", error);
+      reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
+      if (avgEl) avgEl.textContent = "-";
+      if (countEl) countEl.textContent = "0";
+      return;
     }
+
+    if (!data || !data.length) {
+      reviewsGrid.innerHTML = "<p class='review-empty'>Les premiers avis arrivent bientôt.</p>";
+      if (avgEl) avgEl.textContent = "5.0";
+      if (countEl) countEl.textContent = "0";
+      return;
+    }
+
+    let sum = 0;
+    data.forEach((r) => {
+      sum += Number(r.rating || 5);
+    });
+
+    const avg = (sum / data.length).toFixed(1);
+    const count = data.length;
+
+    if (avgEl) avgEl.textContent = avg;
+    if (countEl) countEl.textContent = String(count);
+
+    reviewsGrid.innerHTML = "";
+
+    data.forEach((review) => {
+      const rating = Math.max(0, Math.min(5, Number(review.rating || 5)));
+      const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+      const author = review.name || "Client Singbox";
+      const text = (review.comment || "Super expérience chez Singbox.").trim();
+      const date = review.created_at
+        ? new Date(review.created_at).toLocaleDateString("fr-FR")
+        : "";
+
+      const card = document.createElement("article");
+      card.className = "review-card";
+
+      const starsEl = document.createElement("div");
+      starsEl.className = "review-stars";
+      starsEl.setAttribute("aria-label", `${rating} sur 5`);
+      starsEl.textContent = stars;
+
+      const textEl = document.createElement("p");
+      textEl.className = "review-text";
+      textEl.textContent = text;
+
+      const footerEl = document.createElement("div");
+      footerEl.className = "review-footer";
+
+      const authorEl = document.createElement("span");
+      authorEl.className = "review-author";
+      authorEl.textContent = author;
+
+      const dateEl = document.createElement("span");
+      dateEl.className = "review-date";
+      dateEl.textContent = date;
+
+      footerEl.appendChild(authorEl);
+      footerEl.appendChild(dateEl);
+
+      card.appendChild(starsEl);
+      card.appendChild(textEl);
+      card.appendChild(footerEl);
+
+      reviewsGrid.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Erreur réseau avis :", err);
+    reviewsGrid.innerHTML = "<p class='review-empty'>Impossible de charger les avis pour le moment.</p>";
+    if (avgEl) avgEl.textContent = "-";
+    if (countEl) countEl.textContent = "0";
+  }
+}
 
     document.addEventListener("DOMContentLoaded", () => {
       initHomeDate();
