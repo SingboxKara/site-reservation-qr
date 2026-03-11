@@ -1011,6 +1011,49 @@
       return result;
     }
 
+    function formatDateTimeLocalValue(dateValue) {
+      if (!dateValue) return "";
+
+      const parsedDate = new Date(dateValue);
+      if (Number.isNaN(parsedDate.getTime())) return "";
+
+      const pad = (n) => String(n).padStart(2, "0");
+
+      return (
+        parsedDate.getFullYear() +
+        "-" +
+        pad(parsedDate.getMonth() + 1) +
+        "-" +
+        pad(parsedDate.getDate()) +
+        "T" +
+        pad(parsedDate.getHours()) +
+        ":" +
+        pad(parsedDate.getMinutes())
+      );
+    }
+
+    function fillArticleForm(data) {
+      const aId = getEl("a-id");
+      const aTitre = getEl("a-titre");
+      const aSlug = getEl("a-slug");
+      const aImage = getEl("a-image");
+      const aChapeau = getEl("a-chapeau");
+      const aContenu = getEl("a-contenu");
+      const aCategorie = getEl("a-categorie");
+      const aPublie = getEl("a-publie");
+      const aDatepub = getEl("a-datepub");
+
+      if (aId) aId.value = data.id || "";
+      if (aTitre) aTitre.value = data.titre || "";
+      if (aSlug) aSlug.value = data.slug || "";
+      if (aImage) aImage.value = data.image_url || "";
+      if (aChapeau) aChapeau.value = data.chapeau || "";
+      if (aContenu) aContenu.value = data.contenu || "";
+      if (aCategorie) aCategorie.value = data.categorie || "coulisses-travaux";
+      if (aPublie) aPublie.checked = Boolean(data.publie);
+      if (aDatepub) aDatepub.value = formatDateTimeLocalValue(data.date_publication);
+    }
+
     let authRefreshing = false;
 
     async function refreshAuthUI() {
@@ -1511,68 +1554,28 @@
     async function loadArticleIntoForm(id) {
       setMsg("article-form-message", "Chargement de l’article...", true);
 
-      const response = await withTimeout(
-        supabaseClient
-          .from("actualites")
-          .select("*")
-          .eq("id", id)
-          .maybeSingle(),
-        12000
-      );
+      try {
+        const response = await withTimeout(
+          supabaseClient
+            .from("actualites")
+            .select("*")
+            .eq("id", id)
+            .maybeSingle(),
+          12000
+        );
 
-      if (response.error || !response.data) {
-        console.error(response.error);
-        setMsg("article-form-message", "Impossible de charger l’article.", false);
-        return;
-      }
-
-      const data = response.data;
-      const aId = getEl("a-id");
-      const aTitre = getEl("a-titre");
-      const aSlug = getEl("a-slug");
-      const aImage = getEl("a-image");
-      const aChapeau = getEl("a-chapeau");
-      const aContenu = getEl("a-contenu");
-      const aCategorie = getEl("a-categorie");
-      const aPublie = getEl("a-publie");
-      const aDatepub = getEl("a-datepub");
-
-      if (aId) aId.value = data.id || "";
-      if (aTitre) aTitre.value = data.titre || "";
-      if (aSlug) aSlug.value = data.slug || "";
-      if (aImage) aImage.value = data.image_url || "";
-      if (aChapeau) aChapeau.value = data.chapeau || "";
-      if (aContenu) aContenu.value = data.contenu || "";
-      if (aCategorie) aCategorie.value = data.categorie || "coulisses-travaux";
-      if (aPublie) aPublie.checked = !!data.publie;
-
-      if (aDatepub) {
-        if (data.date_publication) {
-          const parsedDate = new Date(data.date_publication);
-
-          if (!Number.isNaN(parsedDate.getTime())) {
-            const pad = (n) => String(n).padStart(2, "0");
-            const formattedValue =
-              parsedDate.getFullYear() +
-              "-" +
-              pad(parsedDate.getMonth() + 1) +
-              "-" +
-              pad(parsedDate.getDate()) +
-              "T" +
-              pad(parsedDate.getHours()) +
-              ":" +
-              pad(parsedDate.getMinutes());
-
-            aDatepub.value = formattedValue;
-          } else {
-            aDatepub.value = "";
-          }
-        } else {
-          aDatepub.value = "";
+        if (response.error || !response.data) {
+          console.error(response.error);
+          setMsg("article-form-message", "Impossible de charger l’article.", false);
+          return;
         }
-      }
 
-      setMsg("article-form-message", "Mode édition ✔", true);
+        fillArticleForm(response.data);
+        setMsg("article-form-message", "Mode édition ✔", true);
+      } catch (error) {
+        console.error("loadArticleIntoForm error:", error);
+        setMsg("article-form-message", "Erreur réseau lors du chargement de l’article.", false);
+      }
     }
 
     async function upsertArticle(payload, id) {
