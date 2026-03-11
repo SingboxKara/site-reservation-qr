@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Laisser un avis – Singbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Partagez votre expérience chez Singbox à Toulouse en laissant un avis sur votre séance de karaoké box privative."
+  />
+
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --sb-bg-main: #050814;
+      --sb-bg-deep: #020617;
+      --sb-card: rgba(2, 6, 23, 0.96);
+      --sb-text-main: #f9fafb;
+      --sb-text-muted: #9ca3af;
+      --sb-text-soft: #e5e7eb;
+      --sb-red: #c94c35;
+      --sb-orange: #f97316;
+      --sb-border-soft: rgba(148, 163, 184, 0.3);
+      --sb-container-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--sb-text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
+        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    h1, h2, h3 {
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      margin: 0;
+    }
+
+    .container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #020617;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
+    }
+
+    .header-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 110px;
+      height: auto;
+      border-radius: 999px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      font-size: 26px;
+      color: #f9fafb;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    nav.main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      margin: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .main-nav a {
+      font-weight: 600;
+      color: #ffffff;
+      position: relative;
+      padding-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #ff6930, #ffb96f);
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .main-nav a:hover::after,
+    .main-nav a:focus-visible::after {
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .nav-cta {
+      background: var(--sb-red);
+      padding: 8px 22px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #f9fafb;
+      white-space: nowrap;
+    }
+
+    .burger-button {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: transparent;
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: #020617;
+      padding: 12px 24px 16px;
+      z-index: 40;
+      border-bottom: 1px solid #111827;
+    }
+
+    .mobile-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-nav.open {
+      display: block;
+    }
+
+    main {
+      padding: 9rem 0 5rem;
+    }
+
+    .review-page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .review-page-header p {
+      color: var(--sb-text-muted);
+      max-width: 700px;
+      margin: 0.75rem auto 0;
+      line-height: 1.6;
+    }
+
+    .review-form-card {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 1.8rem;
+      border: 1px solid var(--sb-border-soft);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+    }
+
+    .review-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .review-form-field {
+      margin-bottom: 1rem;
+    }
+
+    .review-form-field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--sb-text-soft);
+    }
+
+    .review-form-field input,
+    .review-form-field select,
+    .review-form-field textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: #020617;
+      color: #f9fafb;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .review-form-field textarea {
+      resize: vertical;
+      min-height: 140px;
+      line-height: 1.5;
+    }
+
+    .review-form-field input:focus,
+    .review-form-field select:focus,
+    .review-form-field textarea:focus {
+      border-color: var(--sb-red);
+      box-shadow:
+        0 0 0 1px rgba(201, 76, 53, 0.8),
+        0 0 20px rgba(201, 76, 53, 0.25);
+    }
+
+    .review-form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .review-back-link {
+      color: #fbbf77;
+      font-size: 14px;
+    }
+
+    .review-submit {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .review-message {
+      min-height: 1.4em;
+      margin-top: 1rem;
+      font-size: 14px;
+      color: var(--sb-text-muted);
+    }
+
+    footer {
+      background: #020617;
+      color: #e5e7eb;
+      padding: 32px 24px 18px;
+      border-top: 1px solid #111827;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      nav.main-nav {
+        display: none;
+      }
+
+      .burger-button {
+        display: flex;
+      }
+
+      .review-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
+        <span class="brand-text">Singbox</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="box.html">Les box</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <button
+          class="burger-button"
+          id="burger-button"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="box.html">Les box</a></li>
+      <li><a href="actualites.html">Actualités</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="mon-compte.html">Mon compte</a></li>
+      <li><a href="reservation.html">Réserver</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="review-page-header">
+        <h1>Laisser un avis</h1>
+        <p>
+          Vous avez chanté chez Singbox ? Partagez votre expérience pour aider les prochains visiteurs.
+        </p>
+      </div>
+
+      <div class="review-form-card">
+        <form id="review-form">
+          <div class="review-form-grid">
+            <div class="review-form-field">
+              <label for="review-name">Prénom</label>
+              <input id="review-name" type="text" maxlength="60" required />
+            </div>
+
+            <div class="review-form-field">
+              <label for="review-rating">Note</label>
+              <select id="review-rating" required>
+                <option value="">Choisir une note</option>
+                <option value="5">5 / 5</option>
+                <option value="4">4 / 5</option>
+                <option value="3">3 / 5</option>
+                <option value="2">2 / 5</option>
+                <option value="1">1 / 5</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="review-form-field">
+            <label for="review-comment">Votre avis</label>
+            <textarea
+              id="review-comment"
+              maxlength="600"
+              placeholder="Dites-nous comment s’est passée votre expérience…"
+              required
+            ></textarea>
+          </div>
+
+          <div class="review-form-actions">
+            <a href="index.html#avis" class="review-back-link">← Retour aux avis</a>
+            <button type="submit" id="review-submit" class="review-submit">Envoyer mon avis</button>
+          </div>
+
+          <p id="review-message" class="review-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Réalisé avec ♥ pour Singbox
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "TON_ANON_KEY_ICI";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
+    function initBurgerMenu() {
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
+
+      if (!burgerBtn || !mobileNav) return;
+
+      burgerBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      mobileNav.addEventListener("click", (event) => {
+        const target = event.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          mobileNav.classList.remove("open");
+          burgerBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    function setReviewMessage(message, color) {
+      const el = getEl("review-message");
+      if (!el) return;
+      el.textContent = message;
+      el.style.color = color;
+    }
+
+    function setReviewSubmitting(isSubmitting) {
+      const btn = getEl("review-submit");
+      if (!btn) return;
+
+      if (isSubmitting) {
+        if (!btn.dataset.originalText) {
+          btn.dataset.originalText = btn.textContent;
+        }
+        btn.disabled = true;
+        btn.textContent = "Envoi...";
+        return;
+      }
+
+      btn.disabled = false;
+      btn.textContent = btn.dataset.originalText || "Envoyer mon avis";
+    }
+
+    async function submitReview(payload) {
+      return supabaseClient.from("reviews").insert([payload]);
+    }
+
+    function initReviewForm() {
+      const form = getEl("review-form");
+      const nameInput = getEl("review-name");
+      const ratingInput = getEl("review-rating");
+      const commentInput = getEl("review-comment");
+
+      if (!form || !nameInput || !ratingInput || !commentInput) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const name = nameInput.value.trim();
+        const rating = Number(ratingInput.value);
+        const comment = commentInput.value.trim();
+
+        if (!name || !rating || !comment) {
+          setReviewMessage("Merci de remplir tous les champs.", "#fecaca");
+          return;
+        }
+
+        if (name.length < 2) {
+          setReviewMessage("Le prénom est trop court.", "#fecaca");
+          return;
+        }
+
+        if (comment.length < 10) {
+          setReviewMessage("Votre avis doit contenir au moins 10 caractères.", "#fecaca");
+          return;
+        }
+
+        if (rating < 1 || rating > 5) {
+          setReviewMessage("La note doit être comprise entre 1 et 5.", "#fecaca");
+          return;
+        }
+
+        setReviewSubmitting(true);
+        setReviewMessage("Envoi en cours...", "#e2e8f0");
+
+        try {
+          const { error } = await submitReview({
+            name,
+            rating,
+            comment
+          });
+
+          if (error) {
+            console.error("Erreur envoi avis :", error);
+            setReviewMessage("Impossible d'envoyer l'avis pour le moment.", "#fecaca");
+            return;
+          }
+
+          form.reset();
+          setReviewMessage("Merci ! Votre avis a bien été envoyé 🧡", "#86efac");
+        } catch (error) {
+          console.error("Erreur réseau avis :", error);
+          setReviewMessage("Erreur réseau, merci de réessayer.", "#fecaca");
+        } finally {
+          setReviewSubmitting(false);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initBurgerMenu();
+      initReviewForm();
+    });
+  </script>
+</body>
+</html>
