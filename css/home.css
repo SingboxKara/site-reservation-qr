@@ -168,7 +168,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .hero-image-groupe {
-  background-image: url("hero-groupe-karaoke.jpg");
+  background-image: url("../hero-groupe-karaoke.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
