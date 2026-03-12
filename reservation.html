@@ -6,14 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO -->
-  <meta name="description" content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire." />
+  <meta
+    name="description"
+    content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire."
+  />
   <meta name="robots" content="index,follow" />
-  <meta name="keywords" content="karaoke toulouse, karaoké toulouse, karaoke box toulouse, karaoké privatif toulouse, réserver karaoké toulouse, singbox, nuit étoilée, ambiance sunset" />
+  <meta
+    name="keywords"
+    content="karaoke toulouse, karaoké toulouse, karaoke box toulouse, karaoké privatif toulouse, réserver karaoké toulouse, singbox, nuit étoilée, ambiance sunset"
+  />
   <link rel="canonical" href="https://www.singbox.fr/reservation" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
-  <meta property="og:description" content="Réservez votre box de karaoké privative à Toulouse (Nuit étoilée ou Ambiance Sunset) pour une session de 1h30. Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier." />
+  <meta
+    property="og:description"
+    content="Réservez votre box de karaoké privative à Toulouse (Nuit étoilée ou Ambiance Sunset) pour une session de 1h30. Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier."
+  />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.singbox.fr/reservation" />
   <meta property="og:site_name" content="Singbox" />
@@ -22,7 +31,10 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
-  <meta name="twitter:description" content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox : sessions de 1h30, deux ambiances, tarifs dynamiques et réservation 100% en ligne." />
+  <meta
+    name="twitter:description"
+    content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox : sessions de 1h30, deux ambiances, tarifs dynamiques et réservation 100% en ligne."
+  />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
   <!-- Favicon -->
@@ -80,278 +92,17 @@
     rel="stylesheet"
   />
 
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/global.css" />
+
+  <!-- CSS SPÉCIFIQUE À LA PAGE RÉSERVATION -->
   <style>
-    :root {
-      --sb-bg-main: #050814;
-      --sb-bg-deep: #020617;
-      --sb-card: #050b18;
-      --sb-text-main: #F9FAFB;
-      --sb-text-muted: #CBD5E1;
-      --sb-red: #C94C35;
-      --sb-orange: #F97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.35);
-      --sb-container-width: 1180px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--sb-text-main);
-      background:
-        radial-gradient(circle at 10% 0%, rgba(107,18,32,0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30,64,175,0.7), transparent 60%),
-        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      min-height: 100vh;
-    }
-
-    a { text-decoration: none; color: inherit; }
-
-    h1, h2, h3 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.03em;
-      margin: 0;
-    }
-
-    .container {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .sr-only {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-    }
-
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: #020617;
-      color: #fff;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.75);
-    }
-
-    .header-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-
-    .brand-logo {
-      width: 110px;
-      height: auto;
-      border-radius: 999px;
-      display: block;
-      object-fit: contain;
-      filter:
-        drop-shadow(0 0 12px rgba(255,255,255,0.16))
-        drop-shadow(0 0 20px rgba(201,76,53,0.6));
-    }
-
-    .brand-text {
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      font-size: 26px;
-      color: #F9FAFB;
-      text-transform: uppercase;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-    }
-
-    nav.main-nav {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      min-width: 0;
-    }
-
-    .main-nav ul {
-      list-style: none;
-      display: flex;
-      gap: 32px;
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-    }
-
-    .main-nav a {
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color: #ffffff;
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      white-space: nowrap;
-    }
-
-    .main-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      width: 0;
-      background: linear-gradient(90deg, #ff6930, #ffb96f);
-      border-radius: 6px;
-      transition: width 0.3s ease;
-    }
-
-    .main-nav a:hover::after,
-    .main-nav a:focus-visible::after,
-    .main-nav a[href="reservation.html"]::after {
-      width: 100%;
-    }
-
-    .main-nav a:hover,
-    .main-nav a:focus-visible {
-      color: #ffb96f;
-      transition: 0.25s ease;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .nav-cta {
-      background: var(--sb-red);
-      padding: 8px 22px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 14px;
-      color: #F9FAFB;
-      white-space: nowrap;
-      box-shadow:
-        0 0 0 1px rgba(249,250,251,0.08),
-        0 10px 28px rgba(0,0,0,0.7);
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .nav-cta:hover,
-    .nav-cta:focus-visible {
-      background: #d55a40;
-      transform: translateY(-1px);
-      box-shadow:
-        0 0 0 1px rgba(249,250,251,0.18),
-        0 16px 38px rgba(0,0,0,0.9);
-    }
-
-    .cart-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248,250,252,0.16), rgba(15,23,42,0.85));
-      backdrop-filter: blur(6px);
-    }
-
-    #cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: var(--sb-orange);
-      color:#fff;
-      border-radius:999px;
-      font-size:10px;
-      padding: 2px 5px;
-      min-width: 18px;
-      text-align:center;
-    }
-
-    #cart-count:empty { display:none; }
-
-    .burger-button {
-      display: none;
-      width:36px;
-      height:36px;
-      border-radius:999px;
-      border:1px solid #ffffff33;
-      background:transparent;
-      color:#fff;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      font-size:20px;
-    }
-
-    .mobile-nav {
-      display:none;
-      position:fixed;
-      top:80px;
-      left:0;
-      right:0;
-      background:#020617;
-      padding:12px 24px 16px;
-      z-index:40;
-      border-bottom:1px solid #111827;
-    }
-
-    .mobile-nav ul {
-      list-style:none;
-      padding:0;
-      margin:0;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      font-size:15px;
-    }
-
-    .mobile-nav a { color:#fff; }
-    .mobile-nav.open { display:block; }
-
-    @media screen and (max-width: 1024px) {
-      .header-inner { padding: 10px 16px; gap: 12px; }
-      .main-nav { display: none !important; }
-      .nav-cta { display: none !important; }
-      .brand-text { display: none !important; }
-      .burger-button { display: flex !important; }
-      .brand-logo { width: 72px; }
-    }
-
-    @media (max-width: 640px) {
-      .brand-logo { width: 64px; }
-    }
-
     .hero-resa {
       position: relative;
       padding: 12rem 0 3.25rem;
       background:
-        radial-gradient(circle at 25% 0%, rgba(201,76,53,0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(37,99,235,0.45), transparent 60%),
+        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
         #050814;
       text-align: center;
       overflow: hidden;
@@ -373,14 +124,14 @@
     }
 
     .hero-resa h1 {
-      margin:0 0 10px;
+      margin: 0 0 10px;
       font-size: 30px;
     }
 
     .hero-resa p {
-      margin:0;
-      font-size:14px;
-      color: rgba(249,250,251,0.88);
+      margin: 0;
+      font-size: 14px;
+      color: rgba(249, 250, 251, 0.88);
     }
 
     main {
@@ -388,14 +139,16 @@
       background: #050814;
     }
 
-    .resa-wrapper { padding-top: 2.5rem; }
+    .resa-wrapper {
+      padding-top: 2.5rem;
+    }
 
     .resa-card {
       background: var(--sb-card);
       border-radius: 24px;
       padding: 2rem 2rem 2.25rem;
-      box-shadow: 0 22px 60px rgba(0,0,0,0.9);
-      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
       overflow: hidden;
     }
@@ -406,7 +159,7 @@
       right: 18px;
       bottom: 16px;
       font-size: 30px;
-      color: rgba(148,163,184,0.1);
+      color: rgba(148, 163, 184, 0.1);
       pointer-events: none;
     }
 
@@ -428,12 +181,21 @@
       flex-direction: column;
       gap: 6px;
       font-size: 13px;
-      color: #E5E7EB;
+      color: #e5e7eb;
     }
 
-    .resa-field-date { flex: 1; min-width: 0; }
-    .resa-field-persons { width: 230px; }
-    .resa-button-wrapper { margin-left: auto; }
+    .resa-field-date {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .resa-field-persons {
+      width: 230px;
+    }
+
+    .resa-button-wrapper {
+      margin-left: auto;
+    }
 
     .resa-label-inline {
       display: flex;
@@ -452,21 +214,23 @@
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 13px;
       outline: none;
       min-width: 180px;
       max-width: 260px;
     }
 
-    #date-input::-webkit-calendar-picker-indicator { filter: invert(1); }
+    #date-input::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
 
     .resa-persons-select {
       padding: 0.45rem 0.8rem;
       border-radius: 999px;
       border: 1px solid var(--sb-border-soft);
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 13px;
       outline: none;
       min-width: 180px;
@@ -477,13 +241,13 @@
       border-radius: 999px;
       padding: 0.65rem 1.4rem;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 14px 30px rgba(0,0,0,0.85);
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 14px 30px rgba(0, 0, 0, 0.85);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       white-space: nowrap;
       align-self: center;
@@ -494,8 +258,8 @@
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.18),
-        0 20px 50px rgba(0,0,0,1);
+        0 0 0 1px rgba(248, 250, 251, 0.18),
+        0 20px 50px rgba(0, 0, 0, 1);
     }
 
     .resa-note {
@@ -506,18 +270,29 @@
     }
 
     @media (max-width: 900px) {
-      .resa-header { flex-direction: column; align-items: flex-start; }
-      .resa-field-persons, .resa-button-wrapper { width: 100%; }
-      .resa-header button { width: 100%; text-align: center; }
+      .resa-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .resa-field-persons,
+      .resa-button-wrapper {
+        width: 100%;
+      }
+
+      .resa-header button {
+        width: 100%;
+        text-align: center;
+      }
     }
 
     .table-wrapper {
       margin-top: 1rem;
       border-radius: 18px;
       overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.35);
+      border: 1px solid rgba(148, 163, 184, 0.35);
       background: #020617;
-      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.8);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.8);
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
@@ -537,34 +312,40 @@
     }
 
     @media (max-width: 768px) {
-      .table-scroll-hint { display: block; }
+      .table-scroll-hint {
+        display: block;
+      }
     }
 
     table {
       border-collapse: collapse;
       width: 100%;
       min-width: 640px;
-      color: #F9FAFB;
+      color: #f9fafb;
       table-layout: fixed;
     }
 
-    th, td {
+    th,
+    td {
       padding: 0.55rem 0.6rem;
       text-align: center;
       font-size: 12px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
-      border-right: 1px solid rgba(31,41,55,0.9);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      border-right: 1px solid rgba(31, 41, 55, 0.9);
       white-space: nowrap;
     }
 
-    th:last-child, td:last-child { border-right: none; }
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
 
     th {
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #E5E7EB;
-      background: linear-gradient(to right, rgba(15,23,42,1), rgba(30,64,175,0.35));
+      color: #e5e7eb;
+      background: linear-gradient(to right, rgba(15, 23, 42, 1), rgba(30, 64, 175, 0.35));
     }
 
     thead th {
@@ -577,16 +358,20 @@
       background: #020617;
       font-weight: 700;
       font-size: 12px;
-      color: #E5E7EB;
+      color: #e5e7eb;
       position: sticky;
       left: 0;
       z-index: 3;
-      border-right: 1px solid rgba(31,41,55,0.95);
-      box-shadow: 8px 0 18px rgba(0,0,0,0.35);
+      border-right: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow: 8px 0 18px rgba(0, 0, 0, 0.35);
     }
 
     .slot-cell {
-      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, color 0.15s ease;
+      transition:
+        background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.1s ease,
+        color 0.15s ease;
       cursor: default;
       height: 70px;
       vertical-align: middle;
@@ -604,33 +389,42 @@
 
     .slot-free {
       background-color: #022c22;
-      color: #ECFDF5;
+      color: #ecfdf5;
       cursor: pointer;
     }
 
     .slot-free:hover {
       background-color: #065f46;
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.5);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.5);
       transform: translateY(-1px);
     }
 
     .slot-booked {
       background-color: rgba(127, 29, 29, 0.55);
-      color: #FEE2E2;
+      color: #fee2e2;
       cursor: not-allowed;
     }
 
-    .legend-dot.booked { background-color: rgba(127, 29, 29, 0.55); }
+    .legend-dot.booked {
+      background-color: rgba(127, 29, 29, 0.55);
+    }
 
     .slot-selected {
       background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
+      color: #f9fafb;
       cursor: default;
-      box-shadow: 0 0 0 1px rgba(129,140,248,0.7);
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
     }
 
-    .slot-price-main { font-weight: 700; font-size: 14px; }
-    .slot-price-total { font-size: 11px; color: var(--sb-text-muted); }
+    .slot-price-main {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .slot-price-total {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
 
     .slot-status {
       font-size: 10px;
@@ -649,17 +443,26 @@
       color: var(--sb-text-muted);
     }
 
-    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     .legend-dot {
       width: 14px;
       height: 14px;
       border-radius: 4px;
-      border: 1px solid rgba(15,23,42,0.9);
+      border: 1px solid rgba(15, 23, 42, 0.9);
     }
 
-    .legend-dot.free { background-color: #022c22; }
-    .legend-dot.selected { background: linear-gradient(135deg, #1d4ed8, #4c1d95); }
+    .legend-dot.free {
+      background-color: #022c22;
+    }
+
+    .legend-dot.selected {
+      background: linear-gradient(135deg, #1d4ed8, #4c1d95);
+    }
 
     .resa-pricing-rules {
       margin-top: 0.4rem;
@@ -671,7 +474,7 @@
     #message {
       margin-top: 1rem;
       font-size: 12px;
-      color: #F9FAFB;
+      color: #f9fafb;
       white-space: pre-line;
       min-height: 1em;
     }
@@ -684,7 +487,7 @@
     }
 
     dialog#slot-modal::backdrop {
-      background: rgba(15,23,42,0.7);
+      background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(4px);
     }
 
@@ -694,9 +497,9 @@
       padding: 1.85rem 1.85rem 1.6rem;
       max-width: 520px;
       width: min(520px, calc(100vw - 36px));
-      box-shadow: 0 24px 70px rgba(0,0,0,0.95);
-      border: 1px solid rgba(248,250,251,0.12);
-      color: #F9FAFB;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95);
+      border: 1px solid rgba(248, 250, 251, 0.12);
+      color: #f9fafb;
     }
 
     .modal-dialog h2 {
@@ -707,27 +510,27 @@
 
     .modal-dialog p {
       font-size: 13.5px;
-      color: rgba(229,231,235,0.92);
+      color: rgba(229, 231, 235, 0.92);
       line-height: 1.7;
       margin: 0 0 12px;
     }
 
     #modal-slot-info {
-      color: rgba(249,250,251,0.95);
+      color: rgba(249, 250, 251, 0.95);
       font-weight: 600;
       margin-bottom: 14px;
     }
 
     .modal-extra-text {
       font-size: 13px;
-      color: rgba(156,163,175,0.95);
+      color: rgba(156, 163, 175, 0.95);
       line-height: 1.75;
       margin: 0 0 12px;
     }
 
     .modal-divider {
       height: 1px;
-      background: rgba(148,163,184,0.18);
+      background: rgba(148, 163, 184, 0.18);
       margin: 14px 0 14px;
       border-radius: 999px;
     }
@@ -742,16 +545,16 @@
 
     .modal-persons-row label {
       font-size: 13px;
-      color: #E5E7EB;
+      color: #e5e7eb;
       font-weight: 600;
     }
 
     #modal-persons-select {
       padding: 10px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
+      border: 1px solid rgba(148, 163, 184, 0.6);
       background: #020617;
-      color: #F9FAFB;
+      color: #f9fafb;
       font-size: 14px;
       outline: none;
       width: 100%;
@@ -777,16 +580,16 @@
 
     #modal-cart {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #F9FAFB;
+      color: #f9fafb;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
+        0 0 0 1px rgba(248, 250, 251, 0.12),
+        0 16px 40px rgba(0, 0, 0, 0.9);
     }
 
     #modal-continue {
       background: transparent;
-      color: #E5E7EB;
-      border: 1px solid rgba(148,163,184,0.6);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.6);
     }
 
     @media (max-width: 520px) {
@@ -795,8 +598,14 @@
         max-width: 100%;
         border-radius: 20px;
       }
-      .modal-actions { flex-direction: column; }
-      .modal-actions button { width: 100%; }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+
+      .modal-actions button {
+        width: 100%;
+      }
     }
 
     .mobile-slots {
@@ -809,7 +618,7 @@
       border: 1px solid rgba(148, 163, 184, 0.28);
       border-radius: 16px;
       background: rgba(2, 6, 23, 0.65);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
       overflow: hidden;
     }
 
@@ -819,7 +628,7 @@
       align-items: baseline;
       justify-content: space-between;
       gap: 10px;
-      background: linear-gradient(90deg, rgba(15,23,42,1), rgba(30,64,175,0.25));
+      background: linear-gradient(90deg, rgba(15, 23, 42, 1), rgba(30, 64, 175, 0.25));
       border-bottom: 1px solid rgba(148, 163, 184, 0.18);
     }
 
@@ -832,7 +641,7 @@
 
     .mobile-box-meta {
       font-size: 12px;
-      color: rgba(156,163,175,0.95);
+      color: rgba(156, 163, 175, 0.95);
       white-space: nowrap;
     }
 
@@ -846,9 +655,9 @@
     }
 
     .mobile-slot-pill {
-      border: 1px solid rgba(16,185,129,0.35);
+      border: 1px solid rgba(16, 185, 129, 0.35);
       background: rgba(2, 44, 34, 0.75);
-      color: #ECFDF5;
+      color: #ecfdf5;
       border-radius: 999px;
       padding: 12px 14px;
       min-width: 180px;
@@ -862,10 +671,12 @@
       text-align: center;
     }
 
-    .mobile-slot-pill:active { transform: scale(0.98); }
+    .mobile-slot-pill:active {
+      transform: scale(0.98);
+    }
 
     .mobile-slot-pill:hover {
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.35);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35);
       filter: brightness(1.05);
     }
 
@@ -879,106 +690,44 @@
     .mobile-slot-price {
       margin-top: 6px;
       font-size: 13px;
-      color: rgba(236,253,245,0.92);
+      color: rgba(236, 253, 245, 0.92);
       line-height: 1.15;
     }
 
     .mobile-slot-sub {
       margin-top: 4px;
       font-size: 12px;
-      color: rgba(156,163,175,0.95);
+      color: rgba(156, 163, 175, 0.95);
       line-height: 1.15;
     }
 
     .mobile-slot-pill.selected {
-      border-color: rgba(129,140,248,0.65);
+      border-color: rgba(129, 140, 248, 0.65);
       background: linear-gradient(135deg, #1d4ed8, #4c1d95);
-      color: #F9FAFB;
+      color: #f9fafb;
     }
 
     .mobile-empty {
       padding: 12px 14px 16px;
-      color: rgba(156,163,175,0.95);
+      color: rgba(156, 163, 175, 0.95);
       font-size: 13px;
       line-height: 1.55;
     }
 
     @media (max-width: 768px) {
-      .table-wrapper { display: none; }
-      .table-scroll-hint { display: none !important; }
-      .mobile-slots { display: flex; flex-direction: column; }
+      .table-wrapper {
+        display: none;
+      }
+
+      .table-scroll-hint {
+        display: none !important;
+      }
+
+      .mobile-slots {
+        display: flex;
+        flex-direction: column;
+      }
     }
-
-    footer {
-      background:#020617;
-      color:#e5e7eb;
-      padding:32px 24px 18px;
-      border-top: 1px solid #111827;
-    }
-
-    .newsletter-container {
-      max-width:var(--sb-container-width);
-      margin:0 auto 24px;
-      text-align:center;
-    }
-
-    .newsletter-container h3 { margin-bottom:6px; }
-
-    .newsletter-container p {
-      margin-top: 0;
-      font-size: 13px;
-      color: var(--sb-text-muted);
-    }
-
-    .newsletter-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      justify-content:center;
-      margin-top: 8px;
-    }
-
-    footer input[type=email] {
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,0.4);
-      min-width:240px;
-      max-width:360px;
-      font-size:14px;
-      background:#020617;
-      color:#F9FAFB;
-      outline: none;
-    }
-
-    footer input[type=email]::placeholder { color: rgba(156,163,175,0.9); }
-
-    footer button {
-      padding:10px 18px;
-      border:none;
-      border-radius:999px;
-      background:linear-gradient(90deg,var(--sb-red),var(--sb-orange));
-      color:#F9FAFB;
-      font-weight:600;
-      font-size:14px;
-      cursor:pointer;
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.12),
-        0 16px 40px rgba(0,0,0,0.9);
-    }
-
-    .footer-columns {
-      max-width:var(--sb-container-width);
-      margin:0 auto;
-      display:flex;
-      flex-wrap:wrap;
-      gap:24px;
-      justify-content:space-between;
-      font-size:13px;
-    }
-
-    .footer-brand { display:flex; align-items:center; gap:10px; }
-    .footer-brand img { height:80px; width:auto; display:block; }
-    .footer-columns p { margin:4px 0; }
 
     .footer-social .social-link {
       display: flex;
@@ -990,7 +739,9 @@
       text-decoration: none;
     }
 
-    .footer-social .social-link:hover { color: #f97316; }
+    .footer-social .social-link:hover {
+      color: #f97316;
+    }
 
     .footer-social .social-icon {
       width: 24px;
@@ -1000,19 +751,14 @@
       justify-content: center;
     }
 
-    .footer-bottom {
-      max-width:var(--sb-container-width);
-      margin:20px auto 0;
-      padding-top:8px;
-      font-size:11px;
-      text-align:center;
-      color:#9CA3AF;
-      border-top:1px solid #111827;
-    }
-
     @media (max-width: 600px) {
-      .hero-resa { padding-top: 9rem; }
-      .hero-resa h1 { font-size: 26px; }
+      .hero-resa {
+        padding-top: 9rem;
+      }
+
+      .hero-resa h1 {
+        font-size: 26px;
+      }
     }
   </style>
 </head>
@@ -1207,7 +953,7 @@
         <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" required />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
-      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
+      <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
     <div class="footer-columns">
@@ -2038,7 +1784,7 @@
 
       mobileNav.addEventListener("click", (event) => {
         const target = event.target;
-        if (target && target.tagName === "A") {
+        if (target instanceof HTMLElement && target.tagName === "A") {
           mobileNav.classList.remove("open");
           burgerBtn.setAttribute("aria-expanded", "false");
         }
