@@ -5,7 +5,6 @@
   <title>Paiement karaoké box Singbox | Panier & règlement sécurisé à Toulouse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
   <meta
     name="description"
     content="Finalisez le paiement sécurisé de votre karaoké box Singbox à Toulouse. Vérifiez votre panier, appliquez votre code promo et réglez vos réservations en quelques clics."
@@ -19,7 +18,6 @@
   />
   <link rel="canonical" href="https://www.singbox.fr/paiement" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Paiement réservation karaoké box - Singbox Toulouse" />
@@ -31,7 +29,6 @@
   <meta property="og:url" content="https://www.singbox.fr/paiement" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Paiement réservation karaoké box - Singbox Toulouse" />
   <meta
@@ -40,12 +37,10 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-  <!-- Données structurées JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -70,7 +65,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -78,8 +72,12 @@
     rel="stylesheet"
   />
 
-  <!-- CSS EXTERNE -->
   <link rel="stylesheet" href="css/paiement.css" />
+
+  <style>
+    .hidden { display: none !important; }
+    .card-element-wrapper.is-hidden { display: none !important; }
+  </style>
 </head>
 <body>
   <!-- HEADER -->
@@ -141,7 +139,7 @@
     </p>
     <div class="auth-loyalty-pill">
       <span>★</span>
-      <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+      <span>10 points par réservation payante. À 100 points, 2 personnes sont offertes sur 1 séance.</span>
     </div>
 
     <div class="auth-tabs">
@@ -313,7 +311,7 @@
                   Points disponibles : <b id="loyalty-points">0</b> ⭐
                 </p>
                 <p style="margin:4px 0 10px; font-size:12px; color:#CBD5E1;">
-                  100 points = 1 réservation gratuite
+                  100 points = 2 personnes offertes sur 1 séance
                 </p>
 
                 <button
@@ -332,7 +330,7 @@
                     font-size:13px;
                   "
                 >
-                  Utiliser 100 points pour une réservation gratuite
+                  Utiliser 100 points
                 </button>
 
                 <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;"></p>
@@ -360,18 +358,27 @@
                 <span>Sous-total (HT)</span>
                 <span id="order-subtotal">0€</span>
               </div>
-              <div class="order-row" id="order-discount-row" style="display:none;">
-                <span>Remise</span>
-                <span id="order-discount">-0€</span>
+
+              <div class="order-row" id="order-promo-row" style="display:none;">
+                <span>Code promo</span>
+                <span id="order-promo-discount">-0€</span>
               </div>
+
+              <div class="order-row" id="order-loyalty-row" style="display:none;">
+                <span>Fidélité</span>
+                <span id="order-loyalty-discount">-0€</span>
+              </div>
+
               <div class="order-row">
                 <span>TVA (20&nbsp;%)</span>
                 <span id="order-tva">0€</span>
               </div>
+
               <div class="order-row total">
                 <span>Total à payer (TTC)</span>
                 <span id="order-total">0€</span>
               </div>
+
               <p class="order-note">Paiement en une fois, toutes taxes comprises.</p>
             </div>
           </div>
@@ -515,7 +522,7 @@
       </div>
 
       <!-- SECTION MERCI -->
-      <div id="thankyou-section">
+      <div id="thankyou-section" style="display:none;">
         <div class="card thankyou-card">
           <div>
             <h2 class="thankyou-title">
@@ -674,10 +681,18 @@
     const PRICE_FALLBACK = 10;
     const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
+
+    const LOYALTY_POINTS_COST = 100;
+    const LOYALTY_FREE_BILLABLE_PERSONS = 2;
+    const MIN_BILLABLE_PERSONS = 2;
+    const OFF_PEAK_START_HOUR = 4;
+    const OFF_PEAK_END_HOUR = 14;
+    const OFF_PEAK_RATE = 7.9;
+    const STANDARD_RATE = 9.9;
 
     let stripe = null;
     let cardElement = null;
@@ -696,7 +711,9 @@
 
     let currentTotals = {
       totalTTCNoDiscount: 0,
-      discount: 0,
+      promoDiscount: 0,
+      loyaltyDiscount: 0,
+      totalDiscount: 0,
       finalTotalTTC: 0
     };
 
@@ -899,6 +916,72 @@
       }
     }
 
+    function isWeekend(dateObj) {
+      const day = dateObj.getDay();
+      return day === 0 || day === 6;
+    }
+
+    function getPerPersonRate(dateObj) {
+      const hour = dateObj.getHours();
+
+      if (isWeekend(dateObj)) {
+        return STANDARD_RATE;
+      }
+
+      if (hour >= OFF_PEAK_START_HOUR && hour < OFF_PEAK_END_HOUR) {
+        return OFF_PEAK_RATE;
+      }
+
+      return STANDARD_RATE;
+    }
+
+    function getItemPersons(item) {
+      const persons = Number(
+        item?.persons ??
+        item?.nb_personnes ??
+        item?.participants ??
+        2
+      );
+
+      if (!Number.isFinite(persons)) return 2;
+      return Math.max(1, persons);
+    }
+
+    function getItemDateObject(item) {
+      const candidate =
+        item?.start_time ||
+        item?.startTime ||
+        item?.datetime ||
+        (item?.date && typeof item?.hour === "number"
+          ? (() => {
+              const hour = Math.floor(item.hour);
+              const minute = Math.round((item.hour - hour) * 60);
+              return `${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`;
+            })()
+          : item?.date);
+
+      const d = new Date(candidate);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function computeLoyaltyDiscount(panier) {
+      if (!loyaltyUsed || !Array.isArray(panier) || panier.length === 0) return 0;
+
+      const firstItem = panier[0];
+      const slotDate = getItemDateObject(firstItem);
+      if (!slotDate) return 0;
+
+      const rate = getPerPersonRate(slotDate);
+      const persons = getItemPersons(firstItem);
+      const billablePersons = Math.max(persons, MIN_BILLABLE_PERSONS);
+      const coveredPersons = Math.min(LOYALTY_FREE_BILLABLE_PERSONS, billablePersons);
+
+      const rawDiscount = rate * coveredPersons;
+      const itemPrice = Number(firstItem?.price ?? PRICE_FALLBACK) || 0;
+
+      return Math.max(0, Math.min(itemPrice, Number(rawDiscount.toFixed(2))));
+    }
+
     function getCheckoutEls() {
       return {
         nameEl: getEl("order-product-name"),
@@ -906,8 +989,10 @@
         subEl: getEl("order-subtotal"),
         tvaEl: getEl("order-tva"),
         totalEl: getEl("order-total"),
-        discountRow: getEl("order-discount-row"),
-        discountEl: getEl("order-discount"),
+        promoRow: getEl("order-promo-row"),
+        promoEl: getEl("order-promo-discount"),
+        loyaltyRow: getEl("order-loyalty-row"),
+        loyaltyEl: getEl("order-loyalty-discount"),
         emptyState: getEl("empty-cart-state"),
         checkoutLayout: document.querySelector(".checkout-layout"),
         paymentCard: document.querySelector(".payment-card"),
@@ -925,31 +1010,47 @@
     }
 
     function renderEmptyOrderSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow } = els;
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, loyaltyRow } = els;
 
       if (nameEl) nameEl.textContent = "Aucune réservation";
       if (metaEl) metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
       if (subEl) subEl.textContent = "0€";
       if (tvaEl) tvaEl.textContent = "0€";
       if (totalEl) totalEl.textContent = "0€";
-      if (discountRow) discountRow.style.display = "none";
+      if (promoRow) promoRow.style.display = "none";
+      if (loyaltyRow) loyaltyRow.style.display = "none";
 
-      currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
+      currentTotals = {
+        totalTTCNoDiscount: 0,
+        promoDiscount: 0,
+        loyaltyDiscount: 0,
+        totalDiscount: 0,
+        finalTotalTTC: 0
+      };
+
       cartValid = false;
     }
 
     function renderInvalidCartSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow, submitBtn } = els;
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, loyaltyRow, submitBtn } = els;
 
       if (nameEl) nameEl.textContent = "Erreur sur votre panier";
       if (metaEl) metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
       if (subEl) subEl.textContent = "—";
       if (tvaEl) tvaEl.textContent = "—";
       if (totalEl) totalEl.textContent = "—";
-      if (discountRow) discountRow.style.display = "none";
+      if (promoRow) promoRow.style.display = "none";
+      if (loyaltyRow) loyaltyRow.style.display = "none";
       if (submitBtn) submitBtn.disabled = true;
 
-      currentTotals = { totalTTCNoDiscount: 0, discount: 0, finalTotalTTC: 0 };
+      currentTotals = {
+        totalTTCNoDiscount: 0,
+        promoDiscount: 0,
+        loyaltyDiscount: 0,
+        totalDiscount: 0,
+        finalTotalTTC: 0
+      };
+
       cartValid = false;
     }
 
@@ -985,7 +1086,10 @@
 
     function updateOrderSummaryFromPanier() {
       const els = getCheckoutEls();
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, discountRow, discountEl, submitBtn } = els;
+      const {
+        nameEl, metaEl, subEl, tvaEl, totalEl,
+        promoRow, promoEl, loyaltyRow, loyaltyEl, submitBtn
+      } = els;
 
       if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
 
@@ -1010,28 +1114,28 @@
 
       toggleEmptyCartUI(false, els);
 
-      const totalHTNoDiscount = totalTTCNoDiscount / 1.2;
-      const tvaNoDiscount = totalTTCNoDiscount - totalHTNoDiscount;
-
-      let discount = 0;
+      let promoDiscount = 0;
       if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
-        discount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
+        promoDiscount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
       } else {
         currentPromo = null;
       }
 
-      discount = Math.max(0, Math.min(discount, totalTTCNoDiscount));
+      promoDiscount = Math.max(0, Math.min(promoDiscount, totalTTCNoDiscount));
 
-      const discountHT = discount / 1.2;
-      const discountTVA = discount - discountHT;
-      const totalHT = Math.max(0, totalHTNoDiscount - discountHT);
-      const tva = Math.max(0, tvaNoDiscount - discountTVA);
-      const finalTotalTTC = Math.max(0, totalTTCNoDiscount - discount);
+      const totalAfterPromo = Math.max(0, totalTTCNoDiscount - promoDiscount);
+      const loyaltyDiscount = Math.max(0, Math.min(computeLoyaltyDiscount(panier), totalAfterPromo));
+      const totalDiscount = promoDiscount + loyaltyDiscount;
+      const finalTotalTTC = Math.max(0, totalTTCNoDiscount - totalDiscount);
+
+      const totalHT = finalTotalTTC / 1.2;
+      const tva = finalTotalTTC - totalHT;
 
       const first = panier[0];
       const boxName = getDisplayBoxName(first);
       const extraCount = panier.length - 1;
       const { dateLabel, hourText } = buildOrderMeta(first);
+      const persons = getItemPersons(first);
 
       nameEl.textContent = extraCount > 0
         ? `Box ${boxName} + ${extraCount} autre(s) créneau(x)`
@@ -1040,22 +1144,38 @@
       metaEl.innerHTML =
         (dateLabel ? `Date : ${dateLabel}<br>` : "") +
         (hourText ? `Créneau : ${hourText}<br>` : "") +
+        `Participants : ${persons}<br>` +
         `Nombre de créneaux : ${panier.length}`;
 
       subEl.textContent = formatMoney(totalHT);
       tvaEl.textContent = formatMoney(tva);
       totalEl.textContent = formatMoney(finalTotalTTC);
 
-      if (discountRow && discountEl) {
-        if (discount > 0) {
-          discountRow.style.display = "flex";
-          discountEl.textContent = "-" + formatMoney(discount);
+      if (promoRow && promoEl) {
+        if (promoDiscount > 0) {
+          promoRow.style.display = "flex";
+          promoEl.textContent = "-" + formatMoney(promoDiscount);
         } else {
-          discountRow.style.display = "none";
+          promoRow.style.display = "none";
         }
       }
 
-      currentTotals = { totalTTCNoDiscount, discount, finalTotalTTC };
+      if (loyaltyRow && loyaltyEl) {
+        if (loyaltyDiscount > 0) {
+          loyaltyRow.style.display = "flex";
+          loyaltyEl.textContent = "-" + formatMoney(loyaltyDiscount);
+        } else {
+          loyaltyRow.style.display = "none";
+        }
+      }
+
+      currentTotals = {
+        totalTTCNoDiscount,
+        promoDiscount,
+        loyaltyDiscount,
+        totalDiscount,
+        finalTotalTTC
+      };
     }
 
     function setCardElementHidden(hidden) {
@@ -1463,15 +1583,43 @@
     function renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
       loyaltyPointsEl.textContent = String(points);
 
-      if (points >= 100) {
+      if (points >= LOYALTY_POINTS_COST) {
         useLoyaltyBtn.style.display = "block";
+        useLoyaltyBtn.disabled = false;
+        useLoyaltyBtn.textContent = "Utiliser 100 points";
         loyaltyMsg.style.color = "#D1FAE5";
-        loyaltyMsg.textContent = "Vous pouvez utiliser vos points pour une séance gratuite.";
+        loyaltyMsg.textContent = "Vous pouvez offrir 2 personnes sur une séance.";
       } else {
         useLoyaltyBtn.style.display = "none";
         loyaltyMsg.style.color = "#CBD5E1";
-        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, 100 - points)} point(s) pour une séance gratuite.`;
+        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, LOYALTY_POINTS_COST - points)} point(s).`;
       }
+    }
+
+    function disablePromoBecauseOfLoyalty() {
+      const promoInput = getEl("promo-code");
+      const promoMsg = getEl("promo-message");
+
+      currentPromo = null;
+      localStorage.removeItem("promoCode");
+
+      if (promoInput) {
+        promoInput.value = "";
+        promoInput.disabled = true;
+      }
+
+      if (promoMsg) {
+        promoMsg.classList.remove("ok", "error");
+        promoMsg.textContent = "Le code promo est désactivé pendant l’utilisation des points fidélité.";
+      }
+    }
+
+    function enablePromoAfterLoyaltyRemoval() {
+      const promoInput = getEl("promo-code");
+      const promoMsg = getEl("promo-message");
+
+      if (promoInput) promoInput.disabled = false;
+      if (promoMsg) promoMsg.textContent = "";
     }
 
     function bindLoyaltyButton(useLoyaltyBtn, loyaltyPointsEl, loyaltyMsg) {
@@ -1488,19 +1636,28 @@
 
         const currentPoints = Number.parseInt(loyaltyPointsEl.textContent || "0", 10);
 
-        if (currentPoints < 100) {
+        if (currentPoints < LOYALTY_POINTS_COST) {
           loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Vous n'avez pas encore assez de points pour une séance gratuite.";
+          loyaltyMsg.textContent = "Vous n'avez pas encore assez de points.";
           return;
         }
 
-        currentPromo = { type: "free", code: "LOYALTY100", is_active: true };
-        loyaltyUsed = true;
-        updateOrderSummaryFromPanier();
+        loyaltyUsed = !loyaltyUsed;
 
-        loyaltyMsg.style.color = "#D1FAE5";
-        loyaltyMsg.textContent = "🎉 Séance gratuite activée. Les points seront débités après validation du paiement.";
-        useLoyaltyBtn.disabled = true;
+        if (loyaltyUsed) {
+          disablePromoBecauseOfLoyalty();
+          loyaltyMsg.style.color = "#D1FAE5";
+          loyaltyMsg.textContent =
+            "🎉 Fidélité activée : 2 personnes seront offertes sur la première séance du panier.";
+          useLoyaltyBtn.textContent = "Retirer la fidélité";
+        } else {
+          enablePromoAfterLoyaltyRemoval();
+          loyaltyMsg.style.color = "#CBD5E1";
+          loyaltyMsg.textContent = "Utilisation des points retirée.";
+          useLoyaltyBtn.textContent = "Utiliser 100 points";
+        }
+
+        updateOrderSummaryFromPanier();
       });
 
       useLoyaltyBtn.dataset.bound = "true";
@@ -1623,6 +1780,11 @@
       const promoInput = getEl("promo-code");
       if (!promoInput) return;
 
+      if (loyaltyUsed) {
+        setPromoMessage("Retirez d’abord la fidélité pour appliquer un code promo.", "error");
+        return;
+      }
+
       const code = promoInput.value.trim().toUpperCase();
 
       if (!code) {
@@ -1645,7 +1807,7 @@
       localStorage.setItem("promoCode", result.promo.code);
       updateOrderSummaryFromPanier();
 
-      const discountNow = currentTotals.discount || 0;
+      const discountNow = currentTotals.promoDiscount || 0;
       setPromoMessage(
         discountNow > 0
           ? "Code appliqué ✔ Réduction de " + formatMoney(discountNow) + " sur votre commande."
@@ -1773,7 +1935,8 @@
         complement: getEl("complement")?.value.trim() || "",
         cp: getEl("cp")?.value.trim() || "",
         ville: getEl("ville")?.value.trim() || "",
-        naissance: getEl("naissance")?.value || ""
+        naissance: getEl("naissance")?.value || "",
+        loyalty_points_spent: loyaltyUsed ? LOYALTY_POINTS_COST : 0
       };
 
       if (includeSaveCheckoutInfo) payload.save_checkout_info = true;
@@ -1791,6 +1954,8 @@
           customer: getCustomerPayload(true),
           promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
           loyaltyUsed,
+          loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
+          loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
           isFree: Boolean(isFree)
         };
 
@@ -1957,6 +2122,7 @@
       savePanier([]);
       localStorage.removeItem("promoCode");
       currentPromo = null;
+      loyaltyUsed = false;
       updateCartIcon();
     }
 
@@ -2085,16 +2251,16 @@
     async function createPaymentIntentRequest() {
       const panier = getPanier();
       const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
-      const finalAmountCents = currentPromo && currentPromo.type === "free"
-        ? 0
-        : Math.round((currentTotals.finalTotalTTC || 0) * 100);
+      const finalAmountCents = Math.round((currentTotals.finalTotalTTC || 0) * 100);
 
       const body = {
         panier,
         customer: getCustomerPayload(false),
         promoCode,
         finalAmountCents,
-        loyaltyUsed
+        loyaltyUsed,
+        loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
+        loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0
       };
 
       if (lastPayWithSaved) {
@@ -2199,7 +2365,7 @@
     }
 
     async function handleFreeCheckout(successEl, errorEl) {
-      if (successEl) successEl.textContent = "Réservation gratuite validée ✔️";
+      if (successEl) successEl.textContent = "Réservation validée ✔️";
       await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
     }
 
@@ -2246,7 +2412,7 @@
           return;
         }
 
-        if (json.isFree) {
+        if (json.isFree || Number(currentTotals.finalTotalTTC || 0) <= 0) {
           await handleFreeCheckout(successEl, errorEl);
           return;
         }
