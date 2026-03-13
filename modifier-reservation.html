@@ -530,6 +530,10 @@
       color: #93c5fd;
     }
 
+    .page-message.warn {
+      color: #fde68a;
+    }
+
     .newsletter-message {
       font-size: 12px;
       margin-top: 6px;
@@ -642,7 +646,7 @@
               </div>
 
               <div class="current-info-box">
-                <div class="current-info-label">Montant actuel</div>
+                <div class="current-info-label">Montant actuel payé</div>
                 <div class="current-info-value" id="current-amount">—</div>
               </div>
 
@@ -656,8 +660,8 @@
               <li>Modification possible jusqu’à <strong>6 heures avant</strong> la séance.</li>
               <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
               <li>Facturation minimale : <strong>2 personnes</strong>.</li>
-              <li>Si la réservation a été obtenue via la fidélité, la modification reste à <strong>0 €</strong>.</li>
-              <li>Le complément éventuel ne doit être calculé que pour une réservation réellement payée.</li>
+              <li>Si la réservation a été obtenue avec la fidélité, <strong>2 personnes restent offertes</strong>.</li>
+              <li>À partir de la 3e personne, seul le <strong>supplément</strong> est dû.</li>
             </ul>
           </div>
 
@@ -690,7 +694,7 @@
                     <option value="8">8 personnes</option>
                   </select>
                   <div class="field-help">
-                    Même si vous venez seul·e, la facturation minimale reste de 2 personnes.
+                    Même si vous venez seul·e, la base reste calculée sur 2 personnes minimum.
                   </div>
                 </div>
               </div>
@@ -715,7 +719,7 @@
           <div class="edit-card summary-card">
             <h2>Résumé de la modification</h2>
             <p class="edit-card-subtitle">
-              Le résumé ci-dessous tient compte du cas fidélité, du changement de date, de l’horaire et du nombre de personnes.
+              Le résumé ci-dessous suit la même logique que le backend.
             </p>
 
             <div class="summary-row">
@@ -749,7 +753,7 @@
             </div>
 
             <div class="summary-row">
-              <div class="summary-label">Montant actuel</div>
+              <div class="summary-label">Montant actuel payé</div>
               <div class="summary-value" id="summary-old-amount">—</div>
             </div>
 
@@ -770,8 +774,8 @@
             </div>
 
             <p class="summary-note">
-              <strong>Important :</strong> si la réservation avait été obtenue avec les points de fidélité,
-              cette page considère qu’il n’y a <strong>aucun complément à payer</strong> lors d’une modification.
+              <strong>Important :</strong> avec la fidélité, <strong>2 personnes max sont offertes</strong>.
+              Si vous passez au-dessus, la page calcule uniquement le supplément.
             </p>
 
             <div class="summary-actions">
@@ -849,15 +853,20 @@
 
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 8;
     const MIN_BILLABLE_PERSONS = 2;
     const MODIFICATION_DEADLINE_HOURS = 6;
     const SLOT_DURATION_MIN = 90;
+
     const OFF_PEAK_START_HOUR = 4;
     const OFF_PEAK_END_HOUR = 14;
     const OFF_PEAK_RATE = 7.9;
     const STANDARD_RATE = 9.9;
+
+    const LOYALTY_POINTS_COST = 100;
+    const LOYALTY_FREE_BILLABLE_PERSONS = 2;
 
     let currentReservation = null;
     let selectedSlot = null;
@@ -992,10 +1001,16 @@
       return Math.max(p, MIN_BILLABLE_PERSONS);
     }
 
-    function computePriceFromDate(date, persons) {
+    function computeCashAmountFromDate(date, persons, loyaltyUsed = false) {
       const billablePersons = getBillablePersons(persons);
       const perPerson = getPerPersonRate(date);
-      return Number((perPerson * billablePersons).toFixed(2));
+
+      if (!loyaltyUsed) {
+        return Number((perPerson * billablePersons).toFixed(2));
+      }
+
+      const extraBillablePersons = Math.max(0, billablePersons - LOYALTY_FREE_BILLABLE_PERSONS);
+      return Number((perPerson * extraBillablePersons).toFixed(2));
     }
 
     function getHoursBeforeStart(startIso) {
@@ -1042,6 +1057,7 @@
         reservation.points_spent ??
         reservation.loyalty_points_used ??
         reservation.pointsUsed ??
+        reservation.used_points_count ??
         0
       ) || 0;
 
@@ -1051,7 +1067,12 @@
           reservation.loyaltyUsed === true ||
           reservation.is_loyalty_booking === true ||
           reservation.free_by_loyalty === true ||
-          pointsSpent >= 100
+          reservation.paid_with_loyalty === true ||
+          reservation.used_loyalty_reward === true ||
+          reservation.loyalty_reward_used === true ||
+          pointsSpent >= LOYALTY_POINTS_COST ||
+          String(reservation.payment_mode || "").toLowerCase().includes("loyalty") ||
+          String(reservation.payment_mode || "").toLowerCase().includes("fidel")
         );
 
       return {
@@ -1068,12 +1089,15 @@
         raw.date ||
         null;
 
+      const parsedStart = parseDateOrNull(startTime);
+
       const endTime =
         raw.end_time ||
         raw.endTime ||
-        (startTime ? new Date(new Date(startTime).getTime() + SLOT_DURATION_MIN * 60 * 1000).toISOString() : null);
+        (parsedStart ? new Date(parsedStart.getTime() + SLOT_DURATION_MIN * 60 * 1000).toISOString() : null);
 
       const amountPaidRaw =
+        raw.amount_paid ??
         raw.amountPaid ??
         raw.montant ??
         raw.total ??
@@ -1126,29 +1150,21 @@
         throw new Error("Aucune réservation sélectionnée.");
       }
 
-      const response = await fetch(`${API_BASE}/api/my-reservations`, {
+      const response = await fetch(`${API_BASE}/api/my-reservations/${encodeURIComponent(reservationId)}`, {
         headers: getAuthHeaders()
       });
 
       const data = await safeJson(response);
 
       if (!response.ok) {
-        throw new Error(data.error || "Impossible de charger vos réservations.");
+        throw new Error(data.error || "Impossible de charger votre réservation.");
       }
 
-      const reservations = Array.isArray(data)
-        ? data
-        : Array.isArray(data.reservations)
-          ? data.reservations
-          : [];
-
-      const found = reservations.find((r) => String(r.id) === String(reservationId));
-
-      if (!found) {
+      if (!data.reservation) {
         throw new Error("Réservation introuvable sur votre compte.");
       }
 
-      return normalizeReservation(found);
+      return normalizeReservation(data.reservation);
     }
 
     function renderCurrentReservation(reservation) {
@@ -1167,7 +1183,6 @@
       if (!banner) return;
 
       const canModify = isModificationAllowed(reservation.startTime, reservation.status);
-
       banner.className = "status-banner " + (canModify ? "ok" : "error");
 
       if (!canModify) {
@@ -1178,7 +1193,7 @@
 
       if (reservation.loyaltyUsed) {
         banner.innerHTML =
-          "Votre réservation est <strong>modifiable</strong> et a été obtenue via la <strong>fidélité</strong>. Aucun nouveau paiement ne doit être demandé lors de la modification.";
+          "Votre réservation est <strong>modifiable</strong> et utilise la <strong>fidélité</strong>. Les <strong>2 premières personnes restent offertes</strong>, et seul un éventuel supplément au-delà est à payer.";
         return;
       }
 
@@ -1193,7 +1208,7 @@
       selectedPersons = clampPersons(reservation.persons || 2);
       select.value = String(selectedPersons);
 
-      select.addEventListener("change", async () => {
+      select.addEventListener("change", () => {
         selectedPersons = clampPersons(select.value);
         select.value = String(selectedPersons);
         renderSlots();
@@ -1342,10 +1357,11 @@
         const key = slotKeyFromIso(slot.startTime);
         const isSameAsCurrent = key === currentKey;
 
-        let estimatedPrice = computePriceFromDate(start, selectedPersons);
-        if (currentReservation.loyaltyUsed) {
-          estimatedPrice = 0;
-        }
+        const estimatedPrice = computeCashAmountFromDate(
+          start,
+          selectedPersons,
+          currentReservation.loyaltyUsed
+        );
 
         const btn = document.createElement("button");
         btn.type = "button";
@@ -1370,13 +1386,16 @@
 
     function getNewAmount() {
       if (!currentReservation) return 0;
-      if (currentReservation.loyaltyUsed) return 0;
 
       const start = selectedSlot
         ? parseDateOrNull(selectedSlot.startTime)
         : parseDateOrNull(currentReservation.startTime);
 
-      return computePriceFromDate(start, selectedPersons);
+      return computeCashAmountFromDate(
+        start,
+        selectedPersons,
+        currentReservation.loyaltyUsed
+      );
     }
 
     function getDeltaAmount(oldAmount, newAmount) {
@@ -1428,17 +1447,27 @@
       const decisionNote = getEl("decision-note");
 
       if (currentReservation.loyaltyUsed) {
-        decisionLabel.textContent = "Réservation fidélité";
-        decisionNote.textContent =
-          "Cette réservation a été obtenue avec les points de fidélité. Aucun complément à payer ne doit être demandé pour cette modification.";
+        if (delta > 0) {
+          decisionLabel.textContent = "Supplément fidélité";
+          decisionNote.textContent =
+            "La fidélité couvre toujours 2 personnes maximum. Le supplément vient uniquement des personnes au-delà de ce quota ou d’un changement de créneau plus cher.";
+        } else if (delta < 0) {
+          decisionLabel.textContent = "Baisse / remboursement";
+          decisionNote.textContent =
+            "La modification réduit le montant payé en complément de la fidélité. Le backend doit gérer le remboursement automatique.";
+        } else {
+          decisionLabel.textContent = "Aucun écart";
+          decisionNote.textContent =
+            "La réservation reste dans la même logique fidélité et ne change pas le montant payé.";
+        }
       } else if (delta > 0) {
         decisionLabel.textContent = "Complément à payer";
         decisionNote.textContent =
-          "La modification augmente le montant de la réservation. Le backend devra demander un complément avant validation finale.";
+          "La modification augmente le montant de la réservation. Le backend peut tenter un paiement automatique sur la carte enregistrée, sinon demander un paiement complémentaire.";
       } else if (delta < 0) {
-        decisionLabel.textContent = "Baisse de tarif";
+        decisionLabel.textContent = "Remboursement attendu";
         decisionNote.textContent =
-          "La modification réduit le montant estimé. Aucun remboursement automatique ne doit être appliqué sans validation backend.";
+          "La modification réduit le montant estimé. Le backend doit tenter un remboursement automatique.";
       } else {
         decisionLabel.textContent = "Aucun écart";
         decisionNote.textContent =
@@ -1552,18 +1581,44 @@
         const data = await safeJson(response);
 
         if (!response.ok) {
+          if (data.requiresAdditionalPayment) {
+            const delta = data?.financial?.deltaAmount ?? payload.deltaAmount ?? 0;
+            summaryMsg.textContent =
+              `Un paiement complémentaire de ${formatMoney(delta)} est nécessaire pour finaliser cette modification.`;
+            summaryMsg.className = "page-message warn";
+            btn.disabled = false;
+            return;
+          }
+
           summaryMsg.textContent = data.error || "Impossible de modifier la réservation.";
           summaryMsg.className = "page-message";
           btn.disabled = false;
           return;
         }
 
-        summaryMsg.textContent = "Réservation modifiée avec succès. Redirection vers votre compte...";
-        summaryMsg.className = "page-message ok";
+        if (data.success) {
+          const delta = Number(data?.financial?.deltaAmount || 0);
 
-        setTimeout(() => {
-          window.location.href = "mon-compte.html";
-        }, 1200);
+          if (delta > 0) {
+            summaryMsg.textContent = "Réservation modifiée avec supplément validé. Redirection vers votre compte...";
+          } else if (delta < 0) {
+            summaryMsg.textContent = "Réservation modifiée. Le remboursement a été demandé. Redirection vers votre compte...";
+          } else {
+            summaryMsg.textContent = "Réservation modifiée avec succès. Redirection vers votre compte...";
+          }
+
+          summaryMsg.className = "page-message ok";
+
+          setTimeout(() => {
+            window.location.href = "mon-compte.html";
+          }, 1200);
+
+          return;
+        }
+
+        summaryMsg.textContent = "Impossible de finaliser la modification.";
+        summaryMsg.className = "page-message";
+        btn.disabled = false;
       } catch (error) {
         console.error("Erreur modification réservation :", error);
         summaryMsg.textContent = "Erreur réseau. Merci de réessayer.";
@@ -1617,7 +1672,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
