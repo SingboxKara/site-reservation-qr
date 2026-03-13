@@ -714,6 +714,11 @@
       color: #f9fafb;
     }
 
+    .reservation-edit-btn {
+      background: linear-gradient(90deg, #0f766e, #1d4ed8);
+      color: #f9fafb;
+    }
+
     .reservation-action-btn[disabled] {
       opacity: 0.55;
       cursor: not-allowed;
@@ -1374,6 +1379,7 @@
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
     const CHECK_ENDPOINT = "https://singbox-backend.onrender.com/api/check";
+    const MODIFICATION_DEADLINE_HOURS = 6;
 
     function getStoredToken() {
       const token = localStorage.getItem("token");
@@ -1539,6 +1545,26 @@
       return hoursBefore >= 24;
     }
 
+    function isModificationPossible(startTimeIso, statusRaw) {
+      const start = parseDateOrNull(startTimeIso);
+      if (!start) {
+        return false;
+      }
+
+      const normalized = (statusRaw || "").toString().toLowerCase();
+      const isConfirmed =
+        normalized.includes("confirme") || normalized === "confirmed";
+
+      if (!isConfirmed) {
+        return false;
+      }
+
+      const now = new Date();
+      const diffHours = (start.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+      return diffHours >= MODIFICATION_DEADLINE_HOURS;
+    }
+
     function getReservationIdForQr(reservation) {
       return reservation?.id || null;
     }
@@ -1591,24 +1617,50 @@
     function buildQrButtonHtml(canShowQr, checkUrl, qrTitle) {
       if (!canShowQr) {
         return [
-          '<div class="reservation-actions-row">',
-          '  <button class="reservation-action-btn reservation-qr-btn" type="button" disabled>',
-          "    QR indisponible",
-          "  </button>",
-          "</div>"
+          '<button class="reservation-action-btn reservation-qr-btn" type="button" disabled>',
+          "  QR indisponible",
+          "</button>"
         ].join("");
       }
 
       return [
+        '<button',
+        '  class="reservation-action-btn reservation-qr-btn"',
+        `  data-qr-url="${checkUrl}"`,
+        `  data-qr-title="${qrTitle}"`,
+        '  type="button"',
+        ">",
+        "  Afficher le QR",
+        "</button>"
+      ].join("");
+    }
+
+    function buildEditButtonHtml(canEdit, reservation) {
+      if (!canEdit) {
+        return [
+          '<button class="reservation-action-btn reservation-edit-btn" type="button" disabled>',
+          "  Modifier",
+          "</button>"
+        ].join("");
+      }
+
+      const reservationId = reservation?.id ? String(reservation.id) : "";
+      return [
+        '<button',
+        '  class="reservation-action-btn reservation-edit-btn"',
+        `  data-edit-reservation-id="${reservationId}"`,
+        '  type="button"',
+        ">",
+        "  Modifier",
+        "</button>"
+      ].join("");
+    }
+
+    function buildActionsHtml(canShowQr, checkUrl, qrTitle, canEdit, reservation) {
+      return [
         '<div class="reservation-actions-row">',
-        '  <button',
-        '    class="reservation-action-btn reservation-qr-btn"',
-        `    data-qr-url="${checkUrl}"`,
-        `    data-qr-title="${qrTitle}"`,
-        '    type="button"',
-        "  >",
-        "    Afficher le QR",
-        "  </button>",
+        buildEditButtonHtml(canEdit, reservation),
+        buildQrButtonHtml(canShowQr, checkUrl, qrTitle),
         "</div>"
       ].join("");
     }
@@ -1676,11 +1728,12 @@
       const isInFuture = Boolean(parsedStart && parsedStart.getTime() > Date.now());
       const isFutureConfirmed = statutClass === "reservation-status-confirmed" && hasValidStart && isInFuture;
       const canRefund = isRefundPossible(startTimeIso);
+      const canEdit = isModificationPossible(startTimeIso, statutRaw);
 
       const priceHtml = montant ? `<div class="reservation-price">${montant} €</div>` : "";
       const statusHtml = statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : "";
-      const actionsHtml = buildQrButtonHtml(canShowQr, checkUrl, qrTitle);
-      const refundHtml = buildRefundHtml(canRefund, reservation.id, startTimeIso, isFutureConfirmed);
+      const actionsHtml = buildActionsHtml(canShowQr, checkUrl, qrTitle, canEdit, reservation);
+      const refundHtml = buildRefundHtml(reservationId ? canRefund : false, reservation.id, startTimeIso, isFutureConfirmed);
 
       item.innerHTML = `
         <div class="reservation-main-row">
@@ -2075,7 +2128,12 @@
       }
 
       listEl.addEventListener("click", async (e) => {
-        const btn = e.target.closest(".reservation-refund-btn");
+        const target = e.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
+
+        const btn = target.closest(".reservation-refund-btn");
         if (!btn) {
           return;
         }
@@ -2136,6 +2194,83 @@
       });
     }
 
+    function goToReservationEditPage(reservation) {
+      if (!reservation || typeof reservation !== "object") {
+        return;
+      }
+
+      try {
+        sessionStorage.setItem("reservation_to_edit", JSON.stringify(reservation));
+      } catch (error) {
+        console.error("Impossible de stocker reservation_to_edit :", error);
+      }
+
+      const reservationId = reservation.id ? encodeURIComponent(String(reservation.id)) : "";
+      const targetUrl = reservationId
+        ? `modifier-reservation.html?reservationId=${reservationId}`
+        : "modifier-reservation.html";
+
+      window.location.href = targetUrl;
+    }
+
+    function initEditReservationButtons() {
+      const listEl = document.getElementById("reservations-list");
+      if (!listEl) {
+        return;
+      }
+
+      listEl.addEventListener("click", async (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
+
+        const editBtn = target.closest(".reservation-edit-btn");
+        if (!editBtn || editBtn.hasAttribute("disabled")) {
+          return;
+        }
+
+        const reservationItem = editBtn.closest(".reservation-item");
+        if (!reservationItem) {
+          return;
+        }
+
+        const reservationId = editBtn.dataset.editReservationId;
+        if (!reservationId) {
+          return;
+        }
+
+        const token = getStoredToken();
+        if (!token) {
+          return;
+        }
+
+        try {
+          const response = await fetch(API_BASE + "/api/my-reservations", {
+            headers: { Authorization: "Bearer " + token }
+          });
+
+          if (!response.ok) {
+            console.error("Impossible de recharger les réservations avant modification :", response.status);
+            return;
+          }
+
+          const data = await safeJson(response);
+          const reservations = Array.isArray(data) ? data : (data.reservations || []);
+          const reservation = reservations.find((item) => String(item.id) === String(reservationId));
+
+          if (!reservation) {
+            console.error("Réservation introuvable pour modification :", reservationId);
+            return;
+          }
+
+          goToReservationEditPage(reservation);
+        } catch (error) {
+          console.error("Erreur ouverture page modification réservation :", error);
+        }
+      });
+    }
+
     function initQrActions() {
       const listEl = document.getElementById("reservations-list");
       const closeBtn = document.getElementById("qr-close-btn");
@@ -2180,7 +2315,12 @@
       }
 
       listEl.addEventListener("click", (e) => {
-        const qrBtn = e.target.closest(".reservation-qr-btn");
+        const target = e.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
+
+        const qrBtn = target.closest(".reservation-qr-btn");
         if (!qrBtn || qrBtn.hasAttribute("disabled")) {
           return;
         }
@@ -2209,9 +2349,15 @@
       });
 
       mobileNav.addEventListener("click", (e) => {
-        if (e.target.tagName !== "A") {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) {
           return;
         }
+
+        if (target.tagName !== "A") {
+          return;
+        }
+
         mobileNav.classList.remove("open");
         burgerBtn.setAttribute("aria-expanded", "false");
       });
@@ -2223,6 +2369,7 @@
       initLoginForm();
       initLogout();
       initRefundButtons();
+      initEditReservationButtons();
       initQrActions();
       loadProfile();
     });
@@ -2232,7 +2379,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
