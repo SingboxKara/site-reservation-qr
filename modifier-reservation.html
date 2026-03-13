@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Modifier ma réservation | Singbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta
+    name="description"
+    content="Modifiez votre réservation Singbox : ajustez l’horaire de votre séance ou le nombre de personnes jusqu’à 6 heures avant votre session de karaoké box à Toulouse."
+  />
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="canonical" href="https://www.singbox.fr/modifier-reservation" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Modifier ma réservation | Singbox" />
+  <meta
+    property="og:description"
+    content="Modifiez votre réservation Singbox jusqu’à 6 heures avant votre séance : horaire et nombre de personnes."
+  />
+  <meta property="og:url" content="https://www.singbox.fr/modifier-reservation" />
+  <meta property="og:site_name" content="Singbox" />
+  <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Modifier ma réservation | Singbox" />
+  <meta
+    name="twitter:description"
+    content="Ajustez l’horaire ou le nombre de personnes de votre réservation Singbox, selon les conditions de modification."
+  />
+  <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Modifier ma réservation",
+    "url": "https://www.singbox.fr/modifier-reservation",
+    "description": "Page de modification de réservation Singbox : changement d’horaire et ajustement du nombre de personnes jusqu’à 6 heures avant la séance.",
+    "inLanguage": "fr-FR",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Singbox",
+      "url": "https://www.singbox.fr"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/global.css" />
+
+  <style>
+    #reservation-edit-page {
+      position: relative;
+      padding: 10rem 0 72px;
+      background:
+        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
+        #050814;
+      color: var(--sb-text-main);
+      overflow: hidden;
+    }
+
+    #reservation-edit-page::before {
+      content: "♪";
+      position: absolute;
+      top: 14%;
+      left: 8%;
+      font-size: 34px;
+      color: rgba(148, 163, 184, 0.1);
+      pointer-events: none;
+    }
+
+    #reservation-edit-page::after {
+      content: "★";
+      position: absolute;
+      bottom: 16%;
+      right: 8%;
+      font-size: 30px;
+      color: rgba(148, 163, 184, 0.08);
+      pointer-events: none;
+    }
+
+    .edit-header {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+
+    .edit-eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--sb-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .edit-header h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .edit-header p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(249, 250, 251, 0.86);
+      line-height: 1.7;
+    }
+
+    .edit-layout {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 980px) {
+      .edit-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .edit-card {
+      background: var(--sb-card);
+      border-radius: 24px;
+      padding: 1.7rem 1.8rem;
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .edit-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .edit-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.08), transparent 58%);
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .edit-card h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .edit-card-subtitle {
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      margin: 0 0 14px;
+      line-height: 1.6;
+    }
+
+    .status-banner {
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(2, 6, 23, 0.9);
+      color: #f9fafb;
+    }
+
+    .status-banner.ok {
+      border-color: rgba(52, 211, 153, 0.45);
+      background: rgba(6, 95, 70, 0.22);
+      color: #d1fae5;
+    }
+
+    .status-banner.warn {
+      border-color: rgba(251, 191, 36, 0.45);
+      background: rgba(120, 53, 15, 0.22);
+      color: #fde68a;
+    }
+
+    .status-banner.error {
+      border-color: rgba(248, 113, 113, 0.45);
+      background: rgba(127, 29, 29, 0.25);
+      color: #fecaca;
+    }
+
+    .reservation-current-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 640px) {
+      .reservation-current-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .current-info-box {
+      border-radius: 18px;
+      padding: 12px 14px;
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .current-info-label {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .current-info-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .rule-list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      line-height: 1.7;
+    }
+
+    .edit-form-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .field-block label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .field-help {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      line-height: 1.55;
+    }
+
+    .field-block select {
+      width: 100%;
+      font-family: inherit;
+      font-size: 14px;
+      color: #f9fafb;
+      background: #020617;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 0.7rem 0.95rem;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .field-block select:focus {
+      border-color: var(--sb-orange);
+      box-shadow:
+        0 0 0 1px rgba(249, 115, 22, 0.8),
+        0 0 18px rgba(249, 115, 22, 0.18);
+    }
+
+    .slots-section-title {
+      font-size: 15px;
+      margin: 2px 0 10px;
+      color: #f9fafb;
+      font-weight: 700;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .slots-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .slot-option {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #020617;
+      color: #f9fafb;
+      padding: 12px 14px;
+      cursor: pointer;
+      text-align: left;
+      transition:
+        transform 0.14s ease,
+        box-shadow 0.14s ease,
+        border-color 0.14s ease,
+        background 0.14s ease;
+      min-height: 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .slot-option:hover,
+    .slot-option:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(249, 115, 22, 0.6);
+      box-shadow:
+        0 0 0 1px rgba(249, 115, 22, 0.35),
+        0 16px 36px rgba(0, 0, 0, 0.75);
+      outline: none;
+    }
+
+    .slot-option.selected {
+      border-color: rgba(129, 140, 248, 0.75);
+      background: linear-gradient(135deg, rgba(29, 78, 216, 0.45), rgba(76, 29, 149, 0.45));
+      box-shadow:
+        0 0 0 1px rgba(129, 140, 248, 0.55),
+        0 16px 38px rgba(0, 0, 0, 0.85);
+    }
+
+    .slot-time {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .slot-price {
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .slot-sub {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+    }
+
+    .no-slots-box {
+      margin-top: 8px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      line-height: 1.6;
+    }
+
+    .summary-card {
+      position: sticky;
+      top: 96px;
+    }
+
+    @media (max-width: 980px) {
+      .summary-card {
+        position: static;
+      }
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+    }
+
+    .summary-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: var(--sb-text-muted);
+    }
+
+    .summary-value {
+      text-align: right;
+      color: #f9fafb;
+      font-weight: 600;
+    }
+
+    .summary-value.positive {
+      color: #86efac;
+    }
+
+    .summary-value.negative {
+      color: #fca5a5;
+    }
+
+    .price-highlight-box {
+      margin-top: 14px;
+      border-radius: 18px;
+      padding: 12px 14px;
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .price-highlight-title {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .price-highlight-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #f9fafb;
+    }
+
+    .price-highlight-note {
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--sb-text-muted);
+    }
+
+    .summary-note {
+      margin-top: 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--sb-text-muted);
+    }
+
+    .summary-note strong {
+      color: #f9fafb;
+    }
+
+    .summary-actions {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-main,
+    .btn-secondary {
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 1.15rem;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, background 0.15s ease;
+      text-align: center;
+    }
+
+    .btn-main {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.16),
+        0 16px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .btn-main:hover,
+    .btn-main:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.24),
+        0 22px 54px rgba(0, 0, 0, 1);
+    }
+
+    .btn-secondary {
+      background: #111827;
+      color: #f9fafb;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 10px 28px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: #1f2937;
+      transform: translateY(-1px);
+    }
+
+    .btn-main[disabled],
+    .btn-secondary[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 8px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .page-message {
+      min-height: 18px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #fca5a5;
+      line-height: 1.55;
+    }
+
+    .page-message.ok {
+      color: #bbf7d0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo" />
+        <span class="brand-text">Singbox</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="concept.html">Le concept</a></li>
+          <li><a href="box.html">Les box</a></li>
+          <li><a href="actualites.html">Actualités</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="reservation.html" class="nav-cta">Réserver</a>
+        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
+          🛒<span id="cart-count"></span>
+        </a>
+        <button
+          class="burger-button"
+          id="burger-button"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          type="button"
+        >
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="concept.html">Le concept</a></li>
+      <li><a href="box.html">Les box</a></li>
+      <li><a href="actualites.html">Actualités</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="mon-compte.html">Mon compte</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="reservation-edit-page">
+      <div class="edit-header">
+        <p class="edit-eyebrow">Gestion de réservation</p>
+        <h1>Modifier ma réservation</h1>
+        <p>
+          Ajustez l’horaire de votre séance ou le nombre de personnes, sous réserve de disponibilité
+          et jusqu’à 6 heures avant le début de votre session.
+        </p>
+      </div>
+
+      <div class="edit-layout">
+        <div class="edit-left">
+          <div class="edit-card">
+            <h2>Réservation actuelle</h2>
+            <p class="edit-card-subtitle">
+              Vérifiez les informations de votre séance actuelle avant de choisir une nouvelle option.
+            </p>
+
+            <div id="edit-status-banner" class="status-banner">
+              Chargement de votre réservation…
+            </div>
+
+            <div class="reservation-current-grid">
+              <div class="current-info-box">
+                <div class="current-info-label">Référence</div>
+                <div class="current-info-value" id="current-reference">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Statut</div>
+                <div class="current-info-value" id="current-status">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Date</div>
+                <div class="current-info-value" id="current-date">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Horaire actuel</div>
+                <div class="current-info-value" id="current-slot">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Box</div>
+                <div class="current-info-value" id="current-box">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Participants</div>
+                <div class="current-info-value" id="current-persons">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Montant actuel</div>
+                <div class="current-info-value" id="current-amount">—</div>
+              </div>
+
+              <div class="current-info-box">
+                <div class="current-info-label">Délai restant</div>
+                <div class="current-info-value" id="current-deadline">—</div>
+              </div>
+            </div>
+
+            <ul class="rule-list">
+              <li>Modification possible jusqu’à <strong>6 heures avant</strong> la séance.</li>
+              <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
+              <li>Facturation minimale : <strong>2 personnes</strong>.</li>
+              <li>Une hausse de tarif demandera un complément lors de l’étape backend.</li>
+              <li>Une baisse de tarif n’ouvre pas automatiquement droit à remboursement.</li>
+            </ul>
+          </div>
+
+          <div class="edit-card" style="margin-top: 1.2rem;">
+            <h2>Nouvelle configuration</h2>
+            <p class="edit-card-subtitle">
+              Sélectionnez un nouvel horaire disponible et/ou ajustez le nombre de personnes.
+            </p>
+
+            <div class="edit-form-grid">
+              <div class="field-block">
+                <label for="new-persons">Nombre de personnes</label>
+                <select id="new-persons" aria-label="Nouveau nombre de personnes">
+                  <option value="1">1 personne</option>
+                  <option value="2">2 personnes</option>
+                  <option value="3">3 personnes</option>
+                  <option value="4">4 personnes</option>
+                  <option value="5">5 personnes</option>
+                  <option value="6">6 personnes</option>
+                  <option value="7">7 personnes</option>
+                  <option value="8">8 personnes</option>
+                </select>
+                <div class="field-help">
+                  Même si vous venez seul·e, la facturation minimale reste de 2 personnes.
+                </div>
+              </div>
+
+              <div class="field-block">
+                <div class="slots-section-title">Choisir un nouvel horaire</div>
+                <div id="slots-grid" class="slots-grid"></div>
+                <div id="no-slots-box" class="no-slots-box" style="display:none;">
+                  Aucun créneau alternatif disponible pour cette réservation.
+                </div>
+                <div class="field-help">
+                  Version simple conseillée : même box, même date, même durée de 1h30.
+                </div>
+              </div>
+            </div>
+
+            <div id="edit-page-message" class="page-message"></div>
+          </div>
+        </div>
+
+        <aside class="edit-right">
+          <div class="edit-card summary-card">
+            <h2>Résumé de la modification</h2>
+            <p class="edit-card-subtitle">
+              Ce résumé est calculé côté front. On branchera ensuite la vraie validation API/backend.
+            </p>
+
+            <div class="summary-row">
+              <div class="summary-label">Horaire actuel</div>
+              <div class="summary-value" id="summary-old-slot">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Nouvel horaire</div>
+              <div class="summary-value" id="summary-new-slot">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Participants actuels</div>
+              <div class="summary-value" id="summary-old-persons">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Nouveaux participants</div>
+              <div class="summary-value" id="summary-new-persons">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Montant actuel</div>
+              <div class="summary-value" id="summary-old-amount">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Nouveau montant estimé</div>
+              <div class="summary-value" id="summary-new-amount">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Différence</div>
+              <div class="summary-value" id="summary-delta">—</div>
+            </div>
+
+            <div class="price-highlight-box">
+              <div class="price-highlight-title">Décision attendue</div>
+              <div class="price-highlight-value" id="decision-label">—</div>
+              <div class="price-highlight-note" id="decision-note">
+                —
+              </div>
+            </div>
+
+            <p class="summary-note">
+              <strong>Important :</strong> cette page prépare la modification, mais la disponibilité réelle,
+              le verrouillage du créneau et l’éventuel paiement complémentaire devront être validés côté serveur.
+            </p>
+
+            <div class="summary-actions">
+              <button id="confirm-edit-btn" class="btn-main" type="button">
+                Confirmer la modification
+              </button>
+              <a href="mon-compte.html" class="btn-secondary">Retour à mon compte</a>
+            </div>
+
+            <div id="summary-message" class="page-message"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="newsletter-container">
+      <h3>Inscrivez-vous à notre newsletter</h3>
+      <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
+      <div class="newsletter-row">
+        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
+      </div>
+      <p id="newsletter-message" class="newsletter-message"></p>
+    </div>
+
+    <div class="footer-columns">
+      <div class="footer-brand">
+        <img src="logo.png" alt="Logo Singbox" />
+        <div>
+          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
+          <p style="margin:0;">Karaoké Box à Toulouse</p>
+        </div>
+      </div>
+
+      <div>
+        <p><strong>Infos</strong></p>
+        <p><a href="mentions-legales.html">Mentions légales</a></p>
+        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
+        <p><a href="cgv.html">CGV</a></p>
+      </div>
+
+      <div>
+        <p><strong>Contact</strong></p>
+        <p>Adresse : 66 Rue de la République, 31300 Toulouse</p>
+        <p>Email : contactsingbox@gmail.com</p>
+        <p>Téléphone : 06 00 00 00 00</p>
+      </div>
+
+      <div>
+        <p><strong>Réseaux</strong></p>
+
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
+          </svg>
+          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </p>
+
+        <p style="display:flex;align-items:center;gap:8px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
+          </svg>
+          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">TikTok</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
+  </footer>
+
+  <script>
+    const MIN_ALLOWED_PERSONS = 1;
+    const MAX_ALLOWED_PERSONS = 8;
+    const MIN_BILLABLE_PERSONS = 2;
+    const MODIFICATION_DEADLINE_HOURS = 6;
+    const SLOT_DURATION_MIN = 90;
+    const OFF_PEAK_START_HOUR = 4;
+    const OFF_PEAK_END_HOUR = 14;
+    const OFF_PEAK_RATE = 7.9;
+    const STANDARD_RATE = 9.9;
+
+    let currentReservation = null;
+    let selectedSlot = null;
+    let selectedPersons = 2;
+
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
+    function updateCartIcon() {
+      const el = getEl("cart-count");
+      if (!el) return;
+
+      let panier = [];
+      try {
+        panier = JSON.parse(localStorage.getItem("panier")) || [];
+      } catch {
+        panier = [];
+      }
+
+      el.textContent = panier.length ? String(panier.length) : "";
+    }
+
+    function initMobileMenu() {
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
+
+      if (!burgerBtn || !mobileNav) return;
+
+      burgerBtn.addEventListener("click", () => {
+        const willOpen = !mobileNav.classList.contains("open");
+        mobileNav.classList.toggle("open");
+        burgerBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.tagName !== "A") return;
+
+        mobileNav.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    function parseDateOrNull(dateStr) {
+      if (!dateStr) return null;
+      const date = new Date(dateStr);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function formatDateFr(dateStr) {
+      const date = parseDateOrNull(dateStr);
+      if (!date) return "Date à confirmer";
+
+      return date.toLocaleDateString("fr-FR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function formatHour(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+      return date.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }).replace(":", "h");
+    }
+
+    function formatMoney(value) {
+      return Number(value).toFixed(2).replace(".", ",") + " €";
+    }
+
+    function getHourFromDate(date) {
+      return date.getHours();
+    }
+
+    function isWeekend(date) {
+      const day = date.getDay();
+      return day === 0 || day === 6;
+    }
+
+    function isHolidayLike(date) {
+      return false;
+    }
+
+    function getPerPersonRate(date) {
+      const hour = getHourFromDate(date);
+
+      if (isWeekend(date) || isHolidayLike(date)) {
+        return STANDARD_RATE;
+      }
+
+      if (hour >= OFF_PEAK_START_HOUR && hour < OFF_PEAK_END_HOUR) {
+        return OFF_PEAK_RATE;
+      }
+
+      return STANDARD_RATE;
+    }
+
+    function getBillablePersons(persons) {
+      const p = Number.isFinite(persons) ? persons : MIN_BILLABLE_PERSONS;
+      return Math.max(p, MIN_BILLABLE_PERSONS);
+    }
+
+    function computePriceFromDate(date, persons) {
+      const billablePersons = getBillablePersons(persons);
+      const perPerson = getPerPersonRate(date);
+      return Number((perPerson * billablePersons).toFixed(2));
+    }
+
+    function getHoursBeforeStart(startIso) {
+      const start = parseDateOrNull(startIso);
+      if (!start) return null;
+
+      const now = new Date();
+      return (start.getTime() - now.getTime()) / (1000 * 60 * 60);
+    }
+
+    function isModificationAllowed(startIso, statusRaw) {
+      const status = (statusRaw || "").toString().toLowerCase();
+      const isConfirmed =
+        status.includes("confirme") || status === "confirmed";
+
+      if (!isConfirmed) return false;
+
+      const diff = getHoursBeforeStart(startIso);
+      if (diff === null) return false;
+
+      return diff >= MODIFICATION_DEADLINE_HOURS;
+    }
+
+    function formatHoursRemaining(startIso) {
+      const diff = getHoursBeforeStart(startIso);
+      if (diff === null) return "—";
+
+      if (diff <= 0) return "Séance commencée ou passée";
+
+      if (diff < 1) {
+        const min = Math.round(diff * 60);
+        return `${min} min`;
+      }
+
+      const rounded = Math.floor(diff * 10) / 10;
+      return `${rounded.toString().replace(".", ",")} h`;
+    }
+
+    function clampPersons(value) {
+      let n = Number.parseInt(value, 10);
+
+      if (Number.isNaN(n) || n < MIN_ALLOWED_PERSONS) {
+        n = MIN_ALLOWED_PERSONS;
+      }
+
+      if (n > MAX_ALLOWED_PERSONS) {
+        n = MAX_ALLOWED_PERSONS;
+      }
+
+      return n;
+    }
+
+    function getReservationIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("reservationId");
+    }
+
+    function buildDemoReservation() {
+      const now = new Date();
+      const future = new Date(now.getTime() + 30 * 60 * 60 * 1000);
+      future.setMinutes(0, 0, 0);
+
+      const end = new Date(future.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+
+      const persons = 4;
+      const amount = computePriceFromDate(future, persons);
+
+      return {
+        id: "DEMO-45812",
+        status: "Confirmée",
+        boxId: 1,
+        boxName: "Nuit étoilée",
+        date: future.toISOString(),
+        startTime: future.toISOString(),
+        endTime: end.toISOString(),
+        persons,
+        amountPaid: amount
+      };
+    }
+
+    function getStoredReservationToEdit() {
+      try {
+        const raw = sessionStorage.getItem("reservation_to_edit");
+        if (!raw) return null;
+
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return null;
+
+        return {
+          id: parsed.id || parsed.reference || "—",
+          status: parsed.status || parsed.statut || "Confirmée",
+          boxId: parsed.boxId || parsed.box_id || 1,
+          boxName: parsed.boxName || parsed.box_name || parsed.box || "Nuit étoilée",
+          date: parsed.start_time || parsed.startTime || parsed.datetime || parsed.date || null,
+          startTime: parsed.start_time || parsed.startTime || parsed.datetime || parsed.date || null,
+          endTime: parsed.end_time || parsed.endTime || null,
+          persons: Number(parsed.persons || parsed.nb_personnes || 2),
+          amountPaid: Number(parsed.amountPaid || parsed.montant || parsed.total || parsed.total_price || 0)
+        };
+      } catch (error) {
+        console.error("Erreur sessionStorage reservation_to_edit :", error);
+        return null;
+      }
+    }
+
+    function loadReservationData() {
+      const fromStorage = getStoredReservationToEdit();
+      if (fromStorage && fromStorage.startTime) {
+        return fromStorage;
+      }
+
+      const reservationId = getReservationIdFromUrl();
+      const demo = buildDemoReservation();
+
+      if (reservationId) {
+        demo.id = reservationId;
+      }
+
+      return demo;
+    }
+
+    function getAlternativeSlots(reservation) {
+      const start = parseDateOrNull(reservation.startTime);
+      if (!start) return [];
+
+      const date = new Date(start);
+      const baseDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+
+      const slotHours = [4, 5.5, 7, 8.5, 10, 11.5, 13, 14.5, 16, 17.5, 19, 20.5, 22];
+      const currentStartMs = start.getTime();
+
+      const alternatives = [];
+
+      for (const hourValue of slotHours) {
+        const totalMinutes = Math.round(hourValue * 60);
+        const slotStart = new Date(baseDay.getTime() + totalMinutes * 60 * 1000);
+        const slotEnd = new Date(slotStart.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+
+        if (slotStart.getTime() <= Date.now()) continue;
+        if (Math.abs(slotStart.getTime() - currentStartMs) < 60 * 1000) continue;
+
+        alternatives.push({
+          startTime: slotStart.toISOString(),
+          endTime: slotEnd.toISOString()
+        });
+      }
+
+      return alternatives.slice(0, 8);
+    }
+
+    function renderCurrentReservation(reservation) {
+      getEl("current-reference").textContent = reservation.id || "—";
+      getEl("current-status").textContent = reservation.status || "—";
+      getEl("current-date").textContent = formatDateFr(reservation.startTime);
+      getEl("current-slot").textContent =
+        `${formatHour(parseDateOrNull(reservation.startTime))} – ${formatHour(parseDateOrNull(reservation.endTime || new Date(parseDateOrNull(reservation.startTime).getTime() + SLOT_DURATION_MIN * 60 * 1000)))}`;
+      getEl("current-box").textContent = reservation.boxName || "—";
+      getEl("current-persons").textContent = `${reservation.persons} personne${reservation.persons > 1 ? "s" : ""}`;
+      getEl("current-amount").textContent = formatMoney(reservation.amountPaid || 0);
+      getEl("current-deadline").textContent = formatHoursRemaining(reservation.startTime);
+    }
+
+    function renderStatusBanner(reservation) {
+      const banner = getEl("edit-status-banner");
+      if (!banner) return;
+
+      const canModify = isModificationAllowed(reservation.startTime, reservation.status);
+
+      banner.className = "status-banner " + (canModify ? "ok" : "error");
+
+      if (canModify) {
+        banner.innerHTML =
+          "Votre réservation est <strong>modifiable</strong>. Vous pouvez changer l’horaire ou le nombre de personnes jusqu’à 6 heures avant le début de la séance.";
+        return;
+      }
+
+      banner.innerHTML =
+        "Cette réservation n’est plus modifiable en ligne. Le délai de 6 heures avant la séance est dépassé ou la réservation n’est pas dans un état modifiable.";
+    }
+
+    function renderPersonsSelect(reservation) {
+      const select = getEl("new-persons");
+      if (!select) return;
+
+      selectedPersons = clampPersons(reservation.persons || 2);
+      select.value = String(selectedPersons);
+
+      select.addEventListener("change", () => {
+        selectedPersons = clampPersons(select.value);
+        select.value = String(selectedPersons);
+        updateSummary();
+      });
+    }
+
+    function renderSlots(reservation) {
+      const slotsGrid = getEl("slots-grid");
+      const noSlotsBox = getEl("no-slots-box");
+
+      if (!slotsGrid || !noSlotsBox) return;
+
+      slotsGrid.innerHTML = "";
+      selectedSlot = null;
+
+      const alternatives = getAlternativeSlots(reservation);
+
+      if (!alternatives.length) {
+        noSlotsBox.style.display = "block";
+        updateSummary();
+        return;
+      }
+
+      noSlotsBox.style.display = "none";
+
+      for (const slot of alternatives) {
+        const start = parseDateOrNull(slot.startTime);
+        const estimatedPrice = computePriceFromDate(start, selectedPersons);
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "slot-option";
+        btn.innerHTML = `
+          <span class="slot-time">${formatHour(start)} – ${formatHour(parseDateOrNull(slot.endTime))}</span>
+          <span class="slot-price">${formatMoney(estimatedPrice)}</span>
+          <span class="slot-sub">Même box • même durée</span>
+        `;
+
+        btn.addEventListener("click", () => {
+          const all = slotsGrid.querySelectorAll(".slot-option");
+          all.forEach((node) => node.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedSlot = slot;
+          updateSummary();
+        });
+
+        slotsGrid.appendChild(btn);
+      }
+    }
+
+    function getNewAmount() {
+      if (!currentReservation) return 0;
+
+      const start = selectedSlot
+        ? parseDateOrNull(selectedSlot.startTime)
+        : parseDateOrNull(currentReservation.startTime);
+
+      return computePriceFromDate(start, selectedPersons);
+    }
+
+    function getDeltaAmount(oldAmount, newAmount) {
+      return Number((newAmount - oldAmount).toFixed(2));
+    }
+
+    function updateSummary() {
+      if (!currentReservation) return;
+
+      const oldStart = parseDateOrNull(currentReservation.startTime);
+      const oldEnd = parseDateOrNull(currentReservation.endTime) ||
+        new Date(oldStart.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+
+      const newStart = selectedSlot
+        ? parseDateOrNull(selectedSlot.startTime)
+        : oldStart;
+
+      const newEnd = selectedSlot
+        ? parseDateOrNull(selectedSlot.endTime)
+        : oldEnd;
+
+      const oldAmount = Number(currentReservation.amountPaid || 0);
+      const newAmount = getNewAmount();
+      const delta = getDeltaAmount(oldAmount, newAmount);
+
+      getEl("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
+      getEl("summary-new-slot").textContent = `${formatHour(newStart)} – ${formatHour(newEnd)}`;
+      getEl("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
+      getEl("summary-new-persons").textContent = `${selectedPersons} personne${selectedPersons > 1 ? "s" : ""}`;
+      getEl("summary-old-amount").textContent = formatMoney(oldAmount);
+      getEl("summary-new-amount").textContent = formatMoney(newAmount);
+
+      const deltaEl = getEl("summary-delta");
+      deltaEl.className = "summary-value";
+
+      if (delta > 0) {
+        deltaEl.textContent = "+ " + formatMoney(delta);
+        deltaEl.classList.add("positive");
+      } else if (delta < 0) {
+        deltaEl.textContent = "- " + formatMoney(Math.abs(delta));
+        deltaEl.classList.add("negative");
+      } else {
+        deltaEl.textContent = formatMoney(0);
+      }
+
+      const decisionLabel = getEl("decision-label");
+      const decisionNote = getEl("decision-note");
+
+      if (delta > 0) {
+        decisionLabel.textContent = "Complément à payer";
+        decisionNote.textContent =
+          "La modification augmente le montant de la réservation. Lors du branchement backend, il faudra demander un paiement complémentaire avant validation finale.";
+      } else if (delta < 0) {
+        decisionLabel.textContent = "Baisse de tarif";
+        decisionNote.textContent =
+          "La modification réduit le montant estimé. Selon votre politique, aucun remboursement automatique n’est appliqué à ce stade.";
+      } else {
+        decisionLabel.textContent = "Aucun écart";
+        decisionNote.textContent =
+          "La modification ne change pas le montant estimé de la réservation.";
+      }
+
+      updateActionAvailability();
+    }
+
+    function updateActionAvailability() {
+      const canModify = currentReservation
+        ? isModificationAllowed(currentReservation.startTime, currentReservation.status)
+        : false;
+
+      const confirmBtn = getEl("confirm-edit-btn");
+      const pageMsg = getEl("edit-page-message");
+      const summaryMsg = getEl("summary-message");
+
+      if (!confirmBtn || !pageMsg || !summaryMsg) return;
+
+      pageMsg.textContent = "";
+      pageMsg.classList.remove("ok");
+      summaryMsg.textContent = "";
+      summaryMsg.classList.remove("ok");
+
+      if (!canModify) {
+        confirmBtn.disabled = true;
+        pageMsg.textContent = "Modification impossible : délai dépassé ou réservation non modifiable.";
+        return;
+      }
+
+      if (!selectedSlot && selectedPersons === currentReservation.persons) {
+        confirmBtn.disabled = true;
+        pageMsg.textContent = "Sélectionnez un nouvel horaire ou modifiez le nombre de personnes.";
+        return;
+      }
+
+      confirmBtn.disabled = false;
+    }
+
+    function buildPayloadPreview() {
+      if (!currentReservation) return null;
+
+      const newStartIso = selectedSlot ? selectedSlot.startTime : currentReservation.startTime;
+      const newEndIso = selectedSlot ? selectedSlot.endTime : currentReservation.endTime;
+      const newAmount = getNewAmount();
+      const oldAmount = Number(currentReservation.amountPaid || 0);
+
+      return {
+        reservationId: currentReservation.id,
+        oldStartTime: currentReservation.startTime,
+        newStartTime: newStartIso,
+        oldPersons: currentReservation.persons,
+        newPersons: selectedPersons,
+        oldAmount,
+        newAmount,
+        deltaAmount: Number((newAmount - oldAmount).toFixed(2)),
+        boxId: currentReservation.boxId,
+        boxName: currentReservation.boxName
+      };
+    }
+
+    function initConfirmButton() {
+      const btn = getEl("confirm-edit-btn");
+      const summaryMsg = getEl("summary-message");
+
+      if (!btn || !summaryMsg) return;
+
+      btn.addEventListener("click", () => {
+        if (!currentReservation) return;
+
+        const canModify = isModificationAllowed(currentReservation.startTime, currentReservation.status);
+        if (!canModify) {
+          summaryMsg.textContent = "Cette réservation ne peut plus être modifiée.";
+          summaryMsg.classList.remove("ok");
+          return;
+        }
+
+        const payloadPreview = buildPayloadPreview();
+        if (!payloadPreview) {
+          summaryMsg.textContent = "Impossible de préparer la modification.";
+          summaryMsg.classList.remove("ok");
+          return;
+        }
+
+        sessionStorage.setItem("reservation_edit_preview", JSON.stringify(payloadPreview));
+
+        console.log("Prévisualisation modification réservation :", payloadPreview);
+
+        summaryMsg.textContent =
+          "Prévisualisation enregistrée côté front. Prochaine étape : brancher cette action à l’API de modification.";
+        summaryMsg.classList.add("ok");
+      });
+    }
+
+    function initPage() {
+      initMobileMenu();
+      updateCartIcon();
+
+      currentReservation = loadReservationData();
+
+      renderCurrentReservation(currentReservation);
+      renderStatusBanner(currentReservation);
+      renderPersonsSelect(currentReservation);
+      renderSlots(currentReservation);
+      updateSummary();
+      initConfirmButton();
+    }
+
+    document.addEventListener("DOMContentLoaded", initPage);
+  </script>
+
+  <!-- Supabase Newsletter -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
+
+      if (!emailInput || !submitBtn || !messageBox) return;
+
+      submitBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+
+        messageBox.style.color = "#e5e7eb";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (!email || !email.includes("@")) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert([{ email }]);
+
+        if (error) {
+          const isDuplicate =
+            error.code === "23505" ||
+            (error.message && error.message.includes("duplicate key value"));
+
+          if (isDuplicate) {
+            messageBox.style.color = "#38bdf8";
+            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
+            return;
+          }
+
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur : " + error.message;
+          return;
+        }
+
+        messageBox.style.color = "#38bdf8";
+        messageBox.textContent = "Merci ! Vous êtes inscrit.";
+        emailInput.value = "";
+      });
+    });
+  </script>
+
+</body>
+</html>
