@@ -7,7 +7,7 @@
 
   <meta
     name="description"
-    content="Modifiez votre réservation Singbox : ajustez l’horaire de votre séance ou le nombre de personnes jusqu’à 6 heures avant votre session de karaoké box à Toulouse."
+    content="Modifiez votre réservation Singbox : ajustez la date, l’horaire ou le nombre de personnes jusqu’à 6 heures avant votre session de karaoké box à Toulouse."
   />
   <meta name="robots" content="noindex,nofollow" />
   <link rel="canonical" href="https://www.singbox.fr/modifier-reservation" />
@@ -17,7 +17,7 @@
   <meta property="og:title" content="Modifier ma réservation | Singbox" />
   <meta
     property="og:description"
-    content="Modifiez votre réservation Singbox jusqu’à 6 heures avant votre séance : horaire et nombre de personnes."
+    content="Modifiez votre réservation Singbox jusqu’à 6 heures avant votre séance : date, horaire et nombre de personnes."
   />
   <meta property="og:url" content="https://www.singbox.fr/modifier-reservation" />
   <meta property="og:site_name" content="Singbox" />
@@ -27,25 +27,9 @@
   <meta name="twitter:title" content="Modifier ma réservation | Singbox" />
   <meta
     name="twitter:description"
-    content="Ajustez l’horaire ou le nombre de personnes de votre réservation Singbox, selon les conditions de modification."
+    content="Ajustez la date, l’horaire ou le nombre de personnes de votre réservation Singbox, selon les conditions de modification."
   />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Modifier ma réservation",
-    "url": "https://www.singbox.fr/modifier-reservation",
-    "description": "Page de modification de réservation Singbox : changement d’horaire et ajustement du nombre de personnes jusqu’à 6 heures avant la séance.",
-    "inLanguage": "fr-FR",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Singbox",
-      "url": "https://www.singbox.fr"
-    }
-  }
-  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -89,9 +73,10 @@
     }
 
     .edit-header {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto 28px;
       text-align: center;
+      padding: 0 24px;
     }
 
     .edit-eyebrow {
@@ -244,6 +229,18 @@
       margin-top: 12px;
     }
 
+    .dual-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .dual-fields {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     .field-block label {
       display: block;
       margin-bottom: 6px;
@@ -259,7 +256,8 @@
       line-height: 1.55;
     }
 
-    .field-block select {
+    .field-block select,
+    .field-block input[type="date"] {
       width: 100%;
       font-family: inherit;
       font-size: 14px;
@@ -272,11 +270,17 @@
       transition: border-color 0.16s ease, box-shadow 0.16s ease;
     }
 
-    .field-block select:focus {
+    .field-block select:focus,
+    .field-block input[type="date"]:focus {
       border-color: var(--sb-orange);
       box-shadow:
         0 0 0 1px rgba(249, 115, 22, 0.8),
         0 0 18px rgba(249, 115, 22, 0.18);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
     }
 
     .slots-section-title {
@@ -452,7 +456,7 @@
     }
 
     .btn-main,
-    .btn-secondary {
+    .btn-secondary-link {
       border: none;
       border-radius: 999px;
       padding: 0.85rem 1.15rem;
@@ -463,6 +467,10 @@
       text-transform: uppercase;
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, background 0.15s ease;
       text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-main {
@@ -482,7 +490,7 @@
         0 22px 54px rgba(0, 0, 0, 1);
     }
 
-    .btn-secondary {
+    .btn-secondary-link {
       background: #111827;
       color: #f9fafb;
       box-shadow:
@@ -490,14 +498,13 @@
         0 10px 28px rgba(0, 0, 0, 0.8);
     }
 
-    .btn-secondary:hover,
-    .btn-secondary:focus-visible {
+    .btn-secondary-link:hover,
+    .btn-secondary-link:focus-visible {
       background: #1f2937;
       transform: translateY(-1px);
     }
 
-    .btn-main[disabled],
-    .btn-secondary[disabled] {
+    .btn-main[disabled] {
       opacity: 0.55;
       cursor: not-allowed;
       transform: none;
@@ -518,11 +525,20 @@
     .page-message.ok {
       color: #bbf7d0;
     }
+
+    .page-message.info {
+      color: #93c5fd;
+    }
+
+    .newsletter-message {
+      font-size: 12px;
+      margin-top: 6px;
+      min-height: 16px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -560,7 +576,6 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -578,8 +593,8 @@
         <p class="edit-eyebrow">Gestion de réservation</p>
         <h1>Modifier ma réservation</h1>
         <p>
-          Ajustez l’horaire de votre séance ou le nombre de personnes, sous réserve de disponibilité
-          et jusqu’à 6 heures avant le début de votre session.
+          Ajustez la date, l’horaire de votre séance ou le nombre de personnes,
+          sous réserve de disponibilité et jusqu’à 6 heures avant le début de votre session.
         </p>
       </div>
 
@@ -641,32 +656,42 @@
               <li>Modification possible jusqu’à <strong>6 heures avant</strong> la séance.</li>
               <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
               <li>Facturation minimale : <strong>2 personnes</strong>.</li>
-              <li>Une hausse de tarif demandera un complément lors de l’étape backend.</li>
-              <li>Une baisse de tarif n’ouvre pas automatiquement droit à remboursement.</li>
+              <li>Si la réservation a été obtenue via la fidélité, la modification reste à <strong>0 €</strong>.</li>
+              <li>Le complément éventuel ne doit être calculé que pour une réservation réellement payée.</li>
             </ul>
           </div>
 
           <div class="edit-card" style="margin-top: 1.2rem;">
             <h2>Nouvelle configuration</h2>
             <p class="edit-card-subtitle">
-              Sélectionnez un nouvel horaire disponible et/ou ajustez le nombre de personnes.
+              Sélectionnez une nouvelle date, un nouvel horaire disponible et/ou ajustez le nombre de personnes.
             </p>
 
             <div class="edit-form-grid">
-              <div class="field-block">
-                <label for="new-persons">Nombre de personnes</label>
-                <select id="new-persons" aria-label="Nouveau nombre de personnes">
-                  <option value="1">1 personne</option>
-                  <option value="2">2 personnes</option>
-                  <option value="3">3 personnes</option>
-                  <option value="4">4 personnes</option>
-                  <option value="5">5 personnes</option>
-                  <option value="6">6 personnes</option>
-                  <option value="7">7 personnes</option>
-                  <option value="8">8 personnes</option>
-                </select>
-                <div class="field-help">
-                  Même si vous venez seul·e, la facturation minimale reste de 2 personnes.
+              <div class="dual-fields">
+                <div class="field-block">
+                  <label for="new-date">Nouvelle date</label>
+                  <input type="date" id="new-date" aria-label="Nouvelle date de réservation" />
+                  <div class="field-help">
+                    Vous pouvez changer de jour si un créneau est disponible pour la même box.
+                  </div>
+                </div>
+
+                <div class="field-block">
+                  <label for="new-persons">Nombre de personnes</label>
+                  <select id="new-persons" aria-label="Nouveau nombre de personnes">
+                    <option value="1">1 personne</option>
+                    <option value="2">2 personnes</option>
+                    <option value="3">3 personnes</option>
+                    <option value="4">4 personnes</option>
+                    <option value="5">5 personnes</option>
+                    <option value="6">6 personnes</option>
+                    <option value="7">7 personnes</option>
+                    <option value="8">8 personnes</option>
+                  </select>
+                  <div class="field-help">
+                    Même si vous venez seul·e, la facturation minimale reste de 2 personnes.
+                  </div>
                 </div>
               </div>
 
@@ -674,10 +699,10 @@
                 <div class="slots-section-title">Choisir un nouvel horaire</div>
                 <div id="slots-grid" class="slots-grid"></div>
                 <div id="no-slots-box" class="no-slots-box" style="display:none;">
-                  Aucun créneau alternatif disponible pour cette réservation.
+                  Aucun créneau alternatif disponible pour cette date et cette box.
                 </div>
                 <div class="field-help">
-                  Version simple conseillée : même box, même date, même durée de 1h30.
+                  Seuls les créneaux encore libres pour la même box sont proposés.
                 </div>
               </div>
             </div>
@@ -690,8 +715,18 @@
           <div class="edit-card summary-card">
             <h2>Résumé de la modification</h2>
             <p class="edit-card-subtitle">
-              Ce résumé est calculé côté front. On branchera ensuite la vraie validation API/backend.
+              Le résumé ci-dessous tient compte du cas fidélité, du changement de date, de l’horaire et du nombre de personnes.
             </p>
+
+            <div class="summary-row">
+              <div class="summary-label">Date actuelle</div>
+              <div class="summary-value" id="summary-old-date">—</div>
+            </div>
+
+            <div class="summary-row">
+              <div class="summary-label">Nouvelle date</div>
+              <div class="summary-value" id="summary-new-date">—</div>
+            </div>
 
             <div class="summary-row">
               <div class="summary-label">Horaire actuel</div>
@@ -731,21 +766,19 @@
             <div class="price-highlight-box">
               <div class="price-highlight-title">Décision attendue</div>
               <div class="price-highlight-value" id="decision-label">—</div>
-              <div class="price-highlight-note" id="decision-note">
-                —
-              </div>
+              <div class="price-highlight-note" id="decision-note">—</div>
             </div>
 
             <p class="summary-note">
-              <strong>Important :</strong> cette page prépare la modification, mais la disponibilité réelle,
-              le verrouillage du créneau et l’éventuel paiement complémentaire devront être validés côté serveur.
+              <strong>Important :</strong> si la réservation avait été obtenue avec les points de fidélité,
+              cette page considère qu’il n’y a <strong>aucun complément à payer</strong> lors d’une modification.
             </p>
 
             <div class="summary-actions">
               <button id="confirm-edit-btn" class="btn-main" type="button">
                 Confirmer la modification
               </button>
-              <a href="mon-compte.html" class="btn-secondary">Retour à mon compte</a>
+              <a href="mon-compte.html" class="btn-secondary-link">Retour à mon compte</a>
             </div>
 
             <div id="summary-message" class="page-message"></div>
@@ -755,7 +788,6 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -816,6 +848,7 @@
   </footer>
 
   <script>
+    const API_BASE = "https://singbox-backend.onrender.com";
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 8;
     const MIN_BILLABLE_PERSONS = 2;
@@ -829,9 +862,22 @@
     let currentReservation = null;
     let selectedSlot = null;
     let selectedPersons = 2;
+    let selectedDateIso = null;
+    let availableSlots = [];
 
     function getEl(id) {
       return document.getElementById(id);
+    }
+
+    function getStoredToken() {
+      const token = localStorage.getItem("token");
+      if (!token || token === "null" || token === "undefined") return null;
+      return token;
+    }
+
+    function getAuthHeaders() {
+      const token = getStoredToken();
+      return token ? { Authorization: "Bearer " + token } : {};
     }
 
     function updateCartIcon() {
@@ -876,6 +922,14 @@
       return Number.isNaN(date.getTime()) ? null : date;
     }
 
+    function pad2(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function toLocalYMD(date) {
+      return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+    }
+
     function formatDateFr(dateStr) {
       const date = parseDateOrNull(dateStr);
       if (!date) return "Date à confirmer";
@@ -896,12 +950,18 @@
       }).replace(":", "h");
     }
 
-    function formatMoney(value) {
-      return Number(value).toFixed(2).replace(".", ",") + " €";
+    function formatRange(startIso, endIso) {
+      const start = parseDateOrNull(startIso);
+      let end = parseDateOrNull(endIso);
+
+      if (!start) return "—";
+      if (!end) end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+
+      return `${formatHour(start)} – ${formatHour(end)}`;
     }
 
-    function getHourFromDate(date) {
-      return date.getHours();
+    function formatMoney(value) {
+      return Number(value || 0).toFixed(2).replace(".", ",") + " €";
     }
 
     function isWeekend(date) {
@@ -909,12 +969,12 @@
       return day === 0 || day === 6;
     }
 
-    function isHolidayLike(date) {
+    function isHolidayLike(_date) {
       return false;
     }
 
     function getPerPersonRate(date) {
-      const hour = getHourFromDate(date);
+      const hour = date.getHours();
 
       if (isWeekend(date) || isHolidayLike(date)) {
         return STANDARD_RATE;
@@ -941,16 +1001,12 @@
     function getHoursBeforeStart(startIso) {
       const start = parseDateOrNull(startIso);
       if (!start) return null;
-
-      const now = new Date();
-      return (start.getTime() - now.getTime()) / (1000 * 60 * 60);
+      return (start.getTime() - Date.now()) / (1000 * 60 * 60);
     }
 
     function isModificationAllowed(startIso, statusRaw) {
       const status = (statusRaw || "").toString().toLowerCase();
-      const isConfirmed =
-        status.includes("confirme") || status === "confirmed";
-
+      const isConfirmed = status.includes("confirme") || status === "confirmed";
       if (!isConfirmed) return false;
 
       const diff = getHoursBeforeStart(startIso);
@@ -962,28 +1018,16 @@
     function formatHoursRemaining(startIso) {
       const diff = getHoursBeforeStart(startIso);
       if (diff === null) return "—";
-
       if (diff <= 0) return "Séance commencée ou passée";
-
-      if (diff < 1) {
-        const min = Math.round(diff * 60);
-        return `${min} min`;
-      }
-
-      const rounded = Math.floor(diff * 10) / 10;
-      return `${rounded.toString().replace(".", ",")} h`;
+      if (diff < 1) return `${Math.round(diff * 60)} min`;
+      return `${(Math.floor(diff * 10) / 10).toString().replace(".", ",")} h`;
     }
 
     function clampPersons(value) {
       let n = Number.parseInt(value, 10);
 
-      if (Number.isNaN(n) || n < MIN_ALLOWED_PERSONS) {
-        n = MIN_ALLOWED_PERSONS;
-      }
-
-      if (n > MAX_ALLOWED_PERSONS) {
-        n = MAX_ALLOWED_PERSONS;
-      }
+      if (Number.isNaN(n) || n < MIN_ALLOWED_PERSONS) n = MIN_ALLOWED_PERSONS;
+      if (n > MAX_ALLOWED_PERSONS) n = MAX_ALLOWED_PERSONS;
 
       return n;
     }
@@ -993,105 +1037,125 @@
       return params.get("reservationId");
     }
 
-    function buildDemoReservation() {
-      const now = new Date();
-      const future = new Date(now.getTime() + 30 * 60 * 60 * 1000);
-      future.setMinutes(0, 0, 0);
+    function getLoyaltyInfo(reservation) {
+      const pointsSpent = Number(
+        reservation.points_spent ??
+        reservation.loyalty_points_used ??
+        reservation.pointsUsed ??
+        0
+      ) || 0;
 
-      const end = new Date(future.getTime() + SLOT_DURATION_MIN * 60 * 1000);
-
-      const persons = 4;
-      const amount = computePriceFromDate(future, persons);
+      const loyaltyUsed =
+        Boolean(
+          reservation.loyalty_used === true ||
+          reservation.loyaltyUsed === true ||
+          reservation.is_loyalty_booking === true ||
+          reservation.free_by_loyalty === true ||
+          pointsSpent >= 100
+        );
 
       return {
-        id: "DEMO-45812",
-        status: "Confirmée",
-        boxId: 1,
-        boxName: "Nuit étoilée",
-        date: future.toISOString(),
-        startTime: future.toISOString(),
-        endTime: end.toISOString(),
-        persons,
-        amountPaid: amount
+        loyaltyUsed,
+        pointsSpent
       };
     }
 
-    function getStoredReservationToEdit() {
+    function normalizeReservation(raw) {
+      const startTime =
+        raw.start_time ||
+        raw.startTime ||
+        raw.datetime ||
+        raw.date ||
+        null;
+
+      const endTime =
+        raw.end_time ||
+        raw.endTime ||
+        (startTime ? new Date(new Date(startTime).getTime() + SLOT_DURATION_MIN * 60 * 1000).toISOString() : null);
+
+      const amountPaidRaw =
+        raw.amountPaid ??
+        raw.montant ??
+        raw.total ??
+        raw.total_price ??
+        raw.paid_amount ??
+        0;
+
+      const personsRaw =
+        raw.persons ??
+        raw.nb_personnes ??
+        raw.participants ??
+        2;
+
+      const normalized = {
+        id: raw.id || raw.reference || "—",
+        status: raw.status || raw.statut || "confirmed",
+        boxId: Number(raw.boxId || raw.box_id || 1),
+        boxName: raw.boxName || raw.box_name || raw.box || `Box ${raw.box_id || 1}`,
+        startTime,
+        endTime,
+        persons: clampPersons(personsRaw),
+        amountPaid: Number(amountPaidRaw) || 0,
+        email: raw.email || null,
+        raw
+      };
+
+      const loyaltyInfo = getLoyaltyInfo(raw);
+      normalized.loyaltyUsed = loyaltyInfo.loyaltyUsed;
+      normalized.pointsSpent = loyaltyInfo.pointsSpent;
+
+      return normalized;
+    }
+
+    async function safeJson(response) {
       try {
-        const raw = sessionStorage.getItem("reservation_to_edit");
-        if (!raw) return null;
-
-        const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== "object") return null;
-
-        return {
-          id: parsed.id || parsed.reference || "—",
-          status: parsed.status || parsed.statut || "Confirmée",
-          boxId: parsed.boxId || parsed.box_id || 1,
-          boxName: parsed.boxName || parsed.box_name || parsed.box || "Nuit étoilée",
-          date: parsed.start_time || parsed.startTime || parsed.datetime || parsed.date || null,
-          startTime: parsed.start_time || parsed.startTime || parsed.datetime || parsed.date || null,
-          endTime: parsed.end_time || parsed.endTime || null,
-          persons: Number(parsed.persons || parsed.nb_personnes || 2),
-          amountPaid: Number(parsed.amountPaid || parsed.montant || parsed.total || parsed.total_price || 0)
-        };
-      } catch (error) {
-        console.error("Erreur sessionStorage reservation_to_edit :", error);
-        return null;
+        return await response.json();
+      } catch {
+        return {};
       }
     }
 
-    function loadReservationData() {
-      const fromStorage = getStoredReservationToEdit();
-      if (fromStorage && fromStorage.startTime) {
-        return fromStorage;
+    async function loadReservationData() {
+      const token = getStoredToken();
+      if (!token) {
+        throw new Error("Vous devez être connecté pour modifier une réservation.");
       }
 
       const reservationId = getReservationIdFromUrl();
-      const demo = buildDemoReservation();
-
-      if (reservationId) {
-        demo.id = reservationId;
+      if (!reservationId) {
+        throw new Error("Aucune réservation sélectionnée.");
       }
 
-      return demo;
-    }
+      const response = await fetch(`${API_BASE}/api/my-reservations`, {
+        headers: getAuthHeaders()
+      });
 
-    function getAlternativeSlots(reservation) {
-      const start = parseDateOrNull(reservation.startTime);
-      if (!start) return [];
+      const data = await safeJson(response);
 
-      const date = new Date(start);
-      const baseDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
-
-      const slotHours = [4, 5.5, 7, 8.5, 10, 11.5, 13, 14.5, 16, 17.5, 19, 20.5, 22];
-      const currentStartMs = start.getTime();
-
-      const alternatives = [];
-
-      for (const hourValue of slotHours) {
-        const totalMinutes = Math.round(hourValue * 60);
-        const slotStart = new Date(baseDay.getTime() + totalMinutes * 60 * 1000);
-        const slotEnd = new Date(slotStart.getTime() + SLOT_DURATION_MIN * 60 * 1000);
-
-        if (slotStart.getTime() <= Date.now()) continue;
-        if (Math.abs(slotStart.getTime() - currentStartMs) < 60 * 1000) continue;
-
-        alternatives.push({
-          startTime: slotStart.toISOString(),
-          endTime: slotEnd.toISOString()
-        });
+      if (!response.ok) {
+        throw new Error(data.error || "Impossible de charger vos réservations.");
       }
 
-      return alternatives.slice(0, 8);
+      const reservations = Array.isArray(data)
+        ? data
+        : Array.isArray(data.reservations)
+          ? data.reservations
+          : [];
+
+      const found = reservations.find((r) => String(r.id) === String(reservationId));
+
+      if (!found) {
+        throw new Error("Réservation introuvable sur votre compte.");
+      }
+
+      return normalizeReservation(found);
     }
 
     function renderCurrentReservation(reservation) {
       getEl("current-reference").textContent = reservation.id || "—";
       getEl("current-status").textContent = reservation.status || "—";
       getEl("current-date").textContent = formatDateFr(reservation.startTime);
-      getEl("current-slot").textContent =
-        `${formatHour(parseDateOrNull(reservation.startTime))} – ${formatHour(parseDateOrNull(reservation.endTime || new Date(parseDateOrNull(reservation.startTime).getTime() + SLOT_DURATION_MIN * 60 * 1000)))}`;
+      getEl("current-slot").textContent = formatRange(reservation.startTime, reservation.endTime);
       getEl("current-box").textContent = reservation.boxName || "—";
       getEl("current-persons").textContent = `${reservation.persons} personne${reservation.persons > 1 ? "s" : ""}`;
       getEl("current-amount").textContent = formatMoney(reservation.amountPaid || 0);
@@ -1106,14 +1170,20 @@
 
       banner.className = "status-banner " + (canModify ? "ok" : "error");
 
-      if (canModify) {
+      if (!canModify) {
         banner.innerHTML =
-          "Votre réservation est <strong>modifiable</strong>. Vous pouvez changer l’horaire ou le nombre de personnes jusqu’à 6 heures avant le début de la séance.";
+          "Cette réservation n’est plus modifiable en ligne. Le délai de 6 heures avant la séance est dépassé ou la réservation n’est pas dans un état modifiable.";
+        return;
+      }
+
+      if (reservation.loyaltyUsed) {
+        banner.innerHTML =
+          "Votre réservation est <strong>modifiable</strong> et a été obtenue via la <strong>fidélité</strong>. Aucun nouveau paiement ne doit être demandé lors de la modification.";
         return;
       }
 
       banner.innerHTML =
-        "Cette réservation n’est plus modifiable en ligne. Le délai de 6 heures avant la séance est dépassé ou la réservation n’est pas dans un état modifiable.";
+        "Votre réservation est <strong>modifiable</strong>. Vous pouvez changer la date, l’horaire ou le nombre de personnes jusqu’à 6 heures avant le début de la séance.";
     }
 
     function renderPersonsSelect(reservation) {
@@ -1123,43 +1193,167 @@
       selectedPersons = clampPersons(reservation.persons || 2);
       select.value = String(selectedPersons);
 
-      select.addEventListener("change", () => {
+      select.addEventListener("change", async () => {
         selectedPersons = clampPersons(select.value);
         select.value = String(selectedPersons);
+        renderSlots();
         updateSummary();
       });
     }
 
-    function renderSlots(reservation) {
+    function renderDateInput(reservation) {
+      const dateInput = getEl("new-date");
+      if (!dateInput) return;
+
+      const start = parseDateOrNull(reservation.startTime);
+      const today = new Date();
+      const currentDateIso = start ? toLocalYMD(start) : toLocalYMD(today);
+      const minIso = toLocalYMD(today);
+
+      selectedDateIso = currentDateIso;
+      dateInput.min = minIso;
+      dateInput.value = currentDateIso;
+
+      dateInput.addEventListener("change", async () => {
+        const picked = dateInput.value;
+        if (!picked) return;
+
+        selectedDateIso = picked;
+        selectedSlot = null;
+        await loadAvailableSlotsForSelectedDate();
+        renderSlots();
+        updateSummary();
+      });
+    }
+
+    function getCurrentSlotKey() {
+      if (!currentReservation) return null;
+      const start = parseDateOrNull(currentReservation.startTime);
+      if (!start) return null;
+
+      return `${toLocalYMD(start)}|${formatHour(start)}`;
+    }
+
+    function buildSlotFromHourValue(dateIso, hourValue) {
+      let hourNum = 0;
+      let minuteNum = 0;
+
+      if (typeof hourValue === "number") {
+        hourNum = Math.floor(hourValue);
+        minuteNum = Math.round((hourValue - hourNum) * 60);
+      } else {
+        const match = String(hourValue).match(/(\d{1,2})(?:[:h](\d{2}))?/i);
+        if (match) {
+          hourNum = Number(match[1]);
+          minuteNum = match[2] ? Number(match[2]) : 0;
+        }
+      }
+
+      const start = new Date(`${dateIso}T${pad2(hourNum)}:${pad2(minuteNum)}:00`);
+      const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+
+      return {
+        dateIso,
+        startTime: start.toISOString(),
+        endTime: end.toISOString()
+      };
+    }
+
+    function slotKeyFromIso(startIso) {
+      const start = parseDateOrNull(startIso);
+      if (!start) return "";
+      return `${toLocalYMD(start)}|${formatHour(start)}`;
+    }
+
+    async function loadAvailableSlotsForSelectedDate() {
+      if (!currentReservation || !selectedDateIso) return;
+
+      const msg = getEl("edit-page-message");
+      if (msg) {
+        msg.textContent = "Chargement des créneaux disponibles...";
+        msg.className = "page-message info";
+      }
+
+      const response = await fetch(`${API_BASE}/api/slots?date=${encodeURIComponent(selectedDateIso)}`);
+      const data = await safeJson(response);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Impossible de charger les créneaux.");
+      }
+
+      const reservations = Array.isArray(data.reservations) ? data.reservations : [];
+      const sameBoxReservations = reservations.filter((r) => Number(r.box_id) === Number(currentReservation.boxId));
+
+      const bookedKeys = new Set();
+      for (const reservation of sameBoxReservations) {
+        const start = parseDateOrNull(reservation.start_time);
+        if (!start) continue;
+        bookedKeys.add(`${toLocalYMD(start)}|${formatHour(start)}`);
+      }
+
+      const baseHours = [4, 5.5, 7, 8.5, 10, 11.5, 13, 14.5, 16, 17.5, 19, 20.5, 22];
+      const now = new Date();
+      const currentSlotKey = getCurrentSlotKey();
+
+      const slots = [];
+
+      for (const hourValue of baseHours) {
+        const slot = buildSlotFromHourValue(selectedDateIso, hourValue);
+        const start = parseDateOrNull(slot.startTime);
+        if (!start) continue;
+
+        const key = slotKeyFromIso(slot.startTime);
+
+        if (start.getTime() <= now.getTime()) continue;
+        if (bookedKeys.has(key) && key !== currentSlotKey) continue;
+
+        slots.push(slot);
+      }
+
+      availableSlots = slots;
+
+      if (msg) {
+        msg.textContent = "";
+        msg.className = "page-message";
+      }
+    }
+
+    function renderSlots() {
       const slotsGrid = getEl("slots-grid");
       const noSlotsBox = getEl("no-slots-box");
-
-      if (!slotsGrid || !noSlotsBox) return;
+      if (!slotsGrid || !noSlotsBox || !currentReservation) return;
 
       slotsGrid.innerHTML = "";
-      selectedSlot = null;
+      noSlotsBox.style.display = "none";
 
-      const alternatives = getAlternativeSlots(reservation);
-
-      if (!alternatives.length) {
+      if (!availableSlots.length) {
         noSlotsBox.style.display = "block";
-        updateSummary();
         return;
       }
 
-      noSlotsBox.style.display = "none";
+      const currentStart = parseDateOrNull(currentReservation.startTime);
+      const currentKey = currentStart ? slotKeyFromIso(currentReservation.startTime) : "";
 
-      for (const slot of alternatives) {
+      for (const slot of availableSlots) {
         const start = parseDateOrNull(slot.startTime);
-        const estimatedPrice = computePriceFromDate(start, selectedPersons);
+        const end = parseDateOrNull(slot.endTime);
+        if (!start || !end) continue;
+
+        const key = slotKeyFromIso(slot.startTime);
+        const isSameAsCurrent = key === currentKey;
+
+        let estimatedPrice = computePriceFromDate(start, selectedPersons);
+        if (currentReservation.loyaltyUsed) {
+          estimatedPrice = 0;
+        }
 
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "slot-option";
         btn.innerHTML = `
-          <span class="slot-time">${formatHour(start)} – ${formatHour(parseDateOrNull(slot.endTime))}</span>
+          <span class="slot-time">${formatHour(start)} – ${formatHour(end)}</span>
           <span class="slot-price">${formatMoney(estimatedPrice)}</span>
-          <span class="slot-sub">Même box • même durée</span>
+          <span class="slot-sub">${isSameAsCurrent ? "Horaire actuel" : "Créneau disponible"} • ${currentReservation.boxName}</span>
         `;
 
         btn.addEventListener("click", () => {
@@ -1176,6 +1370,7 @@
 
     function getNewAmount() {
       if (!currentReservation) return 0;
+      if (currentReservation.loyaltyUsed) return 0;
 
       const start = selectedSlot
         ? parseDateOrNull(selectedSlot.startTime)
@@ -1207,6 +1402,8 @@
       const newAmount = getNewAmount();
       const delta = getDeltaAmount(oldAmount, newAmount);
 
+      getEl("summary-old-date").textContent = formatDateFr(currentReservation.startTime);
+      getEl("summary-new-date").textContent = formatDateFr(newStart.toISOString());
       getEl("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
       getEl("summary-new-slot").textContent = `${formatHour(newStart)} – ${formatHour(newEnd)}`;
       getEl("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
@@ -1230,14 +1427,18 @@
       const decisionLabel = getEl("decision-label");
       const decisionNote = getEl("decision-note");
 
-      if (delta > 0) {
+      if (currentReservation.loyaltyUsed) {
+        decisionLabel.textContent = "Réservation fidélité";
+        decisionNote.textContent =
+          "Cette réservation a été obtenue avec les points de fidélité. Aucun complément à payer ne doit être demandé pour cette modification.";
+      } else if (delta > 0) {
         decisionLabel.textContent = "Complément à payer";
         decisionNote.textContent =
-          "La modification augmente le montant de la réservation. Lors du branchement backend, il faudra demander un paiement complémentaire avant validation finale.";
+          "La modification augmente le montant de la réservation. Le backend devra demander un complément avant validation finale.";
       } else if (delta < 0) {
         decisionLabel.textContent = "Baisse de tarif";
         decisionNote.textContent =
-          "La modification réduit le montant estimé. Selon votre politique, aucun remboursement automatique n’est appliqué à ce stade.";
+          "La modification réduit le montant estimé. Aucun remboursement automatique ne doit être appliqué sans validation backend.";
       } else {
         decisionLabel.textContent = "Aucun écart";
         decisionNote.textContent =
@@ -1259,9 +1460,9 @@
       if (!confirmBtn || !pageMsg || !summaryMsg) return;
 
       pageMsg.textContent = "";
-      pageMsg.classList.remove("ok");
+      pageMsg.className = "page-message";
       summaryMsg.textContent = "";
-      summaryMsg.classList.remove("ok");
+      summaryMsg.className = "page-message";
 
       if (!canModify) {
         confirmBtn.disabled = true;
@@ -1269,93 +1470,155 @@
         return;
       }
 
-      if (!selectedSlot && selectedPersons === currentReservation.persons) {
+      const samePersons = selectedPersons === currentReservation.persons;
+      const sameDateTime = !selectedSlot;
+
+      if (samePersons && sameDateTime) {
         confirmBtn.disabled = true;
-        pageMsg.textContent = "Sélectionnez un nouvel horaire ou modifiez le nombre de personnes.";
+        pageMsg.textContent = "Choisissez une nouvelle date, un autre horaire ou modifiez le nombre de personnes.";
         return;
       }
 
       confirmBtn.disabled = false;
     }
 
-    function buildPayloadPreview() {
+    function buildPayload() {
       if (!currentReservation) return null;
 
-      const newStartIso = selectedSlot ? selectedSlot.startTime : currentReservation.startTime;
-      const newEndIso = selectedSlot ? selectedSlot.endTime : currentReservation.endTime;
-      const newAmount = getNewAmount();
+      const targetStart = selectedSlot ? selectedSlot.startTime : currentReservation.startTime;
+      const targetEnd = selectedSlot ? selectedSlot.endTime : currentReservation.endTime;
+
       const oldAmount = Number(currentReservation.amountPaid || 0);
+      const newAmount = getNewAmount();
 
       return {
         reservationId: currentReservation.id,
-        oldStartTime: currentReservation.startTime,
-        newStartTime: newStartIso,
-        oldPersons: currentReservation.persons,
+        newStartTime: targetStart,
+        newEndTime: targetEnd,
         newPersons: selectedPersons,
+        oldStartTime: currentReservation.startTime,
+        oldEndTime: currentReservation.endTime,
+        oldPersons: currentReservation.persons,
         oldAmount,
         newAmount,
         deltaAmount: Number((newAmount - oldAmount).toFixed(2)),
         boxId: currentReservation.boxId,
-        boxName: currentReservation.boxName
+        loyaltyUsed: currentReservation.loyaltyUsed,
+        pointsSpent: currentReservation.pointsSpent || 0
       };
     }
 
-    function initConfirmButton() {
-      const btn = getEl("confirm-edit-btn");
+    async function confirmModification() {
       const summaryMsg = getEl("summary-message");
+      const btn = getEl("confirm-edit-btn");
 
-      if (!btn || !summaryMsg) return;
+      if (!currentReservation || !summaryMsg || !btn) return;
 
-      btn.addEventListener("click", () => {
-        if (!currentReservation) return;
+      const canModify = isModificationAllowed(currentReservation.startTime, currentReservation.status);
+      if (!canModify) {
+        summaryMsg.textContent = "Cette réservation ne peut plus être modifiée.";
+        summaryMsg.className = "page-message";
+        return;
+      }
 
-        const canModify = isModificationAllowed(currentReservation.startTime, currentReservation.status);
-        if (!canModify) {
-          summaryMsg.textContent = "Cette réservation ne peut plus être modifiée.";
-          summaryMsg.classList.remove("ok");
+      const payload = buildPayload();
+      if (!payload) {
+        summaryMsg.textContent = "Impossible de préparer la modification.";
+        summaryMsg.className = "page-message";
+        return;
+      }
+
+      const token = getStoredToken();
+      if (!token) {
+        summaryMsg.textContent = "Vous devez être connecté pour modifier votre réservation.";
+        summaryMsg.className = "page-message";
+        return;
+      }
+
+      btn.disabled = true;
+      summaryMsg.textContent = "Modification en cours...";
+      summaryMsg.className = "page-message info";
+
+      try {
+        const response = await fetch(`${API_BASE}/api/modify-reservation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...getAuthHeaders()
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await safeJson(response);
+
+        if (!response.ok) {
+          summaryMsg.textContent = data.error || "Impossible de modifier la réservation.";
+          summaryMsg.className = "page-message";
+          btn.disabled = false;
           return;
         }
 
-        const payloadPreview = buildPayloadPreview();
-        if (!payloadPreview) {
-          summaryMsg.textContent = "Impossible de préparer la modification.";
-          summaryMsg.classList.remove("ok");
-          return;
-        }
+        summaryMsg.textContent = "Réservation modifiée avec succès. Redirection vers votre compte...";
+        summaryMsg.className = "page-message ok";
 
-        sessionStorage.setItem("reservation_edit_preview", JSON.stringify(payloadPreview));
-
-        console.log("Prévisualisation modification réservation :", payloadPreview);
-
-        summaryMsg.textContent =
-          "Prévisualisation enregistrée côté front. Prochaine étape : brancher cette action à l’API de modification.";
-        summaryMsg.classList.add("ok");
-      });
+        setTimeout(() => {
+          window.location.href = "mon-compte.html";
+        }, 1200);
+      } catch (error) {
+        console.error("Erreur modification réservation :", error);
+        summaryMsg.textContent = "Erreur réseau. Merci de réessayer.";
+        summaryMsg.className = "page-message";
+        btn.disabled = false;
+      }
     }
 
-    function initPage() {
+    async function initPage() {
       initMobileMenu();
       updateCartIcon();
 
-      currentReservation = loadReservationData();
+      const editMsg = getEl("edit-page-message");
+      try {
+        currentReservation = await loadReservationData();
 
-      renderCurrentReservation(currentReservation);
-      renderStatusBanner(currentReservation);
-      renderPersonsSelect(currentReservation);
-      renderSlots(currentReservation);
-      updateSummary();
-      initConfirmButton();
+        renderCurrentReservation(currentReservation);
+        renderStatusBanner(currentReservation);
+        renderPersonsSelect(currentReservation);
+        renderDateInput(currentReservation);
+        await loadAvailableSlotsForSelectedDate();
+        renderSlots();
+        updateSummary();
+
+        const confirmBtn = getEl("confirm-edit-btn");
+        if (confirmBtn) {
+          confirmBtn.addEventListener("click", confirmModification);
+        }
+      } catch (error) {
+        console.error(error);
+
+        const banner = getEl("edit-status-banner");
+        if (banner) {
+          banner.className = "status-banner error";
+          banner.textContent = error.message || "Impossible de charger la réservation.";
+        }
+
+        if (editMsg) {
+          editMsg.textContent = error.message || "Impossible de charger la réservation.";
+          editMsg.className = "page-message";
+        }
+
+        const confirmBtn = getEl("confirm-edit-btn");
+        if (confirmBtn) confirmBtn.disabled = true;
+      }
     }
 
     document.addEventListener("DOMContentLoaded", initPage);
   </script>
 
-  <!-- Supabase Newsletter -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+    const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     document.addEventListener("DOMContentLoaded", () => {
       const emailInput = document.getElementById("newsletter-email");
