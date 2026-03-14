@@ -410,33 +410,6 @@
       color: #fca5a5;
     }
 
-    .price-highlight-box {
-      margin-top: 14px;
-      border-radius: 18px;
-      padding: 12px 14px;
-      background: #020617;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-
-    .price-highlight-title {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-bottom: 4px;
-    }
-
-    .price-highlight-value {
-      font-size: 22px;
-      font-weight: 800;
-      color: #f9fafb;
-    }
-
-    .price-highlight-note {
-      margin-top: 6px;
-      font-size: 12px;
-      line-height: 1.55;
-      color: var(--sb-text-muted);
-    }
-
     .summary-note {
       margin-top: 14px;
       font-size: 12px;
@@ -765,12 +738,6 @@
             <div class="summary-row">
               <div class="summary-label">Différence</div>
               <div class="summary-value" id="summary-delta">—</div>
-            </div>
-
-            <div class="price-highlight-box">
-              <div class="price-highlight-title">Décision attendue</div>
-              <div class="price-highlight-value" id="decision-label">—</div>
-              <div class="price-highlight-note" id="decision-note">—</div>
             </div>
 
             <p class="summary-note">
@@ -1306,7 +1273,7 @@
         bookedKeys.add(`${toLocalYMD(start)}|${formatHour(start)}`);
       }
 
-      const baseHours = [0, 1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5, 15, 16.5, 18, 19.5, 21, 22.5]
+      const baseHours = [0, 1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5, 15, 16.5, 18, 19.5, 21, 22.5];
       const now = new Date();
       const currentSlotKey = getCurrentSlotKey();
 
@@ -1441,37 +1408,6 @@
         deltaEl.classList.add("negative");
       } else {
         deltaEl.textContent = formatMoney(0);
-      }
-
-      const decisionLabel = getEl("decision-label");
-      const decisionNote = getEl("decision-note");
-
-      if (currentReservation.loyaltyUsed) {
-        if (delta > 0) {
-          decisionLabel.textContent = "Supplément fidélité";
-          decisionNote.textContent =
-            "La fidélité couvre toujours 2 personnes maximum. Le supplément vient uniquement des personnes au-delà de ce quota ou d’un changement de créneau plus cher.";
-        } else if (delta < 0) {
-          decisionLabel.textContent = "Baisse / remboursement";
-          decisionNote.textContent =
-            "La modification réduit le montant payé en complément de la fidélité. Le backend doit gérer le remboursement automatique.";
-        } else {
-          decisionLabel.textContent = "Aucun écart";
-          decisionNote.textContent =
-            "La réservation reste dans la même logique fidélité et ne change pas le montant payé.";
-        }
-      } else if (delta > 0) {
-        decisionLabel.textContent = "Complément à payer";
-        decisionNote.textContent =
-          "La modification augmente le montant de la réservation. Le backend peut tenter un paiement automatique sur la carte enregistrée, sinon demander un paiement complémentaire.";
-      } else if (delta < 0) {
-        decisionLabel.textContent = "Remboursement attendu";
-        decisionNote.textContent =
-          "La modification réduit le montant estimé. Le backend doit tenter un remboursement automatique.";
-      } else {
-        decisionLabel.textContent = "Aucun écart";
-        decisionNote.textContent =
-          "La modification ne change pas le montant estimé de la réservation.";
       }
 
       updateActionAvailability();
