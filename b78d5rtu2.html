@@ -27,6 +27,7 @@
       --sb-success:#dcfce7;
       --sb-danger:#f87171;
       --sb-warning:#FED7AA;
+      --sb-info:#bfdbfe;
       --sb-container-width:1100px;
     }
 
@@ -124,7 +125,6 @@
       white-space:nowrap;
     }
 
-    /* LOGIN */
     #login-screen{
       display:flex;
       min-height:100vh;
@@ -215,8 +215,8 @@
 
     .status-message.ok{color:var(--sb-success)}
     .status-message.error{color:var(--sb-danger)}
+    .status-message.info{color:var(--sb-info)}
 
-    /* ADMIN */
     #admin-screen{display:none}
 
     .tabs{
@@ -283,8 +283,21 @@
       margin-bottom:.75rem;
     }
 
+    .form-grid-4{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:.75rem;
+      margin-bottom:.75rem;
+    }
+
+    @media(max-width:980px){
+      .form-grid-4{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
     @media(max-width:768px){
-      .form-grid-3,.form-grid-2{
+      .form-grid-3,.form-grid-2,.form-grid-4{
         grid-template-columns:minmax(0,1fr);
       }
     }
@@ -475,6 +488,52 @@
     }
 
     .inline-check input{width:auto}
+
+    .qr-result-card{
+      margin-top:1rem;
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.35);
+      padding:1rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(59,130,246,0.12), transparent 50%),
+        #020617;
+    }
+
+    .qr-preview-wrap{
+      display:flex;
+      gap:1rem;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-top:.8rem;
+    }
+
+    .qr-box{
+      background:#fff;
+      padding:12px;
+      border-radius:14px;
+      min-width:220px;
+    }
+
+    .qr-meta{
+      flex:1 1 280px;
+      font-size:12px;
+      color:var(--sb-text-soft);
+      line-height:1.6;
+    }
+
+    .qr-meta strong{
+      color:#fff;
+    }
+
+    .link-box{
+      margin-top:.6rem;
+      padding:.65rem .8rem;
+      border-radius:12px;
+      background:#0b1220;
+      border:1px solid rgba(148,163,184,0.35);
+      word-break:break-all;
+      font-size:12px;
+    }
   </style>
 </head>
 
@@ -513,7 +572,7 @@
           <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
           <div>
             <h1 class="admin-title-main">Back-office Singbox</h1>
-            <p class="admin-subtitle">Admin sécurisé (RLS) : actualités, codes promo, réservations.</p>
+            <p class="admin-subtitle">Admin sécurisé (RLS) : actualités, codes promo, réservations, invitations QR.</p>
           </div>
         </div>
         <div class="admin-header-right">
@@ -528,6 +587,7 @@
         <button class="tab-button" data-tab="tab-reservations" id="tab-btn-reservations" role="tab" aria-selected="false" aria-controls="tab-reservations" type="button">Réservations</button>
         <button class="tab-button" data-tab="tab-clients" id="tab-btn-clients" role="tab" aria-selected="false" aria-controls="tab-clients" type="button">Clients</button>
         <button class="tab-button" data-tab="tab-promo" id="tab-btn-promo" role="tab" aria-selected="false" aria-controls="tab-promo" type="button">Codes promo</button>
+        <button class="tab-button" data-tab="tab-free-qr" id="tab-btn-free-qr" role="tab" aria-selected="false" aria-controls="tab-free-qr" type="button">Invitations / QR</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -700,6 +760,10 @@
                   <th>Heure</th>
                   <th>Client</th>
                   <th>Email</th>
+                  <th>Box</th>
+                  <th>Pers.</th>
+                  <th>Montant</th>
+                  <th>Gratuite</th>
                   <th>Statut</th>
                 </tr>
               </thead>
@@ -844,10 +908,129 @@
         </div>
       </section>
 
+      <!-- INVITATIONS / QR GRATUITS -->
+      <section id="tab-free-qr" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-free-qr">
+        <div class="card">
+          <h2>Créer une place gratuite / invitation</h2>
+          <p class="card-subtitle">
+            Cette action crée une vraie réservation <code>confirmed</code> et <code>free_session=true</code>,
+            puis génère automatiquement le QR code d’accès.
+          </p>
+
+          <form id="free-resa-form">
+            <div class="form-grid-4">
+              <div class="form-field">
+                <label for="free-name">Nom</label>
+                <input id="free-name" type="text" placeholder="Nom invité" required />
+              </div>
+
+              <div class="form-field">
+                <label for="free-email">Email</label>
+                <input id="free-email" type="email" placeholder="email@exemple.com" required />
+              </div>
+
+              <div class="form-field">
+                <label for="free-box">Box</label>
+                <select id="free-box" required>
+                  <option value="1">Box 1</option>
+                  <option value="2">Box 2</option>
+                  <option value="3">Box 3</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="free-persons">Personnes</label>
+                <select id="free-persons" required>
+                  <option value="1">1</option>
+                  <option value="2" selected>2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-4">
+              <div class="form-field">
+                <label for="free-date">Date</label>
+                <input id="free-date" type="date" required />
+              </div>
+
+              <div class="form-field">
+                <label for="free-time">Heure de début</label>
+                <input id="free-time" type="time" step="1800" required />
+                <div class="helper-text">Ex : 19:30, 22:30, 00:00…</div>
+              </div>
+
+              <div class="form-field">
+                <label for="free-note">Code promo / note interne (optionnel)</label>
+                <input id="free-note" type="text" placeholder="INVITATION, STAFF, PARTENAIRE..." />
+              </div>
+
+              <div class="form-field">
+                <label for="free-status">Statut</label>
+                <select id="free-status">
+                  <option value="confirmed" selected>confirmed</option>
+                  <option value="pending">pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="free-custom-link">Base URL backend QR</label>
+                <input id="free-custom-link" type="url" value="https://singbox-backend.onrender.com" />
+                <div class="helper-text">Le QR pointera vers <code>/api/check?id=...</code></div>
+              </div>
+
+              <div class="form-field">
+                <label>Session gratuite</label>
+                <div class="inline-check">
+                  <input id="free-is-free" type="checkbox" checked disabled />
+                  <span>Réservation offerte</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button id="free-resa-submit" type="submit" class="btn-primary">Créer la réservation gratuite + QR</button>
+            </div>
+          </form>
+
+          <div id="free-resa-message" class="status-message" aria-live="polite"></div>
+
+          <div id="free-qr-result" class="qr-result-card" style="display:none;">
+            <h3 style="font-size:14px;">QR code généré</h3>
+            <div class="qr-preview-wrap">
+              <div class="qr-box">
+                <canvas id="free-qr-canvas" width="220" height="220"></canvas>
+              </div>
+              <div class="qr-meta">
+                <div><strong>Réservation ID :</strong> <span id="free-result-id">--</span></div>
+                <div><strong>Nom :</strong> <span id="free-result-name">--</span></div>
+                <div><strong>Email :</strong> <span id="free-result-email">--</span></div>
+                <div><strong>Date :</strong> <span id="free-result-date">--</span></div>
+                <div><strong>Heure :</strong> <span id="free-result-time">--</span></div>
+                <div><strong>Box :</strong> <span id="free-result-box">--</span></div>
+                <div><strong>Personnes :</strong> <span id="free-result-persons">--</span></div>
+                <div class="link-box" id="free-result-link">--</div>
+                <div class="form-actions" style="justify-content:flex-start;margin-top:1rem;">
+                  <button id="download-qr-btn" type="button" class="btn-secondary">Télécharger le QR</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
@@ -885,15 +1068,13 @@
       if (adminScreen) adminScreen.style.display = "block";
     }
 
-    function setMsg(id, text, ok = false) {
+    function setMsg(id, text, type = "") {
       const el = getEl(id);
       if (!el) return;
 
       el.textContent = text || "";
       el.className = "status-message";
-
-      if (!text) return;
-      el.classList.add(ok ? "ok" : "error");
+      if (type) el.classList.add(type);
     }
 
     function withTimeout(promise, ms = 12000) {
@@ -1054,6 +1235,51 @@
       if (aDatepub) aDatepub.value = formatDateTimeLocalValue(data.date_publication);
     }
 
+    function buildStartAndEndIso(dateStr, timeStr, durationMinutes = 90) {
+      const [hour, minute] = String(timeStr).split(":").map(Number);
+      const start = new Date(dateStr + "T00:00:00");
+      start.setHours(hour || 0, minute || 0, 0, 0);
+
+      const end = new Date(start.getTime() + durationMinutes * 60000);
+
+      return {
+        startIso: start.toISOString(),
+        endIso: end.toISOString(),
+        startDateObj: start,
+        endDateObj: end
+      };
+    }
+
+    function formatMoney(value) {
+      const n = Number(value || 0);
+      return n.toFixed(2).replace(".", ",") + " €";
+    }
+
+    function getSafeInt(value, fallback = 0) {
+      const parsed = Number.parseInt(value, 10);
+      return Number.isNaN(parsed) ? fallback : parsed;
+    }
+
+    async function drawQrToCanvas(text, canvasEl) {
+      if (!canvasEl) return;
+      await globalThis.QRCode.toCanvas(canvasEl, text, {
+        width: 220,
+        margin: 1,
+        color: {
+          dark: "#000000",
+          light: "#ffffff"
+        }
+      });
+    }
+
+    function downloadCanvas(canvasEl, filename = "qr-singbox.png") {
+      if (!canvasEl) return;
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = canvasEl.toDataURL("image/png");
+      link.click();
+    }
+
     let authRefreshing = false;
 
     async function refreshAuthUI() {
@@ -1092,7 +1318,7 @@
       } catch (error) {
         console.error("refreshAuthUI error:", error);
         showLogin();
-        setMsg("login-error", "Connexion Supabase impossible (réseau / config). Réessaie.", false);
+        setMsg("login-error", "Connexion Supabase impossible (réseau / config). Réessaie.", "error");
       } finally {
         authRefreshing = false;
       }
@@ -1110,7 +1336,7 @@
 
       setMsg("login-error", "");
       if (!email || !password) {
-        setMsg("login-error", "Merci de saisir email + mot de passe.", false);
+        setMsg("login-error", "Merci de saisir email + mot de passe.", "error");
         return;
       }
 
@@ -1126,20 +1352,20 @@
 
         if (loginResponse.error) {
           console.error(loginResponse.error);
-          setMsg("login-error", `Connexion refusée : ${loginResponse.error.message || "erreur"}`, false);
+          setMsg("login-error", `Connexion refusée : ${loginResponse.error.message || "erreur"}`, "error");
           return;
         }
 
         passEl.value = "";
-        setMsg("login-error", "", true);
+        setMsg("login-error", "", "");
         await refreshAuthUI();
       } catch (error) {
         console.error("login error:", error);
 
         if (String(error?.message || "") === "timeout") {
-          setMsg("login-error", "Connexion Supabase : timeout (réseau ou config).", false);
+          setMsg("login-error", "Connexion Supabase : timeout (réseau ou config).", "error");
         } else {
-          setMsg("login-error", "Erreur connexion (console).", false);
+          setMsg("login-error", "Erreur connexion (console).", "error");
         }
       } finally {
         btn.disabled = false;
@@ -1189,7 +1415,7 @@
       if (!msgEl) return;
 
       msgEl.textContent = "Chargement du dashboard...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       try {
         const now = new Date();
@@ -1211,7 +1437,7 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur dashboard : ${response.error.message || ""}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1225,11 +1451,11 @@
         if (kpiRate) kpiRate.textContent = `${rate} %`;
 
         msgEl.textContent = "Dashboard mis à jour ✔";
-        msgEl.classList.add("ok");
+        msgEl.className = "status-message ok";
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau dashboard.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
@@ -1240,7 +1466,7 @@
 
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des réservations...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       const dateFrom = getEl("filter-res-date-from")?.value || null;
       const dateTo = getEl("filter-res-date-to")?.value || null;
@@ -1249,7 +1475,7 @@
       try {
         let query = supabaseClient
           .from("reservations")
-          .select("date, start_time, name, email, status")
+          .select("date, start_time, name, email, status, box_id, persons, montant, free_session")
           .order("start_time", { ascending: false });
 
         if (dateFrom) query = query.gte("date", dateFrom);
@@ -1261,7 +1487,7 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur chargement réservations : ${response.error.message || ""}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1269,7 +1495,7 @@
 
         if (data.length === 0) {
           msgEl.textContent = "Aucune réservation trouvée.";
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1291,6 +1517,22 @@
           const tdEmail = document.createElement("td");
           tdEmail.textContent = row.email || "-";
           tr.appendChild(tdEmail);
+
+          const tdBox = document.createElement("td");
+          tdBox.textContent = row.box_id != null ? `Box ${row.box_id}` : "-";
+          tr.appendChild(tdBox);
+
+          const tdPersons = document.createElement("td");
+          tdPersons.textContent = row.persons ?? "-";
+          tr.appendChild(tdPersons);
+
+          const tdMontant = document.createElement("td");
+          tdMontant.textContent = formatMoney(row.montant || 0);
+          tr.appendChild(tdMontant);
+
+          const tdFree = document.createElement("td");
+          tdFree.textContent = row.free_session ? "Oui" : "Non";
+          tr.appendChild(tdFree);
 
           const tdStatus = document.createElement("td");
           const badge = document.createElement("span");
@@ -1316,10 +1558,11 @@
         });
 
         msgEl.textContent = "";
+        msgEl.className = "status-message";
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau lors du chargement des réservations.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
@@ -1330,7 +1573,7 @@
 
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des clients...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       try {
         const response = await withTimeout(
@@ -1344,7 +1587,7 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur chargement clients : ${response.error.message || ""}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1352,7 +1595,7 @@
 
         if (data.length === 0) {
           msgEl.textContent = "Aucun client trouvé (pas de réservations).";
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1410,10 +1653,11 @@
         });
 
         msgEl.textContent = "";
+        msgEl.className = "status-message";
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau lors du chargement des clients.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
@@ -1448,7 +1692,7 @@
 
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des articles...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       try {
         const response = await withTimeout(
@@ -1462,7 +1706,7 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur chargement actualités : ${response.error.message || ""}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1470,11 +1714,12 @@
 
         if (data.length === 0) {
           msgEl.textContent = "Aucun article pour le moment.";
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
         msgEl.textContent = "";
+        msgEl.className = "status-message";
 
         data.forEach((row) => {
           const tr = document.createElement("tr");
@@ -1547,12 +1792,12 @@
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau chargement actualités.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
     async function loadArticleIntoForm(id) {
-      setMsg("article-form-message", "Chargement de l’article...", true);
+      setMsg("article-form-message", "Chargement de l’article...", "info");
 
       try {
         const response = await withTimeout(
@@ -1566,21 +1811,21 @@
 
         if (response.error || !response.data) {
           console.error(response.error);
-          setMsg("article-form-message", "Impossible de charger l’article.", false);
+          setMsg("article-form-message", "Impossible de charger l’article.", "error");
           return;
         }
 
         fillArticleForm(response.data);
-        setMsg("article-form-message", "Mode édition ✔", true);
+        setMsg("article-form-message", "Mode édition ✔", "ok");
       } catch (error) {
         console.error("loadArticleIntoForm error:", error);
-        setMsg("article-form-message", "Erreur réseau lors du chargement de l’article.", false);
+        setMsg("article-form-message", "Erreur réseau lors du chargement de l’article.", "error");
       }
     }
 
     async function upsertArticle(payload, id) {
       const msgId = "article-form-message";
-      setMsg(msgId, "Enregistrement en cours...", true);
+      setMsg(msgId, "Enregistrement en cours...", "info");
 
       try {
         const query = supabaseClient.from("actualites");
@@ -1594,16 +1839,16 @@
 
         if (response.error) {
           console.error(response.error);
-          setMsg(msgId, `Erreur : ${response.error.message || "impossible"}`, false);
+          setMsg(msgId, `Erreur : ${response.error.message || "impossible"}`, "error");
           return;
         }
 
-        setMsg(msgId, "Article enregistré ✅", true);
+        setMsg(msgId, "Article enregistré ✅", "ok");
         resetArticleForm();
         await loadArticles();
       } catch (error) {
         console.error(error);
-        setMsg(msgId, "Erreur réseau.", false);
+        setMsg(msgId, "Erreur réseau.", "error");
       }
     }
 
@@ -1612,7 +1857,7 @@
       if (!msgEl) return;
 
       msgEl.textContent = "Suppression en cours...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       const response = await withTimeout(
         supabaseClient.from("actualites").delete().eq("id", id),
@@ -1622,12 +1867,12 @@
       if (response.error) {
         console.error(response.error);
         msgEl.textContent = `Erreur suppression : ${response.error.message || ""}`;
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
         return;
       }
 
       msgEl.textContent = "Article supprimé.";
-      msgEl.classList.add("ok");
+      msgEl.className = "status-message ok";
       await loadArticles();
     }
 
@@ -1661,13 +1906,13 @@
 
       if (!code) {
         msgEl.textContent = "Merci de saisir un code.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
         return;
       }
 
       if (type !== "free" && (!numericValue || numericValue <= 0)) {
         msgEl.textContent = "Merci de mettre une valeur > 0.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
         return;
       }
 
@@ -1688,6 +1933,7 @@
       };
 
       msgEl.textContent = "Enregistrement en cours...";
+      msgEl.className = "status-message info";
 
       try {
         const response = await withTimeout(
@@ -1698,16 +1944,16 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur : ${response.error.message || "enregistrement impossible."}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
         } else {
           msgEl.textContent = "Code enregistré ✅";
-          msgEl.classList.add("ok");
+          msgEl.className = "status-message ok";
           await loadPromoCodes();
         }
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
@@ -1718,7 +1964,7 @@
 
       tbody.innerHTML = "";
       msgEl.textContent = "Chargement des codes promo...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       try {
         const response = await withTimeout(
@@ -1729,16 +1975,17 @@
         if (response.error) {
           console.error(response.error);
           msgEl.textContent = `Erreur chargement : ${response.error.message || ""}`;
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
         const data = response.data || [];
         msgEl.textContent = "";
+        msgEl.className = "status-message";
 
         if (data.length === 0) {
           msgEl.textContent = "Aucun code promo.";
-          msgEl.classList.add("error");
+          msgEl.className = "status-message error";
           return;
         }
 
@@ -1812,7 +2059,7 @@
       } catch (error) {
         console.error(error);
         msgEl.textContent = "Erreur réseau.";
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
       }
     }
 
@@ -1821,7 +2068,7 @@
       if (!msgEl) return;
 
       msgEl.textContent = "Mise à jour...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       const response = await withTimeout(
         supabaseClient.from("promo_codes").update({ is_active: newStatus }).eq("id", id),
@@ -1831,12 +2078,12 @@
       if (response.error) {
         console.error(response.error);
         msgEl.textContent = `Erreur : ${response.error.message || ""}`;
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
         return;
       }
 
       msgEl.textContent = "Statut mis à jour.";
-      msgEl.classList.add("ok");
+      msgEl.className = "status-message ok";
       await loadPromoCodes();
     }
 
@@ -1845,7 +2092,7 @@
       if (!msgEl) return;
 
       msgEl.textContent = "Suppression...";
-      msgEl.className = "status-message";
+      msgEl.className = "status-message info";
 
       const response = await withTimeout(
         supabaseClient.from("promo_codes").delete().eq("id", id),
@@ -1855,13 +2102,118 @@
       if (response.error) {
         console.error(response.error);
         msgEl.textContent = `Erreur : ${response.error.message || ""}`;
-        msgEl.classList.add("error");
+        msgEl.className = "status-message error";
         return;
       }
 
       msgEl.textContent = "Code supprimé.";
-      msgEl.classList.add("ok");
+      msgEl.className = "status-message ok";
       await loadPromoCodes();
+    }
+
+    async function handleFreeReservationSubmit(event) {
+      event.preventDefault();
+
+      const submitBtn = getEl("free-resa-submit");
+      const name = (getEl("free-name")?.value || "").trim();
+      const email = (getEl("free-email")?.value || "").trim();
+      const boxId = getSafeInt(getEl("free-box")?.value, 1);
+      const persons = Math.min(Math.max(getSafeInt(getEl("free-persons")?.value, 2), 1), 8);
+      const date = getEl("free-date")?.value || "";
+      const time = getEl("free-time")?.value || "";
+      const note = (getEl("free-note")?.value || "").trim() || null;
+      const status = getEl("free-status")?.value || "confirmed";
+      const backendBase = (getEl("free-custom-link")?.value || "").trim().replace(/\/+$/, "");
+
+      setMsg("free-resa-message", "");
+
+      if (!name || !email || !date || !time || !backendBase) {
+        setMsg("free-resa-message", "Merci de remplir nom, email, date, heure et URL backend.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setMsg("free-resa-message", "Création de la réservation gratuite...", "info");
+
+      try {
+        const { startIso, endIso } = buildStartAndEndIso(date, time, 90);
+
+        const payload = {
+          name,
+          email,
+          datetime: startIso,
+          created_at: new Date().toISOString(),
+          start_time: startIso,
+          box_id: boxId,
+          status,
+          date,
+          end_time: endIso,
+          payment_intent_id: null,
+          deposit_payment_intent_id: null,
+          deposit_amount_cents: 0,
+          deposit_status: null,
+          persons,
+          billable_persons: Math.max(persons, 2),
+          montant: 0,
+          free_session: true,
+          loyalty_used: false,
+          points_spent: 0,
+          promo_code: note,
+          updated_at: new Date().toISOString()
+        };
+
+        const insertResponse = await withTimeout(
+          supabaseClient
+            .from("reservations")
+            .insert([payload])
+            .select("*")
+            .single(),
+          15000
+        );
+
+        if (insertResponse.error || !insertResponse.data) {
+          console.error(insertResponse.error);
+          setMsg(
+            "free-resa-message",
+            `Erreur création réservation : ${insertResponse.error?.message || "impossible"}`,
+            "error"
+          );
+          return;
+        }
+
+        const reservation = insertResponse.data;
+        const qrUrl = `${backendBase}/api/check?id=${encodeURIComponent(reservation.id)}`;
+
+        const qrCanvas = getEl("free-qr-canvas");
+        await drawQrToCanvas(qrUrl, qrCanvas);
+
+        const resultWrap = getEl("free-qr-result");
+        if (resultWrap) resultWrap.style.display = "block";
+
+        getEl("free-result-id").textContent = reservation.id || "-";
+        getEl("free-result-name").textContent = reservation.name || "-";
+        getEl("free-result-email").textContent = reservation.email || "-";
+        getEl("free-result-date").textContent = reservation.date || "-";
+        getEl("free-result-time").textContent = getTimeLabelFromStartTime(reservation.start_time);
+        getEl("free-result-box").textContent = `Box ${reservation.box_id}`;
+        getEl("free-result-persons").textContent = String(reservation.persons || persons);
+        getEl("free-result-link").textContent = qrUrl;
+
+        const downloadBtn = getEl("download-qr-btn");
+        if (downloadBtn) {
+          downloadBtn.onclick = () => {
+            downloadCanvas(qrCanvas, `singbox-qr-${reservation.date || "reservation"}-${reservation.box_id || "box"}.png`);
+          };
+        }
+
+        setMsg("free-resa-message", "Réservation gratuite créée et QR généré ✅", "ok");
+        await loadReservations();
+      } catch (error) {
+        console.error(error);
+        setMsg("free-resa-message", "Erreur réseau ou droits insuffisants pour insérer dans reservations.", "error");
+      } finally {
+        submitBtn.disabled = false;
+      }
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -1872,21 +2224,27 @@
         emailEl.value = "contactsingbox@gmail.com";
       }
 
+      const freeDateEl = getEl("free-date");
+      if (freeDateEl && !freeDateEl.value) {
+        freeDateEl.value = toISODate(new Date());
+      }
+
+      const freeTimeEl = getEl("free-time");
+      if (freeTimeEl && !freeTimeEl.value) {
+        freeTimeEl.value = "19:30";
+      }
+
       initTabs();
 
       getEl("login-button")?.addEventListener("click", handleLogin);
       getEl("logout-button")?.addEventListener("click", handleLogout);
 
       getEl("admin-password")?.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-          handleLogin();
-        }
+        if (event.key === "Enter") handleLogin();
       });
 
       getEl("admin-email")?.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-          handleLogin();
-        }
+        if (event.key === "Enter") handleLogin();
       });
 
       getEl("article-reset")?.addEventListener("click", resetArticleForm);
@@ -1922,7 +2280,7 @@
         const dateLocal = getEl("a-datepub")?.value || null;
 
         if (!titre || !slug) {
-          setMsg("article-form-message", "Titre + slug requis.", false);
+          setMsg("article-form-message", "Titre + slug requis.", "error");
           return;
         }
 
@@ -1949,6 +2307,7 @@
       });
 
       getEl("btn-refresh-promo")?.addEventListener("click", loadPromoCodes);
+      getEl("free-resa-form")?.addEventListener("submit", handleFreeReservationSubmit);
 
       supabaseClient.auth.onAuthStateChange(() => {
         refreshAuthUI();
@@ -1960,7 +2319,7 @@
     globalThis.addEventListener("unhandledrejection", (event) => {
       console.error("Unhandled rejection:", event.reason);
       showLogin();
-      setMsg("login-error", "Erreur JS (voir console).", false);
+      setMsg("login-error", "Erreur JS (voir console).", "error");
     });
   </script>
 </body>
