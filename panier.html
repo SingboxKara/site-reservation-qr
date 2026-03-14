@@ -606,6 +606,7 @@
     }
 
     function getHourText(item) {
+      // cas 1 : ancien système avec item.hour
       if (typeof item.hour === "number") {
         const startTotalMin = Math.round(item.hour * 60);
         const startHour = Math.floor(startTotalMin / 60);
@@ -621,6 +622,29 @@
         return `${startText} – ${endText}`;
       }
 
+      // cas 2 : données backend avec start_time
+      if (item.start_time) {
+        const start = new Date(item.start_time);
+
+        if (!Number.isNaN(start.getTime())) {
+          const end = new Date(start.getTime() + 90 * 60000);
+
+          return `${formatHourMinute(start.getHours(), start.getMinutes())} – ${formatHourMinute(end.getHours(), end.getMinutes())}`;
+        }
+      }
+
+      // cas 3 : fallback avec datetime
+      if (item.datetime) {
+        const start = new Date(item.datetime);
+
+        if (!Number.isNaN(start.getTime())) {
+          const end = new Date(start.getTime() + 90 * 60000);
+
+          return `${formatHourMinute(start.getHours(), start.getMinutes())} – ${formatHourMinute(end.getHours(), end.getMinutes())}`;
+        }
+      }
+
+      // cas 4 : label déjà fourni
       if (item.hourLabel) {
         return item.hourLabel;
       }
