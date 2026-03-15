@@ -62,37 +62,6 @@
   }
   </script>
 
-  <!-- STRUCTURED DATA : ARTICLE VEDETTE -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    "headline": "Ouverture prochaine de Singbox à Toulouse",
-    "datePublished": "2026-01-01",
-    "dateModified": "2026-01-01",
-    "image": [
-      "https://www.singbox.fr/assets/article1.png"
-    ],
-    "keywords": "ouverture Singbox, karaoké box Toulouse, vie du lieu",
-    "author": {
-      "@type": "Organization",
-      "name": "Singbox"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Singbox",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.singbox.fr/logo.png"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.singbox.fr/actualites"
-    }
-  }
-  </script>
-
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -142,6 +111,24 @@
       margin: 0 auto;
       padding: 0 24px;
       text-align: center;
+    }
+
+    .breadcrumb {
+      max-width: 720px;
+      margin: 0 auto 18px;
+      padding: 0 24px;
+      font-size: 13px;
+      color: rgba(229, 231, 235, 0.72);
+      text-align: left;
+    }
+
+    .breadcrumb a {
+      color: rgba(249, 250, 251, 0.85);
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
     }
 
     .news-eyebrow {
@@ -209,6 +196,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      font-family: inherit;
     }
 
     .filter-pill:hover {
@@ -216,6 +204,11 @@
       border-color: rgba(248, 250, 251, 0.5);
       box-shadow: 0 0 18px rgba(201, 76, 53, 0.35);
       transform: translateY(-1px);
+    }
+
+    .filter-pill:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 2px;
     }
 
     .filter-pill.active {
@@ -256,6 +249,23 @@
       font-size: 42px;
       color: rgba(148, 163, 184, 0.07);
       pointer-events: none;
+    }
+
+    .news-section-header {
+      max-width: var(--sb-container-width);
+      margin: 0 auto 18px;
+      padding: 0 24px;
+    }
+
+    .news-section-header h2 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .news-section-header p {
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      margin: 0;
     }
 
     .news-grid {
@@ -312,6 +322,38 @@
       padding: 1.75rem 1.9rem;
     }
 
+    .news-card.is-clickable {
+      cursor: pointer;
+    }
+
+    .news-card:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.95);
+      outline-offset: 3px;
+    }
+
+    .news-card-media-link,
+    .news-title-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .news-card-media {
+      margin: -0.25rem -0.25rem 1rem;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b1020;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      aspect-ratio: 16 / 9;
+    }
+
+    .news-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .news-badge {
       display: inline-flex;
       align-items: center;
@@ -329,6 +371,12 @@
     .news-title {
       font-size: 20px;
       margin: 4px 0 6px;
+    }
+
+    .news-title-link:hover .news-title,
+    .news-title-link:focus-visible .news-title {
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     .news-meta {
@@ -352,6 +400,7 @@
       align-items: center;
       gap: 4px;
       transition: color 0.15s ease, text-shadow 0.15s ease;
+      text-decoration: none;
     }
 
     .news-link:hover {
@@ -359,18 +408,10 @@
       text-shadow: 0 0 12px rgba(248, 250, 252, 0.6);
     }
 
-    .news-card.is-highlighted {
-      opacity: 1;
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.18),
-        0 24px 60px rgba(255, 120, 80, 0.35);
-      border-color: rgba(255, 120, 80, 0.6);
-      filter: none;
-    }
-
-    .news-card.is-dimmed {
-      opacity: 0.45;
-      filter: grayscale(0.15);
+    .news-link[aria-disabled="true"] {
+      pointer-events: none;
+      opacity: 0.65;
+      cursor: default;
     }
 
     .news-empty {
@@ -378,6 +419,141 @@
       font-size: 14px;
       color: var(--sb-text-muted);
       margin-top: 12px;
+    }
+
+    .news-empty-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .news-empty-button,
+    .news-retry-button,
+    .news-secondary-link {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: #111827;
+      color: #f9fafb;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .news-empty-button:hover,
+    .news-retry-button:hover,
+    .news-secondary-link:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .news-skeleton-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .news-skeleton-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .news-skeleton-card {
+      background: rgba(17, 24, 39, 0.9);
+      border-radius: 20px;
+      padding: 1.5rem 1.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+    }
+
+    .news-skeleton-media,
+    .news-skeleton-line {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.06) 25%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.06) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.35s infinite linear;
+      border-radius: 12px;
+    }
+
+    .news-skeleton-media {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 14px;
+    }
+
+    .news-skeleton-line {
+      height: 12px;
+      margin-bottom: 10px;
+    }
+
+    .news-skeleton-line.short {
+      width: 34%;
+    }
+
+    .news-skeleton-line.medium {
+      width: 62%;
+    }
+
+    .news-skeleton-line.long {
+      width: 92%;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* ---------- BLOC SEO ---------- */
+    #news-seo-block {
+      padding: 8px 0 44px;
+      background: #050814;
+    }
+
+    .news-seo-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .news-seo-card {
+      background: rgba(15, 22, 40, 0.94);
+      border-radius: 22px;
+      padding: 1.5rem 1.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+    }
+
+    .news-seo-card h2 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .news-seo-card p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(229, 231, 235, 0.88);
+      margin: 0 0 12px;
+    }
+
+    .news-seo-card p:last-child {
+      margin-bottom: 0;
     }
 
     /* ---------- CTA FINAL ---------- */
@@ -390,7 +566,7 @@
     }
 
     .news-cta-inner {
-      max-width: 640px;
+      max-width: 720px;
       margin: 0 auto;
       padding: 0 24px;
       text-align: center;
@@ -407,6 +583,13 @@
       margin-bottom: 18px;
     }
 
+    .news-cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .news-cta-button {
       border: none;
       border-radius: 999px;
@@ -420,6 +603,10 @@
         0 0 0 1px rgba(248, 250, 251, 0.12),
         0 18px 40px rgba(0, 0, 0, 0.9);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .news-cta-button:hover {
@@ -430,9 +617,15 @@
         0 24px 60px rgba(0, 0, 0, 1);
     }
 
+    .news-cta-button--secondary {
+      background: #111827;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    }
+
     /* ---------- RESPONSIVE PAGE ---------- */
     @media (max-width: 900px) {
-      .news-grid {
+      .news-grid,
+      .news-skeleton-grid {
         grid-template-columns: minmax(0, 1fr);
         margin-top: -4px;
       }
@@ -449,6 +642,25 @@
     @media (max-width: 800px) {
       .news-title-main {
         font-size: 26px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .news-card,
+      .news-card--featured,
+      .news-skeleton-card,
+      .news-seo-card {
+        padding: 1.2rem 1.15rem;
+      }
+
+      .news-section-header h2,
+      .news-seo-card h2,
+      .news-cta-inner h2 {
+        font-size: 20px;
+      }
+
+      .breadcrumb {
+        font-size: 12px;
       }
     }
   </style>
@@ -508,6 +720,10 @@
 
   <!-- INTRO ACTUALITÉS -->
   <section id="news-intro">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a> <span aria-hidden="true">›</span> <span>Actualités</span>
+    </nav>
+
     <div class="news-intro-inner">
       <p class="news-eyebrow">Actualités Singbox</p>
       <h1 class="news-title-main">Actualités Singbox : nouveautés, promos, annonces et coulisses à Toulouse</h1>
@@ -524,25 +740,82 @@
       <div class="news-filters-inner">
         <h2>Catégories</h2>
         <p>Choisis une catégorie pour afficher les articles correspondants.</p>
-        <div class="filters-row">
-          <span class="filter-pill active" data-category="all">Toutes les actualités</span>
-          <span class="filter-pill" data-category="coulisses-travaux">🧱 Coulisses &amp; travaux</span>
-          <span class="filter-pill" data-category="nouvelles-chansons">🎤 Nouvelles chansons</span>
-          <span class="filter-pill" data-category="vie-lieu">👥 Vie du lieu</span>
-          <span class="filter-pill" data-category="idees-soirees">💡 Idées de soirées</span>
-          <span class="filter-pill" data-category="promo">🔥 Promo</span>
+        <div class="filters-row" role="group" aria-label="Filtrer les actualités par catégorie">
+          <button type="button" class="filter-pill active" data-category="all" aria-pressed="true">Toutes les actualités</button>
+          <button type="button" class="filter-pill" data-category="coulisses-travaux" aria-pressed="false">🧱 Coulisses &amp; travaux</button>
+          <button type="button" class="filter-pill" data-category="nouvelles-chansons" aria-pressed="false">🎤 Nouvelles chansons</button>
+          <button type="button" class="filter-pill" data-category="vie-lieu" aria-pressed="false">👥 Vie du lieu</button>
+          <button type="button" class="filter-pill" data-category="idees-soirees" aria-pressed="false">💡 Idées de soirées</button>
+          <button type="button" class="filter-pill" data-category="promo" aria-pressed="false">🔥 Promo</button>
         </div>
       </div>
     </section>
 
     <!-- LISTE DES ARTICLES -->
     <section id="news-list">
+      <div class="news-section-header">
+        <h2>Dernières actualités</h2>
+        <p>Retrouve ici les articles les plus récents, classés du plus récent au plus ancien.</p>
+      </div>
+
       <div class="container">
-        <p id="news-empty" class="news-empty"></p>
+        <div id="news-loading" class="news-skeleton-grid" aria-hidden="true">
+          <div class="news-skeleton-column">
+            <div class="news-skeleton-card">
+              <div class="news-skeleton-media"></div>
+              <div class="news-skeleton-line short"></div>
+              <div class="news-skeleton-line medium"></div>
+              <div class="news-skeleton-line long"></div>
+              <div class="news-skeleton-line long"></div>
+              <div class="news-skeleton-line medium"></div>
+            </div>
+          </div>
+
+          <div class="news-skeleton-column">
+            <div class="news-skeleton-card">
+              <div class="news-skeleton-media"></div>
+              <div class="news-skeleton-line short"></div>
+              <div class="news-skeleton-line medium"></div>
+              <div class="news-skeleton-line long"></div>
+              <div class="news-skeleton-line medium"></div>
+            </div>
+
+            <div class="news-skeleton-card">
+              <div class="news-skeleton-media"></div>
+              <div class="news-skeleton-line short"></div>
+              <div class="news-skeleton-line medium"></div>
+              <div class="news-skeleton-line long"></div>
+              <div class="news-skeleton-line medium"></div>
+            </div>
+          </div>
+        </div>
+
+        <p id="news-empty" class="news-empty" style="display: none;"></p>
+
+        <div id="news-empty-actions" class="news-empty-actions" style="display: none;"></div>
 
         <div id="news-grid" class="news-grid" style="display: none;">
           <div class="news-main-column" id="news-main-column"></div>
           <div class="news-side-column" id="news-side-column"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOC TEXTE SEO -->
+    <section id="news-seo-block">
+      <div class="news-seo-inner">
+        <div class="news-seo-card">
+          <h2>Pourquoi suivre les actualités Singbox ?</h2>
+          <p>
+            La page actualités Singbox te permet de suivre l’évolution du projet, les nouveautés, les prochaines
+            annonces, les nouvelles chansons disponibles, les idées de soirées et les offres ponctuelles autour de
+            notre karaoké box privatif à Toulouse.
+          </p>
+          <p>
+            Que tu cherches une activité à faire entre amis, une idée de sortie à Toulouse, un lieu original pour un
+            anniversaire, un EVJF, un EVG ou simplement une soirée karaoké dans une box privée, cette page regroupe
+            toutes les informations utiles pour rester au courant de l’univers Singbox.
+          </p>
         </div>
       </div>
     </section>
@@ -554,9 +827,15 @@
         <p>
           Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.
         </p>
-        <button class="news-cta-button" id="news-cta-button">
-          S’abonner aux actualités
-        </button>
+
+        <div class="news-cta-actions">
+          <button class="news-cta-button" id="news-cta-button">
+            S’abonner aux actualités
+          </button>
+          <a href="reservation.html" class="news-cta-button news-cta-button--secondary">
+            Réserver une box
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -637,14 +916,9 @@
 
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-  </script>
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
-  <script>
-    const supabaseClient = globalThis.supabase.createClient(
-      "https://sfckofydfqbllkxhxwnt.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
-    );
+    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     const CATEGORY_LABELS = {
       "coulisses-travaux": "Coulisses & travaux",
@@ -695,6 +969,99 @@
       return baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
     }
 
+    function getArticleSlug(article) {
+      const slug = typeof article.slug === "string" ? article.slug.trim() : "";
+      return slug;
+    }
+
+    function getArticleUrl(article) {
+      const slug = getArticleSlug(article);
+      return slug ? "article.html?slug=" + encodeURIComponent(slug) : "";
+    }
+
+    function getArticleImage(article) {
+      const candidates = [
+        article.image_url,
+        article.image,
+        article.image_couverture,
+        article.cover_image,
+        article.thumbnail,
+        article.visuel,
+        article.photo
+      ];
+
+      const found = candidates.find((value) => typeof value === "string" && value.trim() !== "");
+      return found ? found.trim() : "";
+    }
+
+    function hideLoadingState() {
+      const loadingEl = getEl("news-loading");
+      if (loadingEl) {
+        loadingEl.style.display = "none";
+      }
+    }
+
+    function showLoadingState() {
+      const loadingEl = getEl("news-loading");
+      const grid = getEl("news-grid");
+      const emptyEl = getEl("news-empty");
+      const emptyActions = getEl("news-empty-actions");
+
+      if (loadingEl) loadingEl.style.display = "grid";
+      if (grid) grid.style.display = "none";
+      if (emptyEl) {
+        emptyEl.textContent = "";
+        emptyEl.style.display = "none";
+      }
+      if (emptyActions) {
+        emptyActions.innerHTML = "";
+        emptyActions.style.display = "none";
+      }
+    }
+
+    function setEmptyState(message, options = {}) {
+      const grid = getEl("news-grid");
+      const emptyEl = getEl("news-empty");
+      const emptyActions = getEl("news-empty-actions");
+      const mainCol = getEl("news-main-column");
+      const sideCol = getEl("news-side-column");
+
+      hideLoadingState();
+
+      if (mainCol) mainCol.innerHTML = "";
+      if (sideCol) sideCol.innerHTML = "";
+      if (grid) grid.style.display = "none";
+
+      if (emptyEl) {
+        emptyEl.textContent = message;
+        emptyEl.style.display = "block";
+      }
+
+      if (emptyActions) {
+        emptyActions.innerHTML = "";
+
+        if (options.showResetFilter) {
+          const resetBtn = document.createElement("button");
+          resetBtn.type = "button";
+          resetBtn.className = "news-empty-button";
+          resetBtn.textContent = "Voir toutes les actualités";
+          resetBtn.addEventListener("click", resetCategoryFilter);
+          emptyActions.appendChild(resetBtn);
+        }
+
+        if (options.showRetry) {
+          const retryBtn = document.createElement("button");
+          retryBtn.type = "button";
+          retryBtn.className = "news-retry-button";
+          retryBtn.textContent = "Réessayer";
+          retryBtn.addEventListener("click", loadArticles);
+          emptyActions.appendChild(retryBtn);
+        }
+
+        emptyActions.style.display = emptyActions.children.length ? "flex" : "none";
+      }
+    }
+
     function createArticleCard(article, isFeatured) {
       const card = document.createElement("article");
       card.className = "news-card" + (isFeatured ? " news-card--featured" : "");
@@ -702,15 +1069,72 @@
       const catSlug = article.categorie || "autre";
       card.dataset.category = catSlug;
 
+      const articleUrl = getArticleUrl(article);
+      const articleImage = getArticleImage(article);
+      const isClickable = Boolean(articleUrl);
+
+      if (isClickable) {
+        card.classList.add("is-clickable");
+        card.tabIndex = 0;
+        card.setAttribute("role", "link");
+        card.setAttribute("aria-label", "Lire l’article : " + (article.titre || "Sans titre"));
+
+        card.addEventListener("click", (event) => {
+          const target = event.target;
+          if (target instanceof HTMLElement && target.closest("a")) return;
+          window.location.href = articleUrl;
+        });
+
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            window.location.href = articleUrl;
+          }
+        });
+      }
+
+      if (articleImage) {
+        const mediaLink = document.createElement(isClickable ? "a" : "div");
+        mediaLink.className = "news-card-media-link";
+        if (isClickable) {
+          mediaLink.href = articleUrl;
+          mediaLink.setAttribute("aria-label", "Ouvrir l’article : " + (article.titre || "Sans titre"));
+        }
+
+        const media = document.createElement("div");
+        media.className = "news-card-media";
+
+        const img = document.createElement("img");
+        img.src = articleImage;
+        img.alt = article.titre ? "Illustration de l’article " + article.titre : "Illustration d’actualité Singbox";
+        img.loading = "lazy";
+        img.decoding = "async";
+
+        media.appendChild(img);
+        mediaLink.appendChild(media);
+        card.appendChild(mediaLink);
+      }
+
       const badge = document.createElement("span");
       badge.className = "news-badge";
       badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
       card.appendChild(badge);
 
-      const titleEl = document.createElement(isFeatured ? "h2" : "h3");
-      titleEl.className = "news-title";
-      titleEl.textContent = article.titre || "Sans titre";
-      card.appendChild(titleEl);
+      const titleTag = isFeatured ? "h2" : "h3";
+      const titleContainer = document.createElement(titleTag);
+      titleContainer.className = "news-title";
+
+      if (isClickable) {
+        const titleLink = document.createElement("a");
+        titleLink.className = "news-title-link";
+        titleLink.href = articleUrl;
+        titleLink.textContent = article.titre || "Sans titre";
+        titleContainer.appendChild(titleLink);
+      } else {
+        titleContainer.textContent = article.titre || "Sans titre";
+      }
+
+      card.appendChild(titleContainer);
 
       const meta = document.createElement("p");
       meta.className = "news-meta";
@@ -728,9 +1152,17 @@
 
       const link = document.createElement("a");
       link.className = "news-link";
-      const slug = article.slug || "";
-      link.href = slug ? "article.html?slug=" + encodeURIComponent(slug) : "#";
-      link.textContent = "Lire l’article complet →";
+
+      if (isClickable) {
+        link.href = articleUrl;
+        link.textContent = "Lire l’article complet →";
+      } else {
+        link.href = "#";
+        link.textContent = "Article bientôt disponible";
+        link.setAttribute("aria-disabled", "true");
+        link.addEventListener("click", (e) => e.preventDefault());
+      }
+
       card.appendChild(link);
 
       return card;
@@ -744,37 +1176,27 @@
       return allArticles.filter((article) => (article.categorie || "autre") === currentCategory);
     }
 
-    function renderEmptyArticlesState(message) {
-      const grid = getEl("news-grid");
-      const emptyEl = getEl("news-empty");
-      const mainCol = getEl("news-main-column");
-      const sideCol = getEl("news-side-column");
-
-      if (mainCol) mainCol.innerHTML = "";
-      if (sideCol) sideCol.innerHTML = "";
-      if (grid) grid.style.display = "none";
-      if (emptyEl) emptyEl.textContent = message;
-    }
-
     function renderArticles() {
       const grid = getEl("news-grid");
       const mainCol = getEl("news-main-column");
       const sideCol = getEl("news-side-column");
-      const emptyEl = getEl("news-empty");
 
-      if (!grid || !mainCol || !sideCol || !emptyEl) return;
+      if (!grid || !mainCol || !sideCol) return;
 
       const articles = getFilteredArticles();
 
+      hideLoadingState();
       mainCol.innerHTML = "";
       sideCol.innerHTML = "";
 
       if (!articles.length) {
-        renderEmptyArticlesState("Aucune actualité dans cette catégorie pour le moment.");
+        setEmptyState(
+          "Aucune actualité dans cette catégorie pour le moment.",
+          { showResetFilter: currentCategory !== "all" }
+        );
         return;
       }
 
-      emptyEl.textContent = "";
       grid.style.display = "grid";
 
       const [featured, ...others] = articles;
@@ -786,6 +1208,17 @@
       others.forEach((article) => {
         sideCol.appendChild(createArticleCard(article, false));
       });
+
+      const emptyEl = getEl("news-empty");
+      const emptyActions = getEl("news-empty-actions");
+      if (emptyEl) {
+        emptyEl.textContent = "";
+        emptyEl.style.display = "none";
+      }
+      if (emptyActions) {
+        emptyActions.innerHTML = "";
+        emptyActions.style.display = "none";
+      }
     }
 
     async function fetchPublishedArticles() {
@@ -796,45 +1229,44 @@
         .order("date_publication", { ascending: false });
     }
 
-    function handleArticlesLoadError(error, emptyEl) {
+    function handleArticlesLoadError(error) {
       console.error("Erreur réseau actualités :", error);
-      if (emptyEl) {
-        emptyEl.textContent = "Erreur réseau lors du chargement des actualités.";
-      }
+      setEmptyState("Erreur réseau lors du chargement des actualités.", { showRetry: true });
     }
 
     async function loadArticles() {
-      const emptyEl = getEl("news-empty");
-
-      if (emptyEl) {
-        emptyEl.textContent = "Chargement des actualités...";
-        emptyEl.style.display = "block";
-      }
+      showLoadingState();
 
       try {
         const { data, error } = await fetchPublishedArticles();
 
         if (error) {
           console.error("Erreur chargement actualités :", error);
-          if (emptyEl) {
-            emptyEl.textContent = "Erreur lors du chargement des actualités.";
-          }
+          setEmptyState("Erreur lors du chargement des actualités.", { showRetry: true });
           return;
         }
 
         allArticles = Array.isArray(data) ? data : [];
 
         if (!allArticles.length) {
-          if (emptyEl) {
-            emptyEl.textContent = "Aucune actualité pour le moment. Reviens un peu plus tard ✨";
-          }
+          setEmptyState("Aucune actualité pour le moment. Reviens un peu plus tard ✨");
           return;
         }
 
         renderArticles();
       } catch (error) {
-        handleArticlesLoadError(error, emptyEl);
+        handleArticlesLoadError(error);
       }
+    }
+
+    function closeMobileMenu() {
+      const burgerBtn = getEl("burger-button");
+      const mobileNav = getEl("mobile-nav");
+
+      if (!burgerBtn || !mobileNav) return;
+
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
     }
 
     function initMobileMenu() {
@@ -851,10 +1283,39 @@
       mobileNav.addEventListener("click", (e) => {
         const target = e.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMobileMenu();
         }
       });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeMobileMenu();
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (!(target instanceof Node)) return;
+        if (!mobileNav.classList.contains("open")) return;
+        if (mobileNav.contains(target) || burgerBtn.contains(target)) return;
+        closeMobileMenu();
+      });
+    }
+
+    function updateFilterButtons(activeCategory) {
+      const filterPills = document.querySelectorAll(".filter-pill");
+
+      filterPills.forEach((pill) => {
+        const isActive = (pill.dataset.category || "all") === activeCategory;
+        pill.classList.toggle("active", isActive);
+        pill.setAttribute("aria-pressed", String(isActive));
+      });
+    }
+
+    function resetCategoryFilter() {
+      currentCategory = "all";
+      updateFilterButtons(currentCategory);
+      renderArticles();
     }
 
     function initCategoryFilters() {
@@ -862,9 +1323,8 @@
 
       filterPills.forEach((pill) => {
         pill.addEventListener("click", () => {
-          filterPills.forEach((p) => p.classList.remove("active"));
-          pill.classList.add("active");
           currentCategory = pill.dataset.category || "all";
+          updateFilterButtons(currentCategory);
           renderArticles();
         });
       });
