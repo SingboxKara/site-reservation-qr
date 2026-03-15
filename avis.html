@@ -9,8 +9,29 @@
     content="Partagez votre expérience chez Singbox à Toulouse en laissant un avis sur votre séance de karaoké box privative."
   />
 
+  <link rel="canonical" href="https://www.singbox.fr/laisser-un-avis" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Laisser un avis – Singbox" />
+  <meta
+    property="og:description"
+    content="Partagez votre expérience chez Singbox à Toulouse en laissant un avis sur votre séance de karaoké box privative."
+  />
+  <meta property="og:url" content="https://www.singbox.fr/laisser-un-avis" />
+  <meta property="og:image" content="https://www.singbox.fr/assets/avis-preview.png" />
+  <meta property="og:site_name" content="Singbox" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Laisser un avis – Singbox" />
+  <meta
+    name="twitter:description"
+    content="Partagez votre expérience chez Singbox à Toulouse en laissant un avis sur votre séance de karaoké box privative."
+  />
+  <meta name="twitter:image" content="https://www.singbox.fr/assets/avis-preview.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,6 +50,8 @@
       --sb-text-soft: #e5e7eb;
       --sb-red: #c94c35;
       --sb-orange: #f97316;
+      --sb-green: #86efac;
+      --sb-danger: #fecaca;
       --sb-border-soft: rgba(148, 163, 184, 0.3);
       --sb-container-width: 1180px;
     }
@@ -63,6 +86,28 @@
       max-width: var(--sb-container-width);
       margin: 0 auto;
       padding: 0 24px;
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .hidden-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
     }
 
     .site-header {
@@ -167,6 +212,13 @@
       font-size: 14px;
       color: #f9fafb;
       white-space: nowrap;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
     }
 
     .burger-button {
@@ -210,6 +262,22 @@
 
     main {
       padding: 9rem 0 5rem;
+    }
+
+    .breadcrumb {
+      max-width: 760px;
+      margin: 0 auto 18px;
+      font-size: 13px;
+      color: rgba(229, 231, 235, 0.78);
+    }
+
+    .breadcrumb a {
+      color: rgba(249, 250, 251, 0.88);
+    }
+
+    .breadcrumb a:hover,
+    .breadcrumb a:focus-visible {
+      text-decoration: underline;
     }
 
     .review-page-header {
@@ -285,6 +353,72 @@
       margin-bottom: 12px;
       font-size: 12px;
       color: var(--sb-text-muted);
+      line-height: 1.55;
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .review-star {
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: #020617;
+      color: #9ca3af;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 22px;
+      transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .review-star:hover,
+    .review-star:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(249, 115, 22, 0.75);
+      color: #fed7aa;
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.18);
+    }
+
+    .review-star.is-active {
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.8);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.14);
+    }
+
+    .review-rating-text {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+      min-height: 1.2em;
+    }
+
+    .review-character-count {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      text-align: right;
+    }
+
+    .review-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .review-checkbox-row input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--sb-red);
+    }
+
+    .review-checkbox-row label {
+      font-size: 13px;
+      color: var(--sb-text-soft);
       line-height: 1.5;
     }
 
@@ -294,7 +428,7 @@
       align-items: center;
       gap: 1rem;
       flex-wrap: wrap;
-      margin-top: 0.5rem;
+      margin-top: 0.8rem;
     }
 
     .review-back-link {
@@ -310,11 +444,20 @@
       color: #f9fafb;
       font-weight: 700;
       cursor: pointer;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .review-submit:hover,
+    .review-submit:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
     }
 
     .review-submit:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+      transform: none;
+      filter: none;
     }
 
     .review-message {
@@ -322,14 +465,28 @@
       margin-top: 1rem;
       font-size: 14px;
       color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
+    .review-info-box {
+      max-width: 760px;
+      margin: 0 auto 1rem;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      color: var(--sb-text-soft);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     footer {
       background: #020617;
       color: #e5e7eb;
-      padding: 32px 24px 18px;
+      padding: 24px 24px 18px;
       border-top: 1px solid #111827;
       text-align: center;
+      font-size: 12px;
     }
 
     @media (max-width: 768px) {
@@ -343,6 +500,23 @@
 
       .review-form-grid {
         grid-template-columns: minmax(0, 1fr);
+      }
+
+      .brand-logo {
+        width: 86px;
+      }
+
+      .brand-text {
+        font-size: 20px;
+      }
+
+      .review-stars {
+        gap: 6px;
+      }
+
+      .review-star {
+        width: 42px;
+        height: 42px;
       }
     }
   </style>
@@ -396,6 +570,12 @@
 
   <main>
     <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span aria-hidden="true"> › </span>
+        <span>Laisser un avis</span>
+      </nav>
+
       <div class="review-page-header">
         <h1>Laisser un avis</h1>
         <p>
@@ -403,12 +583,26 @@
         </p>
       </div>
 
+      <div class="review-info-box">
+        Votre e-mail sert uniquement à vérifier et modérer les avis. Il ne sera pas affiché publiquement.
+      </div>
+
       <div class="review-form-card">
-        <form id="review-form">
+        <form id="review-form" novalidate>
+          <input
+            type="text"
+            id="review-company"
+            name="company"
+            class="hidden-honeypot"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+
           <div class="review-form-grid">
             <div class="review-form-field">
               <label for="review-name">Prénom</label>
-              <input id="review-name" type="text" maxlength="60" required />
+              <input id="review-name" type="text" maxlength="60" autocomplete="given-name" required />
             </div>
 
             <div class="review-form-field">
@@ -419,14 +613,17 @@
 
           <div class="review-form-field">
             <label for="review-rating">Note</label>
-            <select id="review-rating" required>
-              <option value="">Choisir une note</option>
-              <option value="5">5 / 5</option>
-              <option value="4">4 / 5</option>
-              <option value="3">3 / 5</option>
-              <option value="2">2 / 5</option>
-              <option value="1">1 / 5</option>
-            </select>
+            <input id="review-rating" type="hidden" value="" required />
+
+            <div class="review-stars" id="review-stars" role="radiogroup" aria-label="Choisir une note sur 5">
+              <button type="button" class="review-star" data-value="1" aria-label="1 sur 5" role="radio" aria-checked="false">★</button>
+              <button type="button" class="review-star" data-value="2" aria-label="2 sur 5" role="radio" aria-checked="false">★</button>
+              <button type="button" class="review-star" data-value="3" aria-label="3 sur 5" role="radio" aria-checked="false">★</button>
+              <button type="button" class="review-star" data-value="4" aria-label="4 sur 5" role="radio" aria-checked="false">★</button>
+              <button type="button" class="review-star" data-value="5" aria-label="5 sur 5" role="radio" aria-checked="false">★</button>
+            </div>
+
+            <p id="review-rating-text" class="review-rating-text">Choisissez une note</p>
           </div>
 
           <div class="review-form-field">
@@ -437,11 +634,21 @@
               placeholder="Dites-nous comment s’est passée votre expérience…"
               required
             ></textarea>
+            <div id="review-character-count" class="review-character-count">0 / 600</div>
           </div>
 
           <p class="review-helper">
-            Un seul avis par adresse e-mail. Votre avis pourra être vérifié avant affichage.
+            Un seul avis par adresse e-mail. Votre avis pourra être vérifié avant affichage. Pour une réclamation ou un problème d’accès, utilisez plutôt la page contact.
           </p>
+
+          <div class="review-checkbox-row">
+            <input id="review-consent" type="checkbox" required />
+            <label for="review-consent">
+              J’accepte que mon prénom et mon avis puissent être publiés sur le site Singbox après modération.
+            </label>
+          </div>
+
+          <div id="captcha-container" class="review-form-field" style="display:none;"></div>
 
           <div class="review-form-actions">
             <a href="index.html#avis" class="review-back-link">← Retour aux avis</a>
@@ -459,10 +666,22 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    /*
+      OPTIONNEL :
+      Si un jour tu veux activer Cloudflare Turnstile, mets ta clé site ici
+      et ajoute le script Turnstile dans le head ou juste avant ce script.
+      Exemple script :
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    */
+    const TURNSTILE_SITE_KEY = "";
+    let turnstileToken = "";
+    let formStartTime = Date.now();
 
     function getEl(id) {
       return document.getElementById(id);
@@ -474,6 +693,11 @@
 
       if (!burgerBtn || !mobileNav) return;
 
+      function closeMenu() {
+        mobileNav.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+      }
+
       burgerBtn.addEventListener("click", () => {
         const isOpen = mobileNav.classList.toggle("open");
         burgerBtn.setAttribute("aria-expanded", String(isOpen));
@@ -482,9 +706,22 @@
       mobileNav.addEventListener("click", (event) => {
         const target = event.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMenu();
         }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) return;
+        if (!mobileNav.classList.contains("open")) return;
+        if (mobileNav.contains(target) || burgerBtn.contains(target)) return;
+        closeMenu();
       });
     }
 
@@ -506,6 +743,16 @@
         dotIndex > atIndex + 1 &&
         dotIndex < value.length - 1
       );
+    }
+
+    function isValidFirstName(name) {
+      if (typeof name !== "string") return false;
+
+      const value = name.trim();
+
+      if (value.length < 2 || value.length > 60) return false;
+
+      return /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value);
     }
 
     function setReviewMessage(message, color) {
@@ -544,30 +791,142 @@
       );
     }
 
+    function initRatingSystem() {
+      const stars = Array.from(document.querySelectorAll(".review-star"));
+      const ratingInput = getEl("review-rating");
+      const ratingText = getEl("review-rating-text");
+
+      if (!stars.length || !ratingInput || !ratingText) return;
+
+      const ratingLabels = {
+        1: "1 / 5 – Très décevant",
+        2: "2 / 5 – Décevant",
+        3: "3 / 5 – Correct",
+        4: "4 / 5 – Très bien",
+        5: "5 / 5 – Excellent"
+      };
+
+      function updateStars(value) {
+        const numericValue = Number(value) || 0;
+
+        stars.forEach((star) => {
+          const starValue = Number(star.dataset.value);
+          const isActive = starValue <= numericValue;
+          star.classList.toggle("is-active", isActive);
+          star.setAttribute("aria-checked", String(starValue === numericValue));
+        });
+
+        ratingInput.value = numericValue ? String(numericValue) : "";
+        ratingText.textContent = numericValue ? ratingLabels[numericValue] : "Choisissez une note";
+      }
+
+      stars.forEach((star) => {
+        star.addEventListener("click", () => {
+          updateStars(star.dataset.value);
+        });
+
+        star.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            updateStars(star.dataset.value);
+          }
+        });
+      });
+
+      updateStars("");
+    }
+
+    function initCharacterCounter() {
+      const commentInput = getEl("review-comment");
+      const counter = getEl("review-character-count");
+
+      if (!commentInput || !counter) return;
+
+      function updateCounter() {
+        const currentLength = commentInput.value.length;
+        counter.textContent = `${currentLength} / 600`;
+      }
+
+      commentInput.addEventListener("input", updateCounter);
+      updateCounter();
+    }
+
+    function initOptionalCaptcha() {
+      const captchaContainer = getEl("captcha-container");
+
+      if (!captchaContainer || !TURNSTILE_SITE_KEY) return;
+
+      captchaContainer.style.display = "block";
+
+      if (!globalThis.turnstile) {
+        captchaContainer.innerHTML = `
+          <p class="review-helper" style="margin:0;">
+            Le captcha n’a pas pu être chargé.
+          </p>
+        `;
+        return;
+      }
+
+      globalThis.turnstile.render("#captcha-container", {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: function(token) {
+          turnstileToken = token;
+        },
+        "expired-callback": function() {
+          turnstileToken = "";
+        },
+        "error-callback": function() {
+          turnstileToken = "";
+        }
+      });
+    }
+
+    function normalizeFirstName(name) {
+      const trimmed = name.trim().replace(/\s+/g, " ");
+      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    }
+
     function initReviewForm() {
       const form = getEl("review-form");
       const nameInput = getEl("review-name");
       const emailInput = getEl("review-email");
       const ratingInput = getEl("review-rating");
       const commentInput = getEl("review-comment");
+      const consentInput = getEl("review-consent");
+      const honeypotInput = getEl("review-company");
 
-      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput) return;
+      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput || !consentInput || !honeypotInput) {
+        return;
+      }
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const name = nameInput.value.trim();
+        const name = normalizeFirstName(nameInput.value);
         const email = emailInput.value.trim().toLowerCase();
         const rating = Number(ratingInput.value);
         const comment = commentInput.value.trim();
+        const consent = consentInput.checked;
+        const honeypotValue = honeypotInput.value.trim();
+        const elapsedSeconds = (Date.now() - formStartTime) / 1000;
+
+        if (honeypotValue) {
+          setReviewMessage("Envoi refusé.", "#fecaca");
+          return;
+        }
+
+        if (elapsedSeconds < 3) {
+          setReviewMessage("Veuillez patienter quelques secondes avant d’envoyer votre avis.", "#fecaca");
+          return;
+        }
 
         if (!name || !email || !rating || !comment) {
           setReviewMessage("Merci de remplir tous les champs.", "#fecaca");
           return;
         }
 
-        if (name.length < 2) {
-          setReviewMessage("Le prénom est trop court.", "#fecaca");
+        if (!isValidFirstName(name)) {
+          setReviewMessage("Merci d’entrer un prénom valide.", "#fecaca");
           return;
         }
 
@@ -583,6 +942,16 @@
 
         if (rating < 1 || rating > 5) {
           setReviewMessage("La note doit être comprise entre 1 et 5.", "#fecaca");
+          return;
+        }
+
+        if (!consent) {
+          setReviewMessage("Merci d’accepter la publication de votre avis après modération.", "#fecaca");
+          return;
+        }
+
+        if (TURNSTILE_SITE_KEY && !turnstileToken) {
+          setReviewMessage("Merci de valider le captcha.", "#fecaca");
           return;
         }
 
@@ -617,10 +986,33 @@
           }
 
           form.reset();
+          formStartTime = Date.now();
+          turnstileToken = "";
+
+          const stars = document.querySelectorAll(".review-star");
+          stars.forEach((star) => {
+            star.classList.remove("is-active");
+            star.setAttribute("aria-checked", "false");
+          });
+
+          const ratingText = getEl("review-rating-text");
+          if (ratingText) {
+            ratingText.textContent = "Choisissez une note";
+          }
+
+          const counter = getEl("review-character-count");
+          if (counter) {
+            counter.textContent = "0 / 600";
+          }
+
           setReviewMessage(
             "Merci ! Votre avis a bien été envoyé et sera affiché après vérification 🧡",
             "#86efac"
           );
+
+          if (TURNSTILE_SITE_KEY && globalThis.turnstile) {
+            globalThis.turnstile.reset("#captcha-container");
+          }
         } catch (error) {
           console.error("Erreur réseau avis :", error);
           setReviewMessage("Erreur réseau, merci de réessayer.", "#fecaca");
@@ -631,7 +1023,11 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      formStartTime = Date.now();
       initBurgerMenu();
+      initRatingSystem();
+      initCharacterCounter();
+      initOptionalCaptcha();
       initReviewForm();
     });
   </script>
