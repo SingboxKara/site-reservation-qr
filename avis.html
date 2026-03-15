@@ -292,7 +292,8 @@
       line-height: 1.6;
     }
 
-    .review-form-card {
+    .review-form-card,
+    .review-status-card {
       max-width: 760px;
       margin: 0 auto;
       background: var(--sb-card);
@@ -300,6 +301,76 @@
       padding: 1.8rem;
       border: 1px solid var(--sb-border-soft);
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+    }
+
+    .review-status-card {
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .review-status-card h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .review-status-card p {
+      color: var(--sb-text-soft);
+      margin: 0;
+    }
+
+    .review-status-card-actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .review-status-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 11px 20px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .review-status-button--secondary {
+      background: #111827;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .review-session-badge {
+      max-width: 760px;
+      margin: 0 auto 1rem;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      color: var(--sb-text-soft);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .review-session-badge strong {
+      color: #f9fafb;
+    }
+
+    .review-info-box {
+      max-width: 760px;
+      margin: 0 auto 1rem;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      color: var(--sb-text-soft);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     .review-form-grid {
@@ -331,6 +402,11 @@
       font-size: 14px;
       font-family: inherit;
       outline: none;
+    }
+
+    .review-form-field input[readonly] {
+      opacity: 0.82;
+      cursor: default;
     }
 
     .review-form-field textarea {
@@ -387,6 +463,13 @@
       color: #fbbf24;
       border-color: rgba(251, 191, 36, 0.8);
       box-shadow: 0 0 20px rgba(251, 191, 36, 0.14);
+    }
+
+    .review-star:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     .review-rating-text {
@@ -468,16 +551,12 @@
       line-height: 1.5;
     }
 
-    .review-info-box {
+    .review-form-loading {
       max-width: 760px;
       margin: 0 auto 1rem;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 18px;
-      padding: 1rem 1.1rem;
-      color: var(--sb-text-soft);
-      font-size: 13px;
-      line-height: 1.6;
+      text-align: center;
+      color: var(--sb-text-muted);
+      font-size: 14px;
     }
 
     footer {
@@ -583,11 +662,28 @@
         </p>
       </div>
 
-      <div class="review-info-box">
+      <div id="review-loading" class="review-form-loading">
+        Vérification du lien d’avis...
+      </div>
+
+      <div id="review-status-card" class="review-status-card" hidden>
+        <h2 id="review-status-title">Lien d’avis indisponible</h2>
+        <p id="review-status-text">
+          Ce lien n’est pas valide.
+        </p>
+        <div class="review-status-card-actions">
+          <a href="index.html" class="review-status-button review-status-button--secondary">Retour à l’accueil</a>
+          <a href="contact.html" class="review-status-button">Nous contacter</a>
+        </div>
+      </div>
+
+      <div id="review-session-badge" class="review-session-badge" hidden></div>
+
+      <div id="review-info-box" class="review-info-box" hidden>
         Votre e-mail sert uniquement à vérifier et modérer les avis. Il ne sera pas affiché publiquement.
       </div>
 
-      <div class="review-form-card">
+      <div id="review-form-card" class="review-form-card" hidden>
         <form id="review-form" novalidate>
           <input
             type="text"
@@ -599,15 +695,18 @@
             aria-hidden="true"
           />
 
+          <input type="hidden" id="review-token" value="" />
+          <input type="hidden" id="review-request-email" value="" />
+
           <div class="review-form-grid">
             <div class="review-form-field">
               <label for="review-name">Prénom</label>
-              <input id="review-name" type="text" maxlength="60" autocomplete="given-name" required />
+              <input id="review-name" type="text" maxlength="60" autocomplete="given-name" required readonly />
             </div>
 
             <div class="review-form-field">
               <label for="review-email">E-mail</label>
-              <input id="review-email" type="email" maxlength="120" autocomplete="email" required />
+              <input id="review-email" type="email" maxlength="120" autocomplete="email" required readonly />
             </div>
           </div>
 
@@ -638,7 +737,7 @@
           </div>
 
           <p class="review-helper">
-            Un seul avis par adresse e-mail. Votre avis pourra être vérifié avant affichage. Pour une réclamation ou un problème d’accès, utilisez plutôt la page contact.
+            Ce lien est personnel et valable pour une seule demande d’avis. Votre avis pourra être vérifié avant affichage. Pour une réclamation ou un problème d’accès, utilisez plutôt la page contact.
           </p>
 
           <div class="review-checkbox-row">
@@ -672,6 +771,8 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    const BACKEND_BASE_URL = "https://singbox-backend.onrender.com";
+
     /*
       OPTIONNEL :
       Si un jour tu veux activer Cloudflare Turnstile, mets ta clé site ici
@@ -682,9 +783,38 @@
     const TURNSTILE_SITE_KEY = "";
     let turnstileToken = "";
     let formStartTime = Date.now();
+    let validatedReviewRequest = null;
+    let validatedReservation = null;
 
     function getEl(id) {
       return document.getElementById(id);
+    }
+
+    function getTokenFromUrl() {
+      const params = new URLSearchParams(globalThis.location.search);
+      return String(params.get("token") || "").trim();
+    }
+
+    function formatDateFr(dateValue) {
+      if (!dateValue) return "";
+      const d = new Date(dateValue);
+      if (Number.isNaN(d.getTime())) return "";
+      return d.toLocaleString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
     function initBurgerMenu() {
@@ -822,10 +952,12 @@
 
       stars.forEach((star) => {
         star.addEventListener("click", () => {
+          if (star.disabled) return;
           updateStars(star.dataset.value);
         });
 
         star.addEventListener("keydown", (event) => {
+          if (star.disabled) return;
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             updateStars(star.dataset.value);
@@ -886,6 +1018,186 @@
       return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
     }
 
+    function showLoadingState() {
+      const loadingEl = getEl("review-loading");
+      const formCard = getEl("review-form-card");
+      const infoBox = getEl("review-info-box");
+      const sessionBadge = getEl("review-session-badge");
+      const statusCard = getEl("review-status-card");
+
+      if (loadingEl) loadingEl.hidden = false;
+      if (formCard) formCard.hidden = true;
+      if (infoBox) infoBox.hidden = true;
+      if (sessionBadge) sessionBadge.hidden = true;
+      if (statusCard) statusCard.hidden = true;
+    }
+
+    function showStatusCard(title, text) {
+      const loadingEl = getEl("review-loading");
+      const formCard = getEl("review-form-card");
+      const infoBox = getEl("review-info-box");
+      const sessionBadge = getEl("review-session-badge");
+      const statusCard = getEl("review-status-card");
+      const statusTitle = getEl("review-status-title");
+      const statusText = getEl("review-status-text");
+
+      if (loadingEl) loadingEl.hidden = true;
+      if (formCard) formCard.hidden = true;
+      if (infoBox) infoBox.hidden = true;
+      if (sessionBadge) sessionBadge.hidden = true;
+      if (statusCard) statusCard.hidden = false;
+      if (statusTitle) statusTitle.textContent = title;
+      if (statusText) statusText.textContent = text;
+    }
+
+    function showValidatedForm() {
+      const loadingEl = getEl("review-loading");
+      const formCard = getEl("review-form-card");
+      const infoBox = getEl("review-info-box");
+
+      if (loadingEl) loadingEl.hidden = true;
+      if (formCard) formCard.hidden = false;
+      if (infoBox) infoBox.hidden = false;
+    }
+
+    function renderSessionBadge() {
+      const badge = getEl("review-session-badge");
+      if (!badge || !validatedReservation) return;
+
+      const startText = formatDateFr(validatedReservation.start_time);
+      const boxText = validatedReservation.box_id ? `Box ${validatedReservation.box_id}` : "Votre box";
+
+      badge.innerHTML = `
+        <strong>Session concernée :</strong> ${escapeHtml(boxText)}
+        ${startText ? ` · ${escapeHtml(startText)}` : ""}
+      `;
+      badge.hidden = false;
+    }
+
+    function fillValidatedUserFields() {
+      const nameInput = getEl("review-name");
+      const emailInput = getEl("review-email");
+      const tokenInput = getEl("review-token");
+      const requestEmailInput = getEl("review-request-email");
+
+      if (!nameInput || !emailInput || !tokenInput || !requestEmailInput || !validatedReviewRequest) {
+        return;
+      }
+
+      const safeName = typeof validatedReviewRequest.name === "string" && validatedReviewRequest.name.trim()
+        ? validatedReviewRequest.name.trim()
+        : (typeof validatedReservation?.name === "string" ? validatedReservation.name.trim().split(/\s+/)[0] : "");
+
+      const safeEmail = typeof validatedReviewRequest.email === "string"
+        ? validatedReviewRequest.email.trim().toLowerCase()
+        : "";
+
+      nameInput.value = safeName;
+      emailInput.value = safeEmail;
+      tokenInput.value = getTokenFromUrl();
+      requestEmailInput.value = safeEmail;
+    }
+
+    async function validateReviewToken() {
+      const token = getTokenFromUrl();
+
+      if (!token) {
+        showStatusCard(
+          "Lien d’avis manquant",
+          "Ce formulaire d’avis fonctionne uniquement avec un lien personnel reçu par e-mail après votre session."
+        );
+        return false;
+      }
+
+      showLoadingState();
+
+      try {
+        const response = await fetch(
+          `${BACKEND_BASE_URL}/api/review-request/validate?token=${encodeURIComponent(token)}`
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || !data.valid) {
+          showStatusCard(
+            "Lien d’avis indisponible",
+            data?.error || "Ce lien n’est pas valide, a expiré ou a déjà été utilisé."
+          );
+          return false;
+        }
+
+        validatedReviewRequest = data.request || null;
+        validatedReservation = data.reservation || null;
+
+        fillValidatedUserFields();
+        renderSessionBadge();
+        showValidatedForm();
+        return true;
+      } catch (error) {
+        console.error("Erreur validation token avis :", error);
+        showStatusCard(
+          "Vérification impossible",
+          "Une erreur réseau est survenue pendant la vérification du lien d’avis."
+        );
+        return false;
+      }
+    }
+
+    async function markTokenAsUsed(token) {
+      const response = await fetch(`${BACKEND_BASE_URL}/api/review-request/mark-used`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Impossible de marquer le lien comme utilisé");
+      }
+
+      return data;
+    }
+
+    function resetStarsAndCounter() {
+      const stars = document.querySelectorAll(".review-star");
+      stars.forEach((star) => {
+        star.classList.remove("is-active");
+        star.setAttribute("aria-checked", "false");
+      });
+
+      const ratingText = getEl("review-rating-text");
+      if (ratingText) {
+        ratingText.textContent = "Choisissez une note";
+      }
+
+      const counter = getEl("review-character-count");
+      if (counter) {
+        counter.textContent = "0 / 600";
+      }
+    }
+
+    function lockReviewFormAfterSuccess() {
+      const form = getEl("review-form");
+      const commentInput = getEl("review-comment");
+      const consentInput = getEl("review-consent");
+      const submitBtn = getEl("review-submit");
+      const stars = document.querySelectorAll(".review-star");
+
+      if (commentInput) commentInput.disabled = true;
+      if (consentInput) consentInput.disabled = true;
+      if (submitBtn) submitBtn.disabled = true;
+      stars.forEach((star) => {
+        star.disabled = true;
+      });
+
+      if (form) {
+        form.dataset.submitted = "true";
+      }
+    }
+
     function initReviewForm() {
       const form = getEl("review-form");
       const nameInput = getEl("review-name");
@@ -894,21 +1206,34 @@
       const commentInput = getEl("review-comment");
       const consentInput = getEl("review-consent");
       const honeypotInput = getEl("review-company");
+      const tokenInput = getEl("review-token");
+      const requestEmailInput = getEl("review-request-email");
 
-      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput || !consentInput || !honeypotInput) {
+      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput || !consentInput || !honeypotInput || !tokenInput || !requestEmailInput) {
         return;
       }
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
+        if (form.dataset.submitted === "true") {
+          return;
+        }
+
+        const token = tokenInput.value.trim();
         const name = normalizeFirstName(nameInput.value);
         const email = emailInput.value.trim().toLowerCase();
+        const expectedEmail = requestEmailInput.value.trim().toLowerCase();
         const rating = Number(ratingInput.value);
         const comment = commentInput.value.trim();
         const consent = consentInput.checked;
         const honeypotValue = honeypotInput.value.trim();
         const elapsedSeconds = (Date.now() - formStartTime) / 1000;
+
+        if (!token) {
+          setReviewMessage("Lien d’avis invalide.", "#fecaca");
+          return;
+        }
 
         if (honeypotValue) {
           setReviewMessage("Envoi refusé.", "#fecaca");
@@ -932,6 +1257,11 @@
 
         if (!isValidEmail(email)) {
           setReviewMessage("Merci d'entrer une adresse e-mail valide.", "#fecaca");
+          return;
+        }
+
+        if (expectedEmail && email !== expectedEmail) {
+          setReviewMessage("Cette adresse e-mail ne correspond pas à la demande d’avis.", "#fecaca");
           return;
         }
 
@@ -985,25 +1315,19 @@
             return;
           }
 
+          await markTokenAsUsed(token);
+
           form.reset();
           formStartTime = Date.now();
           turnstileToken = "";
+          resetStarsAndCounter();
 
-          const stars = document.querySelectorAll(".review-star");
-          stars.forEach((star) => {
-            star.classList.remove("is-active");
-            star.setAttribute("aria-checked", "false");
-          });
+          nameInput.value = name;
+          emailInput.value = email;
+          requestEmailInput.value = email;
+          tokenInput.value = token;
 
-          const ratingText = getEl("review-rating-text");
-          if (ratingText) {
-            ratingText.textContent = "Choisissez une note";
-          }
-
-          const counter = getEl("review-character-count");
-          if (counter) {
-            counter.textContent = "0 / 600";
-          }
+          lockReviewFormAfterSuccess();
 
           setReviewMessage(
             "Merci ! Votre avis a bien été envoyé et sera affiché après vérification 🧡",
@@ -1015,20 +1339,26 @@
           }
         } catch (error) {
           console.error("Erreur réseau avis :", error);
-          setReviewMessage("Erreur réseau, merci de réessayer.", "#fecaca");
+          setReviewMessage(
+            error?.message || "Erreur réseau, merci de réessayer.",
+            "#fecaca"
+          );
         } finally {
-          setReviewSubmitting(false);
+          if (form.dataset.submitted !== "true") {
+            setReviewSubmitting(false);
+          }
         }
       });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       formStartTime = Date.now();
       initBurgerMenu();
       initRatingSystem();
       initCharacterCounter();
       initOptionalCaptcha();
       initReviewForm();
+      await validateReviewToken();
     });
   </script>
 </body>
