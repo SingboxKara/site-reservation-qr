@@ -28,7 +28,7 @@
       --sb-danger:#f87171;
       --sb-warning:#FED7AA;
       --sb-info:#bfdbfe;
-      --sb-container-width:1100px;
+      --sb-container-width:1160px;
     }
 
     *{box-sizing:border-box}
@@ -269,16 +269,16 @@
       margin-bottom:1.1rem;
     }
 
-    .form-grid-3{
+    .form-grid-2{
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      grid-template-columns:repeat(2,minmax(0,1fr));
       gap:.75rem;
       margin-bottom:.75rem;
     }
 
-    .form-grid-2{
+    .form-grid-3{
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:.75rem;
       margin-bottom:.75rem;
     }
@@ -297,7 +297,9 @@
     }
 
     @media(max-width:768px){
-      .form-grid-3,.form-grid-2,.form-grid-4{
+      .form-grid-2,
+      .form-grid-3,
+      .form-grid-4{
         grid-template-columns:minmax(0,1fr);
       }
     }
@@ -314,7 +316,7 @@
     .form-field select,
     .form-field textarea{
       width:100%;
-      padding:.45rem .7rem;
+      padding:.5rem .75rem;
       border-radius:14px;
       border:1px solid var(--sb-border-soft);
       background:#020617;
@@ -374,7 +376,7 @@
     }
 
     th,td{
-      padding:.4rem .6rem;
+      padding:.45rem .6rem;
       border-bottom:1px solid rgba(31,41,55,0.9);
       text-align:left;
       white-space:nowrap;
@@ -432,6 +434,19 @@
       margin-top:4px;
     }
 
+    .inline-check{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:.5rem .7rem;
+      border-radius:14px;
+      border:1px solid rgba(148,163,184,0.35);
+      background:#020617;
+      color:var(--sb-text-soft);
+    }
+
+    .inline-check input{width:auto}
+
     .kpi-grid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
@@ -476,18 +491,216 @@
       .kpi-grid{grid-template-columns:minmax(0,1fr)}
     }
 
-    .inline-check{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:.5rem .7rem;
-      border-radius:14px;
-      border:1px solid rgba(148,163,184,0.35);
-      background:#020617;
-      color:var(--sb-text-soft);
+    /* ===== Planner style inspiré réservation ===== */
+    .planner-card {
+      background: var(--sb-bg-card);
+      border-radius: 22px;
+      padding: 1.3rem 1.3rem 1.4rem;
+      border:1px solid rgba(255,255,255,0.06);
+      box-shadow:0 18px 45px rgba(0,0,0,0.75);
     }
 
-    .inline-check input{width:auto}
+    .planner-controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      align-items:flex-end;
+      margin-bottom:1rem;
+    }
+
+    .planner-field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:180px;
+    }
+
+    .planner-field label{
+      font-size:12px;
+      color:#e5e7eb;
+    }
+
+    .planner-field input,
+    .planner-field select{
+      padding:.55rem .8rem;
+      border-radius:999px;
+      border:1px solid var(--sb-border-soft);
+      background:#020617;
+      color:#f9fafb;
+      font-size:13px;
+      outline:none;
+    }
+
+    .planner-note{
+      font-size:12px;
+      line-height:1.6;
+      color:var(--sb-text-muted);
+      margin:.3rem 0 .9rem;
+    }
+
+    .planner-table-wrapper{
+      margin-top:1rem;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(148,163,184,0.35);
+      background:#020617;
+      box-shadow:inset 0 0 0 1px rgba(15,23,42,0.8);
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .planner-table{
+      border-collapse:collapse;
+      width:100%;
+      min-width:680px;
+      color:#f9fafb;
+      table-layout:fixed;
+    }
+
+    .planner-table th,
+    .planner-table td{
+      padding:.55rem .6rem;
+      text-align:center;
+      font-size:12px;
+      border-bottom:1px solid rgba(31,41,55,0.9);
+      border-right:1px solid rgba(31,41,55,0.9);
+      white-space:nowrap;
+    }
+
+    .planner-table th:last-child,
+    .planner-table td:last-child{
+      border-right:none;
+    }
+
+    .planner-table th{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#e5e7eb;
+      background:linear-gradient(to right, rgba(15,23,42,1), rgba(30,64,175,0.35));
+    }
+
+    .planner-hour-cell{
+      background:#020617;
+      font-weight:700;
+      font-size:12px;
+      color:#e5e7eb;
+      position:sticky;
+      left:0;
+      z-index:3;
+      border-right:1px solid rgba(31,41,55,0.95);
+      box-shadow:8px 0 18px rgba(0,0,0,0.35);
+    }
+
+    .planner-slot{
+      transition:
+        background-color .15s ease,
+        box-shadow .15s ease,
+        transform .1s ease,
+        color .15s ease;
+      cursor:default;
+      height:74px;
+      vertical-align:middle;
+    }
+
+    .planner-slot-label{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      align-items:center;
+      justify-content:center;
+      line-height:1.2;
+      height:100%;
+    }
+
+    .planner-slot-free{
+      background-color:#022c22;
+      color:#ecfdf5;
+      cursor:pointer;
+    }
+
+    .planner-slot-free:hover{
+      background-color:#065f46;
+      box-shadow:0 0 0 1px rgba(16,185,129,0.5);
+      transform:translateY(-1px);
+    }
+
+    .planner-slot-booked{
+      background-color:rgba(127,29,29,0.55);
+      color:#fee2e2;
+      cursor:not-allowed;
+    }
+
+    .planner-slot-selected{
+      background:linear-gradient(135deg, #1d4ed8, #4c1d95);
+      color:#f9fafb;
+      box-shadow:0 0 0 1px rgba(129,140,248,0.7);
+      cursor:default;
+    }
+
+    .planner-slot-main{
+      font-weight:700;
+      font-size:13px;
+    }
+
+    .planner-slot-sub{
+      font-size:11px;
+      color:var(--sb-text-muted);
+    }
+
+    .planner-slot-status{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      opacity:.95;
+    }
+
+    .planner-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem 1.2rem;
+      align-items:center;
+      margin-top:.85rem;
+      font-size:11px;
+      color:var(--sb-text-muted);
+    }
+
+    .planner-legend-item{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .planner-legend-dot{
+      width:14px;
+      height:14px;
+      border-radius:4px;
+      border:1px solid rgba(15,23,42,0.9);
+    }
+
+    .planner-legend-dot.free{ background:#022c22; }
+    .planner-legend-dot.booked{ background:rgba(127,29,29,0.55); }
+    .planner-legend-dot.selected{ background:linear-gradient(135deg, #1d4ed8, #4c1d95); }
+
+    .selected-slot-box{
+      margin-top:1rem;
+      padding:1rem;
+      border-radius:16px;
+      background:
+        radial-gradient(circle at 0 0, rgba(59,130,246,0.14), transparent 55%),
+        #020617;
+      border:1px solid rgba(148,163,184,0.35);
+    }
+
+    .selected-slot-line{
+      font-size:13px;
+      line-height:1.7;
+      color:#e5e7eb;
+    }
+
+    .selected-slot-line strong{
+      color:#fff;
+    }
 
     .qr-result-card{
       margin-top:1rem;
@@ -534,12 +747,21 @@
       word-break:break-all;
       font-size:12px;
     }
+
+    @media (max-width: 768px) {
+      .planner-controls{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .planner-field{
+        min-width:0;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- LOGIN -->
   <div id="login-screen">
     <div id="login-card">
       <h1>Accès admin Singbox</h1>
@@ -563,7 +785,6 @@
     </div>
   </div>
 
-  <!-- ADMIN -->
   <div id="admin-screen">
     <div class="admin-container">
 
@@ -572,7 +793,7 @@
           <img src="logo.png" alt="Logo Singbox" class="admin-logo" />
           <div>
             <h1 class="admin-title-main">Back-office Singbox</h1>
-            <p class="admin-subtitle">Admin sécurisé (RLS) : actualités, codes promo, réservations, invitations QR.</p>
+            <p class="admin-subtitle">Admin sécurisé : actualités, codes promo, réservations, invitations QR.</p>
           </div>
         </div>
         <div class="admin-header-right">
@@ -587,7 +808,7 @@
         <button class="tab-button" data-tab="tab-reservations" id="tab-btn-reservations" role="tab" aria-selected="false" aria-controls="tab-reservations" type="button">Réservations</button>
         <button class="tab-button" data-tab="tab-clients" id="tab-btn-clients" role="tab" aria-selected="false" aria-controls="tab-clients" type="button">Clients</button>
         <button class="tab-button" data-tab="tab-promo" id="tab-btn-promo" role="tab" aria-selected="false" aria-controls="tab-promo" type="button">Codes promo</button>
-        <button class="tab-button" data-tab="tab-free-qr" id="tab-btn-free-qr" role="tab" aria-selected="false" aria-controls="tab-free-qr" type="button">Invitations / QR</button>
+        <button class="tab-button" data-tab="tab-invitations" id="tab-btn-invitations" role="tab" aria-selected="false" aria-controls="tab-invitations" type="button">Invitations / QR</button>
       </div>
 
       <!-- DASHBOARD -->
@@ -650,7 +871,7 @@
 
             <div class="form-field">
               <label for="a-contenu">Contenu</label>
-              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML (ex: &lt;br&gt;, &lt;strong&gt;)"></textarea>
+              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML"></textarea>
             </div>
 
             <div class="form-grid-3" style="margin-top:.75rem">
@@ -676,7 +897,7 @@
               <div class="form-field">
                 <label for="a-datepub">Date de publication (optionnel)</label>
                 <input id="a-datepub" type="datetime-local" />
-                <div class="helper-text">Si vide : on met la date actuelle au moment de publier.</div>
+                <div class="helper-text">Si vide : date actuelle au moment de publier.</div>
               </div>
             </div>
 
@@ -724,7 +945,7 @@
       <section id="tab-reservations" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-reservations">
         <div class="card">
           <h2>Réservations</h2>
-          <p class="card-subtitle">Lecture admin (table <code>reservations</code>).</p>
+          <p class="card-subtitle">Lecture admin de <code>reservations</code>.</p>
 
           <div class="form-grid-3">
             <div class="form-field">
@@ -763,7 +984,7 @@
                   <th>Box</th>
                   <th>Pers.</th>
                   <th>Montant</th>
-                  <th>Gratuite</th>
+                  <th>Offerte</th>
                   <th>Statut</th>
                 </tr>
               </thead>
@@ -854,7 +1075,6 @@
                   <input type="checkbox" id="promo-first-session" />
                   <span>Réservé à la <strong>première session</strong></span>
                 </div>
-                <div class="helper-text">Valable si l'email n'a jamais réservé.</div>
               </div>
 
               <div class="form-field">
@@ -908,117 +1128,148 @@
         </div>
       </section>
 
-      <!-- INVITATIONS / QR GRATUITS -->
-      <section id="tab-free-qr" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-free-qr">
+      <!-- INVITATIONS / QR -->
+      <section id="tab-invitations" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-invitations">
         <div class="card">
-          <h2>Créer une place gratuite / invitation</h2>
+          <h2>Créer une invitation / place gratuite</h2>
           <p class="card-subtitle">
-            Cette action crée une vraie réservation <code>confirmed</code> et <code>free_session=true</code>,
-            puis génère automatiquement le QR code d’accès.
+            Sélectionne d’abord un créneau libre dans le planning, puis remplis les infos invité.
+            La création finale doit passer par le backend pour bloquer les doublons, enregistrer la réservation et envoyer l’email.
           </p>
 
-          <form id="free-resa-form">
-            <div class="form-grid-4">
-              <div class="form-field">
-                <label for="free-name">Nom</label>
-                <input id="free-name" type="text" placeholder="Nom invité" required />
+          <div class="planner-card">
+            <div class="planner-controls">
+              <div class="planner-field">
+                <label for="invitation-date">Date</label>
+                <input type="date" id="invitation-date" />
               </div>
 
-              <div class="form-field">
-                <label for="free-email">Email</label>
-                <input id="free-email" type="email" placeholder="email@exemple.com" required />
-              </div>
-
-              <div class="form-field">
-                <label for="free-box">Box</label>
-                <select id="free-box" required>
-                  <option value="1">Box 1</option>
-                  <option value="2">Box 2</option>
-                  <option value="3">Box 3</option>
+              <div class="planner-field">
+                <label for="invitation-persons">Nombre de personnes</label>
+                <select id="invitation-persons">
+                  <option value="1">1 personne</option>
+                  <option value="2" selected>2 personnes</option>
+                  <option value="3">3 personnes</option>
+                  <option value="4">4 personnes</option>
+                  <option value="5">5 personnes</option>
+                  <option value="6">6 personnes</option>
+                  <option value="7">7 personnes</option>
+                  <option value="8">8 personnes</option>
                 </select>
               </div>
 
-              <div class="form-field">
-                <label for="free-persons">Personnes</label>
-                <select id="free-persons" required>
-                  <option value="1">1</option>
-                  <option value="2" selected>2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-grid-4">
-              <div class="form-field">
-                <label for="free-date">Date</label>
-                <input id="free-date" type="date" required />
-              </div>
-
-              <div class="form-field">
-                <label for="free-time">Heure de début</label>
-                <input id="free-time" type="time" step="1800" required />
-                <div class="helper-text">Ex : 19:30, 22:30, 00:00…</div>
-              </div>
-
-              <div class="form-field">
-                <label for="free-note">Code promo / note interne (optionnel)</label>
-                <input id="free-note" type="text" placeholder="INVITATION, STAFF, PARTENAIRE..." />
-              </div>
-
-              <div class="form-field">
-                <label for="free-status">Statut</label>
-                <select id="free-status">
+              <div class="planner-field">
+                <label for="invitation-status">Statut créé</label>
+                <select id="invitation-status">
                   <option value="confirmed" selected>confirmed</option>
                   <option value="pending">pending</option>
                 </select>
+              </div>
+
+              <div class="planner-field">
+                <button id="load-invitation-planning" type="button" class="btn-primary">Voir les créneaux disponibles</button>
+              </div>
+            </div>
+
+            <p class="planner-note">
+              Les créneaux déjà pris remontent depuis le backend via <code>/api/slots</code>.
+              Un créneau rouge est indisponible. Un créneau vert est sélectionnable.
+            </p>
+
+            <div class="planner-table-wrapper">
+              <table id="invitation-planning-table" class="planner-table" aria-label="Planning invitations admin">
+                <thead>
+                  <tr>
+                    <th>Heure</th>
+                    <th>Nuit étoilée</th>
+                    <th>Ambiance Sunset</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="planner-hour-cell">Chargement</th>
+                    <td colspan="2">Choisis une date puis charge les créneaux.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="planner-legend">
+              <div class="planner-legend-item"><span class="planner-legend-dot free"></span> Libre</div>
+              <div class="planner-legend-item"><span class="planner-legend-dot booked"></span> Réservé</div>
+              <div class="planner-legend-item"><span class="planner-legend-dot selected"></span> Sélectionné</div>
+            </div>
+
+            <div id="selected-slot-box" class="selected-slot-box" style="display:none;">
+              <div class="selected-slot-line"><strong>Créneau sélectionné :</strong> <span id="selected-slot-label">--</span></div>
+              <div class="selected-slot-line"><strong>Box :</strong> <span id="selected-slot-box-name">--</span></div>
+              <div class="selected-slot-line"><strong>Date :</strong> <span id="selected-slot-date">--</span></div>
+              <div class="selected-slot-line"><strong>Horaire :</strong> <span id="selected-slot-time">--</span></div>
+              <div class="selected-slot-line"><strong>Personnes :</strong> <span id="selected-slot-persons">--</span></div>
+            </div>
+          </div>
+
+          <form id="invitation-form" style="margin-top:1.2rem;">
+            <div class="form-grid-3">
+              <div class="form-field">
+                <label for="invite-name">Nom</label>
+                <input id="invite-name" type="text" placeholder="Nom invité" required />
+              </div>
+
+              <div class="form-field">
+                <label for="invite-email">Email</label>
+                <input id="invite-email" type="email" placeholder="email@exemple.com" required />
+              </div>
+
+              <div class="form-field">
+                <label for="invite-note">Label / note interne (optionnel)</label>
+                <input id="invite-note" type="text" placeholder="PARTENAIRE, INVITATION, STAFF..." />
               </div>
             </div>
 
             <div class="form-grid-2">
               <div class="form-field">
-                <label for="free-custom-link">Base URL backend QR</label>
-                <input id="free-custom-link" type="url" value="https://singbox-backend.onrender.com" />
+                <label for="invite-backend-base">Base URL backend</label>
+                <input id="invite-backend-base" type="url" value="https://singbox-backend.onrender.com" />
                 <div class="helper-text">Le QR pointera vers <code>/api/check?id=...</code></div>
               </div>
 
               <div class="form-field">
-                <label>Session gratuite</label>
+                <label>Réservation offerte</label>
                 <div class="inline-check">
-                  <input id="free-is-free" type="checkbox" checked disabled />
-                  <span>Réservation offerte</span>
+                  <input type="checkbox" checked disabled />
+                  <span>Montant = 0 € / free_session = true</span>
                 </div>
               </div>
             </div>
 
             <div class="form-actions">
-              <button id="free-resa-submit" type="submit" class="btn-primary">Créer la réservation gratuite + QR</button>
+              <button id="create-invitation-btn" type="submit" class="btn-primary">Créer la réservation gratuite + envoyer l’email + générer le QR</button>
             </div>
           </form>
 
-          <div id="free-resa-message" class="status-message" aria-live="polite"></div>
+          <div id="invitation-message" class="status-message" aria-live="polite"></div>
 
-          <div id="free-qr-result" class="qr-result-card" style="display:none;">
+          <div id="invitation-qr-result" class="qr-result-card" style="display:none;">
             <h3 style="font-size:14px;">QR code généré</h3>
+
             <div class="qr-preview-wrap">
               <div class="qr-box">
-                <canvas id="free-qr-canvas" width="220" height="220"></canvas>
+                <canvas id="invitation-qr-canvas" width="220" height="220"></canvas>
               </div>
+
               <div class="qr-meta">
-                <div><strong>Réservation ID :</strong> <span id="free-result-id">--</span></div>
-                <div><strong>Nom :</strong> <span id="free-result-name">--</span></div>
-                <div><strong>Email :</strong> <span id="free-result-email">--</span></div>
-                <div><strong>Date :</strong> <span id="free-result-date">--</span></div>
-                <div><strong>Heure :</strong> <span id="free-result-time">--</span></div>
-                <div><strong>Box :</strong> <span id="free-result-box">--</span></div>
-                <div><strong>Personnes :</strong> <span id="free-result-persons">--</span></div>
-                <div class="link-box" id="free-result-link">--</div>
+                <div><strong>Réservation ID :</strong> <span id="invitation-result-id">--</span></div>
+                <div><strong>Nom :</strong> <span id="invitation-result-name">--</span></div>
+                <div><strong>Email :</strong> <span id="invitation-result-email">--</span></div>
+                <div><strong>Date :</strong> <span id="invitation-result-date">--</span></div>
+                <div><strong>Heure :</strong> <span id="invitation-result-time">--</span></div>
+                <div><strong>Box :</strong> <span id="invitation-result-box">--</span></div>
+                <div><strong>Personnes :</strong> <span id="invitation-result-persons">--</span></div>
+                <div class="link-box" id="invitation-result-link">--</div>
+
                 <div class="form-actions" style="justify-content:flex-start;margin-top:1rem;">
-                  <button id="download-qr-btn" type="button" class="btn-secondary">Télécharger le QR</button>
+                  <button id="download-invitation-qr-btn" type="button" class="btn-secondary">Télécharger le QR</button>
                 </div>
               </div>
             </div>
@@ -1032,6 +1283,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
+    const API_BASE = "https://singbox-backend.onrender.com";
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
@@ -1050,8 +1302,38 @@
       "promo": "Promo"
     };
 
+    const INVITATION_BOXES = [
+      { id: 1, name: "Nuit étoilée" },
+      { id: 2, name: "Ambiance Sunset" }
+    ];
+
+    const SLOT_DURATION_MIN = 90;
+    const SLOT_STEP_MIN = 90;
+
+    let authRefreshing = false;
+    let selectedInvitationSlot = null;
+    let invitationBookedIndex = {};
+    let currentInvitationTableSelectionCell = null;
+
     function getEl(id) {
       return document.getElementById(id);
+    }
+
+    function setMsg(id, text, type = "") {
+      const el = getEl(id);
+      if (!el) return;
+      el.textContent = text || "";
+      el.className = "status-message";
+      if (type) el.classList.add(type);
+    }
+
+    function withTimeout(promise, ms = 12000) {
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => {
+          globalThis.setTimeout(() => reject(new Error("timeout")), ms);
+        })
+      ]);
     }
 
     function showLogin() {
@@ -1068,27 +1350,20 @@
       if (adminScreen) adminScreen.style.display = "block";
     }
 
-    function setMsg(id, text, type = "") {
-      const el = getEl(id);
-      if (!el) return;
-
-      el.textContent = text || "";
-      el.className = "status-message";
-      if (type) el.classList.add(type);
-    }
-
-    function withTimeout(promise, ms = 12000) {
-      return Promise.race([
-        promise,
-        new Promise((_, reject) => {
-          globalThis.setTimeout(() => reject(new Error("timeout")), ms);
-        })
-      ]);
+    function pad2(n) {
+      return String(n).padStart(2, "0");
     }
 
     function toISODate(date) {
       const d = new Date(date);
       return d.toISOString().split("T")[0];
+    }
+
+    function toLocalYMD(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
     }
 
     function formatDateFr(dateStr) {
@@ -1166,13 +1441,8 @@
     function trimLeadingAndTrailingHyphens(value) {
       let result = value;
 
-      while (result.startsWith("-")) {
-        result = result.slice(1);
-      }
-
-      while (result.endsWith("-")) {
-        result = result.slice(0, -1);
-      }
+      while (result.startsWith("-")) result = result.slice(1);
+      while (result.endsWith("-")) result = result.slice(0, -1);
 
       return result;
     }
@@ -1188,28 +1458,24 @@
         result = result.replaceAll("--", "-");
       }
 
-      result = trimLeadingAndTrailingHyphens(result);
-      return result;
+      return trimLeadingAndTrailingHyphens(result);
     }
 
     function formatDateTimeLocalValue(dateValue) {
       if (!dateValue) return "";
-
       const parsedDate = new Date(dateValue);
       if (Number.isNaN(parsedDate.getTime())) return "";
-
-      const pad = (n) => String(n).padStart(2, "0");
 
       return (
         parsedDate.getFullYear() +
         "-" +
-        pad(parsedDate.getMonth() + 1) +
+        pad2(parsedDate.getMonth() + 1) +
         "-" +
-        pad(parsedDate.getDate()) +
+        pad2(parsedDate.getDate()) +
         "T" +
-        pad(parsedDate.getHours()) +
+        pad2(parsedDate.getHours()) +
         ":" +
-        pad(parsedDate.getMinutes())
+        pad2(parsedDate.getMinutes())
       );
     }
 
@@ -1233,21 +1499,6 @@
       if (aCategorie) aCategorie.value = data.categorie || "coulisses-travaux";
       if (aPublie) aPublie.checked = Boolean(data.publie);
       if (aDatepub) aDatepub.value = formatDateTimeLocalValue(data.date_publication);
-    }
-
-    function buildStartAndEndIso(dateStr, timeStr, durationMinutes = 90) {
-      const [hour, minute] = String(timeStr).split(":").map(Number);
-      const start = new Date(dateStr + "T00:00:00");
-      start.setHours(hour || 0, minute || 0, 0, 0);
-
-      const end = new Date(start.getTime() + durationMinutes * 60000);
-
-      return {
-        startIso: start.toISOString(),
-        endIso: end.toISOString(),
-        startDateObj: start,
-        endDateObj: end
-      };
     }
 
     function formatMoney(value) {
@@ -1280,7 +1531,51 @@
       link.click();
     }
 
-    let authRefreshing = false;
+    function minutesToTimeLabel(totalMin) {
+      const h = Math.floor((totalMin / 60) % 24);
+      const m = totalMin % 60;
+      return m === 0 ? `${pad2(h)}h` : `${pad2(h)}h${pad2(m)}`;
+    }
+
+    function formatSlotRange(startMinutes) {
+      const startLabel = minutesToTimeLabel(startMinutes);
+      const endLabel = minutesToTimeLabel(startMinutes + SLOT_DURATION_MIN);
+      return `${startLabel}–${endLabel}`;
+    }
+
+    function buildStartMinutesList() {
+      const list = [];
+      for (let minutes = 0; minutes < 24 * 60; minutes += SLOT_STEP_MIN) {
+        list.push(minutes);
+      }
+      return list;
+    }
+
+    function parseIsoDateLocal(isoDate) {
+      const parts = isoDate.split("-");
+      return new Date(
+        Number.parseInt(parts[0], 10),
+        Number.parseInt(parts[1], 10) - 1,
+        Number.parseInt(parts[2], 10)
+      );
+    }
+
+    function isTodayDate(date, now) {
+      return date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth() &&
+        date.getDate() === now.getDate();
+    }
+
+    function isPastSlotForToday(date, startMinutes, now) {
+      if (!isTodayDate(date, now)) return false;
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      return startMinutes <= nowMinutes;
+    }
+
+    async function getAdminAccessToken() {
+      const sessionResponse = await supabaseClient.auth.getSession();
+      return sessionResponse?.data?.session?.access_token || null;
+    }
 
     async function refreshAuthUI() {
       if (authRefreshing) return;
@@ -1594,7 +1889,7 @@
         const data = response.data || [];
 
         if (data.length === 0) {
-          msgEl.textContent = "Aucun client trouvé (pas de réservations).";
+          msgEl.textContent = "Aucun client trouvé.";
           msgEl.className = "status-message error";
           return;
         }
@@ -1889,11 +2184,7 @@
       const noteInput = getEl("promo-note");
       const msgEl = getEl("promo-form-message");
 
-      if (
-        !codeInput || !typeInput || !valueInput || !validFromInput || !validToInput ||
-        !maxUsesInput || !maxPerEmailInput || !firstSessionInput || !emailDomainInput ||
-        !noteInput || !msgEl
-      ) {
+      if (!codeInput || !typeInput || !valueInput || !validFromInput || !validToInput || !maxUsesInput || !maxPerEmailInput || !firstSessionInput || !emailDomainInput || !noteInput || !msgEl) {
         return;
       }
 
@@ -2111,109 +2402,348 @@
       await loadPromoCodes();
     }
 
-    async function handleFreeReservationSubmit(event) {
-      event.preventDefault();
+    /* ===== Invitations / QR ===== */
 
-      const submitBtn = getEl("free-resa-submit");
-      const name = (getEl("free-name")?.value || "").trim();
-      const email = (getEl("free-email")?.value || "").trim();
-      const boxId = getSafeInt(getEl("free-box")?.value, 1);
-      const persons = Math.min(Math.max(getSafeInt(getEl("free-persons")?.value, 2), 1), 8);
-      const date = getEl("free-date")?.value || "";
-      const time = getEl("free-time")?.value || "";
-      const note = (getEl("free-note")?.value || "").trim() || null;
-      const status = getEl("free-status")?.value || "confirmed";
-      const backendBase = (getEl("free-custom-link")?.value || "").trim().replace(/\/+$/, "");
-
-      setMsg("free-resa-message", "");
-
-      if (!name || !email || !date || !time || !backendBase) {
-        setMsg("free-resa-message", "Merci de remplir nom, email, date, heure et URL backend.", "error");
+    function renderSelectedInvitationSlot(slot) {
+      const box = getEl("selected-slot-box");
+      if (!slot || !box) {
+        if (box) box.style.display = "none";
         return;
       }
 
-      submitBtn.disabled = true;
-      setMsg("free-resa-message", "Création de la réservation gratuite...", "info");
+      box.style.display = "block";
+      getEl("selected-slot-label").textContent = `${slot.boxName} – ${slot.date} – ${slot.range}`;
+      getEl("selected-slot-box-name").textContent = slot.boxName;
+      getEl("selected-slot-date").textContent = slot.date;
+      getEl("selected-slot-time").textContent = slot.range;
+      getEl("selected-slot-persons").textContent = String(slot.persons);
+    }
+
+    async function fetchInvitationReservationsForDate(isoDate) {
+      invitationBookedIndex = {};
 
       try {
-        const { startIso, endIso } = buildStartAndEndIso(date, time, 90);
+        const res = await fetch(`${API_BASE}/api/slots?date=${encodeURIComponent(isoDate)}`);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
 
-        const payload = {
-          name,
-          email,
-          datetime: startIso,
-          created_at: new Date().toISOString(),
-          start_time: startIso,
-          box_id: boxId,
-          status,
-          date,
-          end_time: endIso,
-          payment_intent_id: null,
-          deposit_payment_intent_id: null,
-          deposit_amount_cents: 0,
-          deposit_status: null,
-          persons,
-          billable_persons: Math.max(persons, 2),
-          montant: 0,
-          free_session: true,
-          loyalty_used: false,
-          points_spent: 0,
-          promo_code: note,
-          updated_at: new Date().toISOString()
-        };
+        const json = await res.json();
+        const reservations = Array.isArray(json.reservations) ? json.reservations : [];
 
-        const insertResponse = await withTimeout(
-          supabaseClient
-            .from("reservations")
-            .insert([payload])
-            .select("*")
-            .single(),
-          15000
-        );
+        reservations.forEach((reservation) => {
+          const start = new Date(reservation.start_time);
+          const startMinutes = start.getHours() * 60 + start.getMinutes();
+          invitationBookedIndex[`${reservation.box_id}-${startMinutes}`] = true;
+        });
+      } catch (error) {
+        console.error("fetchInvitationReservationsForDate:", error);
+        throw error;
+      }
+    }
 
-        if (insertResponse.error || !insertResponse.data) {
-          console.error(insertResponse.error);
+    function isInvitationSlotBooked(boxId, startMinutes) {
+      return Boolean(invitationBookedIndex[`${boxId}-${startMinutes}`]);
+    }
+
+    function createInvitationHourHeaderCell(startMinutes) {
+      const th = document.createElement("th");
+      th.className = "planner-hour-cell";
+      th.textContent = formatSlotRange(startMinutes);
+      return th;
+    }
+
+    function clearCurrentInvitationSelectionVisual() {
+      if (currentInvitationTableSelectionCell) {
+        currentInvitationTableSelectionCell.classList.remove("planner-slot-selected");
+        if (!currentInvitationTableSelectionCell.classList.contains("planner-slot-booked")) {
+          currentInvitationTableSelectionCell.classList.add("planner-slot-free");
+        }
+      }
+      currentInvitationTableSelectionCell = null;
+    }
+
+    function selectInvitationSlot(slot, cell) {
+      selectedInvitationSlot = slot;
+      clearCurrentInvitationSelectionVisual();
+
+      if (cell) {
+        cell.classList.remove("planner-slot-free");
+        cell.classList.add("planner-slot-selected");
+        currentInvitationTableSelectionCell = cell;
+      }
+
+      renderSelectedInvitationSlot(slot);
+      setMsg("invitation-message", "");
+    }
+
+    function createInvitationFreeCell(box, dateIso, startMinutes, personsValue) {
+      const td = document.createElement("td");
+      td.className = "planner-slot planner-slot-free";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "planner-slot-label";
+
+      const main = document.createElement("span");
+      main.className = "planner-slot-main";
+      main.textContent = "Libre";
+
+      const sub = document.createElement("span");
+      sub.className = "planner-slot-sub";
+      sub.textContent = formatSlotRange(startMinutes);
+
+      const status = document.createElement("span");
+      status.className = "planner-slot-status";
+      status.textContent = "Sélectionner";
+
+      wrapper.appendChild(main);
+      wrapper.appendChild(sub);
+      wrapper.appendChild(status);
+      td.appendChild(wrapper);
+
+      td.addEventListener("click", () => {
+        selectInvitationSlot({
+          boxId: box.id,
+          boxName: box.name,
+          date: dateIso,
+          startMinutes,
+          range: formatSlotRange(startMinutes),
+          persons: personsValue
+        }, td);
+      });
+
+      return td;
+    }
+
+    function createInvitationBookedCell() {
+      const td = document.createElement("td");
+      td.className = "planner-slot planner-slot-booked";
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "planner-slot-label";
+
+      const main = document.createElement("span");
+      main.className = "planner-slot-main";
+      main.textContent = "Réservé";
+
+      const sub = document.createElement("span");
+      sub.className = "planner-slot-sub";
+      sub.textContent = "Indisponible";
+
+      const status = document.createElement("span");
+      status.className = "planner-slot-status";
+      status.textContent = "Bloqué";
+
+      wrapper.appendChild(main);
+      wrapper.appendChild(sub);
+      wrapper.appendChild(status);
+      td.appendChild(wrapper);
+
+      return td;
+    }
+
+    function buildInvitationPlanningTable(dateObj, personsValue) {
+      const table = getEl("invitation-planning-table");
+      if (!table) return;
+
+      const isoDate = toLocalYMD(dateObj);
+      const startMinutesList = buildStartMinutesList();
+      const now = new Date();
+
+      selectedInvitationSlot = null;
+      clearCurrentInvitationSelectionVisual();
+      renderSelectedInvitationSlot(null);
+
+      table.innerHTML = "";
+
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+
+      const hourHead = document.createElement("th");
+      hourHead.textContent = "Heure";
+      hourHead.className = "planner-hour-cell";
+      headRow.appendChild(hourHead);
+
+      INVITATION_BOXES.forEach((box) => {
+        const th = document.createElement("th");
+        th.textContent = box.name;
+        headRow.appendChild(th);
+      });
+
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      startMinutesList.forEach((startMinutes) => {
+        if (isPastSlotForToday(dateObj, startMinutes, now)) return;
+
+        const tr = document.createElement("tr");
+        tr.appendChild(createInvitationHourHeaderCell(startMinutes));
+
+        INVITATION_BOXES.forEach((box) => {
+          if (isInvitationSlotBooked(box.id, startMinutes)) {
+            tr.appendChild(createInvitationBookedCell());
+          } else {
+            tr.appendChild(createInvitationFreeCell(box, isoDate, startMinutes, personsValue));
+          }
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+    }
+
+    async function loadInvitationPlanning() {
+      const dateInput = getEl("invitation-date");
+      const personsInput = getEl("invitation-persons");
+      const table = getEl("invitation-planning-table");
+
+      if (!dateInput || !personsInput || !table) return;
+
+      const isoDate = dateInput.value;
+      const personsValue = Math.min(Math.max(getSafeInt(personsInput.value, 2), 1), 8);
+
+      if (!isoDate) {
+        setMsg("invitation-message", "Choisis une date.", "error");
+        return;
+      }
+
+      setMsg("invitation-message", "Chargement des créneaux...", "info");
+
+      try {
+        await fetchInvitationReservationsForDate(isoDate);
+        buildInvitationPlanningTable(parseIsoDateLocal(isoDate), personsValue);
+        setMsg("invitation-message", "Créneaux chargés. Sélectionne un créneau vert.", "ok");
+      } catch (error) {
+        console.error(error);
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Heure</th>
+              <th>Nuit étoilée</th>
+              <th>Ambiance Sunset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="planner-hour-cell">Erreur</th>
+              <td colspan="2">Impossible de charger les créneaux.</td>
+            </tr>
+          </tbody>
+        `;
+        setMsg("invitation-message", "Impossible de charger les créneaux depuis le backend.", "error");
+      }
+    }
+
+    async function handleInvitationFormSubmit(event) {
+      event.preventDefault();
+
+      const btn = getEl("create-invitation-btn");
+      const name = (getEl("invite-name")?.value || "").trim();
+      const email = (getEl("invite-email")?.value || "").trim();
+      const note = (getEl("invite-note")?.value || "").trim() || null;
+      const status = getEl("invitation-status")?.value || "confirmed";
+      const backendBase = (getEl("invite-backend-base")?.value || API_BASE).trim().replace(/\/+$/, "");
+
+      if (!selectedInvitationSlot) {
+        setMsg("invitation-message", "Sélectionne d’abord un créneau libre dans le planning.", "error");
+        return;
+      }
+
+      if (!name || !email) {
+        setMsg("invitation-message", "Merci de remplir le nom et l’email.", "error");
+        return;
+      }
+
+      const accessToken = await getAdminAccessToken();
+      if (!accessToken) {
+        setMsg("invitation-message", "Session admin expirée. Reconnecte-toi.", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      setMsg("invitation-message", "Création de la réservation gratuite...", "info");
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/create-free-reservation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            note,
+            status,
+            date: selectedInvitationSlot.date,
+            box_id: selectedInvitationSlot.boxId,
+            start_minutes: selectedInvitationSlot.startMinutes,
+            persons: selectedInvitationSlot.persons
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
           setMsg(
-            "free-resa-message",
-            `Erreur création réservation : ${insertResponse.error?.message || "impossible"}`,
+            "invitation-message",
+            data.error || "Création impossible. Le créneau a peut-être été pris entre-temps.",
             "error"
           );
+          await loadInvitationPlanning();
           return;
         }
 
-        const reservation = insertResponse.data;
+        const reservation = data.reservation;
         const qrUrl = `${backendBase}/api/check?id=${encodeURIComponent(reservation.id)}`;
 
-        const qrCanvas = getEl("free-qr-canvas");
-        await drawQrToCanvas(qrUrl, qrCanvas);
+        const canvas = getEl("invitation-qr-canvas");
+        await drawQrToCanvas(qrUrl, canvas);
 
-        const resultWrap = getEl("free-qr-result");
-        if (resultWrap) resultWrap.style.display = "block";
+        getEl("invitation-result-id").textContent = reservation.id || "-";
+        getEl("invitation-result-name").textContent = reservation.name || "-";
+        getEl("invitation-result-email").textContent = reservation.email || "-";
+        getEl("invitation-result-date").textContent = reservation.date || "-";
+        getEl("invitation-result-time").textContent = getTimeLabelFromStartTime(reservation.start_time);
+        getEl("invitation-result-box").textContent = `Box ${reservation.box_id}`;
+        getEl("invitation-result-persons").textContent = String(reservation.persons || selectedInvitationSlot.persons);
+        getEl("invitation-result-link").textContent = qrUrl;
 
-        getEl("free-result-id").textContent = reservation.id || "-";
-        getEl("free-result-name").textContent = reservation.name || "-";
-        getEl("free-result-email").textContent = reservation.email || "-";
-        getEl("free-result-date").textContent = reservation.date || "-";
-        getEl("free-result-time").textContent = getTimeLabelFromStartTime(reservation.start_time);
-        getEl("free-result-box").textContent = `Box ${reservation.box_id}`;
-        getEl("free-result-persons").textContent = String(reservation.persons || persons);
-        getEl("free-result-link").textContent = qrUrl;
+        const resultCard = getEl("invitation-qr-result");
+        if (resultCard) resultCard.style.display = "block";
 
-        const downloadBtn = getEl("download-qr-btn");
+        const downloadBtn = getEl("download-invitation-qr-btn");
         if (downloadBtn) {
           downloadBtn.onclick = () => {
-            downloadCanvas(qrCanvas, `singbox-qr-${reservation.date || "reservation"}-${reservation.box_id || "box"}.png`);
+            downloadCanvas(canvas, `invitation-singbox-${reservation.date}-${reservation.box_id}.png`);
           };
         }
 
-        setMsg("free-resa-message", "Réservation gratuite créée et QR généré ✅", "ok");
+        setMsg("invitation-message", "Réservation gratuite créée, email envoyé et QR généré ✅", "ok");
+
         await loadReservations();
+        await loadInvitationPlanning();
       } catch (error) {
         console.error(error);
-        setMsg("free-resa-message", "Erreur réseau ou droits insuffisants pour insérer dans reservations.", "error");
+        setMsg("invitation-message", "Erreur réseau pendant la création de l’invitation.", "error");
       } finally {
-        submitBtn.disabled = false;
+        btn.disabled = false;
       }
+    }
+
+    function bindInvitationPersonsReload() {
+      const personsSelect = getEl("invitation-persons");
+      if (!personsSelect) return;
+
+      personsSelect.addEventListener("change", () => {
+        if (selectedInvitationSlot) {
+          selectedInvitationSlot.persons = Math.min(Math.max(getSafeInt(personsSelect.value, 2), 1), 8);
+          renderSelectedInvitationSlot(selectedInvitationSlot);
+        }
+      });
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -2224,14 +2754,9 @@
         emailEl.value = "contactsingbox@gmail.com";
       }
 
-      const freeDateEl = getEl("free-date");
-      if (freeDateEl && !freeDateEl.value) {
-        freeDateEl.value = toISODate(new Date());
-      }
-
-      const freeTimeEl = getEl("free-time");
-      if (freeTimeEl && !freeTimeEl.value) {
-        freeTimeEl.value = "19:30";
+      const invitationDate = getEl("invitation-date");
+      if (invitationDate && !invitationDate.value) {
+        invitationDate.value = toISODate(new Date());
       }
 
       initTabs();
@@ -2249,6 +2774,13 @@
 
       getEl("article-reset")?.addEventListener("click", resetArticleForm);
       getEl("btn-refresh-articles")?.addEventListener("click", loadArticles);
+      getEl("btn-refresh-reservations")?.addEventListener("click", loadReservations);
+      getEl("btn-refresh-clients")?.addEventListener("click", loadClients);
+      getEl("btn-refresh-promo")?.addEventListener("click", loadPromoCodes);
+      getEl("load-invitation-planning")?.addEventListener("click", loadInvitationPlanning);
+      getEl("invitation-form")?.addEventListener("submit", handleInvitationFormSubmit);
+
+      bindInvitationPersonsReload();
 
       getEl("a-titre")?.addEventListener("input", () => {
         const slugEl = getEl("a-slug");
@@ -2298,16 +2830,10 @@
         await upsertArticle(payload, id);
       });
 
-      getEl("btn-refresh-reservations")?.addEventListener("click", loadReservations);
-      getEl("btn-refresh-clients")?.addEventListener("click", loadClients);
-
       getEl("promo-form")?.addEventListener("submit", async (event) => {
         event.preventDefault();
         await handlePromoFormSubmit();
       });
-
-      getEl("btn-refresh-promo")?.addEventListener("click", loadPromoCodes);
-      getEl("free-resa-form")?.addEventListener("submit", handleFreeReservationSubmit);
 
       supabaseClient.auth.onAuthStateChange(() => {
         refreshAuthUI();
