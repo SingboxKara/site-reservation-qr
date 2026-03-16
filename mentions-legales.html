@@ -8,10 +8,10 @@
   <!-- SEO -->
   <meta
     name="description"
-    content="Consultez les mentions légales du site Singbox, karaoké box privative à Toulouse : éditeur du site, hébergeur, propriété intellectuelle, données personnelles et responsabilité."
+    content="Consultez les mentions légales du site Singbox, karaoké box privative à Toulouse : éditeur du site, hébergeur, propriété intellectuelle, données personnelles, cookies et responsabilité."
   />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://www.singbox.fr/mentions-legales" />
+  <link rel="canonical" href="https://www.singbox.fr/mentions-legales.html" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
@@ -24,12 +24,13 @@
   <meta property="og:title" content="Mentions légales Singbox | Karaoké box à Toulouse" />
   <meta
     property="og:description"
-    content="Toutes les informations légales du site Singbox à Toulouse : éditeur, hébergeur, propriété intellectuelle, données personnelles et responsabilités."
+    content="Toutes les informations légales du site Singbox à Toulouse : éditeur, hébergeur, propriété intellectuelle, données personnelles, cookies et responsabilités."
   />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/mentions-legales" />
+  <meta property="og:url" content="https://www.singbox.fr/mentions-legales.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
+  <meta property="og:locale" content="fr_FR" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -40,46 +41,41 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Données structurées LocalBusiness -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EntertainmentBusiness",
-    "name": "Singbox",
-    "image": "https://www.singbox.fr/logo.png",
-    "@id": "https://www.singbox.fr/",
-    "url": "https://www.singbox.fr/",
-    "telephone": "+33 6 00 00 00 00",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "66 Rue de la République",
-      "postalCode": "31300",
-      "addressLocality": "Toulouse",
-      "addressCountry": "FR"
-    },
-    "priceRange": "€€",
-    "description": "Karaoké box privative à Toulouse : réservez des salons insonorisés pour chanter entre amis, en famille ou entre collègues.",
-    "sameAs": [
-      "https://www.instagram.com/singboxtoulouse/",
-      "https://www.tiktok.com/@singbox.toulouse/"
-    ]
-  }
-  </script>
-
   <!-- Données structurées WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Mentions légales Singbox | Karaoké box à Toulouse",
-    "url": "https://www.singbox.fr/mentions-legales",
-    "description": "Mentions légales du site Singbox à Toulouse : informations sur l’éditeur, l’hébergeur, la propriété intellectuelle, les données personnelles et la responsabilité.",
+    "url": "https://www.singbox.fr/mentions-legales.html",
+    "description": "Mentions légales du site Singbox à Toulouse : informations sur l’éditeur, l’hébergeur, la propriété intellectuelle, les données personnelles, les cookies et la responsabilité.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
       "name": "Singbox",
       "url": "https://www.singbox.fr"
     }
+  }
+  </script>
+
+  <!-- Données structurées Organisation -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Singbox",
+    "url": "https://www.singbox.fr/",
+    "logo": "https://www.singbox.fr/logo.png",
+    "email": "contactsingbox@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Toulouse",
+      "addressCountry": "FR"
+    },
+    "sameAs": [
+      "https://www.instagram.com/singboxtoulouse/",
+      "https://www.tiktok.com/@singbox.toulouse/"
+    ]
   }
   </script>
 
@@ -107,6 +103,10 @@
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -404,6 +404,16 @@
       color: #ffedd5;
     }
 
+    .legal-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      color: #fde7d5;
+      font-size: 14px;
+    }
+
     /* ---------- FOOTER ---------- */
     footer {
       background: #020617;
@@ -437,6 +447,11 @@
       color: #f9fafb;
     }
 
+    footer input[type="email"][aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
     footer button {
       padding: 10px 18px;
       border: none;
@@ -446,6 +461,18 @@
       font-weight: 600;
       font-size: 14px;
       cursor: pointer;
+    }
+
+    footer button[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+    }
+
+    .newsletter-message {
+      min-height: 22px;
+      margin-top: 10px;
+      font-size: 14px;
     }
 
     .footer-columns {
@@ -546,6 +573,7 @@
           <li><a href="box.html">Les box</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="contact.html">Contact</a></li>
+          <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
 
@@ -576,6 +604,7 @@
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li><a href="mon-compte.html">Mon compte</a></li>
       <li><a href="reservation.html">Réserver</a></li>
     </ul>
   </nav>
@@ -601,11 +630,11 @@
         <p><strong>N° SIRET :</strong> [SIRET]</p>
         <p><strong>N° TVA intracommunautaire :</strong> [TVA intracom] (le cas échéant)</p>
 
-        <p style="margin-top: 10px;"><strong>Responsable de la publication :</strong> Pesce Jolann, en qualité de gérant.</p>
+        <p style="margin-top: 10px;"><strong>Responsable de la publication :</strong> Jolann Pesce, en qualité de gérant.</p>
 
         <p style="margin-top: 10px;"><strong>Contact :</strong></p>
         <p>
-          Téléphone : 06 95 55 26 96<br />
+          Téléphone : 06 45 56 43 07<br />
           E-mail :
           <a href="mailto:contactsingbox@gmail.com">contactsingbox@gmail.com</a>
         </p>
@@ -624,7 +653,8 @@
         <h2>4. Propriété intellectuelle</h2>
         <p>
           L’ensemble du contenu présent sur ce site (textes, images, photographies, vidéos, logos, icônes,
-          charte graphique, structure, etc.) est, sauf mention contraire, la propriété exclusive de Singbox.
+          charte graphique, structure, éléments visuels, bases de données et plus généralement tout contenu publié)
+          est, sauf mention contraire, la propriété exclusive de Singbox.
         </p>
         <p>
           Toute reproduction, représentation, modification, publication, adaptation totale ou partielle des éléments du site,
@@ -637,29 +667,30 @@
         </p>
 
         <h2>5. Données personnelles</h2>
-        <p>Dans le cadre de son activité, Singbox peut être amené à collecter et traiter certaines données personnelles :</p>
+        <p>Dans le cadre de son activité, Singbox peut être amené à collecter et traiter certaines données personnelles via :</p>
         <ul>
-          <li>Formulaire de contact</li>
-          <li>Formulaire de réservation en ligne</li>
-          <li>Inscription à la newsletter</li>
-          <li>Statistiques de fréquentation du site</li>
+          <li>le formulaire de contact,</li>
+          <li>le formulaire de réservation en ligne,</li>
+          <li>l’inscription à la newsletter,</li>
+          <li>les outils de mesure d’audience ou de performance du site, lorsqu’ils sont utilisés.</li>
         </ul>
 
         <p>Les données collectées sont utilisées uniquement pour :</p>
         <ul>
           <li>gérer les demandes de contact,</li>
           <li>gérer les réservations,</li>
-          <li>envoyer des informations ou offres liées à l’activité de Singbox (si consentement),</li>
+          <li>envoyer des informations ou offres liées à l’activité de Singbox lorsque l’utilisateur y a consenti,</li>
           <li>améliorer l’expérience utilisateur et le fonctionnement du site.</li>
         </ul>
 
         <p>
           Les données sont conservées pour une durée strictement nécessaire aux finalités mentionnées ci-dessus
-          et ne sont jamais revendues à des tiers.
+          et ne sont pas revendues à des tiers.
         </p>
 
         <p>
-          Conformément au Règlement (UE) 2016/679 (RGPD) et à la loi « Informatique et Libertés », vous disposez des droits suivants :
+          Conformément au Règlement (UE) 2016/679 (RGPD) et à la loi « Informatique et Libertés », vous disposez notamment
+          des droits suivants :
         </p>
         <ul>
           <li>droit d’accès,</li>
@@ -686,15 +717,15 @@
           <li>mesurer l’audience et les performances du site,</li>
           <li>faciliter la navigation,</li>
           <li>mémoriser certaines préférences (langue, choix de date, etc.),</li>
-          <li>le cas échéant, personnaliser le contenu ou les offres.</li>
+          <li>le cas échéant, personnaliser le contenu ou certaines fonctionnalités.</li>
         </ul>
         <p>
-          Lors de votre première visite, un bandeau de consentement vous informe de la présence de ces cookies
-          et vous permet de les accepter, de les refuser ou de les personnaliser.
+          Lorsqu’un consentement est requis, l’utilisateur doit pouvoir accepter, refuser ou personnaliser le dépôt
+          de certains cookies ou traceurs conformément à la réglementation applicable.
         </p>
         <p>
-          Vous pouvez à tout moment modifier vos préférences en matière de cookies via les paramètres de votre navigateur
-          ou le module de gestion des cookies.
+          Si un bandeau ou un module de gestion des cookies est mis en place sur le site, l’utilisateur peut y gérer
+          ses préférences. Il peut également modifier certains réglages via les paramètres de son navigateur.
         </p>
 
         <h2>7. Liens hypertextes</h2>
@@ -702,14 +733,11 @@
           Le site peut contenir des liens vers d’autres sites web. Singbox ne peut être tenu responsable du contenu,
           du fonctionnement ou de la politique de confidentialité de ces sites tiers.
         </p>
-        <p>
-          Toute création de lien hypertexte vers le site Singbox est soumise à l’autorisation préalable écrite de l’éditeur.
-        </p>
 
         <h2>8. Limitation de responsabilité</h2>
         <p>
           Singbox s’efforce de fournir sur ce site des informations aussi précises et à jour que possible.
-          Toutefois, des erreurs ou omissions peuvent survenir.
+          Toutefois, des erreurs, omissions ou indisponibilités peuvent survenir.
         </p>
         <p>L’éditeur du site ne pourra être tenu responsable :</p>
         <ul>
@@ -724,9 +752,13 @@
 
         <h2>9. Droit applicable et juridiction compétente</h2>
         <p>
-          Les présentes mentions légales sont soumises au droit français.
-          En cas de litige et à défaut de résolution amiable, les tribunaux du ressort de la Cour d’appel de Toulouse seront seuls compétents.
+          Les présentes mentions légales sont soumises au droit français. En cas de litige et à défaut de résolution amiable,
+          les juridictions compétentes seront déterminées conformément aux règles applicables du droit français.
         </p>
+
+        <div class="legal-note">
+          Les champs encore entre crochets doivent être complétés avant la mise en ligne définitive de la version finale du site.
+        </div>
       </section>
     </div>
   </main>
@@ -737,9 +769,17 @@
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" aria-label="Adresse e-mail newsletter" />
-        <button type="button">S'abonner</button>
+        <input
+          id="newsletter-email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+          aria-label="Adresse e-mail newsletter"
+          autocomplete="email"
+          inputmode="email"
+        />
+        <button id="newsletter-submit" type="button">S'abonner</button>
       </div>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -762,7 +802,7 @@
         <p><strong>Contact</strong></p>
         <p>Adresse : [à compléter]</p>
         <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
+        <p>Téléphone : 06 45 56 43 07</p>
       </div>
 
       <div>
@@ -795,7 +835,13 @@
     </div>
   </footer>
 
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
     function getPanier() {
       const rawPanier = localStorage.getItem("panier");
       if (!rawPanier) {
@@ -816,6 +862,58 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    function setNewsletterMessage(messageEl, message, color) {
+      if (!messageEl) return;
+      messageEl.textContent = message;
+      messageEl.style.color = color;
+    }
+
+    function setNewsletterLoadingState(submitBtn, isLoading) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.originalText) {
+        submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
+      }
+
+      submitBtn.disabled = isLoading;
+      submitBtn.setAttribute("aria-busy", String(isLoading));
+      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
+    }
+
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -823,20 +921,104 @@
       const mobileNav = document.getElementById("mobile-nav");
 
       if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", function () {
-          const isOpen = mobileNav.classList.toggle("open");
-          burgerBtn.setAttribute("aria-expanded", String(isOpen));
+        burgerBtn.addEventListener("click", () => {
+          const isOpen = mobileNav.classList.contains("open");
+
+          if (isOpen) {
+            closeMobileNav(mobileNav, burgerBtn);
+          } else {
+            openMobileNav(mobileNav, burgerBtn);
+          }
         });
 
-        mobileNav.addEventListener("click", function (e) {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-            burgerBtn.setAttribute("aria-expanded", "false");
+        mobileNav.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target instanceof HTMLElement && target.tagName === "A") {
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          const target = e.target;
+          if (
+            mobileNav.classList.contains("open") &&
+            target instanceof Node &&
+            !mobileNav.contains(target) &&
+            !burgerBtn.contains(target)
+          ) {
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+            closeMobileNav(mobileNav, burgerBtn);
           }
         });
       }
 
       updateCartIcon();
+
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageEl = document.getElementById("newsletter-message");
+
+      async function handleNewsletterSubmit() {
+        if (!(emailInput instanceof HTMLInputElement) || !submitBtn || !messageEl) return;
+
+        const email = emailInput.value.trim();
+        emailInput.removeAttribute("aria-invalid");
+
+        if (!isValidEmail(email)) {
+          emailInput.setAttribute("aria-invalid", "true");
+          setNewsletterMessage(messageEl, "Merci d'entrer une adresse e-mail valide 🙂", "#ff6b6b");
+          return;
+        }
+
+        setNewsletterLoadingState(submitBtn, true);
+        setNewsletterMessage(messageEl, "Envoi en cours...", "#e5e7eb");
+
+        try {
+          const { error } = await subscribeNewsletter(email);
+
+          if (error) {
+            console.error(error);
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage(messageEl, "Tu es déjà inscrit à la newsletter 🎤", "#f97373");
+            } else {
+              setNewsletterMessage(
+                messageEl,
+                "Oups, une erreur est survenue. Réessaie dans quelques instants.",
+                "#f97373"
+              );
+            }
+          } else {
+            setNewsletterMessage(messageEl, "Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
+            emailInput.value = "";
+          }
+        } catch (error) {
+          console.error(error);
+          setNewsletterMessage(
+            messageEl,
+            "Erreur réseau, vérifie ta connexion et réessaie.",
+            "#f97373"
+          );
+        } finally {
+          setNewsletterLoadingState(submitBtn, false);
+        }
+      }
+
+      if (emailInput && submitBtn && messageEl) {
+        submitBtn.addEventListener("click", handleNewsletterSubmit);
+
+        emailInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            handleNewsletterSubmit();
+          }
+        });
+      }
     });
   </script>
 </body>
