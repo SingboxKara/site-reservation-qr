@@ -5,35 +5,69 @@
   <title>Singbox – Karaoké box privative à Toulouse – Ouverture prochaine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO de base -->
-  <meta name="description" content="Singbox arrive bientôt à Toulouse : des box de karaoké privées, un catalogue XXL de chansons et une ambiance intimiste pour chanter sans jugement. Inscrivez-vous à la newsletter pour être averti de l’ouverture et recevoir -10 % sur votre première réservation." />
+  <!-- SEO -->
+  <meta
+    name="description"
+    content="Singbox arrive bientôt à Toulouse : box de karaoké privatives, réservation en ligne, accès autonome, ambiance immersive et soirées entre amis. Inscrivez-vous à la newsletter pour être averti de l’ouverture, suivre les coulisses et profiter des premières infos."
+  />
+  <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.singbox.fr/" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="theme-color" content="#050814" />
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Singbox – Karaoké box privative à Toulouse – Ouverture prochaine">
-  <meta property="og:description" content="Singbox ouvre bientôt à Toulouse. Des salons privés de karaoké, zéro jugement, juste du son, des lumières et vos meilleures (ou pires) voix. Inscrivez-vous pour être prévenu et profiter de -10 % sur votre première réservation.">
-  <meta property="og:image" content="https://www.singbox.fr/OG-image.jpg">
-  <meta property="og:site_name" content="Singbox">
-  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Singbox – Karaoké box privative à Toulouse – Ouverture prochaine" />
+  <meta
+    property="og:description"
+    content="Singbox ouvre bientôt à Toulouse. Des box de karaoké privatives, une réservation en ligne simple, un accès autonome et une ambiance immersive. Inscrivez-vous pour être prévenu de l’ouverture et suivre les coulisses du projet."
+  />
+  <meta property="og:image" content="https://www.singbox.fr/OG-image.jpg" />
+  <meta property="og:site_name" content="Singbox" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:url" content="https://www.singbox.fr/" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Singbox – Karaoké box privative à Toulouse – Ouverture prochaine">
-  <meta name="twitter:description" content="Ouverture prochaine de Singbox, karaoké box privative à Toulouse. Inscrivez-vous pour être prévenu et recevoir -10 % sur votre première réservation.">
-  <meta name="twitter:image" content="https://www.singbox.fr/OG-image.jpg">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Singbox – Karaoké box privative à Toulouse – Ouverture prochaine" />
+  <meta
+    name="twitter:description"
+    content="Ouverture prochaine de Singbox à Toulouse. Inscrivez-vous pour être prévenu, suivre les coulisses et recevoir les premières informations sur le lancement."
+  />
+  <meta name="twitter:image" content="https://www.singbox.fr/OG-image.jpg" />
+
+  <!-- Données structurées -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EntertainmentBusiness",
+    "name": "Singbox",
+    "image": "https://www.singbox.fr/logo.png",
+    "@id": "https://www.singbox.fr/",
+    "url": "https://www.singbox.fr/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Toulouse",
+      "addressCountry": "FR"
+    },
+    "description": "Singbox est un concept de karaoké box privatives à Toulouse avec réservation en ligne et ouverture prochaine.",
+    "sameAs": [
+      "https://www.instagram.com/singboxtoulouse/",
+      "https://www.tiktok.com/@singbox.toulouse/"
+    ]
+  }
+  </script>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
   <style>
     :root {
@@ -49,6 +83,10 @@
     }
 
     * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -73,7 +111,7 @@
         radial-gradient(circle at 0 0, rgba(248,250,252,0.06), transparent 60%),
         radial-gradient(circle at 100% 0, rgba(30,64,175,0.4), transparent 60%),
         #020617;
-      padding: 26px 26px 26px;
+      padding: 26px;
       box-shadow:
         0 30px 80px rgba(0,0,0,0.9),
         0 0 0 1px rgba(15,23,42,0.9);
@@ -81,7 +119,7 @@
 
     @media (max-width: 960px) {
       .page-wrapper {
-        padding: 22px 18px 22px;
+        padding: 22px 18px;
         border-radius: 24px;
       }
     }
@@ -113,7 +151,6 @@
       margin-bottom: 18px;
     }
 
-    /* LOGO QUI REMPLIT BIEN LE CERCLE */
     .brand-logo {
       width: 80px;
       height: 80px;
@@ -178,6 +215,7 @@
       justify-content: center;
       font-size: 11px;
       background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      flex-shrink: 0;
     }
 
     h1 {
@@ -190,8 +228,9 @@
     .intro-text {
       margin: 0 0 24px;
       font-size: 14px;
+      line-height: 1.7;
       color: rgba(249,250,251,0.88);
-      max-width: 520px;
+      max-width: 560px;
     }
 
     .countdown-block {
@@ -245,10 +284,11 @@
     }
 
     .features li {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
+      line-height: 1.6;
     }
 
     .features li span.bullet {
@@ -260,12 +300,54 @@
       justify-content: center;
       font-size: 11px;
       background: rgba(148,163,184,0.18);
+      flex-shrink: 0;
+    }
+
+    .mini-expectations {
+      margin: 22px 0 22px;
+    }
+
+    .mini-expectations-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 12px;
+    }
+
+    .expect-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .expect-card {
+      background: rgba(15,23,42,0.78);
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 18px;
+      padding: 14px 12px;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.6);
+    }
+
+    .expect-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #F9FAFB;
+      margin-bottom: 6px;
+    }
+
+    .expect-card-text {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--sb-text-muted);
+      margin: 0;
     }
 
     .newsletter-label {
       font-size: 12px;
       color: var(--sb-text-muted);
       margin-bottom: 8px;
+      line-height: 1.6;
     }
 
     .newsletter-row {
@@ -281,7 +363,7 @@
       border: 1px solid var(--sb-border-soft);
       background: #020617;
       color: #F9FAFB;
-      padding: 9px 13px;
+      padding: 10px 13px;
       font-size: 13px;
       outline: none;
       min-width: 0;
@@ -298,10 +380,15 @@
         0 0 22px rgba(249,115,22,0.3);
     }
 
+    .newsletter-row input[aria-invalid="true"] {
+      outline: 2px solid #f87171;
+      outline-offset: 2px;
+    }
+
     .newsletter-button {
       border: none;
       border-radius: 999px;
-      padding: 9px 20px;
+      padding: 10px 20px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -314,7 +401,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
-    .newsletter-button:hover {
+    .newsletter-button:hover,
+    .newsletter-button:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.05);
       box-shadow:
@@ -322,10 +410,25 @@
         0 24px 60px rgba(0,0,0,1);
     }
 
+    .newsletter-button[disabled] {
+      opacity: 0.7;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+      transform: none;
+    }
+
     .newsletter-message {
       font-size: 12px;
-      min-height: 16px;
+      min-height: 18px;
       color: #9CA3AF;
+      margin: 0;
+    }
+
+    .newsletter-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(156,163,175,0.95);
+      line-height: 1.5;
     }
 
     /* ---------- COLONNE DROITE ---------- */
@@ -368,6 +471,7 @@
 
     .right-intro {
       font-size: 13px;
+      line-height: 1.7;
       color: rgba(249,250,251,0.88);
       margin: 0 0 4px;
     }
@@ -390,22 +494,26 @@
 
     .infos-list li {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       color: rgba(249,250,251,0.9);
+      line-height: 1.6;
     }
 
     .infos-list span.icon {
       font-size: 13px;
       width: 16px;
       text-align: center;
+      flex-shrink: 0;
+      margin-top: 1px;
     }
 
     .side-small-text {
       font-size: 12px;
       color: var(--sb-text-muted);
       margin: 0 0 2px;
+      line-height: 1.6;
     }
 
     .social-buttons {
@@ -430,7 +538,8 @@
       transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
 
-    .social-btn:hover {
+    .social-btn:hover,
+    .social-btn:focus-visible {
       transform: translateY(-1px);
       border-color: rgba(248,250,251,0.8);
       box-shadow: 0 20px 50px rgba(0,0,0,1);
@@ -469,12 +578,14 @@
       font-size: 12px;
       color: rgba(249,250,251,0.9);
       margin: 0;
+      line-height: 1.7;
     }
 
     .side-footnote {
       font-size: 11px;
       color: rgba(156,163,175,0.95);
       margin-top: 10px;
+      line-height: 1.6;
     }
 
     @media (max-width: 960px) {
@@ -485,18 +596,25 @@
       .right-card {
         padding: 18px 18px 16px;
       }
+
+      .expect-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 560px) {
       .countdown-row {
         gap: 10px;
       }
+
       .countdown-item {
         flex: 1 1 calc(50% - 10px);
       }
+
       .brand-row {
         align-items: flex-start;
       }
+
       h1 {
         font-size: 26px;
       }
@@ -511,7 +629,7 @@
       <section class="left" aria-label="Informations ouverture Singbox">
         <header class="brand-row">
           <div class="brand-logo">
-            <img src="logo.png" alt="Logo Singbox, karaoké box privative à Toulouse">
+            <img src="logo.png" alt="Logo Singbox, karaoké box privative à Toulouse" />
           </div>
           <div class="brand-text-block">
             <div class="brand-name">SINGBOX</div>
@@ -521,13 +639,14 @@
 
         <div class="opening-chip" id="opening-chip">
           <span class="icon">📅</span>
-          <span>Ouverture prévue prochainement</span>
+          <span id="opening-chip-text">Ouverture prévue prochainement</span>
         </div>
 
         <h1>On se prépare pour l’ouverture ✨</h1>
         <p class="intro-text">
-          Des box de karaoké privées, un catalogue XXL de chansons et une ambiance pensée
-          pour que tout le monde ose chanter. L’ouverture approche&nbsp;!
+          Des box de karaoké privatives, une réservation en ligne simple, une ambiance immersive
+          et un lieu pensé pour chanter entre amis sans pression. L’ouverture approche :
+          inscrivez-vous pour suivre les coulisses, être averti du lancement et découvrir les premières infos avant tout le monde.
         </p>
 
         <!-- COMPTE À REBOURS -->
@@ -556,23 +675,47 @@
         <ul class="features">
           <li>
             <span class="bullet">🎤</span>
-            <span>Salons privés &amp; insonorisés pour chanter en toute intimité.</span>
+            <span>Box privatives et insonorisées pour chanter en toute intimité.</span>
           </li>
           <li>
-            <span class="bullet">🎧</span>
-            <span>Catalogue de chansons mis à jour régulièrement.</span>
+            <span class="bullet">📲</span>
+            <span>Réservation en ligne et fonctionnement pensé pour être simple et fluide.</span>
           </li>
           <li>
             <span class="bullet">🎉</span>
-            <span>Parfait pour anniversaires, EVJF/EVG, afterworks &amp; team building.</span>
+            <span>Idéal pour anniversaires, EVJF/EVG, afterworks, sorties entre amis et événements en petit groupe.</span>
           </li>
         </ul>
+
+        <section class="mini-expectations" aria-label="Ce qui vous attend chez Singbox">
+          <div class="mini-expectations-label">Ce qui vous attend</div>
+          <div class="expect-grid">
+            <article class="expect-card">
+              <div class="expect-card-title">Box privatives</div>
+              <p class="expect-card-text">
+                Des espaces dédiés pour chanter entre vous, dans une ambiance immersive et sans regard extérieur.
+              </p>
+            </article>
+            <article class="expect-card">
+              <div class="expect-card-title">Réservation en ligne</div>
+              <p class="expect-card-text">
+                Un parcours simple pour choisir votre créneau, votre box et réserver rapidement.
+              </p>
+            </article>
+            <article class="expect-card">
+              <div class="expect-card-title">Accès autonome</div>
+              <p class="expect-card-text">
+                Une expérience pensée pour être la plus fluide possible, de la réservation jusqu’à votre séance.
+              </p>
+            </article>
+          </div>
+        </section>
 
         <!-- NEWSLETTER -->
         <section aria-label="Inscription newsletter Singbox">
           <p class="newsletter-label">
-            Pour être prévenu de l’ouverture et recevoir <strong>-10&nbsp;% sur votre première réservation</strong>,
-            inscrivez-vous à notre newsletter&nbsp;:
+            Pour être prévenu de l’ouverture, suivre l’avancée du projet et recevoir les premières informations sur le lancement,
+            inscrivez-vous à la newsletter :
           </p>
 
           <div class="newsletter-row">
@@ -581,12 +724,19 @@
               id="newsletter-email"
               placeholder="Votre adresse e-mail"
               autocomplete="email"
+              inputmode="email"
+              aria-label="Votre adresse e-mail"
             />
             <button id="newsletter-submit" type="button" class="newsletter-button">
               M'avertir
             </button>
           </div>
-          <p id="newsletter-message" class="newsletter-message"></p>
+          <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
+
+          <p class="newsletter-note">
+            Vous recevrez en priorité les annonces d’ouverture, les éventuelles invitations de lancement
+            et les nouveautés liées à Singbox.
+          </p>
         </section>
       </section>
 
@@ -595,11 +745,12 @@
         <div>
           <div class="right-title">EN COULISSES…</div>
           <p class="right-intro">
-            Nous finalisons les dernières touches&nbsp;: installation des box, tests son &amp; lumières,
-            validation du catalogue et préparation des premières soirées à thème.
+            Nous avançons sur les dernières étapes du projet : lieu, aménagement, tests techniques,
+            expérience client et préparation du lancement.
           </p>
           <p class="right-intro">
-            Bientôt, vous pourrez réserver votre créneau 24/7 directement en ligne.
+            L’objectif est de proposer à Toulouse une expérience de karaoké box privative simple,
+            autonome et mémorable dès l’ouverture.
           </p>
         </div>
 
@@ -608,11 +759,11 @@
           <ul class="infos-list">
             <li>
               <span class="icon">📍</span>
-              <span>Adresse&nbsp;: 66 Rue de la République, 31300 Toulouse</span>
+              <span>Localisation prévue : Toulouse. L’adresse exacte sera communiquée dès confirmation du lieu.</span>
             </li>
             <li>
               <span class="icon">🕒</span>
-              <span>Horaires prévus&nbsp;: 24h/24, 7j/7</span>
+              <span>Horaires envisagés : 24h/24, 7j/7, sous réserve de validation finale d’exploitation.</span>
             </li>
             <li>
               <span class="icon">✉️</span>
@@ -624,7 +775,7 @@
         <div>
           <p class="side-section-label">Suivez l’avancée du projet</p>
           <p class="side-small-text">
-            Coulisses, travaux, sondages et premières playlists sont partagés sur nos réseaux.
+            Coulisses, travaux, sondages, inspirations, premières playlists et annonces de lancement seront partagés sur nos réseaux.
           </p>
 
           <div class="social-buttons">
@@ -636,11 +787,10 @@
               rel="noopener noreferrer"
             >
               <span class="social-icon" aria-hidden="true">
-                <!-- Logo Instagram -->
                 <svg viewBox="0 0 24 24" fill="none">
-                  <rect x="3" y="3" width="18" height="18" rx="5" stroke="#F9FAFB" stroke-width="1.6"/>
-                  <circle cx="12" cy="12" r="4.3" stroke="#F9FAFB" stroke-width="1.6"/>
-                  <circle cx="17.2" cy="6.8" r="1.3" fill="#F9FAFB"/>
+                  <rect x="3" y="3" width="18" height="18" rx="5" stroke="#F9FAFB" stroke-width="1.6"></rect>
+                  <circle cx="12" cy="12" r="4.3" stroke="#F9FAFB" stroke-width="1.6"></circle>
+                  <circle cx="17.2" cy="6.8" r="1.3" fill="#F9FAFB"></circle>
                 </svg>
               </span>
               <span>Instagram</span>
@@ -654,7 +804,6 @@
               rel="noopener noreferrer"
             >
               <span class="social-icon" aria-hidden="true">
-                <!-- Logo TikTok stylisé -->
                 <svg viewBox="0 0 24 24" fill="none">
                   <path
                     d="M16.2 5.2c.5.7 1.2 1.2 2 1.5v3.1a5 5 0 0 1-3-1V15a4.5 4.5 0 1 1-4.5-4.5c.3 0 .6 0 .9.1v2.8a1.8 1.8 0 1 0 1.3 1.7V4.5h2.6v.7z"
@@ -667,19 +816,17 @@
           </div>
         </div>
 
-        <!-- A PROPOS DU PROJET -->
         <div class="about-project">
           <p class="about-title">À propos du projet</p>
           <p class="about-text">
-            Singbox est né à Toulouse de l’envie de recréer les karaokés box asiatiques&nbsp;:
-            des salons privés, zéro jugement, juste du son, des lumières et vos meilleures
-            (ou pires) voix.
+            Singbox est né à Toulouse avec l’envie de recréer l’esprit des karaokés box asiatiques :
+            des espaces privatifs, une vraie liberté, une ambiance travaillée et un moment fun à partager sans jugement.
           </p>
         </div>
 
         <p class="side-footnote">
-          Cette page est temporaire. Le site complet (réservation, box, tarifs…) sera
-          disponible à l’ouverture.
+          Cette page est une page de pré-lancement. Le site complet avec les réservations, les box,
+          les tarifs et les informations définitives sera mis en ligne à l’ouverture.
         </p>
       </aside>
     </div>
@@ -688,10 +835,15 @@
   <!-- Supabase Newsletter -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ---- TIMER ----
-    // Mets ici ta vraie date/heure d'ouverture
-    const LAUNCH_DATE = new Date("2026-03-01T18:00:00+01:00"); // 1er mars 2026, 18h (exemple)
+    // =========================
+    // PARAMÈTRES À METTRE À JOUR
+    // =========================
+    // Remplace cette date par ta vraie date d'ouverture estimée ou officielle.
+    const LAUNCH_DATE = new Date("2026-04-30T18:00:00+02:00");
 
+    // =========================
+    // COUNTDOWN
+    // =========================
     function pad(n) {
       return n.toString().padStart(2, "0");
     }
@@ -702,13 +854,8 @@
         hoursEl: document.getElementById("hours"),
         minutesEl: document.getElementById("minutes"),
         secondsEl: document.getElementById("seconds"),
-        chipEl: document.getElementById("opening-chip"),
+        chipTextEl: document.getElementById("opening-chip-text")
       };
-    }
-
-    function getChipTextSpan(chipEl) {
-      if (!chipEl) return null;
-      return chipEl.querySelector("span:nth-child(2)");
     }
 
     function setCountdownZeros(els) {
@@ -718,22 +865,56 @@
       if (els.secondsEl) els.secondsEl.textContent = "00";
     }
 
-    function setChipText(chipEl, text) {
-      const textSpan = getChipTextSpan(chipEl);
-      if (textSpan) textSpan.textContent = text;
-    }
-
     function getFrenchLaunchDateString() {
-      const options = { weekday: "long", day: "2-digit", month: "long", year: "numeric" };
+      const options = {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      };
       return LAUNCH_DATE.toLocaleDateString("fr-FR", options);
     }
 
-    function renderOpenedState(els) {
-      setCountdownZeros(els);
+    function getFrenchLaunchTimeString() {
+      return LAUNCH_DATE.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function setChipText(text) {
+      const els = getCountdownEls();
+      if (els.chipTextEl) els.chipTextEl.textContent = text;
+    }
+
+    function renderPrelaunchState(parts) {
+      const els = getCountdownEls();
+
+      if (els.daysEl) els.daysEl.textContent = pad(parts.days);
+      if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
+      if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
+      if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
+
       setChipText(
-        els.chipEl,
-        "Singbox est ouvert 🎉 Le site complet arrive dans quelques instants."
+        "Ouverture estimée le " + getFrenchLaunchDateString() + " à " + getFrenchLaunchTimeString()
       );
+    }
+
+    function renderLaunchImminentState(parts) {
+      const els = getCountdownEls();
+
+      if (els.daysEl) els.daysEl.textContent = pad(parts.days);
+      if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
+      if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
+      if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
+
+      setChipText("Le lancement approche : ouverture imminente");
+    }
+
+    function renderPostLaunchState() {
+      const els = getCountdownEls();
+      setCountdownZeros(els);
+      setChipText("L’ouverture est imminente : les dernières informations arrivent bientôt");
     }
 
     function getTimeParts(diffMs) {
@@ -742,81 +923,141 @@
         days: Math.floor(totalSeconds / (60 * 60 * 24)),
         hours: Math.floor((totalSeconds / (60 * 60)) % 24),
         minutes: Math.floor((totalSeconds / 60) % 60),
-        seconds: totalSeconds % 60,
+        seconds: totalSeconds % 60
       };
-    }
-
-    function renderCountdown(els, parts) {
-      if (els.daysEl) els.daysEl.textContent = pad(parts.days);
-      if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
-      if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
-      if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
-
-      setChipText(els.chipEl, "Ouverture prévue le " + getFrenchLaunchDateString());
     }
 
     function updateCountdown() {
       const now = new Date();
       const diff = LAUNCH_DATE - now;
-
-      const els = getCountdownEls();
+      const twoDaysMs = 2 * 24 * 60 * 60 * 1000;
 
       if (diff <= 0) {
-        renderOpenedState(els);
+        renderPostLaunchState();
         return;
       }
 
       const parts = getTimeParts(diff);
-      renderCountdown(els, parts);
+
+      if (diff <= twoDaysMs) {
+        renderLaunchImminentState(parts);
+      } else {
+        renderPrelaunchState(parts);
+      }
     }
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ---- NEWSLETTER SUPABASE ----
-    const supabaseClient = supabase.createClient(
+    // =========================
+    // NEWSLETTER SUPABASE
+    // =========================
+    const supabaseClient = globalThis.supabase.createClient(
       "https://sfckofydfqbllkxhxwnt.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
     );
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    function setNewsletterMessage(msgBox, message, color) {
+      if (!msgBox) return;
+      msgBox.style.color = color;
+      msgBox.textContent = message;
+    }
+
+    function setNewsletterLoadingState(submitBtn, isLoading) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.originalText) {
+        submitBtn.dataset.originalText = submitBtn.textContent || "M'avertir";
+      }
+
+      submitBtn.disabled = isLoading;
+      submitBtn.setAttribute("aria-busy", String(isLoading));
+      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
+    }
+
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const msgBox = document.getElementById("newsletter-message");
 
-      if (!emailInput || !submitBtn || !msgBox) return;
+      if (!(emailInput instanceof HTMLInputElement) || !submitBtn || !msgBox) return;
 
-      submitBtn.addEventListener("click", async () => {
+      async function handleNewsletterSubmit() {
         const email = emailInput.value.trim();
 
-        msgBox.style.color = "#9CA3AF";
-        msgBox.textContent = "Envoi en cours...";
+        emailInput.removeAttribute("aria-invalid");
+        setNewsletterMessage(msgBox, "Envoi en cours...", "#9CA3AF");
 
-        if (!email || !email.includes("@")) {
-          msgBox.style.color = "#f87171";
-          msgBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+        if (!isValidEmail(email)) {
+          emailInput.setAttribute("aria-invalid", "true");
+          setNewsletterMessage(msgBox, "Veuillez entrer une adresse e-mail valide.", "#f87171");
           return;
         }
 
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert({ email });
+        setNewsletterLoadingState(submitBtn, true);
 
-        if (error) {
-          if (
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"))
-          ) {
-            msgBox.style.color = "#38bdf8";
-            msgBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+        try {
+          const { error } = await subscribeNewsletter(email);
+
+          if (error) {
+            console.error(error);
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage(msgBox, "Vous êtes déjà inscrit à la newsletter 😉", "#38bdf8");
+            } else {
+              setNewsletterMessage(
+                msgBox,
+                "Une erreur est survenue. Réessayez dans quelques instants.",
+                "#f87171"
+              );
+            }
           } else {
-            msgBox.style.color = "#f87171";
-            msgBox.textContent = "Erreur : " + error.message;
+            setNewsletterMessage(
+              msgBox,
+              "Merci ! Vous serez prévenu des prochaines annonces Singbox 🎉",
+              "#4ade80"
+            );
+            emailInput.value = "";
           }
-        } else {
-          msgBox.style.color = "#4ade80";
-          msgBox.textContent = "Merci ! Vous serez prévenu et recevrez votre réduction de -10 % 🎉";
-          emailInput.value = "";
+        } catch (error) {
+          console.error(error);
+          setNewsletterMessage(
+            msgBox,
+            "Erreur réseau, vérifiez votre connexion puis réessayez.",
+            "#f87171"
+          );
+        } finally {
+          setNewsletterLoadingState(submitBtn, false);
+        }
+      }
+
+      submitBtn.addEventListener("click", handleNewsletterSubmit);
+
+      emailInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          handleNewsletterSubmit();
         }
       });
     });
