@@ -6,9 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- SEO -->
-  <meta name="description" content="Consultez les Conditions Générales de Vente (CGV) de Singbox, karaoké box privative à Toulouse : réservation en ligne, tarifs, paiement, annulation, responsabilité et règlement intérieur." />
+  <meta
+    name="description"
+    content="Consultez les Conditions Générales de Vente (CGV) de Singbox, karaoké box privative à Toulouse : réservation en ligne, accès autonome, QR code, tarifs, paiement, annulation, responsabilité et règlement intérieur."
+  />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://www.singbox.fr/cgv" />
+  <link rel="canonical" href="https://www.singbox.fr/cgv.html" />
 
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
@@ -19,16 +22,22 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Conditions Générales de Vente Singbox | Karaoké box à Toulouse" />
-  <meta property="og:description" content="Réservation, paiement, annulation, règlement intérieur : découvrez les Conditions Générales de Vente de Singbox, karaoké box privative à Toulouse." />
+  <meta
+    property="og:description"
+    content="Réservation, QR code, accès autonome, paiement, annulation et règlement intérieur : découvrez les Conditions Générales de Vente de Singbox, karaoké box privative à Toulouse."
+  />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/cgv" />
+  <meta property="og:url" content="https://www.singbox.fr/cgv.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Conditions Générales de Vente Singbox | Karaoké box à Toulouse" />
-  <meta name="twitter:description" content="Toutes les Conditions Générales de Vente pour vos réservations de box de karaoké privatives chez Singbox à Toulouse." />
+  <meta
+    name="twitter:description"
+    content="Toutes les Conditions Générales de Vente pour vos réservations de box de karaoké privatives chez Singbox à Toulouse."
+  />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <!-- Données structurées LocalBusiness -->
@@ -63,8 +72,8 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Conditions Générales de Vente Singbox | Karaoké box à Toulouse",
-    "url": "https://www.singbox.fr/cgv",
-    "description": "Conditions Générales de Vente de Singbox à Toulouse : règles de réservation, annulation, paiement, responsabilité et règlement intérieur des box de karaoké privatives.",
+    "url": "https://www.singbox.fr/cgv.html",
+    "description": "Conditions Générales de Vente de Singbox à Toulouse : règles de réservation, annulation, paiement, accès autonome, QR code, responsabilité et règlement intérieur des box de karaoké privatives.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -97,6 +106,10 @@
     }
 
     * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -372,14 +385,15 @@
     }
 
     .legal-card h2 {
-      font-size: 18px;
-      margin-top: 24px;
-      margin-bottom: 8px;
+      font-size: 19px;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      scroll-margin-top: 110px;
     }
 
     .legal-card h3 {
       font-size: 16px;
-      margin-top: 14px;
+      margin-top: 16px;
       margin-bottom: 6px;
     }
 
@@ -394,6 +408,58 @@
 
     .legal-card li {
       margin-bottom: 4px;
+    }
+
+    .legal-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.18);
+      color: #fde7d5;
+      font-size: 14px;
+    }
+
+    .legal-summary {
+      margin: 22px 0 10px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .legal-summary-title {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 18px;
+      margin: 0 0 10px;
+      color: #F9FAFB;
+    }
+
+    .legal-summary-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .legal-summary-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .legal-summary-links a:hover,
+    .legal-summary-links a:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(148, 163, 184, 0.16);
     }
 
     /* ---------- FOOTER ---------- */
@@ -429,6 +495,11 @@
       color:#F9FAFB;
     }
 
+    footer input[type=email][aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
     footer button {
       padding:10px 18px;
       border:none;
@@ -438,6 +509,18 @@
       font-weight:600;
       font-size:14px;
       cursor:pointer;
+    }
+
+    footer button[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+    }
+
+    .newsletter-message {
+      min-height: 22px;
+      margin-top: 10px;
+      font-size: 14px;
     }
 
     .footer-columns {
@@ -510,6 +593,19 @@
         padding-inline: 14px;
         font-size: 13px;
       }
+
+      .legal-card {
+        padding: 26px 18px 32px;
+      }
+
+      .legal-summary-links {
+        flex-direction: column;
+      }
+
+      .legal-summary-links a {
+        width: 100%;
+        justify-content: flex-start;
+      }
     }
   </style>
 </head>
@@ -574,8 +670,30 @@
         <p class="legal-intro">
           Les présentes Conditions Générales de Vente (CGV) s’appliquent à l’ensemble des prestations proposées par Singbox, accessible depuis le site https://singbox.fr. En réservant une box via notre site, le client reconnaît avoir lu, compris et accepté sans réserve les présentes CGV.
         </p>
+        <p class="legal-intro">
+          Singbox se réserve le droit de mettre à jour les présentes CGV à tout moment. La version applicable est celle en vigueur à la date de la réservation.
+        </p>
 
-        <h2>1. Informations légales</h2>
+        <div class="legal-summary" aria-label="Sommaire des Conditions Générales de Vente">
+          <p class="legal-summary-title">Sommaire</p>
+          <div class="legal-summary-links">
+            <a href="#infos-legales">1. Informations légales</a>
+            <a href="#objet-services">2. Objet des services</a>
+            <a href="#reservation">3. Réservation</a>
+            <a href="#tarifs">4. Tarifs</a>
+            <a href="#paiement">5. Paiement</a>
+            <a href="#annulation">6. Annulation & modification</a>
+            <a href="#reglement-interieur">7. Règlement intérieur</a>
+            <a href="#mineurs">8. Mineurs</a>
+            <a href="#responsabilite">9. Responsabilité</a>
+            <a href="#donnees-personnelles">10. Données personnelles</a>
+            <a href="#propriete-intellectuelle">11. Propriété intellectuelle</a>
+            <a href="#litiges">12. Litiges & droit applicable</a>
+            <a href="#acceptation-cgv">13. Acceptation des CGV</a>
+          </div>
+        </div>
+
+        <h2 id="infos-legales">1. Informations légales</h2>
         <p>Singbox</p>
         <p>EURL</p>
         <p>Représenté par : Pesce</p>
@@ -583,54 +701,68 @@
         <p>N° SIRET : [numéro]</p>
         <p>E-mail : <a href="mailto:contactsingbox@gmail.com" style="color:var(--sb-orange);">contactsingbox@gmail.com</a></p>
 
-        <h2>2. Objet des services</h2>
+        <h2 id="objet-services">2. Objet des services</h2>
         <p>Singbox propose la location de box privées de karaoké, accessibles sur réservation en ligne :</p>
         <ul>
-          <li>réservation de créneaux horaires</li>
-          <li>utilisation personnelle et privative de la box</li>
-          <li>installation audio/vidéo fournie</li>
-          <li>services complémentaires éventuels (snacks, boissons, options… selon disponibilité)</li>
+          <li>réservation de créneaux horaires ;</li>
+          <li>utilisation personnelle et privative de la box ;</li>
+          <li>installation audio/vidéo fournie ;</li>
+          <li>accès autonome à la box via QR code ou tout autre système d’accès communiqué après réservation ;</li>
+          <li>services complémentaires éventuels (snacks, boissons, options… selon disponibilité).</li>
         </ul>
 
-        <h2>3. Réservation</h2>
+        <h2 id="reservation">3. Réservation</h2>
         <h3>3.1. Processus de réservation</h3>
         <p>Le client sélectionne :</p>
         <ul>
-          <li>la date</li>
-          <li>le créneau horaire</li>
-          <li>la box souhaitée</li>
-          <li>le nombre de personnes</li>
+          <li>la date ;</li>
+          <li>le créneau horaire ;</li>
+          <li>la box souhaitée ;</li>
+          <li>le nombre de personnes.</li>
         </ul>
         <p>La réservation devient effective après :</p>
         <ul>
-          <li>validation du panier</li>
-          <li>acceptation des CGV</li>
-          <li>paiement (si paiement en ligne activé)</li>
+          <li>validation du panier ;</li>
+          <li>acceptation des CGV ;</li>
+          <li>paiement (si paiement en ligne activé).</li>
         </ul>
         <p>Une confirmation est envoyée par e-mail.</p>
 
         <h3>3.2. Exactitude des informations</h3>
         <p>
           Le client s’engage à fournir des informations exactes (identité, coordonnées, e-mail).
-          Singbox ne peut être tenu responsable en cas d’erreur saisie par le client entraînant l’impossibilité d’honorer la réservation.
+          Singbox ne pourra être tenu responsable en cas d’erreur de saisie par le client entraînant l’impossibilité d’honorer correctement la réservation, d’envoyer les informations d’accès ou de transmettre le QR code.
         </p>
 
-        <h2>4. Tarifs</h2>
+        <h3>3.3. Accès autonome et QR code</h3>
+        <p>
+          L’accès à la box peut être conditionné à l’utilisation d’un QR code, d’un lien d’accès ou de toute autre méthode d’accès autonome communiquée au client après réservation.
+        </p>
+        <ul>
+          <li>Le QR code ou le lien d’accès est strictement réservé au client ayant effectué la réservation et à son groupe.</li>
+          <li>Le client est responsable de la confidentialité et de l’usage du QR code transmis.</li>
+          <li>Toute transmission à un tiers non autorisé, utilisation abusive, tentative de contournement du système d’accès ou fraude pourra entraîner le refus d’accès ou l’interruption de la séance, sans remboursement.</li>
+        </ul>
+        <p>
+          Singbox ne saurait être tenu responsable si le client ne peut accéder à sa box en raison d’une adresse e-mail erronée, d’un défaut d’accès à sa messagerie ou d’une mauvaise utilisation des informations d’accès communiquées.
+        </p>
+
+        <h2 id="tarifs">4. Tarifs</h2>
         <p>Les prix affichés sur le site sont indiqués en euros TTC. Les tarifs peuvent varier selon :</p>
         <ul>
-          <li>le jour</li>
-          <li>l’horaire</li>
-          <li>la durée</li>
-          <li>les options</li>
+          <li>le jour ;</li>
+          <li>l’horaire ;</li>
+          <li>la durée ;</li>
+          <li>les options.</li>
         </ul>
         <p>
           Singbox se réserve le droit de modifier ses tarifs à tout moment, mais le prix facturé sera celui valable au moment de la réservation.
         </p>
 
-        <h2>5. Paiement</h2>
+        <h2 id="paiement">5. Paiement</h2>
         <p>Le paiement s'effectue :</p>
         <ul>
-          <li>en ligne (carte bancaire, solution de paiement sécurisée)</li>
+          <li>en ligne (carte bancaire, solution de paiement sécurisée).</li>
         </ul>
         <p>Le paiement est sécurisé et géré par un prestataire conforme aux normes PCI-DSS.</p>
 
@@ -642,73 +774,91 @@
 
         <h3>5.3. Empreinte bancaire (caution jusqu’à 250&nbsp;€)</h3>
         <p>
-          Afin de couvrir d’éventuelles dégradations du matériel ou des installations, ainsi que les écarts entre le nombre de participants réservé et le nombre réel de personnes présentes, Singbox se réserve le droit de réaliser, lors de la réservation ou avant le début de la séance, une <strong>empreinte bancaire (pré-autorisation)</strong> d’un montant pouvant aller jusqu’à 250&nbsp;€ par box.
+          Afin de couvrir d’éventuelles dégradations du matériel ou des installations, ainsi que les écarts entre le nombre de participants réservé et le nombre réel de personnes présentes, Singbox se réserve la possibilité de réaliser, lors de la réservation ou avant le début de la séance, une <strong>empreinte bancaire (pré-autorisation)</strong> d’un montant pouvant aller jusqu’à 250&nbsp;€ par box.
         </p>
         <p>
           Le montant de cette empreinte peut être adapté notamment en fonction du <strong>nombre de participants annoncé</strong>, du créneau réservé et de l’historique du client, dans la limite de 250&nbsp;€ par box.
         </p>
         <p>
-          Cette empreinte bancaire ne constitue pas un débit immédiat : aucun montant n’est prélevé tant qu’aucune dégradation, fraude ou manquement grave aux présentes CGV n’est constaté. En cas de dégradation avérée imputable au client ou à son groupe, ou d’écart entre le nombre de participants réservé et le nombre réel de personnes présentes, Singbox pourra procéder au débit partiel ou total de cette empreinte, dans la limite des frais réellement dus (réparations, compléments de prix, pénalités) et au maximum à hauteur de 250&nbsp;€.
+          Cette empreinte bancaire ne constitue pas un débit immédiat : aucun montant n’est prélevé tant qu’aucune dégradation, fraude ou manquement grave aux présentes CGV n’est constaté. En cas de dégradation avérée imputable au client ou à son groupe, ou d’écart entre le nombre de participants réservé et le nombre réel de personnes présentes, Singbox pourra procéder au débit partiel ou total de cette empreinte, dans la limite des frais réellement dus, justifiés et au maximum à hauteur de 250&nbsp;€.
         </p>
         <p>
           En validant sa réservation et son paiement, le client autorise expressément Singbox à effectuer cette empreinte bancaire et à l’utiliser dans les conditions décrites ci-dessus.
         </p>
 
-        <h2>6. Annulation &amp; modification</h2>
+        <h2 id="annulation">6. Annulation &amp; modification</h2>
         <h3>6.1. Annulation par le client</h3>
-        <p>L’annulation est possible jusqu’à 24h avant le début du créneau réservé. Au-delà, aucun remboursement ne pourra être accordé.</p>
+        <p>
+          L’annulation est possible jusqu’à 24h avant le début du créneau réservé. Au-delà, aucun remboursement ne pourra être accordé, sauf disposition contraire expressément prévue par Singbox ou obligation légale applicable.
+        </p>
 
         <h3>6.2. Modification</h3>
-        <p>Sous réserve de disponibilité, le client peut modifier :</p>
+        <p>Sous réserve de disponibilité, le client peut demander la modification :</p>
         <ul>
-          <li>la date</li>
-          <li>le créneau horaire</li>
-          <li>la box réservée</li>
+          <li>de la date ;</li>
+          <li>du créneau horaire ;</li>
+          <li>de la box réservée.</li>
         </ul>
         <p>Aucune garantie de disponibilité n’est assurée.</p>
 
         <h3>6.3. Non-présentation</h3>
         <p>En cas de non-présentation ("no-show") :</p>
         <ul>
-          <li>la réservation est automatiquement perdue</li>
-          <li>aucun remboursement n’est possible</li>
+          <li>la réservation est automatiquement perdue ;</li>
+          <li>aucun remboursement n’est possible, sauf disposition légale impérative contraire.</li>
         </ul>
 
-        <h2>7. Règlement intérieur</h2>
+        <h2 id="reglement-interieur">7. Règlement intérieur</h2>
         <p>En réservant chez Singbox, le client accepte le règlement intérieur suivant :</p>
 
         <h3>7.1. Comportement</h3>
         <p>Le client est responsable :</p>
         <ul>
-          <li>de l'état des lieux</li>
-          <li>du respect du matériel</li>
-          <li>du comportement de son groupe</li>
+          <li>de l'état des lieux ;</li>
+          <li>du respect du matériel ;</li>
+          <li>du comportement de son groupe.</li>
         </ul>
-        <p>Tout comportement dangereux, violent ou inapproprié peut entraîner l’expulsion immédiate sans remboursement.</p>
+        <p>
+          Tout comportement dangereux, violent, frauduleux ou manifestement inapproprié peut entraîner l’expulsion immédiate ou l’interruption de la séance, sans remboursement.
+        </p>
 
         <h3>7.2. Dégradations</h3>
         <p>En cas de dégradation volontaire ou accidentelle :</p>
         <ul>
-          <li>des frais de réparation pourront être facturés au client sur la base de devis ou factures de remplacement</li>
-          <li>l’empreinte bancaire réalisée lors de la réservation pourra être utilisée pour procéder au débit des sommes dues, dans la limite des montants justifiés</li>
-          <li>si le coût réel des réparations dépasse 250&nbsp;€, Singbox se réserve le droit de facturer au client le complément, qui devra être réglé sur présentation des justificatifs</li>
+          <li>des frais de réparation pourront être facturés au client sur la base de devis ou factures de remplacement ;</li>
+          <li>l’empreinte bancaire réalisée lors de la réservation pourra être utilisée pour procéder au débit des sommes dues, dans la limite des montants justifiés ;</li>
+          <li>si le coût réel des réparations dépasse 250&nbsp;€, Singbox se réserve le droit de facturer au client le complément, qui devra être réglé sur présentation des justificatifs.</li>
         </ul>
 
-<h3>7.3. Consommations</h3>
-<p>
-  La consommation d’alcool est autorisée sous la responsabilité des clients. 
-  Tout comportement excessif, dégradation ou incident lié à l’alcool engage la responsabilité du groupe ayant effectué la réservation et pourra entraîner des frais supplémentaires ou l’interruption de la session.
-</p>
-<ul>
-  <li>Il est interdit de fumer dans les locaux</li>
-</ul>
+        <h3>7.3. Consommations</h3>
+        <p>
+          La consommation modérée d’alcool apporté par les clients peut être tolérée sous leur entière responsabilité, sous réserve qu’elle ne donne lieu à aucun abus, danger, nuisance, dégradation ou incident.
+        </p>
+        <p>
+          Singbox se réserve le droit d’interrompre la séance, de refuser l’accès ou de facturer les frais éventuellement causés si l’état d’un ou plusieurs participants, ou le comportement du groupe, compromet la sécurité, le bon déroulement de la séance, le respect des lieux ou du matériel.
+        </p>
+        <ul>
+          <li>Il est interdit de fumer dans les locaux.</li>
+          <li>Tout dommage, incident ou comportement excessif lié à la consommation d’alcool engage la responsabilité du groupe ayant effectué la réservation.</li>
+        </ul>
 
-        <h3>7.4. Retard</h3>
-        <p>Tout retard empiète sur la durée réservée et ne donne droit à aucune compensation.</p>
+        <h3>7.4. Retard, durée de séance et libération de la box</h3>
+        <p>
+          Tout retard empiète sur la durée réservée et ne donne droit à aucune compensation.
+        </p>
+        <p>
+          La durée effective d’utilisation de la box correspond au créneau réservé. Le client peut être amené à accéder aux lieux quelques minutes avant ou à sortir quelques minutes après la séance, selon l’organisation et les tolérances techniques de Singbox, sans que cela ne modifie la durée de la prestation réservée.
+        </p>
+        <p>
+          Singbox se réserve la possibilité de couper automatiquement tout ou partie des équipements à l’issue du créneau réservé ou à l’expiration du temps de tolérance éventuellement accordé, afin de permettre la remise à disposition de la box pour la réservation suivante.
+        </p>
+        <p>
+          Le client s’engage à libérer la box à l’issue de sa réservation. Toute occupation anormale au-delà du créneau réservé pourra entraîner l’interruption du service, la facturation de frais complémentaires ou le refus d’accès lors d’une réservation ultérieure.
+        </p>
 
         <h3>7.5. Fraude sur le nombre de participants</h3>
         <p>
-          Le tarif de la séance est notamment fonction du <strong>nombre de participants déclaré lors de la réservation</strong>. En cas de contrôle à l’entrée ou pendant la séance, si Singbox constate que le nombre réel de participants est supérieur à celui déclaré (par exemple réservation pour 4 personnes mais présence de 5 personnes ou plus), Singbox se réserve le droit :
+          Le tarif de la séance est notamment fonction du <strong>nombre de participants déclaré lors de la réservation</strong>. En cas de contrôle à l’entrée ou pendant la séance, si Singbox constate que le nombre réel de participants est supérieur à celui déclaré, Singbox se réserve le droit :
         </p>
         <ul>
           <li>de facturer immédiatement le <strong>complément de prix correspondant au nombre réel de participants</strong> ; et/ou</li>
@@ -719,48 +869,61 @@
           En cas de refus de paiement de ces sommes ou de fraude manifeste, Singbox pourra également interrompre ou refuser la séance, sans remboursement des sommes déjà versées.
         </p>
 
-        <h2>8. Mineurs</h2>
+        <h2 id="mineurs">8. Mineurs</h2>
         <p>
-          Les mineurs doivent être accompagnés d’un adulte responsable.
-          Singbox peut refuser l’accès à un groupe ne respectant pas cette règle.
+          Les mineurs doivent être accompagnés pendant toute la séance par un adulte majeur responsable.
+        </p>
+        <p>
+          La réservation d’une box pour un groupe comprenant un ou plusieurs mineurs doit être effectuée par une personne majeure, qui demeure responsable du groupe, du respect des présentes CGV, du matériel et des éventuels dommages causés.
+        </p>
+        <p>
+          Singbox peut refuser l’accès à tout groupe de mineurs non accompagné dans les conditions prévues ci-dessus.
         </p>
 
-        <h2>9. Responsabilité</h2>
+        <h2 id="responsabilite">9. Responsabilité</h2>
         <p>Singbox ne peut être tenu responsable :</p>
         <ul>
-          <li>des objets perdus ou volés</li>
-          <li>du comportement des clients entre eux</li>
-          <li>des dommages causés par un usage anormal de la box</li>
-          <li>d'une interruption temporaire du service (panne, maintenance…)</li>
+          <li>des objets perdus ou volés ;</li>
+          <li>du comportement des clients entre eux ;</li>
+          <li>des dommages causés par un usage anormal de la box ;</li>
+          <li>d'une interruption temporaire du service (panne, maintenance, incident technique, réseau ou énergie) n’étant pas imputable à une faute caractérisée de Singbox ;</li>
+          <li>de l’impossibilité temporaire d’utiliser certains équipements en cas de maintenance, de dysfonctionnement ou de mise en sécurité.</li>
         </ul>
+        <p>
+          En cas d’incident technique majeur empêchant l’accès à la box ou le déroulement normal de la prestation, Singbox pourra proposer, selon les circonstances, un report, un avoir, une solution alternative ou un remboursement total ou partiel.
+        </p>
 
-        <h2>10. Données personnelles</h2>
+        <h2 id="donnees-personnelles">10. Données personnelles</h2>
         <p>
           Les données collectées sont traitées conformément à notre Politique de confidentialité, accessible sur le site.
           Le client dispose notamment d’un droit d’accès, de rectification, de suppression et d’opposition.
         </p>
 
-        <h2>11. Propriété intellectuelle</h2>
+        <h2 id="propriete-intellectuelle">11. Propriété intellectuelle</h2>
         <p>
           Tous les contenus présents sur le site Singbox (textes, images, logo, design, vidéos, sons)
           sont protégés par les droits d’auteur. Toute reproduction sans autorisation est interdite.
         </p>
 
-        <h2>12. Litiges &amp; droit applicable</h2>
+        <h2 id="litiges">12. Litiges &amp; droit applicable</h2>
         <p>Les présentes CGV sont soumises au droit français.</p>
         <p>En cas de litige :</p>
         <ul>
           <li>une solution amiable sera recherchée prioritairement ;</li>
-          <li>en cas d’échec, le litige pourra être porté devant les tribunaux compétents du siège de Singbox.</li>
+          <li>à défaut d’accord amiable, le litige sera porté devant les juridictions compétentes dans les conditions prévues par le droit français.</li>
         </ul>
 
-        <h2>13. Acceptation des CGV</h2>
+        <h2 id="acceptation-cgv">13. Acceptation des CGV</h2>
         <p>La validation d'une réservation vaut :</p>
         <ul>
           <li>acceptation pleine et entière des présentes CGV ;</li>
           <li>reconnaissance de la capacité juridique du client ;</li>
           <li>acceptation expresse de l’empreinte bancaire prévue à l’article 5.3 (jusqu’à 250&nbsp;€ par box) et de son éventuelle utilisation pour couvrir les dégradations, compléments de prix et pénalités prévus aux articles 5.3, 7.2 et 7.5.</li>
         </ul>
+
+        <div class="legal-note">
+          Ce document constitue une base claire et structurée pour l’information client. Pour une validation juridique définitive, une relecture par un professionnel du droit reste recommandée avant mise en exploitation commerciale.
+        </div>
       </section>
     </div>
   </main>
@@ -772,12 +935,16 @@
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <div class="newsletter-row">
         <input
+          id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
           aria-label="Adresse e-mail pour la newsletter"
+          autocomplete="email"
+          inputmode="email"
         />
-        <button type="button">S'abonner</button>
+        <button id="newsletter-submit" type="button">S'abonner</button>
       </div>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -808,9 +975,9 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
           </svg>
           <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
             Instagram
@@ -819,7 +986,7 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
           </svg>
           <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
             TikTok
@@ -835,7 +1002,13 @@
     </div>
   </footer>
 
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
     function getPanier() {
       const rawPanier = localStorage.getItem("panier");
       if (!rawPanier) {
@@ -856,6 +1029,58 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    function setNewsletterMessage(messageEl, message, color) {
+      if (!messageEl) return;
+      messageEl.style.color = color;
+      messageEl.textContent = message;
+    }
+
+    async function subscribeNewsletter(email) {
+      return supabaseClient
+        .from("newsletter_subscriptions")
+        .insert([{ email }]);
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function setNewsletterLoadingState(submitBtn, isLoading) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.originalText) {
+        submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
+      }
+
+      submitBtn.disabled = isLoading;
+      submitBtn.setAttribute("aria-busy", String(isLoading));
+      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -864,19 +1089,103 @@
 
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", () => {
-          const isOpen = mobileNav.classList.toggle("open");
-          burgerBtn.setAttribute("aria-expanded", String(isOpen));
+          const isOpen = mobileNav.classList.contains("open");
+
+          if (isOpen) {
+            closeMobileNav(mobileNav, burgerBtn);
+          } else {
+            openMobileNav(mobileNav, burgerBtn);
+          }
         });
 
         mobileNav.addEventListener("click", (e) => {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-            burgerBtn.setAttribute("aria-expanded", "false");
+          const target = e.target;
+          if (target instanceof HTMLElement && target.tagName === "A") {
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          const target = e.target;
+          if (
+            mobileNav.classList.contains("open") &&
+            target instanceof Node &&
+            !mobileNav.contains(target) &&
+            !burgerBtn.contains(target)
+          ) {
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+            closeMobileNav(mobileNav, burgerBtn);
           }
         });
       }
 
       updateCartIcon();
+
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageEl = document.getElementById("newsletter-message");
+
+      async function handleNewsletterSubmit() {
+        if (!(emailInput instanceof HTMLInputElement) || !submitBtn || !messageEl) return;
+
+        const email = emailInput.value.trim();
+        emailInput.removeAttribute("aria-invalid");
+        setNewsletterMessage(messageEl, "Envoi en cours...", "#e5e7eb");
+
+        if (!isValidEmail(email)) {
+          emailInput.setAttribute("aria-invalid", "true");
+          setNewsletterMessage(messageEl, "Merci d'entrer une adresse e-mail valide 🙂", "#ff6b6b");
+          return;
+        }
+
+        setNewsletterLoadingState(submitBtn, true);
+
+        try {
+          const { error } = await subscribeNewsletter(email);
+
+          if (error) {
+            console.error(error);
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage(messageEl, "Tu es déjà inscrit à la newsletter 🎤", "#f97373");
+            } else {
+              setNewsletterMessage(
+                messageEl,
+                "Oups, une erreur est survenue. Réessaie dans quelques instants.",
+                "#f97373"
+              );
+            }
+          } else {
+            setNewsletterMessage(messageEl, "Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
+            emailInput.value = "";
+          }
+        } catch (error) {
+          console.error(error);
+          setNewsletterMessage(
+            messageEl,
+            "Erreur réseau, vérifie ta connexion et réessaie.",
+            "#f97373"
+          );
+        } finally {
+          setNewsletterLoadingState(submitBtn, false);
+        }
+      }
+
+      if (emailInput && submitBtn && messageEl) {
+        submitBtn.addEventListener("click", handleNewsletterSubmit);
+
+        emailInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            handleNewsletterSubmit();
+          }
+        });
+      }
     });
   </script>
 </body>
