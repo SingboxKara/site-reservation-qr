@@ -10,7 +10,7 @@
     content="Modifiez votre réservation Singbox : ajustez la date, l’horaire ou le nombre de personnes jusqu’à 6 heures avant votre session de karaoké box à Toulouse."
   />
   <meta name="robots" content="noindex,nofollow" />
-  <link rel="canonical" href="https://www.singbox.fr/modifier-reservation" />
+  <link rel="canonical" href="https://www.singbox.fr/modifier-reservation.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <meta property="og:type" content="website" />
@@ -19,7 +19,7 @@
     property="og:description"
     content="Modifiez votre réservation Singbox jusqu’à 6 heures avant votre séance : date, horaire et nombre de personnes."
   />
-  <meta property="og:url" content="https://www.singbox.fr/modifier-reservation" />
+  <meta property="og:url" content="https://www.singbox.fr/modifier-reservation.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
@@ -41,6 +41,18 @@
   <link rel="stylesheet" href="css/global.css" />
 
   <style>
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
     #reservation-edit-page {
       position: relative;
       padding: 10rem 0 72px;
@@ -278,6 +290,12 @@
         0 0 18px rgba(249, 115, 22, 0.18);
     }
 
+    .field-block select[aria-invalid="true"],
+    .field-block input[type="date"][aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
     input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1);
       cursor: pointer;
@@ -407,7 +425,7 @@
     }
 
     .summary-value.negative {
-      color: #fca5a5;
+      color: #fdba74;
     }
 
     .summary-note {
@@ -444,6 +462,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .btn-main {
@@ -512,6 +531,29 @@
       margin-top: 6px;
       min-height: 16px;
     }
+
+    #newsletter-email[aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 600px) {
+      #reservation-edit-page {
+        padding-top: 9rem;
+      }
+
+      .edit-layout {
+        padding: 0 16px;
+      }
+
+      .edit-card {
+        padding: 1.2rem 1rem;
+      }
+
+      .edit-header {
+        padding: 0 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -561,6 +603,7 @@
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="mon-compte.html">Mon compte</a></li>
+      <li><a href="reservation.html">Réserver</a></li>
     </ul>
   </nav>
 
@@ -631,7 +674,7 @@
 
             <ul class="rule-list">
               <li>Modification possible jusqu’à <strong>6 heures avant</strong> la séance.</li>
-              <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
+              <li>Capacité autorisée : <strong>1 à 6 personnes</strong>.</li>
               <li>Facturation minimale : <strong>2 personnes</strong>.</li>
               <li>Si la réservation a été obtenue avec la fidélité, <strong>2 personnes restent offertes</strong>.</li>
               <li>À partir de la 3e personne, seul le <strong>supplément</strong> est dû.</li>
@@ -663,8 +706,6 @@
                     <option value="4">4 personnes</option>
                     <option value="5">5 personnes</option>
                     <option value="6">6 personnes</option>
-                    <option value="7">7 personnes</option>
-                    <option value="8">8 personnes</option>
                   </select>
                   <div class="field-help">
                     Même si vous venez seul·e, la base reste calculée sur 2 personnes minimum.
@@ -679,7 +720,7 @@
                   Aucun créneau alternatif disponible pour cette date et cette box.
                 </div>
                 <div class="field-help">
-                  Seuls les créneaux encore libres pour la même box sont proposés.
+                  Sélectionnez un nouveau créneau disponible pour finaliser la modification.
                 </div>
               </div>
             </div>
@@ -765,10 +806,17 @@
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
-        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <input
+          id="newsletter-email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+          autocomplete="email"
+          inputmode="email"
+          aria-label="Adresse e-mail"
+        />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
-      <p id="newsletter-message" class="newsletter-message"></p>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -818,11 +866,14 @@
     <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
     const MIN_ALLOWED_PERSONS = 1;
-    const MAX_ALLOWED_PERSONS = 8;
+    const MAX_ALLOWED_PERSONS = 6;
     const MIN_BILLABLE_PERSONS = 2;
     const MODIFICATION_DEADLINE_HOURS = 6;
     const SLOT_DURATION_MIN = 90;
@@ -840,6 +891,7 @@
     let selectedPersons = 2;
     let selectedDateIso = null;
     let availableSlots = [];
+    let supabaseClient = null;
 
     function getEl(id) {
       return document.getElementById(id);
@@ -856,18 +908,35 @@
       return token ? { Authorization: "Bearer " + token } : {};
     }
 
+    function getPanier() {
+      try {
+        const rawValue = localStorage.getItem("panier");
+        if (!rawValue) return [];
+        const parsed = JSON.parse(rawValue);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
     function updateCartIcon() {
       const el = getEl("cart-count");
       if (!el) return;
-
-      let panier = [];
-      try {
-        panier = JSON.parse(localStorage.getItem("panier")) || [];
-      } catch {
-        panier = [];
-      }
-
+      const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
     }
 
     function initMobileMenu() {
@@ -877,18 +946,37 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        const willOpen = !mobileNav.classList.contains("open");
-        mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
       });
 
       mobileNav.addEventListener("click", (e) => {
         const target = e.target;
-        if (!(target instanceof HTMLElement)) return;
-        if (target.tagName !== "A") return;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
 
-        mobileNav.classList.remove("open");
-        burgerBtn.setAttribute("aria-expanded", "false");
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
       });
     }
 
@@ -986,10 +1074,19 @@
       return (start.getTime() - Date.now()) / (1000 * 60 * 60);
     }
 
+    function isConfirmedLike(statusRaw) {
+      const status = (statusRaw || "").toString().toLowerCase().trim();
+      return (
+        status === "confirmed" ||
+        status === "paid" ||
+        status.includes("confirm") ||
+        status.includes("payé") ||
+        status.includes("paye")
+      );
+    }
+
     function isModificationAllowed(startIso, statusRaw) {
-      const status = (statusRaw || "").toString().toLowerCase();
-      const isConfirmed = status.includes("confirme") || status === "confirmed";
-      if (!isConfirmed) return false;
+      if (!isConfirmedLike(statusRaw)) return false;
 
       const diff = getHoursBeforeStart(startIso);
       if (diff === null) return false;
@@ -1106,6 +1203,26 @@
       }
     }
 
+    function showFatalReservationError(message) {
+      const banner = getEl("edit-status-banner");
+      const editMsg = getEl("edit-page-message");
+      const confirmBtn = getEl("confirm-edit-btn");
+
+      if (banner) {
+        banner.className = "status-banner error";
+        banner.textContent = message;
+      }
+
+      if (editMsg) {
+        editMsg.textContent = message;
+        editMsg.className = "page-message";
+      }
+
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+      }
+    }
+
     async function loadReservationData() {
       const token = getStoredToken();
       if (!token) {
@@ -1114,12 +1231,17 @@
 
       const reservationId = getReservationIdFromUrl();
       if (!reservationId) {
-        throw new Error("Aucune réservation sélectionnée.");
+        throw new Error("Aucune réservation sélectionnée. Retournez à votre compte pour choisir une réservation.");
       }
 
-      const response = await fetch(`${API_BASE}/api/my-reservations/${encodeURIComponent(reservationId)}`, {
-        headers: getAuthHeaders()
-      });
+      let response;
+      try {
+        response = await fetch(`${API_BASE}/api/my-reservations/${encodeURIComponent(reservationId)}`, {
+          headers: getAuthHeaders()
+        });
+      } catch {
+        throw new Error("Impossible de contacter le serveur. Merci de réessayer.");
+      }
 
       const data = await safeJson(response);
 
@@ -1256,7 +1378,13 @@
         msg.className = "page-message info";
       }
 
-      const response = await fetch(`${API_BASE}/api/slots?date=${encodeURIComponent(selectedDateIso)}`);
+      let response;
+      try {
+        response = await fetch(`${API_BASE}/api/slots?date=${encodeURIComponent(selectedDateIso)}`);
+      } catch {
+        throw new Error("Impossible de charger les créneaux disponibles.");
+      }
+
       const data = await safeJson(response);
 
       if (!response.ok) {
@@ -1378,20 +1506,22 @@
 
       const newStart = selectedSlot
         ? parseDateOrNull(selectedSlot.startTime)
-        : oldStart;
+        : null;
 
       const newEnd = selectedSlot
         ? parseDateOrNull(selectedSlot.endTime)
-        : oldEnd;
+        : null;
 
       const oldAmount = Number(currentReservation.amountPaid || 0);
-      const newAmount = getNewAmount();
+      const newAmount = selectedSlot ? getNewAmount() : oldAmount;
       const delta = getDeltaAmount(oldAmount, newAmount);
 
       getEl("summary-old-date").textContent = formatDateFr(currentReservation.startTime);
-      getEl("summary-new-date").textContent = formatDateFr(newStart.toISOString());
+      getEl("summary-new-date").textContent = selectedSlot ? formatDateFr(selectedSlot.startTime) : "Non sélectionnée";
       getEl("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
-      getEl("summary-new-slot").textContent = `${formatHour(newStart)} – ${formatHour(newEnd)}`;
+      getEl("summary-new-slot").textContent = selectedSlot && newStart && newEnd
+        ? `${formatHour(newStart)} – ${formatHour(newEnd)}`
+        : "Non sélectionné";
       getEl("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
       getEl("summary-new-persons").textContent = `${selectedPersons} personne${selectedPersons > 1 ? "s" : ""}`;
       getEl("summary-old-amount").textContent = formatMoney(oldAmount);
@@ -1402,10 +1532,10 @@
 
       if (delta > 0) {
         deltaEl.textContent = "+ " + formatMoney(delta);
-        deltaEl.classList.add("positive");
+        deltaEl.classList.add("negative");
       } else if (delta < 0) {
         deltaEl.textContent = "- " + formatMoney(Math.abs(delta));
-        deltaEl.classList.add("negative");
+        deltaEl.classList.add("positive");
       } else {
         deltaEl.textContent = formatMoney(0);
       }
@@ -1418,9 +1548,9 @@
         ? isModificationAllowed(currentReservation.startTime, currentReservation.status)
         : false;
 
-      const confirmBtn = getEl("confirm-edit-btn");
       const pageMsg = getEl("edit-page-message");
       const summaryMsg = getEl("summary-message");
+      const confirmBtn = getEl("confirm-edit-btn");
 
       if (!confirmBtn || !pageMsg || !summaryMsg) return;
 
@@ -1435,12 +1565,22 @@
         return;
       }
 
+      if (!selectedSlot) {
+        confirmBtn.disabled = true;
+        pageMsg.textContent = "Veuillez sélectionner un nouveau créneau pour finaliser la modification.";
+        pageMsg.className = "page-message warn";
+        return;
+      }
+
       const samePersons = selectedPersons === currentReservation.persons;
-      const sameDateTime = !selectedSlot;
+      const sameDateTime = selectedSlot
+        ? slotKeyFromIso(selectedSlot.startTime) === slotKeyFromIso(currentReservation.startTime)
+        : true;
 
       if (samePersons && sameDateTime) {
         confirmBtn.disabled = true;
-        pageMsg.textContent = "Choisissez une nouvelle date, un autre horaire ou modifiez le nombre de personnes.";
+        pageMsg.textContent = "Choisissez un autre horaire ou modifiez le nombre de personnes.";
+        pageMsg.className = "page-message warn";
         return;
       }
 
@@ -1448,18 +1588,15 @@
     }
 
     function buildPayload() {
-      if (!currentReservation) return null;
-
-      const targetStart = selectedSlot ? selectedSlot.startTime : currentReservation.startTime;
-      const targetEnd = selectedSlot ? selectedSlot.endTime : currentReservation.endTime;
+      if (!currentReservation || !selectedSlot) return null;
 
       const oldAmount = Number(currentReservation.amountPaid || 0);
       const newAmount = getNewAmount();
 
       return {
         reservationId: currentReservation.id,
-        newStartTime: targetStart,
-        newEndTime: targetEnd,
+        newStartTime: selectedSlot.startTime,
+        newEndTime: selectedSlot.endTime,
         newPersons: selectedPersons,
         oldStartTime: currentReservation.startTime,
         oldEndTime: currentReservation.endTime,
@@ -1488,8 +1625,8 @@
 
       const payload = buildPayload();
       if (!payload) {
-        summaryMsg.textContent = "Impossible de préparer la modification.";
-        summaryMsg.className = "page-message";
+        summaryMsg.textContent = "Sélectionnez un nouveau créneau avant de confirmer.";
+        summaryMsg.className = "page-message warn";
         return;
       }
 
@@ -1563,14 +1700,133 @@
       }
     }
 
-    async function initPage() {
-      initMobileMenu();
-      updateCartIcon();
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
 
-      const editMsg = getEl("edit-page-message");
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    function setNewsletterMessage(messageBox, message, color) {
+      if (!messageBox) return;
+      messageBox.style.color = color;
+      messageBox.textContent = message;
+    }
+
+    function setNewsletterSubmitting(submitBtn, isSubmitting) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.originalText) {
+        submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner aux actualités";
+      }
+
+      submitBtn.disabled = isSubmitting;
+      submitBtn.setAttribute("aria-busy", String(isSubmitting));
+      submitBtn.textContent = isSubmitting ? "Envoi..." : submitBtn.dataset.originalText;
+    }
+
+    async function handleNewsletterSubmit() {
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
+      const messageBox = getEl("newsletter-message");
+
+      if (!(emailInput instanceof HTMLInputElement) || !submitBtn || !messageBox) return;
+
+      if (!supabaseClient) {
+        setNewsletterMessage(messageBox, "Le service newsletter est momentanément indisponible.", "#ff6b6b");
+        return;
+      }
+
+      const email = emailInput.value.trim();
+      emailInput.removeAttribute("aria-invalid");
+
+      if (!isValidEmail(email)) {
+        emailInput.setAttribute("aria-invalid", "true");
+        setNewsletterMessage(messageBox, "Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
+        return;
+      }
+
+      setNewsletterSubmitting(submitBtn, true);
+      setNewsletterMessage(messageBox, "Envoi en cours...", "#e5e7eb");
+
+      try {
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert([{ email }]);
+
+        if (error) {
+          console.error("Erreur newsletter :", error);
+
+          if (isDuplicateNewsletterError(error)) {
+            setNewsletterMessage(messageBox, "Vous êtes déjà inscrit à la newsletter.", "#38bdf8");
+          } else {
+            setNewsletterMessage(messageBox, "Une erreur est survenue. Merci de réessayer dans quelques instants.", "#ff6b6b");
+          }
+          return;
+        }
+
+        setNewsletterMessage(messageBox, "Merci ! Vous êtes inscrit.", "#38bdf8");
+        emailInput.value = "";
+      } catch (error) {
+        console.error("Erreur newsletter :", error);
+        setNewsletterMessage(messageBox, "Erreur réseau. Merci de réessayer.", "#ff6b6b");
+      } finally {
+        setNewsletterSubmitting(submitBtn, false);
+      }
+    }
+
+    async function initPage() {
+      updateCartIcon();
+      initMobileMenu();
+
+      try {
+        if (globalThis.supabase) {
+          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+      } catch (error) {
+        console.error("Erreur initialisation Supabase :", error);
+        supabaseClient = null;
+      }
+
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
+      if (emailInput && submitBtn) {
+        submitBtn.addEventListener("click", handleNewsletterSubmit);
+        emailInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            handleNewsletterSubmit();
+          }
+        });
+        emailInput.addEventListener("input", () => {
+          emailInput.removeAttribute("aria-invalid");
+        });
+      }
+
+      const confirmBtn = getEl("confirm-edit-btn");
+      if (confirmBtn) {
+        confirmBtn.addEventListener("click", confirmModification);
+      }
+
+      const reservationId = getReservationIdFromUrl();
+      if (!reservationId) {
+        showFatalReservationError("Aucune réservation sélectionnée. Retour vers votre compte dans quelques instants.");
+        setTimeout(() => {
+          window.location.href = "mon-compte.html";
+        }, 1800);
+        return;
+      }
+
       try {
         currentReservation = await loadReservationData();
-
         renderCurrentReservation(currentReservation);
         renderStatusBanner(currentReservation);
         renderPersonsSelect(currentReservation);
@@ -1578,84 +1834,13 @@
         await loadAvailableSlotsForSelectedDate();
         renderSlots();
         updateSummary();
-
-        const confirmBtn = getEl("confirm-edit-btn");
-        if (confirmBtn) {
-          confirmBtn.addEventListener("click", confirmModification);
-        }
       } catch (error) {
         console.error(error);
-
-        const banner = getEl("edit-status-banner");
-        if (banner) {
-          banner.className = "status-banner error";
-          banner.textContent = error.message || "Impossible de charger la réservation.";
-        }
-
-        if (editMsg) {
-          editMsg.textContent = error.message || "Impossible de charger la réservation.";
-          editMsg.className = "page-message";
-        }
-
-        const confirmBtn = getEl("confirm-edit-btn");
-        if (confirmBtn) confirmBtn.disabled = true;
+        showFatalReservationError(error.message || "Impossible de charger la réservation.");
       }
     }
 
     document.addEventListener("DOMContentLoaded", initPage);
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
-
-      if (!emailInput || !submitBtn || !messageBox) return;
-
-      submitBtn.addEventListener("click", async () => {
-        const email = emailInput.value.trim();
-
-        messageBox.style.color = "#e5e7eb";
-        messageBox.textContent = "Envoi en cours...";
-
-        if (!email || !email.includes("@")) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
-          return;
-        }
-
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert([{ email }]);
-
-        if (error) {
-          const isDuplicate =
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"));
-
-          if (isDuplicate) {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
-            return;
-          }
-
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
-          return;
-        }
-
-        messageBox.style.color = "#38bdf8";
-        messageBox.textContent = "Merci ! Vous êtes inscrit.";
-        emailInput.value = "";
-      });
-    });
-  </script>
-
 </body>
 </html>
