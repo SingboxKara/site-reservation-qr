@@ -9,14 +9,10 @@
     name="description"
     content="Finalisez le paiement sécurisé de votre karaoké box Singbox à Toulouse. Vérifiez votre panier, appliquez votre code promo et réglez vos réservations en quelques clics."
   />
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,follow" />
   <meta name="author" content="Singbox" />
   <meta name="theme-color" content="#050814" />
-  <meta
-    name="keywords"
-    content="paiement Singbox, paiement karaoké Toulouse, panier Singbox, réservation karaoké box, règlement sécurisé, karaoké privatif Toulouse"
-  />
-  <link rel="canonical" href="https://www.singbox.fr/paiement" />
+  <link rel="canonical" href="https://www.singbox.fr/paiement.html" />
 
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:type" content="website" />
@@ -26,7 +22,7 @@
     content="Réglez en ligne votre séance de karaoké privé chez Singbox à Toulouse : créneaux flexibles, paiement sécurisé et codes promo disponibles."
   />
   <meta property="og:site_name" content="Singbox" />
-  <meta property="og:url" content="https://www.singbox.fr/paiement" />
+  <meta property="og:url" content="https://www.singbox.fr/paiement.html" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
@@ -46,7 +42,7 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Paiement réservation karaoké box - Singbox Toulouse",
-    "url": "https://www.singbox.fr/paiement",
+    "url": "https://www.singbox.fr/paiement.html",
     "description": "Page de paiement sécurisé pour finaliser votre réservation de karaoké box privée chez Singbox à Toulouse.",
     "inLanguage": "fr-FR",
     "isPartOf": {
@@ -77,6 +73,58 @@
   <style>
     .hidden { display: none !important; }
     .card-element-wrapper.is-hidden { display: none !important; }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .checkout-info-note {
+      margin: 12px 0 14px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      font-size: 12px;
+      line-height: 1.55;
+      color: #e5e7eb;
+    }
+
+    .checkout-info-note strong {
+      color: #f9fafb;
+    }
+
+    .field-help {
+      margin: 6px 0 0;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+    }
+
+    .payment-consents label {
+      align-items: flex-start;
+    }
+
+    @media (max-width: 640px) {
+      .checkout-info-note {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -131,56 +179,56 @@
   </nav>
 
   <!-- MODAL CONNEXION / FIDÉLITÉ -->
-  <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title">
+  <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title" aria-describedby="auth-modal-desc">
     <div class="auth-modal-eyebrow">Programme fidélité</div>
     <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
-    <p class="auth-modal-subtext">
-      Créez votre compte ou connectez-vous pour cumuler des points à chaque session.
+    <p id="auth-modal-desc" class="auth-modal-subtext">
+      Créez votre compte ou connectez-vous pour cumuler des points à chaque session et accélérer vos prochains paiements.
     </p>
     <div class="auth-loyalty-pill">
       <span>★</span>
-      <span>10 points par réservation payante. À 100 points, 2 personnes sont offertes sur 1 séance.</span>
+      <span>10 points par réservation payante. À 100 points, 2 participants sont offerts sur 1 séance.</span>
     </div>
 
-    <div class="auth-tabs">
-      <button type="button" id="auth-btn-login" class="auth-tab-btn active">Se connecter</button>
-      <button type="button" id="auth-btn-register" class="auth-tab-btn">Créer un compte</button>
+    <div class="auth-tabs" role="tablist" aria-label="Connexion ou création de compte">
+      <button type="button" id="auth-btn-login" class="auth-tab-btn active" role="tab" aria-selected="true">Se connecter</button>
+      <button type="button" id="auth-btn-register" class="auth-tab-btn" role="tab" aria-selected="false">Créer un compte</button>
     </div>
 
-    <div id="auth-modal-message" class="auth-modal-message"></div>
+    <div id="auth-modal-message" class="auth-modal-message" aria-live="polite" role="status"></div>
 
     <!-- Formulaire LOGIN -->
-    <form id="auth-login-form" class="auth-form">
+    <form id="auth-login-form" class="auth-form" autocomplete="on">
       <div class="auth-field">
         <label for="auth-login-email">Email</label>
-        <input type="email" id="auth-login-email" placeholder="vous@email.fr" required />
+        <input type="email" id="auth-login-email" placeholder="vous@email.fr" autocomplete="email" required />
       </div>
       <div class="auth-field">
         <label for="auth-login-password">Mot de passe</label>
-        <input type="password" id="auth-login-password" placeholder="Mot de passe" required />
+        <input type="password" id="auth-login-password" placeholder="Mot de passe" autocomplete="current-password" required />
       </div>
       <button type="submit" class="auth-submit-btn">Connexion</button>
     </form>
 
     <!-- Formulaire REGISTER -->
-    <form id="auth-register-form" class="auth-form hidden">
+    <form id="auth-register-form" class="auth-form hidden" autocomplete="on">
       <div class="auth-field">
         <label for="auth-register-email">Email</label>
-        <input type="email" id="auth-register-email" placeholder="vous@email.fr" required />
+        <input type="email" id="auth-register-email" placeholder="vous@email.fr" autocomplete="email" required />
       </div>
       <div class="auth-field">
         <label for="auth-register-password">Mot de passe</label>
-        <input type="password" id="auth-register-password" placeholder="Mot de passe" required />
+        <input type="password" id="auth-register-password" placeholder="Mot de passe" autocomplete="new-password" minlength="6" required />
       </div>
       <button type="submit" class="auth-submit-btn">Créer mon compte</button>
     </form>
 
     <div class="auth-modal-footer">
       <button type="button" id="auth-modal-continue" class="auth-modal-skip">
-        Continuer sans compte (pas de points)
+        Continuer sans compte (sans fidélité ni carte enregistrée)
       </button>
       <span class="auth-modal-small">
-        Vous pourrez retrouver vos points et vos réservations dans l’espace “Mon compte”.
+        Vous pourrez toujours payer sans compte, mais les points fidélité et les options de paiement rapide nécessitent une connexion.
       </span>
     </div>
   </dialog>
@@ -195,7 +243,7 @@
       </div>
 
       <!-- EMPTY CART STATE -->
-      <div id="empty-cart-state" class="empty-cart" style="display:none;">
+      <div id="empty-cart-state" class="empty-cart" style="display:none;" aria-live="polite">
         <p class="empty-cart-title">Votre panier est vide 😅</p>
         <p class="empty-cart-text">
           Ajoutez au moins un créneau de karaoké pour pouvoir passer au paiement.
@@ -222,21 +270,21 @@
             </label>
           </div>
 
-          <form id="billing-form" novalidate>
+          <form id="billing-form" novalidate autocomplete="on">
             <div class="billing-form-grid-2">
               <div class="billing-field">
                 <label for="prenom">Prénom *</label>
-                <input type="text" id="prenom" name="prenom" placeholder="Prénom" required />
+                <input type="text" id="prenom" name="prenom" placeholder="Prénom" autocomplete="given-name" required />
               </div>
               <div class="billing-field">
                 <label for="nom">Nom *</label>
-                <input type="text" id="nom" name="nom" placeholder="Nom" required />
+                <input type="text" id="nom" name="nom" placeholder="Nom" autocomplete="family-name" required />
               </div>
             </div>
 
             <div class="billing-field">
-              <label for="pays">Pays / région *</label>
-              <select id="pays" name="pays" required>
+              <label for="pays">Pays / région</label>
+              <select id="pays" name="pays" autocomplete="country-name">
                 <option value="FR" selected>France</option>
                 <option value="BE">Belgique</option>
                 <option value="CH">Suisse</option>
@@ -245,13 +293,13 @@
             </div>
 
             <div class="billing-field">
-              <label for="adresse">Numéro et nom de rue *</label>
+              <label for="adresse">Adresse postale (facultatif)</label>
               <input
                 type="text"
                 id="adresse"
                 name="adresse"
-                placeholder="Numéro de voie et nom de la rue"
-                required
+                placeholder="Numéro de voie et nom de rue"
+                autocomplete="address-line1"
               />
             </div>
 
@@ -262,41 +310,71 @@
                 id="complement"
                 name="complement"
                 placeholder="Bâtiment, appartement, lot, etc."
+                autocomplete="address-line2"
               />
             </div>
 
             <div class="billing-form-grid-2">
               <div class="billing-field">
-                <label for="cp">Code postal *</label>
-                <input type="text" id="cp" name="cp" placeholder="Code postal" required />
+                <label for="cp">Code postal (facultatif)</label>
+                <input
+                  type="text"
+                  id="cp"
+                  name="cp"
+                  placeholder="Code postal"
+                  autocomplete="postal-code"
+                  inputmode="numeric"
+                />
               </div>
               <div class="billing-field">
-                <label for="ville">Ville *</label>
-                <input type="text" id="ville" name="ville" placeholder="Ville" required />
+                <label for="ville">Ville (facultatif)</label>
+                <input
+                  type="text"
+                  id="ville"
+                  name="ville"
+                  placeholder="Ville"
+                  autocomplete="address-level2"
+                />
               </div>
             </div>
 
             <div class="billing-field">
               <label for="telephone">Téléphone *</label>
-              <input type="tel" id="telephone" name="telephone" placeholder="Téléphone" required />
+              <input
+                type="tel"
+                id="telephone"
+                name="telephone"
+                placeholder="Téléphone"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+              />
             </div>
 
             <div class="billing-field">
               <label for="email">Adresse e-mail *</label>
-              <input type="email" id="email" name="email" placeholder="votre@email.fr" required />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="votre@email.fr"
+                autocomplete="email"
+                inputmode="email"
+                required
+              />
             </div>
 
             <div class="billing-field">
-              <label for="naissance">Date de naissance *</label>
-              <input type="date" id="naissance" name="naissance" required />
+              <label for="naissance">Date de naissance (facultatif)</label>
+              <input type="date" id="naissance" name="naissance" autocomplete="bday" />
               <p class="field-help">
-                Utilisée uniquement pour vérifier la majorité (soirées alcoolisées, créneaux tardifs, etc.).
+                Facultatif. Si vous la renseignez, elle doit correspondre à une personne majeure.
               </p>
             </div>
 
             <!-- BLOC FIDÉLITÉ -->
             <div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
-              <div style="color:#F9FAFB; font-weight:600; margin-bottom:6px;">Programme Fidélité ⭐</div>
+              <div style="color:#F9FAFB; font-weight:600; margin-bottom:6px;">Programme fidélité ⭐</div>
 
               <div
                 style="
@@ -311,7 +389,7 @@
                   Points disponibles : <b id="loyalty-points">0</b> ⭐
                 </p>
                 <p style="margin:4px 0 10px; font-size:12px; color:#CBD5E1;">
-                  100 points = 2 personnes offertes sur 1 séance
+                  100 points = 2 participants offerts sur la première séance du panier
                 </p>
 
                 <button
@@ -333,7 +411,7 @@
                   Utiliser 100 points
                 </button>
 
-                <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;"></p>
+                <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;" aria-live="polite" role="status"></p>
               </div>
             </div>
           </form>
@@ -387,7 +465,7 @@
           <div class="promo-card card">
             <div class="promo-header">
               <span>Code promo</span>
-              <button type="button" class="promo-toggle" id="promo-toggle">
+              <button type="button" class="promo-toggle" id="promo-toggle" aria-expanded="false" aria-controls="promo-body">
                 Vous avez un code promo ?
               </button>
             </div>
@@ -399,10 +477,12 @@
                   id="promo-code"
                   placeholder="SINGBOX10, NOEL..."
                   autocomplete="off"
+                  autocapitalize="characters"
+                  spellcheck="false"
                 />
                 <button type="button" id="apply-promo">Appliquer</button>
               </div>
-              <p id="promo-message" class="promo-message"></p>
+              <p id="promo-message" class="promo-message" aria-live="polite" role="status"></p>
             </div>
           </div>
 
@@ -410,7 +490,7 @@
           <div class="payment-card card">
             <h3>💳 Paiement sécurisé</h3>
 
-            <div class="payment-logos">
+            <div class="payment-logos" aria-label="Cartes acceptées">
               <span class="payment-logo visa">VISA</span>
               <span class="payment-logo mc">MC</span>
             </div>
@@ -422,6 +502,11 @@
                 politique de confidentialité
               </a>.
             </p>
+
+            <div class="checkout-info-note">
+              <strong>Information caution :</strong> une <strong>empreinte bancaire de 250€</strong> peut être demandée après la réservation pour couvrir d’éventuelles dégradations ou un non-respect grave du règlement.
+              <strong>Elle n’est pas débitée</strong> si tout se passe normalement.
+            </div>
 
             <!-- Paiement rapide -->
             <div id="saved-card-block" style="display:none; margin: 10px 0 12px;">
@@ -472,18 +557,19 @@
                   <span>
                     Payer avec la carte enregistrée (1 clic)
                     <span style="display:block; font-size:11px; color:#CBD5E1; margin-top:2px;">
-                      La 3DS peut s’afficher si nécessaire.
+                      Une vérification 3D Secure peut s’afficher si nécessaire.
                     </span>
                   </span>
                 </label>
 
-                <div id="save-card-msg" style="font-size:11px; margin-top:6px; min-height:14px; color:#D1D5DB;"></div>
+                <div id="save-card-msg" style="font-size:11px; margin-top:6px; min-height:14px; color:#D1D5DB;" aria-live="polite" role="status"></div>
               </div>
             </div>
 
             <div class="card-element-wrapper">
+              <label for="card-element" class="sr-only">Informations de carte bancaire</label>
               <div id="card-element"></div>
-              <div id="card-errors"></div>
+              <div id="card-errors" aria-live="polite" role="status"></div>
             </div>
 
             <div class="payment-consents">
@@ -496,10 +582,17 @@
                   </a>.
                 </span>
               </label>
+
+              <label>
+                <input type="checkbox" id="majority-checkbox" />
+                <span>Je certifie être majeur(e) et autorisé(e) à effectuer cette réservation.</span>
+              </label>
+
               <label>
                 <input type="checkbox" id="rules-checkbox" />
-                <span>Il est interdit de ramener des boissons ou aliments dans les box.</span>
+                <span>Je reconnais avoir pris connaissance des règles d’usage des box, notamment l’interdiction d’apporter boissons et aliments extérieurs.</span>
               </label>
+
               <label>
                 <input type="checkbox" id="newsletter-optin" />
                 <span>Je souhaite recevoir la newsletter Singbox (offres, playlists, soirées à thème).</span>
@@ -508,11 +601,11 @@
 
             <div class="payment-warning">
               <span>⚠️</span>
-              <span>Merci de respecter cette règle pour garantir la propreté et la sécurité de toutes les box.</span>
+              <span>Merci de respecter ces règles pour garantir la propreté, la sécurité et la qualité d’expérience de toutes les box.</span>
             </div>
 
-            <div id="checkout-error" class="checkout-error"></div>
-            <div id="checkout-success" class="checkout-success"></div>
+            <div id="checkout-error" class="checkout-error" aria-live="assertive" role="alert"></div>
+            <div id="checkout-success" class="checkout-success" aria-live="polite" role="status"></div>
 
             <div class="checkout-submit">
               <button id="checkout-submit-btn" type="button">Commander</button>
@@ -573,8 +666,7 @@
               <li>ou si vous ne vous présentez pas sans prévenir selon nos CGV.</li>
             </ul>
             <p style="margin-top:4px;">
-              Si tout se passe bien (et on sait que ce sera le cas 😉), l’empreinte expirera automatiquement après la
-              séance.
+              Si tout se passe bien, l’empreinte expirera automatiquement après la séance.
             </p>
           </div>
 
@@ -605,10 +697,12 @@
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
-        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" autocomplete="email" inputmode="email" />
+        <label for="newsletter-company" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input id="newsletter-company" class="newsletter-honeypot" type="text" tabindex="-1" autocomplete="off" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
-      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
+      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -721,6 +815,11 @@
       return document.getElementById(id);
     }
 
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
     function getToken() {
       const token = localStorage.getItem("token");
       return (!token || token === "null" || token === "undefined") ? null : token;
@@ -802,6 +901,7 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
     }
 
     function computeTotal(panier) {
@@ -1588,7 +1688,7 @@
         useLoyaltyBtn.disabled = false;
         useLoyaltyBtn.textContent = "Utiliser 100 points";
         loyaltyMsg.style.color = "#D1FAE5";
-        loyaltyMsg.textContent = "Vous pouvez offrir 2 personnes sur une séance.";
+        loyaltyMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
       } else {
         useLoyaltyBtn.style.display = "none";
         loyaltyMsg.style.color = "#CBD5E1";
@@ -1599,6 +1699,7 @@
     function disablePromoBecauseOfLoyalty() {
       const promoInput = getEl("promo-code");
       const promoMsg = getEl("promo-message");
+      const promoBtn = getEl("apply-promo");
 
       currentPromo = null;
       localStorage.removeItem("promoCode");
@@ -1606,6 +1707,10 @@
       if (promoInput) {
         promoInput.value = "";
         promoInput.disabled = true;
+      }
+
+      if (promoBtn) {
+        promoBtn.disabled = true;
       }
 
       if (promoMsg) {
@@ -1617,8 +1722,10 @@
     function enablePromoAfterLoyaltyRemoval() {
       const promoInput = getEl("promo-code");
       const promoMsg = getEl("promo-message");
+      const promoBtn = getEl("apply-promo");
 
       if (promoInput) promoInput.disabled = false;
+      if (promoBtn) promoBtn.disabled = false;
       if (promoMsg) promoMsg.textContent = "";
     }
 
@@ -1648,7 +1755,7 @@
           disablePromoBecauseOfLoyalty();
           loyaltyMsg.style.color = "#D1FAE5";
           loyaltyMsg.textContent =
-            "🎉 Fidélité activée : 2 personnes seront offertes sur la première séance du panier.";
+            "🎉 Fidélité activée : 2 participants seront offerts sur la première séance du panier.";
           useLoyaltyBtn.textContent = "Retirer la fidélité";
         } else {
           enablePromoAfterLoyaltyRemoval();
@@ -1825,6 +1932,7 @@
       if (promoToggle && promoBody) {
         promoToggle.addEventListener("click", () => {
           promoBody.classList.toggle("open");
+          promoToggle.setAttribute("aria-expanded", promoBody.classList.contains("open") ? "true" : "false");
         });
       }
 
@@ -2190,10 +2298,22 @@
 
     function validateBillingFormPresenceAndFields() {
       const billingForm = getEl("billing-form");
+      const requiredFields = ["prenom", "nom", "telephone", "email"];
+
       if (!billingForm) return false;
 
-      if (!billingForm.reportValidity()) {
-        return setCheckoutError("Merci de compléter tous les champs obligatoires de facturation.");
+      for (const id of requiredFields) {
+        const field = getEl(id);
+        if (!field || !field.value.trim()) {
+          if (field && typeof field.focus === "function") field.focus();
+          return setCheckoutError("Merci de compléter tous les champs obligatoires de facturation.");
+        }
+      }
+
+      const email = getEl("email")?.value.trim() || "";
+      if (!isValidEmail(email)) {
+        getEl("email")?.focus();
+        return setCheckoutError("Merci de renseigner une adresse e-mail valide.");
       }
 
       return true;
@@ -2208,10 +2328,19 @@
     }
 
     function validateMajority() {
-      const age = calculateAgeFromBirthdate(getEl("naissance")?.value || "");
-      if (!age || age < 18) {
-        return setCheckoutError("La réservation doit être faite par un adulte (date de naissance invalide).");
+      const majorityChecked = Boolean(getEl("majority-checkbox")?.checked);
+      if (!majorityChecked) {
+        return setCheckoutError("Merci de certifier que vous êtes majeur(e) pour continuer.");
       }
+
+      const birthdateValue = getEl("naissance")?.value || "";
+      if (!birthdateValue) return true;
+
+      const age = calculateAgeFromBirthdate(birthdateValue);
+      if (age !== null && age < 18) {
+        return setCheckoutError("La date de naissance renseignée indique une personne mineure. Merci de corriger ou de retirer ce champ.");
+      }
+
       return true;
     }
 
@@ -2352,6 +2481,7 @@
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = "Paiement en cours...";
+        submitBtn.setAttribute("aria-busy", "true");
       }
 
       return originalLabel;
@@ -2362,6 +2492,7 @@
 
       submitBtn.disabled = false;
       submitBtn.textContent = originalLabel;
+      submitBtn.setAttribute("aria-busy", "false");
     }
 
     async function handleFreeCheckout(successEl, errorEl) {
@@ -2436,6 +2567,18 @@
       submitBtn.addEventListener("click", handleCheckoutSubmit);
     }
 
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
     function initMobileMenu() {
       const burgerBtn = getEl("burger-button");
       const mobileNav = getEl("mobile-nav");
@@ -2443,16 +2586,36 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        mobileNav.classList.toggle("open");
-        const isExpanded = mobileNav.classList.contains("open");
-        burgerBtn.setAttribute("aria-expanded", String(isExpanded));
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
       });
 
       mobileNav.addEventListener("click", (e) => {
         const target = e.target;
         if (target && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
         }
       });
     }
@@ -2496,6 +2659,8 @@
 
       btnLoginTab.classList.toggle("active", isLogin);
       btnRegisterTab.classList.toggle("active", !isLogin);
+      btnLoginTab.setAttribute("aria-selected", isLogin ? "true" : "false");
+      btnRegisterTab.setAttribute("aria-selected", !isLogin ? "true" : "false");
       loginForm.classList.toggle("hidden", !isLogin);
       registerForm.classList.toggle("hidden", isLogin);
       clearAuthMessage();
@@ -2509,8 +2674,8 @@
 
       clearAuthMessage();
 
-      if (!email || !password) {
-        if (msgEl) msgEl.textContent = "Merci de renseigner vos identifiants.";
+      if (!isValidEmail(email) || !password) {
+        if (msgEl) msgEl.textContent = "Merci de renseigner des identifiants valides.";
         return;
       }
 
@@ -2545,8 +2710,8 @@
 
       clearAuthMessage();
 
-      if (!email || !password) {
-        if (msgEl) msgEl.textContent = "Merci de renseigner un email et un mot de passe.";
+      if (!isValidEmail(email) || !password || password.length < 6) {
+        if (msgEl) msgEl.textContent = "Merci de renseigner un email valide et un mot de passe d’au moins 6 caractères.";
         return;
       }
 
@@ -2634,16 +2799,24 @@
       const emailInput = getEl("newsletter-email");
       const submitBtn = getEl("newsletter-submit");
       const messageBox = getEl("newsletter-message");
+      const honeypot = getEl("newsletter-company");
 
       if (!emailInput || !submitBtn || !messageBox) return;
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
+        const botValue = honeypot?.value || "";
 
         messageBox.style.color = "#e5e7eb";
         messageBox.textContent = "Envoi en cours...";
 
-        if (!email || !email.includes("@")) {
+        if (botValue) {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci !";
+          return;
+        }
+
+        if (!isValidEmail(email)) {
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
           return;
@@ -2678,6 +2851,7 @@
         messageBox.style.color = "#38bdf8";
         messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
         emailInput.value = "";
+        if (honeypot) honeypot.value = "";
       });
     }
 
