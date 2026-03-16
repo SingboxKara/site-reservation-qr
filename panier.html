@@ -5,79 +5,44 @@
   <title>Panier de réservation karaoké à Toulouse | Singbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
   <meta
     name="description"
-    content="Consultez le récapitulatif de vos réservations de karaoké box privatives à Toulouse chez Singbox. Vérifiez vos créneaux, le nombre de box et le total avant de procéder au paiement sécurisé."
+    content="Consultez le récapitulatif de vos réservations de karaoké box privatives à Toulouse chez Singbox. Vérifiez vos créneaux avant de procéder au paiement sécurisé."
   />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta
-    name="keywords"
-    content="panier karaoke, panier karaoké toulouse, réservation karaoké toulouse, singbox panier, box karaoke privatif toulouse, récapitulatif réservation karaoké"
-  />
-  <link rel="canonical" href="https://www.singbox.fr/panier" />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href="https://www.singbox.fr/panier.html" />
 
-  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#050814" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Panier de réservation karaoké à Toulouse | Singbox" />
   <meta
     property="og:description"
-    content="Vérifiez vos créneaux de karaoké, le nombre de box et le montant total dans votre panier Singbox avant de régler votre réservation à Toulouse."
+    content="Vérifiez vos créneaux de karaoké dans votre panier Singbox avant de régler votre réservation à Toulouse."
   />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/panier" />
+  <meta property="og:url" content="https://www.singbox.fr/panier.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Panier de réservation karaoké à Toulouse | Singbox" />
   <meta
     name="twitter:description"
-    content="Dernière étape avant de chanter : vérifiez vos réservations de karaoké box Singbox à Toulouse et passez au paiement sécurisé."
+    content="Vérifiez vos réservations de karaoké box Singbox à Toulouse avant de passer au paiement sécurisé."
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
-  <!-- Données structurées LocalBusiness -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EntertainmentBusiness",
-    "name": "Singbox",
-    "image": "https://www.singbox.fr/logo.png",
-    "@id": "https://www.singbox.fr/",
-    "url": "https://www.singbox.fr/",
-    "telephone": "+33 6 00 00 00 00",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "66 Rue de la République",
-      "postalCode": "31300",
-      "addressLocality": "Toulouse",
-      "addressCountry": "FR"
-    },
-    "priceRange": "€€",
-    "description": "Karaoké box privatives à Toulouse : réservez vos salons insonorisés pour chanter entre amis, en famille ou entre collègues.",
-    "sameAs": [
-      "https://www.instagram.com/singboxtoulouse/",
-      "https://www.tiktok.com/@singbox.toulouse/"
-    ]
-  }
-  </script>
-
-  <!-- Données structurées WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Panier de réservation karaoké à Toulouse | Singbox",
-    "url": "https://www.singbox.fr/panier",
-    "description": "Panier de réservation des karaoké box Singbox à Toulouse : récapitulatif de vos créneaux et du montant total avant paiement sécurisé.",
+    "url": "https://www.singbox.fr/panier.html",
+    "description": "Panier de réservation des karaoké box Singbox à Toulouse : récapitulatif de vos créneaux avant paiement sécurisé.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -87,7 +52,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -95,10 +59,8 @@
     rel="stylesheet"
   />
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="css/global.css" />
 
-  <!-- CSS SPÉCIFIQUE À LA PAGE PANIER -->
   <style>
     .hero-panier {
       position: relative;
@@ -135,6 +97,7 @@
       margin: 0;
       font-size: 14px;
       color: rgba(249, 250, 251, 0.92);
+      line-height: 1.6;
     }
 
     main {
@@ -154,8 +117,34 @@
       font-size: 13px;
       color: var(--sb-text-muted);
       margin: 0 auto 1.25rem;
-      max-width: 100%;
+      max-width: 760px;
       text-align: center;
+      line-height: 1.6;
+    }
+
+    .cart-server-message {
+      display: none;
+      margin: 0 auto 1rem;
+      max-width: 760px;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.55;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: rgba(2, 6, 23, 0.92);
+      color: #e5e7eb;
+    }
+
+    .cart-server-message.is-error {
+      display: block;
+      color: #fecaca;
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .cart-server-message.is-info {
+      display: block;
+      color: #bfdbfe;
+      border-color: rgba(96, 165, 250, 0.35);
     }
 
     .cart-item-card {
@@ -177,6 +166,7 @@
       flex-direction: column;
       gap: 0.25rem;
       font-size: 13px;
+      min-width: 0;
     }
 
     .cart-main-line {
@@ -227,6 +217,7 @@
       font-size: 11px;
       color: var(--sb-text-muted);
       text-align: right;
+      line-height: 1.45;
     }
 
     .cart-remove {
@@ -239,6 +230,11 @@
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 3px;
+    }
+
+    .cart-remove:hover,
+    .cart-remove:focus-visible {
+      color: #fda4af;
     }
 
     .cart-summary-card {
@@ -267,6 +263,7 @@
       margin-top: 0.75rem;
       font-size: 12px;
       color: var(--sb-text-muted);
+      line-height: 1.6;
     }
 
     .cart-actions {
@@ -284,6 +281,12 @@
       cursor: pointer;
       font-weight: 600;
       border: none;
+      font-family: inherit;
+    }
+
+    .btn[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
     }
 
     .btn-ghost {
@@ -332,6 +335,7 @@
       margin: 0 0 1.5rem;
       font-size: 13px;
       color: var(--sb-text-muted);
+      line-height: 1.6;
     }
 
     .btn-empty-primary {
@@ -347,6 +351,14 @@
       box-shadow:
         0 0 0 1px rgba(248, 250, 251, 0.12),
         0 16px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
     }
 
     @media (max-width: 900px) {
@@ -367,13 +379,43 @@
 
       .cart-actions {
         justify-content: flex-start;
-        flex-wrap: wrap;
       }
     }
 
     @media (max-width: 600px) {
       .hero-panier {
         padding-top: 9rem;
+      }
+
+      .hero-panier h1 {
+        font-size: 26px;
+      }
+
+      .cart-item-card {
+        padding: 1rem 1rem;
+      }
+
+      .cart-summary-card {
+        padding: 1rem;
+      }
+
+      .cart-actions {
+        flex-direction: column;
+      }
+
+      .cart-actions .btn,
+      .cart-actions a.btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+
+      .cart-item-right {
+        width: 100%;
+      }
+
+      .cart-price-sub {
+        text-align: left;
       }
     }
   </style>
@@ -430,11 +472,10 @@
 
   <section class="hero-panier">
     <div class="hero-inner">
-      <p class="hero-eyebrow">PANIER DE RÉSERVATION</p>
+      <p class="hero-eyebrow">Panier de réservation</p>
       <h1>Mon panier de karaoké Singbox à Toulouse</h1>
       <p>
-        Retrouvez ici le récapitulatif de vos réservations de box de karaoké privatives à Toulouse.
-        Vérifiez vos dates, horaires et montants avant de passer au paiement sécurisé.
+        Vérifiez vos créneaux, retirez ceux qui ne vous conviennent plus, puis continuez vers le paiement sécurisé.
       </p>
     </div>
   </section>
@@ -442,20 +483,20 @@
   <main>
     <section class="container cart-wrapper" aria-label="Récapitulatif de votre panier de réservation Singbox">
       <p class="cart-intro-text">
-        Chaque ligne correspond à une réservation de box de karaoké chez Singbox à Toulouse
-        (Nuit étoilée, Ambiance Sunset, etc.). Vous pouvez supprimer un créneau, vider le panier
-        ou valider l’ensemble pour finaliser votre réservation en ligne.
+        Votre panier regroupe les créneaux sélectionnés. Leur disponibilité et leur tarif sont revérifiés automatiquement avant le paiement.
       </p>
+
+      <div id="cart-server-message" class="cart-server-message" aria-live="polite" role="status"></div>
 
       <div id="cart-items"></div>
 
       <div id="cart-summary" class="cart-summary-card" style="display:none;">
-        <span class="cart-summary-label">Total des réservations karaoké (TTC)</span>
-        <span class="cart-summary-value" id="cart-total">0 €</span>
+        <span class="cart-summary-label">Total estimé des réservations (TTC)</span>
+        <span class="cart-summary-value" id="cart-total">Calcul au paiement</span>
       </div>
 
       <p id="cart-policy" class="cart-policy" style="display:none;">
-        Les réservations ne sont pas remboursables mais modifiables jusqu'à X heures avant, selon nos CGV.
+        Les réservations sont modifiables et annulables jusqu’à 24h avant selon nos CGV. La disponibilité et le tarif final sont confirmés au moment du paiement.
       </p>
 
       <div class="cart-actions" id="cart-actions" style="display:none;">
@@ -476,15 +517,16 @@
           id="newsletter-email"
           type="email"
           placeholder="Entrez votre adresse e-mail"
+          autocomplete="email"
+          inputmode="email"
         />
-        <button
-          id="newsletter-submit"
-          type="button"
-        >
+        <label for="newsletter-company" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input id="newsletter-company" class="newsletter-honeypot" type="text" tabindex="-1" autocomplete="off" />
+        <button id="newsletter-submit" type="button">
           S'abonner aux actualités
         </button>
       </div>
-      <p id="newsletter-message" class="newsletter-message"></p>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -538,12 +580,24 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const API_BASE = "https://singbox-backend.onrender.com";
+    const API_BASE =
+      (globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://singbox-backend.onrender.com";
+
+    const SLOT_DURATION_MINUTES = 90;
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+
+    let supabaseClient = null;
 
     function getPanier() {
       try {
-        return JSON.parse(localStorage.getItem("panier")) || [];
+        const raw = localStorage.getItem("panier");
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
       } catch (error) {
         console.error("Erreur lecture panier depuis localStorage :", error);
         return [];
@@ -551,7 +605,7 @@
     }
 
     function savePanier(panier) {
-      localStorage.setItem("panier", JSON.stringify(panier));
+      localStorage.setItem("panier", JSON.stringify(Array.isArray(panier) ? panier : []));
       updateCartIcon();
     }
 
@@ -561,6 +615,24 @@
 
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
+    function setServerMessage(text, type = "") {
+      const el = document.getElementById("cart-server-message");
+      if (!el) return;
+
+      el.textContent = text || "";
+      el.className = "cart-server-message";
+
+      if (text && type) {
+        el.classList.add(type === "error" ? "is-error" : "is-info");
+      }
     }
 
     function formatDateFr(isoDate) {
@@ -609,9 +681,7 @@
 
     function buildHourTextFromDate(startDate, endDate = null) {
       if (!startDate) return "?";
-
-      const realEnd = endDate || new Date(startDate.getTime() + 90 * 60000);
-
+      const realEnd = endDate || new Date(startDate.getTime() + SLOT_DURATION_MINUTES * 60000);
       return `${formatHourMinute(startDate.getHours(), startDate.getMinutes())} – ${formatHourMinute(realEnd.getHours(), realEnd.getMinutes())}`;
     }
 
@@ -621,7 +691,7 @@
         const startHour = Math.floor(startTotalMin / 60);
         const startMin = startTotalMin % 60;
 
-        const endTotalMin = startTotalMin + 90;
+        const endTotalMin = startTotalMin + SLOT_DURATION_MINUTES;
         const endHour = Math.floor((endTotalMin / 60) % 24);
         const endMin = endTotalMin % 60;
 
@@ -643,6 +713,10 @@
         }
       }
 
+      if (item.heure && typeof item.heure === "string" && item.heure.trim()) {
+        return item.heure.trim().replace(/\s*-\s*/g, " – ");
+      }
+
       if (item.hourLabel && typeof item.hourLabel === "string" && item.hourLabel.trim()) {
         return item.hourLabel.trim();
       }
@@ -651,7 +725,10 @@
     }
 
     function getPersonsInfo(item) {
-      const rawPersons = typeof item.persons === "number" ? item.persons : null;
+      const rawPersons = typeof item.persons === "number"
+        ? item.persons
+        : (typeof item.nb_personnes === "number" ? item.nb_personnes : null);
+
       const personsFacturees = Math.max(rawPersons || 2, 2);
 
       let personnesPrevuesText = "Nombre de personnes non renseigné";
@@ -662,12 +739,10 @@
             : `${rawPersons} personnes prévues`;
       }
 
-      let personnesFactureesText;
-      if (personsFacturees === 1) {
-        personnesFactureesText = "1 personne facturée (minimum 2)";
-      } else {
-        personnesFactureesText = `${personsFacturees} personnes facturées (minimum 2)`;
-      }
+      const personnesFactureesText =
+        personsFacturees === 1
+          ? "1 personne facturée (minimum 2)"
+          : `${personsFacturees} personnes facturées (minimum 2)`;
 
       return {
         rawPersons,
@@ -678,15 +753,15 @@
     }
 
     function getPriceInfo(item, personsFacturees) {
-      const hasPrice = typeof item.price === "number";
+      const hasPrice = typeof item.price === "number" && Number.isFinite(item.price);
       const price = hasPrice ? item.price : null;
 
-      let priceDisplay = "—";
+      let priceDisplay = "Calcul au paiement";
       if (hasPrice && price !== null) {
         priceDisplay = formatMoney(price);
       }
 
-      let priceSubDetail = "Tarif à confirmer au moment du paiement";
+      let priceSubDetail = "Tarif définitif revérifié avant paiement";
       if (hasPrice && price !== null && personsFacturees > 0) {
         const perPerson = price / personsFacturees;
         priceSubDetail = `${formatMoney(perPerson)}/pers × ${personsFacturees} pers facturées`;
@@ -701,18 +776,35 @@
     }
 
     function getBoxName(item) {
-      return item.boxName || item.box || item.boxId || "Box";
+      const raw = item.boxName || item.box_name || item.box || item.boxId || item.box_id || "Box";
+      return String(raw).trim();
+    }
+
+    function getSlotStableId(item, index) {
+      if (item && item.slotId) return String(item.slotId);
+      if (item && item.reservationId) return String(item.reservationId);
+      return `idx-${index}`;
     }
 
     function computeCartTotal(panier) {
-      return panier.reduce((sum, item) => {
-        if (typeof item.price === "number") {
-          return sum + item.price;
-        }
+      let total = 0;
+      let hasAtLeastOnePrice = false;
+      let hasMissingPrice = false;
 
-        console.error("Prix manquant pour un item du panier :", item);
-        return sum;
-      }, 0);
+      for (const item of panier) {
+        if (typeof item.price === "number" && Number.isFinite(item.price)) {
+          total += item.price;
+          hasAtLeastOnePrice = true;
+        } else {
+          hasMissingPrice = true;
+        }
+      }
+
+      return {
+        total,
+        hasAtLeastOnePrice,
+        hasMissingPrice
+      };
     }
 
     function renderEmptyCart(container, summaryEl, actionsEl, policyEl) {
@@ -724,7 +816,7 @@
       emptyDiv.className = "cart-empty";
       emptyDiv.innerHTML = `
         <h2>Votre panier de karaoké est vide</h2>
-        <p>Ajoutez des créneaux depuis la page "Réserver une box" pour les retrouver ici avant le paiement.</p>
+        <p>Ajoutez des créneaux depuis la page “Réserver une box” pour les retrouver ici avant le paiement.</p>
         <a href="reservation.html" class="btn-empty-primary">Voir les créneaux disponibles</a>
       `;
 
@@ -735,7 +827,7 @@
       const card = document.createElement("div");
       card.className = "cart-item-card";
 
-      const dateLabel = item.date ? formatDateFr(item.date) : (item.dateLabel || "");
+      const dateLabel = item.date ? formatDateFr(item.date) : (item.dateLabel || "Date à confirmer");
       const boxName = getBoxName(item);
       const hourText = getHourText(item);
 
@@ -755,7 +847,7 @@
           <div class="cart-main-line">
             <span class="cart-date">${dateLabel}</span>
             <span class="cart-dot">·</span>
-            <span class="cart-box">Box ${boxName}</span>
+            <span class="cart-box">${boxName}</span>
           </div>
           <div class="cart-slot-line">
             Créneau : ${hourText} (1h30)
@@ -770,7 +862,7 @@
             <div class="cart-price-amount">${priceDisplay}</div>
             <div class="cart-price-sub">${priceSubDetail}</div>
           </div>
-          <button class="cart-remove" data-index="${index}" type="button">Supprimer</button>
+          <button class="cart-remove" data-slot-id="${getSlotStableId(item, index)}" type="button">Supprimer</button>
         </div>
       `;
 
@@ -803,8 +895,26 @@
         container.appendChild(card);
       });
 
-      const total = computeCartTotal(panier);
-      totalEl.textContent = formatMoney(total);
+      const { total, hasAtLeastOnePrice, hasMissingPrice } = computeCartTotal(panier);
+      totalEl.textContent = hasAtLeastOnePrice ? formatMoney(total) : "Calcul au paiement";
+
+      if (hasMissingPrice) {
+        setServerMessage("Le montant final sera confirmé avant le paiement sécurisé.", "info");
+      } else {
+        setServerMessage("");
+      }
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
     }
 
     function initMobileMenu() {
@@ -813,15 +923,36 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
       });
 
       mobileNav.addEventListener("click", (e) => {
         const target = e.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
         }
       });
     }
@@ -832,8 +963,8 @@
 
       clearBtn.addEventListener("click", () => {
         if (!confirm("Vider le panier ?")) return;
-
         savePanier([]);
+        setServerMessage("");
         renderPanier();
       });
     }
@@ -847,11 +978,11 @@
         const removeBtn = target instanceof Element ? target.closest(".cart-remove") : null;
         if (!removeBtn) return;
 
-        const index = Number(removeBtn.dataset.index);
+        const slotId = removeBtn.dataset.slotId;
         const panier = getPanier();
 
-        panier.splice(index, 1);
-        savePanier(panier);
+        const nextPanier = panier.filter((item, index) => getSlotStableId(item, index) !== slotId);
+        savePanier(nextPanier);
         renderPanier();
       });
     }
@@ -875,22 +1006,20 @@
     }
 
     async function verifyCartBeforePayment(panier) {
-      const response = await fetch(`${API_BASE}/api/verify-cart`, {
+      return fetch(`${API_BASE}/api/verify-cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ items: panier })
       });
-
-      return response;
     }
 
     function showCartVerificationError(errorText) {
-      alert(
-        "Un ou plusieurs créneaux ne sont plus disponibles ou le prix a changé.\n" +
-        "Merci de mettre à jour votre panier depuis la page de réservation.\n\n" +
-        (errorText || "")
+      setServerMessage(
+        "Un ou plusieurs créneaux ne sont plus disponibles ou le prix a changé. Merci de revenir à la réservation pour mettre à jour votre panier." +
+        (errorText ? ` ${errorText}` : ""),
+        "error"
       );
     }
 
@@ -910,6 +1039,12 @@
           return;
         }
 
+        confirmBtn.disabled = true;
+        const defaultText = confirmBtn.textContent;
+        confirmBtn.textContent = "Vérification...";
+
+        setServerMessage("Vérification de vos créneaux en cours...", "info");
+
         try {
           const response = await verifyCartBeforePayment(panier);
 
@@ -920,61 +1055,68 @@
           }
 
           const data = await safeReadJson(response);
+
           if (data && Array.isArray(data.items)) {
             savePanier(data.items);
             renderPanier();
           }
 
+          setServerMessage("");
           goToPaymentPage();
         } catch (err) {
           console.error("Erreur vérification panier :", err);
-
-          const proceed = confirm(
-            "Nous n'avons pas pu vérifier la disponibilité des créneaux auprès du serveur.\n" +
-            "Tu peux réessayer dans quelques instants.\n\n" +
-            "Continuer quand même vers le paiement ?"
+          setServerMessage(
+            "Nous n’avons pas pu vérifier vos créneaux auprès du serveur. Merci de réessayer dans quelques instants avant de continuer vers le paiement.",
+            "error"
           );
-
-          if (proceed) {
-            goToPaymentPage();
-          }
+        } finally {
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = defaultText;
         }
       });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      initMobileMenu();
-      updateCartIcon();
-      renderPanier();
-      initClearCart();
-      initRemoveItem();
-      initConfirmCart();
-    });
-  </script>
+    function initSupabaseClient() {
+      try {
+        if (globalThis.supabase && typeof globalThis.supabase.createClient === "function") {
+          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+      } catch (error) {
+        console.error("Erreur initialisation Supabase :", error);
+        supabaseClient = null;
+      }
+    }
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
+    function initNewsletter() {
       const emailInput = document.getElementById("newsletter-email");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
+      const honeypot = document.getElementById("newsletter-company");
 
       if (!emailInput || !submitBtn || !messageBox) return;
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
+        const botValue = honeypot?.value || "";
 
         messageBox.style.color = "#e5e7eb";
         messageBox.textContent = "Envoi en cours...";
 
-        if (!email || !email.includes("@")) {
+        if (botValue) {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci !";
+          return;
+        }
+
+        if (!isValidEmail(email)) {
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        if (!supabaseClient) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Service newsletter indisponible.";
           return;
         }
 
@@ -1002,14 +1144,25 @@
           messageBox.style.color = "#38bdf8";
           messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
           emailInput.value = "";
+          if (honeypot) honeypot.value = "";
         } catch (error) {
           console.error("Erreur Supabase newsletter :", error);
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Erreur réseau. Merci de réessayer.";
         }
       });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initSupabaseClient();
+      initMobileMenu();
+      updateCartIcon();
+      renderPanier();
+      initClearCart();
+      initRemoveItem();
+      initConfirmCart();
+      initNewsletter();
     });
   </script>
-
 </body>
 </html>
