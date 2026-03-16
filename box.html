@@ -8,7 +8,7 @@
   <!-- SEO -->
   <meta
     name="description"
-    content="Découvrez les box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset. Salons de karaoké insonorisés jusqu’à 6 personnes, réservation en ligne, matériel premium, 3 micros et commande via tablette."
+    content="Découvrez les box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset. Salons de karaoké insonorisés jusqu’à 6 personnes, réservation en ligne, matériel premium, 4 micros et accès autonome par QR code."
   />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.singbox.fr/box.html" />
@@ -25,7 +25,7 @@
   <meta property="og:title" content="Box karaoké privatives à Toulouse | Singbox" />
   <meta
     property="og:description"
-    content="Deux box karaoké privatives à Toulouse : Nuit étoilée et Ambiance Sunset. Salons insonorisés jusqu’à 6 personnes, 4 micros, ambiance immersive et réservation en ligne."
+    content="Deux box karaoké privatives à Toulouse : Nuit étoilée et Ambiance Sunset. Salons insonorisés jusqu’à 6 personnes, 4 micros, ambiance immersive, réservation en ligne et accès autonome par QR code."
   />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-boxes.jpg" />
   <meta property="og:site_name" content="Singbox" />
@@ -37,7 +37,7 @@
   <meta name="twitter:title" content="Box karaoké privatives à Toulouse | Singbox" />
   <meta
     name="twitter:description"
-    content="Choisissez votre box karaoké privative à Toulouse : Nuit étoilée ou Ambiance Sunset. 4 micros, matériel premium, idéal pour anniversaires, afterworks, EVJF/EVG et soirées entre amis."
+    content="Choisissez votre box karaoké privative à Toulouse : Nuit étoilée ou Ambiance Sunset. 4 micros, accès autonome par QR code, matériel premium, idéal pour anniversaires, afterworks, EVJF/EVG et soirées entre amis."
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-boxes.jpg" />
 
@@ -55,10 +55,17 @@
           "@type": "Product",
           "name": "Box karaoké Nuit étoilée",
           "image": "https://www.singbox.fr/images/box-nuit-etoilee.png",
-          "description": "Box karaoké privative jusqu'à 6 personnes à Toulouse. Ambiance bleutée, plafond étoilé, commande via tablette, 4 micros et accès PMR. Snacks et boissons extérieurs non autorisés, consommations disponibles sur place.",
+          "description": "Box karaoké privative jusqu'à 6 personnes à Toulouse. Ambiance bleutée, plafond étoilé, commande via tablette, 4 micros et accès PMR.",
           "brand": {
             "@type": "Brand",
             "name": "Singbox"
+          },
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "price": "10.00",
+            "availability": "https://schema.org/InStock",
+            "url": "https://www.singbox.fr/reservation.html?box=nuit-etoilee"
           }
         }
       },
@@ -69,10 +76,17 @@
           "@type": "Product",
           "name": "Box karaoké Ambiance Sunset",
           "image": "https://www.singbox.fr/images/box-ambiance-sunset.png",
-          "description": "Box karaoké privative jusqu'à 6 personnes à Toulouse. Dégradés orangés, ambiance coucher de soleil, commande via tablette, 4 micros et accès PMR. Snacks et boissons extérieurs non autorisés, consommations disponibles sur place.",
+          "description": "Box karaoké privative jusqu'à 6 personnes à Toulouse. Dégradés orangés, ambiance coucher de soleil, commande via tablette, 4 micros et accès PMR.",
           "brand": {
             "@type": "Brand",
             "name": "Singbox"
+          },
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "price": "10.00",
+            "availability": "https://schema.org/InStock",
+            "url": "https://www.singbox.fr/reservation.html?box=ambiance-sunset"
           }
         }
       }
@@ -89,16 +103,29 @@
     "image": "https://www.singbox.fr/logo.png",
     "@id": "https://www.singbox.fr/",
     "url": "https://www.singbox.fr/",
-    "telephone": "+33 6 00 00 00 00",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "66 Rue de la République",
-      "postalCode": "31300",
       "addressLocality": "Toulouse",
       "addressCountry": "FR"
     },
     "priceRange": "€€",
     "description": "Karaoké box privatives à Toulouse : réservez des salons insonorisés pour chanter entre amis, en famille ou entre collègues.",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    ],
     "sameAs": [
       "https://www.instagram.com/singboxtoulouse/",
       "https://www.tiktok.com/@singbox.toulouse/"
@@ -113,7 +140,7 @@
     "@type": "WebPage",
     "name": "Box karaoké privatives à Toulouse | Singbox",
     "url": "https://www.singbox.fr/box.html",
-    "description": "Page de présentation des box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset, salons insonorisés jusqu'à 6 personnes, 4 micros et consommations disponibles sur place.",
+    "description": "Page de présentation des box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset, salons insonorisés jusqu'à 6 personnes, 4 micros, accès autonome par QR code et consommations disponibles sur place.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -170,7 +197,7 @@
     }
 
     .concept-intro-inner {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
       padding: 0 24px;
     }
@@ -192,6 +219,47 @@
       font-size: 15px;
       color: rgba(249, 250, 251, 0.85);
       line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .concept-intro-cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta,
+    .hero-secondary-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0.85rem 1.5rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .hero-cta {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+    }
+
+    .hero-secondary-cta {
+      background: rgba(15, 23, 42, 0.75);
+      color: #f9fafb;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .hero-cta:hover,
+    .hero-cta:focus-visible,
+    .hero-secondary-cta:hover,
+    .hero-secondary-cta:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
     }
 
     /* ----------- SECTION BOX (cartes) ----------- */
@@ -257,6 +325,7 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      height: 100%;
     }
 
     .box-card-title {
@@ -292,6 +361,10 @@
       flex-shrink: 0;
     }
 
+    .box-feature-icon[aria-hidden="true"] {
+      speak: none;
+    }
+
     .box-feature-text {
       white-space: nowrap;
     }
@@ -300,11 +373,36 @@
       margin: 0;
       font-size: 13px;
       color: var(--sb-text-muted);
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+
+    .box-card-extra {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .box-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #f9fafb;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
     .box-card-button {
       align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      text-decoration: none;
       border: none;
       border-radius: 999px;
       padding: 0.7rem 1.8rem;
@@ -317,6 +415,7 @@
         0 0 0 1px rgba(248, 250, 251, 0.15),
         0 18px 42px rgba(0, 0, 0, 0.95);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      margin-top: auto;
     }
 
     .box-card-button:hover,
@@ -326,6 +425,156 @@
       box-shadow:
         0 0 0 1px rgba(248, 250, 251, 0.22),
         0 24px 60px rgba(0, 0, 0, 1);
+    }
+
+    /* ----------- COMMENT ÇA MARCHE ----------- */
+    .how-it-works {
+      padding: 0 0 5rem;
+      background: #030712;
+    }
+
+    .how-it-works-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-bottom: 26px;
+    }
+
+    .section-intro h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .section-intro p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--sb-text-muted);
+      margin: 0;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .step-card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      padding: 1.35rem;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .step-card h3 {
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--sb-text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ----------- INFOS PRATIQUES ----------- */
+    .boxes-info {
+      padding: 0 0 4.5rem;
+      background: #030712;
+    }
+
+    .boxes-info-inner {
+      max-width: var(--sb-container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: rgba(15, 23, 42, 0.82);
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 1.35rem;
+    }
+
+    .info-card h3 {
+      font-size: 17px;
+      margin: 0 0 12px;
+    }
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--sb-text-muted);
+    }
+
+    .info-card li {
+      margin-bottom: 10px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* ----------- CTA BAS DE PAGE ----------- */
+    .boxes-bottom-cta {
+      margin-top: 28px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .bottom-cta-primary,
+    .bottom-cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0.85rem 1.45rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .bottom-cta-primary {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #fff;
+    }
+
+    .bottom-cta-secondary {
+      background: transparent;
+      color: #f9fafb;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .bottom-cta-primary:hover,
+    .bottom-cta-primary:focus-visible,
+    .bottom-cta-secondary:hover,
+    .bottom-cta-secondary:focus-visible {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
     }
 
     .boxes-extra {
@@ -347,6 +596,7 @@
     .boxes-extra-inner p {
       font-size: 14px;
       color: var(--sb-text-muted);
+      line-height: 1.7;
     }
 
     .boxes-faq {
@@ -362,9 +612,35 @@
       font-size: 14px;
       margin: 0;
       color: var(--sb-text-muted);
+      line-height: 1.7;
+    }
+
+    .newsletter-row input[aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
+    #newsletter-submit[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+    }
+
+    #newsletter-submit.is-loading {
+      position: relative;
     }
 
     /* ---------- RESPONSIVE BLOCS ---------- */
+    @media (max-width: 1100px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 900px) {
       #concept-intro {
         padding: 9rem 0 64px;
@@ -372,6 +648,25 @@
 
       .boxes-grid {
         grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .concept-title {
+        font-size: 28px;
+      }
+
+      .section-intro h2,
+      .boxes-extra-inner h2 {
+        font-size: 24px;
+      }
+
+      .box-feature-text {
+        white-space: normal;
       }
     }
   </style>
@@ -437,8 +732,14 @@
       <h1 class="concept-title">Nos box karaoké Singbox</h1>
       <p class="concept-intro-text">
         Découvrez nos deux salons de karaoké privatisés à Toulouse, climatisés et insonorisés.
-        Choisissez la box qui correspond le mieux à l’ambiance de votre soirée&nbsp;: Nuit étoilée ou Ambiance Sunset.
+        Choisissez la box qui correspond le mieux à l’ambiance de votre soirée : Nuit étoilée ou Ambiance Sunset.
+        Chaque espace est conçu pour accueillir jusqu’à 6 personnes dans une expérience simple, immersive et autonome.
       </p>
+
+      <div class="concept-intro-cta-row">
+        <a href="reservation.html" class="hero-cta">Voir les disponibilités</a>
+        <a href="#comment-ca-marche" class="hero-secondary-cta">Comment ça marche</a>
+      </div>
     </div>
   </section>
 
@@ -449,105 +750,216 @@
         <!-- Box 1 : Nuit étoilée -->
         <article class="box-card">
           <div class="box-card-media">
-            <img src="box-nuit-etoilee.png" alt="Box karaoké Nuit étoilée Singbox à Toulouse" />
+            <img
+              src="box-nuit-etoilee.png"
+              alt="Box karaoké Nuit étoilée Singbox à Toulouse"
+              loading="eager"
+            />
             <div class="box-card-badge">
-              <span class="box-badge-capacity">8 pers max</span>
+              <span class="box-badge-capacity">6 pers max</span>
             </div>
           </div>
 
           <div class="box-card-body">
-            <h3 class="box-card-title">Nuit étoilée</h3>
+            <h2 class="box-card-title">Nuit étoilée</h2>
 
             <div class="box-card-features" aria-label="Équipements et caractéristiques de la box Nuit étoilée">
               <div class="box-feature">
-                <span class="box-feature-icon">📱</span>
+                <span class="box-feature-icon" aria-hidden="true">📱</span>
                 <span class="box-feature-text">Commande via tablette</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🎤</span>
+                <span class="box-feature-icon" aria-hidden="true">🎤</span>
                 <span class="box-feature-text">4 micros</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">♿</span>
+                <span class="box-feature-icon" aria-hidden="true">♿</span>
                 <span class="box-feature-text">Accès PMR</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🚫</span>
+                <span class="box-feature-icon" aria-hidden="true">🚫</span>
                 <span class="box-feature-text">Snacks & boissons extérieurs non autorisés</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🥤</span>
+                <span class="box-feature-icon" aria-hidden="true">🥤</span>
                 <span class="box-feature-text">Snacks & boissons sur place</span>
               </div>
             </div>
 
             <p class="box-card-description">
-              Ambiance bleutée, lumières tamisées et plafond étoilé&nbsp;: la box parfaite pour
-              chanter toute la nuit entre amis, comme sous un ciel rempli de constellations.
-              Idéale pour une soirée karaoké intimiste à Toulouse. Snacks et boissons sont disponibles
-              directement sur place selon vos envies.
+              Ambiance bleutée, lumières tamisées et plafond étoilé : la box parfaite pour
+              chanter entre amis dans une atmosphère immersive et intimiste. Idéale pour une soirée karaoké
+              privative à Toulouse en petit comité, un anniversaire ou un moment chill à 2, 4 ou 6 personnes.
             </p>
 
-            <button
+            <div class="box-card-extra" aria-label="Occasions idéales pour la box Nuit étoilée">
+              <span class="box-tag">Anniversaire</span>
+              <span class="box-tag">Soirée entre amis</span>
+              <span class="box-tag">Ambiance intimiste</span>
+            </div>
+
+            <a
               class="box-card-button"
-              type="button"
-              onclick="globalThis.location.href='reservation.html?box=nuit-etoilee'"
+              href="reservation.html?box=nuit-etoilee"
+              aria-label="Réserver la box Nuit étoilée"
             >
               Réserver cette box
-            </button>
+            </a>
           </div>
         </article>
 
         <!-- Box 2 : Ambiance Sunset -->
         <article class="box-card">
           <div class="box-card-media">
-            <img src="box-ambiance-sunset.png" alt="Box karaoké Ambiance Sunset Singbox à Toulouse" />
+            <img
+              src="box-ambiance-sunset.png"
+              alt="Box karaoké Ambiance Sunset Singbox à Toulouse"
+              loading="eager"
+            />
             <div class="box-card-badge">
-              <span class="box-badge-capacity">8 pers max</span>
+              <span class="box-badge-capacity">6 pers max</span>
             </div>
           </div>
 
           <div class="box-card-body">
-            <h3 class="box-card-title">Ambiance Sunset</h3>
+            <h2 class="box-card-title">Ambiance Sunset</h2>
 
             <div class="box-card-features" aria-label="Équipements et caractéristiques de la box Ambiance Sunset">
               <div class="box-feature">
-                <span class="box-feature-icon">📱</span>
+                <span class="box-feature-icon" aria-hidden="true">📱</span>
                 <span class="box-feature-text">Commande via tablette</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🎤</span>
+                <span class="box-feature-icon" aria-hidden="true">🎤</span>
                 <span class="box-feature-text">4 micros</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">♿</span>
+                <span class="box-feature-icon" aria-hidden="true">♿</span>
                 <span class="box-feature-text">Accès PMR</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🚫</span>
+                <span class="box-feature-icon" aria-hidden="true">🚫</span>
                 <span class="box-feature-text">Snacks & boissons extérieurs non autorisés</span>
               </div>
               <div class="box-feature">
-                <span class="box-feature-icon">🥤</span>
+                <span class="box-feature-icon" aria-hidden="true">🥤</span>
                 <span class="box-feature-text">Snacks & boissons sur place</span>
               </div>
             </div>
 
             <p class="box-card-description">
-              Dégradés orangés, ambiance coucher de soleil et mood chaleureux&nbsp;:
+              Dégradés orangés, ambiance coucher de soleil et mood chaleureux :
               une box idéale pour les afterworks, les anniversaires et les soirées feel good.
-              Parfaite pour un karaoké convivial à Toulouse entre collègues ou en famille.
-              Les consommations sont disponibles directement sur place.
+              Parfaite pour un karaoké convivial à Toulouse entre collègues, amis ou en famille jusqu’à 6 personnes.
             </p>
 
-            <button
+            <div class="box-card-extra" aria-label="Occasions idéales pour la box Ambiance Sunset">
+              <span class="box-tag">Afterwork</span>
+              <span class="box-tag">EVJF / EVG</span>
+              <span class="box-tag">Ambiance festive</span>
+            </div>
+
+            <a
               class="box-card-button"
-              type="button"
-              onclick="globalThis.location.href='reservation.html?box=ambiance-sunset'"
+              href="reservation.html?box=ambiance-sunset"
+              aria-label="Réserver la box Ambiance Sunset"
             >
               Réserver cette box
-            </button>
+            </a>
           </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- COMMENT ÇA MARCHE ---------- -->
+  <section class="how-it-works" id="comment-ca-marche">
+    <div class="how-it-works-inner">
+      <div class="section-intro">
+        <h2>Comment fonctionne la réservation chez Singbox ?</h2>
+        <p>
+          Réserver une box karaoké à Toulouse chez Singbox se fait en quelques clics.
+          L’objectif est simple : vous offrir une expérience autonome, fluide et rapide, de la réservation
+          en ligne jusqu’à l’entrée dans votre box grâce à votre QR code.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">1</div>
+          <h3>Je réserve en ligne</h3>
+          <p>
+            Choisissez votre box, votre date et votre créneau directement sur le site selon les disponibilités.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">2</div>
+          <h3>Je reçois ma confirmation</h3>
+          <p>
+            Après validation, vous recevez un e-mail récapitulatif avec les informations utiles pour votre séance.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">3</div>
+          <h3>Je récupère mon QR code</h3>
+          <p>
+            Votre accès autonome vous permet de scanner votre QR code à l’entrée pour rejoindre votre box.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <div class="step-number">4</div>
+          <h3>Je profite de ma session</h3>
+          <p>
+            Installez-vous, sélectionnez vos titres sur la tablette et profitez de votre karaoké privatif à Toulouse.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- INFOS PRATIQUES ---------- -->
+  <section class="boxes-info">
+    <div class="boxes-info-inner">
+      <div class="section-intro">
+        <h2>Ce qu’il faut savoir avant votre séance</h2>
+        <p>
+          Pour que votre expérience soit la plus simple possible, voici les informations pratiques essentielles
+          avant de réserver votre box karaoké Singbox.
+        </p>
+      </div>
+
+      <div class="info-grid">
+        <article class="info-card">
+          <h3>Ce qui est inclus</h3>
+          <ul>
+            <li>Une box karaoké privative jusqu’à 6 personnes</li>
+            <li>4 micros et un système karaoké prêt à l’emploi</li>
+            <li>Commande des titres via tablette</li>
+            <li>Ambiance lumineuse immersive selon la box choisie</li>
+          </ul>
+        </article>
+
+        <article class="info-card">
+          <h3>Bon à savoir</h3>
+          <ul>
+            <li>Un QR code d’accès est prévu après la réservation</li>
+            <li>Les snacks et boissons extérieurs ne sont pas autorisés</li>
+            <li>Des consommations peuvent être proposées sur place</li>
+            <li>Un accès PMR est prévu pour les box</li>
+          </ul>
+        </article>
+
+        <article class="info-card">
+          <h3>Idéal pour</h3>
+          <ul>
+            <li>Anniversaires en petit comité</li>
+            <li>Soirées entre amis ou en famille</li>
+            <li>Afterworks et sorties entre collègues</li>
+            <li>EVJF / EVG et moments festifs à Toulouse</li>
+          </ul>
         </article>
       </div>
     </div>
@@ -556,40 +968,54 @@
   <!-- ---------- TEXTE SEO & FAQ ---------- -->
   <section class="boxes-extra">
     <div class="boxes-extra-inner">
-      <h2>Quelle box karaoké choisir pour votre soirée à Toulouse&nbsp;?</h2>
+      <h2>Quelle box karaoké choisir pour votre soirée à Toulouse ?</h2>
       <p>
         Chez Singbox, chaque box karaoké privative a sa propre ambiance. Nuit étoilée est parfaite
         pour une atmosphère plus intimiste, avec des lumières bleutées et un plafond étoilé. Ambiance Sunset,
         elle, offre une lumière chaude et des dégradés orangés pour une énergie plus festive.
-        Dans les deux cas, vous profitez d’un salon privatisé, insonorisé, équipé de 4 micros
-        et de consommations disponibles sur place (snacks et boissons extérieurs non autorisés).
+        Dans les deux cas, vous profitez d’un salon privatisé, insonorisé, équipé de 4 micros,
+        accessible jusqu’à 6 personnes, avec réservation en ligne, accès autonome et consommations disponibles sur place.
+        C’est une activité indoor idéale à Toulouse pour un anniversaire, un EVJF, un EVG, un afterwork
+        ou simplement une soirée karaoké entre amis.
       </p>
 
       <div class="boxes-faq">
-        <h3>Combien de personnes peuvent venir dans une box Singbox&nbsp;?</h3>
+        <h3>Combien de personnes peuvent venir dans une box Singbox ?</h3>
         <p>
-          Chaque box karaoké Singbox peut accueillir jusqu’à 8 personnes. C’est le format idéal
+          Chaque box karaoké Singbox peut accueillir jusqu’à 6 personnes. C’est le format idéal
           pour une soirée entre amis, un anniversaire en petit comité, un EVJF/EVG ou un afterwork d’équipe.
         </p>
 
-        <h3>Les box sont-elles adaptées aux personnes à mobilité réduite&nbsp;?</h3>
+        <h3>Les box sont-elles adaptées aux personnes à mobilité réduite ?</h3>
         <p>
           Oui, nos box sont accessibles aux personnes à mobilité réduite (PMR). Les accès sont prévus
           pour que chacun puisse profiter du karaoké dans les meilleures conditions.
         </p>
 
-        <h3>Puis-je amener mes propres snacks ou boissons&nbsp;?</h3>
+        <h3>Puis-je amener mes propres snacks ou boissons ?</h3>
         <p>
           Les snacks et boissons extérieurs ne sont pas autorisés dans les box. Des consommations sont
-          disponibles directement sur place pour accompagner votre séance (softs, snacks…).
+          disponibles directement sur place pour accompagner votre séance.
         </p>
 
-        <h3>Comment réserver une box karaoké à Toulouse&nbsp;?</h3>
+        <h3>Comment réserver une box karaoké à Toulouse ?</h3>
         <p>
-          La réservation se fait en ligne en quelques clics&nbsp;: choisissez votre box, sélectionnez
+          La réservation se fait en ligne en quelques clics : choisissez votre box, sélectionnez
           la date et l’horaire, puis validez votre séance. Vous recevrez ensuite votre confirmation
-          par e-mail avec toutes les informations nécessaires.
+          par e-mail avec les informations nécessaires pour l’accès à votre réservation.
         </p>
+
+        <h3>Quel est le tarif d’une box karaoké Singbox ?</h3>
+        <p>
+          Les tarifs exacts peuvent évoluer, mais l’objectif est de proposer une formule accessible,
+          avec une base autour de 10 € par personne selon la séance choisie. Les prix définitifs seront
+          affichés au moment de la réservation.
+        </p>
+      </div>
+
+      <div class="boxes-bottom-cta">
+        <a href="reservation.html" class="bottom-cta-primary">Voir les disponibilités</a>
+        <a href="contact.html" class="bottom-cta-secondary">Nous contacter</a>
       </div>
     </div>
   </section>
@@ -606,6 +1032,8 @@
           type="email"
           placeholder="Entrez votre adresse e-mail"
           aria-label="Adresse e-mail pour la newsletter"
+          autocomplete="email"
+          inputmode="email"
         />
         <button
           id="newsletter-submit"
@@ -615,7 +1043,7 @@
         </button>
       </div>
 
-      <p id="newsletter-message" class="newsletter-message"></p>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -636,9 +1064,9 @@
 
       <div>
         <p><strong>Contact</strong></p>
-        <p>Adresse : [à compléter]</p>
+        <p>Adresse : Toulouse (adresse à venir)</p>
         <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
+        <p>Téléphone : à venir</p>
       </div>
 
       <div>
@@ -696,26 +1124,12 @@
 
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
     }
 
     function isValidEmail(email) {
       if (typeof email !== "string") return false;
-
-      const value = email.trim();
-
-      if (!value || value.includes(" ")) return false;
-
-      const atIndex = value.indexOf("@");
-      const lastAtIndex = value.lastIndexOf("@");
-      const dotIndex = value.lastIndexOf(".");
-
-      return (
-        value.length >= 6 &&
-        atIndex > 0 &&
-        atIndex === lastAtIndex &&
-        dotIndex > atIndex + 1 &&
-        dotIndex < value.length - 1
-      );
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
     }
 
     function isDuplicateNewsletterError(error) {
@@ -740,21 +1154,68 @@
         .insert([{ email }]);
     }
 
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function setNewsletterLoadingState(submitBtn, isLoading) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.originalText) {
+        submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
+      }
+
+      submitBtn.disabled = isLoading;
+      submitBtn.classList.toggle("is-loading", isLoading);
+      submitBtn.setAttribute("aria-busy", String(isLoading));
+      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
       if (burgerBtn && mobileNav) {
         burgerBtn.addEventListener("click", () => {
-          const isOpen = mobileNav.classList.toggle("open");
-          burgerBtn.setAttribute("aria-expanded", String(isOpen));
+          const isOpen = mobileNav.classList.contains("open");
+
+          if (isOpen) {
+            closeMobileNav(mobileNav, burgerBtn);
+          } else {
+            openMobileNav(mobileNav, burgerBtn);
+          }
         });
 
         mobileNav.addEventListener("click", (e) => {
           const target = e.target;
           if (target instanceof HTMLElement && target.tagName === "A") {
-            mobileNav.classList.remove("open");
-            burgerBtn.setAttribute("aria-expanded", "false");
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          const target = e.target;
+          if (
+            mobileNav.classList.contains("open") &&
+            target instanceof Node &&
+            !mobileNav.contains(target) &&
+            !burgerBtn.contains(target)
+          ) {
+            closeMobileNav(mobileNav, burgerBtn);
+          }
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+            closeMobileNav(mobileNav, burgerBtn);
           }
         });
       }
@@ -765,47 +1226,59 @@
       const messageEl = document.getElementById("newsletter-message");
       const submitBtn = document.getElementById("newsletter-submit");
 
-      if (emailInput && messageEl && submitBtn) {
-        submitBtn.addEventListener("click", async () => {
-          const email = emailInput.value.trim();
+      async function handleNewsletterSubmit() {
+        if (!(emailInput instanceof HTMLInputElement) || !messageEl || !submitBtn) return;
 
-          setNewsletterMessage(messageEl, "Envoi en cours...", "#e5e7eb");
+        const email = emailInput.value.trim();
+        emailInput.removeAttribute("aria-invalid");
+        setNewsletterMessage(messageEl, "Envoi en cours...", "#e5e7eb");
 
-          if (!isValidEmail(email)) {
-            setNewsletterMessage(messageEl, "Merci d'entrer une adresse e-mail valide 🙂", "#ff6b6b");
-            return;
-          }
+        if (!isValidEmail(email)) {
+          emailInput.setAttribute("aria-invalid", "true");
+          setNewsletterMessage(messageEl, "Merci d'entrer une adresse e-mail valide 🙂", "#ff6b6b");
+          return;
+        }
 
-          submitBtn.disabled = true;
+        setNewsletterLoadingState(submitBtn, true);
 
-          try {
-            const { error } = await subscribeNewsletter(email);
+        try {
+          const { error } = await subscribeNewsletter(email);
 
-            if (error) {
-              console.error(error);
-
-              if (isDuplicateNewsletterError(error)) {
-                setNewsletterMessage(messageEl, "Tu es déjà inscrit à la newsletter 🎤", "#f97373");
-              } else {
-                setNewsletterMessage(
-                  messageEl,
-                  "Oups, une erreur est survenue. Réessaie dans quelques instants.",
-                  "#f97373"
-                );
-              }
-            } else {
-              setNewsletterMessage(messageEl, "Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
-              emailInput.value = "";
-            }
-          } catch (error) {
+          if (error) {
             console.error(error);
-            setNewsletterMessage(
-              messageEl,
-              "Erreur réseau, vérifie ta connexion et réessaie.",
-              "#f97373"
-            );
-          } finally {
-            submitBtn.disabled = false;
+
+            if (isDuplicateNewsletterError(error)) {
+              setNewsletterMessage(messageEl, "Tu es déjà inscrit à la newsletter 🎤", "#f97373");
+            } else {
+              setNewsletterMessage(
+                messageEl,
+                "Oups, une erreur est survenue. Réessaie dans quelques instants.",
+                "#f97373"
+              );
+            }
+          } else {
+            setNewsletterMessage(messageEl, "Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
+            emailInput.value = "";
+          }
+        } catch (error) {
+          console.error(error);
+          setNewsletterMessage(
+            messageEl,
+            "Erreur réseau, vérifie ta connexion et réessaie.",
+            "#f97373"
+          );
+        } finally {
+          setNewsletterLoadingState(submitBtn, false);
+        }
+      }
+
+      if (emailInput && messageEl && submitBtn) {
+        submitBtn.addEventListener("click", handleNewsletterSubmit);
+
+        emailInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            handleNewsletterSubmit();
           }
         });
       }
