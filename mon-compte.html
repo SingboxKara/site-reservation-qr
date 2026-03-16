@@ -9,25 +9,22 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta
     name="description"
-    content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse. Connectez-vous pour cumuler des points à chaque réservation."
+    content="Accédez à votre compte Singbox : consultez votre email, vos points de fidélité, vos réservations et vos avantages pour le karaoké box privatif à Toulouse."
   />
   <meta name="author" content="Singbox" />
-  <meta
-    name="keywords"
-    content="mon compte Singbox, espace client Singbox, fidélité karaoké Toulouse, points de fidélité, réservation karaoké box Toulouse"
-  />
-  <link rel="canonical" href="https://www.singbox.fr/mon-compte" />
+  <link rel="canonical" href="https://www.singbox.fr/mon-compte.html" />
 
   <link rel="icon" type="image/png" href="favicon.png" />
+  <meta name="theme-color" content="#050814" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:title" content="Mon compte Singbox | Espace client & points de fidélité" />
   <meta
     property="og:description"
-    content="Connectez-vous à votre espace client Singbox pour consulter vos informations, vos réservations et suivre vos points de fidélité pour le karaoké box privatif à Toulouse."
+    content="Connectez-vous à votre espace client Singbox pour consulter vos informations, vos réservations et suivre vos points de fidélité."
   />
-  <meta property="og:url" content="https://www.singbox.fr/mon-compte" />
+  <meta property="og:url" content="https://www.singbox.fr/mon-compte.html" />
   <meta property="og:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
   <meta property="og:locale" content="fr_FR" />
 
@@ -35,7 +32,7 @@
   <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
   <meta
     name="twitter:description"
-    content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox pour vos prochaines séances de karaoké privatif à Toulouse."
+    content="Retrouvez vos informations client, vos réservations et vos points de fidélité Singbox."
   />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
@@ -44,8 +41,8 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Mon compte Singbox",
-    "url": "https://www.singbox.fr/mon-compte",
-    "description": "Espace client Singbox : accès au compte, réservations, points de fidélité et avantages pour le karaoké box privatif à Toulouse.",
+    "url": "https://www.singbox.fr/mon-compte.html",
+    "description": "Espace client Singbox : accès au compte, réservations, points de fidélité et avantages.",
     "isPartOf": {
       "@type": "WebSite",
       "name": "Singbox",
@@ -80,12 +77,15 @@
       --sb-red: #c94c35;
       --sb-orange: #f97316;
       --sb-border-soft: rgba(148, 163, 184, 0.35);
-      --sb-border-white: rgba(255, 255, 255, 0.85);
       --sb-container-width: 1180px;
     }
 
     * {
       box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -112,15 +112,15 @@
     }
 
     .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
     }
 
     .container {
@@ -138,7 +138,6 @@
       background: #020617;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
-      height: auto;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     }
 
@@ -150,7 +149,6 @@
       align-items: center;
       justify-content: space-between;
       gap: 2rem;
-      height: auto;
       flex-wrap: nowrap;
     }
 
@@ -204,7 +202,6 @@
       font-weight: 600;
       letter-spacing: 0.3px;
       color: #ffffff;
-      text-decoration: none;
       position: relative;
       padding-bottom: 4px;
       white-space: nowrap;
@@ -223,18 +220,16 @@
     }
 
     .main-nav a:hover::after,
-    .main-nav a:focus-visible::after {
+    .main-nav a:focus-visible::after,
+    .main-nav a[aria-current="page"]::after {
       width: 100%;
     }
 
     .main-nav a:hover,
-    .main-nav a:focus-visible {
+    .main-nav a:focus-visible,
+    .main-nav a[aria-current="page"] {
       color: #ffb96f;
       transition: 0.25s ease;
-    }
-
-    .main-nav a[href="mon-compte.html"]::after {
-      width: 100%;
     }
 
     .header-actions {
@@ -316,13 +311,14 @@
     .mobile-nav {
       display: none;
       position: fixed;
-      top: 70px;
+      top: 74px;
       left: 0;
       right: 0;
       background: #020617;
       padding: 12px 24px 16px;
       z-index: 40;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
     }
 
     .mobile-nav ul {
@@ -464,7 +460,7 @@
     }
 
     .account-layout {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
@@ -532,6 +528,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       font-size: 12px;
       margin-top: 6px;
+      flex-wrap: wrap;
     }
 
     .badge-points span:first-child {
@@ -543,6 +540,7 @@
       border-radius: 999px;
       background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
       font-size: 12px;
+      flex-shrink: 0;
     }
 
     .account-subtext {
@@ -593,6 +591,10 @@
 
     .account-message.ok {
       color: #bbf7d0;
+    }
+
+    .account-message.info {
+      color: #93c5fd;
     }
 
     .reservations-block {
@@ -658,6 +660,7 @@
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.35);
       font-size: 11px;
+      text-transform: capitalize;
     }
 
     .reservation-status-confirmed {
@@ -885,6 +888,11 @@
         0 0 22px rgba(249, 115, 22, 0.25);
     }
 
+    .login-field input[aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
     .login-actions {
       display: flex;
       flex-wrap: wrap;
@@ -943,6 +951,22 @@
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.35),
         0 14px 34px rgba(0, 0, 0, 0.95);
+      }
+
+    .login-submit-btn[disabled],
+    .login-secondary-btn[disabled],
+    #newsletter-submit[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+    }
+
+    .login-help {
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-top: 8px;
+      line-height: 1.55;
     }
 
     .login-links {
@@ -969,6 +993,10 @@
 
     .login-message.ok {
       color: #bbf7d0;
+    }
+
+    .login-message.info {
+      color: #93c5fd;
     }
 
     dialog.modal-dialog {
@@ -1008,7 +1036,6 @@
     .qr-img {
       width: 320px;
       height: 320px;
-      border-radius: 0;
       border: 2px solid #ffffff;
       background: #ffffff;
       display: block;
@@ -1091,6 +1118,11 @@
       color: rgba(156, 163, 175, 0.9);
     }
 
+    footer input[type="email"][aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
     footer button {
       padding: 10px 18px;
       border: none;
@@ -1139,6 +1171,44 @@
       text-align: center;
       color: #9ca3af;
       border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    @media (max-width: 640px) {
+      #account {
+        padding-top: 8.7rem;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .card {
+        padding: 1.25rem 1rem;
+      }
+
+      .reservation-main-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .reservation-side {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .reservation-actions-row,
+      .reservation-refund-row {
+        justify-content: flex-start;
+      }
+
+      .login-actions {
+        flex-direction: column;
+      }
+
+      .login-submit-btn,
+      .login-secondary-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -1190,7 +1260,8 @@
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="mon-compte.html">Mon compte</a></li>
+      <li><a href="mon-compte.html" aria-current="page">Mon compte</a></li>
+      <li><a href="reservation.html">Réserver</a></li>
     </ul>
   </nav>
 
@@ -1217,27 +1288,30 @@
               <form id="login-form">
                 <div class="login-field">
                   <label for="login-email">Email</label>
-                  <input type="email" id="login-email" placeholder="vous@email.fr" required />
+                  <input type="email" id="login-email" placeholder="vous@email.fr" autocomplete="email" required />
                 </div>
                 <div class="login-field">
                   <label for="login-password">Mot de passe</label>
-                  <input type="password" id="login-password" placeholder="Mot de passe" required />
+                  <input type="password" id="login-password" placeholder="Mot de passe" autocomplete="current-password" required />
                 </div>
                 <div class="login-actions">
-                  <button type="submit" class="login-submit-btn">Connexion</button>
-                  <button type="button" id="create-account-btn" class="login-secondary-btn">Créer mon compte</button>
+                  <button type="submit" class="login-submit-btn" id="login-submit-btn">Connexion</button>
+                  <button type="button" id="create-account-btn" class="login-secondary-btn">Créer un compte avec ces identifiants</button>
                 </div>
                 <p class="login-links">
                   <a href="mot-de-passe-oublie.html" class="login-forgot">Mot de passe oublié&nbsp;?</a>
                 </p>
+                <p class="login-help">
+                  Pour aller vite, vous pouvez créer votre compte avec l’email et le mot de passe saisis ci-dessus.
+                </p>
               </form>
-              <div id="login-message" class="login-message"></div>
+              <div id="login-message" class="login-message" aria-live="polite" role="status"></div>
             </div>
 
             <!-- Carte principale -->
             <div class="card account-main-card">
               <h2>Mes informations</h2>
-              <p class="account-message" id="account-message"></p>
+              <p class="account-message" id="account-message" aria-live="polite" role="status"></p>
 
               <div>
                 <div class="account-field-label">Email</div>
@@ -1263,11 +1337,11 @@
                   </p>
                 </div>
 
-                <p id="refund-message" class="account-message" style="margin-top:6px;"></p>
+                <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
               </div>
 
               <p class="account-subtext">
-                Astuce : cliquez sur “Afficher le QR” et présentez-le à l’accueil.
+                Astuce : cliquez sur “Afficher le QR” et présentez-le à l’entrée.
               </p>
 
               <div class="logout-row">
@@ -1284,7 +1358,7 @@
             </div>
             <h3>Comment ça marche&nbsp;?</h3>
             <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
-            <p>À 100 points, vous débloquez une séance offerte (selon disponibilité).</p>
+            <p>À 100 points, vous débloquez une séance offerte selon les conditions de votre programme fidélité.</p>
             <p class="loyalty-highlight" id="loyalty-highlight-text">
               Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.
             </p>
@@ -1293,7 +1367,7 @@
             </p>
 
             <p class="account-cta" id="not-logged-cta" style="display:none;">
-              Vous n’êtes pas connecté. Connectez-vous ou créez un compte lors de votre prochaine réservation.
+              Vous n’êtes pas connecté. Connectez-vous ou créez un compte pour commencer à cumuler vos points.
             </p>
           </div>
         </div>
@@ -1304,7 +1378,7 @@
   <!-- MODAL QR -->
   <dialog id="qr-modal" class="modal-dialog" aria-labelledby="qr-modal-title">
     <h2 id="qr-modal-title">Votre QR code</h2>
-    <p id="qr-modal-subtitle">Présentez ce QR code à l’accueil.</p>
+    <p id="qr-modal-subtitle">Présentez ce QR code à l’entrée.</p>
 
     <div class="qr-only-wrap">
       <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
@@ -1322,10 +1396,10 @@
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
-        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" />
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" autocomplete="email" inputmode="email" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
-      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;"></p>
+      <p id="newsletter-message" style="font-size:12px;margin-top:6px;min-height:16px;" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -1376,10 +1450,23 @@
   </footer>
 
   <!-- JS PRINCIPAL -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
     const CHECK_ENDPOINT = "https://singbox-backend.onrender.com/api/check";
     const MODIFICATION_DEADLINE_HOURS = 6;
+
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+    let supabaseClient = null;
+
+    function isValidEmail(email) {
+      if (typeof email !== "string") {
+        return false;
+      }
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
 
     function getStoredToken() {
       const token = localStorage.getItem("token");
@@ -1397,20 +1484,79 @@
       return { Authorization: "Bearer " + token };
     }
 
+    function getPanier() {
+      try {
+        const raw = localStorage.getItem("panier");
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
     function updateCartIcon() {
       const el = document.getElementById("cart-count");
       if (!el) {
         return;
       }
+      const panier = getPanier();
+      el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
 
-      let panier = [];
-      try {
-        panier = JSON.parse(localStorage.getItem("panier")) || [];
-      } catch {
-        panier = [];
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function initMobileMenu() {
+      const burgerBtn = document.getElementById("burger-button");
+      const mobileNav = document.getElementById("mobile-nav");
+
+      if (!burgerBtn || !mobileNav) {
+        return;
       }
 
-      el.textContent = panier.length ? panier.length : "";
+      burgerBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
     }
 
     function getLoyaltyText(points) {
@@ -1421,7 +1567,7 @@
       const next = Math.max(0, 100 - points);
 
       if (next === 0) {
-        return "Bravo ! Vous avez atteint 100 points. Votre prochaine séance est offerte.";
+        return "Bravo ! Vous avez atteint 100 points. Votre prochaine séance offerte est débloquée.";
       }
 
       const suffix = next > 1 ? "s" : "";
@@ -1461,12 +1607,12 @@
         pointsEl.textContent = "—";
       }
       if (msgEl) {
-        msgEl.textContent = "Vous n’êtes pas connecté. Utilisez le formulaire ci-dessus.";
-        msgEl.classList.remove("ok");
+        msgEl.textContent = "Connectez-vous pour accéder à votre espace client.";
+        msgEl.className = "account-message";
       }
       if (refundMsgEl) {
         refundMsgEl.textContent = "";
-        refundMsgEl.classList.remove("ok");
+        refundMsgEl.className = "account-message";
       }
       if (notLoggedCta) {
         notLoggedCta.style.display = "block";
@@ -1553,7 +1699,11 @@
 
       const normalized = (statusRaw || "").toString().toLowerCase();
       const isConfirmed =
-        normalized.includes("confirme") || normalized === "confirmed";
+        normalized === "confirmed" ||
+        normalized === "paid" ||
+        normalized.includes("confirm") ||
+        normalized.includes("payé") ||
+        normalized.includes("paye");
 
       if (!isConfirmed) {
         return false;
@@ -1579,7 +1729,13 @@
     function getReservationStatusClass(statusRaw) {
       const normalized = (statusRaw || "").toString().toLowerCase();
 
-      if (normalized.includes("confirme") || normalized === "confirmed") {
+      if (
+        normalized === "confirmed" ||
+        normalized === "paid" ||
+        normalized.includes("confirm") ||
+        normalized.includes("payé") ||
+        normalized.includes("paye")
+      ) {
         return "reservation-status-confirmed";
       }
 
@@ -1601,14 +1757,15 @@
     function buildReservationMetaText(reservation) {
       const metaPieces = [];
       const timeRange = formatReservationHoursFromReservation(reservation);
-      const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
+      const rawBoxName = reservation.box_name || reservation.box || reservation.box_id || "";
+      const boxName = String(rawBoxName).trim();
 
       if (timeRange) {
         metaPieces.push(timeRange);
       }
 
       if (boxName) {
-        metaPieces.push("Box " + boxName);
+        metaPieces.push(/^box/i.test(boxName) ? boxName : `Box ${boxName}`);
       }
 
       return metaPieces.join(" • ");
@@ -1712,7 +1869,7 @@
 
       const qrTitleParts = [];
       if (boxName) {
-        qrTitleParts.push(`Box ${boxName}`);
+        qrTitleParts.push(/^box/i.test(String(boxName).trim()) ? String(boxName).trim() : `Box ${boxName}`);
       }
       qrTitleParts.push(date);
 
@@ -1837,7 +1994,7 @@
 
       if (refundMsgEl) {
         refundMsgEl.textContent = "";
-        refundMsgEl.classList.remove("ok");
+        refundMsgEl.className = "account-message";
       }
 
       if (!token) {
@@ -1881,8 +2038,8 @@
       }
 
       if (msgEl) {
-        msgEl.textContent = "Chargement de vos informations...";
-        msgEl.classList.remove("ok");
+        msgEl.textContent = "Chargement de votre espace client...";
+        msgEl.className = "account-message info";
       }
 
       try {
@@ -1890,10 +2047,17 @@
           headers: getAuthHeaders()
         });
 
-        if (!response.ok) {
-          console.warn("API /api/me non OK :", response.status);
+        if (response.status === 401 || response.status === 403) {
           localStorage.removeItem("token");
           showNotLoggedState();
+          return;
+        }
+
+        if (!response.ok) {
+          if (msgEl) {
+            msgEl.textContent = "Impossible de charger votre espace client pour le moment.";
+            msgEl.className = "account-message";
+          }
           return;
         }
 
@@ -1911,8 +2075,8 @@
         }
 
         if (msgEl) {
-          msgEl.textContent = "Profil chargé avec succès.";
-          msgEl.classList.add("ok");
+          msgEl.textContent = "Bienvenue dans votre espace client.";
+          msgEl.className = "account-message ok";
         }
 
         if (loginCard) {
@@ -1929,21 +2093,54 @@
         console.error("Erreur /api/me :", err);
 
         if (msgEl) {
-          msgEl.textContent = "Erreur de chargement. Merci de vous reconnecter.";
-          msgEl.classList.remove("ok");
+          msgEl.textContent = "Erreur de chargement. Merci de réessayer dans quelques instants.";
+          msgEl.className = "account-message";
         }
-
-        localStorage.removeItem("token");
-        showNotLoggedState();
       }
     }
 
-    function setLoginMessage(loginMsgEl, text, isOk = false) {
+    function setLoginMessage(loginMsgEl, text, type = "error") {
       if (!loginMsgEl) {
         return;
       }
+
       loginMsgEl.textContent = text || "";
-      loginMsgEl.classList.toggle("ok", Boolean(isOk));
+      loginMsgEl.className = "login-message";
+
+      if (type === "ok") {
+        loginMsgEl.classList.add("ok");
+      } else if (type === "info") {
+        loginMsgEl.classList.add("info");
+      }
+    }
+
+    function setAuthButtonsLoading(isLoading) {
+      const loginBtn = document.getElementById("login-submit-btn");
+      const createBtn = document.getElementById("create-account-btn");
+
+      if (loginBtn) {
+        if (!loginBtn.dataset.defaultText) {
+          loginBtn.dataset.defaultText = loginBtn.textContent;
+        }
+        loginBtn.disabled = isLoading;
+        loginBtn.textContent = isLoading ? "Chargement..." : loginBtn.dataset.defaultText;
+      }
+
+      if (createBtn) {
+        if (!createBtn.dataset.defaultText) {
+          createBtn.dataset.defaultText = createBtn.textContent;
+        }
+        createBtn.disabled = isLoading;
+        createBtn.textContent = isLoading ? "Chargement..." : createBtn.dataset.defaultText;
+      }
+    }
+
+    function clearLoginFieldErrors() {
+      const emailEl = document.getElementById("login-email");
+      const passEl = document.getElementById("login-password");
+
+      if (emailEl) emailEl.removeAttribute("aria-invalid");
+      if (passEl) passEl.removeAttribute("aria-invalid");
     }
 
     function getLoginCredentials() {
@@ -2025,14 +2222,27 @@
 
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        setLoginMessage(loginMsg, "", false);
+        clearLoginFieldErrors();
+        setLoginMessage(loginMsg, "", "error");
 
+        const emailEl = document.getElementById("login-email");
+        const passEl = document.getElementById("login-password");
         const { email, password } = getLoginCredentials();
 
-        if (!email || !password) {
-          setLoginMessage(loginMsg, "Merci de renseigner votre email et votre mot de passe.", false);
+        if (!isValidEmail(email)) {
+          if (emailEl) emailEl.setAttribute("aria-invalid", "true");
+          setLoginMessage(loginMsg, "Merci d’entrer une adresse e-mail valide.", "error");
           return;
         }
+
+        if (!password) {
+          if (passEl) passEl.setAttribute("aria-invalid", "true");
+          setLoginMessage(loginMsg, "Merci de renseigner votre mot de passe.", "error");
+          return;
+        }
+
+        setAuthButtonsLoading(true);
+        setLoginMessage(loginMsg, "Connexion en cours...", "info");
 
         try {
           const result = await doLogin(email, password);
@@ -2041,34 +2251,45 @@
             setLoginMessage(
               loginMsg,
               result.error || "Erreur de connexion. Vérifiez vos identifiants.",
-              false
+              "error"
             );
             return;
           }
 
           localStorage.setItem("token", result.token);
-          setLoginMessage(loginMsg, "Connexion réussie.", true);
+          setLoginMessage(loginMsg, "Connexion réussie.", "ok");
           loadProfile();
         } catch (err) {
           console.error(err);
-          setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", false);
+          setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", "error");
+        } finally {
+          setAuthButtonsLoading(false);
         }
       });
 
       if (createBtn) {
         createBtn.addEventListener("click", async () => {
-          setLoginMessage(loginMsg, "", false);
+          clearLoginFieldErrors();
+          setLoginMessage(loginMsg, "", "error");
 
+          const emailEl = document.getElementById("login-email");
+          const passEl = document.getElementById("login-password");
           const { email, password } = getLoginCredentials();
 
-          if (!email || !password) {
-            setLoginMessage(
-              loginMsg,
-              "Renseignez un email et un mot de passe puis cliquez sur « Créer mon compte ».",
-              false
-            );
+          if (!isValidEmail(email)) {
+            if (emailEl) emailEl.setAttribute("aria-invalid", "true");
+            setLoginMessage(loginMsg, "Merci d’entrer une adresse e-mail valide.", "error");
             return;
           }
+
+          if (!password || password.length < 6) {
+            if (passEl) passEl.setAttribute("aria-invalid", "true");
+            setLoginMessage(loginMsg, "Choisissez un mot de passe d’au moins 6 caractères.", "error");
+            return;
+          }
+
+          setAuthButtonsLoading(true);
+          setLoginMessage(loginMsg, "Création du compte en cours...", "info");
 
           try {
             const result = await registerThenLogin(email, password);
@@ -2077,19 +2298,30 @@
               setLoginMessage(
                 loginMsg,
                 result.error || "Erreur lors de la création du compte.",
-                false
+                "error"
               );
               return;
             }
 
             localStorage.setItem("token", result.token);
-            setLoginMessage(loginMsg, "Compte créé et connecté.", true);
+            setLoginMessage(loginMsg, "Compte créé et connecté.", "ok");
             loadProfile();
           } catch (err) {
             console.error(err);
-            setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", false);
+            setLoginMessage(loginMsg, "Erreur réseau. Veuillez réessayer.", "error");
+          } finally {
+            setAuthButtonsLoading(false);
           }
         });
+      }
+
+      const emailEl = document.getElementById("login-email");
+      const passEl = document.getElementById("login-password");
+      if (emailEl) {
+        emailEl.addEventListener("input", () => emailEl.removeAttribute("aria-invalid"));
+      }
+      if (passEl) {
+        passEl.addEventListener("input", () => passEl.removeAttribute("aria-invalid"));
       }
     }
 
@@ -2107,12 +2339,12 @@
 
         if (msgEl) {
           msgEl.textContent = "Vous avez été déconnecté.";
-          msgEl.classList.remove("ok");
+          msgEl.className = "account-message";
         }
 
         if (refundMsgEl) {
           refundMsgEl.textContent = "";
-          refundMsgEl.classList.remove("ok");
+          refundMsgEl.className = "account-message";
         }
 
         showNotLoggedState();
@@ -2141,7 +2373,7 @@
         const { reservationId, startTime } = btn.dataset;
         const token = getStoredToken();
 
-        refundMsgEl.classList.remove("ok");
+        refundMsgEl.className = "account-message";
         refundMsgEl.textContent = "";
 
         if (!token) {
@@ -2162,6 +2394,7 @@
 
         btn.disabled = true;
         refundMsgEl.textContent = "Demande de remboursement en cours...";
+        refundMsgEl.className = "account-message info";
 
         try {
           const response = await fetch(API_BASE + "/api/refund-reservation", {
@@ -2179,17 +2412,19 @@
             btn.disabled = false;
             refundMsgEl.textContent =
               data.error || "Impossible de procéder au remboursement.";
+            refundMsgEl.className = "account-message";
             return;
           }
 
           refundMsgEl.textContent =
             "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.";
-          refundMsgEl.classList.add("ok");
+          refundMsgEl.className = "account-message ok";
           loadReservations();
         } catch (err) {
           console.error(err);
           btn.disabled = false;
           refundMsgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+          refundMsgEl.className = "account-message";
         }
       });
     }
@@ -2227,11 +2462,6 @@
 
         const editBtn = target.closest(".reservation-edit-btn");
         if (!editBtn || editBtn.hasAttribute("disabled")) {
-          return;
-        }
-
-        const reservationItem = editBtn.closest(".reservation-item");
-        if (!reservationItem) {
           return;
         }
 
@@ -2326,7 +2556,7 @@
         }
 
         const { qrUrl, qrTitle } = qrBtn.dataset;
-        const title = qrTitle || "Présentez ce QR code à l’accueil.";
+        const title = qrTitle || "Présentez ce QR code à l’entrée.";
 
         if (qrUrl) {
           openQrModal(qrUrl, title);
@@ -2334,32 +2564,114 @@
       });
     }
 
-    function initMobileMenu() {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
+    function setNewsletterMessage(messageBox, message, color) {
+      if (!messageBox) return;
+      messageBox.style.color = color;
+      messageBox.textContent = message;
+    }
 
-      if (!burgerBtn || !mobileNav) {
+    function setNewsletterLoading(submitBtn, isLoading) {
+      if (!submitBtn) return;
+
+      if (!submitBtn.dataset.defaultText) {
+        submitBtn.dataset.defaultText = submitBtn.textContent || "S'abonner aux actualités";
+      }
+
+      submitBtn.disabled = isLoading;
+      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.defaultText;
+      submitBtn.setAttribute("aria-busy", String(isLoading));
+    }
+
+    function isDuplicateNewsletterError(error) {
+      return Boolean(
+        error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.includes("duplicate key value"))
+        )
+      );
+    }
+
+    async function handleNewsletterSubmit() {
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
+
+      if (!(emailInput instanceof HTMLInputElement) || !submitBtn || !messageBox) {
         return;
       }
 
-      burgerBtn.addEventListener("click", () => {
-        const willOpen = !mobileNav.classList.contains("open");
-        mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      if (!supabaseClient) {
+        setNewsletterMessage(messageBox, "Le service newsletter est momentanément indisponible.", "#ff6b6b");
+        return;
+      }
+
+      const email = emailInput.value.trim();
+      emailInput.removeAttribute("aria-invalid");
+
+      if (!isValidEmail(email)) {
+        emailInput.setAttribute("aria-invalid", "true");
+        setNewsletterMessage(messageBox, "Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
+        return;
+      }
+
+      setNewsletterLoading(submitBtn, true);
+      setNewsletterMessage(messageBox, "Envoi en cours...", "#e5e7eb");
+
+      try {
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert([{ email }]);
+
+        if (error) {
+          console.error("Erreur newsletter :", error);
+
+          if (isDuplicateNewsletterError(error)) {
+            setNewsletterMessage(messageBox, "Vous êtes déjà inscrit à la newsletter.", "#38bdf8");
+          } else {
+            setNewsletterMessage(messageBox, "Une erreur est survenue. Merci de réessayer dans quelques instants.", "#ff6b6b");
+          }
+          return;
+        }
+
+        setNewsletterMessage(messageBox, "Merci ! Vous êtes inscrit.", "#38bdf8");
+        emailInput.value = "";
+      } catch (error) {
+        console.error("Erreur newsletter :", error);
+        setNewsletterMessage(messageBox, "Erreur réseau. Merci de réessayer.", "#ff6b6b");
+      } finally {
+        setNewsletterLoading(submitBtn, false);
+      }
+    }
+
+    function initNewsletter() {
+      try {
+        if (globalThis.supabase) {
+          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+      } catch (error) {
+        console.error("Erreur initialisation Supabase :", error);
+        supabaseClient = null;
+      }
+
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+
+      if (!emailInput || !submitBtn) {
+        return;
+      }
+
+      submitBtn.addEventListener("click", handleNewsletterSubmit);
+
+      emailInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          handleNewsletterSubmit();
+        }
       });
 
-      mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
-        if (!(target instanceof HTMLElement)) {
-          return;
-        }
-
-        if (target.tagName !== "A") {
-          return;
-        }
-
-        mobileNav.classList.remove("open");
-        burgerBtn.setAttribute("aria-expanded", "false");
+      emailInput.addEventListener("input", () => {
+        emailInput.removeAttribute("aria-invalid");
       });
     }
 
@@ -2371,64 +2683,9 @@
       initRefundButtons();
       initEditReservationButtons();
       initQrActions();
+      initNewsletter();
       loadProfile();
     });
   </script>
-
-  <!-- Supabase Newsletter -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
-
-      if (!emailInput || !submitBtn || !messageBox) {
-        return;
-      }
-
-      submitBtn.addEventListener("click", async () => {
-        const email = emailInput.value.trim();
-
-        messageBox.style.color = "#e5e7eb";
-        messageBox.textContent = "Envoi en cours...";
-
-        if (!email || !email.includes("@")) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
-          return;
-        }
-
-        const { error } = await supabaseClient
-          .from("newsletter_subscriptions")
-          .insert([{ email }]);
-
-        if (error) {
-          const isDuplicate =
-            error.code === "23505" ||
-            (error.message && error.message.includes("duplicate key value"));
-
-          if (isDuplicate) {
-            messageBox.style.color = "#38bdf8";
-            messageBox.textContent = "Vous êtes déjà inscrit à la newsletter.";
-            return;
-          }
-
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
-          return;
-        }
-
-        messageBox.style.color = "#38bdf8";
-        messageBox.textContent = "Merci ! Vous êtes inscrit.";
-        emailInput.value = "";
-      });
-    });
-  </script>
-
 </body>
 </html>
