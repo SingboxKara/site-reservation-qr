@@ -613,80 +613,6 @@
           </div>
         </div>
       </div>
-
-      <!-- SECTION MERCI -->
-      <div id="thankyou-section" style="display:none;">
-        <div class="card thankyou-card">
-          <div>
-            <h2 class="thankyou-title">
-              Merci <span id="thankyou-name" class="thankyou-highlight-name"></span> 🎉
-            </h2>
-            <p class="thankyou-subtitle">
-              Votre réservation est confirmée. Un e-mail récapitulatif vient de vous être envoyé avec tous les détails
-              de votre séance.
-            </p>
-          </div>
-
-          <div class="thankyou-summary">
-            <div>
-              <h3 style="font-size:14px;margin-bottom:6px;">Détails de votre séance</h3>
-              <ul>
-                <li><strong>Date :</strong> <span id="thankyou-date">-</span></li>
-                <li><strong>Créneau :</strong> <span id="thankyou-time">-</span></li>
-                <li><strong>Box :</strong> <span id="thankyou-box">-</span></li>
-                <li><strong>Montant payé :</strong> <span id="thankyou-total">-</span></li>
-                <li><strong>Référence réservation :</strong> <span id="thankyou-ref">-</span></li>
-              </ul>
-            </div>
-
-            <div class="thankyou-qr">
-              <div class="thankyou-qr-inner">
-                <p class="thankyou-qr-label">QR CODE DE RÉSERVATION</p>
-                <div class="thankyou-qr-frame">
-                  <div id="thankyou-qr"></div>
-                  <span id="thankyou-qr-fallback">Disponible bientôt</span>
-                </div>
-                <p class="thankyou-qr-note">
-                  Votre QR code de réservation est aussi envoyé par e-mail.<br />
-                  Vous pourrez le présenter à l’accueil le jour J.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="thankyou-deposit">
-            <strong>À propos de l’empreinte bancaire de 250€</strong>
-            <p>
-              Pour garantir le bon déroulement de votre séance, une empreinte bancaire de 250€ vient d’être réalisée sur
-              votre carte. Cette somme n’est <u>pas débitée</u> et ne le sera que :
-            </p>
-            <ul style="margin:4px 0 0 1.1rem;padding:0;font-size:12px;">
-              <li>en cas de dégradations importantes dans la box ;</li>
-              <li>en cas de non-respect grave du règlement intérieur ;</li>
-              <li>ou si vous ne vous présentez pas sans prévenir selon nos CGV.</li>
-            </ul>
-            <p style="margin-top:4px;">
-              Si tout se passe bien, l’empreinte expirera automatiquement après la séance.
-            </p>
-          </div>
-
-          <div class="thankyou-practical">
-            <strong>Infos pratiques pour votre venue</strong>
-            <ul>
-              <li><b>Adresse :</b> Singbox – Adresse à compléter, 31000 Toulouse.</li>
-              <li>Vous pouvez arriver dès <b>5 minutes avant le début</b> de votre créneau pour vous installer tranquillement.</li>
-              <li>En cas de retard, la séance se termine tout de même à l’heure prévue afin de respecter les créneaux suivants.</li>
-              <li>Merci de prévoir une pièce d’identité au même nom que la réservation si besoin de vérification.</li>
-              <li>Vous retrouverez dans l’e-mail toutes les informations pratiques (plan d’accès, parking, règlement intérieur détaillé).</li>
-            </ul>
-          </div>
-
-          <div class="thankyou-actions">
-            <a href="mon-compte.html" class="thankyou-btn-secondary">Voir mes réservations</a>
-            <a href="index.html" class="thankyou-btn-primary">Retour à l’accueil</a>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -765,8 +691,6 @@
 
   <!-- Stripe -->
   <script src="https://js.stripe.com/v3"></script>
-  <!-- QR Code library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -774,6 +698,7 @@
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
     const PRICE_FALLBACK = 10;
     const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
+    const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
 
@@ -1956,80 +1881,33 @@
       }
     }
 
-    function revealHiddenAncestors(node) {
-      let parent = node;
-      while (parent && parent !== document.body) {
-        if (parent.hidden) parent.hidden = false;
-        const st = globalThis.getComputedStyle(parent);
-        if (st && st.display === "none") parent.style.display = "";
-        parent = parent.parentElement;
-      }
-    }
-
-    function showThankYouSection() {
-      const thankyouSection = getEl("thankyou-section");
-      const billingForm = getEl("billing-form");
-      const paymentCard = document.querySelector(".payment-card");
-      const checkoutLayout = document.querySelector(".checkout-layout");
-      const emptyCartState = getEl("empty-cart-state");
-
-      if (!thankyouSection) {
-        console.warn("[THANKYOU] #thankyou-section introuvable dans le DOM.");
-        return;
-      }
-
-      revealHiddenAncestors(thankyouSection);
-
-      if (emptyCartState) emptyCartState.style.display = "none";
-      if (billingForm) billingForm.style.display = "none";
-      if (paymentCard) paymentCard.style.display = "none";
-
-      if (checkoutLayout) {
-        const tyInside = checkoutLayout.contains(thankyouSection);
-
-        if (tyInside) {
-          Array.from(checkoutLayout.children).forEach((child) => {
-            if (child === thankyouSection || child.contains(thankyouSection)) return;
-            child.style.display = "none";
-          });
-          checkoutLayout.style.display = "";
-        } else {
-          checkoutLayout.style.display = "none";
-        }
-      }
-
-      thankyouSection.style.display = "block";
-      thankyouSection.hidden = false;
-      thankyouSection.classList.remove("hidden");
-      globalThis.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function fillThankYouData() {
+    function buildThankYouPayload(reservationId) {
       const panierBeforeClear = getPanier();
       const firstItem = panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
-
-      const thankyouName = getEl("thankyou-name");
-      const thankyouDate = getEl("thankyou-date");
-      const thankyouTime = getEl("thankyou-time");
-      const thankyouBox = getEl("thankyou-box");
-      const thankyouTotal = getEl("thankyou-total");
-
-      const dateLabel = firstItem && firstItem.date ? formatDateFr(firstItem.date) : "";
-      const boxName = getDisplayBoxName(firstItem);
       const { hourText } = buildOrderMeta(firstItem);
-      const prenomValue = (getEl("prenom")?.value || "").trim();
 
-      if (thankyouName) thankyouName.textContent = prenomValue;
-      if (thankyouDate) thankyouDate.textContent = dateLabel || "-";
-      if (thankyouTime) thankyouTime.textContent = hourText || "-";
-      if (thankyouBox) thankyouBox.textContent = boxName;
-      if (thankyouTotal) thankyouTotal.textContent = formatMoney(currentTotals.finalTotalTTC || 0);
+      return {
+        reservationId: reservationId || "",
+        prenom: (getEl("prenom")?.value || "").trim(),
+        date: firstItem && firstItem.date ? formatDateFr(firstItem.date) : "-",
+        time: hourText || "-",
+        box: getDisplayBoxName(firstItem),
+        total: formatMoney(currentTotals.finalTotalTTC || 0),
+        qrUrl: reservationId ? `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}` : "",
+        generatedAt: Date.now()
+      };
+    }
 
-      const headerTitle = document.querySelector(".checkout-header h1");
-      const headerSubtitle = document.querySelector(".checkout-header p:last-of-type");
+    function saveThankYouData(payload) {
+      try {
+        sessionStorage.setItem(THANKYOU_STORAGE_KEY, JSON.stringify(payload));
+      } catch (error) {
+        console.error("Impossible de sauvegarder les données thank you :", error);
+      }
+    }
 
-      if (headerTitle) headerTitle.textContent = "Merci pour votre réservation 🎉";
-      if (headerSubtitle) headerSubtitle.textContent = "Voici le récapitulatif de votre séance chez Singbox.";
+    function redirectToThankYouPage() {
+      window.location.href = "merci.html";
     }
 
     function getCustomerPayload(includeSaveCheckoutInfo = false) {
@@ -2054,7 +1932,6 @@
 
     async function confirmReservation(isFree, paymentIntentId, errorEl) {
       let reservationId = null;
-      const thankyouRef = getEl("thankyou-ref");
 
       try {
         const body = {
@@ -2079,7 +1956,6 @@
 
         if (confirmRes.ok && confirmJson && Array.isArray(confirmJson.reservations) && confirmJson.reservations.length > 0) {
           reservationId = confirmJson.reservations[0].id;
-          if (thankyouRef) thankyouRef.textContent = reservationId;
         } else if (errorEl) {
           errorEl.textContent =
             confirmJson.error ||
@@ -2234,37 +2110,16 @@
       updateCartIcon();
     }
 
-    function renderThankYouQr(reservationId) {
-      const thankyouQrContainer = getEl("thankyou-qr");
-      const thankyouQrFallback = getEl("thankyou-qr-fallback");
-
-      if (!reservationId || !thankyouQrContainer || !globalThis.QRCode) return;
-
-      try {
-        const qrText = `${QR_CHECK_BASE_URL}?id=${encodeURIComponent(reservationId)}`;
-        thankyouQrContainer.innerHTML = "";
-
-        new globalThis.QRCode(thankyouQrContainer, {
-          text: qrText,
-          width: 228,
-          height: 228,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: globalThis.QRCode.CorrectLevel.H
-        });
-
-        if (thankyouQrFallback) thankyouQrFallback.style.display = "none";
-      } catch {}
-    }
-
     async function processReservationAndDeposit({ isFree, paymentIntentId, errorEl }) {
-      fillThankYouData();
       const reservationId = await confirmReservation(isFree, paymentIntentId, errorEl);
       await confirmDepositIntent(reservationId, isFree, errorEl);
       await saveNewsletterOptin();
+
+      const thankYouPayload = buildThankYouPayload(reservationId);
+      saveThankYouData(thankYouPayload);
+
       cleanupAfterReservation();
-      showThankYouSection();
-      renderThankYouQr(reservationId);
+      redirectToThankYouPage();
     }
 
     function isFreeCheckoutFlow() {
