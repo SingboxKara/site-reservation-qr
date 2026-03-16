@@ -1173,6 +1173,205 @@
       border-top: 1px solid rgba(255, 255, 255, 0.15);
     }
 
+    .loyalty-progress-card {
+      margin-top: 10px;
+      padding: 14px 14px 12px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .loyalty-progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .loyalty-progress-title {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .loyalty-progress-value {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .loyalty-progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .loyalty-progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      transition: width 0.3s ease;
+    }
+
+    .loyalty-progress-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .loyalty-progress-stat {
+      background: rgba(2, 6, 23, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .loyalty-progress-stat-label {
+      display: block;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      margin-bottom: 4px;
+    }
+
+    .loyalty-progress-stat strong {
+      font-size: 13px;
+      color: #f9fafb;
+    }
+
+    .account-benefits-card {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .account-benefits-card h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .account-benefits-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .account-benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .account-benefit-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+
+    .account-benefit-item strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .account-benefit-item p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
+    .loyalty-intro {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      margin-bottom: 12px !important;
+    }
+
+    .loyalty-side-highlight {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 14px;
+    }
+
+    .loyalty-side-highlight-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sb-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .loyalty-side-highlight-value {
+      font-size: 24px;
+      font-family: "League Spartan", system-ui, sans-serif;
+      margin-bottom: 6px;
+    }
+
+    .loyalty-side-highlight-text {
+      margin: 0;
+      font-size: 12px;
+      color: #f9fafb;
+      line-height: 1.55;
+    }
+
+    .loyalty-side-steps {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .loyalty-side-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .loyalty-side-step-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .loyalty-side-step strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .loyalty-side-step p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      line-height: 1.5;
+    }
+
     @media (max-width: 640px) {
       #account {
         padding-top: 8.7rem;
@@ -1208,6 +1407,19 @@
       .login-submit-btn,
       .login-secondary-btn {
         width: 100%;
+      }
+
+      .loyalty-progress-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .account-benefit-item,
+      .loyalty-side-step {
+        align-items: flex-start;
+      }
+
+      .loyalty-side-highlight-value {
+        font-size: 20px;
       }
     }
   </style>
@@ -1322,9 +1534,30 @@
                 <div class="account-field-label">Points de fidélité</div>
                 <div class="account-field-value" id="user-points">–</div>
 
-                <div class="badge-points">
-                  <span>★</span>
-                  <span>10 points par réservation payante. À 100 points, votre prochaine séance est offerte.</span>
+                <div class="loyalty-progress-card">
+                  <div class="loyalty-progress-top">
+                    <span class="loyalty-progress-title">Progression vers votre séance offerte</span>
+                    <span class="loyalty-progress-value" id="loyalty-progress-value">0 / 100</span>
+                  </div>
+
+                  <div class="loyalty-progress-bar" aria-hidden="true">
+                    <div class="loyalty-progress-fill" id="loyalty-progress-fill" style="width:0%;"></div>
+                  </div>
+
+                  <div class="loyalty-progress-stats">
+                    <div class="loyalty-progress-stat">
+                      <span class="loyalty-progress-stat-label">Points actuels</span>
+                      <strong id="loyalty-current-points">0</strong>
+                    </div>
+                    <div class="loyalty-progress-stat">
+                      <span class="loyalty-progress-stat-label">Restants</span>
+                      <strong id="loyalty-remaining-points">100</strong>
+                    </div>
+                    <div class="loyalty-progress-stat">
+                      <span class="loyalty-progress-stat-label">Avantage</span>
+                      <strong id="loyalty-reward-label">Séance offerte</strong>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -1338,6 +1571,36 @@
                 </div>
 
                 <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
+              </div>
+
+              <div class="account-benefits-card">
+                <h3>Vos avantages compte</h3>
+
+                <div class="account-benefits-grid">
+                  <div class="account-benefit-item">
+                    <span class="account-benefit-icon">🎟</span>
+                    <div>
+                      <strong>QR code instantané</strong>
+                      <p>Retrouvez votre accès directement depuis votre espace client.</p>
+                    </div>
+                  </div>
+
+                  <div class="account-benefit-item">
+                    <span class="account-benefit-icon">⏰</span>
+                    <div>
+                      <strong>Modification simplifiée</strong>
+                      <p>Changez votre réservation jusqu’à 6h avant selon disponibilité.</p>
+                    </div>
+                  </div>
+
+                  <div class="account-benefit-item">
+                    <span class="account-benefit-icon">★</span>
+                    <div>
+                      <strong>Fidélité automatique</strong>
+                      <p>Chaque réservation payante alimente votre progression vers une séance offerte.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <p class="account-subtext">
@@ -1356,12 +1619,46 @@
               <span>♪</span>
               <span>Programme fidélité Singbox</span>
             </div>
-            <h3>Comment ça marche&nbsp;?</h3>
-            <p>Chaque réservation payante réalisée avec votre compte vous rapporte des points.</p>
-            <p>À 100 points, vous débloquez une séance offerte selon les conditions de votre programme fidélité.</p>
-            <p class="loyalty-highlight" id="loyalty-highlight-text">
-              Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.
+
+            <h3>Votre programme fidélité</h3>
+            <p class="loyalty-intro">
+              Plus vous réservez avec votre compte, plus vous vous rapprochez de votre prochaine récompense.
             </p>
+
+            <div class="loyalty-side-highlight">
+              <div class="loyalty-side-highlight-label">Prochain palier</div>
+              <div class="loyalty-side-highlight-value" id="loyalty-next-goal">100 points</div>
+              <p id="loyalty-highlight-text" class="loyalty-side-highlight-text">
+                Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.
+              </p>
+            </div>
+
+            <div class="loyalty-side-steps">
+              <div class="loyalty-side-step">
+                <span class="loyalty-side-step-icon">1</span>
+                <div>
+                  <strong>Réservez une séance</strong>
+                  <p>Chaque réservation payante avec votre compte vous rapporte 10 points.</p>
+                </div>
+              </div>
+
+              <div class="loyalty-side-step">
+                <span class="loyalty-side-step-icon">2</span>
+                <div>
+                  <strong>Cumulez vos points</strong>
+                  <p>Votre progression est mise à jour automatiquement dans cet espace.</p>
+                </div>
+              </div>
+
+              <div class="loyalty-side-step">
+                <span class="loyalty-side-step-icon">3</span>
+                <div>
+                  <strong>Débloquez votre avantage</strong>
+                  <p>À 100 points, vous obtenez votre prochaine séance offerte selon les conditions Singbox.</p>
+                </div>
+              </div>
+            </div>
+
             <p class="loyalty-next">
               Réservez depuis <a href="reservation.html">Réservation</a> ou finalisez depuis votre <a href="panier.html">panier</a>.
             </p>
@@ -1575,11 +1872,76 @@
     }
 
     function updateLoyaltyHighlight(points) {
-      const el = document.getElementById("loyalty-highlight-text");
-      if (!el) {
+      const textEl = document.getElementById("loyalty-highlight-text");
+      const progressValueEl = document.getElementById("loyalty-progress-value");
+      const progressFillEl = document.getElementById("loyalty-progress-fill");
+      const currentPointsEl = document.getElementById("loyalty-current-points");
+      const remainingPointsEl = document.getElementById("loyalty-remaining-points");
+      const nextGoalEl = document.getElementById("loyalty-next-goal");
+      const rewardLabelEl = document.getElementById("loyalty-reward-label");
+
+      if (typeof points !== "number") {
+        if (textEl) {
+          textEl.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
+        }
+        if (progressValueEl) {
+          progressValueEl.textContent = "0 / 100";
+        }
+        if (progressFillEl) {
+          progressFillEl.style.width = "0%";
+        }
+        if (currentPointsEl) {
+          currentPointsEl.textContent = "0";
+        }
+        if (remainingPointsEl) {
+          remainingPointsEl.textContent = "100";
+        }
+        if (nextGoalEl) {
+          nextGoalEl.textContent = "100 points";
+        }
+        if (rewardLabelEl) {
+          rewardLabelEl.textContent = "Séance offerte";
+        }
         return;
       }
-      el.textContent = getLoyaltyText(points);
+
+      const safePoints = Math.max(0, points);
+      const progress = Math.min(safePoints, 100);
+      const remaining = Math.max(0, 100 - safePoints);
+
+      if (textEl) {
+        if (remaining === 0) {
+          textEl.textContent = "Bravo ! Vous avez atteint le palier fidélité. Votre prochaine séance offerte est débloquée.";
+        } else if (remaining === 1) {
+          textEl.textContent = "Plus qu’1 point avant de débloquer votre prochaine séance offerte.";
+        } else {
+          textEl.textContent = `Plus que ${remaining} points avant de débloquer votre prochaine séance offerte.`;
+        }
+      }
+
+      if (progressValueEl) {
+        progressValueEl.textContent = `${progress} / 100`;
+      }
+
+      if (progressFillEl) {
+        progressFillEl.style.width = `${Math.min(progress, 100)}%`;
+      }
+
+      if (currentPointsEl) {
+        currentPointsEl.textContent = String(safePoints);
+      }
+
+      if (remainingPointsEl) {
+        remainingPointsEl.textContent = String(remaining);
+      }
+
+      if (nextGoalEl) {
+        nextGoalEl.textContent = remaining === 0 ? "Palier atteint" : "100 points";
+      }
+
+      if (rewardLabelEl) {
+        rewardLabelEl.textContent = "Séance offerte";
+      }
     }
 
     function setReservationsNotLogged() {
