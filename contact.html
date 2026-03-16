@@ -3,28 +3,38 @@
 <head>
   <meta charset="UTF-8" />
 
-  <title>Contact Singbox | Karaoké Box privatif à Toulouse – Devis, infos & réservation</title>
+  <title>Contact Singbox | Karaoké box privatif à Toulouse – Devis, infos & réservation</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Contactez Singbox, karaoké box privatif à Toulouse (11 Place Occitane, 31000). Demande de devis entreprise, questions sur les box, réservation de soirée entre amis ou team building." />
+  <meta
+    name="description"
+    content="Contactez Singbox, karaoké box privatif à Toulouse, pour une question, une demande de réservation, une privatisation, un devis entreprise ou un événement de groupe."
+  />
   <meta name="robots" content="index,follow" />
   <meta name="author" content="Singbox" />
-  <meta name="keywords" content="contact Singbox, karaoké Toulouse, karaoké box Toulouse, karaoké privatif Toulouse, salle de karaoké, réservation karaoké, devis entreprise karaoké, team building Toulouse" />
-  <link rel="canonical" href="https://www.singbox.fr/contact" />
+  <link rel="canonical" href="https://www.singbox.fr/contact.html" />
 
   <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="theme-color" content="#050814" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Singbox" />
-  <meta property="og:title" content="Contact Singbox | Karaoké Box privatif à Toulouse" />
-  <meta property="og:description" content="Besoin d’un devis, d’informations sur nos box de karaoké ou d’une réservation de groupe à Toulouse ? Contactez Singbox facilement via ce formulaire." />
-  <meta property="og:url" content="https://www.singbox.fr/contact" />
+  <meta property="og:title" content="Contact Singbox | Karaoké box privatif à Toulouse" />
+  <meta
+    property="og:description"
+    content="Besoin d’un devis, d’informations sur nos box de karaoké ou d’une réservation de groupe à Toulouse ? Contactez Singbox facilement via ce formulaire."
+  />
+  <meta property="og:url" content="https://www.singbox.fr/contact.html" />
   <meta property="og:image" content="https://www.singbox.fr/og-singbox-contact.png" />
   <meta property="og:locale" content="fr_FR" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Contact Singbox | Karaoké Box privatif à Toulouse" />
-  <meta name="twitter:description" content="Formulaire de contact Singbox : demandes de réservation, privatisation, devis entreprise et questions sur notre karaoké box à Toulouse." />
+  <meta name="twitter:title" content="Contact Singbox | Karaoké box privatif à Toulouse" />
+  <meta
+    name="twitter:description"
+    content="Formulaire de contact Singbox : demandes de réservation, privatisation, devis entreprise et questions sur notre karaoké box à Toulouse."
+  />
   <meta name="twitter:image" content="https://www.singbox.fr/og-singbox-contact.png" />
 
   <script type="application/ld+json">
@@ -34,20 +44,12 @@
     "name": "Singbox - Karaoké Box privatif",
     "url": "https://www.singbox.fr",
     "image": "https://www.singbox.fr/og-singbox-contact.png",
-    "telephone": "+33 6 00 00 00 00",
     "email": "contactsingbox@gmail.com",
     "priceRange": "€€",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "11 Place Occitane",
-      "postalCode": "31000",
       "addressLocality": "Toulouse",
       "addressCountry": "FR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 43.6034741,
-      "longitude": 1.4470192
     },
     "sameAs": [
       "https://www.instagram.com/singboxtoulouse/",
@@ -99,7 +101,7 @@
     }
 
     .contact-intro-inner {
-      max-width: 640px;
+      max-width: 680px;
       margin: 0 auto;
       padding: 0 24px;
     }
@@ -121,6 +123,7 @@
       font-size: 15px;
       color: rgba(249,250,251,0.85);
       line-height: 1.7;
+      margin: 0;
     }
 
     /* ---------- SECTION PRINCIPALE : FORM + VISUEL ---------- */
@@ -190,16 +193,19 @@
       font-size: 13px;
       color: #9CA3AF;
       margin-bottom: 16px;
+      line-height: 1.7;
     }
 
     .contact-type-toggle {
       display: inline-flex;
-      padding: 3px;
+      padding: 4px;
       border-radius: 999px;
       background: #020617;
       border: 1px solid rgba(148,163,184,0.35);
       margin-bottom: 18px;
       font-size: 12px;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     .contact-type-option {
@@ -207,11 +213,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 6px 14px;
-      border-radius: 999px;
       cursor: pointer;
       color: #E5E7EB;
-      transition: background 0.15s ease, color 0.15s ease;
     }
 
     .contact-type-option input {
@@ -221,16 +224,20 @@
     }
 
     .contact-type-option span {
-      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .contact-type-option input:checked + span {
       background: linear-gradient(90deg, #C94C35, #F97316);
-      border-radius: 999px;
-      padding: 6px 14px;
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.16),
         0 12px 28px rgba(0,0,0,0.9);
+      color: #F9FAFB;
     }
 
     .form-grid-2 {
@@ -252,6 +259,7 @@
     }
 
     .form-field input,
+    .form-field select,
     .form-field textarea {
       width: 100%;
       font-family: inherit;
@@ -260,9 +268,13 @@
       background: #020617;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.35);
-      padding: 0.6rem 0.9rem;
+      padding: 0.7rem 0.9rem;
       outline: none;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .form-field select {
+      appearance: none;
     }
 
     .form-field textarea {
@@ -278,12 +290,27 @@
     }
 
     .form-field input:focus,
+    .form-field select:focus,
     .form-field textarea:focus {
       border-color: #C94C35;
       box-shadow:
         0 0 0 1px rgba(201,76,53,0.9),
         0 0 30px rgba(201,76,53,0.45);
       background: #020617;
+    }
+
+    .form-field input[aria-invalid="true"],
+    .form-field textarea[aria-invalid="true"],
+    .form-field select[aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
+    .form-helper-text {
+      font-size: 11px;
+      color: #9CA3AF;
+      margin-top: 4px;
+      line-height: 1.5;
     }
 
     .consents {
@@ -300,6 +327,7 @@
       align-items: flex-start;
       gap: 6px;
       cursor: pointer;
+      line-height: 1.5;
     }
 
     .consents input[type="checkbox"] {
@@ -331,6 +359,7 @@
         0 0 0 1px rgba(248,250,251,0.12),
         0 18px 40px rgba(0,0,0,0.9);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      min-height: 46px;
     }
 
     .contact-submit button:hover,
@@ -340,6 +369,19 @@
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.18),
         0 24px 60px rgba(0,0,0,1);
+    }
+
+    .contact-submit button[disabled] {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.1);
+    }
+
+    .form-feedback {
+      margin-top: 14px;
+      font-size: 13px;
+      min-height: 20px;
     }
 
     .contact-visual-card {
@@ -448,6 +490,17 @@
       line-height: 1.5;
     }
 
+    .newsletter-row input[aria-invalid="true"] {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
+    #newsletter-submit[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+      filter: grayscale(0.1);
+    }
+
     @media (max-width: 900px) {
       #contact-intro {
         padding: 9rem 0 32px;
@@ -474,6 +527,26 @@
       .contact-visual-card {
         min-height: 260px;
       }
+
+      .contact-type-toggle {
+        width: 100%;
+      }
+
+      .contact-type-option {
+        flex: 1 1 0;
+      }
+
+      .contact-type-option span {
+        width: 100%;
+      }
+
+      .contact-submit {
+        justify-content: stretch;
+      }
+
+      .contact-submit button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -482,17 +555,17 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo">
+        <img src="logo.png" alt="Logo Singbox, karaoké box privatif à Toulouse" class="brand-logo" />
         <span class="brand-text">Singbox</span>
       </a>
 
       <nav class="main-nav" aria-label="Navigation principale">
-        <ul>
+        <ul aria-label="Liens principaux du site">
           <li><a href="index.html">Accueil</a></li>
           <li><a href="concept.html">Le concept</a></li>
           <li><a href="box.html">Les box</a></li>
           <li><a href="actualites.html">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
           <li><a href="mon-compte.html">Mon compte</a></li>
         </ul>
       </nav>
@@ -518,12 +591,12 @@
 
   <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
-    <ul>
+    <ul aria-label="Liens du menu mobile">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="concept.html">Le concept</a></li>
       <li><a href="box.html">Les box</a></li>
       <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="contact.html" aria-current="page">Contact</a></li>
       <li><a href="mon-compte.html">Mon compte</a></li>
       <li><a href="reservation.html">Réserver</a></li>
     </ul>
@@ -536,7 +609,7 @@
       <h1 class="contact-title-main">Une question sur notre karaoké box à Toulouse&nbsp;?</h1>
       <p class="contact-intro-text">
         Particulier ou entreprise, contactez Singbox pour une réservation de karaoké privatif,
-        une privatisation de box, un devis team building ou toute question sur notre lieu à Toulouse.
+        une privatisation de box, un devis team building ou toute question sur notre concept à Toulouse.
       </p>
     </div>
   </section>
@@ -549,15 +622,16 @@
             <h2>Contactez Singbox</h2>
             <p class="form-subtext">
               Expliquez-nous votre besoin : réservation de box, devis entreprise, événement privé ou simple question.
-              On vous répond rapidement par e-mail ou téléphone.
+              Nous vous répondons rapidement par e-mail.
             </p>
 
-            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
               <input type="hidden" name="access_key" value="6dc5cb1e-a12d-42e2-8647-2c80a1a3fdf1" />
               <input type="hidden" name="from_name" value="Site Singbox" />
               <input type="hidden" name="subject" value="Nouveau message depuis le formulaire de contact Singbox" />
+              <input type="hidden" name="redirect" value="" />
 
-              <div class="contact-type-toggle">
+              <div class="contact-type-toggle" role="radiogroup" aria-label="Type de demandeur">
                 <label class="contact-type-option">
                   <input type="radio" name="type" value="Particulier" checked />
                   <span>Particulier</span>
@@ -590,9 +664,30 @@
                 </div>
               </div>
 
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="event_type">Type de demande</label>
+                  <select id="event_type" name="event_type">
+                    <option value="">Sélectionner</option>
+                    <option value="Reservation">Réservation</option>
+                    <option value="Privatisation">Privatisation</option>
+                    <option value="Devis entreprise">Devis entreprise</option>
+                    <option value="Evenement prive">Événement privé</option>
+                    <option value="Question generale">Question générale</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label for="group_size">Nombre de personnes</label>
+                  <input type="number" id="group_size" name="group_size" min="1" max="50" placeholder="Ex. 6" />
+                </div>
+              </div>
+
               <div class="form-field">
                 <label for="message">Votre message</label>
                 <textarea id="message" name="message" placeholder="Expliquez-nous votre demande" required></textarea>
+                <p class="form-helper-text">
+                  Plus votre demande est précise, plus notre réponse pourra être utile et rapide.
+                </p>
               </div>
 
               <div class="consents">
@@ -601,7 +696,7 @@
                   <span>J’autorise Singbox à m’envoyer ponctuellement des informations et offres liées au karaoké.</span>
                 </label>
                 <label>
-                  <input type="checkbox" name="rgpd" value="oui" required />
+                  <input type="checkbox" id="rgpd" name="rgpd" value="oui" required />
                   <span>Je confirme avoir pris connaissance des informations relatives à l’utilisation de mes données.</span>
                 </label>
               </div>
@@ -609,8 +704,10 @@
               <div class="h-captcha" data-captcha="true"></div>
 
               <div class="contact-submit">
-                <button type="submit">Envoyer</button>
+                <button type="submit" id="contact-submit-button">Envoyer</button>
               </div>
+
+              <p id="contact-form-message" class="form-feedback" aria-live="polite" role="status"></p>
             </form>
           </div>
 
@@ -624,7 +721,7 @@
         <div class="contact-location-grid">
           <div class="map-card">
             <iframe
-              title="Localisation Singbox - 11 Place Occitane, 31000 Toulouse"
+              title="Localisation Singbox à Toulouse"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2889.1473227613033!2d1.447019176710046!3d43.603474071104586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebc9bc22078cd%3A0xc7a034640b3ae875!2s11%20Pl.%20Occitane%2C%2031000%20Toulouse!5e0!3m2!1sfr!2sfr!4v1773341680569!5m2!1sfr!2sfr"
               width="600"
               height="450"
@@ -643,9 +740,8 @@
               <div class="visit-text">
                 <strong>Adresse</strong>
                 <p>
-                  Singbox – Karaoké Box privatif<br />
-                  11 Place Occitane<br />
-                  31000 Toulouse – France
+                  Adresse définitive à confirmer.<br />
+                  Toulouse – France
                 </p>
               </div>
             </div>
@@ -655,8 +751,8 @@
               <div class="visit-text">
                 <strong>Accès</strong>
                 <p>
-                  Métro : Jean-Jaurès / Marengo selon votre trajet<br />
-                  Parkings à proximité : Parking Jean-Jaurès, Parking Victor Hugo
+                  Les informations précises d’accès, métro et stationnement seront mises à jour
+                  dès confirmation du lieu.
                 </p>
               </div>
             </div>
@@ -710,10 +806,13 @@
           name="email"
           placeholder="Entrez votre adresse e-mail"
           required
+          aria-label="Adresse e-mail pour la newsletter"
+          autocomplete="email"
+          inputmode="email"
         />
         <button type="submit" id="newsletter-submit">S'abonner aux actualités</button>
       </form>
-      <p id="newsletter-message" class="newsletter-message"></p>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -734,7 +833,7 @@
 
       <div>
         <p><strong>Contact</strong></p>
-        <p>Adresse : 11 Place Occitane, 31000 Toulouse</p>
+        <p>Adresse : Toulouse (adresse à confirmer)</p>
         <p>Email : contactsingbox@gmail.com</p>
         <p>Téléphone : 06 00 00 00 00</p>
       </div>
@@ -744,9 +843,9 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"/>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"/>
+            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
+            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
+            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
           </svg>
           <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
             Instagram
@@ -755,7 +854,7 @@
 
         <p style="display:flex;align-items:center;gap:8px;">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"/>
+            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
           </svg>
           <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
             TikTok
@@ -770,7 +869,7 @@
   </footer>
 
   <script src="https://web3forms.com/client/script.js" async defer></script>
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
@@ -800,6 +899,19 @@
 
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
     }
 
     function initMobileMenu() {
@@ -809,37 +921,44 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", String(isOpen));
+        const isOpen = mobileNav.classList.contains("open");
+
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
       });
 
       mobileNav.addEventListener("click", (e) => {
         const target = e.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
         }
       });
     }
 
     function isValidEmail(email) {
       if (typeof email !== "string") return false;
-
-      const value = email.trim();
-
-      if (!value || value.includes(" ")) return false;
-
-      const atIndex = value.indexOf("@");
-      const lastAtIndex = value.lastIndexOf("@");
-      const dotIndex = value.lastIndexOf(".");
-
-      return (
-        value.length >= 6 &&
-        atIndex > 0 &&
-        atIndex === lastAtIndex &&
-        dotIndex > atIndex + 1 &&
-        dotIndex < value.length - 1
-      );
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
     }
 
     function isDuplicateNewsletterError(error) {
@@ -865,11 +984,13 @@
           submitBtn.dataset.originalText = submitBtn.textContent;
         }
         submitBtn.disabled = true;
+        submitBtn.setAttribute("aria-busy", "true");
         submitBtn.textContent = "Envoi...";
         return;
       }
 
       submitBtn.disabled = false;
+      submitBtn.setAttribute("aria-busy", "false");
       submitBtn.textContent = submitBtn.dataset.originalText || "S'abonner aux actualités";
     }
 
@@ -884,20 +1005,22 @@
       const emailInput = getEl("newsletter-email");
       const submitBtn = getEl("newsletter-submit");
 
-      if (!newsletterForm || !emailInput || !submitBtn) return;
+      if (!(newsletterForm instanceof HTMLFormElement) || !(emailInput instanceof HTMLInputElement) || !submitBtn) return;
 
       newsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const email = emailInput.value.trim();
+        emailInput.removeAttribute("aria-invalid");
 
         if (!isValidEmail(email)) {
+          emailInput.setAttribute("aria-invalid", "true");
           setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
           return;
         }
 
         setNewsletterSubmitting(submitBtn, true);
-        setNewsletterMessage("", "#9CA3AF");
+        setNewsletterMessage("Envoi en cours...", "#9CA3AF");
 
         try {
           const { error } = await subscribeNewsletter(email);
@@ -928,16 +1051,94 @@
       });
     }
 
-    function initContactFormCaptchaValidation() {
+    function setContactFormMessage(message, color) {
+      const feedbackEl = getEl("contact-form-message");
+      if (!feedbackEl) return;
+      feedbackEl.textContent = message;
+      feedbackEl.style.color = color;
+    }
+
+    function setContactSubmitting(button, isSubmitting) {
+      if (!button) return;
+
+      if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent || "Envoyer";
+      }
+
+      button.disabled = isSubmitting;
+      button.setAttribute("aria-busy", String(isSubmitting));
+      button.textContent = isSubmitting ? "Envoi..." : button.dataset.originalText;
+    }
+
+    function clearContactFieldErrors(fields) {
+      fields.forEach((field) => {
+        if (field instanceof HTMLElement) {
+          field.removeAttribute("aria-invalid");
+        }
+      });
+    }
+
+    function initContactFormValidation() {
       const form = getEl("contact-form");
-      if (!form) return;
+      const submitButton = getEl("contact-submit-button");
+      const nameInput = getEl("nom_prenom");
+      const emailInput = getEl("email");
+      const messageInput = getEl("message");
+      const rgpdInput = getEl("rgpd");
+
+      if (!(form instanceof HTMLFormElement)) return;
 
       form.addEventListener("submit", function (e) {
+        const fields = [nameInput, emailInput, messageInput];
+        clearContactFieldErrors(fields);
+
+        setContactFormMessage("", "#9CA3AF");
+
+        const nameValue = nameInput instanceof HTMLInputElement ? nameInput.value.trim() : "";
+        const emailValue = emailInput instanceof HTMLInputElement ? emailInput.value.trim() : "";
+        const messageValue = messageInput instanceof HTMLTextAreaElement ? messageInput.value.trim() : "";
+        const rgpdChecked = rgpdInput instanceof HTMLInputElement ? rgpdInput.checked : false;
         const hCaptcha = form.querySelector('textarea[name="h-captcha-response"]');
-        if (!hCaptcha || !hCaptcha.value) {
+
+        if (!nameValue) {
           e.preventDefault();
-          globalThis.alert("Merci de valider le captcha avant d'envoyer le formulaire.");
+          if (nameInput instanceof HTMLInputElement) nameInput.setAttribute("aria-invalid", "true");
+          setContactFormMessage("Merci d’indiquer votre nom ou prénom.", "#ff6b6b");
+          return;
         }
+
+        if (!isValidEmail(emailValue)) {
+          e.preventDefault();
+          if (emailInput instanceof HTMLInputElement) emailInput.setAttribute("aria-invalid", "true");
+          setContactFormMessage("Merci d’indiquer une adresse e-mail valide.", "#ff6b6b");
+          return;
+        }
+
+        if (messageValue.length < 10) {
+          e.preventDefault();
+          if (messageInput instanceof HTMLTextAreaElement) messageInput.setAttribute("aria-invalid", "true");
+          setContactFormMessage("Merci de préciser un peu plus votre demande.", "#ff6b6b");
+          return;
+        }
+
+        if (!rgpdChecked) {
+          e.preventDefault();
+          setContactFormMessage("Merci de confirmer la case relative à l’utilisation de vos données.", "#ff6b6b");
+          return;
+        }
+
+        if (!(hCaptcha instanceof HTMLTextAreaElement) || !hCaptcha.value.trim()) {
+          e.preventDefault();
+          setContactFormMessage("Merci de valider le captcha avant d’envoyer le formulaire.", "#ff6b6b");
+          return;
+        }
+
+        setContactSubmitting(submitButton, true);
+        setContactFormMessage("Envoi en cours...", "#9CA3AF");
+      });
+
+      window.addEventListener("pageshow", () => {
+        setContactSubmitting(submitButton, false);
       });
     }
 
@@ -945,7 +1146,7 @@
       initMobileMenu();
       updateCartIcon();
       initNewsletterForm();
-      initContactFormCaptchaValidation();
+      initContactFormValidation();
     }
 
     document.addEventListener("DOMContentLoaded", initContactPage);
