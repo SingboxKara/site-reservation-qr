@@ -73,16 +73,27 @@
     :root {
       --sb-bg-main: #050814;
       --sb-bg-deep: #020617;
-      --sb-card: #060b19;
+      --sb-bg-card: rgba(2, 6, 23, 0.92);
+      --sb-bg-soft: rgba(15, 23, 42, 0.78);
       --sb-text-main: #F9FAFB;
       --sb-text-muted: #9CA3AF;
+      --sb-text-soft: rgba(249, 250, 251, 0.86);
       --sb-red: #C94C35;
       --sb-orange: #F97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.35);
-      --sb-container-width: 1120px;
+      --sb-blue: #2563eb;
+      --sb-border-soft: rgba(148, 163, 184, 0.25);
+      --sb-border-strong: rgba(148, 163, 184, 0.42);
+      --sb-shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.85);
+      --sb-shadow-card: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --sb-radius-xl: 32px;
+      --sb-radius-lg: 24px;
+      --sb-radius-md: 18px;
+      --sb-container-width: 1200px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     html {
       scroll-behavior: smooth;
@@ -90,70 +101,94 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 0% 0%, rgba(201,76,53,0.28), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(37,99,235,0.3), transparent 55%),
-        #020617;
-      min-height: 100vh;
+        radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.34), transparent 38%),
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.32), transparent 42%),
+        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.14), transparent 30%),
+        linear-gradient(145deg, #020617 0%, #030816 40%, #050814 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 28px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+      opacity: 0.4;
+    }
+
+    body::before {
+      width: 260px;
+      height: 260px;
+      left: -60px;
+      top: 60px;
+      background: rgba(201, 76, 53, 0.32);
+      border-radius: 999px;
+    }
+
+    body::after {
+      width: 340px;
+      height: 340px;
+      right: -100px;
+      top: 40px;
+      background: rgba(37, 99, 235, 0.28);
+      border-radius: 999px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .page-wrapper {
-      max-width: var(--sb-container-width);
+      position: relative;
+      z-index: 1;
       width: 100%;
-      border-radius: 32px;
+      max-width: var(--sb-container-width);
+      border-radius: var(--sb-radius-xl);
       background:
-        radial-gradient(circle at 0 0, rgba(248,250,252,0.06), transparent 60%),
-        radial-gradient(circle at 100% 0, rgba(30,64,175,0.4), transparent 60%),
-        #020617;
-      padding: 26px;
+        radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.06), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.22), transparent 40%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.93));
+      border: 1px solid rgba(148, 163, 184, 0.15);
       box-shadow:
-        0 30px 80px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(15,23,42,0.9);
+        var(--sb-shadow-xl),
+        0 0 0 1px rgba(15, 23, 42, 0.88);
+      overflow: hidden;
     }
 
-    @media (max-width: 960px) {
-      .page-wrapper {
-        padding: 22px 18px;
-        border-radius: 24px;
-      }
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-      gap: 32px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 960px) {
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 22px;
-      }
-    }
-
-    /* ---------- COLONNE GAUCHE ---------- */
-
-    .left {
-      padding-right: 8px;
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(2, 6, 23, 0.82);
+      backdrop-filter: blur(12px);
     }
 
     .brand-row {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 18px;
+      min-width: 0;
     }
 
     .brand-logo {
-      width: 80px;
-      height: 80px;
+      width: 74px;
+      height: 74px;
       border-radius: 999px;
       overflow: hidden;
       display: flex;
@@ -161,56 +196,120 @@
       justify-content: center;
       background: #020617;
       box-shadow:
-        0 0 0 2px rgba(248,250,251,0.16),
-        0 0 32px rgba(201,76,53,0.9);
-      padding: 0;
+        0 0 0 2px rgba(248, 250, 251, 0.12),
+        0 0 30px rgba(201, 76, 53, 0.42);
+      flex-shrink: 0;
     }
 
     .brand-logo img {
       width: 100%;
       height: 100%;
-      display: block;
       object-fit: cover;
+      display: block;
     }
 
     .brand-text-block {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
+      min-width: 0;
     }
 
     .brand-name {
       font-family: "League Spartan", system-ui, sans-serif;
       font-size: 20px;
+      line-height: 1;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .brand-tagline {
       font-size: 13px;
       color: var(--sb-text-muted);
+      line-height: 1.4;
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      color: #F9FAFB;
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+    }
+
+    .top-link:hover,
+    .top-link:focus-visible {
+      transform: translateY(-1px);
+      border-color: rgba(248, 250, 251, 0.36);
+      filter: brightness(1.04);
+    }
+
+    .top-link.primary {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      border: none;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-band {
+      padding: 22px 22px 0;
+    }
+
+    .hero-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr);
+      gap: 24px;
+      align-items: stretch;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.18), transparent 42%),
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.16), transparent 45%),
+        rgba(2, 6, 23, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: var(--sb-shadow-card);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
     }
 
     .opening-chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 11px;
+      padding: 8px 13px;
       border-radius: 999px;
       font-size: 12px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.34);
+      color: #F9FAFB;
       margin-bottom: 16px;
-      background: rgba(15,23,42,0.96);
-      border: 1px solid rgba(148,163,184,0.55);
-      box-shadow:
-        0 14px 30px rgba(0,0,0,0.85),
-        0 0 0 1px rgba(15,23,42,0.9);
+      width: fit-content;
     }
 
     .opening-chip span.icon {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 999px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
@@ -218,96 +317,170 @@
       flex-shrink: 0;
     }
 
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
     h1 {
       font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 32px;
-      margin: 0 0 10px;
+      margin: 0 0 12px;
+      font-size: 44px;
+      line-height: 0.95;
       letter-spacing: 0.02em;
     }
 
     .intro-text {
-      margin: 0 0 24px;
-      font-size: 14px;
-      line-height: 1.7;
-      color: rgba(249,250,251,0.88);
-      max-width: 560px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--sb-text-soft);
+      max-width: 640px;
     }
 
-    .countdown-block {
-      margin-bottom: 26px;
+    .hero-right {
+      display: flex;
+      align-items: stretch;
     }
 
-    .countdown-label {
+    .hero-visual {
+      position: relative;
+      width: 100%;
+      min-height: 100%;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.25), transparent 28%),
+        radial-gradient(circle at 80% 25%, rgba(37, 99, 235, 0.24), transparent 30%),
+        linear-gradient(145deg, rgba(15,23,42,0.98), rgba(2,6,23,0.98));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .visual-topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .visual-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: #9CA3AF;
-      margin-bottom: 10px;
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 999px;
+      padding: 7px 10px;
     }
 
-    .countdown-row {
+    .visual-stage {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 18px 0;
+    }
+
+    .mic-ring {
+      width: 170px;
+      height: 170px;
+      border-radius: 999px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.92) 58%, rgba(2, 6, 23, 0.0) 60%),
+        conic-gradient(from 0deg, rgba(249,115,22,0.8), rgba(37,99,235,0.7), rgba(201,76,53,0.85), rgba(249,115,22,0.8));
+      box-shadow:
+        0 0 40px rgba(249,115,22,0.14),
+        0 0 60px rgba(37,99,235,0.12);
+    }
+
+    .mic-ring::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(249, 115, 22, 0.12), transparent 40%),
+        #020617;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .mic-emoji {
+      position: relative;
+      z-index: 1;
+      font-size: 54px;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.45));
+    }
+
+    .visual-bottom {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .countdown-item {
-      flex: 0 0 96px;
-      border-radius: 20px;
-      background: radial-gradient(circle at 0 0, rgba(248,250,252,0.05), transparent 60%);
-      border: 1px solid rgba(31,41,55,0.9);
+    .mini-stat {
+      flex: 1 1 120px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.16);
       padding: 12px 12px 10px;
-      text-align: center;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.9);
     }
 
-    .count-number {
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.15em;
-      margin-bottom: 4px;
-    }
-
-    .count-label {
+    .mini-stat-label {
       font-size: 10px;
-      text-transform: uppercase;
       letter-spacing: 0.16em;
-      color: var(--sb-text-muted);
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 6px;
     }
 
-    .features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 18px;
-      font-size: 13px;
-      color: var(--sb-text-muted);
+    .mini-stat-value {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 20px;
+      letter-spacing: 0.08em;
     }
 
-    .features li {
-      margin-bottom: 8px;
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.98fr);
+      gap: 24px;
+      padding: 24px 22px 22px;
+    }
+
+    .left-stack {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 1.6;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
     }
 
-    .features li span.bullet {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      background: rgba(148,163,184,0.18);
-      flex-shrink: 0;
+    .countdown-card,
+    .newsletter-card,
+    .right-card {
+      background: var(--sb-bg-card);
+      border: 1px solid var(--sb-border-soft);
+      border-radius: 26px;
+      box-shadow: var(--sb-shadow-card);
     }
 
-    .mini-expectations {
-      margin: 22px 0 22px;
+    .countdown-card {
+      padding: 22px;
     }
 
-    .mini-expectations-label {
+    .section-label {
       font-size: 11px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -315,69 +488,82 @@
       margin-bottom: 12px;
     }
 
-    .expect-grid {
+    .countdown-row {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .expect-card {
-      background: rgba(15,23,42,0.78);
-      border: 1px solid rgba(148,163,184,0.18);
-      border-radius: 18px;
-      padding: 14px 12px;
-      box-shadow: 0 14px 36px rgba(0,0,0,0.6);
+    .countdown-item {
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.76);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 16px 10px 14px;
+      text-align: center;
     }
 
-    .expect-card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #F9FAFB;
+    .count-number {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 28px;
+      line-height: 1;
       margin-bottom: 6px;
+      letter-spacing: 0.12em;
     }
 
-    .expect-card-text {
-      font-size: 12px;
-      line-height: 1.6;
-      color: var(--sb-text-muted);
-      margin: 0;
+    .count-label {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+    }
+
+    .newsletter-card {
+      padding: 22px;
+    }
+
+    .newsletter-title {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 26px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      margin: 0 0 10px;
     }
 
     .newsletter-label {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-bottom: 8px;
-      line-height: 1.6;
+      font-size: 13px;
+      color: var(--sb-text-soft);
+      line-height: 1.8;
+      margin: 0 0 14px;
     }
 
     .newsletter-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .newsletter-row input[type=email] {
-      flex: 1 1 220px;
+      flex: 1 1 240px;
+      min-width: 0;
       border-radius: 999px;
-      border: 1px solid var(--sb-border-soft);
+      border: 1px solid var(--sb-border-strong);
       background: #020617;
       color: #F9FAFB;
-      padding: 10px 13px;
-      font-size: 13px;
+      padding: 13px 16px;
+      font-size: 14px;
       outline: none;
-      min-width: 0;
     }
 
     .newsletter-row input::placeholder {
-      color: rgba(156,163,175,0.9);
+      color: rgba(156, 163, 175, 0.88);
     }
 
     .newsletter-row input:focus {
       border-color: var(--sb-orange);
       box-shadow:
-        0 0 0 1px rgba(249,115,22,0.9),
-        0 0 22px rgba(249,115,22,0.3);
+        0 0 0 1px rgba(249, 115, 22, 0.85),
+        0 0 20px rgba(249, 115, 22, 0.24);
     }
 
     .newsletter-row input[aria-invalid="true"] {
@@ -388,65 +574,51 @@
     .newsletter-button {
       border: none;
       border-radius: 999px;
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 600;
+      padding: 13px 22px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       white-space: nowrap;
       box-shadow:
-        0 0 0 1px rgba(248,250,251,0.16),
-        0 18px 40px rgba(0,0,0,0.95);
+        0 0 0 1px rgba(248,250,251,0.08),
+        0 16px 38px rgba(0,0,0,0.44);
       transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
     .newsletter-button:hover,
     .newsletter-button:focus-visible {
       transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow:
-        0 0 0 1px rgba(248,250,251,0.22),
-        0 24px 60px rgba(0,0,0,1);
+      filter: brightness(1.04);
     }
 
     .newsletter-button[disabled] {
       opacity: 0.7;
       cursor: not-allowed;
-      filter: grayscale(0.1);
       transform: none;
+      filter: grayscale(0.1);
     }
 
     .newsletter-message {
       font-size: 12px;
       min-height: 18px;
-      color: #9CA3AF;
       margin: 0;
+      color: #9CA3AF;
     }
 
     .newsletter-note {
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 11px;
-      color: rgba(156,163,175,0.95);
-      line-height: 1.5;
+      color: rgba(156,163,175,0.96);
+      line-height: 1.6;
     }
 
-    /* ---------- COLONNE DROITE ---------- */
-
     .right-card {
-      background:
-        radial-gradient(circle at 0 0, rgba(248,250,252,0.08), transparent 60%),
-        radial-gradient(circle at 100% 0, rgba(30,64,175,0.6), transparent 65%),
-        var(--sb-bg-deep);
-      border-radius: 26px;
-      padding: 20px 22px 18px;
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow:
-        0 26px 70px rgba(0,0,0,0.95),
-        0 0 0 1px rgba(15,23,42,0.95);
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 18px;
       position: relative;
       overflow: hidden;
     }
@@ -454,26 +626,26 @@
     .right-card::before {
       content: "♪";
       position: absolute;
-      font-size: 28px;
-      right: 20px;
-      top: 16px;
-      color: rgba(15,23,42,0.85);
-      opacity: 0.7;
+      right: 22px;
+      top: 14px;
+      font-size: 34px;
+      color: rgba(148, 163, 184, 0.08);
+      pointer-events: none;
     }
 
     .right-title {
       font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 20px;
-      letter-spacing: 0.18em;
+      font-size: 24px;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin: 0 0 8px;
     }
 
     .right-intro {
       font-size: 13px;
-      line-height: 1.7;
-      color: rgba(249,250,251,0.88);
-      margin: 0 0 4px;
+      line-height: 1.8;
+      color: var(--sb-text-soft);
+      margin: 0;
     }
 
     .side-section-label {
@@ -481,68 +653,57 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #e5e7eb;
-      margin-top: 8px;
-      margin-bottom: 6px;
+      margin: 0 0 8px;
     }
 
     .infos-list {
       list-style: none;
       padding: 0;
-      margin: 0 0 4px;
+      margin: 0;
       font-size: 13px;
     }
 
     .infos-list li {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 6px;
-      color: rgba(249,250,251,0.9);
-      line-height: 1.6;
+      gap: 9px;
+      margin-bottom: 8px;
+      color: rgba(249, 250, 251, 0.9);
+      line-height: 1.7;
     }
 
     .infos-list span.icon {
-      font-size: 13px;
       width: 16px;
-      text-align: center;
       flex-shrink: 0;
+      text-align: center;
       margin-top: 1px;
-    }
-
-    .side-small-text {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin: 0 0 2px;
-      line-height: 1.6;
     }
 
     .social-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .social-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 14px;
+      padding: 9px 14px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.96);
-      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.32);
       font-size: 13px;
       color: #F9FAFB;
-      text-decoration: none;
-      box-shadow: 0 14px 36px rgba(0,0,0,0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+      transition: transform 0.15s ease, border-color 0.15s ease;
     }
 
     .social-btn:hover,
     .social-btn:focus-visible {
       transform: translateY(-1px);
-      border-color: rgba(248,250,251,0.8);
-      box-shadow: 0 20px 50px rgba(0,0,0,1);
+      border-color: rgba(248, 250, 251, 0.38);
     }
 
     .social-icon {
@@ -560,10 +721,9 @@
       height: 14px;
     }
 
-    .about-project {
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(15,23,42,0.9);
+    .about-block,
+    .features-block {
+      padding-top: 2px;
     }
 
     .about-title {
@@ -571,30 +731,91 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #e5e7eb;
-      margin-bottom: 6px;
+      margin: 0 0 8px;
     }
 
     .about-text {
       font-size: 12px;
-      color: rgba(249,250,251,0.9);
+      color: rgba(249, 250, 251, 0.88);
       margin: 0;
-      line-height: 1.7;
+      line-height: 1.8;
+    }
+
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      color: var(--sb-text-muted);
+    }
+
+    .features li {
+      margin-bottom: 9px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.65;
+    }
+
+    .features li span.bullet {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      background: rgba(148, 163, 184, 0.16);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .expect-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .expect-card {
+      background: rgba(15, 23, 42, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 18px;
+      padding: 14px 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
+    }
+
+    .expect-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #F9FAFB;
+      margin-bottom: 6px;
+    }
+
+    .expect-card-text {
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--sb-text-muted);
+      margin: 0;
     }
 
     .side-footnote {
       font-size: 11px;
-      color: rgba(156,163,175,0.95);
-      margin-top: 10px;
-      line-height: 1.6;
+      color: rgba(156, 163, 175, 0.95);
+      line-height: 1.7;
+      margin: 0;
+      padding-top: 4px;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
     }
 
-    @media (max-width: 960px) {
-      .left {
-        padding-right: 0;
+    @media (max-width: 1040px) {
+      .hero-panel,
+      .content-grid {
+        grid-template-columns: 1fr;
       }
 
-      .right-card {
-        padding: 18px 18px 16px;
+      .hero-visual {
+        min-height: 300px;
       }
 
       .expect-grid {
@@ -602,21 +823,70 @@
       }
     }
 
-    @media (max-width: 560px) {
-      .countdown-row {
-        gap: 10px;
+    @media (max-width: 720px) {
+      body {
+        padding: 18px 12px;
       }
 
-      .countdown-item {
-        flex: 1 1 calc(50% - 10px);
+      .top-bar,
+      .hero-band,
+      .content-grid {
+        padding-left: 16px;
+        padding-right: 16px;
       }
 
-      .brand-row {
+      .top-bar {
+        flex-direction: column;
         align-items: flex-start;
       }
 
+      .top-links {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .hero-panel,
+      .countdown-card,
+      .newsletter-card,
+      .right-card {
+        border-radius: 22px;
+      }
+
       h1 {
-        font-size: 26px;
+        font-size: 34px;
+      }
+
+      .countdown-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .brand-logo {
+        width: 62px;
+        height: 62px;
+      }
+
+      .brand-name {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .newsletter-row {
+        flex-direction: column;
+      }
+
+      .newsletter-button,
+      .top-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .visual-bottom {
+        flex-direction: column;
+      }
+
+      h1 {
+        font-size: 30px;
       }
     }
   </style>
@@ -624,34 +894,81 @@
 <body>
 
   <main class="page-wrapper">
-    <div class="layout">
-      <!-- COLONNE GAUCHE -->
-      <section class="left" aria-label="Informations ouverture Singbox">
-        <header class="brand-row">
-          <div class="brand-logo">
-            <img src="logo.png" alt="Logo Singbox, karaoké box privative à Toulouse" />
-          </div>
-          <div class="brand-text-block">
-            <div class="brand-name">SINGBOX</div>
-            <div class="brand-tagline">Karaoké box privative à Toulouse</div>
-          </div>
-        </header>
+    <div class="top-bar">
+      <div class="brand-row">
+        <div class="brand-logo">
+          <img src="logo.png" alt="Logo Singbox, karaoké box privative à Toulouse" />
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-name">SINGBOX</div>
+          <div class="brand-tagline">Karaoké box privative à Toulouse</div>
+        </div>
+      </div>
 
-        <div class="opening-chip" id="opening-chip">
-          <span class="icon">📅</span>
-          <span id="opening-chip-text">Ouverture prévue prochainement</span>
+      <div class="top-links">
+        <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer" class="top-link">
+          Instagram
+        </a>
+        <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer" class="top-link">
+          TikTok
+        </a>
+        <a href="#newsletter-section" class="top-link primary">Être prévenu</a>
+      </div>
+    </div>
+
+    <section class="hero-band">
+      <div class="hero-panel">
+        <div class="hero-left">
+          <div class="opening-chip" id="opening-chip">
+            <span class="icon">🎤</span>
+            <span id="opening-chip-text">Ouverture prévue prochainement</span>
+          </div>
+
+          <div class="eyebrow">Bientôt à Toulouse</div>
+          <h1>Le karaoké box nouvelle génération arrive bientôt</h1>
+          <p class="intro-text">
+            Singbox prépare son ouverture à Toulouse avec des box privatives, une réservation simple,
+            un accès fluide et une ambiance pensée pour les soirées entre amis, anniversaires, EVJF/EVG
+            et moments qui méritent plus qu’un simple bar.
+          </p>
         </div>
 
-        <h1>On se prépare pour l’ouverture ✨</h1>
-        <p class="intro-text">
-          Des box de karaoké privatives, une réservation en ligne simple, une ambiance immersive
-          et un lieu pensé pour chanter entre amis sans pression. L’ouverture approche :
-          inscrivez-vous pour suivre les coulisses, être averti du lancement et découvrir les premières infos avant tout le monde.
-        </p>
+        <div class="hero-right" aria-hidden="true">
+          <div class="hero-visual">
+            <div class="visual-topline">
+              <div class="visual-badge">Ouverture prochaine</div>
+              <div class="visual-badge">Toulouse</div>
+            </div>
 
-        <!-- COMPTE À REBOURS -->
-        <section class="countdown-block" aria-label="Compte à rebours avant l'ouverture">
-          <div class="countdown-label">Compte à rebours</div>
+            <div class="visual-stage">
+              <div class="mic-ring">
+                <div class="mic-emoji">🎤</div>
+              </div>
+            </div>
+
+            <div class="visual-bottom">
+              <div class="mini-stat">
+                <div class="mini-stat-label">Expérience</div>
+                <div class="mini-stat-value">Privative</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-label">Réservation</div>
+                <div class="mini-stat-value">En ligne</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-label">Ambiance</div>
+                <div class="mini-stat-value">Immersive</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="left-stack">
+        <section class="countdown-card" aria-label="Compte à rebours avant l'ouverture">
+          <div class="section-label">Compte à rebours</div>
           <div class="countdown-row">
             <div class="countdown-item">
               <div class="count-number" id="days">00</div>
@@ -672,50 +989,11 @@
           </div>
         </section>
 
-        <ul class="features">
-          <li>
-            <span class="bullet">🎤</span>
-            <span>Box privatives et insonorisées pour chanter en toute intimité.</span>
-          </li>
-          <li>
-            <span class="bullet">📲</span>
-            <span>Réservation en ligne et fonctionnement pensé pour être simple et fluide.</span>
-          </li>
-          <li>
-            <span class="bullet">🎉</span>
-            <span>Idéal pour anniversaires, EVJF/EVG, afterworks, sorties entre amis et événements en petit groupe.</span>
-          </li>
-        </ul>
-
-        <section class="mini-expectations" aria-label="Ce qui vous attend chez Singbox">
-          <div class="mini-expectations-label">Ce qui vous attend</div>
-          <div class="expect-grid">
-            <article class="expect-card">
-              <div class="expect-card-title">Box privatives</div>
-              <p class="expect-card-text">
-                Des espaces dédiés pour chanter entre vous, dans une ambiance immersive et sans regard extérieur.
-              </p>
-            </article>
-            <article class="expect-card">
-              <div class="expect-card-title">Réservation en ligne</div>
-              <p class="expect-card-text">
-                Un parcours simple pour choisir votre créneau, votre box et réserver rapidement.
-              </p>
-            </article>
-            <article class="expect-card">
-              <div class="expect-card-title">Accès autonome</div>
-              <p class="expect-card-text">
-                Une expérience pensée pour être la plus fluide possible, de la réservation jusqu’à votre séance.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <!-- NEWSLETTER -->
-        <section aria-label="Inscription newsletter Singbox">
+        <section class="newsletter-card" id="newsletter-section" aria-label="Inscription newsletter Singbox">
+          <h2 class="newsletter-title">Soyez dans les premiers au courant</h2>
           <p class="newsletter-label">
-            Pour être prévenu de l’ouverture, suivre l’avancée du projet et recevoir les premières informations sur le lancement,
-            inscrivez-vous à la newsletter :
+            Inscrivez-vous pour recevoir les annonces d’ouverture, les avancées du projet, les premières
+            infos sur le lieu et, potentiellement, les invitations ou offres de lancement.
           </p>
 
           <div class="newsletter-row">
@@ -734,23 +1012,21 @@
           <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
 
           <p class="newsletter-note">
-            Vous recevrez en priorité les annonces d’ouverture, les éventuelles invitations de lancement
-            et les nouveautés liées à Singbox.
+            Aucun spam : uniquement les informations utiles autour de l’ouverture de Singbox.
           </p>
         </section>
-      </section>
+      </div>
 
-      <!-- COLONNE DROITE -->
       <aside class="right-card" aria-label="Informations pratiques et coulisses">
         <div>
-          <div class="right-title">EN COULISSES…</div>
+          <h2 class="right-title">En coulisses…</h2>
           <p class="right-intro">
-            Nous avançons sur les dernières étapes du projet : lieu, aménagement, tests techniques,
+            Nous avançons sur les dernières étapes : lieu, aménagement, tests techniques,
             expérience client et préparation du lancement.
           </p>
           <p class="right-intro">
-            L’objectif est de proposer à Toulouse une expérience de karaoké box privative simple,
-            autonome et mémorable dès l’ouverture.
+            L’objectif : proposer à Toulouse une expérience de karaoké box privative plus moderne,
+            plus fluide et plus mémorable.
           </p>
         </div>
 
@@ -772,14 +1048,48 @@
           </ul>
         </div>
 
-        <div>
-          <p class="side-section-label">Suivez l’avancée du projet</p>
-          <p class="side-small-text">
-            Coulisses, travaux, sondages, inspirations, premières playlists et annonces de lancement seront partagés sur nos réseaux.
-          </p>
+        <div class="features-block">
+          <p class="side-section-label">Ce qui vous attend</p>
+          <ul class="features">
+            <li>
+              <span class="bullet">🎤</span>
+              <span>Box privatives et insonorisées pour chanter entre vous, sans pression.</span>
+            </li>
+            <li>
+              <span class="bullet">📲</span>
+              <span>Réservation en ligne simple et parcours pensé pour être fluide du début à la fin.</span>
+            </li>
+            <li>
+              <span class="bullet">🎉</span>
+              <span>Parfait pour anniversaires, EVJF/EVG, afterworks et soirées entre amis.</span>
+            </li>
+          </ul>
 
+          <div class="expect-grid">
+            <article class="expect-card">
+              <div class="expect-card-title">Box privatives</div>
+              <p class="expect-card-text">
+                Des espaces dédiés pour chanter entre vous dans une ambiance immersive.
+              </p>
+            </article>
+            <article class="expect-card">
+              <div class="expect-card-title">Réservation simple</div>
+              <p class="expect-card-text">
+                Un parcours rapide pour choisir votre créneau et réserver facilement.
+              </p>
+            </article>
+            <article class="expect-card">
+              <div class="expect-card-title">Expérience fluide</div>
+              <p class="expect-card-text">
+                Une expérience pensée pour être agréable avant, pendant et après votre séance.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <div>
+          <p class="side-section-label">Suivre le projet</p>
           <div class="social-buttons">
-            <!-- Instagram -->
             <a
               class="social-btn"
               href="https://www.instagram.com/singboxtoulouse/"
@@ -796,7 +1106,6 @@
               <span>Instagram</span>
             </a>
 
-            <!-- TikTok -->
             <a
               class="social-btn"
               href="https://www.tiktok.com/@singbox.toulouse/"
@@ -816,11 +1125,11 @@
           </div>
         </div>
 
-        <div class="about-project">
+        <div class="about-block">
           <p class="about-title">À propos du projet</p>
           <p class="about-text">
-            Singbox est né à Toulouse avec l’envie de recréer l’esprit des karaokés box asiatiques :
-            des espaces privatifs, une vraie liberté, une ambiance travaillée et un moment fun à partager sans jugement.
+            Singbox est né avec l’envie de recréer à Toulouse l’esprit des karaokés box asiatiques :
+            des espaces privatifs, une vraie liberté, une ambiance travaillée et un moment fun à partager.
           </p>
         </div>
 
@@ -829,7 +1138,7 @@
           les tarifs et les informations définitives sera mis en ligne à l’ouverture.
         </p>
       </aside>
-    </div>
+    </section>
   </main>
 
   <!-- Supabase Newsletter -->
@@ -838,7 +1147,6 @@
     // =========================
     // PARAMÈTRES À METTRE À JOUR
     // =========================
-    // Remplace cette date par ta vraie date d'ouverture estimée ou officielle.
     const LAUNCH_DATE = new Date("2026-04-30T18:00:00+02:00");
 
     // =========================
