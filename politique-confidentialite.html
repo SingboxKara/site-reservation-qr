@@ -5,64 +5,42 @@
   <title>Politique de confidentialité Singbox | Karaoké box à Toulouse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
-  <meta name="description" content="Consultez la politique de confidentialité de Singbox, karaoké box privatives à Toulouse. Informations sur la collecte, l’utilisation et la protection de vos données personnelles (réservations, newsletter, cookies, RGPD)." />
+  <meta
+    name="description"
+    content="Consultez la politique de confidentialité de Singbox, karaoké box privatives à Toulouse. Informations sur la collecte, l’utilisation et la protection de vos données personnelles."
+  />
   <meta name="robots" content="index,follow" />
-  <meta name="keywords" content="politique de confidentialité singbox, données personnelles singbox, RGPD karaoké toulouse, confidentialité site singbox, protection des données karaoke box toulouse" />
-  <link rel="canonical" href="https://www.singbox.fr/politique-confidentialite" />
+  <link rel="canonical" href="https://www.singbox.fr/politique-confidentialite.html" />
+  <meta name="theme-color" content="#050814" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Politique de confidentialité Singbox | Karaoké box à Toulouse" />
-  <meta property="og:description" content="Découvrez comment Singbox, karaoké box à Toulouse, collecte, utilise et protège vos données personnelles (réservations, newsletter, cookies) conformément au RGPD." />
+  <meta
+    property="og:description"
+    content="Découvrez comment Singbox collecte, utilise et protège vos données personnelles conformément à sa politique de confidentialité."
+  />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/politique-confidentialite" />
+  <meta property="og:url" content="https://www.singbox.fr/politique-confidentialite.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Politique de confidentialité Singbox | Karaoké box à Toulouse" />
-  <meta name="twitter:description" content="Informations complètes sur la confidentialité et la protection de vos données personnelles chez Singbox, karaoké box privatives à Toulouse." />
+  <meta
+    name="twitter:description"
+    content="Informations sur la confidentialité et la protection de vos données personnelles chez Singbox."
+  />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
 
-  <!-- Données structurées LocalBusiness -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EntertainmentBusiness",
-    "name": "Singbox",
-    "image": "https://www.singbox.fr/logo.png",
-    "@id": "https://www.singbox.fr/",
-    "url": "https://www.singbox.fr/",
-    "telephone": "+33 6 00 00 00 00",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "66 Rue de la République",
-      "postalCode": "31300",
-      "addressLocality": "Toulouse",
-      "addressCountry": "FR"
-    },
-    "priceRange": "€€",
-    "description": "Karaoké box privatives à Toulouse : salons insonorisés pour chanter entre amis, en famille ou entre collègues.",
-    "sameAs": [
-      "https://www.instagram.com/singboxtoulouse/",
-      "https://www.tiktok.com/@singbox.toulouse/"
-    ]
-  }
-  </script>
-
-  <!-- Données structurées WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Politique de confidentialité Singbox | Karaoké box à Toulouse",
-    "url": "https://www.singbox.fr/politique-confidentialite",
-    "description": "Politique de confidentialité de Singbox, karaoké box privatives à Toulouse : RGPD, données personnelles, réservations, newsletter, cookies et sécurité.",
+    "url": "https://www.singbox.fr/politique-confidentialite.html",
+    "description": "Politique de confidentialité de Singbox : données personnelles, réservations, newsletter, cookies et sécurité.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -72,7 +50,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -96,6 +73,10 @@
 
     * { box-sizing: border-box; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -115,13 +96,36 @@
       margin: 0;
     }
 
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
     .container {
       max-width: var(--sb-container-width);
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    /* ---------- HEADER GLOBAL ---------- */
+    .text-link {
+      color: var(--sb-orange);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .text-link:hover,
+    .text-link:focus-visible {
+      text-decoration: none;
+    }
+
+    /* ---------- HEADER ---------- */
     .site-header {
       position: fixed;
       top: 0;
@@ -131,6 +135,7 @@
       background: #020617;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0,0,0,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     .header-inner {
@@ -190,9 +195,6 @@
       font-size: 14px;
     }
 
-    .navbar a,
-    .nav-links a,
-    .header-nav a,
     .main-nav a {
       font-weight: 600;
       letter-spacing: 0.3px;
@@ -203,9 +205,6 @@
       white-space: nowrap;
     }
 
-    .navbar a::after,
-    .nav-links a::after,
-    .header-nav a::after,
     .main-nav a::after {
       content: "";
       position: absolute;
@@ -218,24 +217,12 @@
       border-radius: 6px;
     }
 
-    .navbar a:hover::after,
-    .nav-links a:hover::after,
-    .header-nav a:hover::after,
     .main-nav a:hover::after,
-    .navbar a:focus-visible::after,
-    .nav-links a:focus-visible::after,
-    .header-nav a:focus-visible::after,
     .main-nav a:focus-visible::after {
       width: 100%;
     }
 
-    .navbar a:hover,
-    .nav-links a:hover,
-    .header-nav a:hover,
     .main-nav a:hover,
-    .navbar a:focus-visible,
-    .nav-links a:focus-visible,
-    .header-nav a:focus-visible,
     .main-nav a:focus-visible {
       color: #ffb96f;
       transition: 0.25s ease;
@@ -325,6 +312,7 @@
       padding: 12px 24px 16px;
       z-index: 40;
       border-bottom: 1px solid #111827;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.45);
     }
 
     .mobile-nav ul {
@@ -375,6 +363,12 @@
       margin-bottom: 8px;
     }
 
+    .legal-card h3 {
+      font-size: 16px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
     .legal-card p {
       margin: 6px 0;
     }
@@ -386,6 +380,11 @@
 
     .legal-card li {
       margin-bottom: 4px;
+    }
+
+    .legal-placeholder {
+      color: #fbbf24;
+      font-style: italic;
     }
 
     /* ---------- FOOTER ---------- */
@@ -400,6 +399,11 @@
       max-width:var(--sb-container-width);
       margin:0 auto 24px;
       text-align:center;
+    }
+
+    .newsletter-container p {
+      color: var(--sb-text-muted);
+      margin-top: 0;
     }
 
     .newsletter-row {
@@ -419,6 +423,11 @@
       font-size:14px;
       background:#020617;
       color:#F9FAFB;
+      outline: none;
+    }
+
+    footer input[type=email]::placeholder {
+      color: rgba(156,163,175,0.9);
     }
 
     footer button {
@@ -430,6 +439,12 @@
       font-weight:600;
       font-size:14px;
       cursor:pointer;
+    }
+
+    .newsletter-message {
+      font-size: 12px;
+      margin-top: 8px;
+      min-height: 16px;
     }
 
     .footer-columns {
@@ -456,7 +471,6 @@
 
     .footer-columns p { margin:4px 0; }
 
-    /* Liens réseaux sociaux */
     .footer-social .social-link {
       display: flex;
       align-items: center;
@@ -484,6 +498,14 @@
       width: 100%;
       height: 100%;
       fill: currentColor;
+    }
+
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
     }
 
     .footer-bottom {
@@ -532,11 +554,39 @@
         padding-inline: 14px;
         font-size: 13px;
       }
+
+      .legal-card {
+        padding: 24px 18px 30px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .legal-main {
+        padding-top: 8.7rem;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .legal-card h1 {
+        font-size: 26px;
+      }
+
+      .newsletter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      footer input[type=email],
+      footer button {
+        width: 100%;
+        max-width: none;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -573,7 +623,6 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -585,30 +634,30 @@
     </ul>
   </nav>
 
-  <!-- CONTENU POLITIQUE DE CONFIDENTIALITÉ -->
   <main class="legal-main">
     <div class="container">
       <section class="legal-card">
         <h1>Politique de confidentialité de Singbox</h1>
+        <p class="legal-intro">Dernière mise à jour : 29/11/2025</p>
         <p class="legal-intro">
-          Dernière mise à jour : 29/11/2025
-        </p>
-        <p class="legal-intro">
-          La présente politique de confidentialité a pour objectif d’informer les utilisateurs du site Singbox, karaoké box privatives à Toulouse, sur la manière dont leurs données personnelles sont collectées, traitées et protégées, conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi « Informatique et Libertés ».
+          La présente politique de confidentialité a pour objectif d’informer les utilisateurs du site Singbox sur la manière dont leurs données personnelles sont collectées, traitées et protégées.
         </p>
 
         <h2>1. Responsable du traitement</h2>
         <p>Les données personnelles collectées sur ce site sont traitées par :</p>
         <p>Singbox</p>
         <p>EURL</p>
-        <p>[Adresse complète]</p>
-        <p>N° SIREN/SIRET : [numéro]</p>
-        <p>E-mail de contact : <a href="mailto:contactsingbox@gmail.com" style="color:var(--sb-orange);">contactsingbox@gmail.com</a></p>
+        <p><span class="legal-placeholder">[Adresse complète à compléter]</span></p>
+        <p><span class="legal-placeholder">N° SIREN / SIRET à compléter</span></p>
+        <p>
+          E-mail de contact :
+          <a href="mailto:contactsingbox@gmail.com" class="text-link">contactsingbox@gmail.com</a>
+        </p>
 
         <h2>2. Données collectées</h2>
-        <p>Nous collectons plusieurs types de données personnelles, selon les interactions que vous avez avec notre site :</p>
+        <p>Nous collectons plusieurs types de données personnelles, selon les interactions que vous avez avec notre site.</p>
 
-        <h3 style="font-size:16px;margin-top:14px;">2.1. Données fournies directement par l’utilisateur</h3>
+        <h3>2.1. Données fournies directement par l’utilisateur</h3>
         <ul>
           <li>Nom, prénom</li>
           <li>Adresse e-mail</li>
@@ -619,149 +668,141 @@
           <li>Adresse e-mail pour la newsletter</li>
         </ul>
 
-        <h3 style="font-size:16px;margin-top:14px;">2.2. Données collectées automatiquement</h3>
+        <h3>2.2. Données collectées automatiquement</h3>
         <ul>
           <li>Adresse IP</li>
           <li>Type de navigateur et appareil utilisé</li>
-          <li>Statistiques de navigation (pages consultées, clics, temps passé…)</li>
-          <li>Cookies (voir section dédiée)</li>
+          <li>Statistiques de navigation</li>
+          <li>Cookies ou traceurs techniques et de mesure d’audience, si utilisés</li>
         </ul>
-        <p>Ces données sont collectées à des fins d’analyse, de sécurité, de fonctionnement et d’amélioration du site.</p>
+        <p>Ces données peuvent être collectées à des fins d’analyse, de sécurité, de fonctionnement et d’amélioration du site.</p>
 
         <h2>3. Finalités de la collecte</h2>
-        <p>Vos données sont utilisées dans les cas suivants :</p>
+        <p>Vos données peuvent être utilisées dans les cas suivants :</p>
 
-        <h3 style="font-size:16px;margin-top:14px;">3.1. Gestion des réservations</h3>
+        <h3>3.1. Gestion des réservations</h3>
         <ul>
           <li>Afficher les créneaux disponibles</li>
-          <li>Envoyer une confirmation de réservation</li>
+          <li>Traiter les réservations</li>
+          <li>Envoyer une confirmation</li>
           <li>Vous recontacter si nécessaire</li>
         </ul>
 
-        <h3 style="font-size:16px;margin-top:14px;">3.2. Gestion des demandes envoyées via le formulaire</h3>
+        <h3>3.2. Gestion des demandes envoyées via le formulaire</h3>
         <ul>
           <li>Répondre à vos questions</li>
-          <li>Proposer un accompagnement commercial si demandé</li>
+          <li>Assurer un suivi commercial si demandé</li>
         </ul>
 
-        <h3 style="font-size:16px;margin-top:14px;">3.3. Newsletter</h3>
-        <p>Envoi d’informations, offres ou actualités Singbox (uniquement en cas d’inscription volontaire).</p>
+        <h3>3.3. Newsletter</h3>
+        <p>Envoi d’informations, d’offres ou d’actualités Singbox en cas d’inscription volontaire.</p>
 
-        <h3 style="font-size:16px;margin-top:14px;">3.4. Amélioration du site</h3>
+        <h3>3.4. Amélioration du site</h3>
         <ul>
           <li>Mesure de la fréquentation et des performances</li>
           <li>Analyse des usages et optimisation de l’expérience utilisateur</li>
         </ul>
 
-        <h3 style="font-size:16px;margin-top:14px;">3.5. Obligations légales</h3>
-        <p>Conservation de certaines données pour des raisons fiscales ou comptables.</p>
+        <h3>3.5. Obligations légales</h3>
+        <p>Conservation de certaines données lorsque cela est nécessaire pour répondre à des obligations légales, comptables ou administratives.</p>
 
         <h2>4. Base légale du traitement</h2>
-        <p>Nous collectons vos données sur les fondements juridiques suivants :</p>
+        <p>Les traitements peuvent reposer notamment sur :</p>
         <ul>
-          <li>Exécution d’un contrat (réservation, achat de prestations)</li>
-          <li>Consentement (newsletter, cookies, formulaire de contact)</li>
-          <li>Intérêt légitime (amélioration du site, gestion de la sécurité)</li>
-          <li>Obligation légale (facturation, comptabilité)</li>
+          <li>L’exécution d’un contrat ou de mesures précontractuelles</li>
+          <li>Le consentement</li>
+          <li>L’intérêt légitime</li>
+          <li>Une obligation légale</li>
         </ul>
 
         <h2>5. Destinataires des données</h2>
         <p>Vos données sont transmises uniquement lorsque cela est nécessaire :</p>
         <ul>
           <li>Aux personnes habilitées au sein de Singbox</li>
-          <li>À notre prestataire technique ou d’hébergement</li>
-          <li>Aux outils d’analyse ou de gestion (ex : Google Analytics, système de réservation)</li>
-          <li>Aux autorités compétentes en cas d’obligation légale</li>
+          <li>À nos prestataires techniques ou d’hébergement</li>
+          <li>À certains outils de gestion ou de mesure d’audience si utilisés</li>
+          <li>Aux autorités compétentes lorsqu’une obligation légale l’impose</li>
         </ul>
-        <p>En aucun cas, vos données ne sont vendues ou transmises à des tiers à des fins commerciales.</p>
+        <p>Vos données ne sont pas vendues à des tiers à des fins commerciales.</p>
 
         <h2>6. Durée de conservation</h2>
-        <p>Nous conservons vos données uniquement pour la durée strictement nécessaire :</p>
+        <p>Les données sont conservées pendant une durée adaptée à leur finalité et, lorsque nécessaire, conformément aux obligations applicables.</p>
         <ul>
-          <li>Réservations : 3 ans après le dernier contact</li>
+          <li>Réservations : durée nécessaire à la gestion de la relation client</li>
           <li>Newsletter : jusqu’au désabonnement</li>
-          <li>Formulaires de contact : 12 mois</li>
-          <li>Données de facturation : 10 ans (obligation légale)</li>
-          <li>Cookies : 13 mois maximum</li>
+          <li>Formulaires de contact : durée raisonnable de suivi</li>
+          <li>Données de facturation : selon les obligations légales applicables</li>
+          <li>Cookies : selon leur nature et leur durée de vie technique ou de mesure</li>
         </ul>
 
         <h2>7. Vos droits</h2>
-        <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+        <p>Selon la réglementation applicable, vous pouvez notamment disposer des droits suivants :</p>
         <ul>
-          <li>Droit d’accès — connaître les données que nous détenons</li>
-          <li>Droit de rectification — modifier vos informations</li>
-          <li>Droit à l’effacement — suppression de vos données</li>
-          <li>Droit d’opposition — refus du traitement</li>
-          <li>Droit à la portabilité — transfert de vos données</li>
+          <li>Droit d’accès</li>
+          <li>Droit de rectification</li>
+          <li>Droit à l’effacement</li>
+          <li>Droit d’opposition</li>
           <li>Droit à la limitation du traitement</li>
-          <li>Droit de retirer votre consentement à tout moment (newsletter, cookies…)</li>
+          <li>Droit à la portabilité lorsque cela s’applique</li>
+          <li>Droit de retirer votre consentement lorsque le traitement repose sur celui-ci</li>
         </ul>
-        <p>Pour exercer ces droits, contactez-nous à :</p>
+        <p>Pour toute demande, vous pouvez nous contacter à :</p>
         <p>
-          📧 <a href="mailto:contactsingbox@gmail.com" style="color:var(--sb-orange);">contactsingbox@gmail.com</a><br>
-          📮 Adresse : [adresse complète]
+          📧 <a href="mailto:contactsingbox@gmail.com" class="text-link">contactsingbox@gmail.com</a><br>
+          📮 <span class="legal-placeholder">[Adresse complète à compléter]</span>
         </p>
-        <p>Vous pouvez également déposer une réclamation auprès de la CNIL (<a href="https://www.cnil.fr" style="color:var(--sb-orange);">www.cnil.fr</a>).</p>
+        <p>
+          Vous pouvez également consulter le site de la CNIL :
+          <a href="https://www.cnil.fr" class="text-link" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>
+        </p>
 
         <h2>8. Cookies</h2>
-        <p>Le site Singbox utilise des cookies pour :</p>
+        <p>Le site Singbox peut utiliser des cookies ou technologies similaires pour :</p>
         <ul>
           <li>Faciliter la navigation</li>
-          <li>Mémoriser vos préférences</li>
+          <li>Mémoriser certaines préférences</li>
           <li>Mesurer l’audience</li>
-          <li>Améliorer nos services</li>
-          <li>Le cas échéant, personnaliser l’expérience utilisateur</li>
+          <li>Améliorer les services proposés</li>
         </ul>
         <p>
-          Un bandeau de consentement s’affiche lors de votre première visite. Vous pouvez accepter tous les cookies,
-          refuser tous les cookies ou personnaliser vos choix.
+          Si un bandeau de consentement est mis en place, vous pouvez accepter, refuser ou personnaliser vos choix selon les options proposées.
         </p>
-        <p>Vous pouvez également les désactiver à tout moment via les paramètres de votre navigateur.</p>
+        <p>Vous pouvez également gérer certains paramètres depuis votre navigateur.</p>
 
         <h2>9. Sécurité des données</h2>
-        <p>Nous mettons en œuvre toutes les mesures nécessaires pour protéger vos données personnelles :</p>
-        <ul>
-          <li>Connexion sécurisée (HTTPS)</li>
-          <li>Protocole de chiffrement</li>
-          <li>Accès restreint aux données</li>
-          <li>Outils de protection et de surveillance</li>
-          <li>Politique interne de confidentialité</li>
-        </ul>
-        <p>
-          Cependant, aucun système n’est totalement inviolable. En cas de violation de données, les utilisateurs concernés
-          seront notifiés conformément à la loi.
-        </p>
+        <p>Nous mettons en œuvre des mesures techniques et organisationnelles destinées à protéger les données personnelles contre l’accès non autorisé, la perte, l’altération ou la divulgation.</p>
 
         <h2>10. Modifications de la politique de confidentialité</h2>
-        <p>
-          Cette politique peut être modifiée à tout moment afin de :
-        </p>
+        <p>Cette politique peut être modifiée afin de tenir compte :</p>
         <ul>
-          <li>se conformer aux évolutions légales,</li>
-          <li>intégrer de nouveaux services,</li>
-          <li>améliorer la transparence.</li>
+          <li>Des évolutions légales ou réglementaires</li>
+          <li>De l’ajout de nouveaux services</li>
+          <li>D’améliorations apportées à l’information des utilisateurs</li>
         </ul>
-        <p>La date de mise à jour figure en haut du document. Nous vous invitons à la consulter régulièrement.</p>
+        <p>La date de mise à jour figure en haut du document.</p>
 
         <h2>11. Contact</h2>
-        <p>Pour toute question relative à la gestion de vos données personnelles :</p>
+        <p>Pour toute question relative à vos données personnelles :</p>
         <p>
-          📧 <a href="mailto:contactsingbox@gmail.com" style="color:var(--sb-orange);">contactsingbox@gmail.com</a><br>
-          📮 [Adresse complète de Singbox]
+          📧 <a href="mailto:contactsingbox@gmail.com" class="text-link">contactsingbox@gmail.com</a><br>
+          📮 <span class="legal-placeholder">[Adresse complète de Singbox à compléter]</span>
         </p>
       </section>
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
       <div class="newsletter-row">
-        <input type="email" placeholder="Entrez votre adresse e-mail" aria-label="Adresse e-mail newsletter" />
-        <button type="button">S'abonner</button>
+        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
+        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" autocomplete="email" inputmode="email" />
+        <label for="newsletter-company" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input id="newsletter-company" class="newsletter-honeypot" type="text" tabindex="-1" autocomplete="off" />
+        <button id="newsletter-submit" type="button">S'abonner</button>
       </div>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -782,7 +823,7 @@
 
       <div>
         <p><strong>Contact</strong></p>
-        <p>Adresse : [à compléter]</p>
+        <p>Adresse : <span class="legal-placeholder">à compléter</span></p>
         <p>Email : contactsingbox@gmail.com</p>
         <p>Téléphone : 06 00 00 00 00</p>
       </div>
@@ -829,7 +870,13 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+
+    let supabaseClient = null;
+
     function getPanier() {
       const rawPanier = localStorage.getItem("panier");
       if (!rawPanier) {
@@ -850,26 +897,148 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function initMobileMenu() {
       const burgerBtn = document.getElementById("burger-button");
       const mobileNav = document.getElementById("mobile-nav");
 
-      if (burgerBtn && mobileNav) {
-        burgerBtn.addEventListener("click", function () {
-          const isOpen = mobileNav.classList.toggle("open");
-          burgerBtn.setAttribute("aria-expanded", String(isOpen));
-        });
+      if (!burgerBtn || !mobileNav) return;
 
-        mobileNav.addEventListener("click", function (e) {
-          if (e.target.tagName === "A") {
-            mobileNav.classList.remove("open");
-            burgerBtn.setAttribute("aria-expanded", "false");
-          }
-        });
+      burgerBtn.addEventListener("click", function () {
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      mobileNav.addEventListener("click", function (e) {
+        const target = e.target;
+        if (target instanceof HTMLElement && target.tagName === "A") {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", function (e) {
+        const target = e.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+    }
+
+    function initSupabaseClient() {
+      try {
+        if (globalThis.supabase && typeof globalThis.supabase.createClient === "function") {
+          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+      } catch (error) {
+        console.error("Erreur initialisation Supabase :", error);
+        supabaseClient = null;
       }
+    }
 
+    function initNewsletter() {
+      const emailInput = document.getElementById("newsletter-email");
+      const submitBtn = document.getElementById("newsletter-submit");
+      const messageBox = document.getElementById("newsletter-message");
+      const honeypot = document.getElementById("newsletter-company");
+
+      if (!emailInput || !submitBtn || !messageBox) return;
+
+      submitBtn.addEventListener("click", async function () {
+        const email = emailInput.value.trim();
+        const botValue = honeypot?.value || "";
+
+        messageBox.style.color = "#e5e7eb";
+        messageBox.textContent = "Envoi en cours...";
+
+        if (botValue) {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci !";
+          return;
+        }
+
+        if (!isValidEmail(email)) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        if (!supabaseClient) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Service newsletter indisponible.";
+          return;
+        }
+
+        try {
+          const { error } = await supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
+
+          if (error) {
+            const isDuplicate =
+              error.code === "23505" ||
+              (error.message && error.message.includes("duplicate key value"));
+
+            if (isDuplicate) {
+              messageBox.style.color = "#38bdf8";
+              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
+              return;
+            }
+
+            messageBox.style.color = "#ff6b6b";
+            messageBox.textContent = "Erreur : " + error.message;
+            return;
+          }
+
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
+          emailInput.value = "";
+          if (honeypot) honeypot.value = "";
+        } catch (error) {
+          console.error("Erreur Supabase newsletter :", error);
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Erreur réseau. Merci de réessayer.";
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initMobileMenu();
+      initSupabaseClient();
+      initNewsletter();
       updateCartIcon();
     });
   </script>
