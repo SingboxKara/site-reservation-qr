@@ -13,7 +13,6 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Laisser un avis – Singbox" />
   <meta
@@ -24,7 +23,6 @@
   <meta property="og:image" content="https://www.singbox.fr/assets/avis-preview.png" />
   <meta property="og:site_name" content="Singbox" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Laisser un avis – Singbox" />
   <meta
@@ -776,9 +774,8 @@
     /*
       OPTIONNEL :
       Si un jour tu veux activer Cloudflare Turnstile, mets ta clé site ici
-      et ajoute le script Turnstile dans le head ou juste avant ce script.
-      Exemple script :
-      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+      et charge le script Turnstile dans le head ou juste avant ce script.
+      Ne jamais écrire une balise </script> brute dans un commentaire JS inline.
     */
     const TURNSTILE_SITE_KEY = "";
     let turnstileToken = "";
