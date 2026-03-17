@@ -86,18 +86,6 @@
       padding: 0 24px;
     }
 
-    .sr-only {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-    }
-
     .hidden-honeypot {
       position: absolute !important;
       left: -9999px !important;
@@ -767,17 +755,11 @@
   <script>
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const BACKEND_BASE_URL = "https://singbox-backend.onrender.com";
+    const TURNSTILE_SITE_KEY = "";
+
     const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const BACKEND_BASE_URL = "https://singbox-backend.onrender.com";
-
-    /*
-      OPTIONNEL :
-      Si un jour tu veux activer Cloudflare Turnstile, mets ta clé site ici
-      et charge le script Turnstile dans le head ou juste avant ce script.
-      Ne jamais écrire une balise </script> brute dans un commentaire JS inline.
-    */
-    const TURNSTILE_SITE_KEY = "";
     let turnstileToken = "";
     let formStartTime = Date.now();
     let validatedReviewRequest = null;
@@ -788,7 +770,7 @@
     }
 
     function getTokenFromUrl() {
-      const params = new URLSearchParams(globalThis.location.search);
+      const params = new URLSearchParams(window.location.search);
       return String(params.get("token") || "").trim();
     }
 
@@ -825,25 +807,25 @@
         burgerBtn.setAttribute("aria-expanded", "false");
       }
 
-      burgerBtn.addEventListener("click", () => {
+      burgerBtn.addEventListener("click", function () {
         const isOpen = mobileNav.classList.toggle("open");
         burgerBtn.setAttribute("aria-expanded", String(isOpen));
       });
 
-      mobileNav.addEventListener("click", (event) => {
+      mobileNav.addEventListener("click", function (event) {
         const target = event.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
           closeMenu();
         }
       });
 
-      document.addEventListener("keydown", (event) => {
+      document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
           closeMenu();
         }
       });
 
-      document.addEventListener("click", (event) => {
+      document.addEventListener("click", function (event) {
         const target = event.target;
         if (!(target instanceof Node)) return;
         if (!mobileNav.classList.contains("open")) return;
@@ -856,7 +838,6 @@
       if (typeof email !== "string") return false;
 
       const value = email.trim();
-
       if (!value || value.includes(" ")) return false;
 
       const atIndex = value.indexOf("@");
@@ -876,7 +857,6 @@
       if (typeof name !== "string") return false;
 
       const value = name.trim();
-
       if (value.length < 2 || value.length > 60) return false;
 
       return /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value);
@@ -913,8 +893,10 @@
     function isDuplicateEmailError(error) {
       return Boolean(
         error &&
-        (error.code === "23505" ||
-          (typeof error.message === "string" && error.message.toLowerCase().includes("duplicate")))
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" && error.message.toLowerCase().includes("duplicate"))
+        )
       );
     }
 
@@ -936,7 +918,7 @@
       function updateStars(value) {
         const numericValue = Number(value) || 0;
 
-        stars.forEach((star) => {
+        stars.forEach(function (star) {
           const starValue = Number(star.dataset.value);
           const isActive = starValue <= numericValue;
           star.classList.toggle("is-active", isActive);
@@ -947,13 +929,13 @@
         ratingText.textContent = numericValue ? ratingLabels[numericValue] : "Choisissez une note";
       }
 
-      stars.forEach((star) => {
-        star.addEventListener("click", () => {
+      stars.forEach(function (star) {
+        star.addEventListener("click", function () {
           if (star.disabled) return;
           updateStars(star.dataset.value);
         });
 
-        star.addEventListener("keydown", (event) => {
+        star.addEventListener("keydown", function (event) {
           if (star.disabled) return;
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
@@ -973,7 +955,7 @@
 
       function updateCounter() {
         const currentLength = commentInput.value.length;
-        counter.textContent = `${currentLength} / 600`;
+        counter.textContent = currentLength + " / 600";
       }
 
       commentInput.addEventListener("input", updateCounter);
@@ -982,36 +964,33 @@
 
     function initOptionalCaptcha() {
       const captchaContainer = getEl("captcha-container");
-
       if (!captchaContainer || !TURNSTILE_SITE_KEY) return;
 
       captchaContainer.style.display = "block";
 
-      if (!globalThis.turnstile) {
-        captchaContainer.innerHTML = `
-          <p class="review-helper" style="margin:0;">
-            Le captcha n’a pas pu être chargé.
-          </p>
-        `;
+      if (!window.turnstile) {
+        captchaContainer.innerHTML =
+          '<p class="review-helper" style="margin:0;">Le captcha n’a pas pu être chargé.</p>';
         return;
       }
 
-      globalThis.turnstile.render("#captcha-container", {
+      window.turnstile.render("#captcha-container", {
         sitekey: TURNSTILE_SITE_KEY,
-        callback: function(token) {
+        callback: function (token) {
           turnstileToken = token;
         },
-        "expired-callback": function() {
+        "expired-callback": function () {
           turnstileToken = "";
         },
-        "error-callback": function() {
+        "error-callback": function () {
           turnstileToken = "";
         }
       });
     }
 
     function normalizeFirstName(name) {
-      const trimmed = name.trim().replace(/\s+/g, " ");
+      const trimmed = String(name || "").trim().replace(/\s+/g, " ");
+      if (!trimmed) return "";
       return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
     }
 
@@ -1062,12 +1041,13 @@
       if (!badge || !validatedReservation) return;
 
       const startText = formatDateFr(validatedReservation.start_time);
-      const boxText = validatedReservation.box_id ? `Box ${validatedReservation.box_id}` : "Votre box";
+      const boxText = validatedReservation.box_id ? "Box " + validatedReservation.box_id : "Votre box";
 
-      badge.innerHTML = `
-        <strong>Session concernée :</strong> ${escapeHtml(boxText)}
-        ${startText ? ` · ${escapeHtml(startText)}` : ""}
-      `;
+      badge.innerHTML =
+        "<strong>Session concernée :</strong> " +
+        escapeHtml(boxText) +
+        (startText ? " · " + escapeHtml(startText) : "");
+
       badge.hidden = false;
     }
 
@@ -1081,13 +1061,17 @@
         return;
       }
 
-      const safeName = typeof validatedReviewRequest.name === "string" && validatedReviewRequest.name.trim()
-        ? validatedReviewRequest.name.trim()
-        : (typeof validatedReservation?.name === "string" ? validatedReservation.name.trim().split(/\s+/)[0] : "");
+      const safeName =
+        typeof validatedReviewRequest.name === "string" && validatedReviewRequest.name.trim()
+          ? validatedReviewRequest.name.trim()
+          : (typeof validatedReservation?.name === "string"
+              ? validatedReservation.name.trim().split(/\s+/)[0]
+              : "");
 
-      const safeEmail = typeof validatedReviewRequest.email === "string"
-        ? validatedReviewRequest.email.trim().toLowerCase()
-        : "";
+      const safeEmail =
+        typeof validatedReviewRequest.email === "string"
+          ? validatedReviewRequest.email.trim().toLowerCase()
+          : "";
 
       nameInput.value = safeName;
       emailInput.value = safeEmail;
@@ -1110,15 +1094,23 @@
 
       try {
         const response = await fetch(
-          `${BACKEND_BASE_URL}/api/review-request/validate?token=${encodeURIComponent(token)}`
+          BACKEND_BASE_URL + "/api/review-request/validate?token=" + encodeURIComponent(token),
+          {
+            method: "GET",
+            headers: {
+              "Accept": "application/json"
+            }
+          }
         );
 
-        const data = await response.json().catch(() => ({}));
+        const data = await response.json().catch(function () {
+          return {};
+        });
 
         if (!response.ok || !data.valid) {
           showStatusCard(
             "Lien d’avis indisponible",
-            data?.error || "Ce lien n’est pas valide, a expiré ou a déjà été utilisé."
+            data && data.error ? data.error : "Ce lien n’est pas valide, a expiré ou a déjà été utilisé."
           );
           return false;
         }
@@ -1141,18 +1133,21 @@
     }
 
     async function markTokenAsUsed(token) {
-      const response = await fetch(`${BACKEND_BASE_URL}/api/review-request/mark-used`, {
+      const response = await fetch(BACKEND_BASE_URL + "/api/review-request/mark-used", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({ token })
+        body: JSON.stringify({ token: token })
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data = await response.json().catch(function () {
+        return {};
+      });
 
       if (!response.ok) {
-        throw new Error(data?.error || "Impossible de marquer le lien comme utilisé");
+        throw new Error((data && data.error) || "Impossible de marquer le lien comme utilisé");
       }
 
       return data;
@@ -1160,20 +1155,19 @@
 
     function resetStarsAndCounter() {
       const stars = document.querySelectorAll(".review-star");
-      stars.forEach((star) => {
+      stars.forEach(function (star) {
         star.classList.remove("is-active");
         star.setAttribute("aria-checked", "false");
       });
 
+      const ratingInput = getEl("review-rating");
+      if (ratingInput) ratingInput.value = "";
+
       const ratingText = getEl("review-rating-text");
-      if (ratingText) {
-        ratingText.textContent = "Choisissez une note";
-      }
+      if (ratingText) ratingText.textContent = "Choisissez une note";
 
       const counter = getEl("review-character-count");
-      if (counter) {
-        counter.textContent = "0 / 600";
-      }
+      if (counter) counter.textContent = "0 / 600";
     }
 
     function lockReviewFormAfterSuccess() {
@@ -1186,7 +1180,8 @@
       if (commentInput) commentInput.disabled = true;
       if (consentInput) consentInput.disabled = true;
       if (submitBtn) submitBtn.disabled = true;
-      stars.forEach((star) => {
+
+      stars.forEach(function (star) {
         star.disabled = true;
       });
 
@@ -1206,11 +1201,21 @@
       const tokenInput = getEl("review-token");
       const requestEmailInput = getEl("review-request-email");
 
-      if (!form || !nameInput || !emailInput || !ratingInput || !commentInput || !consentInput || !honeypotInput || !tokenInput || !requestEmailInput) {
+      if (
+        !form ||
+        !nameInput ||
+        !emailInput ||
+        !ratingInput ||
+        !commentInput ||
+        !consentInput ||
+        !honeypotInput ||
+        !tokenInput ||
+        !requestEmailInput
+      ) {
         return;
       }
 
-      form.addEventListener("submit", async (event) => {
+      form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         if (form.dataset.submitted === "true") {
@@ -1286,27 +1291,23 @@
         setReviewMessage("Envoi en cours...", "#e2e8f0");
 
         try {
-          const { error } = await submitReview({
-            name,
-            email,
-            rating,
-            comment,
+          const insertResult = await submitReview({
+            name: name,
+            email: email,
+            rating: rating,
+            comment: comment,
             approved: false
           });
+
+          const error = insertResult.error;
 
           if (error) {
             console.error("Erreur envoi avis :", error);
 
             if (isDuplicateEmailError(error)) {
-              setReviewMessage(
-                "Un avis a déjà été envoyé avec cette adresse e-mail.",
-                "#fecaca"
-              );
+              setReviewMessage("Un avis a déjà été envoyé avec cette adresse e-mail.", "#fecaca");
             } else {
-              setReviewMessage(
-                "Impossible d'envoyer l'avis pour le moment.",
-                "#fecaca"
-              );
+              setReviewMessage("Impossible d'envoyer l'avis pour le moment.", "#fecaca");
             }
 
             return;
@@ -1331,13 +1332,13 @@
             "#86efac"
           );
 
-          if (TURNSTILE_SITE_KEY && globalThis.turnstile) {
-            globalThis.turnstile.reset("#captcha-container");
+          if (TURNSTILE_SITE_KEY && window.turnstile) {
+            window.turnstile.reset("#captcha-container");
           }
         } catch (error) {
           console.error("Erreur réseau avis :", error);
           setReviewMessage(
-            error?.message || "Erreur réseau, merci de réessayer.",
+            error && error.message ? error.message : "Erreur réseau, merci de réessayer.",
             "#fecaca"
           );
         } finally {
@@ -1348,7 +1349,7 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("DOMContentLoaded", async function () {
       formStartTime = Date.now();
       initBurgerMenu();
       initRatingSystem();
