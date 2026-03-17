@@ -377,7 +377,6 @@
     }
 
     .review-form-field input,
-    .review-form-field select,
     .review-form-field textarea {
       width: 100%;
       border-radius: 14px;
@@ -402,7 +401,6 @@
     }
 
     .review-form-field input:focus,
-    .review-form-field select:focus,
     .review-form-field textarea:focus {
       border-color: var(--sb-red);
       box-shadow:
@@ -654,9 +652,7 @@
 
       <div id="review-status-card" class="review-status-card" hidden>
         <h2 id="review-status-title">Lien d’avis indisponible</h2>
-        <p id="review-status-text">
-          Ce lien n’est pas valide.
-        </p>
+        <p id="review-status-text">Ce lien n’est pas valide.</p>
         <div class="review-status-card-actions">
           <a href="index.html" class="review-status-button review-status-button--secondary">Retour à l’accueil</a>
           <a href="contact.html" class="review-status-button">Nous contacter</a>
@@ -733,8 +729,6 @@
             </label>
           </div>
 
-          <div id="captcha-container" class="review-form-field" style="display:none;"></div>
-
           <div class="review-form-actions">
             <a href="index.html#avis" class="review-back-link">← Retour aux avis</a>
             <button type="submit" id="review-submit" class="review-submit">Envoyer mon avis</button>
@@ -750,17 +744,9 @@
     Réalisé avec ♥ pour Singbox
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const BACKEND_BASE_URL = "https://singbox-backend.onrender.com";
-    const TURNSTILE_SITE_KEY = "";
 
-    const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let turnstileToken = "";
     let formStartTime = Date.now();
     let validatedReviewRequest = null;
     let validatedReservation = null;
@@ -886,20 +872,6 @@
       btn.textContent = btn.dataset.originalText || "Envoyer mon avis";
     }
 
-    async function submitReview(payload) {
-      return supabaseClient.from("reviews").insert([payload]);
-    }
-
-    function isDuplicateEmailError(error) {
-      return Boolean(
-        error &&
-        (
-          error.code === "23505" ||
-          (typeof error.message === "string" && error.message.toLowerCase().includes("duplicate"))
-        )
-      );
-    }
-
     function initRatingSystem() {
       const stars = Array.from(document.querySelectorAll(".review-star"));
       const ratingInput = getEl("review-rating");
@@ -960,32 +932,6 @@
 
       commentInput.addEventListener("input", updateCounter);
       updateCounter();
-    }
-
-    function initOptionalCaptcha() {
-      const captchaContainer = getEl("captcha-container");
-      if (!captchaContainer || !TURNSTILE_SITE_KEY) return;
-
-      captchaContainer.style.display = "block";
-
-      if (!window.turnstile) {
-        captchaContainer.innerHTML =
-          '<p class="review-helper" style="margin:0;">Le captcha n’a pas pu être chargé.</p>';
-        return;
-      }
-
-      window.turnstile.render("#captcha-container", {
-        sitekey: TURNSTILE_SITE_KEY,
-        callback: function (token) {
-          turnstileToken = token;
-        },
-        "expired-callback": function () {
-          turnstileToken = "";
-        },
-        "error-callback": function () {
-          turnstileToken = "";
-        }
-      });
     }
 
     function normalizeFirstName(name) {
@@ -1132,14 +1078,14 @@
       }
     }
 
-    async function markTokenAsUsed(token) {
-      const response = await fetch(BACKEND_BASE_URL + "/api/review-request/mark-used", {
+    async function submitReviewToBackend(payload) {
+      const response = await fetch(BACKEND_BASE_URL + "/api/review/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json"
         },
-        body: JSON.stringify({ token: token })
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json().catch(function () {
@@ -1147,7 +1093,7 @@
       });
 
       if (!response.ok) {
-        throw new Error((data && data.error) || "Impossible de marquer le lien comme utilisé");
+        throw new Error(data && data.error ? data.error : "Impossible d'envoyer l'avis pour le moment.");
       }
 
       return data;
@@ -1282,42 +1228,22 @@
           return;
         }
 
-        if (TURNSTILE_SITE_KEY && !turnstileToken) {
-          setReviewMessage("Merci de valider le captcha.", "#fecaca");
-          return;
-        }
-
         setReviewSubmitting(true);
         setReviewMessage("Envoi en cours...", "#e2e8f0");
 
         try {
-          const insertResult = await submitReview({
-            name: name,
+          const result = await submitReviewToBackend({
+            token: token,
+            firstName: name,
             email: email,
             rating: rating,
             comment: comment,
-            approved: false
+            consentPublication: consent,
+            website: honeypotValue
           });
-
-          const error = insertResult.error;
-
-          if (error) {
-            console.error("Erreur envoi avis :", error);
-
-            if (isDuplicateEmailError(error)) {
-              setReviewMessage("Un avis a déjà été envoyé avec cette adresse e-mail.", "#fecaca");
-            } else {
-              setReviewMessage("Impossible d'envoyer l'avis pour le moment.", "#fecaca");
-            }
-
-            return;
-          }
-
-          await markTokenAsUsed(token);
 
           form.reset();
           formStartTime = Date.now();
-          turnstileToken = "";
           resetStarsAndCounter();
 
           nameInput.value = name;
@@ -1328,17 +1254,15 @@
           lockReviewFormAfterSuccess();
 
           setReviewMessage(
-            "Merci ! Votre avis a bien été envoyé et sera affiché après vérification 🧡",
+            result && result.message
+              ? result.message
+              : "Merci ! Votre avis a bien été envoyé et sera affiché après vérification 🧡",
             "#86efac"
           );
-
-          if (TURNSTILE_SITE_KEY && window.turnstile) {
-            window.turnstile.reset("#captcha-container");
-          }
         } catch (error) {
-          console.error("Erreur réseau avis :", error);
+          console.error("Erreur envoi avis :", error);
           setReviewMessage(
-            error && error.message ? error.message : "Erreur réseau, merci de réessayer.",
+            error && error.message ? error.message : "Impossible d'envoyer l'avis pour le moment.",
             "#fecaca"
           );
         } finally {
@@ -1354,7 +1278,6 @@
       initBurgerMenu();
       initRatingSystem();
       initCharacterCounter();
-      initOptionalCaptcha();
       initReviewForm();
       await validateReviewToken();
     });
