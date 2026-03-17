@@ -77,18 +77,18 @@
       --sb-bg-soft: rgba(15, 23, 42, 0.78);
       --sb-text-main: #F9FAFB;
       --sb-text-muted: #9CA3AF;
-      --sb-text-soft: rgba(249, 250, 251, 0.86);
+      --sb-text-soft: rgba(249, 250, 251, 0.88);
       --sb-red: #C94C35;
       --sb-orange: #F97316;
       --sb-blue: #2563eb;
-      --sb-border-soft: rgba(148, 163, 184, 0.25);
-      --sb-border-strong: rgba(148, 163, 184, 0.42);
+      --sb-border-soft: rgba(148, 163, 184, 0.22);
+      --sb-border-strong: rgba(148, 163, 184, 0.38);
       --sb-shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.85);
-      --sb-shadow-card: 0 18px 45px rgba(0, 0, 0, 0.65);
+      --sb-shadow-card: 0 18px 45px rgba(0, 0, 0, 0.55);
       --sb-radius-xl: 32px;
       --sb-radius-lg: 24px;
       --sb-radius-md: 18px;
-      --sb-container-width: 1200px;
+      --sb-container-width: 1220px;
     }
 
     * {
@@ -105,15 +105,14 @@
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.34), transparent 38%),
-        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.32), transparent 42%),
-        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.14), transparent 30%),
+        radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.34), transparent 36%),
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.3), transparent 42%),
+        radial-gradient(circle at 80% 85%, rgba(99, 102, 241, 0.14), transparent 30%),
         linear-gradient(145deg, #020617 0%, #030816 40%, #050814 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 28px 16px;
-      position: relative;
       overflow-x: hidden;
     }
 
@@ -121,29 +120,27 @@
     body::after {
       content: "";
       position: fixed;
-      inset: auto;
       pointer-events: none;
       z-index: 0;
+      border-radius: 999px;
       filter: blur(80px);
-      opacity: 0.4;
+      opacity: 0.36;
     }
 
     body::before {
       width: 260px;
       height: 260px;
       left: -60px;
-      top: 60px;
-      background: rgba(201, 76, 53, 0.32);
-      border-radius: 999px;
+      top: 70px;
+      background: rgba(201, 76, 53, 0.34);
     }
 
     body::after {
-      width: 340px;
-      height: 340px;
+      width: 320px;
+      height: 320px;
       right: -100px;
-      top: 40px;
+      top: 30px;
       background: rgba(37, 99, 235, 0.28);
-      border-radius: 999px;
     }
 
     a {
@@ -159,12 +156,12 @@
       border-radius: var(--sb-radius-xl);
       background:
         radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.06), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.22), transparent 40%),
-        linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(2, 6, 23, 0.93));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+        radial-gradient(circle at 100% 0, rgba(37, 99, 235, 0.18), transparent 40%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.97), rgba(2, 6, 23, 0.94));
+      border: 1px solid rgba(148, 163, 184, 0.14);
       box-shadow:
         var(--sb-shadow-xl),
-        0 0 0 1px rgba(15, 23, 42, 0.88);
+        0 0 0 1px rgba(15, 23, 42, 0.9);
       overflow: hidden;
     }
 
@@ -174,7 +171,7 @@
       justify-content: space-between;
       gap: 16px;
       padding: 18px 22px;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
       background: rgba(2, 6, 23, 0.82);
       backdrop-filter: blur(12px);
     }
@@ -197,15 +194,15 @@
       background: #020617;
       box-shadow:
         0 0 0 2px rgba(248, 250, 251, 0.12),
-        0 0 30px rgba(201, 76, 53, 0.42);
+        0 0 30px rgba(201, 76, 53, 0.36);
       flex-shrink: 0;
     }
 
     .brand-logo img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       display: block;
+      object-fit: cover;
     }
 
     .brand-text-block {
@@ -244,8 +241,8 @@
       justify-content: center;
       padding: 10px 16px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.26);
       color: #F9FAFB;
       font-size: 13px;
       font-weight: 600;
@@ -255,14 +252,14 @@
     .top-link:hover,
     .top-link:focus-visible {
       transform: translateY(-1px);
-      border-color: rgba(248, 250, 251, 0.36);
+      border-color: rgba(248, 250, 251, 0.34);
       filter: brightness(1.04);
     }
 
     .top-link.primary {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       border: none;
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.34);
     }
 
     .hero-band {
@@ -278,7 +275,7 @@
         radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.18), transparent 42%),
         radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.16), transparent 45%),
         rgba(2, 6, 23, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.14);
       border-radius: 28px;
       padding: 26px;
       box-shadow: var(--sb-shadow-card);
@@ -334,11 +331,28 @@
     }
 
     .intro-text {
-      margin: 0;
+      margin: 0 0 18px;
       font-size: 15px;
       line-height: 1.8;
       color: var(--sb-text-soft);
       max-width: 640px;
+    }
+
+    .promise-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .promise-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #F9FAFB;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1;
     }
 
     .hero-right {
@@ -349,19 +363,19 @@
     .hero-visual {
       position: relative;
       width: 100%;
-      min-height: 100%;
       border-radius: 24px;
       background:
-        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.25), transparent 28%),
-        radial-gradient(circle at 80% 25%, rgba(37, 99, 235, 0.24), transparent 30%),
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.2), transparent 30%),
+        radial-gradient(circle at 80% 25%, rgba(37, 99, 235, 0.22), transparent 28%),
         linear-gradient(145deg, rgba(15,23,42,0.98), rgba(2,6,23,0.98));
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      border: 1px solid rgba(148, 163, 184, 0.16);
       overflow: hidden;
-      box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.42);
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 100%;
     }
 
     .visual-topline {
@@ -369,6 +383,7 @@
       justify-content: space-between;
       gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .visual-badge {
@@ -380,7 +395,7 @@
       text-transform: uppercase;
       color: #e5e7eb;
       background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.2);
       border-radius: 999px;
       padding: 7px 10px;
     }
@@ -392,37 +407,51 @@
       padding: 18px 0;
     }
 
-    .mic-ring {
-      width: 170px;
-      height: 170px;
+    .logo-ring {
+      width: 182px;
+      height: 182px;
       border-radius: 999px;
-      position: relative;
       display: grid;
       place-items: center;
+      position: relative;
       background:
-        radial-gradient(circle at 50% 50%, rgba(2, 6, 23, 0.95) 0%, rgba(2, 6, 23, 0.92) 58%, rgba(2, 6, 23, 0.0) 60%),
-        conic-gradient(from 0deg, rgba(249,115,22,0.8), rgba(37,99,235,0.7), rgba(201,76,53,0.85), rgba(249,115,22,0.8));
+        radial-gradient(circle at 50% 50%, rgba(2, 6, 23, 0.0) 58%, rgba(249,115,22,0.55) 70%, rgba(37,99,235,0.45) 88%, rgba(2,6,23,0) 100%);
       box-shadow:
-        0 0 40px rgba(249,115,22,0.14),
-        0 0 60px rgba(37,99,235,0.12);
+        0 0 36px rgba(249,115,22,0.12),
+        0 0 50px rgba(37,99,235,0.1);
     }
 
-    .mic-ring::before {
+    .logo-ring::before {
       content: "";
       position: absolute;
-      inset: 16px;
+      inset: 18px;
       border-radius: 999px;
       background:
-        radial-gradient(circle at 50% 40%, rgba(249, 115, 22, 0.12), transparent 40%),
+        radial-gradient(circle at 50% 35%, rgba(249,115,22,0.1), transparent 40%),
         #020617;
-      border: 1px solid rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.14);
     }
 
-    .mic-emoji {
+    .logo-center {
       position: relative;
       z-index: 1;
-      font-size: 54px;
-      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.45));
+      width: 116px;
+      height: 116px;
+      border-radius: 999px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: #020617;
+      box-shadow:
+        0 0 0 2px rgba(248,250,251,0.1),
+        0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .logo-center img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .visual-bottom {
@@ -435,7 +464,7 @@
       flex: 1 1 120px;
       border-radius: 18px;
       background: rgba(15, 23, 42, 0.72);
-      border: 1px solid rgba(148, 163, 184, 0.16);
+      border: 1px solid rgba(148, 163, 184, 0.14);
       padding: 12px 12px 10px;
     }
 
@@ -455,7 +484,7 @@
 
     .content-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.98fr);
+      grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.98fr);
       gap: 24px;
       padding: 24px 22px 22px;
     }
@@ -469,6 +498,8 @@
 
     .countdown-card,
     .newsletter-card,
+    .info-card,
+    .video-card,
     .right-card {
       background: var(--sb-bg-card);
       border: 1px solid var(--sb-border-soft);
@@ -476,7 +507,11 @@
       box-shadow: var(--sb-shadow-card);
     }
 
-    .countdown-card {
+    .countdown-card,
+    .newsletter-card,
+    .info-card,
+    .video-card,
+    .right-card {
       padding: 22px;
     }
 
@@ -497,7 +532,7 @@
     .countdown-item {
       border-radius: 20px;
       background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.18);
+      border: 1px solid rgba(148, 163, 184, 0.14);
       padding: 16px 10px 14px;
       text-align: center;
     }
@@ -517,11 +552,7 @@
       color: #9CA3AF;
     }
 
-    .newsletter-card {
-      padding: 22px;
-    }
-
-    .newsletter-title {
+    .card-title {
       font-family: "League Spartan", system-ui, sans-serif;
       font-size: 26px;
       line-height: 1;
@@ -529,7 +560,7 @@
       margin: 0 0 10px;
     }
 
-    .newsletter-label {
+    .card-text {
       font-size: 13px;
       color: var(--sb-text-soft);
       line-height: 1.8;
@@ -571,24 +602,30 @@
       outline-offset: 2px;
     }
 
-    .newsletter-button {
+    .newsletter-button,
+    .secondary-cta {
       border: none;
       border-radius: 999px;
       padding: 13px 22px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #F9FAFB;
       white-space: nowrap;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .newsletter-button {
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       box-shadow:
         0 0 0 1px rgba(248,250,251,0.08),
         0 16px 38px rgba(0,0,0,0.44);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
 
     .newsletter-button:hover,
-    .newsletter-button:focus-visible {
+    .newsletter-button:focus-visible,
+    .secondary-cta:hover,
+    .secondary-cta:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.04);
     }
@@ -614,8 +651,131 @@
       line-height: 1.6;
     }
 
+    .why-list,
+    .steps-list,
+    .occasions-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .why-item,
+    .step-item,
+    .occasion-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 12px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .why-icon,
+    .step-number,
+    .occasion-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(249, 115, 22, 0.14);
+      color: #F9FAFB;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .item-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #F9FAFB;
+      margin-bottom: 4px;
+    }
+
+    .item-text {
+      font-size: 12px;
+      color: var(--sb-text-muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(201, 76, 53, 0.16), transparent 38%),
+        radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.16), transparent 38%),
+        rgba(2, 6, 23, 0.94);
+    }
+
+    .video-placeholder {
+      margin-top: 12px;
+      border-radius: 22px;
+      min-height: 260px;
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.95), rgba(2,6,23,0.95));
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .video-inner {
+      max-width: 420px;
+    }
+
+    .video-play {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      box-shadow: 0 16px 34px rgba(0,0,0,0.34);
+      font-size: 24px;
+    }
+
+    .video-title {
+      font-family: "League Spartan", system-ui, sans-serif;
+      font-size: 24px;
+      line-height: 1;
+      margin: 0 0 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .video-text {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--sb-text-soft);
+    }
+
+    .video-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--sb-text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .secondary-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .secondary-cta {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
     .right-card {
-      padding: 22px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -693,17 +853,17 @@
       padding: 9px 14px;
       border-radius: 999px;
       background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.32);
+      border: 1px solid rgba(148, 163, 184, 0.24);
       font-size: 13px;
       color: #F9FAFB;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.4);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.3);
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
 
     .social-btn:hover,
     .social-btn:focus-visible {
       transform: translateY(-1px);
-      border-color: rgba(248, 250, 251, 0.38);
+      border-color: rgba(248, 250, 251, 0.34);
     }
 
     .social-icon {
@@ -721,11 +881,6 @@
       height: 14px;
     }
 
-    .about-block,
-    .features-block {
-      padding-top: 2px;
-    }
-
     .about-title {
       font-size: 11px;
       letter-spacing: 0.18em;
@@ -739,64 +894,6 @@
       color: rgba(249, 250, 251, 0.88);
       margin: 0;
       line-height: 1.8;
-    }
-
-    .features {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 13px;
-      color: var(--sb-text-muted);
-    }
-
-    .features li {
-      margin-bottom: 9px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.65;
-    }
-
-    .features li span.bullet {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      background: rgba(148, 163, 184, 0.16);
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .expect-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .expect-card {
-      background: rgba(15, 23, 42, 0.74);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: 18px;
-      padding: 14px 12px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.28);
-    }
-
-    .expect-card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: #F9FAFB;
-      margin-bottom: 6px;
-    }
-
-    .expect-card-text {
-      font-size: 12px;
-      line-height: 1.65;
-      color: var(--sb-text-muted);
-      margin: 0;
     }
 
     .side-footnote {
@@ -814,11 +911,8 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-visual {
-        min-height: 300px;
-      }
-
-      .expect-grid {
+      .expect-grid,
+      .occasions-list {
         grid-template-columns: 1fr;
       }
     }
@@ -848,6 +942,8 @@
       .hero-panel,
       .countdown-card,
       .newsletter-card,
+      .info-card,
+      .video-card,
       .right-card {
         border-radius: 22px;
       }
@@ -868,6 +964,16 @@
       .brand-name {
         font-size: 18px;
       }
+
+      .logo-ring {
+        width: 156px;
+        height: 156px;
+      }
+
+      .logo-center {
+        width: 100px;
+        height: 100px;
+      }
     }
 
     @media (max-width: 520px) {
@@ -876,17 +982,18 @@
       }
 
       .newsletter-button,
-      .top-link {
+      .top-link,
+      .secondary-cta {
         width: 100%;
         justify-content: center;
       }
 
-      .visual-bottom {
-        flex-direction: column;
-      }
-
       h1 {
         font-size: 30px;
+      }
+
+      .video-placeholder {
+        min-height: 220px;
       }
     }
   </style>
@@ -925,12 +1032,19 @@
           </div>
 
           <div class="eyebrow">Bientôt à Toulouse</div>
-          <h1>Le karaoké box nouvelle génération arrive bientôt</h1>
+          <h1>Une nouvelle façon de vivre le karaoké arrive bientôt</h1>
           <p class="intro-text">
-            Singbox prépare son ouverture à Toulouse avec des box privatives, une réservation simple,
-            un accès fluide et une ambiance pensée pour les soirées entre amis, anniversaires, EVJF/EVG
-            et moments qui méritent plus qu’un simple bar.
+            Box privatives, réservation simple, ambiance immersive et moments à partager entre amis :
+            Singbox prépare son ouverture à Toulouse avec l’envie de proposer une expérience festive,
+            fluide et vraiment mémorable dès les premiers jours.
           </p>
+
+          <div class="promise-row">
+            <div class="promise-chip">Privatif</div>
+            <div class="promise-chip">Simple</div>
+            <div class="promise-chip">Immersif</div>
+            <div class="promise-chip">Festif</div>
+          </div>
         </div>
 
         <div class="hero-right" aria-hidden="true">
@@ -941,8 +1055,10 @@
             </div>
 
             <div class="visual-stage">
-              <div class="mic-ring">
-                <div class="mic-emoji">🎤</div>
+              <div class="logo-ring">
+                <div class="logo-center">
+                  <img src="logo.png" alt="" />
+                </div>
               </div>
             </div>
 
@@ -990,13 +1106,37 @@
         </section>
 
         <section class="newsletter-card" id="newsletter-section" aria-label="Inscription newsletter Singbox">
-          <h2 class="newsletter-title">Soyez dans les premiers au courant</h2>
-          <p class="newsletter-label">
-            Inscrivez-vous pour recevoir les annonces d’ouverture, les avancées du projet, les premières
-            infos sur le lieu et, potentiellement, les invitations ou offres de lancement.
+          <h2 class="card-title">Pourquoi s’inscrire maintenant ?</h2>
+          <p class="card-text">
+            Pour être prévenu de l’ouverture, recevoir les premières infos, suivre les coulisses
+            du projet et ne pas manquer les annonces de lancement.
           </p>
 
-          <div class="newsletter-row">
+          <div class="why-list">
+            <div class="why-item">
+              <div class="why-icon">✓</div>
+              <div>
+                <div class="item-title">Être prévenu en priorité</div>
+                <p class="item-text">Vous saurez quand Singbox ouvre et quand les premières infos tombent.</p>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon">✓</div>
+              <div>
+                <div class="item-title">Suivre les coulisses</div>
+                <p class="item-text">Avancée du lieu, aménagement, ambiance, tests et annonces du projet.</p>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon">✓</div>
+              <div>
+                <div class="item-title">Recevoir les infos de lancement</div>
+                <p class="item-text">Premières dates, nouveautés, actualités et éventuelles offres d’ouverture.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="newsletter-row" style="margin-top:14px;">
             <input
               type="email"
               id="newsletter-email"
@@ -1011,9 +1151,80 @@
           </div>
           <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
 
+          <div class="secondary-cta-row">
+            <a
+              href="https://www.instagram.com/singboxtoulouse/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="secondary-cta"
+            >
+              Suivre le projet sur Instagram
+            </a>
+          </div>
+
           <p class="newsletter-note">
             Aucun spam : uniquement les informations utiles autour de l’ouverture de Singbox.
           </p>
+        </section>
+
+        <section class="info-card" aria-label="Comment ça marche">
+          <div class="section-label">Comment ça marche</div>
+          <h2 class="card-title">Une expérience pensée pour être simple</h2>
+          <p class="card-text">
+            L’idée est de rendre l’expérience la plus fluide possible, de la réservation jusqu’à la fin de votre séance.
+          </p>
+
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div>
+                <div class="item-title">Je réserve en ligne</div>
+                <p class="item-text">Je choisis ma date, mon créneau et ma box en quelques clics.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div>
+                <div class="item-title">Je reçois mon accès</div>
+                <p class="item-text">Je récupère mes infos de séance et mon QR code de manière simple et claire.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div>
+                <div class="item-title">J’accède à ma box</div>
+                <p class="item-text">Je profite d’un espace privatif pensé pour chanter entre nous, sans pression.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div>
+                <div class="item-title">Je vis ma séance</div>
+                <p class="item-text">Je chante, je profite, je partage un moment fun avec mon groupe.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="video-card" aria-label="Zone vidéo concept Singbox">
+          <div class="section-label">Vidéo à venir</div>
+          <h2 class="card-title">Découvrir le concept en vidéo</h2>
+          <p class="card-text">
+            Une vidéo explicative viendra bientôt compléter cette page pour montrer visuellement le parcours
+            Singbox et l’ambiance des futures box.
+          </p>
+
+          <div class="video-placeholder">
+            <div class="video-inner">
+              <div class="video-play">▶</div>
+              <h3 class="video-title">Trailer Singbox bientôt disponible</h3>
+              <p class="video-text">
+                Ici, tu pourras intégrer plus tard une vidéo teaser, un mini trailer ou une animation
+                “comment ça marche” avec réservation, QR code, accès et séance.
+              </p>
+              <div class="video-note">Zone prête à accueillir une vidéo personnalisée</div>
+            </div>
+          </div>
         </section>
       </div>
 
@@ -1048,42 +1259,37 @@
           </ul>
         </div>
 
-        <div class="features-block">
-          <p class="side-section-label">Ce qui vous attend</p>
-          <ul class="features">
-            <li>
-              <span class="bullet">🎤</span>
-              <span>Box privatives et insonorisées pour chanter entre vous, sans pression.</span>
-            </li>
-            <li>
-              <span class="bullet">📲</span>
-              <span>Réservation en ligne simple et parcours pensé pour être fluide du début à la fin.</span>
-            </li>
-            <li>
-              <span class="bullet">🎉</span>
-              <span>Parfait pour anniversaires, EVJF/EVG, afterworks et soirées entre amis.</span>
-            </li>
-          </ul>
-
-          <div class="expect-grid">
-            <article class="expect-card">
-              <div class="expect-card-title">Box privatives</div>
-              <p class="expect-card-text">
-                Des espaces dédiés pour chanter entre vous dans une ambiance immersive.
-              </p>
-            </article>
-            <article class="expect-card">
-              <div class="expect-card-title">Réservation simple</div>
-              <p class="expect-card-text">
-                Un parcours rapide pour choisir votre créneau et réserver facilement.
-              </p>
-            </article>
-            <article class="expect-card">
-              <div class="expect-card-title">Expérience fluide</div>
-              <p class="expect-card-text">
-                Une expérience pensée pour être agréable avant, pendant et après votre séance.
-              </p>
-            </article>
+        <div>
+          <p class="side-section-label">Pour quelles occasions ?</p>
+          <div class="occasions-list">
+            <div class="occasion-item">
+              <div class="occasion-icon">🎂</div>
+              <div>
+                <div class="item-title">Anniversaires</div>
+                <p class="item-text">Un moment original et marquant à partager dans une box rien qu’à vous.</p>
+              </div>
+            </div>
+            <div class="occasion-item">
+              <div class="occasion-icon">🎉</div>
+              <div>
+                <div class="item-title">Soirées entre amis</div>
+                <p class="item-text">Pour chanter, se challenger et profiter d’une ambiance fun sans gêne extérieure.</p>
+              </div>
+            </div>
+            <div class="occasion-item">
+              <div class="occasion-icon">💍</div>
+              <div>
+                <div class="item-title">EVJF / EVG</div>
+                <p class="item-text">Une activité conviviale, festive et privative pour marquer l’événement.</p>
+              </div>
+            </div>
+            <div class="occasion-item">
+              <div class="occasion-icon">🏢</div>
+              <div>
+                <div class="item-title">Afterworks & team building</div>
+                <p class="item-text">Un format simple pour créer de bons souvenirs entre collègues.</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1125,7 +1331,7 @@
           </div>
         </div>
 
-        <div class="about-block">
+        <div>
           <p class="about-title">À propos du projet</p>
           <p class="about-text">
             Singbox est né avec l’envie de recréer à Toulouse l’esprit des karaokés box asiatiques :
@@ -1144,14 +1350,8 @@
   <!-- Supabase Newsletter -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // =========================
-    // PARAMÈTRES À METTRE À JOUR
-    // =========================
     const LAUNCH_DATE = new Date("2026-04-30T18:00:00+02:00");
 
-    // =========================
-    // COUNTDOWN
-    // =========================
     function pad(n) {
       return n.toString().padStart(2, "0");
     }
@@ -1174,13 +1374,12 @@
     }
 
     function getFrenchLaunchDateString() {
-      const options = {
+      return LAUNCH_DATE.toLocaleDateString("fr-FR", {
         weekday: "long",
         day: "2-digit",
         month: "long",
         year: "numeric"
-      };
-      return LAUNCH_DATE.toLocaleDateString("fr-FR", options);
+      });
     }
 
     function getFrenchLaunchTimeString() {
@@ -1197,25 +1396,19 @@
 
     function renderPrelaunchState(parts) {
       const els = getCountdownEls();
-
       if (els.daysEl) els.daysEl.textContent = pad(parts.days);
       if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
       if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
       if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
-
-      setChipText(
-        "Ouverture estimée le " + getFrenchLaunchDateString() + " à " + getFrenchLaunchTimeString()
-      );
+      setChipText("Ouverture estimée le " + getFrenchLaunchDateString() + " à " + getFrenchLaunchTimeString());
     }
 
     function renderLaunchImminentState(parts) {
       const els = getCountdownEls();
-
       if (els.daysEl) els.daysEl.textContent = pad(parts.days);
       if (els.hoursEl) els.hoursEl.textContent = pad(parts.hours);
       if (els.minutesEl) els.minutesEl.textContent = pad(parts.minutes);
       if (els.secondsEl) els.secondsEl.textContent = pad(parts.seconds);
-
       setChipText("Le lancement approche : ouverture imminente");
     }
 
@@ -1257,9 +1450,6 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // =========================
-    // NEWSLETTER SUPABASE
-    // =========================
     const supabaseClient = globalThis.supabase.createClient(
       "https://sfckofydfqbllkxhxwnt.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
