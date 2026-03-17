@@ -5,43 +5,35 @@
   <title>Réserver votre karaoké box à Toulouse | Singbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
   <meta
     name="description"
-    content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire."
+    content="Réservez facilement votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box et un créneau libre de 1h30."
   />
   <meta name="robots" content="index,follow" />
-  <meta
-    name="keywords"
-    content="karaoke toulouse, karaoké toulouse, karaoke box toulouse, karaoké privatif toulouse, réserver karaoké toulouse, singbox, nuit étoilée, ambiance sunset"
-  />
-  <link rel="canonical" href="https://www.singbox.fr/reservation" />
+  <link rel="canonical" href="https://www.singbox.fr/reservation.html" />
+  <meta name="theme-color" content="#050814" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
   <meta
     property="og:description"
-    content="Réservez votre box de karaoké privative à Toulouse (Nuit étoilée ou Ambiance Sunset) pour une session de 1h30. Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier."
+    content="Réservez votre box de karaoké privative à Toulouse pour une session de 1h30. Créneaux dynamiques, tarifs selon l’horaire et ajout immédiat au panier."
   />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.singbox.fr/reservation" />
+  <meta property="og:url" content="https://www.singbox.fr/reservation.html" />
   <meta property="og:site_name" content="Singbox" />
   <meta property="og:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Réserver votre karaoké box à Toulouse | Singbox" />
   <meta
     name="twitter:description"
-    content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox : sessions de 1h30, deux ambiances, tarifs dynamiques et réservation 100% en ligne."
+    content="Réservez votre karaoké box privative à Toulouse en quelques clics chez Singbox."
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.png" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
 
-  <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -67,14 +59,13 @@
   }
   </script>
 
-  <!-- Données structurées WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Réserver votre karaoké box à Toulouse | Singbox",
-    "url": "https://www.singbox.fr/reservation",
-    "description": "Réservez votre karaoké box privative à Toulouse chez Singbox. Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et un créneau libre de 1h30, avec tarifs dynamiques selon le jour et l’horaire.",
+    "url": "https://www.singbox.fr/reservation.html",
+    "description": "Réservez votre karaoké box privative à Toulouse chez Singbox.",
     "inLanguage": "fr-FR",
     "isPartOf": {
       "@type": "WebSite",
@@ -84,7 +75,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -92,11 +82,21 @@
     rel="stylesheet"
   />
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="css/global.css" />
 
-  <!-- CSS SPÉCIFIQUE À LA PAGE RÉSERVATION -->
   <style>
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
     .hero-resa {
       position: relative;
       padding: 12rem 0 3.25rem;
@@ -132,6 +132,7 @@
       margin: 0;
       font-size: 14px;
       color: rgba(249, 250, 251, 0.88);
+      line-height: 1.6;
     }
 
     main {
@@ -202,6 +203,7 @@
       gap: 4px;
       align-items: baseline;
       font-size: 13px;
+      flex-wrap: wrap;
     }
 
     .resa-indicator {
@@ -260,6 +262,13 @@
       box-shadow:
         0 0 0 1px rgba(248, 250, 251, 0.18),
         0 20px 50px rgba(0, 0, 0, 1);
+    }
+
+    .resa-header button[disabled] {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+      filter: none;
     }
 
     .resa-note {
@@ -476,7 +485,8 @@
       font-size: 12px;
       color: #f9fafb;
       white-space: pre-line;
-      min-height: 1em;
+      min-height: 1.2em;
+      line-height: 1.5;
     }
 
     dialog#slot-modal {
@@ -751,6 +761,14 @@
       justify-content: center;
     }
 
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+    }
+
     @media (max-width: 600px) {
       .hero-resa {
         padding-top: 9rem;
@@ -818,8 +836,8 @@
       <p class="hero-eyebrow">RÉSERVATION KARAOKÉ BOX</p>
       <h1>Réserver votre karaoké box à Toulouse</h1>
       <p>
-        Choisissez votre date, votre box (Nuit étoilée ou Ambiance Sunset) et cliquez sur une session de 1h30 libre
-        pour l’ajouter à votre panier. Réservation 100&nbsp;% en ligne, 24h/24.
+        Choisissez votre date, votre box et cliquez sur une session de 1h30 libre pour l’ajouter à votre panier.
+        Réservation 100&nbsp;% en ligne, 24h/24.
       </p>
     </div>
   </section>
@@ -858,8 +876,7 @@
         </div>
 
         <p class="resa-note">
-          Tarifs par personne, facturation minimale 2 personnes (même si vous venez seul·e). Capacité
-          maximale : 8 personnes par box. Sessions de 1h30.
+          Tarifs par personne, facturation minimale 2 personnes. Capacité maximale : 8 personnes par box. Sessions de 1h30.
           Heures creuses seulement en semaine hors vacances scolaires.
         </p>
 
@@ -897,16 +914,14 @@
 
         <p class="resa-pricing-rules">
           7,90&nbsp;€ par personne en heures creuses (4h–14h) du lundi au vendredi hors vacances scolaires –
-          9,90&nbsp;€ par personne le reste du temps (week-end et vacances scolaires compris).
-          Facturation minimale 2 personnes par session de 1h30 (si vous venez seul·e, vous payez pour 2 personnes).
+          9,90&nbsp;€ par personne le reste du temps. Facturation minimale 2 personnes par session de 1h30.
         </p>
 
-        <p id="message"></p>
+        <p id="message" aria-live="polite" role="status"></p>
       </section>
     </div>
   </main>
 
-  <!-- MODAL -->
   <dialog id="slot-modal" aria-labelledby="modal-title" aria-describedby="modal-slot-info">
     <div class="modal-dialog">
       <h2 id="modal-title">Session ajoutée au panier</h2>
@@ -917,7 +932,7 @@
         <strong><span id="modal-persons-current"></span></strong> (facturation minimale 2 personnes).
       </p>
       <p class="modal-extra-text">
-        Si tu viens seul(e), tu peux mettre 1 personne (tu payeras automatiquement pour 2).
+        Si tu viens seul(e), tu peux mettre 1 personne. Le minimum facturé reste 2 personnes.
         Les box peuvent accueillir jusqu’à 8 personnes.
       </p>
 
@@ -950,10 +965,18 @@
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
-        <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" required />
+        <input
+          id="newsletter-email"
+          type="email"
+          placeholder="Entrez votre adresse e-mail"
+          autocomplete="email"
+          inputmode="email"
+        />
+        <label for="newsletter-company" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input id="newsletter-company" class="newsletter-honeypot" type="text" tabindex="-1" autocomplete="off" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
-      <p id="newsletter-message" class="newsletter-message"></p>
+      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
     </div>
 
     <div class="footer-columns">
@@ -1007,8 +1030,13 @@
     <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const API_BASE = "https://singbox-backend.onrender.com";
+    const API_BASE =
+      (globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://singbox-backend.onrender.com";
+
     const SLOT_DURATION_MIN = 90;
     const SLOT_STEP_MIN = 90;
     const MIN_BILLABLE_PERSONS = 2;
@@ -1019,6 +1047,9 @@
     const OFF_PEAK_RATE = 7.9;
     const STANDARD_RATE = 9.9;
 
+    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+
     let refreshPlanningGlobal = null;
     let currentDateIsWeekend = false;
     let currentDateIsHoliday = false;
@@ -1027,6 +1058,7 @@
     let currentPlanningDateIso = null;
     let currentSlotChoice = null;
     let currentSlotCell = null;
+    let supabaseClient = null;
 
     const BOXES = [
       { id: 1, name: "Nuit étoilée" },
@@ -1035,6 +1067,12 @@
 
     function getEl(id) {
       return document.getElementById(id);
+    }
+
+    function setMessage(text) {
+      const msgEl = getEl("message");
+      if (!msgEl) return;
+      msgEl.textContent = text || "";
     }
 
     function toLocalYMD(dateObj) {
@@ -1117,7 +1155,8 @@
 
     function getPanier() {
       try {
-        const parsed = JSON.parse(localStorage.getItem("panier"));
+        const raw = localStorage.getItem("panier");
+        const parsed = raw ? JSON.parse(raw) : [];
         return Array.isArray(parsed) ? parsed : [];
       } catch (error) {
         console.error("Erreur lecture panier :", error);
@@ -1134,6 +1173,7 @@
       if (!el) return;
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
     }
 
     function formatSlotRange(startMinutes) {
@@ -1143,13 +1183,16 @@
     }
 
     function buildCartReservation(boxId, boxName, dateObj, startMinutes, price, persons) {
+      const isoDate = toLocalYMD(dateObj);
       return {
         type: "reservation",
+        slotId: `${isoDate}__box${boxId}__${startMinutes}`,
         boxId,
         boxName,
-        date: toLocalYMD(dateObj),
+        date: isoDate,
         hour: minutesToTimeLabel(startMinutes),
         startMinutes,
+        heure: formatSlotRange(startMinutes).replace("–", " - "),
         price,
         persons
       };
@@ -1163,22 +1206,10 @@
     }
 
     function updateAddToCartMessage(boxName, startMinutes, price, persons) {
-      const msgEl = getEl("message");
-      if (!msgEl) return;
-
-      const heureLabel = formatSlotRange(startMinutes);
       const prixAffiche = Number(price).toFixed(2).replace(".", ",");
-
-      msgEl.innerHTML =
-        "<span>Session ajoutée au panier : <strong>" +
-        boxName +
-        "</strong> – " +
-        heureLabel +
-        " – " +
-        prixAffiche +
-        "€ – " +
-        persons +
-        " pers.</span>";
+      setMessage(
+        `Session ajoutée au panier : ${boxName} – ${formatSlotRange(startMinutes)} – ${prixAffiche}€ – ${persons} pers.`
+      );
     }
 
     function addSlotToCart(boxId, boxName, dateObj, startMinutes, price, persons) {
@@ -1261,7 +1292,7 @@
       bookedIndex = {};
 
       try {
-        const res = await fetch(`${API_BASE}/api/slots?date=${isoDate}`);
+        const res = await fetch(`${API_BASE}/api/slots?date=${encodeURIComponent(isoDate)}`);
         if (!res.ok) {
           console.error("Erreur HTTP /api/slots :", res.status);
           return;
@@ -1543,10 +1574,12 @@
       table.appendChild(thead);
 
       const tbody = document.createElement("tbody");
+      let displayedRows = 0;
 
       startMinutesList.forEach((startMinutes, rowIndex) => {
         if (isPastSlotForToday(date, startMinutes, now)) return;
 
+        displayedRows++;
         const tr = document.createElement("tr");
         const rowHeader = createHourHeaderCell(startMinutes, rowIndex);
         tr.appendChild(rowHeader);
@@ -1568,6 +1601,19 @@
 
         tbody.appendChild(tr);
       });
+
+      if (displayedRows === 0) {
+        const tr = document.createElement("tr");
+        const th = document.createElement("th");
+        th.scope = "row";
+        th.textContent = "Info";
+        const td = document.createElement("td");
+        td.colSpan = 2;
+        td.textContent = "Aucun créneau disponible à afficher pour cette date.";
+        tr.appendChild(th);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      }
 
       table.appendChild(tbody);
     }
@@ -1725,8 +1771,7 @@
       let initialPersons = 2;
 
       if (urlPeople) {
-        const parsed = clampPersons(urlPeople);
-        initialPersons = parsed;
+        initialPersons = clampPersons(urlPeople);
       }
 
       if (personsSelect) {
@@ -1743,32 +1788,53 @@
       const todayYMD = toLocalYMD(new Date());
 
       if (iso < todayYMD) {
-        const msg = getEl("message");
-        if (msg) msg.textContent = "Tu ne peux pas réserver à une date passée 🙂";
+        setMessage("Tu ne peux pas réserver à une date passée 🙂");
         return null;
       }
 
       return iso;
     }
 
-    function clearReservationMessage() {
-      const msgEl = getEl("message");
-      if (msgEl) msgEl.textContent = "";
-    }
-
     async function refreshPlanning() {
       const dateInput = getEl("date-input");
+      const loadButton = getEl("load-button");
       const iso = getValidatedSelectedDate(dateInput);
       if (!iso) return;
 
       const theDate = parseIsoDate(iso);
 
-      await checkDateContext(iso);
-      await fetchReservationsForDate(iso);
+      if (loadButton) {
+        loadButton.disabled = true;
+        loadButton.textContent = "Chargement...";
+      }
 
-      buildPlanningTable(theDate);
-      buildMobileSlots(theDate);
-      clearReservationMessage();
+      setMessage("Chargement des créneaux...");
+
+      try {
+        await checkDateContext(iso);
+        await fetchReservationsForDate(iso);
+
+        buildPlanningTable(theDate);
+        buildMobileSlots(theDate);
+        setMessage("");
+      } finally {
+        if (loadButton) {
+          loadButton.disabled = false;
+          loadButton.textContent = "Voir les créneaux disponibles";
+        }
+      }
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
     }
 
     function bindBurgerMenu() {
@@ -1778,15 +1844,36 @@
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", String(mobileNav.classList.contains("open")));
+        const isOpen = mobileNav.classList.contains("open");
+        if (isOpen) {
+          closeMobileNav(mobileNav, burgerBtn);
+        } else {
+          openMobileNav(mobileNav, burgerBtn);
+        }
       });
 
       mobileNav.addEventListener("click", (event) => {
         const target = event.target;
         if (target instanceof HTMLElement && target.tagName === "A") {
-          mobileNav.classList.remove("open");
-          burgerBtn.setAttribute("aria-expanded", "false");
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (
+          mobileNav.classList.contains("open") &&
+          target instanceof Node &&
+          !mobileNav.contains(target) &&
+          !burgerBtn.contains(target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
         }
       });
     }
@@ -1865,52 +1952,52 @@
       });
     }
 
-    function initReservationPage() {
-      bindBurgerMenu();
-      updateCartIcon();
-
-      const dateInput = getEl("date-input");
-      const personsSelect = getEl("persons-select");
-
-      getInitialDateValue(dateInput);
-      selectedPersons = getInitialPersonsValue(personsSelect);
-      updatePersonsIndicator(selectedPersons);
-
-      bindPersonsSelect();
-      bindLoadButton();
-      bindModalPersonsSelect();
-      bindModalButtons();
-      bindModalDismiss();
-
-      refreshPlanningGlobal = refreshPlanning;
-      refreshPlanning();
+    function initSupabaseClient() {
+      try {
+        if (globalThis.supabase && typeof globalThis.supabase.createClient === "function") {
+          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+      } catch (error) {
+        console.error("Erreur initialisation Supabase :", error);
+        supabaseClient = null;
+      }
     }
 
-    document.addEventListener("DOMContentLoaded", initReservationPage);
-  </script>
+    function isValidEmail(email) {
+      if (typeof email !== "string") return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+    }
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
     function initNewsletter() {
-      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-      const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseKey);
-
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
+      const emailInput = getEl("newsletter-email");
+      const submitBtn = getEl("newsletter-submit");
+      const messageBox = getEl("newsletter-message");
+      const honeypot = getEl("newsletter-company");
 
       if (!emailInput || !submitBtn || !messageBox) return;
 
       submitBtn.addEventListener("click", async () => {
         const email = emailInput.value.trim();
+        const botValue = honeypot?.value || "";
 
         messageBox.style.color = "#e5e7eb";
         messageBox.textContent = "Envoi en cours...";
 
-        if (!email || !email.includes("@")) {
+        if (botValue) {
+          messageBox.style.color = "#38bdf8";
+          messageBox.textContent = "Merci !";
+          return;
+        }
+
+        if (!isValidEmail(email)) {
           messageBox.style.color = "#ff6b6b";
           messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
+          return;
+        }
+
+        if (!supabaseClient) {
+          messageBox.style.color = "#ff6b6b";
+          messageBox.textContent = "Service newsletter indisponible.";
           return;
         }
 
@@ -1938,6 +2025,7 @@
           messageBox.style.color = "#38bdf8";
           messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
           emailInput.value = "";
+          if (honeypot) honeypot.value = "";
         } catch (error) {
           console.error("Erreur newsletter :", error);
           messageBox.style.color = "#ff6b6b";
@@ -1946,7 +2034,30 @@
       });
     }
 
-    document.addEventListener("DOMContentLoaded", initNewsletter);
+    function initReservationPage() {
+      bindBurgerMenu();
+      initSupabaseClient();
+      initNewsletter();
+      updateCartIcon();
+
+      const dateInput = getEl("date-input");
+      const personsSelect = getEl("persons-select");
+
+      getInitialDateValue(dateInput);
+      selectedPersons = getInitialPersonsValue(personsSelect);
+      updatePersonsIndicator(selectedPersons);
+
+      bindPersonsSelect();
+      bindLoadButton();
+      bindModalPersonsSelect();
+      bindModalButtons();
+      bindModalDismiss();
+
+      refreshPlanningGlobal = refreshPlanning;
+      refreshPlanning();
+    }
+
+    document.addEventListener("DOMContentLoaded", initReservationPage);
   </script>
 
 </body>
