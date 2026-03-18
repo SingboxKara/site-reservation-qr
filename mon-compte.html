@@ -1426,7 +1426,6 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -1464,7 +1463,6 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -1490,7 +1488,6 @@
 
         <div class="account-layout">
           <div class="account-left">
-            <!-- Bloc connexion -->
             <div class="card" id="login-card" style="margin-bottom:1.2rem; display:none;">
               <h2 class="login-card-title">Se connecter</h2>
               <p class="login-description">
@@ -1520,7 +1517,6 @@
               <div id="login-message" class="login-message" aria-live="polite" role="status"></div>
             </div>
 
-            <!-- Carte principale -->
             <div class="card account-main-card">
               <h2>Mes informations</h2>
               <p class="account-message" id="account-message" aria-live="polite" role="status"></p>
@@ -1613,7 +1609,6 @@
             </div>
           </div>
 
-          <!-- Carte fidélité -->
           <div class="card loyalty-card">
             <div class="loyalty-pill">
               <span>♪</span>
@@ -1672,7 +1667,6 @@
     </section>
   </main>
 
-  <!-- MODAL QR -->
   <dialog id="qr-modal" class="modal-dialog" aria-labelledby="qr-modal-title">
     <h2 id="qr-modal-title">Votre QR code</h2>
     <p id="qr-modal-subtitle">Présentez ce QR code à l’entrée.</p>
@@ -1686,7 +1680,6 @@
     </div>
   </dialog>
 
-  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -1746,7 +1739,6 @@
     <div class="footer-bottom">Réalisé avec ♥ pour Singbox</div>
   </footer>
 
-  <!-- JS PRINCIPAL -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
@@ -2189,25 +2181,21 @@
         return "";
       }
 
-      if (canRefund) {
-        return [
-          '<div class="reservation-refund-row">',
-          "  <span>Remboursement possible jusqu'à 24h avant la séance.</span>",
-          '  <button',
-          '    class="reservation-refund-btn"',
-          `    data-reservation-id="${reservationId}"`,
-          `    data-start-time="${startTimeIso}"`,
-          '    type="button"',
-          "  >",
-          "    Demander un remboursement",
-          "  </button>",
-          "</div>"
-        ].join("");
-      }
+      const infoText = canRefund
+        ? "Remboursement possible jusqu'à 24h avant la séance."
+        : "Le remboursement n'est plus possible (moins de 24h avant la séance).";
 
       return [
         '<div class="reservation-refund-row">',
-        "  <span>Le remboursement n'est plus possible (moins de 24h avant la séance).</span>",
+        `  <span>${infoText}</span>`,
+        '  <button',
+        '    class="reservation-refund-btn"',
+        `    data-reservation-id="${reservationId}"`,
+        `    data-start-time="${startTimeIso}"`,
+        `    type="button" ${canRefund ? "" : "disabled"}`,
+        "  >",
+        "    Demander un remboursement",
+        "  </button>",
         "</div>"
       ].join("");
     }
