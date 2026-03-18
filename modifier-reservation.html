@@ -39,6 +39,7 @@
   />
 
   <link rel="stylesheet" href="css/global.css" />
+  <script src="https://js.stripe.com/v3/"></script>
 
   <style>
     .sr-only {
@@ -871,6 +872,15 @@
     const API_BASE = "https://singbox-backend.onrender.com";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+
+    const STRIPE_PUBLIC_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS"; // ⚠️ remplace par ta vraie clé publique Stripe
+    let stripe = null;
+
+    try {
+      stripe = Stripe(STRIPE_PUBLIC_KEY);
+    } catch (e) {
+      console.error("Stripe init error", e);
+    }
 
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 6;
@@ -1755,25 +1765,35 @@
           return;
         }
 
-        if (data.success) {
-          const delta = Number(data?.financial?.deltaAmount || 0);
+        if (data.clientSecret && stripe) {
+          summaryMsg.textContent = "Paiement requis...";
+          summaryMsg.className = "page-message info";
 
-          if (delta > 0) {
-            summaryMsg.textContent = "Réservation modifiée avec supplément validé.";
-          } else if (delta < 0) {
-            summaryMsg.textContent = "Réservation modifiée. Le remboursement a été demandé.";
-          } else {
-            summaryMsg.textContent = "Réservation modifiée avec succès.";
+          const { error } = await stripe.confirmCardPayment(data.clientSecret);
+
+          if (error) {
+            summaryMsg.textContent = error.message || "Paiement échoué.";
+            summaryMsg.className = "page-message";
+            btn.disabled = false;
+            return;
           }
 
+          summaryMsg.textContent = "Paiement réussi, réservation mise à jour.";
           summaryMsg.className = "page-message ok";
 
           setTimeout(() => {
-            if (isGuest) {
-              window.location.href = "reservation.html";
-            } else {
-              window.location.href = "mon-compte.html";
-            }
+            window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
+          }, 1200);
+
+          return;
+        }
+
+        if (data.success) {
+          summaryMsg.textContent = "Réservation modifiée avec succès.";
+          summaryMsg.className = "page-message ok";
+
+          setTimeout(() => {
+            window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
           }, 1200);
 
           return;
