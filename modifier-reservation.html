@@ -790,7 +790,7 @@
               <button id="confirm-edit-btn" class="btn-main" type="button">
                 Confirmer la modification
               </button>
-              <a href="mon-compte.html" class="btn-secondary-link">Retour à mon compte</a>
+              <a href="mon-compte.html" class="btn-secondary-link" id="back-link">Retour à mon compte</a>
             </div>
 
             <div id="summary-message" class="page-message"></div>
@@ -906,6 +906,38 @@
     function getAuthHeaders() {
       const token = getStoredToken();
       return token ? { Authorization: "Bearer " + token } : {};
+    }
+
+    function getUrlParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function getReservationIdFromUrl() {
+      return getUrlParams().get("reservationId");
+    }
+
+    function getGuestManageTokenFromUrl() {
+      const token = getUrlParams().get("token");
+      if (!token || token === "null" || token === "undefined") return null;
+      return token.trim();
+    }
+
+    function isGuestMode() {
+      return Boolean(getGuestManageTokenFromUrl());
+    }
+
+    function isLoggedMode() {
+      return Boolean(getReservationIdFromUrl() && getStoredToken());
+    }
+
+    function getManageMode() {
+      if (isGuestMode()) return "guest";
+      if (isLoggedMode()) return "auth";
+      return "none";
+    }
+
+    function getBackLinkHref() {
+      return isGuestMode() ? "reservation.html" : "mon-compte.html";
     }
 
     function getPanier() {
@@ -1052,7 +1084,8 @@
     }
 
     function getBillablePersons(persons) {
-      const p = Number.isFinite(persons) ? persons : MIN_BILLABLE_PERSONS;
+      const p = Number(persons);
+      if (!Number.isFinite(p)) return MIN_BILLABLE_PERSONS;
       return Math.max(p, MIN_BILLABLE_PERSONS);
     }
 
@@ -1109,11 +1142,6 @@
       if (n > MAX_ALLOWED_PERSONS) n = MAX_ALLOWED_PERSONS;
 
       return n;
-    }
-
-    function getReservationIdFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("reservationId");
     }
 
     function getLoyaltyInfo(reservation) {
@@ -1223,7 +1251,7 @@
       }
     }
 
-    async function loadReservationData() {
+    async function fetchReservationAuth() {
       const token = getStoredToken();
       if (!token) {
         throw new Error("Vous devez être connecté pour modifier une réservation.");
@@ -1254,6 +1282,46 @@
       }
 
       return normalizeReservation(data.reservation);
+    }
+
+    async function fetchReservationGuest() {
+      const guestToken = getGuestManageTokenFromUrl();
+      if (!guestToken) {
+        throw new Error("Lien invité invalide.");
+      }
+
+      let response;
+      try {
+        response = await fetch(`${API_BASE}/api/guest-reservation?token=${encodeURIComponent(guestToken)}`);
+      } catch {
+        throw new Error("Impossible de contacter le serveur. Merci de réessayer.");
+      }
+
+      const data = await safeJson(response);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Impossible de charger la réservation avec ce lien.");
+      }
+
+      if (!data.reservation) {
+        throw new Error("Réservation introuvable avec ce lien.");
+      }
+
+      return normalizeReservation(data.reservation);
+    }
+
+    async function loadReservationData() {
+      const mode = getManageMode();
+
+      if (mode === "guest") {
+        return fetchReservationGuest();
+      }
+
+      if (mode === "auth") {
+        return fetchReservationAuth();
+      }
+
+      throw new Error("Lien de gestion invalide. Utilisez votre lien reçu par email ou passez par votre compte.");
     }
 
     function renderCurrentReservation(reservation) {
@@ -1593,7 +1661,7 @@
       const oldAmount = Number(currentReservation.amountPaid || 0);
       const newAmount = getNewAmount();
 
-      return {
+      const payload = {
         reservationId: currentReservation.id,
         newStartTime: selectedSlot.startTime,
         newEndTime: selectedSlot.endTime,
@@ -1608,6 +1676,13 @@
         loyaltyUsed: currentReservation.loyaltyUsed,
         pointsSpent: currentReservation.pointsSpent || 0
       };
+
+      const guestToken = getGuestManageTokenFromUrl();
+      if (guestToken) {
+        payload.token = guestToken;
+      }
+
+      return payload;
     }
 
     async function confirmModification() {
@@ -1630,8 +1705,10 @@
         return;
       }
 
-      const token = getStoredToken();
-      if (!token) {
+      const mode = getManageMode();
+      const isGuest = mode === "guest";
+
+      if (mode === "auth" && !getStoredToken()) {
         summaryMsg.textContent = "Vous devez être connecté pour modifier votre réservation.";
         summaryMsg.className = "page-message";
         return;
@@ -1642,12 +1719,21 @@
       summaryMsg.className = "page-message info";
 
       try {
-        const response = await fetch(`${API_BASE}/api/modify-reservation`, {
+        const endpoint = isGuest
+          ? `${API_BASE}/api/guest-modify-reservation`
+          : `${API_BASE}/api/modify-reservation`;
+
+        const headers = {
+          "Content-Type": "application/json"
+        };
+
+        if (!isGuest) {
+          Object.assign(headers, getAuthHeaders());
+        }
+
+        const response = await fetch(endpoint, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...getAuthHeaders()
-          },
+          headers,
           body: JSON.stringify(payload)
         });
 
@@ -1673,17 +1759,21 @@
           const delta = Number(data?.financial?.deltaAmount || 0);
 
           if (delta > 0) {
-            summaryMsg.textContent = "Réservation modifiée avec supplément validé. Redirection vers votre compte...";
+            summaryMsg.textContent = "Réservation modifiée avec supplément validé.";
           } else if (delta < 0) {
-            summaryMsg.textContent = "Réservation modifiée. Le remboursement a été demandé. Redirection vers votre compte...";
+            summaryMsg.textContent = "Réservation modifiée. Le remboursement a été demandé.";
           } else {
-            summaryMsg.textContent = "Réservation modifiée avec succès. Redirection vers votre compte...";
+            summaryMsg.textContent = "Réservation modifiée avec succès.";
           }
 
           summaryMsg.className = "page-message ok";
 
           setTimeout(() => {
-            window.location.href = "mon-compte.html";
+            if (isGuest) {
+              window.location.href = "reservation.html";
+            } else {
+              window.location.href = "mon-compte.html";
+            }
           }, 1200);
 
           return;
@@ -1787,6 +1877,12 @@
       updateCartIcon();
       initMobileMenu();
 
+      const backLink = getEl("back-link");
+      if (backLink) {
+        backLink.href = getBackLinkHref();
+        backLink.textContent = isGuestMode() ? "Retour" : "Retour à mon compte";
+      }
+
       try {
         if (globalThis.supabase) {
           supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1816,11 +1912,11 @@
         confirmBtn.addEventListener("click", confirmModification);
       }
 
-      const reservationId = getReservationIdFromUrl();
-      if (!reservationId) {
-        showFatalReservationError("Aucune réservation sélectionnée. Retour vers votre compte dans quelques instants.");
+      const mode = getManageMode();
+      if (mode === "none") {
+        showFatalReservationError("Lien de gestion invalide. Utilisez votre lien reçu par email ou passez par votre compte.");
         setTimeout(() => {
-          window.location.href = "mon-compte.html";
+          window.location.href = "reservation.html";
         }, 1800);
         return;
       }
