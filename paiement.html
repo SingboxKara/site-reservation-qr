@@ -700,7 +700,7 @@
     const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
+    const SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
@@ -1766,29 +1766,39 @@
     }
 
     async function fetchPromoByCode(code) {
-      if (!globalThis.supabaseClient) {
-        return { errorMessage: "Erreur : service promo indisponible." };
-      }
-
       try {
-        const { data, error } = await globalThis.supabaseClient
-          .from("promo_codes")
-          .select("*")
-          .eq("code", code)
-          .limit(1)
-          .maybeSingle();
+        const result = await apiFetch(
+          "/api/validate-promo",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              code,
+              panier: getPanier()
+            })
+          },
+          { auth: false, ctx: "POST /api/validate-promo" }
+        );
 
-        if (error) {
-          return { errorMessage: "Erreur lors de la vérification du code." };
+        if (!result.ok) {
+          return {
+            errorMessage: result.data?.error || "Erreur lors de la vérification du code."
+          };
         }
 
-        if (!data || !isPromoCurrentlyValid(data)) {
-          return { errorMessage: "Ce code n’existe pas ou n’est plus valable." };
+        if (!result.data?.valid || !result.data?.promo) {
+          return {
+            errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable."
+          };
         }
 
-        return { promo: data };
+        return {
+          promo: result.data.promo
+        };
       } catch {
-        return { errorMessage: "Erreur réseau lors de la vérification du code." };
+        return {
+          errorMessage: "Erreur réseau lors de la vérification du code."
+        };
       }
     }
 
@@ -2644,6 +2654,11 @@
     function initSupabaseClient() {
       if (!globalThis.supabase || typeof globalThis.supabase.createClient !== "function") {
         console.warn("Supabase non disponible.");
+        return;
+      }
+
+      if (!SUPABASE_URL || !SUPABASE_KEY || SUPABASE_KEY === "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS") {
+        console.warn("Supabase non initialisé : clé anon manquante ou placeholder.");
         return;
       }
 
