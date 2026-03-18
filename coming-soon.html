@@ -498,20 +498,12 @@
 
     .countdown-card,
     .newsletter-card,
-    .info-card,
     .video-card,
     .right-card {
       background: var(--sb-bg-card);
       border: 1px solid var(--sb-border-soft);
       border-radius: 26px;
       box-shadow: var(--sb-shadow-card);
-    }
-
-    .countdown-card,
-    .newsletter-card,
-    .info-card,
-    .video-card,
-    .right-card {
       padding: 22px;
     }
 
@@ -910,11 +902,6 @@
       .content-grid {
         grid-template-columns: 1fr;
       }
-
-      .expect-grid,
-      .occasions-list {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media (max-width: 720px) {
@@ -942,7 +929,6 @@
       .hero-panel,
       .countdown-card,
       .newsletter-card,
-      .info-card,
       .video-card,
       .right-card {
         border-radius: 22px;
@@ -1167,45 +1153,6 @@
           </p>
         </section>
 
-        <section class="info-card" aria-label="Comment ça marche">
-          <div class="section-label">Comment ça marche</div>
-          <h2 class="card-title">Une expérience pensée pour être simple</h2>
-          <p class="card-text">
-            L’idée est de rendre l’expérience la plus fluide possible, de la réservation jusqu’à la fin de votre séance.
-          </p>
-
-          <div class="steps-list">
-            <div class="step-item">
-              <div class="step-number">1</div>
-              <div>
-                <div class="item-title">Je réserve en ligne</div>
-                <p class="item-text">Je choisis ma date, mon créneau et ma box en quelques clics.</p>
-              </div>
-            </div>
-            <div class="step-item">
-              <div class="step-number">2</div>
-              <div>
-                <div class="item-title">Je reçois mon accès</div>
-                <p class="item-text">Je récupère mes infos de séance et mon QR code de manière simple et claire.</p>
-              </div>
-            </div>
-            <div class="step-item">
-              <div class="step-number">3</div>
-              <div>
-                <div class="item-title">J’accède à ma box</div>
-                <p class="item-text">Je profite d’un espace privatif pensé pour chanter entre nous, sans pression.</p>
-              </div>
-            </div>
-            <div class="step-item">
-              <div class="step-number">4</div>
-              <div>
-                <div class="item-title">Je vis ma séance</div>
-                <p class="item-text">Je chante, je profite, je partage un moment fun avec mon groupe.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section class="video-card" aria-label="Zone vidéo concept Singbox">
           <div class="section-label">Vidéo à venir</div>
           <h2 class="card-title">Découvrir le concept en vidéo</h2>
@@ -1257,6 +1204,40 @@
               <span>contactsingbox@gmail.com</span>
             </li>
           </ul>
+        </div>
+
+        <div>
+          <p class="side-section-label">Comment ça marche ?</p>
+          <div class="steps-list">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <div>
+                <div class="item-title">Je réserve en ligne</div>
+                <p class="item-text">Je choisis ma date, mon créneau et ma box en quelques clics.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <div>
+                <div class="item-title">Je reçois mon accès</div>
+                <p class="item-text">Je récupère mes infos de séance et mon QR code de manière simple et claire.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <div>
+                <div class="item-title">J’accède à ma box</div>
+                <p class="item-text">Je profite d’un espace privatif pensé pour chanter entre nous, sans pression.</p>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <div>
+                <div class="item-title">Je vis ma séance</div>
+                <p class="item-text">Je chante, je profite, je partage un moment fun avec mon groupe.</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -1347,7 +1328,6 @@
     </section>
   </main>
 
-  <!-- Supabase Newsletter -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const LAUNCH_DATE = new Date("2026-04-30T18:00:00+02:00");
