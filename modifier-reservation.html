@@ -39,7 +39,7 @@
   />
 
   <link rel="stylesheet" href="css/global.css" />
-  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://js.stripe.com/v3"></script>
 
   <style>
     .sr-only {
@@ -291,12 +291,6 @@
         0 0 18px rgba(249, 115, 22, 0.18);
     }
 
-    .field-block select[aria-invalid="true"],
-    .field-block input[type="date"][aria-invalid="true"] {
-      outline: 2px solid #ff6b6b;
-      outline-offset: 2px;
-    }
-
     input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1);
       cursor: pointer;
@@ -438,6 +432,59 @@
 
     .summary-note strong {
       color: #f9fafb;
+    }
+
+    .payment-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(2, 6, 23, 0.9);
+      border: 1px solid rgba(249, 115, 22, 0.22);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+
+    .payment-box-title {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .payment-box-subtitle {
+      margin: 0 0 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--sb-text-muted);
+    }
+
+    .payment-box-notice {
+      margin: 0 0 12px;
+      font-size: 12px;
+      line-height: 1.55;
+      color: #fde68a;
+    }
+
+    .card-element-wrapper {
+      margin-top: 8px;
+    }
+
+    #card-element {
+      display: block;
+      width: 100%;
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-height: 52px;
+      box-sizing: border-box;
+    }
+
+    #card-errors {
+      margin-top: 8px;
+      min-height: 16px;
+      font-size: 12px;
+      color: #fca5a5;
+      line-height: 1.5;
     }
 
     .summary-actions {
@@ -787,6 +834,22 @@
               <strong>Important :</strong> cette page gère les <strong>modifications</strong>. Pour une annulation avec remboursement, le délai applicable est de <strong>24h avant</strong>. Ici, les changements en ligne restent possibles jusqu’à <strong>6h avant</strong>.
             </p>
 
+            <div class="payment-box" id="payment-box">
+              <p class="payment-box-title">💳 Paiement sécurisé</p>
+              <p class="payment-box-subtitle">
+                En cas de supplément, saisissez votre carte ci-dessous puis confirmez la modification.
+              </p>
+              <p class="payment-box-notice" id="payment-box-notice">
+                Le champ carte est prêt. Il sera utilisé uniquement si un paiement complémentaire est nécessaire.
+              </p>
+
+              <div class="card-element-wrapper">
+                <label for="card-element" class="sr-only">Informations de carte bancaire</label>
+                <div id="card-element"></div>
+                <div id="card-errors" aria-live="polite" role="status"></div>
+              </div>
+            </div>
+
             <div class="summary-actions">
               <button id="confirm-edit-btn" class="btn-main" type="button">
                 Confirmer la modification
@@ -872,15 +935,7 @@
     const API_BASE = "https://singbox-backend.onrender.com";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-    const STRIPE_PUBLIC_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X"; // ⚠️ remplace par ta vraie clé publique Stripe
-    let stripe = null;
-
-    try {
-      stripe = Stripe(STRIPE_PUBLIC_KEY);
-    } catch (e) {
-      console.error("Stripe init error", e);
-    }
+    const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
 
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 6;
@@ -902,6 +957,11 @@
     let selectedDateIso = null;
     let availableSlots = [];
     let supabaseClient = null;
+
+    let stripe = null;
+    let elements = null;
+    let cardElement = null;
+    let cardReady = false;
 
     function getEl(id) {
       return document.getElementById(id);
@@ -1239,6 +1299,81 @@
       } catch {
         return {};
       }
+    }
+
+    function buildBillingDetailsForModification() {
+      return {
+        email: currentReservation?.email || undefined
+      };
+    }
+
+    function setPaymentNotice(message, type = "normal") {
+      const notice = getEl("payment-box-notice");
+      if (!notice) return;
+
+      if (type === "error") {
+        notice.style.color = "#fecaca";
+      } else if (type === "ok") {
+        notice.style.color = "#bbf7d0";
+      } else if (type === "info") {
+        notice.style.color = "#93c5fd";
+      } else {
+        notice.style.color = "#fde68a";
+      }
+
+      notice.textContent = message;
+    }
+
+    function initStripeCard() {
+      const cardMount = getEl("card-element");
+      if (!STRIPE_PUBLISHABLE_KEY || !globalThis.Stripe || !cardMount) {
+        console.error("Stripe non disponible ou #card-element introuvable");
+        setPaymentNotice("Le formulaire de carte ne peut pas être chargé pour le moment.", "error");
+        return;
+      }
+
+      stripe = globalThis.Stripe(STRIPE_PUBLISHABLE_KEY);
+      elements = stripe.elements({
+        appearance: {
+          theme: "night",
+          variables: {
+            colorPrimary: "#F97316",
+            colorBackground: "#020617",
+            colorText: "#F9FAFB",
+            colorTextPlaceholder: "#CBD5E1",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            borderRadius: "14px"
+          }
+        }
+      });
+
+      cardElement = elements.create("card", {
+        hidePostalCode: true,
+        style: {
+          base: {
+            color: "#F9FAFB",
+            fontFamily: "Montserrat, system-ui, sans-serif",
+            fontSize: "14px",
+            lineHeight: "24px",
+            fontSmoothing: "antialiased",
+            "::placeholder": { color: "#CBD5E1" }
+          },
+          invalid: {
+            color: "#FECACA"
+          }
+        }
+      });
+
+      cardElement.mount("#card-element");
+      cardReady = true;
+      setPaymentNotice("Champ carte chargé. Vous pouvez saisir votre carte si un supplément est demandé.", "ok");
+
+      cardElement.on("change", (event) => {
+        const displayError = getEl("card-errors");
+        if (displayError) {
+          displayError.textContent = event.error ? event.error.message : "";
+        }
+      });
     }
 
     function showFatalReservationError(message) {
@@ -1695,6 +1830,20 @@
       return payload;
     }
 
+    async function createPaymentMethodForModification() {
+      if (!stripe || !cardElement || !cardReady) {
+        return {
+          error: { message: "Le formulaire de carte n'est pas disponible." }
+        };
+      }
+
+      return stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: buildBillingDetailsForModification()
+      });
+    }
+
     async function confirmModification() {
       const summaryMsg = getEl("summary-message");
       const btn = getEl("confirm-edit-btn");
@@ -1766,24 +1915,66 @@
         }
 
         if (data.clientSecret && stripe) {
-          summaryMsg.textContent = "Paiement requis...";
-          summaryMsg.className = "page-message info";
-
-          const { error } = await stripe.confirmCardPayment(data.clientSecret);
-
-          if (error) {
-            summaryMsg.textContent = error.message || "Paiement échoué.";
+          if (!cardElement || !cardReady) {
+            summaryMsg.textContent = "Le formulaire de carte n'est pas disponible.";
             summaryMsg.className = "page-message";
             btn.disabled = false;
             return;
           }
 
-          summaryMsg.textContent = "Paiement réussi, réservation mise à jour.";
+          summaryMsg.textContent = "Création du moyen de paiement...";
+          summaryMsg.className = "page-message info";
+          setPaymentNotice("Validation de votre carte en cours…", "info");
+
+          const paymentMethodResult = await createPaymentMethodForModification();
+
+          if (paymentMethodResult.error) {
+            summaryMsg.textContent = paymentMethodResult.error.message || "Carte invalide.";
+            summaryMsg.className = "page-message";
+            setPaymentNotice(paymentMethodResult.error.message || "Carte invalide.", "error");
+            btn.disabled = false;
+            return;
+          }
+
+          const paymentMethodId = paymentMethodResult.paymentMethod?.id;
+          if (!paymentMethodId) {
+            summaryMsg.textContent = "Impossible de préparer le paiement.";
+            summaryMsg.className = "page-message";
+            setPaymentNotice("Impossible de préparer le paiement.", "error");
+            btn.disabled = false;
+            return;
+          }
+
+          summaryMsg.textContent = "Confirmation du paiement...";
+          summaryMsg.className = "page-message info";
+
+          const result = await stripe.confirmCardPayment(data.clientSecret, {
+            payment_method: paymentMethodId
+          });
+
+          if (result.error) {
+            summaryMsg.textContent = result.error.message || "Paiement échoué.";
+            summaryMsg.className = "page-message";
+            setPaymentNotice(result.error.message || "Paiement échoué.", "error");
+            btn.disabled = false;
+            return;
+          }
+
+          if (!result.paymentIntent || result.paymentIntent.status !== "succeeded") {
+            summaryMsg.textContent = "Paiement non finalisé.";
+            summaryMsg.className = "page-message";
+            setPaymentNotice("Paiement non finalisé.", "error");
+            btn.disabled = false;
+            return;
+          }
+
+          summaryMsg.textContent = "Paiement réussi, la mise à jour va être finalisée.";
           summaryMsg.className = "page-message ok";
+          setPaymentNotice("Paiement accepté ✔️", "ok");
 
           setTimeout(() => {
             window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
-          }, 1200);
+          }, 1500);
 
           return;
         }
@@ -1791,6 +1982,7 @@
         if (data.success) {
           summaryMsg.textContent = "Réservation modifiée avec succès.";
           summaryMsg.className = "page-message ok";
+          setPaymentNotice("Aucun supplément nécessaire pour cette modification.", "ok");
 
           setTimeout(() => {
             window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
@@ -1806,6 +1998,7 @@
         console.error("Erreur modification réservation :", error);
         summaryMsg.textContent = "Erreur réseau. Merci de réessayer.";
         summaryMsg.className = "page-message";
+        setPaymentNotice("Erreur réseau pendant la tentative de paiement.", "error");
         btn.disabled = false;
       }
     }
@@ -1896,6 +2089,7 @@
     async function initPage() {
       updateCartIcon();
       initMobileMenu();
+      initStripeCard();
 
       const backLink = getEl("back-link");
       if (backLink) {
