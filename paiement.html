@@ -197,7 +197,6 @@
 
     <div id="auth-modal-message" class="auth-modal-message" aria-live="polite" role="status"></div>
 
-    <!-- Formulaire LOGIN -->
     <form id="auth-login-form" class="auth-form" autocomplete="on">
       <div class="auth-field">
         <label for="auth-login-email">Email</label>
@@ -210,7 +209,6 @@
       <button type="submit" class="auth-submit-btn">Connexion</button>
     </form>
 
-    <!-- Formulaire REGISTER -->
     <form id="auth-register-form" class="auth-form hidden" autocomplete="on">
       <div class="auth-field">
         <label for="auth-register-email">Email</label>
@@ -242,7 +240,6 @@
         <p>Vérifiez vos informations et votre commande avant de chanter chez Singbox.</p>
       </div>
 
-      <!-- EMPTY CART STATE -->
       <div id="empty-cart-state" class="empty-cart" style="display:none;" aria-live="polite">
         <p class="empty-cart-title">Votre panier est vide 😅</p>
         <p class="empty-cart-text">
@@ -255,7 +252,6 @@
       </div>
 
       <div class="checkout-layout" id="checkout-layout">
-        <!-- COLONNE GAUCHE : FACTURATION -->
         <div class="billing-card card">
           <h2>Détails de facturation</h2>
 
@@ -372,7 +368,6 @@
               </p>
             </div>
 
-            <!-- BLOC FIDÉLITÉ -->
             <div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
               <div style="color:#F9FAFB; font-weight:600; margin-bottom:6px;">Programme fidélité ⭐</div>
 
@@ -417,7 +412,6 @@
           </form>
         </div>
 
-        <!-- COLONNE DROITE : RÉCAP + PAIEMENT -->
         <div class="summary-column">
           <div class="order-card card">
             <h2>Votre commande</h2>
@@ -461,7 +455,6 @@
             </div>
           </div>
 
-          <!-- Code promo -->
           <div class="promo-card card">
             <div class="promo-header">
               <span>Code promo</span>
@@ -486,7 +479,6 @@
             </div>
           </div>
 
-          <!-- Paiement -->
           <div class="payment-card card">
             <h3>💳 Paiement sécurisé</h3>
 
@@ -508,7 +500,6 @@
               <strong>Elle n’est pas débitée</strong> si tout se passe normalement.
             </div>
 
-            <!-- Paiement rapide -->
             <div id="saved-card-block" style="display:none; margin: 10px 0 12px;">
               <div
                 style="
@@ -616,7 +607,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="newsletter-container">
       <h3>Inscrivez-vous à notre newsletter</h3>
@@ -689,9 +679,7 @@
     globalThis.QR_CHECK_BASE_URL = globalThis.API_BASE_URL + "/api/check";
   </script>
 
-  <!-- Stripe -->
   <script src="https://js.stripe.com/v3"></script>
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
@@ -708,10 +696,19 @@
     const LOYALTY_POINTS_COST = 100;
     const LOYALTY_FREE_BILLABLE_PERSONS = 2;
     const MIN_BILLABLE_PERSONS = 2;
-    const OFF_PEAK_START_HOUR = 4;
-    const OFF_PEAK_END_HOUR = 14;
-    const OFF_PEAK_RATE = 7.9;
-    const STANDARD_RATE = 9.9;
+
+    // Tarifs alignés avec ton backend
+    const WEEKDAY_MORNING_RATE = 4.99;   // semaine 08h–12h
+    const WEEKDAY_MIDDAY_RATE = 8.99;    // semaine 12h–15h
+    const WEEKDAY_EVENING_RATE = 10.99;  // semaine 15h–02h
+    const WEEKEND_BEFORE_15_RATE = 11.99; // vendredi + week-end avant 15h
+    const WEEKEND_AFTER_15_RATE = 13.99;  // vendredi + week-end dès 15h
+
+    const WEEKDAY_MORNING_START_HOUR = 8;
+    const WEEKDAY_MIDDAY_START_HOUR = 12;
+    const WEEKDAY_EVENING_START_HOUR = 15;
+    const WEEKDAY_END_NIGHT_HOUR = 2;
+    const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
 
     let stripe = null;
     let cardElement = null;
@@ -946,18 +943,38 @@
       return day === 0 || day === 6;
     }
 
+    function isFriday(dateObj) {
+      return dateObj.getDay() === 5;
+    }
+
     function getPerPersonRate(dateObj) {
       const hour = dateObj.getHours();
+      const friday = isFriday(dateObj);
+      const weekend = isWeekend(dateObj);
 
-      if (isWeekend(dateObj)) {
-        return STANDARD_RATE;
+      // Vendredi + samedi + dimanche
+      if (friday || weekend) {
+        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+          return WEEKEND_AFTER_15_RATE;
+        }
+        return WEEKEND_BEFORE_15_RATE;
       }
 
-      if (hour >= OFF_PEAK_START_HOUR && hour < OFF_PEAK_END_HOUR) {
-        return OFF_PEAK_RATE;
+      // Lundi à jeudi
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
+        return WEEKDAY_MORNING_RATE;
       }
 
-      return STANDARD_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
+        return WEEKDAY_MIDDAY_RATE;
+      }
+
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+        return WEEKDAY_EVENING_RATE;
+      }
+
+      // Sécurité si horaire hors grille
+      return WEEKDAY_MORNING_RATE;
     }
 
     function getItemPersons(item) {
