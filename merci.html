@@ -587,9 +587,9 @@
     <div class="container">
       <div id="thankyou-content" style="display:none;">
         <div class="thankyou-header">
-          <p class="thankyou-header-eyebrow">Réservation confirmée</p>
-          <h1>Merci <span id="thankyou-name" class="thankyou-highlight-name"></span> 🎉</h1>
-          <p>
+          <p class="thankyou-header-eyebrow" id="thankyou-eyebrow">Réservation confirmée</p>
+          <h1><span id="thankyou-title-prefix">Merci</span> <span id="thankyou-name" class="thankyou-highlight-name"></span> <span id="thankyou-title-emoji">🎉</span></h1>
+          <p id="thankyou-description">
             Votre réservation est bien enregistrée. Vous allez recevoir un e-mail récapitulatif avec toutes les informations utiles pour votre venue.
           </p>
         </div>
@@ -597,7 +597,7 @@
         <div class="thankyou-layout">
           <div>
             <div class="card">
-              <h2>Votre séance</h2>
+              <h2 id="thankyou-session-title">Votre séance</h2>
 
               <div class="thankyou-summary-list">
                 <div class="thankyou-summary-item">
@@ -616,7 +616,7 @@
                 </div>
 
                 <div class="thankyou-summary-item">
-                  <span class="thankyou-summary-label">Montant payé</span>
+                  <span class="thankyou-summary-label" id="thankyou-total-label">Montant payé</span>
                   <span class="thankyou-summary-value" id="thankyou-total">-</span>
                 </div>
 
@@ -627,13 +627,13 @@
               </div>
 
               <div class="thankyou-practical">
-                <strong>Infos pratiques pour votre venue</strong>
+                <strong id="thankyou-practical-title">Infos pratiques pour votre venue</strong>
                 <ul>
                   <li><b>Adresse :</b> Singbox – Adresse à compléter, 31000 Toulouse.</li>
                   <li>Vous pouvez arriver dès <b>5 minutes avant le début</b> de votre créneau.</li>
                   <li>En cas de retard, la séance se termine tout de même à l’heure prévue.</li>
                   <li>Merci de prévoir une pièce d’identité si une vérification est nécessaire.</li>
-                  <li>Retrouvez aussi toutes les informations dans votre e-mail de confirmation.</li>
+                  <li id="thankyou-practical-last-line">Retrouvez aussi toutes les informations dans votre e-mail de confirmation.</li>
                 </ul>
               </div>
 
@@ -654,14 +654,14 @@
 
           <div>
             <div class="card thankyou-qr-wrap">
-              <p class="thankyou-qr-label">QR code de réservation</p>
+              <p class="thankyou-qr-label" id="thankyou-qr-label">QR code de réservation</p>
 
               <div class="thankyou-qr-frame">
                 <div id="thankyou-qr"></div>
                 <span id="thankyou-qr-fallback">QR indisponible</span>
               </div>
 
-              <p class="thankyou-note">
+              <p class="thankyou-note" id="thankyou-qr-note">
                 Présentez ce QR code à votre arrivée. Il vous a aussi été envoyé par e-mail.
               </p>
             </div>
@@ -670,8 +670,8 @@
       </div>
 
       <div id="thankyou-empty" class="card thankyou-empty" style="display:none;">
-        <h2>Aucune réservation récente trouvée</h2>
-        <p>
+        <h2 id="thankyou-empty-title">Aucune réservation récente trouvée</h2>
+        <p id="thankyou-empty-text">
           Nous n’avons pas trouvé de récapitulatif à afficher sur cette page. Cela peut arriver si vous avez ouvert ce lien directement sans passer par le paiement.
         </p>
         <div class="thankyou-actions" style="justify-content:center;">
@@ -730,6 +730,11 @@
       }
     }
 
+    function getPageMode(data) {
+      const rawMode = String(data?.mode || "").trim().toLowerCase();
+      return rawMode === "modification" ? "modification" : "reservation";
+    }
+
     function renderQrCode(qrUrl) {
       const qrContainer = getEl("thankyou-qr");
       const qrFallback = getEl("thankyou-qr-fallback");
@@ -758,7 +763,49 @@
       }
     }
 
+    function applyReservationTexts() {
+      getEl("thankyou-eyebrow").textContent = "Réservation confirmée";
+      getEl("thankyou-title-prefix").textContent = "Merci";
+      getEl("thankyou-title-emoji").textContent = "🎉";
+      getEl("thankyou-description").textContent =
+        "Votre réservation est bien enregistrée. Vous allez recevoir un e-mail récapitulatif avec toutes les informations utiles pour votre venue.";
+      getEl("thankyou-session-title").textContent = "Votre séance";
+      getEl("thankyou-total-label").textContent = "Montant payé";
+      getEl("thankyou-practical-title").textContent = "Infos pratiques pour votre venue";
+      getEl("thankyou-practical-last-line").textContent =
+        "Retrouvez aussi toutes les informations dans votre e-mail de confirmation.";
+      getEl("thankyou-qr-label").textContent = "QR code de réservation";
+      getEl("thankyou-qr-note").textContent =
+        "Présentez ce QR code à votre arrivée. Il vous a aussi été envoyé par e-mail.";
+      document.title = "Merci pour votre réservation | Singbox Toulouse";
+    }
+
+    function applyModificationTexts() {
+      getEl("thankyou-eyebrow").textContent = "Modification confirmée";
+      getEl("thankyou-title-prefix").textContent = "Merci";
+      getEl("thankyou-title-emoji").textContent = "✨";
+      getEl("thankyou-description").textContent =
+        "Votre modification a bien été prise en compte. Vous allez recevoir un e-mail récapitulatif avec les nouvelles informations de votre réservation.";
+      getEl("thankyou-session-title").textContent = "Votre séance mise à jour";
+      getEl("thankyou-total-label").textContent = "Montant mis à jour";
+      getEl("thankyou-practical-title").textContent = "Infos pratiques après modification";
+      getEl("thankyou-practical-last-line").textContent =
+        "Retrouvez aussi toutes les informations mises à jour dans votre e-mail de confirmation.";
+      getEl("thankyou-qr-label").textContent = "QR code de réservation";
+      getEl("thankyou-qr-note").textContent =
+        "Voici votre QR code valable pour votre réservation mise à jour. Il vous a aussi été envoyé par e-mail.";
+      document.title = "Merci pour votre modification | Singbox Toulouse";
+    }
+
     function fillThankYouPage(data) {
+      const mode = getPageMode(data);
+
+      if (mode === "modification") {
+        applyModificationTexts();
+      } else {
+        applyReservationTexts();
+      }
+
       getEl("thankyou-name").textContent = data.prenom || "";
       getEl("thankyou-date").textContent = data.date || "-";
       getEl("thankyou-time").textContent = data.time || "-";
