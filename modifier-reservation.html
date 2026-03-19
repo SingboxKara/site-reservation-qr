@@ -937,6 +937,8 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
 
+    const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
+
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 6;
     const MIN_BILLABLE_PERSONS = 2;
@@ -1104,6 +1106,17 @@
         weekday: "long",
         day: "2-digit",
         month: "long",
+        year: "numeric"
+      });
+    }
+
+    function formatShortDateFr(dateStr) {
+      const date = parseDateOrNull(dateStr);
+      if (!date) return "-";
+
+      return date.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
         year: "numeric"
       });
     }
@@ -1830,6 +1843,113 @@
       return payload;
     }
 
+    function getQrUrlForReservationId(reservationId) {
+      return `${API_BASE}/api/check?id=${encodeURIComponent(reservationId)}`;
+    }
+
+    function buildThankYouDataFromReservation(reservationLike) {
+      const reservationId = reservationLike?.id || currentReservation?.id || "";
+      const prenom =
+        reservationLike?.raw?.prenom ||
+        reservationLike?.raw?.first_name ||
+        reservationLike?.raw?.firstName ||
+        (() => {
+          const fullName = String(reservationLike?.raw?.name || "").trim();
+          if (!fullName) return "";
+          return fullName.split(/\s+/)[0] || "";
+        })();
+
+      return {
+        mode: "modification",
+        prenom: prenom || "",
+        date: formatShortDateFr(reservationLike?.startTime || currentReservation?.startTime),
+        time: formatRange(reservationLike?.startTime || currentReservation?.startTime, reservationLike?.endTime || currentReservation?.endTime),
+        box: reservationLike?.boxName || currentReservation?.boxName || `Box ${reservationLike?.boxId || currentReservation?.boxId || 1}`,
+        total: formatMoney(reservationLike?.amountPaid ?? currentReservation?.amountPaid ?? 0),
+        reservationId: reservationId || "-",
+        qrUrl: reservationId ? getQrUrlForReservationId(reservationId) : ""
+      };
+    }
+
+    function buildThankYouDataFromSelection() {
+      const targetStart = selectedSlot?.startTime || currentReservation?.startTime || null;
+      const targetEnd = selectedSlot?.endTime || currentReservation?.endTime || null;
+      const targetDate = targetStart ? formatShortDateFr(targetStart) : "-";
+      const targetTime = formatRange(targetStart, targetEnd);
+      const targetAmount = selectedSlot ? getNewAmount() : Number(currentReservation?.amountPaid || 0);
+
+      const prenom =
+        currentReservation?.raw?.prenom ||
+        (() => {
+          const fullName = String(currentReservation?.raw?.name || "").trim();
+          if (!fullName) return "";
+          return fullName.split(/\s+/)[0] || "";
+        })();
+
+      return {
+        mode: "modification",
+        prenom: prenom || "",
+        date: targetDate,
+        time: targetTime,
+        box: currentReservation?.boxName || `Box ${currentReservation?.boxId || 1}`,
+        total: formatMoney(targetAmount),
+        reservationId: currentReservation?.id || "-",
+        qrUrl: currentReservation?.id ? getQrUrlForReservationId(currentReservation.id) : ""
+      };
+    }
+
+    function saveThankYouData(data) {
+      try {
+        sessionStorage.setItem(THANKYOU_STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        console.error("Impossible d'enregistrer les données de la page merci :", error);
+      }
+    }
+
+    function redirectToThankYou(data) {
+      saveThankYouData(data);
+      window.location.href = "merci.html";
+    }
+
+    function hasReservationBeenUpdated(oldReservation, newReservation, payload) {
+      if (!oldReservation || !newReservation || !payload) return false;
+
+      const newStartMatch = String(newReservation.startTime || "") === String(payload.newStartTime || "");
+      const newEndMatch = String(newReservation.endTime || "") === String(payload.newEndTime || "");
+      const newPersonsMatch = Number(newReservation.persons || 0) === Number(payload.newPersons || 0);
+
+      const hasActuallyChanged =
+        String(oldReservation.startTime || "") !== String(newReservation.startTime || "") ||
+        String(oldReservation.endTime || "") !== String(newReservation.endTime || "") ||
+        Number(oldReservation.persons || 0) !== Number(newReservation.persons || 0) ||
+        Number(oldReservation.amountPaid || 0) !== Number(newReservation.amountPaid || 0);
+
+      return hasActuallyChanged && newStartMatch && newEndMatch && newPersonsMatch;
+    }
+
+    async function wait(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function waitForReservationUpdateAfterPayment(payload, maxAttempts = 6, delayMs = 1200) {
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        await wait(delayMs);
+
+        try {
+          const refreshed = await loadReservationData();
+
+          if (hasReservationBeenUpdated(currentReservation, refreshed, payload)) {
+            currentReservation = refreshed;
+            return refreshed;
+          }
+        } catch (error) {
+          console.warn("Refresh réservation après paiement échoué :", error);
+        }
+      }
+
+      return null;
+    }
+
     async function createPaymentMethodForModification() {
       if (!stripe || !cardElement || !cardReady) {
         return {
@@ -1968,26 +2088,37 @@
             return;
           }
 
-          summaryMsg.textContent = "Paiement réussi, la mise à jour va être finalisée.";
+          summaryMsg.textContent = "Paiement réussi, finalisation de la modification...";
           summaryMsg.className = "page-message ok";
           setPaymentNotice("Paiement accepté ✔️", "ok");
 
-          setTimeout(() => {
-            window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
-          }, 1500);
+          const refreshedReservation = await waitForReservationUpdateAfterPayment(payload);
+          const thankYouData = refreshedReservation
+            ? buildThankYouDataFromReservation(refreshedReservation)
+            : buildThankYouDataFromSelection();
 
+          redirectToThankYou(thankYouData);
           return;
         }
 
         if (data.success) {
+          const updatedReservation = data.reservation
+            ? normalizeReservation(data.reservation)
+            : null;
+
+          if (updatedReservation) {
+            currentReservation = updatedReservation;
+          }
+
           summaryMsg.textContent = "Réservation modifiée avec succès.";
           summaryMsg.className = "page-message ok";
           setPaymentNotice("Aucun supplément nécessaire pour cette modification.", "ok");
 
-          setTimeout(() => {
-            window.location.href = isGuest ? "reservation.html" : "mon-compte.html";
-          }, 1200);
+          const thankYouData = updatedReservation
+            ? buildThankYouDataFromReservation(updatedReservation)
+            : buildThankYouDataFromSelection();
 
+          redirectToThankYou(thankYouData);
           return;
         }
 
