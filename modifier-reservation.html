@@ -723,7 +723,7 @@
             <ul class="rule-list">
               <li>Modification en ligne possible jusqu’à <strong>6 heures avant</strong> la séance.</li>
               <li>Annulation avec remboursement : jusqu’à <strong>24 heures avant</strong>.</li>
-              <li>Capacité autorisée : <strong>1 à 6 personnes</strong>.</li>
+              <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
               <li>Facturation minimale : <strong>2 personnes</strong>.</li>
               <li>Si la réservation a été obtenue avec la fidélité, <strong>2 personnes restent offertes</strong>.</li>
               <li>À partir de la 3e personne, seul le <strong>supplément</strong> est dû.</li>
@@ -755,6 +755,8 @@
                     <option value="4">4 personnes</option>
                     <option value="5">5 personnes</option>
                     <option value="6">6 personnes</option>
+                    <option value="7">7 personnes</option>
+                    <option value="8">8 personnes</option>
                   </select>
                   <div class="field-help">
                     La base reste calculée sur 2 personnes minimum. Les ajustements affichés ici suivent les règles de modification en ligne.
@@ -769,7 +771,7 @@
                   Aucun créneau alternatif disponible pour cette date et cette box.
                 </div>
                 <div class="field-help">
-                  Sélectionnez un nouveau créneau disponible pour finaliser la modification.
+                  Vous pouvez aussi garder le même horaire et modifier uniquement le nombre de personnes.
                 </div>
               </div>
             </div>
@@ -932,7 +934,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const API_BASE = "https://singbox-backend.onrender.com";
+    const API_BASE =
+      (globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "https://singbox-backend.onrender.com";
+
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
@@ -940,15 +946,23 @@
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
 
     const MIN_ALLOWED_PERSONS = 1;
-    const MAX_ALLOWED_PERSONS = 6;
+    const MAX_ALLOWED_PERSONS = 8;
     const MIN_BILLABLE_PERSONS = 2;
     const MODIFICATION_DEADLINE_HOURS = 6;
     const SLOT_DURATION_MIN = 90;
 
-    const OFF_PEAK_START_HOUR = 4;
-    const OFF_PEAK_END_HOUR = 14;
-    const OFF_PEAK_RATE = 7.9;
-    const STANDARD_RATE = 9.9;
+    // Aligné backend
+    const WEEKDAY_MORNING_RATE = 4.99;
+    const WEEKDAY_MIDDAY_RATE = 8.99;
+    const WEEKDAY_EVENING_RATE = 10.99;
+    const WEEKEND_BEFORE_15_RATE = 11.99;
+    const WEEKEND_AFTER_15_RATE = 13.99;
+
+    const WEEKDAY_MORNING_START_HOUR = 8;
+    const WEEKDAY_MIDDAY_START_HOUR = 12;
+    const WEEKDAY_EVENING_START_HOUR = 15;
+    const WEEKDAY_END_NIGHT_HOUR = 2;
+    const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
 
     const LOYALTY_POINTS_COST = 100;
     const LOYALTY_FREE_BILLABLE_PERSONS = 2;
@@ -1148,22 +1162,35 @@
       return day === 0 || day === 6;
     }
 
-    function isHolidayLike(_date) {
-      return false;
+    function isFriday(date) {
+      return date.getDay() === 5;
     }
 
     function getPerPersonRate(date) {
       const hour = date.getHours();
+      const friday = isFriday(date);
+      const weekend = isWeekend(date);
 
-      if (isWeekend(date) || isHolidayLike(date)) {
-        return STANDARD_RATE;
+      if (friday || weekend) {
+        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+          return WEEKEND_AFTER_15_RATE;
+        }
+        return WEEKEND_BEFORE_15_RATE;
       }
 
-      if (hour >= OFF_PEAK_START_HOUR && hour < OFF_PEAK_END_HOUR) {
-        return OFF_PEAK_RATE;
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
+        return WEEKDAY_MORNING_RATE;
       }
 
-      return STANDARD_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
+        return WEEKDAY_MIDDAY_RATE;
+      }
+
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+        return WEEKDAY_EVENING_RATE;
+      }
+
+      return WEEKDAY_MORNING_RATE;
     }
 
     function getBillablePersons(persons) {
@@ -1173,6 +1200,8 @@
     }
 
     function computeCashAmountFromDate(date, persons, loyaltyUsed = false) {
+      if (!date) return 0;
+
       const billablePersons = getBillablePersons(persons);
       const perPerson = getPerPersonRate(date);
 
@@ -1278,6 +1307,7 @@
         raw.total ??
         raw.total_price ??
         raw.paid_amount ??
+        raw.cash_amount_due ??
         0;
 
       const personsRaw =
@@ -1556,6 +1586,34 @@
       });
     }
 
+    function buildCurrentSlotLikeReservation() {
+      if (!currentReservation) return null;
+      return {
+        dateIso: parseDateOrNull(currentReservation.startTime)
+          ? toLocalYMD(parseDateOrNull(currentReservation.startTime))
+          : null,
+        startTime: currentReservation.startTime,
+        endTime: currentReservation.endTime
+      };
+    }
+
+    function getEffectiveTargetSlot() {
+      if (selectedSlot) return selectedSlot;
+
+      if (!currentReservation) return null;
+
+      const currentStart = parseDateOrNull(currentReservation.startTime);
+      if (!currentStart) return null;
+
+      const currentDateIso = toLocalYMD(currentStart);
+
+      if (selectedDateIso && selectedDateIso !== currentDateIso) {
+        return null;
+      }
+
+      return buildCurrentSlotLikeReservation();
+    }
+
     function getCurrentSlotKey() {
       if (!currentReservation) return null;
       const start = parseDateOrNull(currentReservation.startTime);
@@ -1667,8 +1725,9 @@
         return;
       }
 
-      const currentStart = parseDateOrNull(currentReservation.startTime);
-      const currentKey = currentStart ? slotKeyFromIso(currentReservation.startTime) : "";
+      const effectiveSlot = getEffectiveTargetSlot();
+      const effectiveKey = effectiveSlot ? slotKeyFromIso(effectiveSlot.startTime) : "";
+      const currentKey = getCurrentSlotKey();
 
       for (const slot of availableSlots) {
         const start = parseDateOrNull(slot.startTime);
@@ -1686,7 +1745,7 @@
 
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "slot-option";
+        btn.className = "slot-option" + (key === effectiveKey ? " selected" : "");
         btn.innerHTML = `
           <span class="slot-time">${formatHour(start)} – ${formatHour(end)}</span>
           <span class="slot-price">${formatMoney(estimatedPrice)}</span>
@@ -1694,10 +1753,8 @@
         `;
 
         btn.addEventListener("click", () => {
-          const all = slotsGrid.querySelectorAll(".slot-option");
-          all.forEach((node) => node.classList.remove("selected"));
-          btn.classList.add("selected");
           selectedSlot = slot;
+          renderSlots();
           updateSummary();
         });
 
@@ -1708,9 +1765,8 @@
     function getNewAmount() {
       if (!currentReservation) return 0;
 
-      const start = selectedSlot
-        ? parseDateOrNull(selectedSlot.startTime)
-        : parseDateOrNull(currentReservation.startTime);
+      const effectiveSlot = getEffectiveTargetSlot();
+      const start = effectiveSlot ? parseDateOrNull(effectiveSlot.startTime) : parseDateOrNull(currentReservation.startTime);
 
       return computeCashAmountFromDate(
         start,
@@ -1730,22 +1786,18 @@
       const oldEnd = parseDateOrNull(currentReservation.endTime) ||
         new Date(oldStart.getTime() + SLOT_DURATION_MIN * 60 * 1000);
 
-      const newStart = selectedSlot
-        ? parseDateOrNull(selectedSlot.startTime)
-        : null;
-
-      const newEnd = selectedSlot
-        ? parseDateOrNull(selectedSlot.endTime)
-        : null;
+      const effectiveSlot = getEffectiveTargetSlot();
+      const newStart = effectiveSlot ? parseDateOrNull(effectiveSlot.startTime) : null;
+      const newEnd = effectiveSlot ? parseDateOrNull(effectiveSlot.endTime) : null;
 
       const oldAmount = Number(currentReservation.amountPaid || 0);
-      const newAmount = selectedSlot ? getNewAmount() : oldAmount;
+      const newAmount = getNewAmount();
       const delta = getDeltaAmount(oldAmount, newAmount);
 
       getEl("summary-old-date").textContent = formatDateFr(currentReservation.startTime);
-      getEl("summary-new-date").textContent = selectedSlot ? formatDateFr(selectedSlot.startTime) : "Non sélectionnée";
+      getEl("summary-new-date").textContent = newStart ? formatDateFr(effectiveSlot.startTime) : "Non sélectionnée";
       getEl("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
-      getEl("summary-new-slot").textContent = selectedSlot && newStart && newEnd
+      getEl("summary-new-slot").textContent = newStart && newEnd
         ? `${formatHour(newStart)} – ${formatHour(newEnd)}`
         : "Non sélectionné";
       getEl("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
@@ -1791,21 +1843,22 @@
         return;
       }
 
-      if (!selectedSlot) {
+      const effectiveSlot = getEffectiveTargetSlot();
+
+      if (!effectiveSlot) {
         confirmBtn.disabled = true;
-        pageMsg.textContent = "Veuillez sélectionner un nouveau créneau pour finaliser la modification.";
+        pageMsg.textContent = "Veuillez sélectionner un créneau disponible pour finaliser la modification.";
         pageMsg.className = "page-message warn";
         return;
       }
 
       const samePersons = selectedPersons === currentReservation.persons;
-      const sameDateTime = selectedSlot
-        ? slotKeyFromIso(selectedSlot.startTime) === slotKeyFromIso(currentReservation.startTime)
-        : true;
+      const sameDateTime =
+        slotKeyFromIso(effectiveSlot.startTime) === slotKeyFromIso(currentReservation.startTime);
 
       if (samePersons && sameDateTime) {
         confirmBtn.disabled = true;
-        pageMsg.textContent = "Choisissez un autre horaire ou modifiez le nombre de personnes.";
+        pageMsg.textContent = "Choisissez un autre horaire, une autre date ou modifiez le nombre de personnes.";
         pageMsg.className = "page-message warn";
         return;
       }
@@ -1814,15 +1867,18 @@
     }
 
     function buildPayload() {
-      if (!currentReservation || !selectedSlot) return null;
+      if (!currentReservation) return null;
+
+      const effectiveSlot = getEffectiveTargetSlot();
+      if (!effectiveSlot) return null;
 
       const oldAmount = Number(currentReservation.amountPaid || 0);
       const newAmount = getNewAmount();
 
       const payload = {
         reservationId: currentReservation.id,
-        newStartTime: selectedSlot.startTime,
-        newEndTime: selectedSlot.endTime,
+        newStartTime: effectiveSlot.startTime,
+        newEndTime: effectiveSlot.endTime,
         newPersons: selectedPersons,
         oldStartTime: currentReservation.startTime,
         oldEndTime: currentReservation.endTime,
@@ -1872,11 +1928,12 @@
     }
 
     function buildThankYouDataFromSelection() {
-      const targetStart = selectedSlot?.startTime || currentReservation?.startTime || null;
-      const targetEnd = selectedSlot?.endTime || currentReservation?.endTime || null;
+      const effectiveSlot = getEffectiveTargetSlot();
+      const targetStart = effectiveSlot?.startTime || currentReservation?.startTime || null;
+      const targetEnd = effectiveSlot?.endTime || currentReservation?.endTime || null;
       const targetDate = targetStart ? formatShortDateFr(targetStart) : "-";
       const targetTime = formatRange(targetStart, targetEnd);
-      const targetAmount = selectedSlot ? getNewAmount() : Number(currentReservation?.amountPaid || 0);
+      const targetAmount = getNewAmount();
 
       const prenom =
         currentReservation?.raw?.prenom ||
@@ -1979,7 +2036,7 @@
 
       const payload = buildPayload();
       if (!payload) {
-        summaryMsg.textContent = "Sélectionnez un nouveau créneau avant de confirmer.";
+        summaryMsg.textContent = "Sélectionnez un créneau ou modifiez le nombre de personnes avant de confirmer.";
         summaryMsg.className = "page-message warn";
         return;
       }
