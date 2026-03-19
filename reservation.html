@@ -877,7 +877,6 @@
 
         <p class="resa-note">
           Tarifs par personne, facturation minimale 2 personnes. Capacité maximale : 8 personnes par box. Sessions de 1h30.
-          Heures creuses seulement en semaine hors vacances scolaires.
         </p>
 
         <div class="resa-legend" aria-label="Légende des statuts">
@@ -913,8 +912,9 @@
         <div id="mobile-slots" class="mobile-slots" aria-label="Créneaux disponibles (vue mobile)"></div>
 
         <p class="resa-pricing-rules">
-          7,90&nbsp;€ par personne en heures creuses (4h–14h) du lundi au vendredi hors vacances scolaires –
-          9,90&nbsp;€ par personne le reste du temps. Facturation minimale 2 personnes par session de 1h30.
+          Semaine 08h–12h : 4,99&nbsp;€ / pers. · Semaine 12h–15h : 9,99&nbsp;€ / pers. ·
+          Semaine 15h–02h : 11,99&nbsp;€ / pers. · Week-end avant 15h : 12,99&nbsp;€ / pers. ·
+          Vendredi + week-end 15h–02h : 14,99&nbsp;€ / pers. Facturation minimale 2 personnes par session de 1h30.
         </p>
 
         <p id="message" aria-live="polite" role="status"></p>
@@ -1042,17 +1042,25 @@
     const MIN_BILLABLE_PERSONS = 2;
     const MIN_ALLOWED_PERSONS = 1;
     const MAX_ALLOWED_PERSONS = 8;
-    const OFF_PEAK_START_HOUR = 4;
-    const OFF_PEAK_END_HOUR = 14;
-    const OFF_PEAK_RATE = 7.9;
-    const STANDARD_RATE = 9.9;
+
+    const WEEKDAY_MORNING_START_HOUR = 8;
+    const WEEKDAY_MIDDAY_START_HOUR = 12;
+    const WEEKDAY_EVENING_START_HOUR = 15;
+    const NIGHT_END_HOUR = 2;
+    const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
+
+    const WEEKDAY_MORNING_RATE = 4.99;
+    const WEEKDAY_MIDDAY_RATE = 9.99;
+    const WEEKDAY_EVENING_RATE = 11.99;
+    const WEEKEND_BEFORE_15_RATE = 12.99;
+    const WEEKEND_AFTER_15_RATE = 14.99;
 
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
 
     let refreshPlanningGlobal = null;
     let currentDateIsWeekend = false;
-    let currentDateIsHoliday = false;
+    let currentDateDay = null;
     let bookedIndex = {};
     let selectedPersons = 2;
     let currentPlanningDateIso = null;
@@ -1234,47 +1242,39 @@
       );
     }
 
-    async function fetchHolidayContext(isoDate) {
-      try {
-        const res = await fetch(`${API_BASE}/api/is-vacances?date=${isoDate}`);
-        if (!res.ok) {
-          console.error("Erreur HTTP /api/is-vacances :", res.status);
-          return false;
-        }
-
-        const data = await res.json();
-        return Boolean(
-          data.vacances ??
-          data.is_vacances ??
-          data.isHoliday ??
-          data.holiday
-        );
-      } catch (error) {
-        console.error("Erreur fetch vacances :", error);
-        return false;
-      }
-    }
-
     async function checkDateContext(isoDate) {
       const dateObj = parseIsoDate(isoDate);
-      const day = dateObj.getDay();
+      currentDateDay = dateObj.getDay();
+      currentDateIsWeekend = (currentDateDay === 0 || currentDateDay === 6);
+    }
 
-      currentDateIsWeekend = (day === 0 || day === 6);
-      currentDateIsHoliday = await fetchHolidayContext(isoDate);
+    function isFriday() {
+      return currentDateDay === 5;
     }
 
     function getPerPersonRate(startMinutes) {
       const hour = Math.floor(startMinutes / 60);
 
-      if (currentDateIsWeekend || currentDateIsHoliday) {
-        return STANDARD_RATE;
+      if (isFriday() || currentDateIsWeekend) {
+        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < NIGHT_END_HOUR) {
+          return WEEKEND_AFTER_15_RATE;
+        }
+        return WEEKEND_BEFORE_15_RATE;
       }
 
-      if (hour >= OFF_PEAK_START_HOUR && hour < OFF_PEAK_END_HOUR) {
-        return OFF_PEAK_RATE;
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
+        return WEEKDAY_MORNING_RATE;
       }
 
-      return STANDARD_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
+        return WEEKDAY_MIDDAY_RATE;
+      }
+
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < NIGHT_END_HOUR) {
+        return WEEKDAY_EVENING_RATE;
+      }
+
+      return WEEKDAY_MORNING_RATE;
     }
 
     function getBillablePersons(persons) {
@@ -1331,6 +1331,7 @@
       const parts = currentSlotChoice.date.split("-");
       const dateStr = `${parts[2]}/${parts[1]}/${parts[0]}`;
       const range = formatSlotRange(currentSlotChoice.startMinutes);
+      const prixAffiche = Number(currentSlotChoice.price).toFixed(2).replace(".", ",");
 
       if (infoEl) {
         infoEl.textContent =
@@ -1341,7 +1342,9 @@
           range +
           " – " +
           currentSlotChoice.persons +
-          " pers.";
+          " pers. – " +
+          prixAffiche +
+          "€";
       }
 
       if (personsCurrentEl) {
