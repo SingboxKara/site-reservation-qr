@@ -591,6 +591,19 @@
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
 
+    // Aligné backend
+    const MIN_BILLABLE_PERSONS = 2;
+    const WEEKDAY_MORNING_RATE = 4.99;
+    const WEEKDAY_MIDDAY_RATE = 8.99;
+    const WEEKDAY_EVENING_RATE = 10.99;
+    const WEEKEND_BEFORE_15_RATE = 11.99;
+    const WEEKEND_AFTER_15_RATE = 13.99;
+    const WEEKDAY_MORNING_START_HOUR = 8;
+    const WEEKDAY_MIDDAY_START_HOUR = 12;
+    const WEEKDAY_EVENING_START_HOUR = 15;
+    const WEEKDAY_END_NIGHT_HOUR = 2;
+    const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
+
     let supabaseClient = null;
 
     function getPanier() {
@@ -725,51 +738,134 @@
     }
 
     function getPersonsInfo(item) {
-      const rawPersons = typeof item.persons === "number"
-        ? item.persons
-        : (typeof item.nb_personnes === "number" ? item.nb_personnes : null);
+      const personsRaw = Number(
+        item?.persons ??
+        item?.nb_personnes ??
+        item?.participants ??
+        2
+      );
 
-      const personsFacturees = Math.max(rawPersons || 2, 2);
+      const safePersons = Number.isFinite(personsRaw) ? Math.max(1, Math.min(personsRaw, 8)) : 2;
+      const personsFacturees = Math.max(safePersons, MIN_BILLABLE_PERSONS);
 
-      let personnesPrevuesText = "Nombre de personnes non renseigné";
-      if (rawPersons) {
-        personnesPrevuesText =
-          rawPersons === 1
-            ? "1 personne prévue"
-            : `${rawPersons} personnes prévues`;
-      }
+      const personnesPrevuesText =
+        safePersons === 1
+          ? "1 personne prévue"
+          : `${safePersons} personnes prévues`;
 
       const personnesFactureesText =
         personsFacturees === 1
-          ? "1 personne facturée (minimum 2)"
+          ? "1 personne facturée"
           : `${personsFacturees} personnes facturées (minimum 2)`;
 
       return {
-        rawPersons,
+        rawPersons: safePersons,
         personsFacturees,
         personnesPrevuesText,
         personnesFactureesText
       };
     }
 
+    function isWeekend(dateObj) {
+      const day = dateObj.getDay();
+      return day === 0 || day === 6;
+    }
+
+    function isFriday(dateObj) {
+      return dateObj.getDay() === 5;
+    }
+
+    function getPerPersonRate(dateObj) {
+      const hour = dateObj.getHours();
+      const friday = isFriday(dateObj);
+      const weekend = isWeekend(dateObj);
+
+      if (friday || weekend) {
+        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+          return WEEKEND_AFTER_15_RATE;
+        }
+        return WEEKEND_BEFORE_15_RATE;
+      }
+
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
+        return WEEKDAY_MORNING_RATE;
+      }
+
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
+        return WEEKDAY_MIDDAY_RATE;
+      }
+
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
+        return WEEKDAY_EVENING_RATE;
+      }
+
+      return WEEKDAY_MORNING_RATE;
+    }
+
+    function getItemStartDate(item) {
+      if (item.start_time || item.startTime) {
+        return parseValidDate(item.start_time || item.startTime);
+      }
+
+      if (item.datetime) {
+        return parseValidDate(item.datetime);
+      }
+
+      if (item.date && typeof item.hour === "number") {
+        const hour = Math.floor(item.hour);
+        const minute = Math.round((item.hour - hour) * 60);
+        return parseValidDate(
+          `${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
+        );
+      }
+
+      if (item.date && item.heure && typeof item.heure === "string") {
+        const match = item.heure.match(/(\d{1,2})[h:](\d{2})?/i);
+        if (match) {
+          const hour = Number(match[1]);
+          const minute = Number(match[2] || 0);
+          return parseValidDate(
+            `${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
+          );
+        }
+      }
+
+      return null;
+    }
+
     function getPriceInfo(item, personsFacturees) {
-      const hasPrice = typeof item.price === "number" && Number.isFinite(item.price);
-      const price = hasPrice ? item.price : null;
+      const explicitPrice =
+        typeof item.price === "number" && Number.isFinite(item.price)
+          ? item.price
+          : (typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue)
+            ? item.cashAmountDue
+            : (typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount)
+              ? item.theoreticalFullAmount
+              : null));
+
+      let computedPrice = null;
+      const startDate = getItemStartDate(item);
+      if (startDate) {
+        const perPersonRate = getPerPersonRate(startDate);
+        computedPrice = Number((perPersonRate * personsFacturees).toFixed(2));
+      }
+
+      const finalPrice = explicitPrice ?? computedPrice;
 
       let priceDisplay = "Calcul au paiement";
-      if (hasPrice && price !== null) {
-        priceDisplay = formatMoney(price);
+      if (finalPrice !== null) {
+        priceDisplay = formatMoney(finalPrice);
       }
 
       let priceSubDetail = "Tarif définitif revérifié avant paiement";
-      if (hasPrice && price !== null && personsFacturees > 0) {
-        const perPerson = price / personsFacturees;
+      if (finalPrice !== null && personsFacturees > 0) {
+        const perPerson = Number((finalPrice / personsFacturees).toFixed(2));
         priceSubDetail = `${formatMoney(perPerson)}/pers × ${personsFacturees} pers facturées`;
       }
 
       return {
-        hasPrice,
-        price,
+        hasPrice: finalPrice !== null,
+        price: finalPrice,
         priceDisplay,
         priceSubDetail
       };
@@ -783,6 +879,12 @@
     function getSlotStableId(item, index) {
       if (item && item.slotId) return String(item.slotId);
       if (item && item.reservationId) return String(item.reservationId);
+      if (item && item.start_time && (item.boxId || item.box || item.boxName)) {
+        return `${item.start_time}__${item.boxId || item.box || item.boxName}`;
+      }
+      if (item && item.date && item.hour !== undefined && (item.boxId || item.box || item.boxName)) {
+        return `${item.date}__${String(item.hour)}__${item.boxId || item.box || item.boxName}`;
+      }
       return `idx-${index}`;
     }
 
@@ -792,8 +894,11 @@
       let hasMissingPrice = false;
 
       for (const item of panier) {
-        if (typeof item.price === "number" && Number.isFinite(item.price)) {
-          total += item.price;
+        const { personsFacturees } = getPersonsInfo(item);
+        const priceInfo = getPriceInfo(item, personsFacturees);
+
+        if (priceInfo.hasPrice && typeof priceInfo.price === "number") {
+          total += priceInfo.price;
           hasAtLeastOnePrice = true;
         } else {
           hasMissingPrice = true;
@@ -801,7 +906,7 @@
       }
 
       return {
-        total,
+        total: Number(total.toFixed(2)),
         hasAtLeastOnePrice,
         hasMissingPrice
       };
@@ -1011,7 +1116,10 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ items: panier })
+        body: JSON.stringify({
+          panier,
+          items: panier
+        })
       });
     }
 
@@ -1025,6 +1133,34 @@
 
     function goToPaymentPage() {
       globalThis.location.href = "paiement.html";
+    }
+
+    function normalizeVerifiedItems(data, fallbackPanier) {
+      if (!data || !Array.isArray(data.items)) {
+        return fallbackPanier;
+      }
+
+      return data.items.map((item) => {
+        const normalizedPrice =
+          (typeof item.price === "number" && Number.isFinite(item.price))
+            ? item.price
+            : ((typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue))
+              ? item.cashAmountDue
+              : ((typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount))
+                ? item.theoreticalFullAmount
+                : undefined));
+
+        return {
+          ...item,
+          ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {})
+        };
+      });
+    }
+
+    function extractVerifyErrorText(data, fallbackText) {
+      if (typeof data?.error === "string" && data.error.trim()) return data.error.trim();
+      if (typeof data?.message === "string" && data.message.trim()) return data.message.trim();
+      return fallbackText || "";
     }
 
     function initConfirmCart() {
@@ -1047,19 +1183,17 @@
 
         try {
           const response = await verifyCartBeforePayment(panier);
+          const data = await safeReadJson(response);
 
           if (!response.ok) {
-            const errorText = await safeReadText(response);
-            showCartVerificationError(errorText);
+            const fallbackText = await safeReadText(response);
+            showCartVerificationError(extractVerifyErrorText(data, fallbackText));
             return;
           }
 
-          const data = await safeReadJson(response);
-
-          if (data && Array.isArray(data.items)) {
-            savePanier(data.items);
-            renderPanier();
-          }
+          const normalizedItems = normalizeVerifiedItems(data, panier);
+          savePanier(normalizedItems);
+          renderPanier();
 
           setServerMessage("");
           goToPaymentPage();
