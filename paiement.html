@@ -128,7 +128,6 @@
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="brand">
@@ -166,7 +165,6 @@
     </div>
   </header>
 
-  <!-- MENU MOBILE -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
     <ul>
       <li><a href="index.html">Accueil</a></li>
@@ -178,7 +176,6 @@
     </ul>
   </nav>
 
-  <!-- MODAL CONNEXION / FIDÉLITÉ -->
   <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title" aria-describedby="auth-modal-desc">
     <div class="auth-modal-eyebrow">Programme fidélité</div>
     <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
@@ -216,7 +213,7 @@
       </div>
       <div class="auth-field">
         <label for="auth-register-password">Mot de passe</label>
-        <input type="password" id="auth-register-password" placeholder="Mot de passe" autocomplete="new-password" minlength="6" required />
+        <input type="password" id="auth-register-password" placeholder="Mot de passe" autocomplete="new-password" minlength="8" required />
       </div>
       <button type="submit" class="auth-submit-btn">Créer mon compte</button>
     </form>
@@ -231,7 +228,6 @@
     </div>
   </dialog>
 
-  <!-- MAIN CHECKOUT -->
   <section id="checkout">
     <div class="container">
       <div class="checkout-header">
@@ -685,7 +681,8 @@
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
     const PRICE_FALLBACK = 10;
-    const CHECKOUT_INFO_KEY = "singbox_checkout_info_v1";
+    const CHECKOUT_INFO_KEY = "singbox_checkout_info_v2";
+    const CHECKOUT_INFO_TTL_MS = 1000 * 60 * 60 * 24 * 30;
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
@@ -697,12 +694,11 @@
     const LOYALTY_FREE_BILLABLE_PERSONS = 2;
     const MIN_BILLABLE_PERSONS = 2;
 
-    // Tarifs alignés avec ton backend
-    const WEEKDAY_MORNING_RATE = 4.99;   // semaine 08h–12h
-    const WEEKDAY_MIDDAY_RATE = 8.99;    // semaine 12h–15h
-    const WEEKDAY_EVENING_RATE = 10.99;  // semaine 15h–02h
-    const WEEKEND_BEFORE_15_RATE = 11.99; // vendredi + week-end avant 15h
-    const WEEKEND_AFTER_15_RATE = 13.99;  // vendredi + week-end dès 15h
+    const WEEKDAY_MORNING_RATE = 4.99;
+    const WEEKDAY_MIDDAY_RATE = 8.99;
+    const WEEKDAY_EVENING_RATE = 10.99;
+    const WEEKEND_BEFORE_15_RATE = 11.99;
+    const WEEKEND_AFTER_15_RATE = 13.99;
 
     const WEEKDAY_MORNING_START_HOUR = 8;
     const WEEKDAY_MIDDAY_START_HOUR = 12;
@@ -952,7 +948,6 @@
       const friday = isFriday(dateObj);
       const weekend = isWeekend(dateObj);
 
-      // Vendredi + samedi + dimanche
       if (friday || weekend) {
         if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
           return WEEKEND_AFTER_15_RATE;
@@ -960,7 +955,6 @@
         return WEEKEND_BEFORE_15_RATE;
       }
 
-      // Lundi à jeudi
       if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
         return WEEKDAY_MORNING_RATE;
       }
@@ -973,7 +967,6 @@
         return WEEKDAY_EVENING_RATE;
       }
 
-      // Sécurité si horaire hors grille
       return WEEKDAY_MORNING_RATE;
     }
 
@@ -1456,20 +1449,39 @@
       }
     }
 
+    function sanitizeTextValue(value, maxLen = 160) {
+      const safe = String(value || "").trim();
+      return safe.slice(0, maxLen);
+    }
+
     function getCheckoutInfoFromForm() {
-      const get = (id) => (getEl(id)?.value || "").trim();
+      return {
+        prenom: sanitizeTextValue(getEl("prenom")?.value || "", 80),
+        nom: sanitizeTextValue(getEl("nom")?.value || "", 80),
+        pays: sanitizeTextValue(getEl("pays")?.value || "FR", 20),
+        adresse: sanitizeTextValue(getEl("adresse")?.value || "", 160),
+        complement: sanitizeTextValue(getEl("complement")?.value || "", 160),
+        cp: sanitizeTextValue(getEl("cp")?.value || "", 20),
+        ville: sanitizeTextValue(getEl("ville")?.value || "", 80),
+        telephone: sanitizeTextValue(getEl("telephone")?.value || "", 40),
+        email: sanitizeTextValue(getEl("email")?.value || "", 160).toLowerCase(),
+        naissance: sanitizeTextValue(getEl("naissance")?.value || "", 20)
+      };
+    }
+
+    function getCheckoutInfoForLocalStorage() {
+      const info = getCheckoutInfoFromForm();
 
       return {
-        prenom: get("prenom"),
-        nom: get("nom"),
-        pays: getEl("pays")?.value || "FR",
-        adresse: get("adresse"),
-        complement: get("complement"),
-        cp: get("cp"),
-        ville: get("ville"),
-        telephone: get("telephone"),
-        email: get("email"),
-        naissance: getEl("naissance")?.value || ""
+        prenom: info.prenom,
+        nom: info.nom,
+        pays: info.pays,
+        adresse: info.adresse,
+        complement: info.complement,
+        cp: info.cp,
+        ville: info.ville,
+        telephone: info.telephone,
+        email: info.email
       };
     }
 
@@ -1490,7 +1502,6 @@
       set("ville", info.ville);
       set("telephone", info.telephone);
       set("email", info.email);
-      set("naissance", info.naissance);
 
       const paysEl = getEl("pays");
       if (paysEl && info.pays) paysEl.value = info.pays;
@@ -1499,15 +1510,42 @@
     function loadCheckoutInfoLocal() {
       try {
         const raw = localStorage.getItem(CHECKOUT_INFO_KEY);
-        return raw ? JSON.parse(raw) : null;
+        if (!raw) return null;
+
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") {
+          localStorage.removeItem(CHECKOUT_INFO_KEY);
+          return null;
+        }
+
+        const savedAt = Number(parsed.savedAt || 0);
+        if (!savedAt || Date.now() - savedAt > CHECKOUT_INFO_TTL_MS) {
+          localStorage.removeItem(CHECKOUT_INFO_KEY);
+          return null;
+        }
+
+        return parsed.data || null;
       } catch {
+        localStorage.removeItem(CHECKOUT_INFO_KEY);
         return null;
       }
     }
 
     function saveCheckoutInfoLocal(info) {
       try {
-        localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify(info));
+        localStorage.setItem(
+          CHECKOUT_INFO_KEY,
+          JSON.stringify({
+            savedAt: Date.now(),
+            data: info
+          })
+        );
+      } catch {}
+    }
+
+    function clearCheckoutInfoLocal() {
+      try {
+        localStorage.removeItem(CHECKOUT_INFO_KEY);
       } catch {}
     }
 
@@ -1531,12 +1569,12 @@
         complement: profile.complement || "",
         cp: profile.cp || "",
         ville: profile.ville || "",
-        naissance: profile.naissance || "",
+        naissance: "",
         email: data.email || ""
       });
 
       isPrefilling = false;
-      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+      saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
     }
 
     function bindAutosave() {
@@ -1549,7 +1587,7 @@
 
         clearTimeout(saveTimer);
         saveTimer = setTimeout(() => {
-          saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+          saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
         }, 400);
       }
 
@@ -2129,7 +2167,7 @@
     }
 
     function cleanupAfterReservation() {
-      saveCheckoutInfoLocal(getCheckoutInfoFromForm());
+      saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
       savePanier([]);
       localStorage.removeItem("promoCode");
       currentPromo = null;
@@ -2592,8 +2630,8 @@
 
       clearAuthMessage();
 
-      if (!isValidEmail(email) || !password || password.length < 6) {
-        if (msgEl) msgEl.textContent = "Merci de renseigner un email valide et un mot de passe d’au moins 6 caractères.";
+      if (!isValidEmail(email) || !password || password.length < 8) {
+        if (msgEl) msgEl.textContent = "Merci de renseigner un email valide et un mot de passe d’au moins 8 caractères.";
         return;
       }
 
@@ -2731,7 +2769,7 @@
           }
 
           messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur : " + error.message;
+          messageBox.textContent = "Erreur d’inscription à la newsletter.";
           return;
         }
 
