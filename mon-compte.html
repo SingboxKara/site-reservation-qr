@@ -516,6 +516,7 @@
       font-size: 15px;
       font-weight: 600;
       margin-bottom: 10px;
+      word-break: break-word;
     }
 
     .badge-points {
@@ -640,6 +641,7 @@
     .reservation-meta {
       font-size: 12px;
       color: var(--sb-text-muted);
+      word-break: break-word;
     }
 
     .reservation-side {
@@ -1033,14 +1035,13 @@
       padding: 10px 0 4px;
     }
 
-    .qr-img {
+    #qr-canvas {
       width: 320px;
       height: 320px;
-      border: 2px solid #ffffff;
       background: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
       display: block;
-      object-fit: contain;
-      image-rendering: pixelated;
       max-width: 100%;
       max-height: calc(100vw - 80px);
     }
@@ -1100,6 +1101,7 @@
       gap: 8px;
       justify-content: center;
       margin-top: 8px;
+      position: relative;
     }
 
     footer input[type="email"] {
@@ -1135,6 +1137,16 @@
       box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.18),
         0 16px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     .footer-columns {
@@ -1672,7 +1684,7 @@
     <p id="qr-modal-subtitle">Présentez ce QR code à l’entrée.</p>
 
     <div class="qr-only-wrap">
-      <img id="qr-image" class="qr-img" alt="QR code de validation Singbox" />
+      <canvas id="qr-canvas" width="320" height="320" aria-label="QR code de validation Singbox"></canvas>
     </div>
 
     <div class="modal-actions">
@@ -1686,6 +1698,8 @@
       <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
       <div class="newsletter-row">
         <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
+        <label for="newsletter-company" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input id="newsletter-company" class="newsletter-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <input id="newsletter-email" type="email" placeholder="Entrez votre adresse e-mail" autocomplete="email" inputmode="email" />
         <button id="newsletter-submit" type="button">S'abonner aux actualités</button>
       </div>
@@ -1740,6 +1754,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
     const CHECK_ENDPOINT = "https://singbox-backend.onrender.com/api/check";
@@ -1749,6 +1764,17 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
     let supabaseClient = null;
+
+    function sanitizeText(value, maxLen = 500) {
+      return String(value || "")
+        .replace(/\u0000/g, "")
+        .trim()
+        .slice(0, maxLen);
+    }
+
+    function normalizeEmail(email) {
+      return sanitizeText(email, 254).toLowerCase();
+    }
 
     function isValidEmail(email) {
       if (typeof email !== "string") {
@@ -1765,12 +1791,40 @@
       return token;
     }
 
+    function clearStoredToken() {
+      localStorage.removeItem("token");
+    }
+
     function getAuthHeaders() {
       const token = getStoredToken();
       if (!token) {
         return {};
       }
       return { Authorization: "Bearer " + token };
+    }
+
+    async function safeJson(response) {
+      try {
+        return await response.json();
+      } catch {
+        return {};
+      }
+    }
+
+    async function fetchWithAuth(url, options = {}) {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          ...(options.headers || {}),
+          ...getAuthHeaders()
+        }
+      });
+
+      if (response.status === 401 || response.status === 403) {
+        clearStoredToken();
+      }
+
+      return response;
     }
 
     function getPanier() {
@@ -1848,21 +1902,6 @@
       });
     }
 
-    function getLoyaltyText(points) {
-      if (typeof points !== "number") {
-        return "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
-      }
-
-      const next = Math.max(0, 100 - points);
-
-      if (next === 0) {
-        return "Bravo ! Vous avez atteint 100 points. Votre prochaine séance offerte est débloquée.";
-      }
-
-      const suffix = next > 1 ? "s" : "";
-      return `Il vous reste ${next} point${suffix} avant votre prochaine séance offerte.`;
-    }
-
     function updateLoyaltyHighlight(points) {
       const textEl = document.getElementById("loyalty-highlight-text");
       const progressValueEl = document.getElementById("loyalty-progress-value");
@@ -1872,7 +1911,7 @@
       const nextGoalEl = document.getElementById("loyalty-next-goal");
       const rewardLabelEl = document.getElementById("loyalty-reward-label");
 
-      if (typeof points !== "number") {
+      if (typeof points !== "number" || !Number.isFinite(points)) {
         if (textEl) {
           textEl.textContent = "Connectez-vous pour voir combien de points il vous reste avant votre séance offerte.";
         }
@@ -1897,7 +1936,7 @@
         return;
       }
 
-      const safePoints = Math.max(0, points);
+      const safePoints = Math.max(0, Math.floor(points));
       const progress = Math.min(safePoints, 100);
       const remaining = Math.max(0, 100 - safePoints);
 
@@ -1916,7 +1955,7 @@
       }
 
       if (progressFillEl) {
-        progressFillEl.style.width = `${Math.min(progress, 100)}%`;
+        progressFillEl.style.width = `${progress}%`;
       }
 
       if (currentPointsEl) {
@@ -1942,8 +1981,11 @@
         return;
       }
 
-      listEl.innerHTML =
-        '<p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>';
+      listEl.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "reservations-empty";
+      p.textContent = "Connectez-vous pour retrouver vos réservations passées et à venir.";
+      listEl.appendChild(p);
     }
 
     function showNotLoggedState() {
@@ -2004,7 +2046,7 @@
     function formatReservationDate(dateStr) {
       const date = parseDateOrNull(dateStr);
       if (!date) {
-        return dateStr || "Date à confirmer";
+        return sanitizeText(dateStr || "Date à confirmer", 80);
       }
 
       return date.toLocaleDateString("fr-FR", {
@@ -2112,7 +2154,7 @@
       const metaPieces = [];
       const timeRange = formatReservationHoursFromReservation(reservation);
       const rawBoxName = reservation.box_name || reservation.box || reservation.box_id || "";
-      const boxName = String(rawBoxName).trim();
+      const boxName = sanitizeText(rawBoxName, 80);
 
       if (timeRange) {
         metaPieces.push(timeRange);
@@ -2125,92 +2167,26 @@
       return metaPieces.join(" • ");
     }
 
-    function buildQrButtonHtml(canShowQr, checkUrl, qrTitle) {
-      if (!canShowQr) {
-        return [
-          '<button class="reservation-action-btn reservation-qr-btn" type="button" disabled>',
-          "  QR indisponible",
-          "</button>"
-        ].join("");
-      }
-
-      return [
-        '<button',
-        '  class="reservation-action-btn reservation-qr-btn"',
-        `  data-qr-url="${checkUrl}"`,
-        `  data-qr-title="${qrTitle}"`,
-        '  type="button"',
-        ">",
-        "  Afficher le QR",
-        "</button>"
-      ].join("");
-    }
-
-    function buildEditButtonHtml(canEdit, reservation) {
-      if (!canEdit) {
-        return [
-          '<button class="reservation-action-btn reservation-edit-btn" type="button" disabled>',
-          "  Modifier",
-          "</button>"
-        ].join("");
-      }
-
-      const reservationId = reservation?.id ? String(reservation.id) : "";
-      return [
-        '<button',
-        '  class="reservation-action-btn reservation-edit-btn"',
-        `  data-edit-reservation-id="${reservationId}"`,
-        '  type="button"',
-        ">",
-        "  Modifier",
-        "</button>"
-      ].join("");
-    }
-
-    function buildActionsHtml(canShowQr, checkUrl, qrTitle, canEdit, reservation) {
-      return [
-        '<div class="reservation-actions-row">',
-        buildEditButtonHtml(canEdit, reservation),
-        buildQrButtonHtml(canShowQr, checkUrl, qrTitle),
-        "</div>"
-      ].join("");
-    }
-
-    function buildRefundHtml(canRefund, reservationId, startTimeIso, isFutureConfirmed) {
-      if (!isFutureConfirmed) {
-        return "";
-      }
-
-      const infoText = canRefund
-        ? "Remboursement possible jusqu'à 24h avant la séance."
-        : "Le remboursement n'est plus possible (moins de 24h avant la séance).";
-
-      return [
-        '<div class="reservation-refund-row">',
-        `  <span>${infoText}</span>`,
-        '  <button',
-        '    class="reservation-refund-btn"',
-        `    data-reservation-id="${reservationId}"`,
-        `    data-start-time="${startTimeIso}"`,
-        `    type="button" ${canRefund ? "" : "disabled"}`,
-        "  >",
-        "    Demander un remboursement",
-        "  </button>",
-        "</div>"
-      ].join("");
+    function createButton(classes, text, disabled = false) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = classes;
+      btn.textContent = text;
+      if (disabled) btn.disabled = true;
+      return btn;
     }
 
     function createReservationItemElement(reservation) {
       const item = document.createElement("div");
       item.className = "reservation-item";
 
-      const startTimeIso = reservation.start_time || reservation.datetime || null;
+      const startTimeIso = sanitizeText(reservation.start_time || reservation.datetime || "", 100);
       const date = formatReservationDate(reservation.date || startTimeIso);
       const metaText = buildReservationMetaText(reservation);
-      const boxName = reservation.box_name || reservation.box || reservation.box_id || "";
-      const montant = reservation.montant || reservation.total || reservation.total_price || "";
-      const statutRaw = (reservation.statut || reservation.status || "").toString();
-      const statut = statutRaw || "";
+      const boxName = sanitizeText(reservation.box_name || reservation.box || reservation.box_id || "", 80);
+      const montantRaw = reservation.montant || reservation.total || reservation.total_price || "";
+      const montant = sanitizeText(montantRaw, 40);
+      const statutRaw = sanitizeText((reservation.statut || reservation.status || "").toString(), 80);
       const statutClass = getReservationStatusClass(statutRaw);
 
       const reservationId = getReservationIdForQr(reservation);
@@ -2219,7 +2195,7 @@
 
       const qrTitleParts = [];
       if (boxName) {
-        qrTitleParts.push(/^box/i.test(String(boxName).trim()) ? String(boxName).trim() : `Box ${boxName}`);
+        qrTitleParts.push(/^box/i.test(boxName) ? boxName : `Box ${boxName}`);
       }
       qrTitleParts.push(date);
 
@@ -2237,26 +2213,95 @@
       const canRefund = isRefundPossible(startTimeIso);
       const canEdit = isModificationPossible(startTimeIso, statutRaw);
 
-      const priceHtml = montant ? `<div class="reservation-price">${montant} €</div>` : "";
-      const statusHtml = statut ? `<span class="reservation-status ${statutClass}">${statut}</span>` : "";
-      const actionsHtml = buildActionsHtml(canShowQr, checkUrl, qrTitle, canEdit, reservation);
-      const refundHtml = buildRefundHtml(reservationId ? canRefund : false, reservation.id, startTimeIso, isFutureConfirmed);
+      const mainRow = document.createElement("div");
+      mainRow.className = "reservation-main-row";
 
-      item.innerHTML = `
-        <div class="reservation-main-row">
-          <div>
-            <div class="reservation-date">${date}</div>
-            <div class="reservation-meta">${metaText}</div>
-          </div>
-          <div class="reservation-side">
-            ${priceHtml}
-            ${statusHtml}
-          </div>
-        </div>
+      const leftCol = document.createElement("div");
+      const dateEl = document.createElement("div");
+      dateEl.className = "reservation-date";
+      dateEl.textContent = date;
 
-        ${actionsHtml}
-        ${refundHtml}
-      `;
+      const metaEl = document.createElement("div");
+      metaEl.className = "reservation-meta";
+      metaEl.textContent = metaText;
+
+      leftCol.appendChild(dateEl);
+      leftCol.appendChild(metaEl);
+
+      const rightCol = document.createElement("div");
+      rightCol.className = "reservation-side";
+
+      if (montant) {
+        const priceEl = document.createElement("div");
+        priceEl.className = "reservation-price";
+        priceEl.textContent = `${montant} €`;
+        rightCol.appendChild(priceEl);
+      }
+
+      if (statutRaw) {
+        const statusEl = document.createElement("span");
+        statusEl.className = `reservation-status ${statutClass}`.trim();
+        statusEl.textContent = statutRaw;
+        rightCol.appendChild(statusEl);
+      }
+
+      mainRow.appendChild(leftCol);
+      mainRow.appendChild(rightCol);
+      item.appendChild(mainRow);
+
+      const actionsRow = document.createElement("div");
+      actionsRow.className = "reservation-actions-row";
+
+      const editBtn = createButton(
+        "reservation-action-btn reservation-edit-btn",
+        "Modifier",
+        !canEdit
+      );
+
+      if (canEdit && reservation?.id) {
+        editBtn.dataset.editReservationId = String(reservation.id);
+      }
+
+      const qrBtn = createButton(
+        "reservation-action-btn reservation-qr-btn",
+        canShowQr ? "Afficher le QR" : "QR indisponible",
+        !canShowQr
+      );
+
+      if (canShowQr) {
+        qrBtn.dataset.qrUrl = checkUrl;
+        qrBtn.dataset.qrTitle = qrTitle;
+      }
+
+      actionsRow.appendChild(editBtn);
+      actionsRow.appendChild(qrBtn);
+      item.appendChild(actionsRow);
+
+      if (isFutureConfirmed) {
+        const refundRow = document.createElement("div");
+        refundRow.className = "reservation-refund-row";
+
+        const infoSpan = document.createElement("span");
+        infoSpan.textContent = canRefund
+          ? "Remboursement possible jusqu'à 24h avant la séance."
+          : "Le remboursement n'est plus possible (moins de 24h avant la séance).";
+
+        refundRow.appendChild(infoSpan);
+
+        const refundBtn = createButton(
+          "reservation-refund-btn",
+          "Demander un remboursement",
+          !(canRefund && reservation?.id)
+        );
+
+        if (reservation?.id) {
+          refundBtn.dataset.reservationId = String(reservation.id);
+          refundBtn.dataset.startTime = startTimeIso;
+        }
+
+        refundRow.appendChild(refundBtn);
+        item.appendChild(refundRow);
+      }
 
       return item;
     }
@@ -2267,12 +2312,15 @@
         return;
       }
 
+      listEl.innerHTML = "";
+
       if (!Array.isArray(reservations) || reservations.length === 0) {
-        listEl.innerHTML = '<p class="reservations-empty">Aucune réservation pour le moment.</p>';
+        const p = document.createElement("p");
+        p.className = "reservations-empty";
+        p.textContent = "Aucune réservation pour le moment.";
+        listEl.appendChild(p);
         return;
       }
-
-      listEl.innerHTML = "";
 
       for (const reservation of reservations) {
         const item = createReservationItemElement(reservation);
@@ -2280,24 +2328,33 @@
       }
     }
 
-    function openQrModal(checkUrl, subtitleText) {
+    async function drawQrToCanvas(text) {
+      const canvas = document.getElementById("qr-canvas");
+      if (!canvas || !globalThis.QRCode) return;
+
+      await globalThis.QRCode.toCanvas(canvas, text, {
+        width: 320,
+        margin: 1,
+        color: {
+          dark: "#000000",
+          light: "#ffffff"
+        }
+      });
+    }
+
+    async function openQrModal(checkUrl, subtitleText) {
       const modal = document.getElementById("qr-modal");
-      const img = document.getElementById("qr-image");
       const subtitle = document.getElementById("qr-modal-subtitle");
 
-      if (!modal || !img) {
+      if (!modal) {
         return;
       }
 
       if (subtitle && subtitleText) {
-        subtitle.textContent = subtitleText;
+        subtitle.textContent = sanitizeText(subtitleText, 200);
       }
 
-      const qrImgUrl =
-        "https://api.qrserver.com/v1/create-qr-code/?format=png&size=360x360&margin=0&data=" +
-        encodeURIComponent(checkUrl);
-
-      img.src = qrImgUrl;
+      await drawQrToCanvas(checkUrl);
 
       if (typeof modal.showModal === "function") {
         modal.showModal();
@@ -2308,7 +2365,7 @@
 
     function closeQrModal() {
       const modal = document.getElementById("qr-modal");
-      const img = document.getElementById("qr-image");
+      const canvas = document.getElementById("qr-canvas");
 
       if (!modal) {
         return;
@@ -2320,16 +2377,11 @@
         modal.removeAttribute("open");
       }
 
-      if (img) {
-        img.removeAttribute("src");
-      }
-    }
-
-    async function safeJson(response) {
-      try {
-        return await response.json();
-      } catch {
-        return {};
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
       }
     }
 
@@ -2352,17 +2404,27 @@
         return;
       }
 
-      listEl.innerHTML = '<p class="reservations-empty">Chargement de vos réservations...</p>';
+      listEl.innerHTML = "";
+      const loading = document.createElement("p");
+      loading.className = "reservations-empty";
+      loading.textContent = "Chargement de vos réservations...";
+      listEl.appendChild(loading);
 
       try {
-        const response = await fetch(API_BASE + "/api/my-reservations", {
-          headers: { Authorization: "Bearer " + token }
-        });
+        const response = await fetchWithAuth(API_BASE + "/api/my-reservations");
+
+        if (response.status === 401 || response.status === 403) {
+          showNotLoggedState();
+          return;
+        }
 
         if (!response.ok) {
           console.error("Erreur chargement réservations", response.status);
-          listEl.innerHTML =
-            '<p class="reservations-empty">Impossible de charger vos réservations pour le moment.</p>';
+          listEl.innerHTML = "";
+          const p = document.createElement("p");
+          p.className = "reservations-empty";
+          p.textContent = "Impossible de charger vos réservations pour le moment.";
+          listEl.appendChild(p);
           return;
         }
 
@@ -2371,8 +2433,11 @@
         renderReservations(reservations);
       } catch (err) {
         console.error(err);
-        listEl.innerHTML =
-          '<p class="reservations-empty">Erreur de chargement de vos réservations.</p>';
+        listEl.innerHTML = "";
+        const p = document.createElement("p");
+        p.className = "reservations-empty";
+        p.textContent = "Erreur de chargement de vos réservations.";
+        listEl.appendChild(p);
       }
     }
 
@@ -2393,12 +2458,9 @@
       }
 
       try {
-        const response = await fetch(API_BASE + "/api/me", {
-          headers: getAuthHeaders()
-        });
+        const response = await fetchWithAuth(API_BASE + "/api/me");
 
         if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem("token");
           showNotLoggedState();
           return;
         }
@@ -2417,11 +2479,14 @@
         const pointsEl = document.getElementById("user-points");
 
         if (emailEl) {
-          emailEl.textContent = user.email || "—";
+          emailEl.textContent = sanitizeText(user.email || "—", 254);
         }
 
         if (pointsEl) {
-          pointsEl.textContent = typeof user.points === "number" ? user.points : "0";
+          const safePoints = typeof user.points === "number" && Number.isFinite(user.points)
+            ? Math.max(0, Math.floor(user.points))
+            : 0;
+          pointsEl.textContent = String(safePoints);
         }
 
         if (msgEl) {
@@ -2498,7 +2563,7 @@
       const passEl = document.getElementById("login-password");
 
       return {
-        email: (emailEl?.value || "").trim(),
+        email: normalizeEmail(emailEl?.value || ""),
         password: passEl?.value || ""
       };
     }
@@ -2682,7 +2747,7 @@
       }
 
       logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("token");
+        clearStoredToken();
 
         const msgEl = document.getElementById("account-message");
         const refundMsgEl = document.getElementById("refund-message");
@@ -2720,7 +2785,8 @@
           return;
         }
 
-        const { reservationId, startTime } = btn.dataset;
+        const reservationId = sanitizeText(btn.dataset.reservationId || "", 100);
+        const startTime = sanitizeText(btn.dataset.startTime || "", 100);
         const token = getStoredToken();
 
         refundMsgEl.className = "account-message";
@@ -2751,12 +2817,17 @@
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + token
+              ...getAuthHeaders()
             },
             body: JSON.stringify({ reservationId })
           });
 
           const data = await safeJson(response);
+
+          if (response.status === 401 || response.status === 403) {
+            showNotLoggedState();
+            return;
+          }
 
           if (!response.ok || data.success !== true) {
             btn.disabled = false;
@@ -2815,7 +2886,7 @@
           return;
         }
 
-        const reservationId = editBtn.dataset.editReservationId;
+        const reservationId = sanitizeText(editBtn.dataset.editReservationId || "", 100);
         if (!reservationId) {
           return;
         }
@@ -2826,9 +2897,12 @@
         }
 
         try {
-          const response = await fetch(API_BASE + "/api/my-reservations", {
-            headers: { Authorization: "Bearer " + token }
-          });
+          const response = await fetchWithAuth(API_BASE + "/api/my-reservations");
+
+          if (response.status === 401 || response.status === 403) {
+            showNotLoggedState();
+            return;
+          }
 
           if (!response.ok) {
             console.error("Impossible de recharger les réservations avant modification :", response.status);
@@ -2894,7 +2968,7 @@
         return;
       }
 
-      listEl.addEventListener("click", (e) => {
+      listEl.addEventListener("click", async (e) => {
         const target = e.target;
         if (!(target instanceof Element)) {
           return;
@@ -2905,11 +2979,12 @@
           return;
         }
 
-        const { qrUrl, qrTitle } = qrBtn.dataset;
+        const qrUrl = sanitizeText(qrBtn.dataset.qrUrl || "", 500);
+        const qrTitle = sanitizeText(qrBtn.dataset.qrTitle || "", 200);
         const title = qrTitle || "Présentez ce QR code à l’entrée.";
 
         if (qrUrl) {
-          openQrModal(qrUrl, title);
+          await openQrModal(qrUrl, title);
         }
       });
     }
@@ -2944,6 +3019,7 @@
 
     async function handleNewsletterSubmit() {
       const emailInput = document.getElementById("newsletter-email");
+      const honeypotInput = document.getElementById("newsletter-company");
       const submitBtn = document.getElementById("newsletter-submit");
       const messageBox = document.getElementById("newsletter-message");
 
@@ -2956,8 +3032,15 @@
         return;
       }
 
-      const email = emailInput.value.trim();
+      const email = normalizeEmail(emailInput.value);
+      const honeypotValue = sanitizeText(honeypotInput?.value || "", 100);
+
       emailInput.removeAttribute("aria-invalid");
+
+      if (honeypotValue) {
+        setNewsletterMessage(messageBox, "Merci !", "#38bdf8");
+        return;
+      }
 
       if (!isValidEmail(email)) {
         emailInput.setAttribute("aria-invalid", "true");
@@ -2986,6 +3069,7 @@
 
         setNewsletterMessage(messageBox, "Merci ! Vous êtes inscrit.", "#38bdf8");
         emailInput.value = "";
+        if (honeypotInput) honeypotInput.value = "";
       } catch (error) {
         console.error("Erreur newsletter :", error);
         setNewsletterMessage(messageBox, "Erreur réseau. Merci de réessayer.", "#ff6b6b");
