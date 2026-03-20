@@ -622,6 +622,16 @@
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
     }
 
+    .newsletter-honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     /* ---------- RESPONSIVE PAGE ---------- */
     @media (max-width: 900px) {
       .news-grid,
@@ -845,7 +855,18 @@
     <div class="newsletter-container" id="newsletter-section">
       <h3>Inscrivez-vous à notre newsletter</h3>
       <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
+
       <form class="newsletter-row" id="newsletter-form">
+        <label for="newsletter-email" class="newsletter-honeypot">Ne pas remplir ce champ</label>
+        <input
+          id="newsletter-company"
+          class="newsletter-honeypot"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+
         <input
           type="email"
           id="newsletter-email"
@@ -855,6 +876,7 @@
         />
         <button type="submit" id="newsletter-submit">S'abonner</button>
       </form>
+
       <p id="newsletter-message" class="newsletter-message"></p>
     </div>
 
@@ -935,6 +957,37 @@
       return document.getElementById(id);
     }
 
+    function sanitizeText(value, maxLen = 10000) {
+      return String(value || "")
+        .replace(/\u0000/g, "")
+        .trim()
+        .slice(0, maxLen);
+    }
+
+    function stripHtmlTags(value) {
+      return String(value || "").replace(/<[^>]*>/g, " ");
+    }
+
+    function normalizeEmail(email) {
+      return String(email || "").trim().toLowerCase();
+    }
+
+    function isSafePublicImageUrl(value) {
+      const input = String(value || "").trim();
+      if (!input) return false;
+
+      if (input.startsWith("/")) return true;
+      if (input.startsWith("./")) return true;
+      if (input.startsWith("../")) return true;
+
+      try {
+        const parsed = new URL(input, window.location.origin);
+        return parsed.protocol === "https:" || parsed.protocol === "http:";
+      } catch {
+        return false;
+      }
+    }
+
     function getPanier() {
       try {
         const parsed = JSON.parse(localStorage.getItem("panier"));
@@ -965,7 +1018,11 @@
     }
 
     function buildExcerpt(article) {
-      const baseText = article.chapeau || article.contenu || "";
+      const baseText = sanitizeText(
+        stripHtmlTags(article.chapeau || article.contenu || ""),
+        3000
+      ).replace(/\s+/g, " ");
+
       return baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
     }
 
@@ -991,7 +1048,10 @@
       ];
 
       const found = candidates.find((value) => typeof value === "string" && value.trim() !== "");
-      return found ? found.trim() : "";
+      if (!found) return "";
+
+      const cleaned = found.trim();
+      return isSafePublicImageUrl(cleaned) ? cleaned : "";
     }
 
     function hideLoadingState() {
@@ -1109,6 +1169,7 @@
         img.alt = article.titre ? "Illustration de l’article " + article.titre : "Illustration d’actualité Singbox";
         img.loading = "lazy";
         img.decoding = "async";
+        img.referrerPolicy = "no-referrer";
 
         media.appendChild(img);
         mediaLink.appendChild(media);
@@ -1128,10 +1189,10 @@
         const titleLink = document.createElement("a");
         titleLink.className = "news-title-link";
         titleLink.href = articleUrl;
-        titleLink.textContent = article.titre || "Sans titre";
+        titleLink.textContent = sanitizeText(article.titre || "Sans titre", 200);
         titleContainer.appendChild(titleLink);
       } else {
-        titleContainer.textContent = article.titre || "Sans titre";
+        titleContainer.textContent = sanitizeText(article.titre || "Sans titre", 200);
       }
 
       card.appendChild(titleContainer);
@@ -1224,7 +1285,7 @@
     async function fetchPublishedArticles() {
       return supabaseClient
         .from("actualites")
-        .select("*")
+        .select("id, titre, slug, categorie, chapeau, contenu, image_url, date_publication, publie")
         .eq("publie", true)
         .order("date_publication", { ascending: false });
     }
@@ -1347,7 +1408,7 @@
     }
 
     function isValidEmail(email) {
-      return /^\S+@\S+\.\S+$/.test(email);
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email);
     }
 
     function isDuplicateNewsletterError(error) {
@@ -1391,13 +1452,20 @@
       const newsletterForm = getEl("newsletter-form");
       const emailInput = getEl("newsletter-email");
       const submitBtn = getEl("newsletter-submit");
+      const honeypotInput = getEl("newsletter-company");
 
       if (!newsletterForm || !emailInput || !submitBtn) return;
 
       newsletterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const email = emailInput.value.trim();
+        const email = normalizeEmail(emailInput.value);
+        const honeypotValue = sanitizeText(honeypotInput?.value || "", 100);
+
+        if (honeypotValue) {
+          setNewsletterMessage("Merci !", "#4ade80");
+          return;
+        }
 
         if (!isValidEmail(email)) {
           setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
