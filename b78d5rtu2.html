@@ -491,7 +491,6 @@
       .kpi-grid{grid-template-columns:minmax(0,1fr)}
     }
 
-    /* ===== Planner style inspiré réservation ===== */
     .planner-card {
       background: var(--sb-bg-card);
       border-radius: 22px;
@@ -811,7 +810,6 @@
         <button class="tab-button" data-tab="tab-invitations" id="tab-btn-invitations" role="tab" aria-selected="false" aria-controls="tab-invitations" type="button">Invitations / QR</button>
       </div>
 
-      <!-- DASHBOARD -->
       <section id="tab-dashboard" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-dashboard">
         <div class="card">
           <h2>Dashboard</h2>
@@ -839,7 +837,6 @@
         </div>
       </section>
 
-      <!-- ACTUALITES -->
       <section id="tab-actualites" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-actualites">
         <div class="card">
           <h2>Nouvel article / édition</h2>
@@ -871,7 +868,7 @@
 
             <div class="form-field">
               <label for="a-contenu">Contenu</label>
-              <textarea id="a-contenu" placeholder="Tu peux mettre du texte ou un peu de HTML"></textarea>
+              <textarea id="a-contenu" placeholder="Texte de l’article"></textarea>
             </div>
 
             <div class="form-grid-3" style="margin-top:.75rem">
@@ -941,7 +938,6 @@
         </div>
       </section>
 
-      <!-- RESERVATIONS -->
       <section id="tab-reservations" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-reservations">
         <div class="card">
           <h2>Réservations</h2>
@@ -994,7 +990,6 @@
         </div>
       </section>
 
-      <!-- CLIENTS -->
       <section id="tab-clients" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-clients">
         <div class="card">
           <h2>Clients</h2>
@@ -1022,7 +1017,6 @@
         </div>
       </section>
 
-      <!-- PROMO -->
       <section id="tab-promo" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-promo">
         <div class="card">
           <h2>Créer un code promo</h2>
@@ -1128,7 +1122,6 @@
         </div>
       </section>
 
-      <!-- INVITATIONS / QR -->
       <section id="tab-invitations" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-invitations">
         <div class="card">
           <h2>Créer une invitation / place gratuite</h2>
@@ -1229,8 +1222,10 @@
 
             <div class="form-grid-2">
               <div class="form-field">
-                <label for="invite-backend-base">Base URL backend</label>
-                <input id="invite-backend-base" type="url" value="https://singbox-backend.onrender.com" />
+                <label>Backend QR</label>
+                <div class="inline-check">
+                  <span>QR généré vers <strong>backend officiel Singbox</strong></span>
+                </div>
                 <div class="helper-text">Le QR pointera vers <code>/api/check?id=...</code></div>
               </div>
 
@@ -1284,12 +1279,13 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
+    const QR_PUBLIC_BASE = `${API_BASE}/api/check`;
     const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
 
     const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
-        persistSession: true,
+        persistSession: false,
         autoRefreshToken: true
       }
     });
@@ -1334,6 +1330,23 @@
           globalThis.setTimeout(() => reject(new Error("timeout")), ms);
         })
       ]);
+    }
+
+    function sanitizeText(value, maxLen = 5000) {
+      return String(value || "")
+        .replace(/\u0000/g, "")
+        .trim()
+        .slice(0, maxLen);
+    }
+
+    function sanitizeOptionalText(value, maxLen = 5000) {
+      const cleaned = sanitizeText(value, maxLen);
+      return cleaned || null;
+    }
+
+    function isValidEmail(email) {
+      const value = String(email || "").trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value);
     }
 
     function showLogin() {
@@ -1613,7 +1626,7 @@
       } catch (error) {
         console.error("refreshAuthUI error:", error);
         showLogin();
-        setMsg("login-error", "Connexion Supabase impossible (réseau / config). Réessaie.", "error");
+        setMsg("login-error", "Connexion Supabase impossible. Réessaie.", "error");
       } finally {
         authRefreshing = false;
       }
@@ -1647,7 +1660,7 @@
 
         if (loginResponse.error) {
           console.error(loginResponse.error);
-          setMsg("login-error", `Connexion refusée : ${loginResponse.error.message || "erreur"}`, "error");
+          setMsg("login-error", "Connexion refusée.", "error");
           return;
         }
 
@@ -1658,9 +1671,9 @@
         console.error("login error:", error);
 
         if (String(error?.message || "") === "timeout") {
-          setMsg("login-error", "Connexion Supabase : timeout (réseau ou config).", "error");
+          setMsg("login-error", "Connexion Supabase : timeout.", "error");
         } else {
-          setMsg("login-error", "Erreur connexion (console).", "error");
+          setMsg("login-error", "Erreur connexion.", "error");
         }
       } finally {
         btn.disabled = false;
@@ -1731,7 +1744,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur dashboard : ${response.error.message || ""}`;
+          msgEl.textContent = "Erreur dashboard.";
           msgEl.className = "status-message error";
           return;
         }
@@ -1781,7 +1794,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur chargement réservations : ${response.error.message || ""}`;
+          msgEl.textContent = "Erreur chargement réservations.";
           msgEl.className = "status-message error";
           return;
         }
@@ -1881,7 +1894,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur chargement clients : ${response.error.message || ""}`;
+          msgEl.textContent = "Erreur chargement clients.";
           msgEl.className = "status-message error";
           return;
         }
@@ -2000,7 +2013,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur chargement actualités : ${response.error.message || ""}`;
+          msgEl.textContent = "Erreur chargement actualités.";
           msgEl.className = "status-message error";
           return;
         }
@@ -2134,7 +2147,7 @@
 
         if (response.error) {
           console.error(response.error);
-          setMsg(msgId, `Erreur : ${response.error.message || "impossible"}`, "error");
+          setMsg(msgId, "Erreur d’enregistrement.", "error");
           return;
         }
 
@@ -2161,7 +2174,7 @@
 
       if (response.error) {
         console.error(response.error);
-        msgEl.textContent = `Erreur suppression : ${response.error.message || ""}`;
+        msgEl.textContent = "Erreur suppression.";
         msgEl.className = "status-message error";
         return;
       }
@@ -2191,7 +2204,7 @@
       msgEl.textContent = "";
       msgEl.className = "status-message";
 
-      const code = (codeInput.value || "").trim().toUpperCase();
+      const code = sanitizeText(codeInput.value, 50).toUpperCase();
       const type = typeInput.value;
       let numericValue = valueInput.value ? Number.parseFloat(valueInput.value) : 0;
 
@@ -2218,8 +2231,8 @@
         max_uses: maxUsesInput.value ? Number.parseInt(maxUsesInput.value, 10) : null,
         max_uses_per_user: maxPerEmailInput.value ? Number.parseInt(maxPerEmailInput.value, 10) : null,
         first_session_only: Boolean(firstSessionInput.checked),
-        email_domain: (emailDomainInput.value || "").trim() || null,
-        note: (noteInput.value || "").trim() || null,
+        email_domain: sanitizeOptionalText(emailDomainInput.value, 120),
+        note: sanitizeOptionalText(noteInput.value, 120),
         is_active: true
       };
 
@@ -2234,7 +2247,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur : ${response.error.message || "enregistrement impossible."}`;
+          msgEl.textContent = "Erreur d’enregistrement.";
           msgEl.className = "status-message error";
         } else {
           msgEl.textContent = "Code enregistré ✅";
@@ -2265,7 +2278,7 @@
 
         if (response.error) {
           console.error(response.error);
-          msgEl.textContent = `Erreur chargement : ${response.error.message || ""}`;
+          msgEl.textContent = "Erreur chargement.";
           msgEl.className = "status-message error";
           return;
         }
@@ -2368,7 +2381,7 @@
 
       if (response.error) {
         console.error(response.error);
-        msgEl.textContent = `Erreur : ${response.error.message || ""}`;
+        msgEl.textContent = "Erreur.";
         msgEl.className = "status-message error";
         return;
       }
@@ -2392,7 +2405,7 @@
 
       if (response.error) {
         console.error(response.error);
-        msgEl.textContent = `Erreur : ${response.error.message || ""}`;
+        msgEl.textContent = "Erreur.";
         msgEl.className = "status-message error";
         return;
       }
@@ -2401,8 +2414,6 @@
       msgEl.className = "status-message ok";
       await loadPromoCodes();
     }
-
-    /* ===== Invitations / QR ===== */
 
     function renderSelectedInvitationSlot(slot) {
       const box = getEl("selected-slot-box");
@@ -2641,11 +2652,10 @@
       event.preventDefault();
 
       const btn = getEl("create-invitation-btn");
-      const name = (getEl("invite-name")?.value || "").trim();
-      const email = (getEl("invite-email")?.value || "").trim();
-      const note = (getEl("invite-note")?.value || "").trim() || null;
+      const name = sanitizeText(getEl("invite-name")?.value || "", 120);
+      const email = sanitizeText(getEl("invite-email")?.value || "", 160).toLowerCase();
+      const note = sanitizeOptionalText(getEl("invite-note")?.value || "", 160);
       const status = getEl("invitation-status")?.value || "confirmed";
-      const backendBase = (getEl("invite-backend-base")?.value || API_BASE).trim().replace(/\/+$/, "");
 
       if (!selectedInvitationSlot) {
         setMsg("invitation-message", "Sélectionne d’abord un créneau libre dans le planning.", "error");
@@ -2654,6 +2664,11 @@
 
       if (!name || !email) {
         setMsg("invitation-message", "Merci de remplir le nom et l’email.", "error");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        setMsg("invitation-message", "Merci de saisir un email valide.", "error");
         return;
       }
 
@@ -2698,7 +2713,7 @@
         }
 
         const reservation = data.reservation;
-        const qrUrl = `${backendBase}/api/check?id=${encodeURIComponent(reservation.id)}`;
+        const qrUrl = `${QR_PUBLIC_BASE}?id=${encodeURIComponent(reservation.id)}`;
 
         const canvas = getEl("invitation-qr-canvas");
         await drawQrToCanvas(qrUrl, canvas);
@@ -2749,11 +2764,6 @@
     document.addEventListener("DOMContentLoaded", async () => {
       showLogin();
 
-      const emailEl = getEl("admin-email");
-      if (emailEl && !emailEl.value) {
-        emailEl.value = "contactsingbox@gmail.com";
-      }
-
       const invitationDate = getEl("invitation-date");
       if (invitationDate && !invitationDate.value) {
         invitationDate.value = toISODate(new Date());
@@ -2802,11 +2812,11 @@
         event.preventDefault();
 
         const id = getEl("a-id")?.value || null;
-        const titre = getEl("a-titre")?.value.trim() || "";
+        const titre = sanitizeText(getEl("a-titre")?.value || "", 180);
         const slug = normalizeSlug(getEl("a-slug")?.value || "");
-        const image_url = getEl("a-image")?.value.trim() || null;
-        const chapeau = getEl("a-chapeau")?.value.trim() || null;
-        const contenu = getEl("a-contenu")?.value || null;
+        const image_url = sanitizeOptionalText(getEl("a-image")?.value || "", 500);
+        const chapeau = sanitizeOptionalText(getEl("a-chapeau")?.value || "", 300);
+        const contenu = sanitizeOptionalText(getEl("a-contenu")?.value || "", 10000);
         const categorie = getEl("a-categorie")?.value || "coulisses-travaux";
         const publie = Boolean(getEl("a-publie")?.checked);
         const dateLocal = getEl("a-datepub")?.value || null;
@@ -2845,7 +2855,7 @@
     globalThis.addEventListener("unhandledrejection", (event) => {
       console.error("Unhandled rejection:", event.reason);
       showLogin();
-      setMsg("login-error", "Erreur JS (voir console).", "error");
+      setMsg("login-error", "Erreur JS.", "error");
     });
   </script>
 </body>
