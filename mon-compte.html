@@ -5,7 +5,7 @@
   <title>Mon compte Singbox | Espace client & Singcoins – Karaoké box à Toulouse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos Singcoins, vos réservations et vos avantages pour le karaoké box privatif à Toulouse." />
+  <meta name="description" content="Accédez à votre compte Singbox : consultez votre email, vos réservations et vos avantages pour le karaoké box privatif à Toulouse." />
   <meta name="author" content="Singbox" />
   <link rel="canonical" href="https://www.singbox.fr/mon-compte.html" />
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -159,7 +159,12 @@
       gap: 2rem;
     }
 
-    .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
 
     .brand-logo {
       width: 110px;
@@ -178,7 +183,12 @@
       white-space: nowrap;
     }
 
-    nav.main-nav { flex: 1; display: flex; justify-content: center; min-width: 0; }
+    nav.main-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
 
     .main-nav ul,
     .mobile-nav ul {
@@ -187,7 +197,11 @@
       margin: 0;
     }
 
-    .main-nav ul { display: flex; gap: 32px; font-size: 14px; }
+    .main-nav ul {
+      display: flex;
+      gap: 32px;
+      font-size: 14px;
+    }
 
     .main-nav a {
       font-weight: 600;
@@ -223,9 +237,7 @@
     .logout-row,
     .reservation-actions-row,
     .reservation-refund-row,
-    .newsletter-row,
-    .reservation-main-row,
-    .cta-grid {
+    .newsletter-row {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -233,7 +245,6 @@
     }
 
     .header-actions { gap: 12px; flex-shrink: 0; }
-    .reservation-main-row,
     .logout-row { justify-content: space-between; }
     .reservation-actions-row,
     .reservation-refund-row,
@@ -246,7 +257,6 @@
     .modal-btn,
     .reservation-action-btn,
     .reservation-refund-btn,
-    .cta-btn,
     footer button {
       border: none;
       border-radius: var(--radius-pill);
@@ -268,8 +278,6 @@
     .reservation-action-btn:focus-visible,
     .reservation-refund-btn:hover,
     .reservation-refund-btn:focus-visible,
-    .cta-btn:hover,
-    .cta-btn:focus-visible,
     footer button:hover,
     footer button:focus-visible {
       transform: translateY(-1px);
@@ -280,7 +288,6 @@
     .login-secondary-btn[disabled],
     .reservation-action-btn[disabled],
     .reservation-refund-btn[disabled],
-    .cta-btn[disabled],
     #newsletter-submit[disabled] {
       opacity: .6;
       cursor: not-allowed;
@@ -291,31 +298,39 @@
     .nav-cta,
     .login-submit-btn,
     .reservation-refund-btn,
-    .cta-btn-primary,
     footer button {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 16px 40px rgba(0,0,0,.9);
     }
 
-    .nav-cta { padding: 8px 22px; font-size: 14px; font-weight: 600; }
+    .nav-cta {
+      padding: 8px 22px;
+      font-size: 14px;
+      font-weight: 600;
+    }
 
     .logout-btn,
     .login-secondary-btn,
-    .modal-btn-secondary,
-    .cta-btn-secondary {
+    .modal-btn-secondary {
       background: #111827;
       color: #f9fafb;
       box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 10px 28px rgba(0,0,0,.8);
     }
 
     .login-submit-btn,
-    .login-secondary-btn { padding: .6rem 1rem; font-size: 13px; flex: 1 1 140px; }
+    .login-secondary-btn {
+      padding: .6rem 1rem;
+      font-size: 13px;
+      flex: 1 1 140px;
+    }
 
-    .logout-btn { padding: .55rem 1.2rem; font-size: 13px; }
+    .logout-btn {
+      padding: .55rem 1.2rem;
+      font-size: 13px;
+    }
 
-    .modal-btn,
-    .cta-btn {
+    .modal-btn {
       padding: .7rem 1rem;
       font-size: 12px;
       font-weight: 700;
@@ -323,15 +338,13 @@
       letter-spacing: .04em;
     }
 
-    .modal-btn-secondary,
-    .cta-btn-secondary { border: 1px solid rgba(255,255,255,.35); }
+    .modal-btn-secondary {
+      border: 1px solid rgba(255,255,255,.35);
+    }
 
     .cart-icon,
     .burger-button,
-    .account-benefit-icon,
-    .mini-icon,
-    .badge-icon,
-    .streak-status-dot {
+    .account-benefit-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -405,39 +418,44 @@
     #account::before { content: "★"; top: 16%; left: 8%; font-size: 32px; }
     #account::after { content: "♪"; right: 8%; bottom: 14%; font-size: 30px; opacity: .8; }
 
-    .account-header { max-width: 720px; margin: 0 auto 32px; text-align: center; }
-    .account-header-eyebrow { font-size: 13px; text-transform: uppercase; letter-spacing: .18em; color: #9ca3af; margin-bottom: 8px; }
-    .account-header h1 { font-size: 30px; margin-bottom: 8px; }
-    .account-header p { margin: 0; font-size: 14px; color: rgba(249,250,251,.85); }
+    .account-header {
+      max-width: 720px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+
+    .account-header-eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .account-header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .account-header p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(249,250,251,.85);
+    }
 
     .account-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       gap: 1.4rem;
       align-items: start;
     }
 
-    .account-left,
-    .account-right {
-      display: grid;
-      gap: 1.1rem;
-    }
-
-    .gamified-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
-
-    .span-12 { grid-column: span 12; }
-    .span-8 { grid-column: span 8; }
-    .span-6 { grid-column: span 6; }
-    .span-4 { grid-column: span 4; }
-    .span-3 { grid-column: span 3; }
-
+    .account-main-card h2,
+    .login-card-title,
+    .modal-dialog h2,
     .section-title {
-      font-size: 20px;
-      margin-bottom: 10px;
+      font-size: 18px;
+      margin-bottom: 8px;
     }
 
     .section-subtitle,
@@ -459,10 +477,23 @@
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    .account-field-label { margin-bottom: 2px; font-size: 13px; }
-    .account-field-value { font-size: 15px; font-weight: 600; margin-bottom: 10px; word-break: break-word; }
+    .account-field-label {
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    .account-field-value {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+
     .account-message,
-    .login-message { min-height: 16px; }
+    .login-message {
+      min-height: 16px;
+    }
+
     .account-message.ok,
     .login-message.ok { color: #bbf7d0; }
     .account-message.info,
@@ -473,386 +504,27 @@
     .panel,
     .sub-card,
     .reservation-item,
-    .account-benefit-item,
-    .mission-item,
-    .badge-item,
-    .ranking-item,
-    .chest-item,
-    .history-item,
-    .stat-box,
-    .record-box,
-    .streak-box {
+    .account-benefit-item {
       background: var(--sb-card-2);
       border: 1px solid var(--sb-border-soft);
       border-radius: var(--radius-soft);
     }
 
     .sub-card,
-    .stat-box,
-    .record-box,
-    .streak-box,
-    .mission-item,
-    .badge-item,
-    .ranking-item,
-    .chest-item,
-    .history-item,
     .account-benefit-item {
       padding: 12px;
     }
 
-    .profile-hero {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 14px;
-      align-items: center;
-      min-height: 120px;
-    }
-
-    .profile-avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, rgba(201,76,53,.95), rgba(124,58,237,.9));
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-
-    .profile-name {
-      font-size: 28px;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .profile-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid var(--sb-border);
-      font-size: 12px;
-    }
-
-    .mini-icon,
-    .account-benefit-icon,
-    .badge-icon {
-      width: 24px;
-      height: 24px;
-      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
-      color: #fff;
-      font-size: 12px;
-    }
-
-    .profile-status-badge {
-      padding: 9px 12px;
-      border-radius: 14px;
-      background: rgba(34,197,94,.12);
-      border: 1px solid rgba(34,197,94,.3);
-      color: #bbf7d0;
-      text-align: right;
-      font-size: 12px;
-    }
-
-    .big-number {
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 28px;
-      line-height: 1;
-      letter-spacing: .02em;
-    }
-
-    .level-grid,
-    .streak-grid,
-    .stats-grid,
-    .records-grid,
-    .ranking-grid,
-    .history-grid,
-    .cta-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .streak-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .stats-grid,
-    .records-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-    .ranking-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .history-grid { grid-template-columns: 1fr; }
-    .cta-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-
-    .progress-wrap {
-      margin-top: 12px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .progress-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      transition: width .3s ease;
-    }
-
-    .xp-fill {
-      background: linear-gradient(90deg, #2563eb, #7c3aed);
-    }
-
-    .streak-hero {
-      display: grid;
-      grid-template-columns: 1.3fr .7fr;
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .streak-main {
-      background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(201,76,53,.12));
-      border: 1px solid rgba(245,158,11,.22);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .streak-main-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .streak-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.15);
-      background: rgba(2,6,23,.55);
-    }
-
-    .streak-status-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--sb-green);
-      box-shadow: 0 0 10px rgba(34,197,94,.8);
-    }
-
-    .streak-status-warning .streak-status-dot {
-      background: var(--sb-gold);
-      box-shadow: 0 0 10px rgba(245,158,11,.8);
-    }
-
-    .streak-status-broken .streak-status-dot {
-      background: #ef4444;
-      box-shadow: 0 0 10px rgba(239,68,68,.8);
-    }
-
-    .streak-box .big-number,
-    .stat-box .big-number,
-    .record-box .big-number {
-      font-size: 22px;
-      margin-top: 4px;
-    }
-
-    .coin-card-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
+    .login-description {
+      font-size: 13px;
+      color: var(--sb-text-muted);
       margin-bottom: 10px;
     }
 
-    .coin-balance {
-      font-size: 34px;
-      font-family: "League Spartan", system-ui, sans-serif;
-      line-height: 1;
-    }
-
-    .coin-highlight {
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(201,76,53,.17), rgba(249,115,22,.12));
-      border: 1px solid rgba(249,115,22,.26);
-      font-size: 12px;
-      color: #fff;
-    }
-
-    .coin-stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .coin-stat {
-      padding: 12px;
-      border-radius: 14px;
-      background: rgba(2,6,23,.95);
-      border: 1px solid rgba(255,255,255,.08);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 82px;
-    }
-
-    .coin-stat-label {
-      font-size: 11px;
-      color: var(--sb-text-muted);
-      white-space: nowrap;
-    }
-
-    .coin-stat-value {
-      font-size: 18px;
-      font-family: "League Spartan", system-ui, sans-serif;
-      white-space: nowrap;
-    }
-
-    .mission-item,
-    .badge-item,
-    .ranking-item,
-    .history-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .mission-content,
-    .badge-content,
-    .ranking-content,
-    .history-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .mission-progress {
-      margin-top: 8px;
-      display: grid;
-      gap: 6px;
-    }
-
-    .mission-progress-text {
-      font-size: 11px;
-      color: #cbd5e1;
-    }
-
-    .mini-progress {
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      overflow: hidden;
-    }
-
-    .mini-progress > span {
-      display: block;
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-    }
-
-    .badge-locked {
-      opacity: .62;
-      filter: grayscale(.15);
-    }
-
-    .rarity {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      margin-top: 6px;
-    }
-
-    .rarity.common { color: #e5e7eb; }
-    .rarity.rare { color: #93c5fd; }
-    .rarity.epic { color: #c4b5fd; }
-    .rarity.legendary { color: #fdba74; }
-
-    .ranking-item strong,
-    .history-item strong,
-    .mission-item strong,
-    .badge-item strong,
-    .account-benefit-item strong,
-    .record-box strong,
-    .stat-box strong,
-    .streak-box strong {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .ranking-position {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: rgba(124,58,237,.16);
-      border: 1px solid rgba(124,58,237,.28);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-size: 20px;
-    }
-
-    .history-replay-btn {
-      margin-top: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(37,99,235,.12);
-      border: 1px solid rgba(37,99,235,.24);
-      color: #bfdbfe;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .account-main-card h2,
-    .login-card-title,
-    .modal-dialog h2 {
-      font-size: 18px;
+    .login-field {
       margin-bottom: 8px;
+      font-size: 13px;
     }
-
-    .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
-    .login-field { margin-bottom: 8px; font-size: 13px; }
 
     .login-field input,
     footer input[type="email"] {
@@ -880,7 +552,9 @@
     }
 
     .login-field input::placeholder,
-    footer input[type="email"]::placeholder { color: rgba(156,163,175,.9); }
+    footer input[type="email"]::placeholder {
+      color: rgba(156,163,175,.9);
+    }
 
     .login-field input:focus,
     footer input[type="email"]:focus {
@@ -910,7 +584,12 @@
       backdrop-filter: blur(4px);
     }
 
-    .qr-only-wrap { display: flex; justify-content: center; align-items: center; padding: 10px 0 4px; }
+    .qr-only-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0 4px;
+    }
 
     #qr-canvas {
       width: 320px;
@@ -928,6 +607,14 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+    }
+
+    .reservation-main-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .reservation-side {
@@ -971,6 +658,24 @@
       flex: 1 1 220px;
     }
 
+    .account-benefit-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .account-benefit-icon {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
+      color: #fff;
+      font-size: 12px;
+    }
+
+    #gamification-root {
+      min-height: 120px;
+    }
+
     footer {
       background: #020617;
       color: #e5e7eb;
@@ -979,9 +684,19 @@
       margin-top: 36px;
     }
 
-    .newsletter-container { max-width: var(--sb-container-width); margin: 0 auto 24px; text-align: center; }
+    .newsletter-container {
+      max-width: var(--sb-container-width);
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+
     .newsletter-container h3 { margin-bottom: 6px; }
-    .newsletter-row { justify-content: center; margin-top: 8px; position: relative; }
+
+    .newsletter-row {
+      justify-content: center;
+      margin-top: 8px;
+      position: relative;
+    }
 
     .newsletter-honeypot {
       position: absolute !important;
@@ -1000,9 +715,7 @@
       font-weight: 600;
       font-size: 14px;
       letter-spacing: .01em;
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.18),
-        0 16px 40px rgba(0,0,0,.9);
+      box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 16px 40px rgba(0,0,0,.9);
     }
 
     .footer-columns {
@@ -1015,8 +728,17 @@
       font-size: 13px;
     }
 
-    .footer-brand { display: flex; align-items: center; gap: 10px; }
-    .footer-brand img { height: 80px; display: block; }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand img {
+      height: 80px;
+      display: block;
+    }
+
     .footer-columns p { margin: 4px 0; }
 
     .footer-bottom {
@@ -1029,21 +751,6 @@
       font-size: 11px;
     }
 
-    @media (max-width: 1100px) {
-      .account-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid,
-      .records-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .cta-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
     @media (max-width: 900px) {
       .header-inner { padding: 8px 10px; gap: 8px; }
       nav.main-nav { display: none; }
@@ -1052,31 +759,6 @@
       .nav-cta { padding: 6px 12px; font-size: 11px; }
       .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
       .burger-button { display: flex; }
-
-      .span-8,
-      .span-6,
-      .span-4,
-      .span-3 {
-        grid-column: span 12;
-      }
-
-      .profile-hero {
-        grid-template-columns: 1fr;
-      }
-
-      .streak-hero {
-        grid-template-columns: 1fr;
-      }
-
-      .level-grid,
-      .streak-grid,
-      .coin-stats,
-      .stats-grid,
-      .records-grid,
-      .ranking-grid,
-      .cta-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
     }
 
     @media (max-width: 640px) {
@@ -1096,21 +778,6 @@
       .reservation-side { text-align: left; }
       .login-submit-btn,
       .login-secondary-btn { width: 100%; }
-
-      .level-grid,
-      .streak-grid,
-      .coin-stats,
-      .stats-grid,
-      .records-grid,
-      .ranking-grid,
-      .cta-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .coin-stat-label,
-      .coin-stat-value {
-        white-space: normal;
-      }
     }
 
     @media (max-width: 480px) {
@@ -1171,379 +838,85 @@
         </div>
 
         <div class="account-layout">
-          <div class="account-left">
-            <div class="card" id="login-card" style="display:none;">
-              <h2 class="login-card-title">Se connecter</h2>
-              <p class="login-description">Connectez-vous pour retrouver vos réservations et votre solde de Singcoins.</p>
+          <div class="card" id="login-card" style="display:none;">
+            <h2 class="login-card-title">Se connecter</h2>
+            <p class="login-description">Connectez-vous pour retrouver vos réservations et votre solde de Singcoins.</p>
 
-              <form id="login-form">
-                <div class="login-field">
-                  <label for="login-email">Email</label>
-                  <input type="email" id="login-email" placeholder="vous@email.fr" autocomplete="email" required />
-                </div>
-                <div class="login-field">
-                  <label for="login-password">Mot de passe</label>
-                  <input type="password" id="login-password" placeholder="Mot de passe" autocomplete="current-password" required />
-                </div>
-                <div class="login-actions">
-                  <button type="submit" class="login-submit-btn" id="login-submit-btn">Connexion</button>
-                  <button type="button" id="create-account-btn" class="login-secondary-btn">Créer un compte avec ces identifiants</button>
-                </div>
-                <p class="soft-text" style="margin-top:8px;">
-                  <a href="mot-de-passe-oublie.html" style="color:#f97316;text-decoration:underline;">Mot de passe oublié&nbsp;?</a>
-                </p>
-                <p class="login-help">Pour aller vite, vous pouvez créer votre compte avec l’email et le mot de passe saisis ci-dessus.</p>
-              </form>
-              <div id="login-message" class="login-message" aria-live="polite" role="status"></div>
-            </div>
-
-            <div class="gamified-grid">
-              <div class="card span-12">
-                <div class="profile-hero">
-                  <div class="profile-avatar" id="profile-avatar">S</div>
-
-                  <div>
-                    <div class="soft-text">Profil joueur</div>
-                    <h2 class="profile-name" id="profile-display-name">Singbox Player</h2>
-                    <div class="soft-text" id="profile-email-line">Email : –</div>
-
-                    <div class="profile-meta-row">
-                      <span class="pill"><span class="mini-icon">★</span><span id="profile-member-since">Membre depuis janvier 2026</span></span>
-                      <span class="pill"><span class="mini-icon">🎤</span><span id="profile-level-name-pill">Niveau Rookie</span></span>
-                      <span class="pill"><span class="mini-icon">🔥</span><span id="profile-streak-pill">Streak : 0</span></span>
-                    </div>
-                  </div>
-
-                  <div class="profile-status-badge">
-                    <div class="soft-text" style="color:#d1fae5;">Statut actuel</div>
-                    <strong id="profile-current-status">Chanteur en progression</strong>
-                  </div>
-                </div>
+            <form id="login-form">
+              <div class="login-field">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="vous@email.fr" autocomplete="email" required />
               </div>
-
-              <div class="card span-12">
-                <div class="section-title">Niveau & progression</div>
-                <div class="level-grid">
-                  <div class="sub-card">
-                    <div class="soft-text">Niveau actuel</div>
-                    <div class="big-number" id="level-current">3</div>
-                  </div>
-                  <div class="sub-card">
-                    <div class="soft-text">Nom du niveau</div>
-                    <div class="big-number" id="level-name">Rising Star</div>
-                  </div>
-                </div>
-
-                <div class="progress-wrap">
-                  <div class="progress-head">
-                    <span class="soft-text">XP actuelle : <strong id="xp-current">240</strong></span>
-                    <span class="soft-text">Objectif suivant : <strong id="xp-next">400 XP</strong></span>
-                  </div>
-                  <div class="progress-bar" aria-hidden="true">
-                    <div class="progress-fill xp-fill" id="xp-progress-fill" style="width:60%;"></div>
-                  </div>
-                  <div class="soft-text" id="xp-remaining-text">Plus que 160 XP pour atteindre le niveau suivant.</div>
-                </div>
+              <div class="login-field">
+                <label for="login-password">Mot de passe</label>
+                <input type="password" id="login-password" placeholder="Mot de passe" autocomplete="current-password" required />
               </div>
-
-              <div class="card span-12">
-                <div class="section-title">Streak</div>
-
-                <div class="streak-hero">
-                  <div class="streak-main">
-                    <div class="streak-main-top">
-                      <div>
-                        <div class="soft-text">Streak actuel</div>
-                        <div class="big-number" id="streak-current">4 jours</div>
-                      </div>
-                      <div class="streak-status" id="streak-status-badge">
-                        <span class="streak-status-dot"></span>
-                        <span id="streak-status-text">Actif</span>
-                      </div>
-                    </div>
-
-                    <div class="soft-text" style="margin-top:10px;" id="streak-deadline">
-                      Reviens avant le 24 mars à 23h59 pour conserver ton streak.
-                    </div>
-                  </div>
-
-                  <div class="streak-box">
-                    <div class="soft-text">Jokers disponibles</div>
-                    <div class="big-number" id="streak-jokers">1</div>
-                    <div class="soft-text">Utilisables si tu rates une période.</div>
-                  </div>
-                </div>
-
-                <div class="streak-grid" style="margin-top:10px;">
-                  <div class="streak-box">
-                    <div class="soft-text">Meilleur streak</div>
-                    <div class="big-number" id="streak-best">8</div>
-                  </div>
-                  <div class="streak-box">
-                    <div class="soft-text">État</div>
-                    <div class="big-number" id="streak-state-short">Actif</div>
-                  </div>
-                  <div class="streak-box">
-                    <div class="soft-text">Dernier retour</div>
-                    <div class="big-number" id="streak-last-return">Hier</div>
-                  </div>
-                  <div class="streak-box">
-                    <div class="soft-text">Pression retour</div>
-                    <div class="big-number" id="streak-pressure">Élevée</div>
-                  </div>
-                </div>
+              <div class="login-actions">
+                <button type="submit" class="login-submit-btn" id="login-submit-btn">Connexion</button>
+                <button type="button" id="create-account-btn" class="login-secondary-btn">Créer un compte avec ces identifiants</button>
               </div>
-
-              <div class="card span-12">
-                <div class="coin-card-top">
-                  <div>
-                    <div class="section-title">Singcoins</div>
-                    <div class="soft-text">Ton programme fidélité principal reste mis en avant.</div>
-                  </div>
-                  <div class="coin-highlight" id="coin-next-reward">
-                    Prochaine récompense : séance offerte à 100 Singcoins
-                  </div>
-                </div>
-
-                <div class="coin-balance" id="singcoins-balance">0</div>
-                <div class="soft-text" style="margin-top:6px;">Solde actuel Singcoins</div>
-
-                <div class="progress-wrap">
-                  <div class="progress-head">
-                    <span class="soft-text">Progression récompense</span>
-                    <span class="soft-text" id="loyalty-progress-value">0 / 100</span>
-                  </div>
-                  <div class="progress-bar" aria-hidden="true">
-                    <div class="progress-fill" id="loyalty-progress-fill" style="width:0%;"></div>
-                  </div>
-                  <div class="soft-text" id="loyalty-highlight-text">Connectez-vous pour voir combien de Singcoins il vous reste avant votre séance offerte.</div>
-                </div>
-
-                <div class="coin-stats" style="margin-top:10px;">
-                  <div class="coin-stat">
-                    <span class="coin-stat-label">Solde actuel</span>
-                    <strong class="coin-stat-value" id="loyalty-current-points">0</strong>
-                  </div>
-                  <div class="coin-stat">
-                    <span class="coin-stat-label">Total gagné</span>
-                    <strong class="coin-stat-value" id="singcoins-earned">120</strong>
-                  </div>
-                  <div class="coin-stat">
-                    <span class="coin-stat-label">Total utilisé</span>
-                    <strong class="coin-stat-value" id="singcoins-used">20</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card span-12">
-                <div class="section-title">Stats globales</div>
-                <div class="stats-grid">
-                  <div class="stat-box">
-                    <div class="soft-text">Sessions totales</div>
-                    <div class="big-number" id="stat-total-sessions">12</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="soft-text">Temps chanté</div>
-                    <div class="big-number" id="stat-total-time">18h</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="soft-text">Chansons chantées</div>
-                    <div class="big-number" id="stat-total-songs">96</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="soft-text">Moyenne / session</div>
-                    <div class="big-number" id="stat-average-songs">8</div>
-                  </div>
-                  <div class="stat-box">
-                    <div class="soft-text">Dernière session</div>
-                    <div class="big-number" id="stat-last-session">18 mars</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card span-12">
-                <div class="section-title">Performances & records</div>
-                <div class="records-grid">
-                  <div class="record-box">
-                    <div class="soft-text">Meilleur streak</div>
-                    <div class="big-number" id="record-best-streak">8</div>
-                  </div>
-                  <div class="record-box">
-                    <div class="soft-text">Semaine la plus active</div>
-                    <div class="big-number" id="record-active-week">4 sessions</div>
-                  </div>
-                  <div class="record-box">
-                    <div class="soft-text">Plus grosse session</div>
-                    <div class="big-number" id="record-biggest-session">6 pers.</div>
-                  </div>
-                  <div class="record-box">
-                    <div class="soft-text">Record chansons</div>
-                    <div class="big-number" id="record-songs-session">14</div>
-                  </div>
-                  <div class="record-box">
-                    <div class="soft-text">Record temps</div>
-                    <div class="big-number" id="record-time-session">2h</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card span-8">
-                <div class="section-title">Missions</div>
-                <div id="missions-list" style="display:grid;gap:10px;"></div>
-              </div>
-
-              <div class="card span-4">
-                <div class="section-title">Coffre & récompenses</div>
-                <div class="chest-item">
-                  <span class="badge-icon">🎁</span>
-                  <div>
-                    <strong id="chest-title">Coffre Bronze</strong>
-                    <div class="soft-text" id="chest-condition">Débloquer après 2 sessions ce mois-ci</div>
-                    <div class="soft-text" id="chest-reward">Récompense possible : +10 Singcoins</div>
-                  </div>
-                </div>
-
-                <div style="margin-top:10px;display:grid;gap:8px;" id="rewards-history-list"></div>
-              </div>
-
-              <div class="card span-6">
-                <div class="section-title">Badges & succès</div>
-                <div id="badges-list" style="display:grid;gap:10px;"></div>
-              </div>
-
-              <div class="card span-6">
-                <div class="section-title">Classement</div>
-                <div class="ranking-grid">
-                  <div class="ranking-item">
-                    <span class="ranking-position" id="ranking-weekly-position">#7</span>
-                    <div class="ranking-content">
-                      <strong>Classement hebdo</strong>
-                      <div class="soft-text" id="ranking-weekly-text">7e en streak cette semaine</div>
-                    </div>
-                  </div>
-                  <div class="ranking-item">
-                    <span class="ranking-position" id="ranking-global-position">#21</span>
-                    <div class="ranking-content">
-                      <strong>Classement global</strong>
-                      <div class="soft-text" id="ranking-global-text">21e sur les sessions globales</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="margin-top:10px;" class="sub-card">
-                  <div class="soft-text">Top 3 résumé</div>
-                  <div id="ranking-top-summary" class="soft-text" style="margin-top:6px;">
-                    1. Luna · 14 streak — 2. Max · 12 streak — 3. Nina · 10 streak
-                  </div>
-                </div>
-              </div>
-
-              <div class="card span-12">
-                <div class="section-title">Historique utile</div>
-                <div id="history-list" class="history-grid"></div>
-              </div>
-
-              <div class="card span-12">
-                <div class="section-title">Actions rapides</div>
-                <div class="cta-grid">
-                  <a class="cta-btn cta-btn-primary" href="reservation.html">Réserver</a>
-                  <button class="cta-btn cta-btn-secondary" type="button" id="cta-use-singcoins">Utiliser mes Singcoins</button>
-                  <button class="cta-btn cta-btn-secondary" type="button" id="cta-see-rewards">Voir mes récompenses</button>
-                  <button class="cta-btn cta-btn-secondary" type="button" id="cta-see-ranking">Voir le classement</button>
-                  <button class="cta-btn cta-btn-secondary" type="button" id="cta-resume-streak">Reprendre mon streak</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="card account-main-card">
-              <h2>Mes informations & réservations</h2>
-              <p class="account-message" id="account-message" aria-live="polite" role="status"></p>
-
-              <div>
-                <div class="account-field-label">Email</div>
-                <div class="account-field-value" id="user-email">–</div>
-              </div>
-
-              <div>
-                <div class="account-field-label">Singcoins</div>
-                <div class="account-field-value" id="user-points">–</div>
-              </div>
-
-              <div class="soft-text" style="margin-top:8px;">
-                Astuce : toute la partie gamification au-dessus peut être branchée progressivement côté backend.
-              </div>
-
-              <div class="section-title" style="margin-top:18px;">Mes réservations</div>
-              <div id="reservations-list" style="display:grid;gap:10px;">
-                <p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>
-              </div>
-              <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
-
-              <div class="card" style="margin-top:18px;background:rgba(10,16,30,.72);padding:14px;">
-                <div class="section-title" style="font-size:17px;">Vos avantages compte</div>
-
-                <div style="display:grid;gap:10px;">
-                  <div class="account-benefit-item">
-                    <span class="account-benefit-icon">🎟</span>
-                    <div>
-                      <strong>QR code instantané</strong>
-                      <p class="soft-text">Retrouvez votre accès directement depuis votre espace client.</p>
-                    </div>
-                  </div>
-                  <div class="account-benefit-item">
-                    <span class="account-benefit-icon">⏰</span>
-                    <div>
-                      <strong>Modification simplifiée</strong>
-                      <p class="soft-text">Changez votre réservation jusqu’à 6h avant selon disponibilité.</p>
-                    </div>
-                  </div>
-                  <div class="account-benefit-item">
-                    <span class="account-benefit-icon">★</span>
-                    <div>
-                      <strong>Fidélité automatique</strong>
-                      <p class="soft-text">Chaque réservation payante alimente votre progression vers une séance offerte.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <p class="account-subtext">Astuce : cliquez sur “Afficher le QR” et présentez-le à l’entrée.</p>
-              <div class="logout-row">
-                <button id="logout-btn" class="logout-btn" type="button">Se déconnecter</button>
-              </div>
-            </div>
+              <p class="soft-text" style="margin-top:8px;">
+                <a href="mot-de-passe-oublie.html" style="color:#f97316;text-decoration:underline;">Mot de passe oublié&nbsp;?</a>
+              </p>
+              <p class="login-help">Pour aller vite, vous pouvez créer votre compte avec l’email et le mot de passe saisis ci-dessus.</p>
+            </form>
+            <div id="login-message" class="login-message" aria-live="polite" role="status"></div>
           </div>
 
-          <div class="account-right">
-            <div class="card">
-              <div class="section-title">Résumé fidélité</div>
-              <div class="soft-text">Bloc secondaire utile pour garder le Singcoin toujours visible.</div>
+          <div id="gamification-root"></div>
 
-              <div class="sub-card" style="margin-top:10px;">
-                <div class="soft-text">Prochain palier</div>
-                <div class="big-number" id="loyalty-next-goal">100 Singcoins</div>
-                <p id="loyalty-side-text" class="soft-text" style="margin-top:8px;">
-                  Connectez-vous pour voir combien de Singcoins il vous reste avant votre séance offerte.
-                </p>
+          <div class="card account-main-card">
+            <h2>Mes informations & réservations</h2>
+            <p class="account-message" id="account-message" aria-live="polite" role="status"></p>
+
+            <div>
+              <div class="account-field-label">Email</div>
+              <div class="account-field-value" id="user-email">–</div>
+            </div>
+
+            <div class="soft-text" style="margin-top:8px;">
+              Votre progression gamifiée est affichée juste au-dessus et reste compatible avec le backend actuel.
+            </div>
+
+            <div class="section-title" style="margin-top:18px;">Mes réservations</div>
+            <div id="reservations-list" style="display:grid;gap:10px;">
+              <p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>
+            </div>
+            <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
+
+            <div class="card" style="margin-top:18px;background:rgba(10,16,30,.72);padding:14px;">
+              <div class="section-title" style="font-size:17px;">Vos avantages compte</div>
+
+              <div style="display:grid;gap:10px;">
+                <div class="account-benefit-item">
+                  <span class="account-benefit-icon">🎟</span>
+                  <div>
+                    <strong>QR code instantané</strong>
+                    <p class="soft-text">Retrouvez votre accès directement depuis votre espace client.</p>
+                  </div>
+                </div>
+                <div class="account-benefit-item">
+                  <span class="account-benefit-icon">⏰</span>
+                  <div>
+                    <strong>Modification simplifiée</strong>
+                    <p class="soft-text">Changez votre réservation jusqu’à 6h avant selon disponibilité.</p>
+                  </div>
+                </div>
+                <div class="account-benefit-item">
+                  <span class="account-benefit-icon">★</span>
+                  <div>
+                    <strong>Fidélité automatique</strong>
+                    <p class="soft-text">Chaque réservation payante alimente votre progression vers une séance offerte.</p>
+                  </div>
+                </div>
               </div>
+            </div>
 
-              <div style="display:grid;gap:10px;margin-top:10px;">
-                <div class="sub-card">
-                  <strong>Étape 1</strong>
-                  <div class="soft-text">Réservez une séance et gagnez des Singcoins.</div>
-                </div>
-                <div class="sub-card">
-                  <strong>Étape 2</strong>
-                  <div class="soft-text">Cumulez, progressez, débloquez des badges et entretenez votre streak.</div>
-                </div>
-                <div class="sub-card">
-                  <strong>Étape 3</strong>
-                  <div class="soft-text">Utilisez vos récompenses et revenez plus souvent.</div>
-                </div>
-              </div>
+            <p class="account-subtext">Astuce : cliquez sur “Afficher le QR” et présentez-le à l’entrée.</p>
+            <p class="soft-text" id="not-logged-cta" style="display:none;color:#f97316;">Vous n’êtes pas connecté. Connectez-vous ou créez un compte pour commencer à cumuler vos Singcoins.</p>
 
-              <p class="soft-text" style="margin-top:10px;">Réservez depuis <a href="reservation.html" style="color:#f97316;text-decoration:underline;">Réservation</a> ou finalisez depuis votre <a href="panier.html" style="color:#f97316;text-decoration:underline;">panier</a>.</p>
-              <p class="soft-text" id="not-logged-cta" style="display:none;color:#f97316;">Vous n’êtes pas connecté. Connectez-vous ou créez un compte pour commencer à cumuler vos Singcoins.</p>
+            <div class="logout-row">
+              <button id="logout-btn" class="logout-btn" type="button">Se déconnecter</button>
             </div>
           </div>
         </div>
@@ -1623,12 +996,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="mon-compte-gamification.bundle.js"></script>
+
   <script>
     const API_BASE = "https://singbox-backend.onrender.com";
     const CHECK_ENDPOINT = `${API_BASE}/api/check`;
     const MODIFICATION_DEADLINE_HOURS = 6;
     const LOYALTY_GOAL = 100;
-    const LOYALTY_NAME = "Singcoins";
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
 
@@ -1650,7 +1024,6 @@
       refundMessage: byId("refund-message"),
       notLoggedCta: byId("not-logged-cta"),
       userEmail: byId("user-email"),
-      userPoints: byId("user-points"),
       reservationsList: byId("reservations-list"),
       qrModal: byId("qr-modal"),
       qrCanvas: byId("qr-canvas"),
@@ -1659,150 +1032,12 @@
       newsletterEmail: byId("newsletter-email"),
       newsletterCompany: byId("newsletter-company"),
       newsletterSubmit: byId("newsletter-submit"),
-      newsletterMessage: byId("newsletter-message"),
-
-      profileAvatar: byId("profile-avatar"),
-      profileDisplayName: byId("profile-display-name"),
-      profileEmailLine: byId("profile-email-line"),
-      profileMemberSince: byId("profile-member-since"),
-      profileLevelNamePill: byId("profile-level-name-pill"),
-      profileStreakPill: byId("profile-streak-pill"),
-      profileCurrentStatus: byId("profile-current-status"),
-
-      levelCurrent: byId("level-current"),
-      levelName: byId("level-name"),
-      xpCurrent: byId("xp-current"),
-      xpNext: byId("xp-next"),
-      xpProgressFill: byId("xp-progress-fill"),
-      xpRemainingText: byId("xp-remaining-text"),
-
-      streakCurrent: byId("streak-current"),
-      streakBest: byId("streak-best"),
-      streakDeadline: byId("streak-deadline"),
-      streakJokers: byId("streak-jokers"),
-      streakStateShort: byId("streak-state-short"),
-      streakLastReturn: byId("streak-last-return"),
-      streakPressure: byId("streak-pressure"),
-      streakStatusBadge: byId("streak-status-badge"),
-      streakStatusText: byId("streak-status-text"),
-
-      singcoinsBalance: byId("singcoins-balance"),
-      loyaltyProgressValue: byId("loyalty-progress-value"),
-      loyaltyProgressFill: byId("loyalty-progress-fill"),
-      loyaltyCurrentPoints: byId("loyalty-current-points"),
-      loyaltyHighlightText: byId("loyalty-highlight-text"),
-      loyaltySideText: byId("loyalty-side-text"),
-      loyaltyNextGoal: byId("loyalty-next-goal"),
-      singcoinsEarned: byId("singcoins-earned"),
-      singcoinsUsed: byId("singcoins-used"),
-      coinNextReward: byId("coin-next-reward"),
-
-      statTotalSessions: byId("stat-total-sessions"),
-      statTotalTime: byId("stat-total-time"),
-      statTotalSongs: byId("stat-total-songs"),
-      statAverageSongs: byId("stat-average-songs"),
-      statLastSession: byId("stat-last-session"),
-
-      recordBestStreak: byId("record-best-streak"),
-      recordActiveWeek: byId("record-active-week"),
-      recordBiggestSession: byId("record-biggest-session"),
-      recordSongsSession: byId("record-songs-session"),
-      recordTimeSession: byId("record-time-session"),
-
-      missionsList: byId("missions-list"),
-      badgesList: byId("badges-list"),
-      rankingWeeklyPosition: byId("ranking-weekly-position"),
-      rankingWeeklyText: byId("ranking-weekly-text"),
-      rankingGlobalPosition: byId("ranking-global-position"),
-      rankingGlobalText: byId("ranking-global-text"),
-      rankingTopSummary: byId("ranking-top-summary"),
-
-      chestTitle: byId("chest-title"),
-      chestCondition: byId("chest-condition"),
-      chestReward: byId("chest-reward"),
-      rewardsHistoryList: byId("rewards-history-list"),
-      historyList: byId("history-list"),
-
-      ctaUseSingcoins: byId("cta-use-singcoins"),
-      ctaSeeRewards: byId("cta-see-rewards"),
-      ctaSeeRanking: byId("cta-see-ranking"),
-      ctaResumeStreak: byId("cta-resume-streak")
+      newsletterMessage: byId("newsletter-message")
     };
 
     const state = {
       supabaseClient: null,
       reservations: []
-    };
-
-    const MOCK_GAMIFICATION = {
-      identity: {
-        displayName: "Singbox Player",
-        avatarText: "S",
-        memberSince: "janvier 2026",
-        status: "Chanteur en progression"
-      },
-      level: {
-        current: 3,
-        name: "Rising Star",
-        xpCurrent: 240,
-        xpNextLevel: 400
-      },
-      streak: {
-        current: 4,
-        best: 8,
-        deadlineText: "Reviens avant le 24 mars à 23h59 pour conserver ton streak.",
-        jokers: 1,
-        status: "active",
-        lastReturn: "Hier",
-        pressure: "Élevée"
-      },
-      singcoins: {
-        earned: 120,
-        used: 20,
-        nextReward: "Séance offerte à 100 Singcoins"
-      },
-      stats: {
-        totalSessions: 12,
-        totalTime: "18h",
-        totalSongs: 96,
-        averageSongs: 8,
-        lastSession: "18 mars"
-      },
-      records: {
-        bestStreak: 8,
-        activeWeek: "4 sessions",
-        biggestSession: "6 pers.",
-        songsPerSession: 14,
-        timePerSession: "2h"
-      },
-      missions: [
-        { title: "Faire 1 session cette semaine", progress: 100, reward: "+10 Singcoins", done: true },
-        { title: "Venir avec 3 personnes", progress: 66, reward: "+15 Singcoins", done: false },
-        { title: "Réserver avant dimanche", progress: 30, reward: "Badge Retour éclair", done: false }
-      ],
-      badges: [
-        { icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common", unlocked: true, date: "12 fév. 2026" },
-        { icon: "🔥", title: "3 semaines d’affilée", desc: "Tu es revenu régulièrement pendant 3 semaines.", rarity: "rare", unlocked: false, date: "" },
-        { icon: "🌟", title: "Habitué Singbox", desc: "10 sessions réalisées sur ton compte.", rarity: "epic", unlocked: true, date: "02 mars 2026" }
-      ],
-      ranking: {
-        weeklyPosition: "#7",
-        weeklyText: "7e en streak cette semaine",
-        globalPosition: "#21",
-        globalText: "21e sur les sessions globales",
-        topSummary: "1. Luna · 14 streak — 2. Max · 12 streak — 3. Nina · 10 streak"
-      },
-      chest: {
-        title: "Coffre Bronze",
-        condition: "Débloquer après 2 sessions ce mois-ci",
-        reward: "Récompense possible : +10 Singcoins",
-        history: ["+10 Singcoins · 10 mars", "Code promo -10% · 01 mars"]
-      },
-      history: [
-        { date: "18 mars 2026", box: "Box 2", duration: "1h30" },
-        { date: "11 mars 2026", box: "Box 1", duration: "1h30" },
-        { date: "03 mars 2026", box: "Box 3", duration: "2h00" }
-      ]
     };
 
     const utils = {
@@ -1869,14 +1104,6 @@
           });
         }
         return el;
-      },
-      capitalizeFirst(text) {
-        const safe = utils.sanitizeText(text, 120);
-        return safe ? safe.charAt(0).toUpperCase() + safe.slice(1) : "";
-      },
-      initialsFromEmail(email) {
-        const safe = utils.normalizeEmail(email);
-        return safe ? safe.charAt(0).toUpperCase() : "S";
       }
     };
 
@@ -2061,249 +1288,6 @@
       }
     };
 
-    const gamification = {
-      getData(user) {
-        const base = structuredClone ? structuredClone(MOCK_GAMIFICATION) : JSON.parse(JSON.stringify(MOCK_GAMIFICATION));
-        const safePoints = typeof user?.points === "number" && Number.isFinite(user.points) ? Math.max(0, Math.floor(user.points)) : 0;
-
-        if (user?.email) {
-          const emailName = user.email.split("@")[0].replace(/[._-]+/g, " ");
-          const cleaned = utils.capitalizeFirst(emailName);
-          base.identity.displayName = cleaned || "Singbox Player";
-          base.identity.avatarText = utils.initialsFromEmail(user.email);
-        }
-
-        base.singcoins.balance = safePoints;
-        base.singcoins.used = Math.max(0, base.singcoins.used);
-        base.singcoins.earned = Math.max(safePoints + base.singcoins.used, base.singcoins.earned);
-
-        const remaining = Math.max(0, LOYALTY_GOAL - safePoints);
-        base.singcoins.remaining = remaining;
-
-        if (safePoints >= LOYALTY_GOAL) {
-          base.singcoins.nextReward = "Séance offerte débloquée";
-        }
-
-        return base;
-      },
-
-      renderIdentity(data, user) {
-        const name = data.identity.displayName || "Singbox Player";
-        utils.setText(els.profileDisplayName, name);
-        utils.setText(els.profileAvatar, data.identity.avatarText || "S");
-        utils.setText(els.profileEmailLine, `Email : ${utils.sanitizeText(user?.email || "—", 254)}`);
-        utils.setText(els.profileMemberSince, `Membre depuis ${data.identity.memberSince}`);
-        utils.setText(els.profileLevelNamePill, `Niveau ${data.level.name}`);
-        utils.setText(els.profileStreakPill, `Streak : ${data.streak.current}`);
-        utils.setText(els.profileCurrentStatus, data.identity.status);
-      },
-
-      renderLevel(data) {
-        const current = Number(data.level.xpCurrent || 0);
-        const next = Number(data.level.xpNextLevel || 1);
-        const progress = Math.max(0, Math.min(100, Math.round((current / next) * 100)));
-        const remaining = Math.max(0, next - current);
-
-        utils.setText(els.levelCurrent, String(data.level.current));
-        utils.setText(els.levelName, data.level.name);
-        utils.setText(els.xpCurrent, String(current));
-        utils.setText(els.xpNext, `${next} XP`);
-        if (els.xpProgressFill) els.xpProgressFill.style.width = `${progress}%`;
-        utils.setText(els.xpRemainingText, `Plus que ${remaining} XP pour atteindre le niveau suivant.`);
-      },
-
-      renderStreak(data) {
-        utils.setText(els.streakCurrent, `${data.streak.current} jours`);
-        utils.setText(els.streakBest, String(data.streak.best));
-        utils.setText(els.streakDeadline, data.streak.deadlineText);
-        utils.setText(els.streakJokers, String(data.streak.jokers));
-        utils.setText(els.streakLastReturn, data.streak.lastReturn);
-        utils.setText(els.streakPressure, data.streak.pressure);
-
-        const statusMap = {
-          active: "Actif",
-          warning: "Bientôt perdu",
-          broken: "Cassé"
-        };
-
-        const statusText = statusMap[data.streak.status] || "Actif";
-        utils.setText(els.streakStatusText, statusText);
-        utils.setText(els.streakStateShort, statusText);
-
-        if (els.streakStatusBadge) {
-          els.streakStatusBadge.className = "streak-status";
-          if (data.streak.status === "warning") els.streakStatusBadge.classList.add("streak-status-warning");
-          if (data.streak.status === "broken") els.streakStatusBadge.classList.add("streak-status-broken");
-        }
-      },
-
-      renderSingcoins(data) {
-        const balance = Number(data.singcoins.balance || 0);
-        const remaining = Math.max(0, LOYALTY_GOAL - balance);
-        const progress = Math.max(0, Math.min(100, Math.round((Math.min(balance, LOYALTY_GOAL) / LOYALTY_GOAL) * 100)));
-
-        utils.setText(els.singcoinsBalance, String(balance));
-        utils.setText(els.loyaltyCurrentPoints, String(balance));
-        utils.setText(els.singcoinsEarned, String(data.singcoins.earned));
-        utils.setText(els.singcoinsUsed, String(data.singcoins.used));
-        utils.setText(els.loyaltyProgressValue, `${Math.min(balance, LOYALTY_GOAL)} / ${LOYALTY_GOAL}`);
-        utils.setText(els.loyaltyNextGoal, balance >= LOYALTY_GOAL ? "Palier atteint" : `${LOYALTY_GOAL} Singcoins`);
-        utils.setText(els.coinNextReward, `Prochaine récompense : ${data.singcoins.nextReward}`);
-
-        const text = balance >= LOYALTY_GOAL
-          ? "Bravo ! Votre séance offerte est prête à être utilisée."
-          : `Plus que ${remaining} Singcoins avant votre séance offerte.`;
-
-        utils.setText(els.loyaltyHighlightText, text);
-        utils.setText(els.loyaltySideText, text);
-
-        if (els.loyaltyProgressFill) els.loyaltyProgressFill.style.width = `${progress}%`;
-      },
-
-      renderStats(data) {
-        utils.setText(els.statTotalSessions, String(data.stats.totalSessions));
-        utils.setText(els.statTotalTime, data.stats.totalTime);
-        utils.setText(els.statTotalSongs, String(data.stats.totalSongs));
-        utils.setText(els.statAverageSongs, String(data.stats.averageSongs));
-        utils.setText(els.statLastSession, data.stats.lastSession);
-      },
-
-      renderRecords(data) {
-        utils.setText(els.recordBestStreak, String(data.records.bestStreak));
-        utils.setText(els.recordActiveWeek, data.records.activeWeek);
-        utils.setText(els.recordBiggestSession, data.records.biggestSession);
-        utils.setText(els.recordSongsSession, String(data.records.songsPerSession));
-        utils.setText(els.recordTimeSession, data.records.timePerSession);
-      },
-
-      renderMissions(data) {
-        if (!els.missionsList) return;
-        els.missionsList.innerHTML = "";
-
-        data.missions.forEach((mission) => {
-          const item = utils.create("div", { className: "mission-item" });
-          const icon = utils.create("span", { className: "badge-icon", text: mission.done ? "✓" : "🎯" });
-          const content = utils.create("div", { className: "mission-content" });
-
-          content.append(
-            utils.create("strong", { text: mission.title }),
-            utils.create("div", { className: "soft-text", text: `Récompense : ${mission.reward}` })
-          );
-
-          const progressWrap = utils.create("div", { className: "mission-progress" });
-          progressWrap.append(
-            utils.create("div", { className: "mission-progress-text", text: mission.done ? "Mission terminée" : `Progression : ${mission.progress}%` })
-          );
-
-          const mini = utils.create("div", { className: "mini-progress" });
-          const fill = utils.create("span");
-          fill.style.width = `${Math.max(0, Math.min(100, mission.progress))}%`;
-          mini.appendChild(fill);
-          progressWrap.appendChild(mini);
-          content.appendChild(progressWrap);
-
-          item.append(icon, content);
-          els.missionsList.appendChild(item);
-        });
-      },
-
-      renderBadges(data) {
-        if (!els.badgesList) return;
-        els.badgesList.innerHTML = "";
-
-        data.badges.forEach((badge) => {
-          const item = utils.create("div", { className: `badge-item ${badge.unlocked ? "" : "badge-locked"}`.trim() });
-          const icon = utils.create("span", { className: "badge-icon", text: badge.icon || "★" });
-          const content = utils.create("div", { className: "badge-content" });
-
-          content.append(
-            utils.create("strong", { text: badge.title }),
-            utils.create("div", { className: "soft-text", text: badge.desc })
-          );
-
-          const rarity = utils.create("span", { className: `rarity ${badge.rarity || "common"}`, text: badge.rarity || "common" });
-          content.appendChild(rarity);
-
-          if (badge.date) {
-            content.appendChild(utils.create("div", { className: "soft-text", text: `Obtenu le ${badge.date}` }));
-          }
-
-          item.append(icon, content);
-          els.badgesList.appendChild(item);
-        });
-      },
-
-      renderRanking(data) {
-        utils.setText(els.rankingWeeklyPosition, data.ranking.weeklyPosition);
-        utils.setText(els.rankingWeeklyText, data.ranking.weeklyText);
-        utils.setText(els.rankingGlobalPosition, data.ranking.globalPosition);
-        utils.setText(els.rankingGlobalText, data.ranking.globalText);
-        utils.setText(els.rankingTopSummary, data.ranking.topSummary);
-      },
-
-      renderChest(data) {
-        utils.setText(els.chestTitle, data.chest.title);
-        utils.setText(els.chestCondition, data.chest.condition);
-        utils.setText(els.chestReward, data.chest.reward);
-
-        if (!els.rewardsHistoryList) return;
-        els.rewardsHistoryList.innerHTML = "";
-        data.chest.history.forEach((entry) => {
-          els.rewardsHistoryList.appendChild(
-            utils.create("div", { className: "sub-card" , text: entry })
-          );
-        });
-      },
-
-      renderHistory(data) {
-        if (!els.historyList) return;
-        els.historyList.innerHTML = "";
-
-        data.history.forEach((entry) => {
-          const item = utils.create("div", { className: "history-item" });
-          const icon = utils.create("span", { className: "badge-icon", text: "🎵" });
-          const content = utils.create("div", { className: "history-content" });
-
-          content.append(
-            utils.create("strong", { text: `${entry.date} · ${entry.box}` }),
-            utils.create("div", { className: "soft-text", text: `Durée : ${entry.duration}` })
-          );
-
-          const btn = utils.create("button", { className: "history-replay-btn", text: "Rejouer une session similaire" });
-          btn.type = "button";
-          btn.addEventListener("click", () => {
-            window.location.href = "reservation.html";
-          });
-
-          content.appendChild(btn);
-          item.append(icon, content);
-          els.historyList.appendChild(item);
-        });
-      },
-
-      renderAll(user) {
-        const data = gamification.getData(user);
-        gamification.renderIdentity(data, user);
-        gamification.renderLevel(data);
-        gamification.renderStreak(data);
-        gamification.renderSingcoins(data);
-        gamification.renderStats(data);
-        gamification.renderRecords(data);
-        gamification.renderMissions(data);
-        gamification.renderBadges(data);
-        gamification.renderRanking(data);
-        gamification.renderChest(data);
-        gamification.renderHistory(data);
-      },
-
-      renderLoggedOut() {
-        gamification.renderAll({ email: "", points: 0 });
-        utils.setText(els.profileDisplayName, "Singbox Player");
-        utils.setText(els.profileAvatar, "S");
-        utils.setText(els.profileEmailLine, "Email : —");
-      }
-    };
-
     const ui = {
       updateCartIcon() {
         const panier = (() => {
@@ -2345,7 +1329,7 @@
         }
 
         reservations.forEach((reservation) => {
-                    els.reservationsList.appendChild(reservationsService.renderItem(reservation));
+          els.reservationsList.appendChild(reservationsService.renderItem(reservation));
         });
       },
 
@@ -2362,13 +1346,15 @@
 
       showNotLoggedState(customMessage = "Connectez-vous pour accéder à votre espace client.") {
         utils.setText(els.userEmail, "Non connecté");
-        utils.setText(els.userPoints, "—");
         utils.setStatus(els.accountMessage, customMessage, "error");
         utils.setStatus(els.refundMessage, "", "");
         utils.show(els.notLoggedCta);
         utils.show(els.loginCard);
         ui.setReservationsNotLogged();
-        gamification.renderLoggedOut();
+
+        if (window.SingboxGamification?.renderLoggedOut) {
+          window.SingboxGamification.renderLoggedOut();
+        }
       },
 
       setAuthButtonsLoading(isLoading) {
@@ -2483,15 +1469,22 @@
             : 0;
 
           utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
-          utils.setText(els.userPoints, String(points));
           utils.setStatus(els.accountMessage, "Bienvenue dans votre espace client.", "ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
-          gamification.renderAll({
-            email: user.email || "",
-            points
-          });
+          if (window.SingboxGamification?.updateUser) {
+            window.SingboxGamification.updateUser({
+              email: user.email || "",
+              points,
+              pseudo: user.pseudo || "",
+              username: user.username || "",
+              prenom: user.prenom || "",
+              firstName: user.firstName || "",
+              firstname: user.firstname || "",
+              sessionsCount: user.sessionsCount
+            });
+          }
 
           await profile.loadReservations();
         } catch (error) {
@@ -2887,38 +1880,37 @@
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && els.qrModal?.open) ui.closeQrModal();
         });
-      },
-
-      initGamifiedCtas() {
-        els.ctaUseSingcoins?.addEventListener("click", () => {
-          alert("À brancher plus tard : page d’utilisation des Singcoins.");
-        });
-
-        els.ctaSeeRewards?.addEventListener("click", () => {
-          document.getElementById("account")?.scrollIntoView({ behavior: "smooth" });
-        });
-
-        els.ctaSeeRanking?.addEventListener("click", () => {
-          const rankingCard = els.rankingWeeklyPosition?.closest(".card");
-          rankingCard?.scrollIntoView({ behavior: "smooth", block: "center" });
-        });
-
-        els.ctaResumeStreak?.addEventListener("click", () => {
-          window.location.href = "reservation.html";
-        });
       }
     };
 
     document.addEventListener("DOMContentLoaded", async () => {
+      if (window.SingboxGamification?.mount) {
+        window.SingboxGamification.mount({
+          mountSelector: "#gamification-root",
+          pseudoMaxLength: 20,
+          loyaltyGoal: LOYALTY_GOAL,
+          reservationUrl: "reservation.html",
+          anchors: {
+            singcoins: "#gamif-singcoins-section",
+            rewards: "#gamif-rewards-section",
+            ranking: "#gamif-ranking-section",
+            streak: "#gamif-streak-section"
+          }
+        });
+      }
+
       events.initMobileMenu();
       ui.updateCartIcon();
       events.initLoginForm();
       events.initLogout();
       events.initReservationActions();
       events.initQrModal();
-      events.initGamifiedCtas();
       newsletter.init();
-      gamification.renderLoggedOut();
+
+      if (window.SingboxGamification?.renderLoggedOut) {
+        window.SingboxGamification.renderLoggedOut();
+      }
+
       await profile.load();
     });
   </script>
