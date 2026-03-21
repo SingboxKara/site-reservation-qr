@@ -107,6 +107,7 @@
     }
 
     .container { max-width: var(--sb-container-width); margin: 0 auto; padding: 0 24px; }
+
     .card {
       background: var(--sb-card);
       border-radius: var(--radius-card);
@@ -116,6 +117,7 @@
       position: relative;
       overflow: hidden;
     }
+
     .card::after {
       content: "";
       position: absolute;
@@ -125,6 +127,7 @@
       opacity: .6;
       mix-blend-mode: soft-light;
     }
+
     .card > * { position: relative; z-index: 1; }
 
     .site-header {
@@ -136,6 +139,7 @@
       box-shadow: 0 14px 30px rgba(0,0,0,.75);
       border-bottom: 1px solid rgba(255,255,255,.15);
     }
+
     .header-inner {
       max-width: var(--sb-container-width);
       margin: 0 auto;
@@ -145,7 +149,9 @@
       justify-content: space-between;
       gap: 2rem;
     }
+
     .brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
     .brand-logo {
       width: 110px;
       display: block;
@@ -153,6 +159,7 @@
       object-fit: contain;
       filter: drop-shadow(0 0 12px rgba(255,255,255,.16)) drop-shadow(0 0 20px rgba(201,76,53,.6));
     }
+
     .brand-text {
       font-family: "League Spartan", system-ui, sans-serif;
       font-weight: 600;
@@ -161,14 +168,18 @@
       text-transform: uppercase;
       white-space: nowrap;
     }
+
     nav.main-nav { flex: 1; display: flex; justify-content: center; min-width: 0; }
+
     .main-nav ul,
     .mobile-nav ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
+
     .main-nav ul { display: flex; gap: 32px; font-size: 14px; }
+
     .main-nav a {
       font-weight: 600;
       color: #fff;
@@ -176,6 +187,7 @@
       padding-bottom: 4px;
       white-space: nowrap;
     }
+
     .main-nav a::after {
       content: "";
       position: absolute;
@@ -187,9 +199,11 @@
       transition: width .3s ease;
       border-radius: 6px;
     }
+
     .main-nav a:hover::after,
     .main-nav a:focus-visible::after,
     .main-nav a[aria-current="page"]::after { width: 100%; }
+
     .main-nav a:hover,
     .main-nav a:focus-visible,
     .main-nav a[aria-current="page"] { color: #ffb96f; }
@@ -208,6 +222,7 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+
     .header-actions { gap: 12px; flex-shrink: 0; }
     .loyalty-progress-top,
     .reservation-main-row,
@@ -230,7 +245,9 @@
       cursor: pointer;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast), background var(--transition-fast);
       white-space: nowrap;
+      font-family: inherit;
     }
+
     .btn:hover,
     .btn:focus-visible,
     .nav-cta:hover,
@@ -244,10 +261,13 @@
     .reservation-action-btn:hover,
     .reservation-action-btn:focus-visible,
     .reservation-refund-btn:hover,
-    .reservation-refund-btn:focus-visible {
+    .reservation-refund-btn:focus-visible,
+    footer button:hover,
+    footer button:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.03);
     }
+
     .btn[disabled],
     .login-submit-btn[disabled],
     .login-secondary-btn[disabled],
@@ -262,13 +282,14 @@
 
     .nav-cta,
     .login-submit-btn,
-    .reservation-refund-btn,
-    footer button {
+    .reservation-refund-btn {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 16px 40px rgba(0,0,0,.9);
     }
+
     .nav-cta { padding: 8px 22px; font-size: 14px; font-weight: 600; }
+
     .logout-btn,
     .login-secondary-btn,
     .modal-btn-secondary {
@@ -276,10 +297,20 @@
       color: #f9fafb;
       box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 10px 28px rgba(0,0,0,.8);
     }
+
     .login-submit-btn,
     .login-secondary-btn { padding: .6rem 1rem; font-size: 13px; flex: 1 1 140px; }
+
     .logout-btn { padding: .55rem 1.2rem; font-size: 13px; }
-    .modal-btn { padding: .55rem 1rem; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+
+    .modal-btn {
+      padding: .55rem 1rem;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
     .modal-btn-secondary { border: 1px solid rgba(255,255,255,.35); }
 
     .cart-icon,
@@ -294,6 +325,7 @@
       border-radius: 999px;
       flex-shrink: 0;
     }
+
     .cart-icon,
     .burger-button {
       width: 36px;
@@ -305,7 +337,9 @@
       background: radial-gradient(circle at 30% 0%, rgba(248,250,252,.16), rgba(15,23,42,.85));
       backdrop-filter: blur(6px);
     }
+
     .burger-button { display: none; }
+
     #cart-count {
       position: absolute;
       top: -6px;
@@ -318,6 +352,7 @@
       min-width: 18px;
       text-align: center;
     }
+
     #cart-count:empty { display: none; }
 
     .mobile-nav {
@@ -332,6 +367,7 @@
       border-bottom: 1px solid rgba(255,255,255,.15);
       box-shadow: 0 14px 30px rgba(0,0,0,.45);
     }
+
     .mobile-nav.open { display: block; }
     .mobile-nav ul { display: flex; flex-direction: column; gap: 12px; font-size: 15px; }
     .mobile-nav a { color: #fff; }
@@ -345,12 +381,14 @@
         #050814;
       overflow: hidden;
     }
+
     #account::before,
     #account::after {
       position: absolute;
       pointer-events: none;
       color: rgba(148,163,184,.1);
     }
+
     #account::before { content: "★"; top: 16%; left: 8%; font-size: 32px; }
     #account::after { content: "♪"; right: 8%; bottom: 14%; font-size: 30px; opacity: .8; }
 
@@ -369,6 +407,7 @@
     }
 
     .account-main-card h2 { font-size: 22px; margin-bottom: 6px; }
+
     .account-field-label,
     .loyalty-progress-title,
     .loyalty-progress-stat-label,
@@ -392,15 +431,21 @@
       color: var(--sb-text-muted);
       font-size: 12px;
       line-height: 1.55;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
     .account-field-label { margin-bottom: 2px; font-size: 13px; }
     .account-field-value { font-size: 15px; font-weight: 600; margin-bottom: 10px; word-break: break-word; }
+
     .account-message,
     .login-message { min-height: 16px; }
+
     .account-message.ok,
     .login-message.ok { color: #bbf7d0; }
+
     .account-message.info,
     .login-message.info { color: #93c5fd; }
+
     .account-message.error,
     .login-message.error { color: #fca5a5; }
 
@@ -417,13 +462,16 @@
       font-size: 12px;
       flex-wrap: wrap;
     }
+
     .loyalty-pill { margin-bottom: 10px; font-size: 11px; }
+
     .coin-dot,
     .account-benefit-icon,
     .loyalty-side-step-icon {
       background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
       color: #fff;
     }
+
     .coin-dot { width: 20px; height: 20px; font-size: 12px; }
     .loyalty-pill .coin-dot { width: 18px; height: 18px; font-size: 11px; }
     .account-benefit-icon { width: 28px; height: 28px; font-size: 13px; }
@@ -441,25 +489,43 @@
       border: 1px solid var(--sb-border-soft);
       border-radius: var(--radius-soft);
     }
+
     .loyalty-progress-card,
     .account-benefits-card,
     .loyalty-side-highlight { padding: 14px; }
+
     .reservation-item,
     .account-benefit-item,
     .loyalty-side-step,
-    .loyalty-progress-stat { background: rgba(2,6,23,.95); border-radius: var(--radius-item); }
+    .loyalty-progress-stat {
+      background: rgba(2,6,23,.95);
+      border-radius: var(--radius-item);
+    }
+
     .reservation-item { padding: 9px 11px; display: flex; flex-direction: column; gap: 6px; }
     .account-benefit-item,
     .loyalty-side-step { padding: 10px; display: flex; align-items: flex-start; gap: 10px; }
-    .loyalty-progress-stat { padding: 10px; }
+
+    .loyalty-progress-stat {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      min-height: 76px;
+      gap: 8px;
+    }
 
     .reservations-block,
     .account-benefits-card,
     .loyalty-progress-card { margin-top: 16px; }
+
     .reservations-list,
     .account-benefits-grid,
     .loyalty-side-steps { display: grid; gap: 10px; }
+
     .reservations-list { margin-top: 6px; }
+
     .loyalty-progress-bar {
       width: 100%;
       height: 10px;
@@ -468,6 +534,7 @@
       overflow: hidden;
       margin-bottom: 12px;
     }
+
     .loyalty-progress-fill {
       height: 100%;
       width: 0;
@@ -475,17 +542,57 @@
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       transition: width .3s ease;
     }
+
     .loyalty-progress-stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
     }
 
+    .loyalty-progress-stat-label {
+      display: block;
+      width: 100%;
+      font-size: 11px;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+
+    .loyalty-progress-stat strong {
+      display: block;
+      width: 100%;
+      margin-top: auto;
+      font-size: 16px;
+      line-height: 1.2;
+      color: #f9fafb;
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: .02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #loyalty-reward-label {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
     .reservation-date,
     .reservation-price,
     .account-benefit-item strong,
     .loyalty-side-step strong { font-size: 13px; font-weight: 600; }
-    .reservation-side { text-align: right; font-size: 12px; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+
+    .reservation-side {
+      text-align: right;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
     .reservation-status {
       padding: 2px 8px;
       border-radius: 999px;
@@ -493,18 +600,41 @@
       font-size: 11px;
       text-transform: capitalize;
     }
+
     .reservation-status-confirmed { border-color: rgba(52,211,153,.8); color: #6ee7b7; }
     .reservation-status-pending { border-color: rgba(251,191,36,.8); color: #facc15; }
     .reservation-status-annulee { border-color: rgba(248,113,113,.85); color: #fecaca; }
+
     .reservation-action-btn,
-    .reservation-refund-btn { padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; box-shadow: var(--sb-shadow-btn); }
+    .reservation-refund-btn {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      box-shadow: var(--sb-shadow-btn);
+    }
+
     .reservation-qr-btn { background: linear-gradient(90deg, #1d4ed8, #4c1d95); color: #f9fafb; }
     .reservation-edit-btn { background: linear-gradient(90deg, #0f766e, #1d4ed8); color: #f9fafb; }
-    .reservation-refund-row { margin-top: 6px; }
+
+    .reservation-refund-row {
+      margin-top: 6px;
+      align-items: center;
+    }
+
+    .reservation-refund-row span {
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--sb-text-muted);
+      flex: 1 1 220px;
+    }
 
     .login-card-title,
     .loyalty-card h3,
     .modal-dialog h2 { font-size: 18px; margin-bottom: 8px; }
+
     .login-description { font-size: 13px; color: var(--sb-text-muted); margin-bottom: 10px; }
     .login-field { margin-bottom: 8px; font-size: 13px; }
 
@@ -519,11 +649,13 @@
       outline: none;
       transition: border-color .16s ease, box-shadow .16s ease;
     }
+
     .login-field input {
       border-radius: 999px;
       padding: .55rem .85rem;
       font-size: 13px;
     }
+
     footer input[type="email"] {
       min-width: 240px;
       max-width: 360px;
@@ -531,15 +663,18 @@
       border-radius: 999px;
       font-size: 14px;
     }
+
     .input::placeholder,
     .login-field input::placeholder,
     footer input[type="email"]::placeholder { color: rgba(156,163,175,.9); }
+
     .input:focus,
     .login-field input:focus,
     footer input[type="email"]:focus {
       border-color: var(--sb-orange);
       box-shadow: 0 0 0 1px rgba(249,115,22,.8), 0 0 22px rgba(249,115,22,.25);
     }
+
     .is-invalid,
     .login-field input[aria-invalid="true"],
     footer input[type="email"][aria-invalid="true"] {
@@ -549,9 +684,11 @@
 
     .login-links,
     .account-cta { margin-top: 8px; font-size: 12px; }
+
     .login-forgot,
     .account-cta,
     .account-cta a { color: #f97316; text-decoration: underline; }
+
     .login-forgot:hover,
     .login-forgot:focus-visible,
     .account-cta a:hover,
@@ -567,11 +704,14 @@
       border: 1px solid rgba(255,255,255,.25);
       color: #f9fafb;
     }
+
     dialog.modal-dialog::backdrop {
       background: rgba(15,23,42,.7);
       backdrop-filter: blur(4px);
     }
+
     .qr-only-wrap { display: flex; justify-content: center; align-items: center; padding: 10px 0 4px; }
+
     #qr-canvas {
       width: 320px;
       height: 320px;
@@ -589,9 +729,11 @@
       padding: 32px 24px 18px;
       border-top: 1px solid rgba(255,255,255,.15);
     }
+
     .newsletter-container { max-width: var(--sb-container-width); margin: 0 auto 24px; text-align: center; }
     .newsletter-container h3 { margin-bottom: 6px; }
     .newsletter-row { justify-content: center; margin-top: 8px; position: relative; }
+
     .newsletter-honeypot {
       position: absolute !important;
       left: -9999px !important;
@@ -601,6 +743,19 @@
       opacity: 0 !important;
       pointer-events: none !important;
     }
+
+    footer button {
+      padding: 10px 18px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: .01em;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.18),
+        0 16px 40px rgba(0,0,0,.9);
+    }
+
     .footer-columns {
       max-width: var(--sb-container-width);
       margin: 0 auto;
@@ -610,9 +765,11 @@
       justify-content: space-between;
       font-size: 13px;
     }
+
     .footer-brand { display: flex; align-items: center; gap: 10px; }
     .footer-brand img { height: 80px; display: block; }
     .footer-columns p { margin: 4px 0; }
+
     .footer-bottom {
       max-width: var(--sb-container-width);
       margin: 20px auto 0;
@@ -642,12 +799,28 @@
       .reservation-side,
       .reservation-actions-row,
       .reservation-refund-row,
-      .login-actions { flex-direction: column; align-items: flex-start; }
+      .login-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       .reservation-side { text-align: left; }
       .login-submit-btn,
       .login-secondary-btn { width: 100%; }
       .loyalty-progress-stats { grid-template-columns: 1fr; }
       .loyalty-side-highlight-value { font-size: 20px; }
+
+      .loyalty-progress-stat {
+        min-height: auto;
+      }
+
+      .loyalty-progress-stat-label,
+      .loyalty-progress-stat strong,
+      #loyalty-reward-label {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: initial;
+      }
     }
 
     @media (max-width: 480px) {
@@ -761,7 +934,7 @@
                       <strong id="loyalty-current-points">0</strong>
                     </div>
                     <div class="loyalty-progress-stat">
-                      <span class="loyalty-progress-stat-label">Restants</span>
+                      <span class="loyalty-progress-stat-label">Points restants</span>
                       <strong id="loyalty-remaining-points">100</strong>
                     </div>
                     <div class="loyalty-progress-stat">
@@ -938,8 +1111,6 @@
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
 
-    const $ = (selector, parent = document) => parent.querySelector(selector);
-    const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
     const byId = (id) => document.getElementById(id);
 
     const els = {
@@ -1055,22 +1226,27 @@
           ...options,
           headers: { ...(options.headers || {}), ...utils.getAuthHeaders() }
         });
+
         if ([401, 403].includes(response.status)) utils.clearStoredToken();
         return response;
       },
+
       async postJson(url, payload) {
         const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
+
         const data = await utils.safeJson(response);
         return { response, data };
       },
+
       async login(email, password) {
         const { response, data } = await api.postJson(`${API_BASE}/api/login`, { email, password });
         return { ok: response.ok && Boolean(data?.token), token: data?.token, error: data?.error };
       },
+
       async register(email, password) {
         const { response, data } = await api.postJson(`${API_BASE}/api/register`, { email, password });
         return { ok: response.ok, error: data?.error };
@@ -1084,46 +1260,69 @@
         const end = utils.parseDate(reservation.end_time) || new Date(start.getTime() + 90 * 60 * 1000);
         return `${utils.formatTime(start)} - ${utils.formatTime(end)}`;
       },
+
       statusClass(statusRaw) {
         const normalized = String(statusRaw || "").toLowerCase();
-        if (["confirmed", "paid"].includes(normalized) || normalized.includes("confirm") || normalized.includes("payé") || normalized.includes("paye")) return "reservation-status-confirmed";
+
+        if (
+          ["confirmed", "paid"].includes(normalized) ||
+          normalized.includes("confirm") ||
+          normalized.includes("payé") ||
+          normalized.includes("paye")
+        ) return "reservation-status-confirmed";
+
         if (normalized.includes("attente") || normalized === "pending") return "reservation-status-pending";
         if (normalized.includes("annul") || ["cancelled", "canceled"].includes(normalized)) return "reservation-status-annulee";
+
         return "";
       },
+
       isRefundPossible(startTimeIso) {
         const start = utils.parseDate(startTimeIso);
         if (!start) return false;
         return (start.getTime() - Date.now()) / (1000 * 60 * 60) >= 24;
       },
+
       isModificationPossible(startTimeIso, statusRaw) {
         const start = utils.parseDate(startTimeIso);
         if (!start) return false;
+
         return reservationsService.statusClass(statusRaw) === "reservation-status-confirmed"
           && (start.getTime() - Date.now()) / (1000 * 60 * 60) >= MODIFICATION_DEADLINE_HOURS;
       },
+
       buildMeta(reservation) {
         const timeRange = reservationsService.formatHours(reservation);
         const rawBoxName = reservation.box_name || reservation.box || reservation.box_id || "";
         const boxName = utils.sanitizeText(rawBoxName, 80);
-        return [timeRange, boxName ? (/^box/i.test(boxName) ? boxName : `Box ${boxName}`) : ""].filter(Boolean).join(" • ");
+
+        return [timeRange, boxName ? (/^box/i.test(boxName) ? boxName : `Box ${boxName}`) : ""]
+          .filter(Boolean)
+          .join(" • ");
       },
+
       buildQrTitle(reservation, date, boxName) {
         const parts = [];
         if (boxName) parts.push(/^box/i.test(boxName) ? boxName : `Box ${boxName}`);
         parts.push(date);
+
         const hours = reservationsService.formatHours(reservation);
         if (hours) parts.push(hours);
+
         return parts.join(" • ");
       },
+
       createActionButton({ className, text, disabled = false, dataset = {} }) {
         const btn = utils.create("button", { className, text, attrs: { type: "button" } });
         btn.disabled = disabled;
+
         Object.entries(dataset).forEach(([key, value]) => {
           if (value !== undefined && value !== null && value !== "") btn.dataset[key] = String(value);
         });
+
         return btn;
       },
+
       renderItem(reservation) {
         const item = utils.create("div", { className: "reservation-item" });
         const startTimeIso = utils.sanitizeText(reservation.start_time || reservation.datetime || "", 100);
@@ -1150,8 +1349,12 @@
 
         const rightCol = utils.create("div", { className: "reservation-side" });
         if (montant) rightCol.appendChild(utils.create("div", { className: "reservation-price", text: `${montant} €` }));
+
         if (statutRaw) {
-          rightCol.appendChild(utils.create("span", { className: `reservation-status ${statutClass}`.trim(), text: statutRaw }));
+          rightCol.appendChild(utils.create("span", {
+            className: `reservation-status ${statutClass}`.trim(),
+            text: statutRaw
+          }));
         }
 
         mainRow.append(leftCol, rightCol);
@@ -1176,11 +1379,12 @@
 
         if (isFutureConfirmed) {
           const refundRow = utils.create("div", { className: "reservation-refund-row" });
+
           refundRow.append(
             utils.create("span", {
               text: canRefund
                 ? "Remboursement possible jusqu'à 24h avant la séance."
-                : "Le remboursement n'est plus possible (moins de 24h avant la séance)."
+                : "Le remboursement n'est plus possible dans les 24h avant la séance."
             }),
             reservationsService.createActionButton({
               className: "reservation-refund-btn",
@@ -1189,6 +1393,7 @@
               dataset: { reservationId: reservation?.id || "", startTime: startTimeIso }
             })
           );
+
           item.appendChild(refundRow);
         }
 
@@ -1207,34 +1412,51 @@
             return [];
           }
         })();
+
         if (!els.cartCount) return;
         els.cartCount.textContent = panier.length ? String(panier.length) : "";
         els.cartCount.setAttribute("aria-hidden", panier.length ? "false" : "true");
       },
+
       closeMobileNav() {
         if (!els.mobileNav || !els.burgerButton) return;
         els.mobileNav.classList.remove("open");
         els.burgerButton.setAttribute("aria-expanded", "false");
       },
+
       openMobileNav() {
         if (!els.mobileNav || !els.burgerButton) return;
         els.mobileNav.classList.add("open");
         els.burgerButton.setAttribute("aria-expanded", "true");
       },
+
       renderReservations(reservations = []) {
         if (!els.reservationsList) return;
         els.reservationsList.innerHTML = "";
+
         if (!reservations.length) {
-          els.reservationsList.appendChild(utils.create("p", { className: "reservations-empty", text: "Aucune réservation pour le moment." }));
+          els.reservationsList.appendChild(
+            utils.create("p", { className: "reservations-empty", text: "Aucune réservation pour le moment." })
+          );
           return;
         }
-        reservations.forEach((reservation) => els.reservationsList.appendChild(reservationsService.renderItem(reservation)));
+
+        reservations.forEach((reservation) => {
+          els.reservationsList.appendChild(reservationsService.renderItem(reservation));
+        });
       },
+
       setReservationsNotLogged() {
         if (!els.reservationsList) return;
         els.reservationsList.innerHTML = "";
-        els.reservationsList.appendChild(utils.create("p", { className: "reservations-empty", text: "Connectez-vous pour retrouver vos réservations passées et à venir." }));
+        els.reservationsList.appendChild(
+          utils.create("p", {
+            className: "reservations-empty",
+            text: "Connectez-vous pour retrouver vos réservations passées et à venir."
+          })
+        );
       },
+
       updateLoyalty(points) {
         const isNumber = typeof points === "number" && Number.isFinite(points);
         const safePoints = isNumber ? Math.max(0, Math.floor(points)) : 0;
@@ -1258,6 +1480,7 @@
 
         utils.setText(els.loyaltyHighlightText, highlight);
       },
+
       showNotLoggedState(customMessage = "Connectez-vous pour accéder à votre espace client.") {
         utils.setText(els.userEmail, "Non connecté");
         utils.setText(els.userPoints, "—");
@@ -1268,6 +1491,7 @@
         ui.setReservationsNotLogged();
         ui.updateLoyalty(null);
       },
+
       setAuthButtonsLoading(isLoading) {
         [els.loginSubmitBtn, els.createAccountBtn].forEach((btn) => {
           if (!btn) return;
@@ -1276,29 +1500,37 @@
           btn.textContent = isLoading ? "Chargement..." : btn.dataset.defaultText;
         });
       },
+
       clearLoginFieldErrors() {
         els.loginEmail?.removeAttribute("aria-invalid");
         els.loginPassword?.removeAttribute("aria-invalid");
       },
+
       async drawQr(text) {
         if (!els.qrCanvas || !globalThis.QRCode) return;
+
         await globalThis.QRCode.toCanvas(els.qrCanvas, text, {
           width: 320,
           margin: 1,
           color: { dark: "#000000", light: "#ffffff" }
         });
       },
+
       async openQrModal(url, subtitleText) {
         if (!els.qrModal) return;
         utils.setText(els.qrModalSubtitle, utils.sanitizeText(subtitleText || "Présentez ce QR code à l’entrée.", 200));
         await ui.drawQr(url);
+
         if (typeof els.qrModal.showModal === "function") els.qrModal.showModal();
         else els.qrModal.setAttribute("open", "open");
       },
+
       closeQrModal() {
         if (!els.qrModal) return;
+
         if (typeof els.qrModal.close === "function" && els.qrModal.open) els.qrModal.close();
         else els.qrModal.removeAttribute("open");
+
         const ctx = els.qrCanvas?.getContext("2d");
         if (ctx && els.qrCanvas) ctx.clearRect(0, 0, els.qrCanvas.width, els.qrCanvas.height);
       }
@@ -1307,10 +1539,14 @@
     const profile = {
       async loadReservations() {
         utils.setStatus(els.refundMessage, "", "");
+
         if (!utils.getStoredToken()) return ui.setReservationsNotLogged();
+
         if (els.reservationsList) {
           els.reservationsList.innerHTML = "";
-          els.reservationsList.appendChild(utils.create("p", { className: "reservations-empty", text: "Chargement de vos réservations..." }));
+          els.reservationsList.appendChild(
+            utils.create("p", { className: "reservations-empty", text: "Chargement de vos réservations..." })
+          );
         }
 
         try {
@@ -1323,11 +1559,18 @@
           ui.renderReservations(state.reservations);
         } catch (error) {
           console.error(error);
+
           if (!els.reservationsList) return;
           els.reservationsList.innerHTML = "";
-          els.reservationsList.appendChild(utils.create("p", { className: "reservations-empty", text: "Impossible de charger vos réservations pour le moment." }));
+          els.reservationsList.appendChild(
+            utils.create("p", {
+              className: "reservations-empty",
+              text: "Impossible de charger vos réservations pour le moment."
+            })
+          );
         }
       },
+
       async load() {
         if (!utils.getStoredToken()) return ui.showNotLoggedState();
         utils.setStatus(els.accountMessage, "Chargement de votre espace client...", "info");
@@ -1338,7 +1581,9 @@
           if (!response.ok) throw new Error(`Erreur ${response.status}`);
 
           const user = await utils.safeJson(response);
-          const points = typeof user.points === "number" && Number.isFinite(user.points) ? Math.max(0, Math.floor(user.points)) : 0;
+          const points = typeof user.points === "number" && Number.isFinite(user.points)
+            ? Math.max(0, Math.floor(user.points))
+            : 0;
 
           utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
           utils.setText(els.userPoints, String(points));
@@ -1352,19 +1597,28 @@
           utils.setStatus(els.accountMessage, "Impossible de charger votre espace client pour le moment.", "error");
         }
       },
+
       getCredentials() {
         return {
           email: utils.normalizeEmail(els.loginEmail?.value || ""),
           password: els.loginPassword?.value || ""
         };
       },
+
       async registerThenLogin(email, password) {
         const registerResult = await api.register(email, password);
-        if (!registerResult.ok) return { ok: false, error: registerResult.error || "Erreur lors de la création du compte." };
+        if (!registerResult.ok) {
+          return { ok: false, error: registerResult.error || "Erreur lors de la création du compte." };
+        }
+
         const loginResult = await api.login(email, password);
-        if (!loginResult.ok) return { ok: false, error: "Compte créé, mais la connexion a échoué." };
+        if (!loginResult.ok) {
+          return { ok: false, error: "Compte créé, mais la connexion a échoué." };
+        }
+
         return { ok: true, token: loginResult.token };
       },
+
       logout() {
         utils.clearStoredToken();
         utils.setStatus(els.accountMessage, "Vous avez été déconnecté.", "error");
@@ -1375,20 +1629,32 @@
 
     const newsletter = {
       isDuplicateError(error) {
-        return Boolean(error && (error.code === "23505" || (typeof error.message === "string" && error.message.includes("duplicate key value"))));
+        return Boolean(
+          error &&
+          (
+            error.code === "23505" ||
+            (typeof error.message === "string" && error.message.includes("duplicate key value"))
+          )
+        );
       },
+
       setMessage(message, color) {
         if (!els.newsletterMessage) return;
         els.newsletterMessage.style.color = color;
         els.newsletterMessage.textContent = message;
       },
+
       setLoading(isLoading) {
         if (!els.newsletterSubmit) return;
-        if (!els.newsletterSubmit.dataset.defaultText) els.newsletterSubmit.dataset.defaultText = els.newsletterSubmit.textContent || "S'abonner aux actualités";
+        if (!els.newsletterSubmit.dataset.defaultText) {
+          els.newsletterSubmit.dataset.defaultText = els.newsletterSubmit.textContent || "S'abonner aux actualités";
+        }
+
         els.newsletterSubmit.disabled = isLoading;
         els.newsletterSubmit.textContent = isLoading ? "Envoi..." : els.newsletterSubmit.dataset.defaultText;
         els.newsletterSubmit.setAttribute("aria-busy", String(isLoading));
       },
+
       async submit() {
         if (!(els.newsletterEmail instanceof HTMLInputElement) || !state.supabaseClient) {
           newsletter.setMessage("Le service newsletter est momentanément indisponible.", "#ff6b6b");
@@ -1399,24 +1665,36 @@
         const honeypotValue = utils.sanitizeText(els.newsletterCompany?.value || "", 100);
         els.newsletterEmail.removeAttribute("aria-invalid");
 
-        if (honeypotValue) return newsletter.setMessage("Merci !", "#38bdf8");
+        if (honeypotValue) {
+          newsletter.setMessage("Merci !", "#38bdf8");
+          return;
+        }
+
         if (!utils.isValidEmail(email)) {
           els.newsletterEmail.setAttribute("aria-invalid", "true");
-          return newsletter.setMessage("Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
+          newsletter.setMessage("Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
+          return;
         }
 
         newsletter.setLoading(true);
         newsletter.setMessage("Envoi en cours...", "#e5e7eb");
 
         try {
-          const { error } = await state.supabaseClient.from("newsletter_subscriptions").insert([{ email }]);
+          const { error } = await state.supabaseClient
+            .from("newsletter_subscriptions")
+            .insert([{ email }]);
+
           if (error) {
             console.error("Erreur newsletter :", error);
-            return newsletter.setMessage(
-              newsletter.isDuplicateError(error) ? "Vous êtes déjà inscrit à la newsletter." : "Une erreur est survenue. Merci de réessayer dans quelques instants.",
+            newsletter.setMessage(
+              newsletter.isDuplicateError(error)
+                ? "Vous êtes déjà inscrit à la newsletter."
+                : "Une erreur est survenue. Merci de réessayer dans quelques instants.",
               newsletter.isDuplicateError(error) ? "#38bdf8" : "#ff6b6b"
             );
+            return;
           }
+
           newsletter.setMessage("Merci ! Vous êtes inscrit.", "#38bdf8");
           els.newsletterEmail.value = "";
           if (els.newsletterCompany) els.newsletterCompany.value = "";
@@ -1427,41 +1705,60 @@
           newsletter.setLoading(false);
         }
       },
+
       init() {
         try {
-          if (globalThis.supabase) state.supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+          if (globalThis.supabase) {
+            state.supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+          }
         } catch (error) {
           console.error("Erreur initialisation Supabase :", error);
           state.supabaseClient = null;
         }
 
         els.newsletterSubmit?.addEventListener("click", newsletter.submit);
+
         els.newsletterEmail?.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
             event.preventDefault();
             newsletter.submit();
           }
         });
-        els.newsletterEmail?.addEventListener("input", () => els.newsletterEmail.removeAttribute("aria-invalid"));
+
+        els.newsletterEmail?.addEventListener("input", () => {
+          els.newsletterEmail.removeAttribute("aria-invalid");
+        });
       }
     };
 
     const events = {
       initMobileMenu() {
         if (!els.burgerButton || !els.mobileNav) return;
+
         els.burgerButton.addEventListener("click", () => {
           els.mobileNav.classList.contains("open") ? ui.closeMobileNav() : ui.openMobileNav();
         });
+
         els.mobileNav.addEventListener("click", (e) => {
           if (e.target instanceof HTMLElement && e.target.tagName === "A") ui.closeMobileNav();
         });
+
         document.addEventListener("click", (e) => {
-          if (els.mobileNav.classList.contains("open") && e.target instanceof Node && !els.mobileNav.contains(e.target) && !els.burgerButton.contains(e.target)) ui.closeMobileNav();
+          if (
+            els.mobileNav.classList.contains("open") &&
+            e.target instanceof Node &&
+            !els.mobileNav.contains(e.target) &&
+            !els.burgerButton.contains(e.target)
+          ) {
+            ui.closeMobileNav();
+          }
         });
+
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && els.mobileNav.classList.contains("open")) ui.closeMobileNav();
         });
       },
+
       initLoginForm() {
         if (!els.loginForm) return;
 
@@ -1471,13 +1768,17 @@
           utils.setStatus(els.loginMessage, "", "");
 
           const { email, password } = profile.getCredentials();
+
           if (!utils.isValidEmail(email)) {
             els.loginEmail?.setAttribute("aria-invalid", "true");
-            return utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            return;
           }
+
           if (!password) {
             els.loginPassword?.setAttribute("aria-invalid", "true");
-            return utils.setStatus(els.loginMessage, "Merci de renseigner votre mot de passe.", "error");
+            utils.setStatus(els.loginMessage, "Merci de renseigner votre mot de passe.", "error");
+            return;
           }
 
           ui.setAuthButtonsLoading(true);
@@ -1485,7 +1786,16 @@
 
           try {
             const result = await api.login(email, password);
-            if (!result.ok) return utils.setStatus(els.loginMessage, result.error || "Erreur de connexion. Vérifiez vos identifiants.", "error");
+
+            if (!result.ok) {
+              utils.setStatus(
+                els.loginMessage,
+                result.error || "Erreur de connexion. Vérifiez vos identifiants.",
+                "error"
+              );
+              return;
+            }
+
             localStorage.setItem("token", result.token);
             utils.setStatus(els.loginMessage, "Connexion réussie.", "ok");
             await profile.load();
@@ -1502,13 +1812,17 @@
           utils.setStatus(els.loginMessage, "", "");
 
           const { email, password } = profile.getCredentials();
+
           if (!utils.isValidEmail(email)) {
             els.loginEmail?.setAttribute("aria-invalid", "true");
-            return utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            return;
           }
+
           if (!password || password.length < 6) {
             els.loginPassword?.setAttribute("aria-invalid", "true");
-            return utils.setStatus(els.loginMessage, "Choisissez un mot de passe d’au moins 6 caractères.", "error");
+            utils.setStatus(els.loginMessage, "Choisissez un mot de passe d’au moins 6 caractères.", "error");
+            return;
           }
 
           ui.setAuthButtonsLoading(true);
@@ -1516,7 +1830,16 @@
 
           try {
             const result = await profile.registerThenLogin(email, password);
-            if (!result.ok) return utils.setStatus(els.loginMessage, result.error || "Erreur lors de la création du compte.", "error");
+
+            if (!result.ok) {
+              utils.setStatus(
+                els.loginMessage,
+                result.error || "Erreur lors de la création du compte.",
+                "error"
+              );
+              return;
+            }
+
             localStorage.setItem("token", result.token);
             utils.setStatus(els.loginMessage, "Compte créé et connecté.", "ok");
             await profile.load();
@@ -1532,9 +1855,11 @@
           input?.addEventListener("input", () => input.removeAttribute("aria-invalid"));
         });
       },
+
       initLogout() {
         els.logoutBtn?.addEventListener("click", profile.logout);
       },
+
       initReservationActions() {
         els.reservationsList?.addEventListener("click", async (e) => {
           const target = e.target instanceof Element ? e.target : null;
@@ -1546,9 +1871,20 @@
             const startTime = utils.sanitizeText(refundBtn.dataset.startTime || "", 100);
             utils.setStatus(els.refundMessage, "", "");
 
-            if (!utils.getStoredToken()) return utils.setStatus(els.refundMessage, "Vous devez être connecté pour demander un remboursement.", "error");
-            if (!reservationId) return utils.setStatus(els.refundMessage, "Réservation introuvable.", "error");
-            if (!reservationsService.isRefundPossible(startTime)) return utils.setStatus(els.refundMessage, "Le remboursement n'est plus possible (moins de 24h avant la séance).", "error");
+            if (!utils.getStoredToken()) {
+              utils.setStatus(els.refundMessage, "Vous devez être connecté pour demander un remboursement.", "error");
+              return;
+            }
+
+            if (!reservationId) {
+              utils.setStatus(els.refundMessage, "Réservation introuvable.", "error");
+              return;
+            }
+
+            if (!reservationsService.isRefundPossible(startTime)) {
+              utils.setStatus(els.refundMessage, "Le remboursement n'est plus possible dans les 24h avant la séance.", "error");
+              return;
+            }
 
             refundBtn.disabled = true;
             utils.setStatus(els.refundMessage, "Demande de remboursement en cours...", "info");
@@ -1556,22 +1892,43 @@
             try {
               const response = await fetch(`${API_BASE}/api/refund-reservation`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json", ...utils.getAuthHeaders() },
+                headers: {
+                  "Content-Type": "application/json",
+                  ...utils.getAuthHeaders()
+                },
                 body: JSON.stringify({ reservationId })
               });
+
               const data = await utils.safeJson(response);
-              if ([401,403].includes(response.status)) return ui.showNotLoggedState();
+
+              if ([401, 403].includes(response.status)) {
+                ui.showNotLoggedState();
+                return;
+              }
+
               if (!response.ok || data.success !== true) {
                 refundBtn.disabled = false;
-                return utils.setStatus(els.refundMessage, data.error || "Impossible de procéder au remboursement.", "error");
+                utils.setStatus(
+                  els.refundMessage,
+                  data.error || "Impossible de procéder au remboursement.",
+                  "error"
+                );
+                return;
               }
-              utils.setStatus(els.refundMessage, "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.", "ok");
+
+              utils.setStatus(
+                els.refundMessage,
+                "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.",
+                "ok"
+              );
+
               await profile.loadReservations();
             } catch (error) {
               console.error(error);
               refundBtn.disabled = false;
               utils.setStatus(els.refundMessage, "Erreur réseau. Veuillez réessayer.", "error");
             }
+
             return;
           }
 
@@ -1579,6 +1936,7 @@
           if (editBtn && !editBtn.disabled) {
             const reservationId = utils.sanitizeText(editBtn.dataset.editReservationId || "", 100);
             if (!reservationId || !utils.getStoredToken()) return;
+
             const reservation = state.reservations.find((item) => String(item.id) === reservationId);
             if (!reservation) return;
 
@@ -1591,6 +1949,7 @@
             const targetUrl = reservation.id
               ? `modifier-reservation.html?reservationId=${encodeURIComponent(String(reservation.id))}`
               : "modifier-reservation.html";
+
             window.location.href = targetUrl;
             return;
           }
@@ -1603,17 +1962,26 @@
           }
         });
       },
+
       initQrModal() {
         els.qrCloseBtn?.addEventListener("click", ui.closeQrModal);
+
         els.qrModal?.addEventListener("click", (e) => {
           const rect = els.qrModal.getBoundingClientRect();
-          const isInDialog = rect.top <= e.clientY && e.clientY <= rect.top + rect.height && rect.left <= e.clientX && e.clientX <= rect.left + rect.width;
+          const isInDialog =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width;
+
           if (!isInDialog) ui.closeQrModal();
         });
+
         els.qrModal?.addEventListener("cancel", (e) => {
           e.preventDefault();
           ui.closeQrModal();
         });
+
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && els.qrModal?.open) ui.closeQrModal();
         });
