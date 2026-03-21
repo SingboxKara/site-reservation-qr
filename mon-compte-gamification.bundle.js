@@ -48,6 +48,7 @@
     },
     level: {
       current: 3,
+      name: "Rookie",
       xpCurrent: 240,
       xpNextLevel: 400
     },
@@ -57,7 +58,8 @@
       deadlineText: "Reviens avant le 24 mars à 23h59 pour conserver ton streak.",
       jokers: 1,
       status: "active",
-      lastActivity: "Hier"
+      lastActivity: "Hier",
+      rhythm: "Très bon"
     },
     singcoins: {
       balance: 0,
@@ -83,27 +85,38 @@
       { id: "m3", title: "Réserver un créneau hors week-end", progress: 30, reward: "+10 Singcoins", done: false }
     ],
     badges: [
-      { icon: "🎤", title: "Première session", desc: "Lancer sa première session Singbox.", rarity: "common", unlocked: true, reward: "+5 Singcoins", date: "12 fév. 2026" },
-      { icon: "⏱️", title: "3h de chant cumulées", desc: "Cumuler 3 heures de chant.", rarity: "common", unlocked: true, reward: "+5 Singcoins", date: "18 fév. 2026" },
-      { icon: "🔁", title: "2 sessions réalisées", desc: "Compléter 2 sessions.", rarity: "common", unlocked: true, reward: "+5 Singcoins", date: "22 fév. 2026" },
-
-      { icon: "🔥", title: "4 semaines d’affilée", desc: "Tenir un streak de 4 semaines.", rarity: "rare", unlocked: false, reward: "+10 Singcoins", date: "" },
-      { icon: "💰", title: "Premier achat en Singcoins", desc: "Utiliser ses Singcoins 1 fois.", rarity: "rare", unlocked: false, reward: "+10 Singcoins", date: "" },
-      { icon: "📅", title: "10 sessions réalisées", desc: "Atteindre 10 sessions au total.", rarity: "rare", unlocked: true, reward: "+10 Singcoins", date: "02 mars 2026" },
-      { icon: "🎶", title: "3 sessions en 7 jours", desc: "Faire 3 sessions sur 7 jours.", rarity: "rare", unlocked: false, reward: "+10 Singcoins", date: "" },
-      { icon: "🌞", title: "Session en journée x3", desc: "Réserver 3 fois en journée.", rarity: "rare", unlocked: false, reward: "+10 Singcoins", date: "" },
-
-      { icon: "🚀", title: "20 sessions réalisées", desc: "Passer le cap des 20 sessions.", rarity: "epic", unlocked: false, reward: "+15 Singcoins", date: "" },
-      { icon: "🔥", title: "Streak de 8 semaines", desc: "Tenir 8 semaines d’affilée.", rarity: "epic", unlocked: false, reward: "+15 Singcoins", date: "" },
-      { icon: "💎", title: "Utiliser ses Singcoins 5 fois", desc: "Dépenser ses Singcoins à 5 reprises.", rarity: "epic", unlocked: false, reward: "+15 Singcoins", date: "" },
-      { icon: "🔁", title: "6 sessions en 1 semaine", desc: "Enchaîner 6 sessions sur 7 jours.", rarity: "epic", unlocked: false, reward: "+15 Singcoins", date: "" },
-
-      { icon: "🐐", title: "50 sessions réalisées", desc: "Atteindre 50 sessions au total.", rarity: "legendary", unlocked: false, reward: "+30 Singcoins", date: "" },
-      { icon: "👑", title: "Streak de 12 semaines", desc: "Tenir 12 semaines d’affilée.", rarity: "legendary", unlocked: false, reward: "+30 Singcoins", date: "" },
-      { icon: "💰", title: "Utiliser ses Singcoins 10 fois", desc: "Dépenser ses Singcoins à 10 reprises.", rarity: "legendary", unlocked: false, reward: "+30 Singcoins", date: "" },
-      { icon: "🎉", title: "10 sessions en groupe", desc: "Faire 10 sessions à 5+ personnes.", rarity: "legendary", unlocked: false, reward: "+30 Singcoins", date: "" }
+      { icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common", unlocked: true, date: "12 fév. 2026" },
+      { icon: "⏱️", title: "3h de chant cumulées", desc: "Tu as cumulé 3 heures de chant.", rarity: "common", unlocked: false, date: "" },
+      { icon: "🔁", title: "2 sessions réalisées", desc: "Tu es déjà revenu chanter une deuxième fois.", rarity: "common", unlocked: false, date: "" },
+      { icon: "🔥", title: "4 semaines d’affilée", desc: "Tu as tenu un streak de 4 semaines.", rarity: "rare", unlocked: false, date: "" },
+      { icon: "💰", title: "Utiliser ses Singcoins 1 fois", desc: "Tu as utilisé tes Singcoins une première fois.", rarity: "rare", unlocked: false, date: "" },
+      { icon: "📅", title: "10 sessions réalisées", desc: "Tu as déjà 10 sessions à ton actif.", rarity: "rare", unlocked: false, date: "" },
+      { icon: "🎶", title: "3 sessions en 7 jours", desc: "Tu as réservé 3 sessions sur une semaine.", rarity: "rare", unlocked: false, date: "" },
+      { icon: "🌞", title: "Session en journée x3", desc: "Tu as chanté 3 fois en journée.", rarity: "rare", unlocked: false, date: "" },
+      { icon: "🚀", title: "20 sessions réalisées", desc: "Tu fais clairement partie des habitués.", rarity: "epic", unlocked: false, date: "" },
+      { icon: "🔥", title: "Streak de 8 semaines", desc: "Tu as gardé ton rythme pendant 8 semaines.", rarity: "epic", unlocked: false, date: "" },
+      { icon: "💎", title: "Utiliser ses Singcoins 5 fois", desc: "Tu sais exploiter tes récompenses.", rarity: "epic", unlocked: false, date: "" },
+      { icon: "🔁", title: "6 sessions en 1 semaine", desc: "Semaine ultra active validée.", rarity: "epic", unlocked: false, date: "" },
+      { icon: "🐐", title: "50 sessions réalisées", desc: "Tu fais partie des gros joueurs Singbox.", rarity: "legendary", unlocked: false, date: "" },
+      { icon: "👑", title: "Streak de 12 semaines", desc: "Régularité monstrueuse.", rarity: "legendary", unlocked: false, date: "" },
+      { icon: "💰", title: "Utiliser ses Singcoins 10 fois", desc: "Maîtrise totale du système.", rarity: "legendary", unlocked: false, date: "" },
+      { icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Tu ramènes toute la team.", rarity: "legendary", unlocked: false, date: "" }
     ]
   };
+
+  const LEVEL_NAMES = [
+    { min: 1, max: 9, name: "Rookie" },
+    { min: 10, max: 19, name: "Apprenti de scène" },
+    { min: 20, max: 29, name: "Performer" },
+    { min: 30, max: 39, name: "Showman" },
+    { min: 40, max: 49, name: "Star montante" },
+    { min: 50, max: 59, name: "Headliner" },
+    { min: 60, max: 69, name: "Icône locale" },
+    { min: 70, max: 79, name: "Légende en devenir" },
+    { min: 80, max: 89, name: "Superstar" },
+    { min: 90, max: 99, name: "Icône ultime" },
+    { min: 100, max: 100, name: "GOAT Singbox" }
+  ];
 
   const utils = {
     safeText(value, maxLen = 300) {
@@ -225,6 +238,12 @@
         top: Math.max(0, top),
         behavior: "smooth"
       });
+    },
+
+    getLevelName(level) {
+      const lvl = Math.max(1, Math.min(100, Number(level) || 1));
+      const match = LEVEL_NAMES.find((item) => lvl >= item.min && lvl <= item.max);
+      return match ? match.name : "Rookie";
     }
   };
 
@@ -273,7 +292,7 @@
         background: #050b18;
         border: 1px solid rgba(255,255,255,.16);
         box-shadow: 0 24px 60px rgba(0,0,0,.9), 0 0 0 1px rgba(148,163,184,.12);
-        padding: 1.35rem;
+        padding: 1.2rem;
         position: relative;
         overflow: hidden;
         min-height: 100%;
@@ -318,22 +337,9 @@
       }
 
       #${MODULE_ID} .g-actions-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-      }
-
-      #${MODULE_ID} .g-actions-left {
-        flex: 0 0 280px;
-      }
-
-      #${MODULE_ID} .g-actions-right {
-        flex: 1 1 auto;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: 1.35fr 1fr 1fr 1fr;
         gap: 10px;
-        margin-left: auto;
       }
 
       #${MODULE_ID} .g-quick-btn {
@@ -343,7 +349,6 @@
         justify-content: center;
         white-space: nowrap;
         text-align: center;
-        width: 100%;
         padding: 0 12px;
         font-size: 11px;
         font-weight: 700;
@@ -380,8 +385,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 40px;
-        padding: 0 14px;
+        min-height: 36px;
+        padding: 0 12px;
         border: none;
         cursor: pointer;
         font-size: 11px;
@@ -539,7 +544,6 @@
         color: #d1fae5;
       }
 
-      #${MODULE_ID} .g-benefits-list,
       #${MODULE_ID} .g-source-list,
       #${MODULE_ID} .g-vertical-list {
         display: grid;
@@ -703,13 +707,25 @@
         gap: 10px;
       }
 
-      #${MODULE_ID} .g-level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      #${MODULE_ID} .g-stats-grid,
-      #${MODULE_ID} .g-records-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #${MODULE_ID} .g-level-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
 
-      #${MODULE_ID} #gamif-stats-grid .g-statbox:last-child,
-      #${MODULE_ID} #gamif-records-grid .g-recordbox:last-child {
-        grid-column: 1 / -1;
+      #${MODULE_ID} .g-stats-grid,
+      #${MODULE_ID} .g-records-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #${MODULE_ID} .g-statbox,
+      #${MODULE_ID} .g-recordbox {
+        min-height: 60px;
+        padding: 10px 12px;
+      }
+
+      #${MODULE_ID} .g-statbox .g-bignumber,
+      #${MODULE_ID} .g-recordbox .g-bignumber {
+        font-size: 18px !important;
+        margin-top: 2px;
       }
 
       #${MODULE_ID} .g-streak-hero {
@@ -818,7 +834,6 @@
       #${MODULE_ID} .g-scroll-area {
         overflow-y: auto;
         padding-right: 4px;
-        min-height: 0;
       }
 
       #${MODULE_ID} .g-scroll-area::-webkit-scrollbar {
@@ -835,18 +850,24 @@
         border-radius: 999px;
       }
 
-      #${MODULE_ID} #gamif-badges-section {
-        display: flex;
-        flex-direction: column;
+      #${MODULE_ID} .g-scroll-missions {
+        height: 184px;
+        min-height: 184px;
+        max-height: 184px;
       }
 
-      #${MODULE_ID} #gamif-badges-list {
-        flex: 1 1 auto;
-        min-height: 0;
+      #${MODULE_ID} .g-scroll-badges {
+        height: 276px;
+        min-height: 276px;
+        max-height: 276px;
       }
 
       #${MODULE_ID} #gamif-reservations-anchor,
-      #${MODULE_ID} #gamif-benefits-section {
+      #${MODULE_ID} #gamif-benefits-section,
+      #${MODULE_ID} #gamif-streak-section,
+      #${MODULE_ID} #gamif-badges-section,
+      #${MODULE_ID} #gamif-stats-section,
+      #${MODULE_ID} #gamif-records-section {
         align-self: stretch;
       }
 
@@ -856,7 +877,8 @@
       }
 
       #${MODULE_ID} #gamif-reservations-slot #reservations-list {
-        max-height: 255px;
+        max-height: 245px;
+        min-height: 245px;
         overflow-y: auto;
         padding-right: 4px;
       }
@@ -877,17 +899,7 @@
 
       @media (max-width: 1100px) {
         #${MODULE_ID} .g-actions-row {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        #${MODULE_ID} .g-actions-left {
-          flex: none;
-        }
-
-        #${MODULE_ID} .g-actions-right {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          margin-left: 0;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
@@ -910,12 +922,15 @@
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
         #${MODULE_ID} .g-streak-grid,
-        #${MODULE_ID} .g-actions-right {
+        #${MODULE_ID} .g-actions-row {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        #${MODULE_ID} #gamif-badges-list,
+        #${MODULE_ID} .g-scroll-missions,
+        #${MODULE_ID} .g-scroll-badges,
         #${MODULE_ID} #gamif-reservations-slot #reservations-list {
+          height: auto;
+          min-height: 0;
           max-height: none;
         }
       }
@@ -926,7 +941,7 @@
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
         #${MODULE_ID} .g-streak-grid,
-        #${MODULE_ID} .g-actions-right {
+        #${MODULE_ID} .g-actions-row {
           grid-template-columns: 1fr;
         }
 
@@ -950,22 +965,6 @@
     return "Actif";
   }
 
-  function getLevelName(level) {
-    const lvl = utils.clamp(Number(level) || 1, 1, 100);
-
-    if (lvl === 100) return "GOAT Singbox";
-    if (lvl >= 90) return "Icône ultime";
-    if (lvl >= 80) return "Superstar";
-    if (lvl >= 70) return "Légende en devenir";
-    if (lvl >= 60) return "Icône locale";
-    if (lvl >= 50) return "Headliner";
-    if (lvl >= 40) return "Star montante";
-    if (lvl >= 30) return "Showman";
-    if (lvl >= 20) return "Performer";
-    if (lvl >= 10) return "Apprenti de scène";
-    return "Rookie";
-  }
-
   function buildData(user = {}) {
     const data = utils.deepClone(MOCK_GAMIFICATION);
 
@@ -975,13 +974,6 @@
 
     data.identity.displayName = displayName;
     data.identity.avatarText = utils.initialsFromText(displayName || email || "S");
-
-    const currentLevel = Number.isFinite(Number(user?.level))
-      ? utils.clamp(Math.floor(Number(user.level)), 1, 100)
-      : utils.clamp(Math.floor(Number(data.level.current || 1)), 1, 100);
-
-    data.level.current = currentLevel;
-    data.level.name = getLevelName(currentLevel);
 
     data.singcoins.balance = points;
     data.singcoins.earned = Math.max(points + Number(data.singcoins.used || 0), Number(data.singcoins.earned || 0));
@@ -999,6 +991,11 @@
 
     if (sessionsCount !== null) {
       data.stats.totalSessions = sessionsCount;
+
+      if (sessionsCount >= 100) data.level.current = 100;
+      else data.level.current = Math.max(1, Math.min(99, Math.floor(sessionsCount * 2.2) + 1));
+
+      data.level.name = utils.getLevelName(data.level.current);
     }
 
     return data;
@@ -1017,12 +1014,7 @@
               <div class="g-subtitle">Accédez directement aux sections principales de votre compte.</div>
             </div>
           </div>
-          <div class="g-actions-row">
-            <div class="g-actions-left">
-              <button class="g-quick-btn g-quick-btn-primary" type="button" data-gamif-action="reservations">Réservations</button>
-            </div>
-            <div class="g-actions-right" id="gamif-actions-row"></div>
-          </div>
+          <div class="g-actions-row" id="gamif-actions-row"></div>
         </section>
 
         <section class="g-card g-span-12" id="gamif-profile-section">
@@ -1158,7 +1150,7 @@
               <h3 class="g-title" style="font-size:18px;margin:0;">Mes missions</h3>
               <span class="g-tag">Hebdomadaires</span>
             </div>
-            <div class="g-scroll-area" id="gamif-missions-list"></div>
+            <div class="g-scroll-area g-scroll-missions" id="gamif-missions-list"></div>
           </div>
         </section>
 
@@ -1224,7 +1216,7 @@
               <div class="g-subtitle">Vos badges débloqués et ceux à viser.</div>
             </div>
           </div>
-          <div class="g-scroll-area" id="gamif-badges-list"></div>
+          <div class="g-scroll-area g-scroll-badges" id="gamif-badges-list"></div>
         </section>
 
         <section class="g-card g-span-6" id="gamif-stats-section">
@@ -1268,13 +1260,6 @@
     if (benefitsCard) {
       const title = benefitsCard.querySelector(".section-title");
       if (title) title.textContent = "Avantages du compte";
-
-      const benefitParagraphs = Array.from(benefitsCard.querySelectorAll("p"));
-      benefitParagraphs.forEach((p) => {
-        if (/Chaque réservation payante/i.test(p.textContent || "")) {
-          p.textContent = "Chaque réservation alimente votre progression vers une séance offerte.";
-        }
-      });
     }
   }
 
@@ -1304,6 +1289,7 @@
     if (!el) return;
 
     el.innerHTML = `
+      <button class="g-quick-btn g-quick-btn-primary" type="button" data-gamif-action="reservations">Réservations</button>
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="singcoins">Mes Singcoins</button>
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="level">Mon niveau</button>
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="streak">Ma streak</button>
@@ -1341,7 +1327,7 @@
         { icon: "🔥", title: "Régularité", text: "Entretenir son streak peut accélérer la progression." },
         { icon: "✅", title: "Missions", text: "Les missions accomplies peuvent rapporter de l’XP." },
         { icon: "🌟", title: "Succès", text: "Débloquer certains succès peut donner un bonus d’XP." },
-        { icon: "🎁", title: "Bonus spéciaux", text: "Des bonus spéciaux pourront aussi rapporter de l’XP." }
+        { icon: "🎁", title: "Bonus spéciaux", text: "Des coffres et événements spéciaux pourront aussi rapporter de l’XP." }
       ];
 
       xpEl.innerHTML = items.map((item) => `
@@ -1499,7 +1485,7 @@
     el.innerHTML = items.map((item) => `
       <div class="g-statbox">
         <div class="g-soft">${utils.safeHtml(item.label)}</div>
-        <div class="g-bignumber" style="font-size:22px;">${utils.safeHtml(item.value)}</div>
+        <div class="g-bignumber">${utils.safeHtml(item.value)}</div>
       </div>
     `).join("");
   }
@@ -1518,7 +1504,7 @@
     el.innerHTML = items.map((item) => `
       <div class="g-recordbox">
         <div class="g-soft">${utils.safeHtml(item.label)}</div>
-        <div class="g-bignumber" style="font-size:22px;">${utils.safeHtml(item.value)}</div>
+        <div class="g-bignumber">${utils.safeHtml(item.value)}</div>
       </div>
     `).join("");
   }
@@ -1533,9 +1519,8 @@
         <div class="g-item-content">
           <strong style="color:#f9fafb;">${utils.safeHtml(badge.title)}</strong>
           <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
-          <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml((badge.rarity || "common").replace("legendary", "légendaire").replace("epic", "épique").replace("rare", "rare").replace("common", "commun"))}</span>
-          ${badge.reward ? `<div class="g-soft" style="margin-top:6px;">Récompense : ${utils.safeHtml(badge.reward)}</div>` : ""}
-          ${badge.date ? `<div class="g-soft" style="margin-top:4px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : ""}
+          <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
+          ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : ""}
         </div>
       </div>
     `).join("");
