@@ -9,7 +9,14 @@
     pseudoMaxLength: 20,
     loyaltyGoal: 100,
     reservationUrl: "reservation.html",
+    reservationsCardSelector: "#account-reservations-card",
+    benefitsCardSelector: "#account-benefits-card",
+    selectors: {
+      reservationsSlot: "#gamif-reservations-slot",
+      benefitsSlot: "#gamif-benefits-slot"
+    },
     anchors: {
+      reservations: "#gamif-reservations-anchor",
       singcoins: "#gamif-singcoins-section",
       rewards: "#gamif-rewards-section",
       ranking: "#gamif-ranking-section",
@@ -26,7 +33,8 @@
     mounted: false,
     root: null,
     user: null,
-    data: null
+    data: null,
+    eventsBound: false
   };
 
   const MOCK_GAMIFICATION = {
@@ -248,7 +256,8 @@
       #${MODULE_ID} .g-streakbox,
       #${MODULE_ID} .g-item,
       #${MODULE_ID} .g-source-card,
-      #${MODULE_ID} .g-quick-btn {
+      #${MODULE_ID} .g-quick-btn,
+      #${MODULE_ID} .g-slot-wrap {
         border-radius: 22px;
       }
 
@@ -312,8 +321,8 @@
         justify-content: center;
         white-space: nowrap;
         text-align: center;
-        padding: 0 14px;
-        font-size: 12px;
+        padding: 0 12px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .04em;
@@ -343,9 +352,15 @@
 
       #${MODULE_ID} .g-profile-hero {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: auto minmax(0, 1fr) minmax(230px, 280px);
         gap: 16px;
-        align-items: center;
+        align-items: stretch;
+      }
+
+      #${MODULE_ID} .g-profile-main {
+        display: grid;
+        gap: 8px;
+        align-content: center;
       }
 
       #${MODULE_ID} .g-avatar {
@@ -376,7 +391,7 @@
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
-        margin-bottom: 6px;
+        margin-bottom: 2px;
       }
 
       #${MODULE_ID} .g-inline-btn {
@@ -414,7 +429,7 @@
       #${MODULE_ID} .g-pseudo-form {
         display: grid;
         gap: 8px;
-        margin-top: 10px;
+        margin-top: 6px;
       }
 
       #${MODULE_ID} .g-pseudo-actions {
@@ -435,7 +450,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-top: 10px;
+        margin-top: 4px;
       }
 
       #${MODULE_ID} .g-pill {
@@ -466,12 +481,14 @@
       }
 
       #${MODULE_ID} .g-status-card {
-        padding: 12px 14px;
-        border-radius: 16px;
+        padding: 14px 16px;
+        border-radius: 18px;
         background: rgba(34,197,94,.10);
         border: 1px solid rgba(34,197,94,.28);
-        min-width: 210px;
+        min-width: 0;
         text-align: left;
+        display: grid;
+        align-content: center;
       }
 
       #${MODULE_ID} .g-soft-success {
@@ -491,10 +508,21 @@
       #${MODULE_ID} .g-statbox,
       #${MODULE_ID} .g-recordbox,
       #${MODULE_ID} .g-streakbox,
-      #${MODULE_ID} .g-subcard {
+      #${MODULE_ID} .g-subcard,
+      #${MODULE_ID} .g-slot-wrap {
         background: rgba(10,16,30,.95);
         border: 1px solid rgba(255,255,255,.10);
         padding: 12px;
+      }
+
+      #${MODULE_ID} .g-slot-wrap {
+        padding: 0;
+        background: transparent;
+        border: none;
+      }
+
+      #${MODULE_ID} .g-slot-wrap > * {
+        margin: 0 !important;
       }
 
       #${MODULE_ID} .g-item {
@@ -712,16 +740,6 @@
         align-items: start;
       }
 
-      #${MODULE_ID} .g-res-anchor-note {
-        color: #d1d5db;
-        font-size: 12px;
-        line-height: 1.55;
-        padding: 12px;
-        border-radius: 16px;
-        background: rgba(15,23,42,.75);
-        border: 1px dashed rgba(255,255,255,.16);
-      }
-
       #${MODULE_ID} .g-sr-only {
         position: absolute !important;
         width: 1px !important;
@@ -732,6 +750,18 @@
         clip: rect(0,0,0,0) !important;
         white-space: nowrap !important;
         border: 0 !important;
+      }
+
+      #${MODULE_ID} .g-slot-wrap .section-title {
+        margin-bottom: 10px;
+      }
+
+      #${MODULE_ID} .g-slot-wrap .account-subtext {
+        margin-top: 12px;
+      }
+
+      #${MODULE_ID} .g-slot-wrap .logout-row {
+        margin-top: 14px;
       }
 
       @media (max-width: 1100px) {
@@ -787,9 +817,13 @@
         }
 
         #${MODULE_ID} .g-coin-stat-label,
-        #${MODULE_ID} .g-coin-stat-value,
-        #${MODULE_ID} .g-quick-btn {
+        #${MODULE_ID} .g-coin-stat-value {
           white-space: normal;
+        }
+
+        #${MODULE_ID} .g-quick-btn {
+          white-space: nowrap;
+          font-size: 11px;
         }
       }
     `;
@@ -838,12 +872,12 @@
 
     state.root.id = MODULE_ID;
     state.root.innerHTML = `
-      <div class="g-grid">
+      <div class="gamif-grid">
         <section class="g-card g-span-12" id="gamif-actions-section">
           <div class="g-section-head">
             <div>
               <h2 class="g-title">Actions rapides</h2>
-              <div class="g-subtitle">Accédez directement aux actions principales de votre compte.</div>
+              <div class="g-subtitle">Accédez directement aux sections principales de votre compte.</div>
             </div>
           </div>
           <div class="g-actions-row" id="gamif-actions-row"></div>
@@ -853,7 +887,7 @@
           <div class="g-profile-hero">
             <div class="g-avatar" id="gamif-avatar">S</div>
 
-            <div>
+            <div class="g-profile-main">
               <div class="g-soft">Profil joueur</div>
 
               <div class="g-profile-name-row">
@@ -891,26 +925,12 @@
           </div>
         </section>
 
-        <section class="g-card g-span-8" id="gamif-reservations-anchor">
-          <div class="g-section-head">
-            <div>
-              <h2 class="g-title">Réservations</h2>
-              <div class="g-subtitle">Cette zone correspond à l’emplacement prévu pour remonter votre bloc réservations dans la page finale.</div>
-            </div>
-          </div>
-          <div class="g-res-anchor-note">
-            Lors du branchement dans <strong>mon-compte.html</strong>, le bloc réel “Mes informations & réservations” devra être déplacé juste ici, avant les blocs de gamification détaillés.
-          </div>
+        <section class="g-span-8" id="gamif-reservations-anchor">
+          <div class="g-slot-wrap" id="gamif-reservations-slot"></div>
         </section>
 
-        <section class="g-card g-span-4" id="gamif-benefits-section">
-          <div class="g-section-head">
-            <div>
-              <h2 class="g-title">Avantages du compte</h2>
-              <div class="g-subtitle">Vos avantages restent visibles juste après les réservations.</div>
-            </div>
-          </div>
-          <div class="g-benefits-list" id="gamif-benefits-list"></div>
+        <section class="g-span-4" id="gamif-benefits-section">
+          <div class="g-slot-wrap" id="gamif-benefits-slot"></div>
         </section>
 
         <section class="g-card g-span-7" id="gamif-singcoins-section">
@@ -954,7 +974,7 @@
           <div class="g-section-head">
             <div>
               <h2 class="g-title">Comment gagner des Singcoins</h2>
-              <div class="g-subtitle">Bloc pédagogique visuel, sans dépendance backend complète.</div>
+              <div class="g-subtitle">Un bloc simple pour guider l’utilisateur.</div>
             </div>
           </div>
           <div class="g-source-list" id="gamif-singcoins-sources"></div>
@@ -1043,7 +1063,7 @@
               <div class="g-bignumber" id="gamif-streak-last-activity">Hier</div>
             </div>
             <div class="g-streakbox">
-              <div class="g-soft">Rythme actuel</div>
+              <div class="g-soft">Dynamique du moment</div>
               <div class="g-bignumber" id="gamif-streak-rhythm">Très bon</div>
             </div>
           </div>
@@ -1130,6 +1150,48 @@
     `;
   }
 
+  function prepareExternalCards() {
+    const reservationsCard = document.querySelector(state.config.reservationsCardSelector);
+    const benefitsCard = document.querySelector(state.config.benefitsCardSelector);
+
+    if (reservationsCard) {
+      const title = reservationsCard.querySelector("h2");
+      if (title) title.textContent = "Réservations";
+
+      const singcoinsField = reservationsCard.querySelector("[data-account-singcoins-field]");
+      if (singcoinsField) singcoinsField.style.display = "none";
+
+      const helperText = reservationsCard.querySelector("[data-account-helper-text]");
+      if (helperText) helperText.style.display = "none";
+    }
+
+    if (benefitsCard) {
+      const title = benefitsCard.querySelector(".section-title");
+      if (title) title.textContent = "Avantages du compte";
+    }
+  }
+
+  function mountExternalCards() {
+    prepareExternalCards();
+
+    const reservationsSlot = document.querySelector(state.config.selectors.reservationsSlot);
+    const benefitsSlot = document.querySelector(state.config.selectors.benefitsSlot);
+    const reservationsCard = document.querySelector(state.config.reservationsCardSelector);
+    const benefitsCard = document.querySelector(state.config.benefitsCardSelector);
+
+    if (reservationsSlot && reservationsCard && reservationsCard.parentElement !== reservationsSlot) {
+      reservationsSlot.appendChild(reservationsCard);
+      reservationsCard.hidden = false;
+      reservationsCard.style.display = "";
+    }
+
+    if (benefitsSlot && benefitsCard && benefitsCard.parentElement !== benefitsSlot) {
+      benefitsSlot.appendChild(benefitsCard);
+      benefitsCard.hidden = false;
+      benefitsCard.style.display = "";
+    }
+  }
+
   function renderQuickActions() {
     const el = document.getElementById("gamif-actions-row");
     if (!el) return;
@@ -1141,27 +1203,6 @@
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="ranking">Classement</button>
       <a class="g-quick-btn g-quick-btn-secondary" href="${utils.safeHtml(state.config.reservationUrl)}">Reprendre mon streak</a>
     `;
-  }
-
-  function renderBenefits() {
-    const el = document.getElementById("gamif-benefits-list");
-    if (!el) return;
-
-    const items = [
-      { icon: "🎟", title: "QR code instantané", text: "Retrouvez votre accès directement depuis votre espace client." },
-      { icon: "⏰", title: "Modification simplifiée", text: "Changez votre réservation jusqu’à 6h avant selon disponibilité." },
-      { icon: "★", title: "Fidélité automatique", text: "Chaque réservation payante alimente votre progression Singcoins." }
-    ];
-
-    el.innerHTML = items.map((item) => `
-      <div class="g-item">
-        <span class="g-benefit-icon">${utils.safeHtml(item.icon)}</span>
-        <div class="g-item-content">
-          <strong style="color:#f9fafb;">${utils.safeHtml(item.title)}</strong>
-          <div class="g-soft">${utils.safeHtml(item.text)}</div>
-        </div>
-      </div>
-    `).join("");
   }
 
   function renderSourceCards() {
@@ -1261,9 +1302,11 @@
     if (balanceEl) balanceEl.textContent = String(balance);
     if (loyaltyValue) loyaltyValue.textContent = `${progressValue} / ${state.config.loyaltyGoal}`;
     if (loyaltyFill) loyaltyFill.style.width = `${progress}%`;
-    if (loyaltyText) loyaltyText.textContent = balance >= state.config.loyaltyGoal
-      ? "Bravo ! Votre palier principal est atteint."
-      : `Plus que ${remaining} Singcoins avant votre séance offerte.`;
+    if (loyaltyText) {
+      loyaltyText.textContent = balance >= state.config.loyaltyGoal
+        ? "Bravo ! Votre palier principal est atteint."
+        : `Plus que ${remaining} Singcoins avant votre séance offerte.`;
+    }
     if (current) current.textContent = String(balance);
     if (earnedEl) earnedEl.textContent = String(earned);
     if (usedEl) usedEl.textContent = String(used);
@@ -1310,7 +1353,9 @@
     if (lastActivity) lastActivity.textContent = data.streak.lastActivity;
     if (rhythm) rhythm.textContent = data.streak.rhythm;
     if (statusText) statusText.textContent = getStatusText(data.streak.status);
-    if (jokerHelp) jokerHelp.textContent = "S’active automatiquement si vous manquez une période et prolonge votre streak.";
+    if (jokerHelp) {
+      jokerHelp.textContent = "S’active automatiquement si vous manquez une période et prolonge votre streak.";
+    }
 
     if (status) {
       status.className = "g-streak-status";
@@ -1464,7 +1509,9 @@
   }
 
   function bindEvents() {
-    state.root?.addEventListener("click", (event) => {
+    if (!state.root || state.eventsBound) return;
+
+    state.root.addEventListener("click", (event) => {
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
 
@@ -1474,6 +1521,7 @@
         if (action === "singcoins") utils.scrollTo(state.config.anchors.singcoins);
         if (action === "rewards") utils.scrollTo(state.config.anchors.rewards);
         if (action === "ranking") utils.scrollTo(state.config.anchors.ranking);
+        if (action === "reservations") utils.scrollTo(state.config.anchors.reservations);
         return;
       }
 
@@ -1489,7 +1537,7 @@
       }
     });
 
-    state.root?.addEventListener("submit", (event) => {
+    state.root.addEventListener("submit", (event) => {
       const form = event.target instanceof HTMLFormElement ? event.target : null;
       if (!form || form.id !== "gamif-pseudo-form") return;
 
@@ -1519,19 +1567,21 @@
       refresh();
     });
 
-    state.root?.addEventListener("input", (event) => {
+    state.root.addEventListener("input", (event) => {
       const target = event.target instanceof HTMLInputElement ? event.target : null;
       if (!target || target.id !== "gamif-pseudo-input") return;
       target.value = utils.sanitizePseudo(target.value);
     });
+
+    state.eventsBound = true;
   }
 
   function renderAll() {
     const data = buildData(state.user || {});
     state.data = data;
 
+    mountExternalCards();
     renderQuickActions();
-    renderBenefits();
     renderSourceCards();
     renderIdentity(data, state.user || {});
     renderSingcoins(data);
@@ -1549,7 +1599,17 @@
     state.config = {
       ...DEFAULTS,
       ...state.config,
-      ...options
+      ...options,
+      selectors: {
+        ...DEFAULTS.selectors,
+        ...(state.config.selectors || {}),
+        ...(options.selectors || {})
+      },
+      anchors: {
+        ...DEFAULTS.anchors,
+        ...(state.config.anchors || {}),
+        ...(options.anchors || {})
+      }
     };
 
     const root = document.querySelector(state.config.mountSelector);
@@ -1561,6 +1621,7 @@
     state.root = root;
     injectStyles();
     renderShell();
+    mountExternalCards();
     renderAll();
     bindEvents();
     state.mounted = true;
