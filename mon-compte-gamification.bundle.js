@@ -19,10 +19,9 @@
       reservations: "#gamif-reservations-anchor",
       singcoins: "#gamif-singcoins-section",
       level: "#gamif-xp-section",
-      missions: "#gamif-missions-section",
+      missions: "#gamif-xp-section",
       streak: "#gamif-streak-section",
-      rewards: "#gamif-rewards-section",
-      ranking: "#gamif-ranking-section"
+      badges: "#gamif-badges-section"
     },
     scrollOffset: 110
   };
@@ -91,20 +90,7 @@
       { icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common", unlocked: true, date: "12 fév. 2026" },
       { icon: "🔥", title: "Régulier", desc: "Tu es revenu plusieurs semaines de suite.", rarity: "rare", unlocked: false, date: "" },
       { icon: "🌟", title: "Habitué Singbox", desc: "10 sessions réalisées sur ton compte.", rarity: "epic", unlocked: true, date: "02 mars 2026" }
-    ],
-    ranking: {
-      weeklyPosition: "#7",
-      weeklyText: "7e sur la dynamique de la semaine",
-      globalPosition: "#21",
-      globalText: "21e sur l’activité globale",
-      topSummary: "1. Luna · 14 streak — 2. Max · 12 streak — 3. Nina · 10 streak"
-    },
-    chest: {
-      title: "Coffre Bronze",
-      condition: "Débloqué après 2 sessions ce mois-ci",
-      reward: "Récompense possible : +10 Singcoins",
-      history: ["+10 Singcoins · 10 mars", "Code promo -10% · 01 mars"]
-    }
+    ]
   };
 
   const utils = {
@@ -266,7 +252,8 @@
       #${MODULE_ID} .g-item,
       #${MODULE_ID} .g-source-card,
       #${MODULE_ID} .g-quick-btn,
-      #${MODULE_ID} .g-slot-wrap {
+      #${MODULE_ID} .g-slot-wrap,
+      #${MODULE_ID} .g-cta-inline {
         border-radius: 22px;
       }
 
@@ -277,6 +264,7 @@
         padding: 1.35rem;
         position: relative;
         overflow: hidden;
+        min-height: 100%;
       }
 
       #${MODULE_ID} .g-card::after {
@@ -342,12 +330,15 @@
       }
 
       #${MODULE_ID} .g-quick-btn:hover,
-      #${MODULE_ID} .g-quick-btn:focus-visible {
+      #${MODULE_ID} .g-quick-btn:focus-visible,
+      #${MODULE_ID} .g-cta-inline:hover,
+      #${MODULE_ID} .g-cta-inline:focus-visible {
         transform: translateY(-1px);
         filter: brightness(1.04);
       }
 
-      #${MODULE_ID} .g-quick-btn-primary {
+      #${MODULE_ID} .g-quick-btn-primary,
+      #${MODULE_ID} .g-cta-inline {
         background: linear-gradient(90deg, #c94c35, #f97316);
         color: #f9fafb;
         box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 12px 30px rgba(0,0,0,.8);
@@ -357,6 +348,24 @@
         background: #111827;
         color: #f9fafb;
         box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 12px 30px rgba(0,0,0,.75);
+      }
+
+      #${MODULE_ID} .g-cta-inline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0 14px;
+        border: none;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        text-decoration: none;
+        white-space: nowrap;
+        width: 100%;
+        margin-top: 8px;
       }
 
       #${MODULE_ID} .g-profile-hero {
@@ -528,10 +537,15 @@
         padding: 0;
         background: transparent;
         border: none;
+        height: 100%;
       }
 
       #${MODULE_ID} .g-slot-wrap > * {
         margin: 0 !important;
+      }
+
+      #${MODULE_ID} .g-slot-wrap > .card {
+        height: 100%;
       }
 
       #${MODULE_ID} .g-item {
@@ -545,14 +559,32 @@
         min-width: 0;
       }
 
-      #${MODULE_ID} .g-coin-top,
       #${MODULE_ID} .g-progress-head,
-      #${MODULE_ID} .g-streak-main-top {
+      #${MODULE_ID} .g-streak-main-top,
+      #${MODULE_ID} .g-level-top {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+      }
+
+      #${MODULE_ID} .g-level-top {
+        margin-bottom: 10px;
+      }
+
+      #${MODULE_ID} .g-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        border: 1px solid rgba(255,255,255,.14);
+        background: rgba(15,23,42,.85);
+        color: #f9fafb;
       }
 
       #${MODULE_ID} .g-coin-highlight {
@@ -641,8 +673,7 @@
 
       #${MODULE_ID} .g-level-grid,
       #${MODULE_ID} .g-stats-grid,
-      #${MODULE_ID} .g-records-grid,
-      #${MODULE_ID} .g-ranking-grid {
+      #${MODULE_ID} .g-records-grid {
         display: grid;
         gap: 10px;
       }
@@ -650,7 +681,6 @@
       #${MODULE_ID} .g-level-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       #${MODULE_ID} .g-stats-grid,
       #${MODULE_ID} .g-records-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      #${MODULE_ID} .g-ranking-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 
       #${MODULE_ID} .g-streak-hero {
         display: grid;
@@ -731,28 +761,6 @@
         filter: grayscale(.15);
       }
 
-      #${MODULE_ID} .g-ranking-pos {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-        background: rgba(124,58,237,.16);
-        border: 1px solid rgba(124,58,237,.28);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 20px;
-        color: #f9fafb;
-        flex-shrink: 0;
-      }
-
-      #${MODULE_ID} .g-rewards-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-        align-items: start;
-      }
-
       #${MODULE_ID} .g-sr-only {
         position: absolute !important;
         width: 1px !important;
@@ -775,6 +783,64 @@
 
       #${MODULE_ID} .g-slot-wrap .logout-row {
         margin-top: 14px;
+      }
+
+      #${MODULE_ID} .g-scroll-area {
+        max-height: 240px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      #${MODULE_ID} .g-scroll-area.g-scroll-missions {
+        max-height: 230px;
+      }
+
+      #${MODULE_ID} .g-scroll-area.g-scroll-badges {
+        max-height: 290px;
+      }
+
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-track {
+        background: rgba(255,255,255,.05);
+        border-radius: 999px;
+      }
+
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-thumb {
+        background: rgba(249,115,22,.55);
+        border-radius: 999px;
+      }
+
+      #${MODULE_ID} #gamif-reservations-anchor,
+      #${MODULE_ID} #gamif-benefits-section {
+        align-self: stretch;
+      }
+
+      #${MODULE_ID} #gamif-reservations-slot > .card,
+      #${MODULE_ID} #gamif-benefits-slot > .card {
+        min-height: 100%;
+      }
+
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list {
+        max-height: 255px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-track {
+        background: rgba(255,255,255,.05);
+        border-radius: 999px;
+      }
+
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-thumb {
+        background: rgba(249,115,22,.55);
+        border-radius: 999px;
       }
 
       @media (max-width: 1100px) {
@@ -801,10 +867,16 @@
         #${MODULE_ID} .g-coin-stats,
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
-        #${MODULE_ID} .g-ranking-grid,
         #${MODULE_ID} .g-streak-grid,
         #${MODULE_ID} .g-actions-row {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        #${MODULE_ID} .g-scroll-area,
+        #${MODULE_ID} .g-scroll-area.g-scroll-missions,
+        #${MODULE_ID} .g-scroll-area.g-scroll-badges,
+        #${MODULE_ID} #gamif-reservations-slot #reservations-list {
+          max-height: none;
         }
       }
 
@@ -813,7 +885,6 @@
         #${MODULE_ID} .g-coin-stats,
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
-        #${MODULE_ID} .g-ranking-grid,
         #${MODULE_ID} .g-streak-grid,
         #${MODULE_ID} .g-actions-row {
           grid-template-columns: 1fr;
@@ -989,7 +1060,7 @@
         <section class="g-card g-span-7" id="gamif-xp-section">
           <div class="g-section-head">
             <div>
-              <h2 class="g-title">Niveau / XP / progression</h2>
+              <h2 class="g-title">Mon niveau</h2>
               <div class="g-subtitle">Votre niveau évolue avec votre activité sur Singbox.</div>
             </div>
           </div>
@@ -1013,6 +1084,14 @@
             <div class="g-progress-bar"><div class="g-progress-fill g-progress-fill-xp" id="gamif-xp-fill" style="width:60%;"></div></div>
             <div class="g-soft" id="gamif-xp-text">Plus que 160 XP pour atteindre le niveau suivant.</div>
           </div>
+
+          <div style="margin-top:16px;">
+            <div class="g-level-top">
+              <h3 class="g-title" style="font-size:18px;margin:0;">Mes missions</h3>
+              <span class="g-tag">Hebdomadaires</span>
+            </div>
+            <div class="g-scroll-area g-scroll-missions" id="gamif-missions-list"></div>
+          </div>
         </section>
 
         <section class="g-card g-span-5" id="gamif-xp-help-section">
@@ -1023,16 +1102,6 @@
             </div>
           </div>
           <div class="g-source-list" id="gamif-xp-sources"></div>
-        </section>
-
-        <section class="g-card g-span-6" id="gamif-missions-section">
-          <div class="g-section-head">
-            <div>
-              <h2 class="g-title">Missions</h2>
-              <div class="g-subtitle">Des objectifs motivants, clairs et visuels.</div>
-            </div>
-          </div>
-          <div class="g-vertical-list" id="gamif-missions-list"></div>
         </section>
 
         <section class="g-card g-span-6" id="gamif-streak-section">
@@ -1073,33 +1142,21 @@
                 <div class="g-bignumber" id="gamif-streak-last-activity">Hier</div>
               </div>
               <div class="g-streakbox">
-                <div class="g-soft">Dynamique du moment</div>
-                <div class="g-bignumber" id="gamif-streak-rhythm">Très bon</div>
+                <div class="g-soft">Ne pas perdre ma streak</div>
+                <a class="g-cta-inline" href="${utils.safeHtml(state.config.reservationUrl)}">Réserver maintenant</a>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="g-card g-span-6" id="gamif-rewards-section">
+        <section class="g-card g-span-6" id="gamif-badges-section">
           <div class="g-section-head">
             <div>
-              <h2 class="g-title">Coffre / récompenses</h2>
-              <div class="g-subtitle">Vos récompenses à débloquer et votre historique récent.</div>
+              <h2 class="g-title">Badges / succès</h2>
+              <div class="g-subtitle">Vos badges débloqués et ceux à viser.</div>
             </div>
           </div>
-
-          <div class="g-rewards-layout">
-            <div class="g-item">
-              <span class="g-badge-icon">🎁</span>
-              <div class="g-item-content">
-                <strong id="gamif-chest-title" style="color:#f9fafb;">Coffre Bronze</strong>
-                <div class="g-soft" id="gamif-chest-condition">Débloqué après 2 sessions ce mois-ci</div>
-                <div class="g-soft" id="gamif-chest-reward">Récompense possible : +10 Singcoins</div>
-              </div>
-            </div>
-
-            <div class="g-reward-history" id="gamif-rewards-history"></div>
-          </div>
+          <div class="g-scroll-area g-scroll-badges" id="gamif-badges-list"></div>
         </section>
 
         <section class="g-card g-span-6" id="gamif-stats-section">
@@ -1120,32 +1177,6 @@
             </div>
           </div>
           <div class="g-records-grid" id="gamif-records-grid"></div>
-        </section>
-
-        <section class="g-card g-span-6" id="gamif-ranking-section">
-          <div class="g-section-head">
-            <div>
-              <h2 class="g-title">Classement</h2>
-              <div class="g-subtitle">Votre position dans la dynamique Singbox.</div>
-            </div>
-          </div>
-
-          <div class="g-ranking-grid" id="gamif-ranking-grid"></div>
-
-          <div class="g-subcard" style="margin-top:10px;">
-            <div class="g-soft">Top 3 résumé</div>
-            <div class="g-soft" id="gamif-ranking-top" style="margin-top:6px;"></div>
-          </div>
-        </section>
-
-        <section class="g-card g-span-6" id="gamif-badges-section">
-          <div class="g-section-head">
-            <div>
-              <h2 class="g-title">Badges / succès</h2>
-              <div class="g-subtitle">Vos badges débloqués et ceux à viser.</div>
-            </div>
-          </div>
-          <div class="g-vertical-list" id="gamif-badges-list"></div>
         </section>
       </div>
     `;
@@ -1201,7 +1232,7 @@
       <button class="g-quick-btn g-quick-btn-primary" type="button" data-gamif-action="reservations">Réservations</button>
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="singcoins">Mes Singcoins</button>
       <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="level">Mon niveau</button>
-      <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="missions">Mes missions</button>
+      <button class="g-quick-btn g-quick-btn-secondary" type="button" data-gamif-action="streak">Ma streak</button>
     `;
   }
 
@@ -1214,8 +1245,7 @@
         { icon: "🎟", title: "Réservation", text: "10 Singcoins gagnés par réservation." },
         { icon: "🏅", title: "Succès", text: "Certains succès débloquent des bonus ponctuels." },
         { icon: "✨", title: "Badges", text: "Quelques badges peuvent offrir des gains supplémentaires." },
-        { icon: "🎁", title: "Coffres", text: "Les récompenses spéciales peuvent ajouter des Singcoins." },
-        { icon: "🔁", title: "Régularité", text: "Un bonus toutes les 5 sessions pourra être ajouté plus tard." }
+        { icon: "🎁", title: "Coffres", text: "Les récompenses spéciales peuvent ajouter des Singcoins." }
       ];
 
       singcoinsEl.innerHTML = items.map((item) => `
@@ -1341,7 +1371,6 @@
     const jokers = document.getElementById("gamif-streak-jokers");
     const best = document.getElementById("gamif-streak-best");
     const lastActivity = document.getElementById("gamif-streak-last-activity");
-    const rhythm = document.getElementById("gamif-streak-rhythm");
     const jokerHelp = document.getElementById("gamif-streak-joker-help");
 
     if (currentValue) currentValue.textContent = `${data.streak.current} jours`;
@@ -1349,7 +1378,6 @@
     if (jokers) jokers.textContent = String(data.streak.jokers);
     if (best) best.textContent = String(data.streak.best);
     if (lastActivity) lastActivity.textContent = data.streak.lastActivity;
-    if (rhythm) rhythm.textContent = data.streak.rhythm;
     if (statusText) statusText.textContent = getStatusText(data.streak.status);
     if (jokerHelp) {
       jokerHelp.textContent = "S’active automatiquement si vous manquez une période et prolonge votre streak.";
@@ -1442,46 +1470,6 @@
     `).join("");
   }
 
-  function renderRanking(data) {
-    const el = document.getElementById("gamif-ranking-grid");
-    const top = document.getElementById("gamif-ranking-top");
-    if (!el) return;
-
-    const items = [
-      { position: data.ranking.weeklyPosition, title: "Classement hebdo", text: data.ranking.weeklyText },
-      { position: data.ranking.globalPosition, title: "Classement global", text: data.ranking.globalText }
-    ];
-
-    el.innerHTML = items.map((item) => `
-      <div class="g-item">
-        <span class="g-ranking-pos">${utils.safeHtml(item.position)}</span>
-        <div class="g-item-content">
-          <strong style="color:#f9fafb;">${utils.safeHtml(item.title)}</strong>
-          <div class="g-soft">${utils.safeHtml(item.text)}</div>
-        </div>
-      </div>
-    `).join("");
-
-    if (top) top.textContent = data.ranking.topSummary;
-  }
-
-  function renderRewards(data) {
-    const title = document.getElementById("gamif-chest-title");
-    const condition = document.getElementById("gamif-chest-condition");
-    const reward = document.getElementById("gamif-chest-reward");
-    const history = document.getElementById("gamif-rewards-history");
-
-    if (title) title.textContent = data.chest.title;
-    if (condition) condition.textContent = data.chest.condition;
-    if (reward) reward.textContent = data.chest.reward;
-
-    if (history) {
-      history.innerHTML = (data.chest.history || []).map((entry) => `
-        <div class="g-subcard">${utils.safeHtml(entry)}</div>
-      `).join("");
-    }
-  }
-
   function setPseudoMessage(message, type = "") {
     const el = document.getElementById("gamif-pseudo-message");
     if (!el) return;
@@ -1516,12 +1504,12 @@
       const actionBtn = target.closest("[data-gamif-action]");
       if (actionBtn) {
         const action = actionBtn.getAttribute("data-gamif-action");
-        if (action === "singcoins") utils.scrollTo(state.config.anchors.singcoins);
-        if (action === "rewards") utils.scrollTo(state.config.anchors.rewards);
-        if (action === "ranking") utils.scrollTo(state.config.anchors.ranking);
         if (action === "reservations") utils.scrollTo(state.config.anchors.reservations);
+        if (action === "singcoins") utils.scrollTo(state.config.anchors.singcoins);
         if (action === "level") utils.scrollTo(state.config.anchors.level);
         if (action === "missions") utils.scrollTo(state.config.anchors.missions);
+        if (action === "streak") utils.scrollTo(state.config.anchors.streak);
+        if (action === "badges") utils.scrollTo(state.config.anchors.badges);
         return;
       }
 
@@ -1588,11 +1576,9 @@
     renderLevel(data);
     renderMissions(data);
     renderStreak(data);
-    renderRewards(data);
+    renderBadges(data);
     renderStats(data);
     renderRecords(data);
-    renderRanking(data);
-    renderBadges(data);
   }
 
   function mount(options = {}) {
