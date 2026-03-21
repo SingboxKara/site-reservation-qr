@@ -446,7 +446,7 @@
     .account-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: 1.4rem;
+      gap: 1.2rem;
       align-items: start;
     }
 
@@ -865,7 +865,7 @@
 
           <div id="gamification-root"></div>
 
-          <div class="card account-main-card">
+          <div class="card account-main-card" id="account-reservations-card">
             <h2>Mes informations & réservations</h2>
             <p class="account-message" id="account-message" aria-live="polite" role="status"></p>
 
@@ -874,8 +874,13 @@
               <div class="account-field-value" id="user-email">–</div>
             </div>
 
-            <div class="soft-text" style="margin-top:8px;">
-              Votre progression gamifiée est affichée juste au-dessus et reste compatible avec le backend actuel.
+            <div data-account-singcoins-field>
+              <div class="account-field-label">Singcoins</div>
+              <div class="account-field-value" id="user-points">–</div>
+            </div>
+
+            <div class="soft-text" style="margin-top:8px;" data-account-helper-text>
+              Votre progression gamifiée est affichée plus bas et reste compatible avec le backend actuel.
             </div>
 
             <div class="section-title" style="margin-top:18px;">Mes réservations</div>
@@ -884,39 +889,39 @@
             </div>
             <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
 
-            <div class="card" style="margin-top:18px;background:rgba(10,16,30,.72);padding:14px;">
-              <div class="section-title" style="font-size:17px;">Vos avantages compte</div>
-
-              <div style="display:grid;gap:10px;">
-                <div class="account-benefit-item">
-                  <span class="account-benefit-icon">🎟</span>
-                  <div>
-                    <strong>QR code instantané</strong>
-                    <p class="soft-text">Retrouvez votre accès directement depuis votre espace client.</p>
-                  </div>
-                </div>
-                <div class="account-benefit-item">
-                  <span class="account-benefit-icon">⏰</span>
-                  <div>
-                    <strong>Modification simplifiée</strong>
-                    <p class="soft-text">Changez votre réservation jusqu’à 6h avant selon disponibilité.</p>
-                  </div>
-                </div>
-                <div class="account-benefit-item">
-                  <span class="account-benefit-icon">★</span>
-                  <div>
-                    <strong>Fidélité automatique</strong>
-                    <p class="soft-text">Chaque réservation payante alimente votre progression vers une séance offerte.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <p class="account-subtext">Astuce : cliquez sur “Afficher le QR” et présentez-le à l’entrée.</p>
             <p class="soft-text" id="not-logged-cta" style="display:none;color:#f97316;">Vous n’êtes pas connecté. Connectez-vous ou créez un compte pour commencer à cumuler vos Singcoins.</p>
 
             <div class="logout-row">
               <button id="logout-btn" class="logout-btn" type="button">Se déconnecter</button>
+            </div>
+          </div>
+
+          <div class="card" id="account-benefits-card">
+            <div class="section-title" style="font-size:17px;">Vos avantages compte</div>
+
+            <div style="display:grid;gap:10px;">
+              <div class="account-benefit-item">
+                <span class="account-benefit-icon">🎟</span>
+                <div>
+                  <strong>QR code instantané</strong>
+                  <p class="soft-text">Retrouvez votre accès directement depuis votre espace client.</p>
+                </div>
+              </div>
+              <div class="account-benefit-item">
+                <span class="account-benefit-icon">⏰</span>
+                <div>
+                  <strong>Modification simplifiée</strong>
+                  <p class="soft-text">Changez votre réservation jusqu’à 6h avant selon disponibilité.</p>
+                </div>
+              </div>
+              <div class="account-benefit-item">
+                <span class="account-benefit-icon">★</span>
+                <div>
+                  <strong>Fidélité automatique</strong>
+                  <p class="soft-text">Chaque réservation payante alimente votre progression vers une séance offerte.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1024,6 +1029,7 @@
       refundMessage: byId("refund-message"),
       notLoggedCta: byId("not-logged-cta"),
       userEmail: byId("user-email"),
+      userPoints: byId("user-points"),
       reservationsList: byId("reservations-list"),
       qrModal: byId("qr-modal"),
       qrCanvas: byId("qr-canvas"),
@@ -1346,6 +1352,7 @@
 
       showNotLoggedState(customMessage = "Connectez-vous pour accéder à votre espace client.") {
         utils.setText(els.userEmail, "Non connecté");
+        utils.setText(els.userPoints, "—");
         utils.setStatus(els.accountMessage, customMessage, "error");
         utils.setStatus(els.refundMessage, "", "");
         utils.show(els.notLoggedCta);
@@ -1469,6 +1476,7 @@
             : 0;
 
           utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
+          utils.setText(els.userPoints, String(points));
           utils.setStatus(els.accountMessage, "Bienvenue dans votre espace client.", "ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
@@ -1890,12 +1898,22 @@
           pseudoMaxLength: 20,
           loyaltyGoal: LOYALTY_GOAL,
           reservationUrl: "reservation.html",
+          reservationsCardSelector: "#account-reservations-card",
+          benefitsCardSelector: "#account-benefits-card",
+          selectors: {
+            reservationsSlot: "#gamif-reservations-slot",
+            benefitsSlot: "#gamif-benefits-slot"
+          },
           anchors: {
+            reservations: "#gamif-reservations-anchor",
             singcoins: "#gamif-singcoins-section",
+            level: "#gamif-xp-section",
+            missions: "#gamif-missions-section",
+            streak: "#gamif-streak-section",
             rewards: "#gamif-rewards-section",
-            ranking: "#gamif-ranking-section",
-            streak: "#gamif-streak-section"
-          }
+            ranking: "#gamif-ranking-section"
+          },
+          scrollOffset: 110
         });
       }
 
