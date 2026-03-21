@@ -450,6 +450,11 @@
       align-items: start;
     }
 
+    .account-main-card,
+    #account-benefits-card {
+      height: 100%;
+    }
+
     .account-main-card h2,
     .login-card-title,
     .modal-dialog h2,
@@ -672,6 +677,28 @@
       font-size: 12px;
     }
 
+    #reservations-list {
+      display: grid;
+      gap: 10px;
+      max-height: 255px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    #reservations-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #reservations-list::-webkit-scrollbar-track {
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+    }
+
+    #reservations-list::-webkit-scrollbar-thumb {
+      background: rgba(249,115,22,.55);
+      border-radius: 999px;
+    }
+
     #gamification-root {
       min-height: 120px;
     }
@@ -759,6 +786,10 @@
       .nav-cta { padding: 6px 12px; font-size: 11px; }
       .cart-icon, .burger-button { width: 32px; height: 32px; font-size: 18px; }
       .burger-button { display: flex; }
+
+      #reservations-list {
+        max-height: none;
+      }
     }
 
     @media (max-width: 640px) {
@@ -884,7 +915,7 @@
             </div>
 
             <div class="section-title" style="margin-top:18px;">Mes réservations</div>
-            <div id="reservations-list" style="display:grid;gap:10px;">
+            <div id="reservations-list">
               <p class="reservations-empty">Connectez-vous pour retrouver vos réservations passées et à venir.</p>
             </div>
             <p id="refund-message" class="account-message" style="margin-top:6px;" aria-live="polite" role="status"></p>
@@ -919,7 +950,7 @@
                 <span class="account-benefit-icon">★</span>
                 <div>
                   <strong>Fidélité automatique</strong>
-                  <p class="soft-text">Chaque réservation payante alimente votre progression vers une séance offerte.</p>
+                  <p class="soft-text">Chaque réservation alimente votre progression vers une séance offerte.</p>
                 </div>
               </div>
             </div>
