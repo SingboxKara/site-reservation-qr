@@ -63,16 +63,10 @@
     rel="stylesheet"
   />
 
+  <link rel="stylesheet" href="css/global.css" />
+
   <style>
     :root {
-      --sb-bg-main: #050814;
-      --sb-bg-deep: #020617;
-      --sb-card: #0a0f1c;
-      --sb-text-main: #f9fafb;
-      --sb-text-muted: #9ca3af;
-      --sb-red: #c94c35;
-      --sb-orange: #f97316;
-      --sb-border-soft: rgba(148, 163, 184, 0.25);
       --sb-container-width: 900px;
     }
 
@@ -122,249 +116,14 @@
       border: 0 !important;
     }
 
-    /* ================= HEADER ================= */
-
-    .site-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: #020617;
-      color: #fff;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75);
+    body.layout-loading #site-header,
+    body.layout-loading #site-footer {
+      visibility: hidden;
     }
 
-    .header-inner {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: nowrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-
-    .brand-logo {
-      width: 110px;
-      height: auto;
-      border-radius: 999px;
-      display: block;
-      object-fit: contain;
-      filter:
-        drop-shadow(0 0 12px rgba(255, 255, 255, 0.16))
-        drop-shadow(0 0 20px rgba(201, 76, 53, 0.6));
-    }
-
-    .brand-text {
-      font-family: "League Spartan", system-ui, sans-serif;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      font-size: 26px;
-      color: #f9fafb;
-      text-transform: uppercase;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-    }
-
-    nav.main-nav {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      min-width: 0;
-    }
-
-    .main-nav ul {
-      list-style: none;
-      display: flex;
-      gap: 32px;
-      margin: 0;
-      padding: 0;
-      font-size: 14px;
-    }
-
-    .main-nav a {
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      color: #ffffff;
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 4px;
-      white-space: nowrap;
-    }
-
-    .main-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: linear-gradient(90deg, #ff6930, #ffb96f);
-      transition: width 0.3s ease;
-      border-radius: 6px;
-    }
-
-    .main-nav a:hover::after,
-    .main-nav a:focus-visible::after {
-      width: 100%;
-    }
-
-    .main-nav a:hover,
-    .main-nav a:focus-visible {
-      color: #ffb96f;
-      transition: 0.25s ease;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .nav-cta {
-      background: var(--sb-red);
-      padding: 8px 22px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 14px;
-      color: #f9fafb;
-      white-space: nowrap;
-      box-shadow:
-        0 0 0 1px rgba(249, 250, 251, 0.08),
-        0 10px 28px rgba(0, 0, 0, 0.7);
-      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .nav-cta:hover,
-    .nav-cta:focus-visible {
-      background: #d55a40;
-      transform: translateY(-1px);
-      box-shadow:
-        0 0 0 1px rgba(249, 250, 251, 0.18),
-        0 16px 38px rgba(0, 0, 0, 0.9);
-    }
-
-    .cart-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      position: relative;
-      background: radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.16), rgba(15, 23, 42, 0.85));
-      backdrop-filter: blur(6px);
-    }
-
-    #cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: var(--sb-red);
-      color: #fff;
-      border-radius: 999px;
-      font-size: 10px;
-      padding: 2px 5px;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    #cart-count:empty {
-      display: none;
-    }
-
-    .burger-button {
-      display: none;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: transparent;
-      color: #fff;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-    }
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 80px;
-      left: 0;
-      right: 0;
-      background: #020617;
-      padding: 12px 24px 16px;
-      z-index: 40;
-      border-bottom: 1px solid #111827;
-    }
-
-    .mobile-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-size: 15px;
-    }
-
-    .mobile-nav a {
-      color: #fff;
-    }
-
-    .mobile-nav.open {
-      display: block;
-    }
-
-    @media (max-width: 900px) {
-      .header-inner {
-        padding: 10px 16px;
-        gap: 12px;
-      }
-
-      nav.main-nav {
-        display: none !important;
-      }
-
-      .burger-button {
-        display: flex;
-      }
-
-      .brand-logo {
-        width: 90px;
-      }
-
-      .brand-text {
-        font-size: 20px;
-        letter-spacing: 0.12em;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .brand-logo {
-        width: 72px;
-      }
-
-      .brand-text {
-        font-size: 18px;
-        letter-spacing: 0.1em;
-      }
+    body.layout-ready #site-header,
+    body.layout-ready #site-footer {
+      visibility: visible;
     }
 
     /* =============== CONTENU ARTICLE =============== */
@@ -729,147 +488,10 @@
         grid-template-columns: 1fr;
       }
     }
-
-    /* =============== FOOTER IDENTIQUE AUX AUTRES PAGES =============== */
-
-    footer {
-      background: #020617;
-      color: #e5e7eb;
-      padding: 32px 24px 18px;
-      border-top: 1px solid #111827;
-    }
-
-    .newsletter-container {
-      max-width: 1180px;
-      margin: 0 auto 24px;
-      text-align: center;
-    }
-
-    .newsletter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 8px;
-    }
-
-    footer input[type="email"] {
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      min-width: 240px;
-      max-width: 360px;
-      font-size: 14px;
-      background: #020617;
-      color: #f9fafb;
-    }
-
-    footer button {
-      padding: 10px 18px;
-      border: none;
-      border-radius: 999px;
-      background: var(--sb-red);
-      color: #f9fafb;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .newsletter-message {
-      font-size: 13px;
-      margin-top: 6px;
-      color: #9ca3af;
-      min-height: 1.2em;
-    }
-
-    .footer-columns {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      justify-content: space-between;
-      font-size: 13px;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-brand img {
-      height: 80px;
-      width: auto;
-      display: block;
-    }
-
-    .footer-columns p {
-      margin: 4px 0;
-    }
-
-    .footer-bottom {
-      max-width: var(--sb-container-width);
-      margin: 20px auto 0;
-      padding-top: 8px;
-      font-size: 11px;
-      text-align: center;
-      color: #9ca3af;
-      border-top: 1px solid #111827;
-    }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
-        <span class="brand-text">Singbox</span>
-      </a>
-
-      <nav class="main-nav" aria-label="Navigation principale">
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="concept.html">Le concept</a></li>
-          <li><a href="box.html">Les box</a></li>
-          <li><a href="actualites.html" aria-current="page">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="mon-compte.html">Mon compte</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
-          🛒<span id="cart-count"></span>
-        </a>
-        <button
-          class="burger-button"
-          id="burger-button"
-          type="button"
-          aria-label="Ouvrir le menu"
-          aria-controls="mobile-nav"
-          aria-expanded="false"
-        >
-          ☰
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html">Le concept</a></li>
-      <li><a href="box.html">Les box</a></li>
-      <li><a href="actualites.html" aria-current="page">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="mon-compte.html">Mon compte</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
-    </ul>
-  </nav>
+  <div id="site-header"></div>
 
   <main>
     <div class="container">
@@ -930,87 +552,15 @@
     </div>
   </main>
 
-  <!-- FOOTER IDENTIQUE -->
-  <footer>
-    <section class="newsletter-container" id="newsletter-section" aria-labelledby="newsletter-title">
-      <h2 id="newsletter-title">Inscrivez-vous à notre newsletter</h2>
-      <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
-
-      <form class="newsletter-row" id="newsletter-form">
-        <label for="newsletter-email" class="sr-only">Adresse e-mail</label>
-        <input
-          type="email"
-          id="newsletter-email"
-          name="email"
-          placeholder="Entrez votre adresse e-mail"
-          required
-          autocomplete="email"
-        />
-        <button type="submit" id="newsletter-submit">S'abonner</button>
-      </form>
-
-      <p id="newsletter-message" class="newsletter-message" aria-live="polite"></p>
-    </section>
-
-    <div class="footer-columns">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Logo Singbox" />
-        <div>
-          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
-          <p style="margin:0;">Karaoké Box à Toulouse</p>
-        </div>
-      </div>
-
-      <div>
-        <p><strong>Infos</strong></p>
-        <p><a href="mentions-legales.html">Mentions légales</a></p>
-        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
-        <p><a href="cgv.html">CGV</a></p>
-      </div>
-
-      <div>
-        <p><strong>Contact</strong></p>
-        <p>Adresse : 66 Rue de la République, 31300 Toulouse</p>
-        <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
-      </div>
-
-      <div>
-        <p><strong>Réseaux</strong></p>
-
-        <p style="display:flex;align-items:center;gap:8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
-          </svg>
-          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
-        </p>
-
-        <p style="display:flex;align-items:center;gap:8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
-          </svg>
-          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
-            TikTok
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Supabase -->
   <script src="js/supabase-js-2.min.js"></script>
+  <script src="js/layout.js"></script>
   <script>
-    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const ARTICLE_SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const ARTICLE_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = globalThis.supabase.createClient(ARTICLE_SUPABASE_URL, ARTICLE_SUPABASE_KEY);
 
     const CATEGORY_LABELS = {
       "coulisses-travaux": "Coulisses & travaux",
@@ -1028,27 +578,6 @@
 
     function getEl(id) {
       return document.getElementById(id);
-    }
-
-    function getPanier() {
-      try {
-        const rawValue = globalThis.localStorage.getItem("panier");
-        if (!rawValue) return [];
-
-        const data = JSON.parse(rawValue);
-        return Array.isArray(data) ? data : [];
-      } catch (error) {
-        console.error("Erreur lecture panier :", error);
-        return [];
-      }
-    }
-
-    function updateCartIcon() {
-      const el = getEl("cart-count");
-      if (!el) return;
-
-      const panier = getPanier();
-      el.textContent = panier.length > 0 ? String(panier.length) : "";
     }
 
     function getSlugFromUrl() {
@@ -1158,7 +687,6 @@
     function setArticleLoadingState(isLoading) {
       const wrapper = getEl("article-wrapper");
       if (!wrapper) return;
-
       wrapper.setAttribute("aria-busy", isLoading ? "true" : "false");
     }
 
@@ -1530,162 +1058,8 @@
       }
     }
 
-    function closeMobileMenu() {
-      const burgerBtn = getEl("burger-button");
-      const mobileNav = getEl("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) return;
-
-      mobileNav.classList.remove("open");
-      burgerBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function initMobileMenu() {
-      const burgerBtn = getEl("burger-button");
-      const mobileNav = getEl("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) return;
-
-      burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", String(isOpen));
-      });
-
-      mobileNav.addEventListener("click", (event) => {
-        const target = event.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
-          closeMobileMenu();
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeMobileMenu();
-        }
-      });
-
-      document.addEventListener("click", (event) => {
-        const target = event.target;
-        if (!(target instanceof Node)) return;
-        if (!mobileNav.classList.contains("open")) return;
-        if (mobileNav.contains(target) || burgerBtn.contains(target)) return;
-        closeMobileMenu();
-      });
-    }
-
-    function isValidEmail(email) {
-      if (typeof email !== "string") return false;
-
-      const value = email.trim();
-
-      if (!value || value.includes(" ")) return false;
-
-      const atIndex = value.indexOf("@");
-      const lastAtIndex = value.lastIndexOf("@");
-      const dotIndex = value.lastIndexOf(".");
-
-      return (
-        value.length >= 6 &&
-        atIndex > 0 &&
-        atIndex === lastAtIndex &&
-        dotIndex > atIndex + 1 &&
-        dotIndex < value.length - 1
-      );
-    }
-
-    function setNewsletterMessage(message, color) {
-      const messageEl = getEl("newsletter-message");
-      if (!messageEl) return;
-
-      messageEl.textContent = message;
-      messageEl.style.color = color;
-    }
-
-    function setNewsletterSubmitting(submitBtn, isSubmitting) {
-      if (!submitBtn) return;
-
-      if (isSubmitting) {
-        if (!submitBtn.dataset.originalText) {
-          submitBtn.dataset.originalText = submitBtn.textContent;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Envoi...";
-        return;
-      }
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtn.dataset.originalText || "S'abonner";
-    }
-
-    function isDuplicateNewsletterError(error) {
-      return Boolean(
-        error &&
-        (error.code === "23505" ||
-          (typeof error.message === "string" && error.message.includes("duplicate key value")))
-      );
-    }
-
-    async function subscribeNewsletter(email) {
-      return supabaseClient
-        .from("newsletter_subscriptions")
-        .insert([{ email }]);
-    }
-
-    function initNewsletter() {
-      const newsletterForm = getEl("newsletter-form");
-      const emailInput = getEl("newsletter-email");
-      const submitBtn = getEl("newsletter-submit");
-
-      if (!newsletterForm || !emailInput || !submitBtn) return;
-
-      newsletterForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const email = emailInput.value.trim();
-
-        if (!isValidEmail(email)) {
-          setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
-          return;
-        }
-
-        setNewsletterSubmitting(submitBtn, true);
-        setNewsletterMessage("", "#9CA3AF");
-
-        try {
-          const { error } = await subscribeNewsletter(email);
-
-          if (error) {
-            console.error("Erreur inscription newsletter :", error);
-
-            if (isDuplicateNewsletterError(error)) {
-              setNewsletterMessage("Tu es déjà inscrit à la newsletter 🎤", "#f97373");
-            } else {
-              setNewsletterMessage(
-                "Oups, une erreur est survenue. Réessaie dans quelques instants.",
-                "#f97373"
-              );
-            }
-
-            return;
-          }
-
-          setNewsletterMessage("Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
-          newsletterForm.reset();
-        } catch (error) {
-          console.error("Erreur réseau newsletter :", error);
-          setNewsletterMessage("Erreur réseau, vérifie ta connexion et réessaie.", "#f97373");
-        } finally {
-          setNewsletterSubmitting(submitBtn, false);
-        }
-      });
-    }
-
     function initArticlePage() {
-      initMobileMenu();
-      updateCartIcon();
       loadArticle();
-      initNewsletter();
     }
 
     document.addEventListener("DOMContentLoaded", initArticlePage);
