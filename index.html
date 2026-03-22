@@ -47,7 +47,7 @@
     rel="stylesheet"
   />
 
-  <!-- CSS séparés -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/home.css" />
 
@@ -145,6 +145,16 @@
       filter: grayscale(0.1);
     }
 
+    body.layout-loading #site-header,
+    body.layout-loading #site-footer {
+      visibility: hidden;
+    }
+
+    body.layout-ready #site-header,
+    body.layout-ready #site-footer {
+      visibility: visible;
+    }
+
     @media (max-width: 900px) {
       .occasion-contact-card .contact-cta {
         width: 100%;
@@ -158,58 +168,7 @@
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
-        <span class="brand-text">Singbox</span>
-      </a>
-
-      <nav class="main-nav" aria-label="Navigation principale">
-        <ul aria-label="Liens principaux du site">
-          <li><a href="index.html" aria-current="page">Accueil</a></li>
-          <li><a href="concept.html">Le concept</a></li>
-          <li><a href="box.html">Les box</a></li>
-          <li><a href="actualites.html">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="mon-compte.html">Mon compte</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href="reservation.html" class="nav-cta">Réserver</a>
-
-        <a href="panier.html" class="cart-icon" aria-label="Accéder au panier">
-          <span aria-hidden="true">🛒</span><span id="cart-count"></span>
-        </a>
-
-        <button
-          class="burger-button"
-          id="burger-button"
-          type="button"
-          aria-label="Ouvrir le menu"
-          aria-controls="mobile-nav"
-          aria-expanded="false"
-        >
-          ☰
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Navigation mobile">
-    <ul aria-label="Liens du menu mobile">
-      <li><a href="index.html" aria-current="page">Accueil</a></li>
-      <li><a href="concept.html">Le concept</a></li>
-      <li><a href="box.html">Les box</a></li>
-      <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="mon-compte.html">Mon compte</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
-    </ul>
-  </nav>
+  <div id="site-header"></div>
 
   <main>
     <!-- HERO -->
@@ -459,94 +418,15 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <section class="newsletter-container" aria-labelledby="newsletter-title">
-      <h3 id="newsletter-title">Inscrivez-vous à notre newsletter</h3>
-      <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
+  <div id="site-footer"></div>
 
-      <form class="newsletter-row" id="newsletter-form" aria-labelledby="newsletter-title">
-        <label class="sr-only" for="newsletter-email">Adresse e-mail</label>
-        <input
-          id="newsletter-email"
-          type="email"
-          placeholder="Entrez votre adresse e-mail"
-          autocomplete="email"
-          inputmode="email"
-          required
-          aria-label="Adresse e-mail"
-        />
-        <button
-          id="newsletter-submit"
-          type="submit"
-          aria-label="S'abonner à la newsletter"
-        >
-          S'abonner
-        </button>
-      </form>
-
-      <p id="newsletter-message" class="newsletter-message" aria-live="polite" role="status"></p>
-    </section>
-
-    <div class="footer-columns">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Logo Singbox" />
-        <div>
-          <p style="font-weight:700;font-size:16px;margin-bottom:4px;">Singbox</p>
-          <p style="margin:0;">Karaoké Box à Toulouse</p>
-        </div>
-      </div>
-
-      <div>
-        <p><strong>Infos</strong></p>
-        <p><a href="mentions-legales.html">Mentions légales</a></p>
-        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
-        <p><a href="cgv.html">CGV</a></p>
-      </div>
-
-      <div>
-        <p><strong>Contact</strong></p>
-        <p>Adresse : Toulouse (adresse à confirmer)</p>
-        <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
-      </div>
-
-      <div>
-        <p><strong>Réseaux</strong></p>
-
-        <p style="display:flex;align-items:center;gap:8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
-          </svg>
-          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
-        </p>
-
-        <p style="display:flex;align-items:center;gap:8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
-          </svg>
-          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
-            TikTok
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
-    </div>
-  </footer>
-
-  <!-- Supabase local -->
+  <!-- Scripts -->
   <script src="js/supabase-js-2.min.js"></script>
+  <script src="js/layout.js"></script>
   <script>
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-    const supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const HOME_SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const HOME_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const homeSupabaseClient = globalThis.supabase.createClient(HOME_SUPABASE_URL, HOME_SUPABASE_KEY);
 
     function setResaMessage(message, color) {
       const el = document.getElementById("resa-feedback");
@@ -573,6 +453,7 @@
       if (dateInput) {
         dateInput.removeAttribute("aria-invalid");
       }
+
       setResaMessage("", "#E2E8F0");
 
       const params = new URLSearchParams();
@@ -594,189 +475,17 @@
 
     function initHomeDate() {
       const input = document.getElementById("date-input");
-      if (!input) {
-        return;
-      }
+      if (!input) return;
 
       const today = new Date();
       const localDate = getLocalDateString(today);
+
       input.value = localDate;
       input.min = localDate;
 
       input.addEventListener("input", () => {
         input.removeAttribute("aria-invalid");
         setResaMessage("", "#E2E8F0");
-      });
-    }
-
-    function getPanier() {
-      try {
-        const rawValue = globalThis.localStorage.getItem("panier");
-        if (!rawValue) {
-          return [];
-        }
-
-        const parsed = JSON.parse(rawValue);
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        console.error("Erreur lecture panier :", error);
-        return [];
-      }
-    }
-
-    function updateCartIcon() {
-      const el = document.getElementById("cart-count");
-      if (!el) {
-        return;
-      }
-
-      const panier = getPanier();
-      el.textContent = panier.length ? String(panier.length) : "";
-      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
-    }
-
-    function closeMobileNav(mobileNav, burgerBtn) {
-      if (!mobileNav || !burgerBtn) return;
-      mobileNav.classList.remove("open");
-      burgerBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function openMobileNav(mobileNav, burgerBtn) {
-      if (!mobileNav || !burgerBtn) return;
-      mobileNav.classList.add("open");
-      burgerBtn.setAttribute("aria-expanded", "true");
-    }
-
-    function initBurgerMenu() {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) {
-        return;
-      }
-
-      burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.contains("open");
-
-        if (isOpen) {
-          closeMobileNav(mobileNav, burgerBtn);
-        } else {
-          openMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      mobileNav.addEventListener("click", (event) => {
-        const target = event.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      document.addEventListener("click", (event) => {
-        const target = event.target;
-        if (
-          mobileNav.classList.contains("open") &&
-          target instanceof Node &&
-          !mobileNav.contains(target) &&
-          !burgerBtn.contains(target)
-        ) {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && mobileNav.classList.contains("open")) {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-    }
-
-    function isValidEmail(email) {
-      if (typeof email !== "string") {
-        return false;
-      }
-
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
-    }
-
-    function isDuplicateNewsletterError(error) {
-      return Boolean(
-        error &&
-        (
-          error.code === "23505" ||
-          (typeof error.message === "string" && error.message.includes("duplicate key value"))
-        )
-      );
-    }
-
-    function initNewsletter() {
-      const form = document.getElementById("newsletter-form");
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
-
-      if (!(form instanceof HTMLFormElement) || !(emailInput instanceof HTMLInputElement) || !submitBtn || !messageBox) {
-        return;
-      }
-
-      function setNewsletterMessage(message, color) {
-        messageBox.style.color = color;
-        messageBox.textContent = message;
-      }
-
-      function setNewsletterSubmitting(isSubmitting) {
-        if (!submitBtn.dataset.originalText) {
-          submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
-        }
-
-        submitBtn.disabled = isSubmitting;
-        submitBtn.setAttribute("aria-busy", String(isSubmitting));
-        submitBtn.textContent = isSubmitting ? "Envoi..." : submitBtn.dataset.originalText;
-      }
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const email = emailInput.value.trim();
-        emailInput.removeAttribute("aria-invalid");
-
-        if (!isValidEmail(email)) {
-          emailInput.setAttribute("aria-invalid", "true");
-          setNewsletterMessage("Veuillez entrer une adresse e-mail valide.", "#fecaca");
-          return;
-        }
-
-        setNewsletterSubmitting(true);
-        setNewsletterMessage("Envoi en cours...", "#E2E8F0");
-
-        try {
-          const { error } = await supabaseClient
-            .from("newsletter_subscriptions")
-            .insert([{ email }]);
-
-          if (error) {
-            console.error("Erreur newsletter :", error);
-
-            if (isDuplicateNewsletterError(error)) {
-              setNewsletterMessage("Vous êtes déjà inscrit à la newsletter 😉", "#93dbff");
-            } else {
-              setNewsletterMessage("Oups, une erreur est survenue. Réessayez dans quelques instants.", "#fecaca");
-            }
-            return;
-          }
-
-          setNewsletterMessage("Merci ! Vous êtes inscrit 🎉", "#86efac");
-          form.reset();
-        } catch (err) {
-          console.error("Erreur newsletter :", err);
-          setNewsletterMessage("Erreur réseau, merci de réessayer.", "#fecaca");
-        } finally {
-          setNewsletterSubmitting(false);
-        }
-      });
-
-      emailInput.addEventListener("input", () => {
-        emailInput.removeAttribute("aria-invalid");
       });
     }
 
@@ -850,7 +559,7 @@
     }
 
     async function fetchReviews() {
-      const { data, error } = await supabaseClient
+      const { data, error } = await homeSupabaseClient
         .from("reviews")
         .select("id, name, rating, comment, created_at")
         .order("created_at", { ascending: false })
@@ -864,9 +573,7 @@
       const avgEl = document.getElementById("reviews-average");
       const countEl = document.getElementById("reviews-count");
 
-      if (!reviewsGrid) {
-        return;
-      }
+      if (!reviewsGrid) return;
 
       try {
         const { data, error } = await fetchReviews();
@@ -927,9 +634,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       initHomeDate();
-      initBurgerMenu();
-      updateCartIcon();
-      initNewsletter();
       loadReviews();
 
       const heroButton = document.getElementById("hero-resa-button");
