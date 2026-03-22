@@ -14,7 +14,7 @@
     supabaseUrl: "https://sfckofydfqbllkxhxwnt.supabase.co",
     supabaseKey:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw",
-    chestScriptPath: "js/chestwidget.js",
+    chestScriptPath: "js/chest-widget.js",
     chestScriptId: "singbox-chest-widget-script",
   };
 
@@ -168,12 +168,24 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
   }
 
-  function createSupabaseClient() {
+  function getOrCreateSharedSupabaseClient() {
     if (!window.supabase || typeof window.supabase.createClient !== "function") {
       return null;
     }
 
-    return window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+    if (window.__SINGBOX_SUPABASE_CLIENT__) {
+      window.supabaseClient = window.__SINGBOX_SUPABASE_CLIENT__;
+      return window.__SINGBOX_SUPABASE_CLIENT__;
+    }
+
+    const client = window.supabase.createClient(
+      CONFIG.supabaseUrl,
+      CONFIG.supabaseKey
+    );
+
+    window.__SINGBOX_SUPABASE_CLIENT__ = client;
+    window.supabaseClient = client;
+    return client;
   }
 
   function isDuplicateNewsletterError(error) {
@@ -220,7 +232,11 @@
       return;
     }
 
-    const supabaseClient = createSupabaseClient();
+    if (form.dataset.boundNewsletter === "true") {
+      return;
+    }
+
+    const supabaseClient = getOrCreateSharedSupabaseClient();
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -291,6 +307,8 @@
     emailInput.addEventListener("input", () => {
       emailInput.removeAttribute("aria-invalid");
     });
+
+    form.dataset.boundNewsletter = "true";
   }
 
   function initChestWidgetIfAvailable() {
@@ -373,6 +391,7 @@
         injectComponent(CONFIG.footerTargetId, CONFIG.footerPath),
       ]);
 
+      getOrCreateSharedSupabaseClient();
       setActiveNavLink();
       initBurgerMenu();
       updateCartIcon();
