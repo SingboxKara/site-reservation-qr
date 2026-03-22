@@ -17,6 +17,7 @@
 
     brandName: "Singbox",
     widgetLabel: "Coffre cadeaux",
+    openingDurationMs: 1600,
   };
 
   const DEFAULT_STATE = {
@@ -84,6 +85,8 @@
     },
   ];
 
+  let isOpeningChest = false;
+
   function injectStyles() {
     if (document.getElementById("sb-chest-widget-styles")) return;
 
@@ -114,7 +117,7 @@
           0 10px 30px rgba(0, 0, 0, 0.34),
           0 0 0 1px rgba(249, 250, 251, 0.08);
         color: #fff;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
         position: relative;
         overflow: hidden;
         backdrop-filter: blur(6px);
@@ -139,6 +142,11 @@
         background:
           radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.12), rgba(15, 23, 42, 0.86)),
           linear-gradient(135deg, #3f3f46, #18181b);
+      }
+
+      .sb-chest-trigger.sb-trigger-opening {
+        animation: sbTriggerOpening 0.85s ease-in-out infinite;
+        filter: brightness(1.08);
       }
 
       .sb-chest-icon {
@@ -190,12 +198,13 @@
       .sb-chest-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(2, 6, 23, 0.72);
+        background: rgba(2, 6, 23, 0.78);
         display: none;
         align-items: center;
         justify-content: center;
         z-index: 10000;
         padding: 16px;
+        backdrop-filter: blur(6px);
       }
 
       .sb-chest-overlay.sb-open {
@@ -204,13 +213,34 @@
 
       .sb-chest-modal {
         width: 100%;
-        max-width: 430px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
-        border-radius: 22px;
+        max-width: 450px;
+        background:
+          radial-gradient(circle at top left, rgba(201, 76, 53, 0.16), transparent 35%),
+          radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 30%),
+          linear-gradient(180deg, rgba(3, 7, 18, 0.98), rgba(2, 6, 23, 0.98));
+        border-radius: 24px;
         padding: 22px;
-        box-shadow: 0 28px 70px rgba(0,0,0,0.28);
+        box-shadow:
+          0 28px 70px rgba(0,0,0,0.42),
+          0 0 0 1px rgba(148, 163, 184, 0.16);
         position: relative;
-        color: #111827;
+        color: #f8fafc;
+        overflow: hidden;
+      }
+
+      .sb-chest-modal::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 24px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(249,115,22,0.34), rgba(59,130,246,0.24), rgba(201,76,53,0.34));
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
       }
 
       .sb-chest-close {
@@ -219,59 +249,70 @@
         right: 10px;
         width: 38px;
         height: 38px;
-        border: none;
+        border: 1px solid rgba(148, 163, 184, 0.18);
         border-radius: 999px;
-        background: #f3f4f6;
-        color: #111827;
+        background: rgba(15, 23, 42, 0.82);
+        color: #f8fafc;
         cursor: pointer;
         font-size: 18px;
       }
 
       .sb-chest-title {
         font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 800;
         margin: 0 0 8px;
+        color: #f8fafc;
       }
 
       .sb-chest-subtitle {
         margin: 0 0 16px;
-        color: #4b5563;
+        color: #cbd5e1;
         font-size: 14px;
         line-height: 1.5;
       }
 
       .sb-chest-hero {
-        width: 92px;
-        height: 92px;
-        border-radius: 22px;
+        width: 98px;
+        height: 98px;
+        border-radius: 24px;
         margin: 0 auto 16px;
-        background: linear-gradient(135deg, #111827, #374151);
+        background:
+          radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12), transparent 35%),
+          linear-gradient(135deg, #111827, #1f2937);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 42px;
+        font-size: 44px;
         color: #fff;
-        box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+        box-shadow:
+          0 16px 36px rgba(0,0,0,0.24),
+          0 0 0 1px rgba(248,250,252,0.08);
+      }
+
+      .sb-chest-hero.sb-hero-opening {
+        animation: sbHeroOpening 0.85s ease-in-out infinite;
       }
 
       .sb-chest-card {
-        background: #f8fafc;
-        border: 1px solid #e5e7eb;
+        background: rgba(15, 23, 42, 0.78);
+        border: 1px solid rgba(148, 163, 184, 0.14);
         border-radius: 18px;
         padding: 14px;
         margin-bottom: 14px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
       }
 
       .sb-chest-card strong {
         display: block;
         margin-bottom: 6px;
         font-size: 15px;
+        color: #f8fafc;
       }
 
       .sb-chest-card p {
         margin: 0;
-        color: #4b5563;
+        color: #cbd5e1;
         font-size: 14px;
         line-height: 1.5;
       }
@@ -282,7 +323,7 @@
 
       .sb-chest-progress-bar {
         height: 10px;
-        background: #e5e7eb;
+        background: rgba(51, 65, 85, 0.78);
         border-radius: 999px;
         overflow: hidden;
       }
@@ -298,7 +339,7 @@
       .sb-chest-progress-text {
         margin-top: 8px;
         font-size: 13px;
-        color: #6b7280;
+        color: #94a3b8;
       }
 
       .sb-chest-actions {
@@ -333,31 +374,36 @@
       .sb-chest-btn-primary {
         background: #111827;
         color: #fff;
+        border: 1px solid rgba(148, 163, 184, 0.16);
       }
 
       .sb-chest-btn-secondary {
-        background: #f3f4f6;
-        color: #111827;
+        background: rgba(15, 23, 42, 0.88);
+        color: #f8fafc;
+        border: 1px solid rgba(148, 163, 184, 0.16);
       }
 
       .sb-chest-btn-gold {
         background: linear-gradient(135deg, #c94c35, #f97316);
         color: #fff;
+        box-shadow: 0 10px 24px rgba(201, 76, 53, 0.24);
       }
 
       .sb-chest-reward {
         text-align: center;
         padding: 12px 10px 4px;
+        animation: sbRevealFadeIn 0.55s ease;
       }
 
       .sb-chest-reward-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 8px 14px;
+        padding: 9px 15px;
         border-radius: 999px;
-        background: #ffedd5;
-        color: #9a3412;
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(201, 76, 53, 0.24));
+        color: #fdba74;
+        border: 1px solid rgba(249, 115, 22, 0.18);
         font-weight: 800;
         font-size: 14px;
         margin-bottom: 10px;
@@ -366,8 +412,54 @@
       .sb-chest-footnote {
         margin-top: 12px;
         font-size: 12px;
-        color: #6b7280;
+        color: #94a3b8;
         line-height: 1.45;
+      }
+
+      .sb-chest-opening-stage {
+        text-align: center;
+        padding: 8px 0 4px;
+      }
+
+      .sb-chest-opening-ring {
+        width: 118px;
+        height: 118px;
+        margin: 0 auto 16px;
+        border-radius: 999px;
+        position: relative;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at center, rgba(249,115,22,0.14), rgba(249,115,22,0.02) 55%, transparent 72%);
+      }
+
+      .sb-chest-opening-ring::before {
+        content: "";
+        position: absolute;
+        inset: 8px;
+        border-radius: 999px;
+        border: 2px solid rgba(249,115,22,0.20);
+        animation: sbRingPulse 1.2s ease-in-out infinite;
+      }
+
+      .sb-chest-opening-ring::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 999px;
+        border: 1px solid rgba(59,130,246,0.14);
+        animation: sbRingPulse 1.2s ease-in-out infinite 0.25s;
+      }
+
+      .sb-chest-opening-text {
+        font-size: 14px;
+        color: #cbd5e1;
+        line-height: 1.5;
+      }
+
+      .sb-chest-opening-dots::after {
+        content: "";
+        animation: sbDots 1.2s steps(4, end) infinite;
       }
 
       @keyframes sbChestPulse {
@@ -391,6 +483,42 @@
         }
       }
 
+      @keyframes sbTriggerOpening {
+        0% { transform: scale(1) rotate(0deg); box-shadow: 0 10px 30px rgba(0,0,0,0.34), 0 0 0 1px rgba(249,250,251,0.08); }
+        25% { transform: scale(1.06) rotate(-8deg); }
+        50% { transform: scale(1.1) rotate(8deg); box-shadow: 0 18px 44px rgba(249,115,22,0.34), 0 0 0 1px rgba(249,250,251,0.14); }
+        75% { transform: scale(1.06) rotate(-5deg); }
+        100% { transform: scale(1) rotate(0deg); box-shadow: 0 10px 30px rgba(0,0,0,0.34), 0 0 0 1px rgba(249,250,251,0.08); }
+      }
+
+      @keyframes sbHeroOpening {
+        0% { transform: scale(1) rotate(0deg); }
+        20% { transform: scale(1.05) rotate(-7deg); }
+        40% { transform: scale(1.1) rotate(7deg); }
+        60% { transform: scale(1.06) rotate(-4deg); }
+        80% { transform: scale(1.08) rotate(4deg); }
+        100% { transform: scale(1) rotate(0deg); }
+      }
+
+      @keyframes sbRingPulse {
+        0% { transform: scale(0.92); opacity: 0.3; }
+        50% { transform: scale(1.04); opacity: 0.8; }
+        100% { transform: scale(1.14); opacity: 0; }
+      }
+
+      @keyframes sbRevealFadeIn {
+        0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      @keyframes sbDots {
+        0% { content: ""; }
+        25% { content: "."; }
+        50% { content: ".."; }
+        75% { content: "..."; }
+        100% { content: ""; }
+      }
+
       @media (max-width: 640px) {
         .sb-chest-widget {
           bottom: 16px;
@@ -404,7 +532,7 @@
 
         .sb-chest-modal {
           padding: 18px;
-          border-radius: 18px;
+          border-radius: 20px;
         }
 
         .sb-chest-tooltip {
@@ -421,6 +549,10 @@
     } catch {
       return fallback;
     }
+  }
+
+  function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   function getState() {
@@ -681,6 +813,7 @@
   }
 
   function closeModal() {
+    if (isOpeningChest) return;
     const overlay = document.getElementById("sb-chest-overlay");
     if (overlay) overlay.classList.remove("sb-open");
   }
@@ -731,6 +864,27 @@
     document.getElementById("sb-chest-go-signup")?.addEventListener("click", () => {
       window.location.href = CONFIG.signupUrl;
     });
+  }
+
+  function renderOpeningModal() {
+    setModalContent(`
+      <div class="sb-chest-opening-stage">
+        <div class="sb-chest-opening-ring">
+          <div class="sb-chest-hero sb-hero-opening">🎁</div>
+        </div>
+        <h2 class="sb-chest-title" id="sb-chest-modal-title">Ouverture du coffre</h2>
+        <p class="sb-chest-subtitle">
+          La récompense est en train d’être révélée…
+        </p>
+
+        <div class="sb-chest-card">
+          <strong>Patiente un instant</strong>
+          <p class="sb-chest-opening-text">
+            Ton coffre s’ouvre<span class="sb-chest-opening-dots"></span>
+          </p>
+        </div>
+      </div>
+    `);
   }
 
   function renderLoggedInModal(state) {
@@ -854,35 +1008,54 @@
       window.location.href = CONFIG.accountUrl;
     });
 
-    document.getElementById("sb-open-welcome-chest")?.addEventListener("click", () => {
-      const btn = document.getElementById("sb-open-welcome-chest");
-      if (btn) btn.disabled = true;
-
-      const current = getState();
-      const result = openWelcomeChest(current);
-      saveState(result.state);
-      renderRewardModal(result.reward);
-      refreshWidget();
+    document.getElementById("sb-open-welcome-chest")?.addEventListener("click", async () => {
+      if (isOpeningChest) return;
+      await handleChestOpen("welcome");
     });
 
-    document.getElementById("sb-open-session-chest")?.addEventListener("click", (e) => {
-      const btn = e.currentTarget;
-      if (btn) btn.disabled = true;
-
+    document.getElementById("sb-open-session-chest")?.addEventListener("click", async (e) => {
+      if (isOpeningChest) return;
       const milestone = Number(e.currentTarget.getAttribute("data-milestone"));
-      const current = getState();
-      const result = openMilestoneChest(current, milestone);
-      saveState(result.state);
-      renderRewardModal(result.reward);
-      refreshWidget();
+      await handleChestOpen("sessions", milestone);
     });
+  }
+
+  async function handleChestOpen(type, milestone = null) {
+    isOpeningChest = true;
+
+    const trigger = document.getElementById("sb-chest-trigger");
+    if (trigger) {
+      trigger.classList.add("sb-trigger-opening");
+      trigger.disabled = true;
+    }
+
+    renderOpeningModal();
+    await wait(CONFIG.openingDurationMs);
+
+    const current = getState();
+    const result =
+      type === "welcome"
+        ? openWelcomeChest(current)
+        : openMilestoneChest(current, milestone);
+
+    saveState(result.state);
+    renderRewardModal(result.reward);
+    isOpeningChest = false;
+
+    if (trigger) {
+      trigger.classList.remove("sb-trigger-opening");
+      trigger.disabled = false;
+    }
+
+    refreshWidget();
   }
 
   function renderRewardModal(reward) {
     const isRealReward = reward && !reward.isEmpty && reward.status !== "blocked";
+    const heroIcon = isRealReward ? "✨" : "🎁";
 
     setModalContent(`
-      <div class="sb-chest-hero">${isRealReward ? "✨" : "🎁"}</div>
+      <div class="sb-chest-hero">${heroIcon}</div>
       <h2 class="sb-chest-title" id="sb-chest-modal-title">Résultat du coffre</h2>
       <p class="sb-chest-subtitle">
         ${isRealReward ? "Bravo, tu as débloqué une récompense." : "Le coffre a été ouvert."}
@@ -999,7 +1172,9 @@
       }
     });
 
-    closeBtn?.addEventListener("click", closeModal);
+    closeBtn?.addEventListener("click", () => {
+      closeModal();
+    });
 
     overlay?.addEventListener("click", (e) => {
       if (e.target === overlay) closeModal();
@@ -1046,6 +1221,7 @@
       localStorage.removeItem(CONFIG.storageKey);
       localStorage.removeItem(CONFIG.demoLoginKey);
       sessionStorage.removeItem(CONFIG.rewardSessionKey);
+      isOpeningChest = false;
       refreshWidget();
     },
 
