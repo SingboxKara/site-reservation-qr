@@ -93,6 +93,14 @@
 
   let isOpeningChest = false;
 
+  function getApiBase() {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:3000";
+    }
+    return "https://singbox-backend.onrender.com";
+  }
+
   function injectStyles() {
     if (document.getElementById("sb-chest-widget-styles")) return;
 
@@ -672,6 +680,7 @@
       return {
         loggedIn: true,
         user: window.__SINGBOX_USER__,
+        accessToken: null,
         source: "window.__SINGBOX_USER__",
       };
     }
@@ -684,6 +693,7 @@
           return {
             loggedIn: true,
             user: session.user,
+            accessToken: session.access_token || null,
             source: "window.supabaseClient",
           };
         }
@@ -698,6 +708,7 @@
           return {
             loggedIn: true,
             user: session.user,
+            accessToken: session.access_token || null,
             source: "window.__SINGBOX_SUPABASE_CLIENT__",
           };
         }
@@ -708,11 +719,84 @@
       return {
         loggedIn: true,
         user: { id: "demo-user", email: "demo@singbox.local" },
+        accessToken: null,
         source: "demo-localStorage",
       };
     }
 
-    return { loggedIn: false, user: null, source: "none" };
+    return { loggedIn: false, user: null, accessToken: null, source: "none" };
+  }
+
+  async function apiFetch(path, options = {}, accessToken = null) {
+    const headers = new Headers(options.headers || {});
+    if (accessToken) {
+      headers.set("Authorization", `Bearer ${accessToken}`);
+    }
+    if (!headers.has("Content-Type") && options.method && options.method !== "GET") {
+      headers.set("Content-Type", "application/json");
+    }
+
+    const response = await fetch(`${getApiBase()}${path}`, {
+      ...options,
+      headers,
+    });
+
+    let json = null;
+    try {
+      json = await response.json();
+    } catch {
+      json = null;
+    }
+
+    if (!response.ok) {
+      const message =
+        json?.error ||
+        json?.message ||
+        `Erreur API coffre (${response.status})`;
+      throw new Error(message);
+    }
+
+    return json;
+  }
+
+  async function fetchBackendChestState(sessionInfo) {
+    if (!sessionInfo?.accessToken) return null;
+
+    try {
+      const json = await apiFetch("/api/chest/state", {}, sessionInfo.accessToken);
+      const state = json?.state || null;
+
+      if (state?.activeReward) {
+        saveSessionReward(state.activeReward);
+      } else {
+        clearSessionReward();
+      }
+
+      return state;
+    } catch (error) {
+      console.warn("State coffre backend indisponible :", error);
+      return null;
+    }
+  }
+
+  async function openBackendChest(sessionInfo) {
+    if (!sessionInfo?.accessToken) return null;
+
+    const json = await apiFetch(
+      "/api/chest/open",
+      { method: "POST", body: JSON.stringify({}) },
+      sessionInfo.accessToken
+    );
+
+    if (json?.reward) {
+      if (json.reward.status === "active") {
+        saveSessionReward(json.reward);
+      } else {
+        clearSessionReward();
+      }
+    }
+
+    return json;
   }
 
   function weightedRandom(pool) {
@@ -729,7 +813,12 @@
 
   function getActiveReward() {
     const reward = getSessionReward();
-    return reward && reward.status === "active" ? reward : null;
+    return reward &&
+      (reward.status === "active" ||
+        reward.status === "credited" ||
+        reward.status === "consumed")
+      ? reward
+      : null;
   }
 
   function getNextMilestone(state) {
@@ -911,9 +1000,18 @@
     const url = new URL(CONFIG.reservationUrl, window.location.origin);
 
     if (activeReward && !activeReward.isEmpty) {
-      url.searchParams.set("chestReward", activeReward.rewardId);
-      url.searchParams.set("rewardType", activeReward.type);
-      url.searchParams.set("rewardValue", String(activeReward.value));
+      if (activeReward.rewardId) {
+        url.searchParams.set("chestReward", activeReward.rewardId);
+      }
+      if (activeReward.type) {
+        url.searchParams.set("rewardType", activeReward.type);
+      }
+      if (activeReward.value !== undefined && activeReward.value !== null) {
+        url.searchParams.set("rewardValue", String(activeReward.value));
+      }
+      if (activeReward.promoCode) {
+        url.searchParams.set("promoCode", activeReward.promoCode);
+      }
     }
 
     window.location.href = url.pathname + url.search;
@@ -974,7 +1072,73 @@
     `);
   }
 
-  function renderLoggedInModal(state) {
+  function renderRewardModal(reward) {
+    const isRealReward =
+      reward && !reward.isEmpty && reward.status !== "blocked" && reward.type !== "none";
+    const rewardVisual = getRewardVisual(reward);
+    const hasPromoCode = Boolean(reward?.promoCode);
+
+    setModalContent(`
+      <div class="sb-chest-hero">
+        <img class="${rewardVisual.className}" src="${rewardVisual.src}" alt="${escapeHtml(rewardVisual.alt)}" />
+      </div>
+      <h2 class="sb-chest-title" id="sb-chest-modal-title">Résultat du coffre</h2>
+      <p class="sb-chest-subtitle">
+        ${isRealReward ? "Bravo, tu as débloqué une récompense." : "Le coffre a été ouvert."}
+      </p>
+
+      <div class="sb-chest-reward">
+        <div class="sb-chest-reward-badge">${escapeHtml(reward.label)}</div>
+      </div>
+
+      <div class="sb-chest-card">
+        <strong>Détail</strong>
+        <p>${escapeHtml(reward.description || "")}</p>
+      </div>
+
+      ${
+        hasPromoCode
+          ? `
+          <div class="sb-chest-card">
+            <strong>Code associé</strong>
+            <p><code>${escapeHtml(reward.promoCode)}</code></p>
+          </div>
+        `
+          : ""
+      }
+
+      <div class="sb-chest-actions">
+        ${
+          isRealReward
+            ? `<button class="sb-chest-btn sb-chest-btn-gold" id="sb-reward-book-now" type="button">Réserver maintenant</button>`
+            : `<button class="sb-chest-btn sb-chest-btn-primary" id="sb-reward-ok" type="button">Super</button>`
+        }
+        <button class="sb-chest-btn sb-chest-btn-secondary" id="sb-reward-account" type="button">Voir mon compte</button>
+      </div>
+
+      <div class="sb-chest-footnote">
+        ${
+          hasPromoCode
+            ? "Le code promo coffre a été généré côté serveur."
+            : isRealReward
+              ? "Cette offre est temporaire et disparaît si tu quittes le site."
+              : "Retente ta chance au prochain coffre."
+        }
+      </div>
+    `);
+
+    document.getElementById("sb-reward-ok")?.addEventListener("click", () => {
+      closeModal();
+    });
+
+    document.getElementById("sb-reward-book-now")?.addEventListener("click", goToReservationWithReward);
+
+    document.getElementById("sb-reward-account")?.addEventListener("click", () => {
+      window.location.href = CONFIG.accountUrl;
+    });
+  }
+
+  function renderLoggedInModalLocal(state) {
     const availability = getChestAvailability(true, state);
     const nextMilestone = getNextMilestone(state);
     const progressInBlock = state.completedSessions % CONFIG.sessionsPerChest;
@@ -1102,17 +1266,165 @@
 
     document.getElementById("sb-open-welcome-chest")?.addEventListener("click", async () => {
       if (isOpeningChest) return;
-      await handleChestOpen("welcome");
+      const sessionInfo = await detectLoggedInUser();
+      await handleChestOpen("welcome", null, sessionInfo);
     });
 
     document.getElementById("sb-open-session-chest")?.addEventListener("click", async (e) => {
       if (isOpeningChest) return;
       const milestone = Number(e.currentTarget.getAttribute("data-milestone"));
-      await handleChestOpen("sessions", milestone);
+      const sessionInfo = await detectLoggedInUser();
+      await handleChestOpen("sessions", milestone, sessionInfo);
     });
   }
 
-  async function handleChestOpen(type, milestone = null) {
+  function renderLoggedInModalBackend(chestState) {
+    const completedSessions = Number(chestState?.completedSessions || 0);
+    const nextMilestone = Number(chestState?.nextMilestone || CONFIG.sessionsPerChest);
+    const activeReward = chestState?.activeReward || null;
+    const availableCount = Number(chestState?.availableCount || 0);
+    const welcomeAvailable = chestState?.welcomeAvailable === true;
+    const milestoneChests = Array.isArray(chestState?.milestoneChests)
+      ? chestState.milestoneChests
+      : [];
+
+    const progressInBlock = completedSessions % CONFIG.sessionsPerChest;
+    const progressPercent =
+      availableCount > 0
+        ? 100
+        : Math.min(100, (progressInBlock / CONFIG.sessionsPerChest) * 100);
+
+    if (activeReward) {
+      const rewardVisual = getRewardVisual(activeReward);
+
+      setModalContent(`
+        <div class="sb-chest-hero">
+          <img class="${rewardVisual.className}" src="${rewardVisual.src}" alt="${escapeHtml(rewardVisual.alt)}" />
+        </div>
+        <h2 class="sb-chest-title" id="sb-chest-modal-title">Offre active</h2>
+        <p class="sb-chest-subtitle">
+          Ton coffre a déjà été ouvert. Réserve maintenant pour en profiter.
+        </p>
+
+        <div class="sb-chest-reward">
+          <div class="sb-chest-reward-badge">${escapeHtml(activeReward.label)}</div>
+        </div>
+
+        ${
+          activeReward.promoCode
+            ? `
+          <div class="sb-chest-card">
+            <strong>Code associé</strong>
+            <p><code>${escapeHtml(activeReward.promoCode)}</code></p>
+          </div>
+        `
+            : ""
+        }
+
+        <div class="sb-chest-actions">
+          <button class="sb-chest-btn sb-chest-btn-gold" id="sb-reward-book-now" type="button">
+            Réserver maintenant
+          </button>
+          <button class="sb-chest-btn sb-chest-btn-secondary" id="sb-reward-close" type="button">
+            Plus tard
+          </button>
+        </div>
+
+        <div class="sb-chest-footnote">
+          Cette récompense est gérée côté serveur.
+        </div>
+      `);
+
+      document.getElementById("sb-reward-book-now")?.addEventListener("click", goToReservationWithReward);
+      document.getElementById("sb-reward-close")?.addEventListener("click", closeModal);
+      return;
+    }
+
+    let chestMessage = "";
+    let actionHtml = "";
+
+    if (welcomeAvailable) {
+      chestMessage = `
+        <div class="sb-chest-card">
+          <strong>Coffre de bienvenue disponible</strong>
+          <p>Ton premier coffre t’attend. Ouvre-le maintenant.</p>
+        </div>
+      `;
+      actionHtml = `
+        <button class="sb-chest-btn sb-chest-btn-gold" id="sb-open-backend-chest" type="button">
+          Ouvrir mon coffre
+        </button>
+      `;
+    } else if (milestoneChests.length > 0) {
+      const milestone = milestoneChests[0];
+      chestMessage = `
+        <div class="sb-chest-card">
+          <strong>Coffre débloqué</strong>
+          <p>Tu as atteint ${milestone} sessions. Ton coffre est disponible.</p>
+        </div>
+      `;
+      actionHtml = `
+        <button class="sb-chest-btn sb-chest-btn-gold" id="sb-open-backend-chest" type="button">
+          Ouvrir mon coffre
+        </button>
+      `;
+    } else {
+      chestMessage = `
+        <div class="sb-chest-card">
+          <strong>Prochain coffre bientôt</strong>
+          <p>Continue à réserver pour débloquer ton prochain coffre à ${nextMilestone} sessions.</p>
+        </div>
+      `;
+      actionHtml = `
+        <button class="sb-chest-btn sb-chest-btn-primary" id="sb-go-account" type="button">
+          Voir mon compte
+        </button>
+      `;
+    }
+
+    setModalContent(`
+      <div class="sb-chest-hero">
+        <img src="${CONFIG.assetClosed}" alt="Coffre fermé" />
+      </div>
+      <h2 class="sb-chest-title" id="sb-chest-modal-title">Tes coffres ${escapeHtml(CONFIG.brandName)}</h2>
+      <p class="sb-chest-subtitle">
+        Ouvre un coffre quand il est disponible et découvre ta récompense.
+      </p>
+
+      ${chestMessage}
+
+      <div class="sb-chest-progress">
+        <div class="sb-chest-progress-bar">
+          <div class="sb-chest-progress-fill" style="width:${progressPercent}%;"></div>
+        </div>
+        <div class="sb-chest-progress-text">
+          ${availableCount > 0
+            ? "Un coffre est prêt à être ouvert."
+            : `${progressInBlock}/${CONFIG.sessionsPerChest} sessions vers le prochain coffre`}
+        </div>
+      </div>
+
+      <div class="sb-chest-actions">
+        ${actionHtml}
+      </div>
+
+      <div class="sb-chest-footnote">
+        Le coffre est maintenant branché au backend.
+      </div>
+    `);
+
+    document.getElementById("sb-go-account")?.addEventListener("click", () => {
+      window.location.href = CONFIG.accountUrl;
+    });
+
+    document.getElementById("sb-open-backend-chest")?.addEventListener("click", async () => {
+      if (isOpeningChest) return;
+      const sessionInfo = await detectLoggedInUser();
+      await handleChestOpen("backend", null, sessionInfo);
+    });
+  }
+
+  async function handleChestOpen(type, milestone = null, sessionInfo = null) {
     isOpeningChest = true;
 
     const trigger = document.getElementById("sb-chest-trigger");
@@ -1131,73 +1443,47 @@
     renderOpeningModal();
     await wait(CONFIG.openingDurationMs);
 
-    const current = getState();
-    const result =
-      type === "welcome"
-        ? openWelcomeChest(current)
-        : openMilestoneChest(current, milestone);
+    try {
+      if (sessionInfo?.accessToken) {
+        const result = await openBackendChest(sessionInfo);
+        if (result?.reward) {
+          renderRewardModal(result.reward);
+          await refreshWidget();
+          return;
+        }
+      }
 
-    saveState(result.state);
-    renderRewardModal(result.reward);
-    isOpeningChest = false;
+      const current = getState();
+      const result =
+        type === "welcome"
+          ? openWelcomeChest(current)
+          : openMilestoneChest(current, milestone);
 
-    if (trigger) {
-      trigger.classList.remove("sb-trigger-opening");
-      trigger.disabled = false;
+      saveState(result.state);
+      renderRewardModal(result.reward);
+    } catch (error) {
+      console.error("Erreur ouverture coffre :", error);
+      setModalContent(`
+        <div class="sb-chest-hero">
+          <img src="${CONFIG.assetClosed}" alt="Coffre" />
+        </div>
+        <h2 class="sb-chest-title" id="sb-chest-modal-title">Impossible d’ouvrir le coffre</h2>
+        <p class="sb-chest-subtitle">${escapeHtml(error.message || "Une erreur est survenue.")}</p>
+        <div class="sb-chest-actions">
+          <button class="sb-chest-btn sb-chest-btn-primary" id="sb-reward-ok" type="button">Fermer</button>
+        </div>
+      `);
+      document.getElementById("sb-reward-ok")?.addEventListener("click", closeModal);
+    } finally {
+      isOpeningChest = false;
+
+      if (trigger) {
+        trigger.classList.remove("sb-trigger-opening");
+        trigger.disabled = false;
+      }
+
+      await refreshWidget();
     }
-
-    refreshWidget();
-  }
-
-  function renderRewardModal(reward) {
-    const isRealReward = reward && !reward.isEmpty && reward.status !== "blocked";
-    const rewardVisual = getRewardVisual(reward);
-
-    setModalContent(`
-      <div class="sb-chest-hero">
-        <img class="${rewardVisual.className}" src="${rewardVisual.src}" alt="${escapeHtml(rewardVisual.alt)}" />
-      </div>
-      <h2 class="sb-chest-title" id="sb-chest-modal-title">Résultat du coffre</h2>
-      <p class="sb-chest-subtitle">
-        ${isRealReward ? "Bravo, tu as débloqué une récompense." : "Le coffre a été ouvert."}
-      </p>
-
-      <div class="sb-chest-reward">
-        <div class="sb-chest-reward-badge">${escapeHtml(reward.label)}</div>
-      </div>
-
-      <div class="sb-chest-card">
-        <strong>Détail</strong>
-        <p>${escapeHtml(reward.description)}</p>
-      </div>
-
-      <div class="sb-chest-actions">
-        ${
-          isRealReward
-            ? `<button class="sb-chest-btn sb-chest-btn-gold" id="sb-reward-book-now" type="button">Réserver maintenant</button>`
-            : `<button class="sb-chest-btn sb-chest-btn-primary" id="sb-reward-ok" type="button">Super</button>`
-        }
-        <button class="sb-chest-btn sb-chest-btn-secondary" id="sb-reward-account" type="button">Voir mon compte</button>
-      </div>
-
-      <div class="sb-chest-footnote">
-        ${
-          isRealReward
-            ? "Cette offre est temporaire et disparaît si tu quittes le site."
-            : "Retente ta chance au prochain coffre."
-        }
-      </div>
-    `);
-
-    document.getElementById("sb-reward-ok")?.addEventListener("click", () => {
-      closeModal();
-    });
-
-    document.getElementById("sb-reward-book-now")?.addEventListener("click", goToReservationWithReward);
-
-    document.getElementById("sb-reward-account")?.addEventListener("click", () => {
-      window.location.href = CONFIG.accountUrl;
-    });
   }
 
   async function refreshWidget() {
@@ -1205,6 +1491,10 @@
     const loggedIn = sessionInfo.loggedIn;
     const state = getState();
     const availability = getChestAvailability(loggedIn, state);
+    const backendState =
+      loggedIn && sessionInfo.accessToken
+        ? await fetchBackendChestState(sessionInfo)
+        : null;
 
     const trigger = document.getElementById("sb-chest-trigger");
     const badge = document.getElementById("sb-chest-badge");
@@ -1227,6 +1517,41 @@
       widgetImg.src = CONFIG.assetClosed;
       widgetImg.alt = "Coffre verrouillé";
       tooltip.textContent = "Crée ton compte pour débloquer les coffres cadeaux.";
+      return;
+    }
+
+    if (backendState) {
+      if (backendState.activeReward) {
+        trigger.classList.add("sb-opened");
+        badge.style.display = "none";
+        widgetImg.src = CONFIG.assetOpen;
+        widgetImg.alt = "Coffre ouvert";
+        tooltip.textContent = backendState.activeReward.promoCode
+          ? `Offre active : ${backendState.activeReward.label} (${backendState.activeReward.promoCode})`
+          : `Offre active : ${backendState.activeReward.label}`;
+        return;
+      }
+
+      widgetImg.src = CONFIG.assetClosed;
+      widgetImg.alt = "Coffre fermé";
+
+      if (Number(backendState.availableCount || 0) > 0) {
+        trigger.classList.add("sb-available");
+        badge.style.display = "flex";
+        badge.textContent = String(backendState.availableCount);
+        tooltip.textContent = backendState.welcomeAvailable
+          ? "Ton coffre de bienvenue est disponible."
+          : `Tu as ${backendState.availableCount} coffre${backendState.availableCount > 1 ? "s" : ""} à ouvrir.`;
+      } else {
+        trigger.classList.add("sb-locked");
+        badge.style.display = "none";
+        const progressInBlock =
+          Number(backendState.completedSessions || 0) % CONFIG.sessionsPerChest;
+        const remaining =
+          CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
+        tooltip.textContent = `Encore ${remaining} session(s) avant le prochain coffre.`;
+      }
+
       return;
     }
 
@@ -1271,9 +1596,18 @@
 
       if (!sessionInfo.loggedIn) {
         renderLoggedOutModal();
-      } else {
-        renderLoggedInModal(state);
+        return;
       }
+
+      if (sessionInfo.accessToken) {
+        const backendState = await fetchBackendChestState(sessionInfo);
+        if (backendState) {
+          renderLoggedInModalBackend(backendState);
+          return;
+        }
+      }
+
+      renderLoggedInModalLocal(state);
     });
 
     closeBtn?.addEventListener("click", () => {
