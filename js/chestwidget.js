@@ -18,6 +18,12 @@
     brandName: "Singbox",
     widgetLabel: "Coffre cadeaux",
     openingDurationMs: 1600,
+
+    assetClosed: "/assets/chest-closed.png",
+    assetOpening: "/assets/chest-opening.png",
+    assetOpen: "/assets/chest-open.png",
+    assetSpark: "/assets/spark.png",
+    assetCoin: "/assets/singcoin.png",
   };
 
   const DEFAULT_STATE = {
@@ -33,7 +39,7 @@
       id: "empty",
       type: "none",
       label: "Pas de gain cette fois",
-      description: "Le coffre était vide... mais le prochain sera peut-être le bon 🎤",
+      description: "Le coffre était vide... mais le prochain sera peut-être le bon.",
       weight: 45,
       value: 0,
       isEmpty: true,
@@ -150,8 +156,23 @@
       }
 
       .sb-chest-icon {
-        font-size: 30px;
-        line-height: 1;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .sb-chest-icon img {
+        width: 42px;
+        height: auto;
+        display: block;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .sb-chest-trigger.sb-available .sb-chest-icon img {
+        animation: chestFloat 2s infinite ease-in-out;
       }
 
       .sb-chest-badge {
@@ -273,8 +294,8 @@
       }
 
       .sb-chest-hero {
-        width: 98px;
-        height: 98px;
+        width: 110px;
+        min-height: 98px;
         border-radius: 24px;
         margin: 0 auto 16px;
         background:
@@ -283,15 +304,31 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 44px;
         color: #fff;
         box-shadow:
           0 16px 36px rgba(0,0,0,0.24),
           0 0 0 1px rgba(248,250,252,0.08);
+        overflow: hidden;
       }
 
       .sb-chest-hero.sb-hero-opening {
         animation: sbHeroOpening 0.85s ease-in-out infinite;
+      }
+
+      .sb-chest-hero img {
+        width: 90px;
+        height: auto;
+        display: block;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      .sb-chest-hero img.sb-spark {
+        width: 72px;
+      }
+
+      .sb-chest-hero img.sb-coin {
+        width: 72px;
       }
 
       .sb-chest-card {
@@ -422,8 +459,8 @@
       }
 
       .sb-chest-opening-ring {
-        width: 118px;
-        height: 118px;
+        width: 132px;
+        height: 132px;
         margin: 0 auto 16px;
         border-radius: 999px;
         position: relative;
@@ -460,6 +497,12 @@
       .sb-chest-opening-dots::after {
         content: "";
         animation: sbDots 1.2s steps(4, end) infinite;
+      }
+
+      @keyframes chestFloat {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+        100% { transform: translateY(0); }
       }
 
       @keyframes sbChestPulse {
@@ -530,6 +573,11 @@
           height: 62px;
         }
 
+        .sb-chest-icon,
+        .sb-chest-icon img {
+          width: 38px;
+        }
+
         .sb-chest-modal {
           padding: 18px;
           border-radius: 20px;
@@ -553,6 +601,39 @@
 
   function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function getRewardVisual(reward) {
+    if (!reward) {
+      return {
+        src: CONFIG.assetSpark,
+        className: "sb-spark",
+        alt: "Récompense",
+      };
+    }
+
+    if (reward.type === "points") {
+      return {
+        src: CONFIG.assetCoin,
+        className: "sb-coin",
+        alt: "Singcoin",
+      };
+    }
+
+    return {
+      src: CONFIG.assetSpark,
+      className: "sb-spark",
+      alt: "Récompense",
+    };
   }
 
   function getState() {
@@ -777,8 +858,10 @@
     widget.id = "sb-chest-widget";
 
     widget.innerHTML = `
-      <button class="sb-chest-trigger sb-locked" id="sb-chest-trigger" type="button" aria-label="${CONFIG.widgetLabel}">
-        <span class="sb-chest-icon">🎁</span>
+      <button class="sb-chest-trigger sb-locked" id="sb-chest-trigger" type="button" aria-label="${escapeHtml(CONFIG.widgetLabel)}">
+        <span class="sb-chest-icon">
+          <img id="sb-chest-widget-img" src="${CONFIG.assetClosed}" alt="Coffre récompense" />
+        </span>
         <span class="sb-chest-badge" id="sb-chest-badge" style="display:none;">1</span>
       </button>
 
@@ -838,8 +921,10 @@
 
   function renderLoggedOutModal() {
     setModalContent(`
-      <div class="sb-chest-hero">🎁</div>
-      <h2 class="sb-chest-title" id="sb-chest-modal-title">Débloque les coffres ${CONFIG.brandName}</h2>
+      <div class="sb-chest-hero">
+        <img src="${CONFIG.assetClosed}" alt="Coffre fermé" />
+      </div>
+      <h2 class="sb-chest-title" id="sb-chest-modal-title">Débloque les coffres ${escapeHtml(CONFIG.brandName)}</h2>
       <p class="sb-chest-subtitle">
         Connecte-toi pour accéder aux coffres cadeaux et tenter de gagner des récompenses Singbox.
       </p>
@@ -870,7 +955,9 @@
     setModalContent(`
       <div class="sb-chest-opening-stage">
         <div class="sb-chest-opening-ring">
-          <div class="sb-chest-hero sb-hero-opening">🎁</div>
+          <div class="sb-chest-hero sb-hero-opening">
+            <img src="${CONFIG.assetOpening}" alt="Coffre en ouverture" />
+          </div>
         </div>
         <h2 class="sb-chest-title" id="sb-chest-modal-title">Ouverture du coffre</h2>
         <p class="sb-chest-subtitle">
@@ -897,16 +984,19 @@
 
     if (availability.activeReward) {
       const reward = availability.activeReward;
+      const rewardVisual = getRewardVisual(reward);
 
       setModalContent(`
-        <div class="sb-chest-hero">✨</div>
+        <div class="sb-chest-hero">
+          <img class="${rewardVisual.className}" src="${rewardVisual.src}" alt="${escapeHtml(rewardVisual.alt)}" />
+        </div>
         <h2 class="sb-chest-title" id="sb-chest-modal-title">Offre active</h2>
         <p class="sb-chest-subtitle">
           Ton coffre a déjà été ouvert pendant cette visite. Réserve maintenant pour en profiter.
         </p>
 
         <div class="sb-chest-reward">
-          <div class="sb-chest-reward-badge">${reward.label}</div>
+          <div class="sb-chest-reward-badge">${escapeHtml(reward.label)}</div>
         </div>
 
         <div class="sb-chest-card">
@@ -976,8 +1066,10 @@
     }
 
     setModalContent(`
-      <div class="sb-chest-hero">🎁</div>
-      <h2 class="sb-chest-title" id="sb-chest-modal-title">Tes coffres ${CONFIG.brandName}</h2>
+      <div class="sb-chest-hero">
+        <img src="${CONFIG.assetClosed}" alt="Coffre fermé" />
+      </div>
+      <h2 class="sb-chest-title" id="sb-chest-modal-title">Tes coffres ${escapeHtml(CONFIG.brandName)}</h2>
       <p class="sb-chest-subtitle">
         Ouvre un coffre quand il est disponible et découvre ta récompense instantanée.
       </p>
@@ -1024,9 +1116,16 @@
     isOpeningChest = true;
 
     const trigger = document.getElementById("sb-chest-trigger");
+    const widgetImg = document.getElementById("sb-chest-widget-img");
+
     if (trigger) {
       trigger.classList.add("sb-trigger-opening");
       trigger.disabled = true;
+    }
+
+    if (widgetImg) {
+      widgetImg.src = CONFIG.assetOpening;
+      widgetImg.alt = "Coffre en ouverture";
     }
 
     renderOpeningModal();
@@ -1052,22 +1151,24 @@
 
   function renderRewardModal(reward) {
     const isRealReward = reward && !reward.isEmpty && reward.status !== "blocked";
-    const heroIcon = isRealReward ? "✨" : "🎁";
+    const rewardVisual = getRewardVisual(reward);
 
     setModalContent(`
-      <div class="sb-chest-hero">${heroIcon}</div>
+      <div class="sb-chest-hero">
+        <img class="${rewardVisual.className}" src="${rewardVisual.src}" alt="${escapeHtml(rewardVisual.alt)}" />
+      </div>
       <h2 class="sb-chest-title" id="sb-chest-modal-title">Résultat du coffre</h2>
       <p class="sb-chest-subtitle">
         ${isRealReward ? "Bravo, tu as débloqué une récompense." : "Le coffre a été ouvert."}
       </p>
 
       <div class="sb-chest-reward">
-        <div class="sb-chest-reward-badge">${reward.label}</div>
+        <div class="sb-chest-reward-badge">${escapeHtml(reward.label)}</div>
       </div>
 
       <div class="sb-chest-card">
         <strong>Détail</strong>
-        <p>${reward.description}</p>
+        <p>${escapeHtml(reward.description)}</p>
       </div>
 
       <div class="sb-chest-actions">
@@ -1108,9 +1209,9 @@
     const trigger = document.getElementById("sb-chest-trigger");
     const badge = document.getElementById("sb-chest-badge");
     const tooltip = document.getElementById("sb-chest-tooltip");
-    const icon = document.querySelector("#sb-chest-trigger .sb-chest-icon");
+    const widgetImg = document.getElementById("sb-chest-widget-img");
 
-    if (!trigger || !badge || !tooltip || !icon) return;
+    if (!trigger || !badge || !tooltip || !widgetImg) return;
 
     trigger.classList.remove("sb-available", "sb-locked", "sb-opened");
 
@@ -1123,7 +1224,8 @@
 
       trigger.classList.add("sb-locked");
       badge.style.display = "none";
-      icon.textContent = "🎁";
+      widgetImg.src = CONFIG.assetClosed;
+      widgetImg.alt = "Coffre verrouillé";
       tooltip.textContent = "Crée ton compte pour débloquer les coffres cadeaux.";
       return;
     }
@@ -1131,12 +1233,14 @@
     if (availability.activeReward) {
       trigger.classList.add("sb-opened");
       badge.style.display = "none";
-      icon.textContent = "✨";
+      widgetImg.src = CONFIG.assetOpen;
+      widgetImg.alt = "Coffre ouvert";
       tooltip.textContent = "Tu as une offre active. Réserve maintenant avant de quitter le site.";
       return;
     }
 
-    icon.textContent = "🎁";
+    widgetImg.src = CONFIG.assetClosed;
+    widgetImg.alt = "Coffre fermé";
 
     if (availability.isAvailable) {
       trigger.classList.add("sb-available");
@@ -1198,36 +1302,54 @@
   window.SingboxChestWidget = {
     refresh: refreshWidget,
 
-    debugLogin(value) {
+    async debugLogin(value) {
       localStorage.setItem(CONFIG.demoLoginKey, value ? "1" : "0");
-      refreshWidget();
+      await refreshWidget();
     },
 
-    debugSetSessions(count) {
+    async debugSetSessions(count) {
       const state = getState();
       state.completedSessions = Math.max(0, Number(count) || 0);
       saveState(state);
-      refreshWidget();
+      await refreshWidget();
     },
 
-    debugAddSession() {
+    async debugAddSession() {
       const state = getState();
       state.completedSessions += 1;
       saveState(state);
-      refreshWidget();
+      await refreshWidget();
     },
 
-    debugReset() {
+    async debugReset() {
       localStorage.removeItem(CONFIG.storageKey);
       localStorage.removeItem(CONFIG.demoLoginKey);
       sessionStorage.removeItem(CONFIG.rewardSessionKey);
       isOpeningChest = false;
-      refreshWidget();
+      await refreshWidget();
     },
 
-    debugClearReward() {
+    async debugClearReward() {
       clearSessionReward();
-      refreshWidget();
+      await refreshWidget();
+    },
+
+    async debugForceWelcomeChest() {
+      const state = getState();
+      state.welcomeChestOpened = false;
+      saveState(state);
+      clearSessionReward();
+      await refreshWidget();
+    },
+
+    async debugForceMilestoneChest(milestone = 5) {
+      const state = getState();
+      const target = Math.max(5, Number(milestone) || 5);
+      state.completedSessions = target;
+      state.openedMilestones = state.openedMilestones.filter((m) => m !== target);
+      saveState(state);
+      clearSessionReward();
+      await refreshWidget();
     },
 
     getState() {
