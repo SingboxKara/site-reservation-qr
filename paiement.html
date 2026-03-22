@@ -180,11 +180,11 @@
     <div class="auth-modal-eyebrow">Programme fidélité</div>
     <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
     <p id="auth-modal-desc" class="auth-modal-subtext">
-      Créez votre compte ou connectez-vous pour cumuler des points à chaque session et accélérer vos prochains paiements.
+      Créez votre compte ou connectez-vous pour cumuler des Singcoins à chaque session et accélérer vos prochains paiements.
     </p>
     <div class="auth-loyalty-pill">
       <span>★</span>
-      <span>10 points par réservation payante. À 100 points, 2 participants sont offerts sur 1 séance.</span>
+      <span>10 Singcoins par réservation payante. À 100 Singcoins, 2 participants sont offerts sur 1 séance.</span>
     </div>
 
     <div class="auth-tabs" role="tablist" aria-label="Connexion ou création de compte">
@@ -223,7 +223,7 @@
         Continuer sans compte (sans fidélité ni carte enregistrée)
       </button>
       <span class="auth-modal-small">
-        Vous pourrez toujours payer sans compte, mais les points fidélité et les options de paiement rapide nécessitent une connexion.
+        Vous pourrez toujours payer sans compte, mais les Singcoins et les options de paiement rapide nécessitent une connexion.
       </span>
     </div>
   </dialog>
@@ -377,10 +377,10 @@
                 "
               >
                 <p style="margin:0; font-size:13px;">
-                  Points disponibles : <b id="loyalty-points">0</b> ⭐
+                  Singcoins disponibles : <b id="loyalty-points">0</b> ⭐
                 </p>
                 <p style="margin:4px 0 10px; font-size:12px; color:#CBD5E1;">
-                  100 points = 2 participants offerts sur la première séance du panier
+                  100 Singcoins = 2 participants offerts sur la première séance du panier
                 </p>
 
                 <button
@@ -399,7 +399,7 @@
                     font-size:13px;
                   "
                 >
-                  Utiliser 100 points
+                  Utiliser 100 Singcoins
                 </button>
 
                 <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;" aria-live="polite" role="status"></p>
@@ -1637,19 +1637,24 @@
       });
     }
 
-    async function fetchUserPoints() {
+    async function fetchUserSingcoins() {
       if (!getToken()) return null;
 
-      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (points)" });
+      const r = await apiFetch(
+        "/api/account/gamification",
+        { method: "GET" },
+        { auth: true, ctx: "GET /api/account/gamification (payment loyalty)" }
+      );
+
       if (!r.ok || !r.data) return null;
 
-      return r.data.points ?? 0;
+      return Number(r.data?.singcoins?.balance || 0);
     }
 
     function renderLoyaltyLoggedOut(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
       loyaltyPointsEl.textContent = "0";
       loyaltyMsg.style.color = "#FECACA";
-      loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos points.";
+      loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
       useLoyaltyBtn.style.display = "none";
     }
 
@@ -1657,7 +1662,7 @@
       loyaltyPointsEl.textContent = "0";
       useLoyaltyBtn.style.display = "none";
       loyaltyMsg.style.color = "#FECACA";
-      loyaltyMsg.textContent = "Impossible de récupérer vos points pour le moment.";
+      loyaltyMsg.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
     }
 
     function renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
@@ -1666,13 +1671,13 @@
       if (points >= LOYALTY_POINTS_COST) {
         useLoyaltyBtn.style.display = "block";
         useLoyaltyBtn.disabled = false;
-        useLoyaltyBtn.textContent = "Utiliser 100 points";
+        useLoyaltyBtn.textContent = "Utiliser 100 Singcoins";
         loyaltyMsg.style.color = "#D1FAE5";
         loyaltyMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
       } else {
         useLoyaltyBtn.style.display = "none";
         loyaltyMsg.style.color = "#CBD5E1";
-        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, LOYALTY_POINTS_COST - points)} point(s).`;
+        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, LOYALTY_POINTS_COST - points)} Singcoins.`;
       }
     }
 
@@ -1695,7 +1700,7 @@
 
       if (promoMsg) {
         promoMsg.classList.remove("ok", "error");
-        promoMsg.textContent = "Le code promo est désactivé pendant l’utilisation des points fidélité.";
+        promoMsg.textContent = "Le code promo est désactivé pendant l’utilisation des Singcoins.";
       }
     }
 
@@ -1717,7 +1722,7 @@
 
         if (!getToken()) {
           loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Connectez-vous pour utiliser vos points.";
+          loyaltyMsg.textContent = "Connectez-vous pour utiliser vos Singcoins.";
           return;
         }
 
@@ -1725,7 +1730,7 @@
 
         if (currentPoints < LOYALTY_POINTS_COST) {
           loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Vous n'avez pas encore assez de points.";
+          loyaltyMsg.textContent = "Vous n'avez pas encore assez de Singcoins.";
           return;
         }
 
@@ -1740,8 +1745,8 @@
         } else {
           enablePromoAfterLoyaltyRemoval();
           loyaltyMsg.style.color = "#CBD5E1";
-          loyaltyMsg.textContent = "Utilisation des points retirée.";
-          useLoyaltyBtn.textContent = "Utiliser 100 points";
+          loyaltyMsg.textContent = "Utilisation des Singcoins retirée.";
+          useLoyaltyBtn.textContent = "Utiliser 100 Singcoins";
         }
 
         updateOrderSummaryFromPanier();
@@ -1765,7 +1770,7 @@
         return;
       }
 
-      const points = await fetchUserPoints();
+      const points = await fetchUserSingcoins();
 
       if (points === null) {
         renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
