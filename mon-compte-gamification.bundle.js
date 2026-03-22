@@ -47,95 +47,126 @@
       status: "Chanteur en progression"
     },
     level: {
-      current: 3,
-      name: "Rookie",
-      xpCurrent: 240,
-      xpNextLevel: 400,
-      xpTotal: 240
+      current: 1,
+      name: "Nouveau",
+      xpCurrent: 0,
+      xpNextLevel: 100,
+      xpTotal: 0
     },
     streak: {
-      current: 4,
-      best: 8,
-      deadlineText: "Reviens avant la fin de la semaine pour conserver ton streak.",
-      jokers: 1,
-      status: "active",
-      lastActivity: "Hier",
-      rhythm: "Très bon"
+      current: 0,
+      best: 0,
+      deadlineText: "Fais au moins une session validée cette semaine pour lancer ton streak.",
+      jokers: 0,
+      status: "broken",
+      lastActivity: "—",
+      rhythm: "À lancer"
     },
     singcoins: {
       balance: 0,
-      earned: 120,
-      used: 20,
+      earned: 0,
+      used: 0,
       nextReward: "Séance offerte à 100 Singcoins"
     },
     stats: {
-      totalSessions: 12,
-      totalTime: "18h",
-      totalSongs: 96,
-      lastSession: "18 mars"
+      totalSessions: 0,
+      totalTime: "0h",
+      totalSongs: 0,
+      lastSession: "—"
     },
     records: {
-      bestStreak: 8,
-      activeWeek: "4 sessions",
-      biggestSession: "6 pers.",
-      timePerSession: "2h"
+      bestStreak: 0,
+      activeWeek: "—",
+      biggestSession: "—",
+      timePerSession: "—"
     },
     missions: [
-      { id: "m1", title: "Faire 1 réservation cette semaine", progress: 100, reward: "+5 Singcoins", done: true },
-      { id: "m2", title: "Venir avec 3 personnes", progress: 66, reward: "+5 Singcoins", done: false },
-      { id: "m3", title: "Réserver un créneau hors week-end", progress: 30, reward: "+10 Singcoins", done: false }
+      { id: "book_once_week", title: "Une session cette semaine", progress: 0, reward: "+5 Singcoins • +10 XP", done: false },
+      { id: "come_with_3_people", title: "Venir en groupe", progress: 0, reward: "+8 Singcoins • +12 XP", done: false },
+      { id: "weekday_booking", title: "Créneau semaine", progress: 0, reward: "+6 Singcoins • +10 XP", done: false }
     ],
-    badges: [
-      { icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common", unlocked: true, date: "12 fév. 2026" },
-      { icon: "⏱️", title: "3h de chant cumulées", desc: "Tu as cumulé 3 heures de chant.", rarity: "common", unlocked: false, date: "" },
-      { icon: "🔁", title: "2 sessions réalisées", desc: "Tu es déjà revenu chanter une deuxième fois.", rarity: "common", unlocked: false, date: "" },
-      { icon: "🔥", title: "4 semaines d’affilée", desc: "Tu as tenu un streak de 4 semaines.", rarity: "rare", unlocked: false, date: "" },
-      { icon: "💰", title: "Utiliser ses Singcoins 1 fois", desc: "Tu as utilisé tes Singcoins une première fois.", rarity: "rare", unlocked: false, date: "" },
-      { icon: "📅", title: "10 sessions réalisées", desc: "Tu as déjà 10 sessions à ton actif.", rarity: "rare", unlocked: false, date: "" },
-      { icon: "🎶", title: "3 sessions en 7 jours", desc: "Tu as réservé 3 sessions sur une semaine.", rarity: "rare", unlocked: false, date: "" },
-      { icon: "🌞", title: "Session en journée x3", desc: "Tu as chanté 3 fois en journée.", rarity: "rare", unlocked: false, date: "" },
-      { icon: "🚀", title: "20 sessions réalisées", desc: "Tu fais clairement partie des habitués.", rarity: "epic", unlocked: false, date: "" },
-      { icon: "🔥", title: "Streak de 8 semaines", desc: "Tu as gardé ton rythme pendant 8 semaines.", rarity: "epic", unlocked: false, date: "" },
-      { icon: "💎", title: "Utiliser ses Singcoins 5 fois", desc: "Tu sais exploiter tes récompenses.", rarity: "epic", unlocked: false, date: "" },
-      { icon: "🔁", title: "6 sessions en 1 semaine", desc: "Semaine ultra active validée.", rarity: "epic", unlocked: false, date: "" },
-      { icon: "🐐", title: "50 sessions réalisées", desc: "Tu fais partie des gros joueurs Singbox.", rarity: "legendary", unlocked: false, date: "" },
-      { icon: "👑", title: "Streak de 12 semaines", desc: "Régularité monstrueuse.", rarity: "legendary", unlocked: false, date: "" },
-      { icon: "💰", title: "Utiliser ses Singcoins 10 fois", desc: "Maîtrise totale du système.", rarity: "legendary", unlocked: false, date: "" },
-      { icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Tu ramènes toute la team.", rarity: "legendary", unlocked: false, date: "" }
-    ]
+    badges: []
   };
 
   const BADGE_DEFINITIONS = [
-    { key: "premiere-session", code: "FIRST_SESSION", icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common" },
-    { key: "3h-chant", code: "THREE_HOURS", icon: "⏱️", title: "3h de chant cumulées", desc: "Tu as cumulé 3 heures de chant.", rarity: "common" },
-    { key: "2-sessions", code: "TWO_SESSIONS", icon: "🔁", title: "2 sessions réalisées", desc: "Tu es déjà revenu chanter une deuxième fois.", rarity: "common" },
-    { key: "4-semaines", code: "STREAK_4", icon: "🔥", title: "4 semaines d’affilée", desc: "Tu as tenu un streak de 4 semaines.", rarity: "rare" },
-    { key: "singcoins-1", code: "SINGCOINS_USED_1", icon: "💰", title: "Utiliser ses Singcoins 1 fois", desc: "Tu as utilisé tes Singcoins une première fois.", rarity: "rare" },
-    { key: "10-sessions", code: "TEN_SESSIONS", icon: "📅", title: "10 sessions réalisées", desc: "Tu as déjà 10 sessions à ton actif.", rarity: "rare" },
-    { key: "3-sessions-7j", code: "THREE_SESSIONS_WEEK", icon: "🎶", title: "3 sessions en 7 jours", desc: "Tu as réservé 3 sessions sur une semaine.", rarity: "rare" },
-    { key: "journee-x3", code: "DAY_SESSION_3", icon: "🌞", title: "Session en journée x3", desc: "Tu as chanté 3 fois en journée.", rarity: "rare" },
-    { key: "20-sessions", code: "TWENTY_SESSIONS", icon: "🚀", title: "20 sessions réalisées", desc: "Tu fais clairement partie des habitués.", rarity: "epic" },
-    { key: "streak-8", code: "STREAK_8", icon: "🔥", title: "Streak de 8 semaines", desc: "Tu as gardé ton rythme pendant 8 semaines.", rarity: "epic" },
-    { key: "singcoins-5", code: "SINGCOINS_USED_5", icon: "💎", title: "Utiliser ses Singcoins 5 fois", desc: "Tu sais exploiter tes récompenses.", rarity: "epic" },
-    { key: "6-sessions-semaine", code: "SIX_SESSIONS_WEEK", icon: "🔁", title: "6 sessions en 1 semaine", desc: "Semaine ultra active validée.", rarity: "epic" },
-    { key: "50-sessions", code: "FIFTY_SESSIONS", icon: "🐐", title: "50 sessions réalisées", desc: "Tu fais partie des gros joueurs Singbox.", rarity: "legendary" },
-    { key: "streak-12", code: "STREAK_12", icon: "👑", title: "Streak de 12 semaines", desc: "Régularité monstrueuse.", rarity: "legendary" },
-    { key: "singcoins-10", code: "SINGCOINS_USED_10", icon: "💰", title: "Utiliser ses Singcoins 10 fois", desc: "Maîtrise totale du système.", rarity: "legendary" },
-    { key: "groupe-10", code: "GROUP_SESSION_10", icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Tu ramènes toute la team.", rarity: "legendary" }
+    {
+      key: "first-session",
+      code: "first_session",
+      icon: "🎤",
+      title: "Première session",
+      desc: "Faire une première session réalisée.",
+      rarity: "common"
+    },
+    {
+      key: "two-sessions",
+      code: "two_sessions",
+      icon: "🔁",
+      title: "Ça repart",
+      desc: "Faire 2 sessions réalisées.",
+      rarity: "common"
+    },
+    {
+      key: "three-hours",
+      code: "three_hours",
+      icon: "⏱️",
+      title: "3h de chant",
+      desc: "Atteindre 3 heures cumulées.",
+      rarity: "common"
+    },
+    {
+      key: "weekday-regular",
+      code: "weekday_regular",
+      icon: "📅",
+      title: "Habitué de semaine",
+      desc: "Faire 3 sessions hors week-end.",
+      rarity: "rare"
+    },
+    {
+      key: "group-vibes",
+      code: "group_vibes",
+      icon: "🎉",
+      title: "Chef de bande",
+      desc: "Faire une session à 3 personnes ou plus.",
+      rarity: "rare"
+    },
+    {
+      key: "ten-sessions",
+      code: "ten_sessions",
+      icon: "🏆",
+      title: "Habitué confirmé",
+      desc: "Faire 10 sessions réalisées.",
+      rarity: "epic"
+    },
+    {
+      key: "four-week-streak",
+      code: "four_week_streak",
+      icon: "🔥",
+      title: "Toujours là",
+      desc: "Tenir 4 semaines d’affilée.",
+      rarity: "epic"
+    },
+    {
+      key: "spent-singcoins-once",
+      code: "spent_singcoins_once",
+      icon: "💰",
+      title: "Premier échange",
+      desc: "Utiliser des Singcoins une fois.",
+      rarity: "rare"
+    }
   ];
 
   const LEVEL_NAMES = [
-    { min: 1, max: 9, name: "Rookie" },
+    { min: 1, max: 9, name: "Nouveau" },
     { min: 10, max: 19, name: "Apprenti de scène" },
-    { min: 20, max: 29, name: "Performer" },
-    { min: 30, max: 39, name: "Showman" },
-    { min: 40, max: 49, name: "Star montante" },
-    { min: 50, max: 59, name: "Headliner" },
-    { min: 60, max: 69, name: "Icône locale" },
-    { min: 70, max: 79, name: "Légende en devenir" },
-    { min: 80, max: 89, name: "Superstar" },
-    { min: 90, max: 99, name: "Icône ultime" },
-    { min: 100, max: 100, name: "GOAT Singbox" }
+    { min: 20, max: 29, name: "Voix montante" },
+    { min: 30, max: 39, name: "Performer du vendredi" },
+    { min: 40, max: 49, name: "Ambianceur confirmé" },
+    { min: 50, max: 59, name: "Tête d'affiche" },
+    { min: 60, max: 69, name: "Maître du micro" },
+    { min: 70, max: 79, name: "Bête de scène" },
+    { min: 80, max: 89, name: "Légende locale" },
+    { min: 90, max: 99, name: "Icône Singbox" },
+    { min: 100, max: 100, name: "Star absolue" }
   ];
 
   const utils = {
@@ -263,7 +294,7 @@
     getLevelName(level) {
       const lvl = Math.max(1, Math.min(100, Number(level) || 1));
       const match = LEVEL_NAMES.find((item) => lvl >= item.min && lvl <= item.max);
-      return match ? match.name : "Rookie";
+      return match ? match.name : "Nouveau";
     },
 
     toNumber(value, fallback = 0) {
@@ -345,8 +376,9 @@
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+        .replace(/[^a-z0-9_ -]+/g, "")
+        .replace(/[\s-]+/g, "_")
+        .replace(/^_+|_+$/g, "");
     },
 
     getBadgeLookupKeys(badge) {
@@ -375,6 +407,27 @@
       if (level >= 50 || sessions >= 30) return "Habitué confirmé";
       if (level >= 20 || sessions >= 10) return "Voix qui monte";
       return "Chanteur en progression";
+    },
+
+    formatWeeks(value) {
+      const n = Math.max(0, Math.floor(utils.toNumber(value, 0)));
+      return `${n} semaine${n > 1 ? "s" : ""}`;
+    },
+
+    computeMissionProgressLabel(progressValue, targetValue, isCompleted) {
+      if (isCompleted) return "Mission terminée";
+      const safeTarget = Math.max(1, Math.floor(utils.toNumber(targetValue, 1)));
+      const safeProgress = Math.max(0, Math.floor(utils.toNumber(progressValue, 0)));
+      return `Progression : ${Math.min(safeProgress, safeTarget)} / ${safeTarget}`;
+    },
+
+    guessActiveWeek(stats) {
+      const total30 = Math.max(0, Math.floor(utils.toNumber(stats?.sessions_last_30_days, 0)));
+      const total7 = Math.max(0, Math.floor(utils.toNumber(stats?.sessions_last_7_days, 0)));
+
+      if (total7 > 0) return `${total7} session${total7 > 1 ? "s" : ""}`;
+      if (total30 > 0) return `${total30} sur 30 jours`;
+      return "—";
     }
   };
 
@@ -1091,8 +1144,8 @@
   }
 
   function getStatusText(status) {
-    if (status === "warning") return "À relancer";
-    if (status === "broken") return "À repartir";
+    if (status === "warning") return "À surveiller";
+    if (status === "broken") return "À relancer";
     return "Actif";
   }
 
@@ -1125,10 +1178,10 @@
         unlockedMap.get(utils.normalizeBadgeKey(definition.title));
 
       return {
-        icon: definition.icon || "★",
-        title: definition.title || "Badge",
-        desc: definition.desc || "",
-        rarity: definition.rarity || "common",
+        icon: matched?.icon || definition.icon || "★",
+        title: matched?.title || definition.title || "Badge",
+        desc: matched?.description || matched?.desc || definition.desc || "",
+        rarity: matched?.rarity || definition.rarity || "common",
         unlocked: Boolean(matched),
         date: matched?.unlockedAt ? utils.formatShortDate(matched.unlockedAt) : ""
       };
@@ -1192,10 +1245,13 @@
     const lastValidatedAt = streakApi.lastValidatedAt || "";
     const lastPeriodKey = utils.safeText(streakApi.lastPeriodKey || "", 60);
 
-    const streakStatus = streakCurrent > 0 ? "active" : "broken";
-    const deadlineText = lastPeriodKey
-      ? "Reviens avant la fin de la semaine pour conserver ton streak."
-      : fallback.streak.deadlineText;
+    let streakStatus = "broken";
+    if (streakCurrent > 0) streakStatus = "active";
+    if (streakCurrent > 0 && !lastValidatedAt) streakStatus = "warning";
+
+    const deadlineText = streakCurrent > 0
+      ? "Fais au moins une session validée cette semaine pour conserver ton streak."
+      : "Fais une session validée cette semaine pour lancer ton streak.";
 
     const totalTime =
       typeof statsApi.totalTime === "string" && utils.safeText(statsApi.totalTime)
@@ -1223,6 +1279,23 @@
         ? utils.formatDurationMinutes(recordsApi.longestSessionMinutes)
         : fallback.records.timePerSession;
 
+    const normalizedMissions = Array.isArray(api.missions)
+      ? api.missions.map((mission, index) => {
+          const targetValue = Math.max(1, utils.toNumber(mission?.targetValue, 1));
+          const progressValue = Math.max(0, utils.toNumber(mission?.progressValue, 0));
+          const isCompleted = Boolean(mission?.isCompleted);
+          return {
+            id: utils.safeText(mission?.code || `mission-${index}`, 80) || `mission-${index}`,
+            title: utils.safeText(mission?.title || `Mission ${index + 1}`, 140),
+            progress: isCompleted ? 100 : utils.pct(progressValue, targetValue),
+            progressValue,
+            targetValue,
+            reward: utils.formatRewardText(mission),
+            done: isCompleted
+          };
+        })
+      : fallback.missions;
+
     const normalized = {
       identity: {
         displayName,
@@ -1246,7 +1319,8 @@
         jokers: streakApi.jokers != null ? Math.max(0, Math.floor(utils.toNumber(streakApi.jokers, 0))) : 0,
         status: streakStatus,
         lastActivity: lastValidatedAt ? utils.formatLastActivity(lastValidatedAt) : "—",
-        rhythm: streakCurrent >= 8 ? "Très bon" : streakCurrent >= 4 ? "Bon rythme" : "À lancer"
+        rhythm: streakCurrent >= 8 ? "Très bon" : streakCurrent >= 4 ? "Bon rythme" : "À lancer",
+        lastPeriodKey
       },
 
       singcoins: {
@@ -1262,7 +1336,9 @@
         totalSessions,
         totalTime,
         totalSongs,
-        lastSession
+        lastSession,
+        sessions_last_7_days: Math.max(0, utils.toNumber(statsApi.sessionsLast7Days, 0)),
+        sessions_last_30_days: Math.max(0, utils.toNumber(statsApi.sessionsLast30Days, 0))
       },
 
       records: {
@@ -1274,23 +1350,11 @@
         timePerSession
       },
 
-      missions: Array.isArray(api.missions)
-        ? api.missions.map((mission, index) => {
-            const targetValue = Math.max(0, utils.toNumber(mission?.targetValue, 0));
-            const progressValue = Math.max(0, utils.toNumber(mission?.progressValue, 0));
-            const isCompleted = Boolean(mission?.isCompleted);
-            return {
-              id: utils.safeText(mission?.code || `mission-${index}`, 80) || `mission-${index}`,
-              title: utils.safeText(mission?.title || `Mission ${index + 1}`, 140),
-              progress: isCompleted ? 100 : (targetValue > 0 ? utils.pct(progressValue, targetValue) : 0),
-              reward: utils.formatRewardText(mission),
-              done: isCompleted
-            };
-          })
-        : fallback.missions,
-
+      missions: normalizedMissions,
       badges: normalizeBadges(api.badges, fallback.badges)
     };
+
+    normalized.records.activeWeek = utils.guessActiveWeek(normalized.stats);
 
     return normalized;
   }
@@ -1325,6 +1389,8 @@
         fallback.stats.totalSessions = sessionsCount;
       }
 
+      fallback.badges = normalizeBadges([], BADGE_DEFINITIONS);
+
       return fallback;
     }
 
@@ -1340,7 +1406,7 @@
       stats: { ...fallback.stats, ...normalized.stats },
       records: { ...fallback.records, ...normalized.records },
       missions: Array.isArray(normalized.missions) && normalized.missions.length ? normalized.missions : fallback.missions,
-      badges: Array.isArray(normalized.badges) && normalized.badges.length ? normalized.badges : fallback.badges
+      badges: Array.isArray(normalized.badges) && normalized.badges.length ? normalized.badges : normalizeBadges([], BADGE_DEFINITIONS)
     };
   }
 
@@ -1389,7 +1455,7 @@
 
               <div class="g-pills">
                 <span class="g-pill"><span class="g-mini-icon">★</span><span id="gamif-member-since">Membre depuis janvier 2026</span></span>
-                <span class="g-pill"><span class="g-mini-icon">🎤</span><span id="gamif-level-pill">Niveau Rookie</span></span>
+                <span class="g-pill"><span class="g-mini-icon">🎤</span><span id="gamif-level-pill">Niveau Nouveau</span></span>
                 <span class="g-pill"><span class="g-mini-icon">🔥</span><span id="gamif-streak-pill">Streak : 0</span></span>
               </div>
             </div>
@@ -1471,21 +1537,21 @@
           <div class="g-level-grid">
             <div class="g-subcard">
               <div class="g-soft">Niveau actuel</div>
-              <div class="g-bignumber" id="gamif-level-current">3</div>
+              <div class="g-bignumber" id="gamif-level-current">1</div>
             </div>
             <div class="g-subcard">
               <div class="g-soft">Nom du niveau</div>
-              <div class="g-bignumber" id="gamif-level-name">Rookie</div>
+              <div class="g-bignumber" id="gamif-level-name">Nouveau</div>
             </div>
           </div>
 
           <div class="g-progress-wrap">
             <div class="g-progress-head">
-              <span class="g-soft">XP actuelle : <strong id="gamif-xp-current">240</strong></span>
-              <span class="g-soft">Objectif suivant : <strong id="gamif-xp-next">400 XP</strong></span>
+              <span class="g-soft">XP actuelle : <strong id="gamif-xp-current">0</strong></span>
+              <span class="g-soft">Objectif suivant : <strong id="gamif-xp-next">100 XP</strong></span>
             </div>
-            <div class="g-progress-bar"><div class="g-progress-fill g-progress-fill-xp" id="gamif-xp-fill" style="width:60%;"></div></div>
-            <div class="g-soft" id="gamif-xp-text">Plus que 160 XP pour atteindre le niveau suivant.</div>
+            <div class="g-progress-bar"><div class="g-progress-fill g-progress-fill-xp" id="gamif-xp-fill" style="width:0%;"></div></div>
+            <div class="g-soft" id="gamif-xp-text">Plus que 100 XP pour atteindre le niveau suivant.</div>
           </div>
 
           <div style="margin-top:16px;">
@@ -1511,7 +1577,7 @@
           <div class="g-section-head">
             <div>
               <h2 class="g-title">Streak</h2>
-              <div class="g-subtitle">Votre régularité reste bien mise en avant.</div>
+              <div class="g-subtitle">Votre régularité hebdomadaire reste bien mise en avant.</div>
             </div>
           </div>
 
@@ -1520,32 +1586,32 @@
               <div class="g-streak-main-top">
                 <div>
                   <div class="g-soft">Streak actuel</div>
-                  <div class="g-bignumber" id="gamif-streak-current-value">4 jours</div>
+                  <div class="g-bignumber" id="gamif-streak-current-value">0 semaine</div>
                 </div>
                 <div class="g-streak-status" id="gamif-streak-status">
                   <span class="g-streak-dot"></span>
-                  <span id="gamif-streak-status-text">Actif</span>
+                  <span id="gamif-streak-status-text">À relancer</span>
                 </div>
               </div>
-              <div class="g-soft" style="margin-top:10px;" id="gamif-streak-deadline">Reviens avant le 24 mars à 23h59 pour conserver ton streak.</div>
+              <div class="g-soft" style="margin-top:10px;" id="gamif-streak-deadline">Fais au moins une session validée cette semaine pour lancer ton streak.</div>
             </div>
 
             <div class="g-streak-grid">
               <div class="g-streakbox">
                 <div class="g-soft">Jokers disponibles</div>
-                <div class="g-bignumber" id="gamif-streak-jokers">1</div>
-                <div class="g-soft" id="gamif-streak-joker-help">Protège 1 absence.</div>
+                <div class="g-bignumber" id="gamif-streak-jokers">0</div>
+                <div class="g-soft" id="gamif-streak-joker-help">Protège une absence si activé plus tard.</div>
               </div>
               <div class="g-streakbox">
                 <div class="g-soft">Meilleur streak</div>
-                <div class="g-bignumber" id="gamif-streak-best">8</div>
+                <div class="g-bignumber" id="gamif-streak-best">0</div>
               </div>
               <div class="g-streakbox">
                 <div class="g-soft">Dernière activité</div>
-                <div class="g-bignumber" id="gamif-streak-last-activity">Hier</div>
+                <div class="g-bignumber" id="gamif-streak-last-activity">—</div>
               </div>
               <div class="g-streakbox">
-                <div class="g-soft">Ne pas perdre ma streak</div>
+                <div class="g-soft">Ne pas casser mon streak</div>
                 <a class="g-cta-inline" href="${utils.safeHtml(state.config.reservationUrl)}">Réserver maintenant</a>
               </div>
             </div>
@@ -1645,10 +1711,10 @@
 
     if (singcoinsEl) {
       const items = [
-        { icon: "🎟", title: "Réservation", text: "10 Singcoins gagnés par réservation." },
-        { icon: "🏅", title: "Succès", text: "Certains succès débloquent des bonus ponctuels." },
-        { icon: "✨", title: "Badges", text: "Quelques badges peuvent offrir des gains supplémentaires." },
-        { icon: "🎁", title: "Coffres", text: "Les récompenses spéciales peuvent ajouter des Singcoins." }
+        { icon: "🎟", title: "Session réalisée", text: "Chaque session validée rapporte des Singcoins." },
+        { icon: "🏅", title: "Missions", text: "Les missions hebdomadaires peuvent donner un bonus de Singcoins." },
+        { icon: "✨", title: "Badges", text: "Débloquer certains badges peut vous offrir des Singcoins." },
+        { icon: "🎁", title: "Récompenses", text: "Votre progression vous rapproche de la séance offerte." }
       ];
 
       singcoinsEl.innerHTML = items.map((item) => `
@@ -1666,11 +1732,10 @@
 
     if (xpEl) {
       const items = [
-        { icon: "🎤", title: "Réservations", text: "Chaque réservation participe à votre progression XP." },
-        { icon: "🔥", title: "Régularité", text: "Entretenir son streak peut accélérer la progression." },
+        { icon: "🎤", title: "Sessions réalisées", text: "Chaque session validée participe à votre progression XP." },
+        { icon: "🔥", title: "Régularité", text: "Entretenir votre streak hebdomadaire valorise votre profil." },
         { icon: "✅", title: "Missions", text: "Les missions accomplies peuvent rapporter de l’XP." },
-        { icon: "🌟", title: "Succès", text: "Débloquer certains succès peut donner un bonus d’XP." },
-        { icon: "🎁", title: "Bonus spéciaux", text: "Des coffres et événements spéciaux pourront aussi rapporter de l’XP." }
+        { icon: "🌟", title: "Badges", text: "Débloquer certains badges donne aussi un bonus d’XP." }
       ];
 
       xpEl.innerHTML = items.map((item) => `
@@ -1709,7 +1774,7 @@
     if (statusText) statusText.textContent = data.identity.status;
     if (statusSubline) {
       statusSubline.textContent = email
-        ? "Votre profil se renforce à chaque session et récompense débloquée."
+        ? "Votre profil se renforce à chaque session validée et récompense débloquée."
         : "Connectez-vous pour personnaliser votre profil et suivre votre progression.";
     }
   }
@@ -1776,13 +1841,13 @@
     const lastActivity = document.getElementById("gamif-streak-last-activity");
     const jokerHelp = document.getElementById("gamif-streak-joker-help");
 
-    if (currentValue) currentValue.textContent = `${data.streak.current} jours`;
+    if (currentValue) currentValue.textContent = utils.formatWeeks(data.streak.current);
     if (deadline) deadline.textContent = data.streak.deadlineText;
     if (jokers) jokers.textContent = String(data.streak.jokers);
     if (best) best.textContent = String(data.streak.best);
     if (lastActivity) lastActivity.textContent = data.streak.lastActivity;
     if (statusText) statusText.textContent = getStatusText(data.streak.status);
-    if (jokerHelp) jokerHelp.textContent = "Protège 1 absence.";
+    if (jokerHelp) jokerHelp.textContent = "Protège une absence si activé plus tard.";
 
     if (status) {
       status.className = "g-streak-status";
@@ -1797,6 +1862,11 @@
 
     el.innerHTML = data.missions.map((mission) => {
       const progress = utils.clamp(Number(mission.progress || 0), 0, 100);
+      const progressLabel = utils.computeMissionProgressLabel(
+        mission.progressValue,
+        mission.targetValue,
+        mission.done
+      );
 
       return `
         <div class="g-item">
@@ -1805,7 +1875,7 @@
             <strong style="color:#f9fafb;">${utils.safeHtml(mission.title)}</strong>
             <div class="g-soft">Récompense : ${utils.safeHtml(mission.reward)}</div>
             <div class="g-mission-progress">
-              <div class="g-soft">${mission.done ? "Mission terminée" : `Progression : ${progress}%`}</div>
+              <div class="g-soft">${utils.safeHtml(progressLabel)}</div>
               <div class="g-mini-progress"><span style="width:${progress}%;"></span></div>
             </div>
           </div>
@@ -1838,7 +1908,7 @@
     if (!el) return;
 
     const items = [
-      { label: "Meilleur streak", value: String(data.records.bestStreak) },
+      { label: "Meilleur streak", value: utils.formatWeeks(data.records.bestStreak).replace(" semaines", "").replace(" semaine", "") || "0" },
       { label: "Semaine la plus active", value: data.records.activeWeek },
       { label: "Plus grosse session", value: data.records.biggestSession },
       { label: "Record temps", value: data.records.timePerSession }
@@ -1863,7 +1933,7 @@
           <strong style="color:#f9fafb;">${utils.safeHtml(badge.title)}</strong>
           <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
           <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
-          ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : ""}
+          ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
         </div>
       </div>
     `).join("");
