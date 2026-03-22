@@ -1,0 +1,293 @@
+.sb-chest-widget {
+  position: fixed;
+  z-index: 9999;
+  bottom: 22px;
+  left: 22px;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.sb-chest-trigger {
+  width: 68px;
+  height: 68px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sb-chest-trigger:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+}
+
+.sb-chest-trigger.sb-available {
+  animation: sbChestPulse 1.8s infinite;
+}
+
+.sb-chest-trigger.sb-locked {
+  opacity: 0.92;
+}
+
+.sb-chest-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.sb-chest-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #facc15;
+  color: #111827;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.sb-chest-tooltip {
+  position: absolute;
+  bottom: 78px;
+  left: 0;
+  background: rgba(17, 24, 39, 0.96);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  width: 220px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sb-chest-widget:hover .sb-chest-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sb-chest-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.62);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+}
+
+.sb-chest-overlay.sb-open {
+  display: flex;
+}
+
+.sb-chest-modal {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.22);
+  position: relative;
+  color: #111827;
+}
+
+.sb-chest-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #111827;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.sb-chest-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.sb-chest-subtitle {
+  margin: 0 0 16px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sb-chest-hero {
+  width: 92px;
+  height: 92px;
+  border-radius: 22px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #111827, #374151);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: #fff;
+}
+
+.sb-chest-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.sb-chest-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.sb-chest-card p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sb-chest-progress {
+  margin: 12px 0 4px;
+}
+
+.sb-chest-progress-bar {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sb-chest-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.sb-chest-progress-text {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.sb-chest-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.sb-chest-btn {
+  flex: 1 1 auto;
+  min-width: 140px;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.sb-chest-btn:hover {
+  transform: translateY(-1px);
+}
+
+.sb-chest-btn-primary {
+  background: #111827;
+  color: #fff;
+}
+
+.sb-chest-btn-secondary {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.sb-chest-btn-gold {
+  background: linear-gradient(135deg, #d97706, #facc15);
+  color: #111827;
+}
+
+.sb-chest-reward {
+  text-align: center;
+  padding: 12px 10px 4px;
+}
+
+.sb-chest-reward-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.sb-chest-footnote {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.45;
+}
+
+@keyframes sbChestPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 18px 38px rgba(250, 204, 21, 0.35);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  }
+}
+
+@media (max-width: 640px) {
+  .sb-chest-widget {
+    bottom: 16px;
+    left: 16px;
+  }
+
+  .sb-chest-trigger {
+    width: 62px;
+    height: 62px;
+  }
+
+  .sb-chest-modal {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .sb-chest-tooltip {
+    display: none;
+  }
+}
