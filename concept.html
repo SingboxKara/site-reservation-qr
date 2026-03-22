@@ -110,8 +110,6 @@
   <link rel="stylesheet" href="css/global.css" />
 
   <style>
-    /* ================== CONTENU PAGE CONCEPT ================== */
-
     #concept-intro {
       position: relative;
       padding: 12rem 0 80px;
@@ -554,6 +552,16 @@
       filter: grayscale(0.1);
     }
 
+    body.layout-loading #site-header,
+    body.layout-loading #site-footer {
+      visibility: hidden;
+    }
+
+    body.layout-ready #site-header,
+    body.layout-ready #site-footer {
+      visibility: visible;
+    }
+
     @media (max-width: 1000px) {
       .concept-steps-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
@@ -611,10 +619,8 @@
 </head>
 
 <body>
-
   <div id="site-header"></div>
 
-  <!-- INTRO -->
   <section id="concept-intro">
     <div class="concept-intro-inner">
       <p class="concept-eyebrow">Karaoké box privative à Toulouse</p>
@@ -636,7 +642,6 @@
     </div>
   </section>
 
-  <!-- BLOCS CONCEPT -->
   <section class="concept-section">
     <div class="concept-block">
       <div class="concept-grid">
@@ -711,7 +716,6 @@
     </div>
   </section>
 
-  <!-- COMMENT ÇA MARCHE -->
   <section class="concept-how-it-works">
     <div class="concept-how-it-works-inner">
       <h2>Comment ça marche ?</h2>
@@ -748,7 +752,6 @@
     </div>
   </section>
 
-  <!-- SECTION AVANTAGES + FAQ SEO -->
   <section class="concept-advantages">
     <div class="concept-advantages-inner">
       <h2>Pourquoi choisir Singbox pour votre karaoké à Toulouse&nbsp;?</h2>
@@ -825,7 +828,6 @@
     </div>
   </section>
 
-  <!-- CTA FINALE -->
   <section class="concept-cta-section">
     <div class="concept-cta-inner">
       <h2>Convaincu par le concept&nbsp;?</h2>
@@ -841,235 +843,7 @@
 
   <div id="site-footer"></div>
 
-  <!-- Supabase + JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    function getPanier() {
-      const rawPanier = localStorage.getItem("panier");
-
-      if (!rawPanier) {
-        return [];
-      }
-
-      try {
-        const parsedPanier = JSON.parse(rawPanier);
-        return Array.isArray(parsedPanier) ? parsedPanier : [];
-      } catch (error) {
-        console.error("Impossible de lire le panier depuis le localStorage :", error);
-        return [];
-      }
-    }
-
-    function updateCartIcon() {
-      const el = document.getElementById("cart-count");
-      if (!el) {
-        return;
-      }
-
-      const panier = getPanier();
-      el.textContent = panier.length ? String(panier.length) : "";
-      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
-    }
-
-    function closeMobileNav(mobileNav, burgerBtn) {
-      if (!mobileNav || !burgerBtn) return;
-      mobileNav.classList.remove("open");
-      burgerBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function openMobileNav(mobileNav, burgerBtn) {
-      if (!mobileNav || !burgerBtn) return;
-      mobileNav.classList.add("open");
-      burgerBtn.setAttribute("aria-expanded", "true");
-    }
-
-    function initBurgerMenu() {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) {
-        return;
-      }
-
-      burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.contains("open");
-
-        if (isOpen) {
-          closeMobileNav(mobileNav, burgerBtn);
-        } else {
-          openMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      mobileNav.addEventListener("click", (event) => {
-        const target = event.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      document.addEventListener("click", (event) => {
-        const target = event.target;
-
-        if (
-          mobileNav.classList.contains("open") &&
-          target instanceof Node &&
-          !mobileNav.contains(target) &&
-          !burgerBtn.contains(target)
-        ) {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && mobileNav.classList.contains("open")) {
-          closeMobileNav(mobileNav, burgerBtn);
-        }
-      });
-    }
-
-    function isValidEmail(email) {
-      if (typeof email !== "string") {
-        return false;
-      }
-
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
-    }
-
-    function createSupabaseClient() {
-      const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-      return globalThis.supabase.createClient(supabaseUrl, supabaseKey);
-    }
-
-    function isDuplicateNewsletterError(error) {
-      return Boolean(
-        error &&
-        (
-          error.code === "23505" ||
-          (typeof error.message === "string" && error.message.includes("duplicate key value"))
-        )
-      );
-    }
-
-    function setNewsletterMessage(messageBox, message, color) {
-      if (!messageBox) return;
-      messageBox.style.color = color;
-      messageBox.textContent = message;
-    }
-
-    function setNewsletterLoadingState(submitBtn, isLoading) {
-      if (!submitBtn) return;
-
-      if (!submitBtn.dataset.originalText) {
-        submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
-      }
-
-      submitBtn.disabled = isLoading;
-      submitBtn.setAttribute("aria-busy", String(isLoading));
-      submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
-    }
-
-    function initNewsletter() {
-      const form = document.getElementById("newsletter-form");
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
-
-      if (!(form instanceof HTMLFormElement) || !(emailInput instanceof HTMLInputElement) || !submitBtn || !messageBox) {
-        return;
-      }
-
-      const supabaseClient = createSupabaseClient();
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const email = emailInput.value.trim();
-        emailInput.removeAttribute("aria-invalid");
-
-        if (!isValidEmail(email)) {
-          emailInput.setAttribute("aria-invalid", "true");
-          setNewsletterMessage(messageBox, "Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
-          return;
-        }
-
-        setNewsletterLoadingState(submitBtn, true);
-        setNewsletterMessage(messageBox, "Envoi en cours...", "#e5e7eb");
-
-        try {
-          const { error } = await supabaseClient
-            .from("newsletter_subscriptions")
-            .insert([{ email }]);
-
-          if (error) {
-            console.error("Erreur newsletter :", error);
-
-            if (isDuplicateNewsletterError(error)) {
-              setNewsletterMessage(messageBox, "Vous êtes déjà inscrit à la newsletter 😉", "#38bdf8");
-            } else {
-              setNewsletterMessage(
-                messageBox,
-                "Une erreur est survenue. Merci de réessayer dans quelques instants.",
-                "#ff6b6b"
-              );
-            }
-            return;
-          }
-
-          setNewsletterMessage(messageBox, "Merci ! Vous êtes inscrit 🎉", "#38bdf8");
-          form.reset();
-        } catch (error) {
-          console.error("Erreur newsletter :", error);
-          setNewsletterMessage(messageBox, "Erreur réseau, merci de réessayer.", "#ff6b6b");
-        } finally {
-          setNewsletterLoadingState(submitBtn, false);
-        }
-      });
-
-      emailInput.addEventListener("input", () => {
-        emailInput.removeAttribute("aria-invalid");
-      });
-    }
-
-    async function loadComponent(targetId, filePath) {
-      const target = document.getElementById(targetId);
-      if (!target) return;
-
-      try {
-        const response = await fetch(filePath);
-        if (!response.ok) {
-          throw new Error("Impossible de charger " + filePath);
-        }
-        const html = await response.text();
-        target.innerHTML = html;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    function setActiveNav(currentKey) {
-      const links = document.querySelectorAll(`[data-nav="${currentKey}"]`);
-      links.forEach((link) => {
-        link.setAttribute("aria-current", "page");
-      });
-    }
-
-    async function initLayout() {
-      await Promise.all([
-        loadComponent("site-header", "components/header.html"),
-        loadComponent("site-footer", "components/footer.html")
-      ]);
-
-      setActiveNav("concept");
-      initBurgerMenu();
-      updateCartIcon();
-      initNewsletter();
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      initLayout();
-    });
-  </script>
+  <script src="js/layout.js"></script>
 </body>
 </html>
