@@ -14,6 +14,8 @@
     supabaseUrl: "https://sfckofydfqbllkxhxwnt.supabase.co",
     supabaseKey:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw",
+    chestScriptPath: "js/chest-widget.js",
+    chestScriptId: "singbox-chest-widget-script",
   };
 
   function normalizePath(path) {
@@ -300,6 +302,51 @@
     }
   }
 
+  function ensureChestScriptLoaded() {
+    if (
+      window.SingboxChestWidget &&
+      typeof window.SingboxChestWidget.refresh === "function"
+    ) {
+      initChestWidgetIfAvailable();
+      return Promise.resolve(true);
+    }
+
+    const existingScript = document.getElementById(CONFIG.chestScriptId);
+
+    if (existingScript) {
+      return new Promise((resolve) => {
+        existingScript.addEventListener("load", () => {
+          initChestWidgetIfAvailable();
+          resolve(true);
+        }, { once: true });
+
+        existingScript.addEventListener("error", () => {
+          console.error("Erreur chargement chest widget.");
+          resolve(false);
+        }, { once: true });
+      });
+    }
+
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.id = CONFIG.chestScriptId;
+      script.src = CONFIG.chestScriptPath;
+      script.defer = true;
+
+      script.addEventListener("load", () => {
+        initChestWidgetIfAvailable();
+        resolve(true);
+      }, { once: true });
+
+      script.addEventListener("error", () => {
+        console.error("Impossible de charger le script du chest widget.");
+        resolve(false);
+      }, { once: true });
+
+      document.body.appendChild(script);
+    });
+  }
+
   function watchCartChanges() {
     window.addEventListener("storage", (event) => {
       if (event.key === CONFIG.cartStorageKey) {
@@ -330,7 +377,7 @@
       initBurgerMenu();
       updateCartIcon();
       initNewsletter();
-      initChestWidgetIfAvailable();
+      await ensureChestScriptLoaded();
       watchCartChanges();
     } catch (error) {
       console.error("Erreur chargement layout :", error);
