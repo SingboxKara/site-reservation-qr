@@ -50,12 +50,13 @@
       current: 3,
       name: "Rookie",
       xpCurrent: 240,
-      xpNextLevel: 400
+      xpNextLevel: 400,
+      xpTotal: 240
     },
     streak: {
       current: 4,
       best: 8,
-      deadlineText: "Reviens avant le 24 mars à 23h59 pour conserver ton streak.",
+      deadlineText: "Reviens avant la fin de la semaine pour conserver ton streak.",
       jokers: 1,
       status: "active",
       lastActivity: "Hier",
@@ -103,6 +104,25 @@
       { icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Tu ramènes toute la team.", rarity: "legendary", unlocked: false, date: "" }
     ]
   };
+
+  const BADGE_DEFINITIONS = [
+    { key: "premiere-session", code: "FIRST_SESSION", icon: "🎤", title: "Première session", desc: "Tu as lancé ta toute première session Singbox.", rarity: "common" },
+    { key: "3h-chant", code: "THREE_HOURS", icon: "⏱️", title: "3h de chant cumulées", desc: "Tu as cumulé 3 heures de chant.", rarity: "common" },
+    { key: "2-sessions", code: "TWO_SESSIONS", icon: "🔁", title: "2 sessions réalisées", desc: "Tu es déjà revenu chanter une deuxième fois.", rarity: "common" },
+    { key: "4-semaines", code: "STREAK_4", icon: "🔥", title: "4 semaines d’affilée", desc: "Tu as tenu un streak de 4 semaines.", rarity: "rare" },
+    { key: "singcoins-1", code: "SINGCOINS_USED_1", icon: "💰", title: "Utiliser ses Singcoins 1 fois", desc: "Tu as utilisé tes Singcoins une première fois.", rarity: "rare" },
+    { key: "10-sessions", code: "TEN_SESSIONS", icon: "📅", title: "10 sessions réalisées", desc: "Tu as déjà 10 sessions à ton actif.", rarity: "rare" },
+    { key: "3-sessions-7j", code: "THREE_SESSIONS_WEEK", icon: "🎶", title: "3 sessions en 7 jours", desc: "Tu as réservé 3 sessions sur une semaine.", rarity: "rare" },
+    { key: "journee-x3", code: "DAY_SESSION_3", icon: "🌞", title: "Session en journée x3", desc: "Tu as chanté 3 fois en journée.", rarity: "rare" },
+    { key: "20-sessions", code: "TWENTY_SESSIONS", icon: "🚀", title: "20 sessions réalisées", desc: "Tu fais clairement partie des habitués.", rarity: "epic" },
+    { key: "streak-8", code: "STREAK_8", icon: "🔥", title: "Streak de 8 semaines", desc: "Tu as gardé ton rythme pendant 8 semaines.", rarity: "epic" },
+    { key: "singcoins-5", code: "SINGCOINS_USED_5", icon: "💎", title: "Utiliser ses Singcoins 5 fois", desc: "Tu sais exploiter tes récompenses.", rarity: "epic" },
+    { key: "6-sessions-semaine", code: "SIX_SESSIONS_WEEK", icon: "🔁", title: "6 sessions en 1 semaine", desc: "Semaine ultra active validée.", rarity: "epic" },
+    { key: "50-sessions", code: "FIFTY_SESSIONS", icon: "🐐", title: "50 sessions réalisées", desc: "Tu fais partie des gros joueurs Singbox.", rarity: "legendary" },
+    { key: "streak-12", code: "STREAK_12", icon: "👑", title: "Streak de 12 semaines", desc: "Régularité monstrueuse.", rarity: "legendary" },
+    { key: "singcoins-10", code: "SINGCOINS_USED_10", icon: "💰", title: "Utiliser ses Singcoins 10 fois", desc: "Maîtrise totale du système.", rarity: "legendary" },
+    { key: "groupe-10", code: "GROUP_SESSION_10", icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Tu ramènes toute la team.", rarity: "legendary" }
+  ];
 
   const LEVEL_NAMES = [
     { min: 1, max: 9, name: "Rookie" },
@@ -244,6 +264,117 @@
       const lvl = Math.max(1, Math.min(100, Number(level) || 1));
       const match = LEVEL_NAMES.find((item) => lvl >= item.min && lvl <= item.max);
       return match ? match.name : "Rookie";
+    },
+
+    toNumber(value, fallback = 0) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : fallback;
+    },
+
+    formatMonthYear(value) {
+      if (!value) return "janvier 2026";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "janvier 2026";
+      try {
+        return new Intl.DateTimeFormat("fr-FR", {
+          month: "long",
+          year: "numeric"
+        }).format(date);
+      } catch {
+        return "janvier 2026";
+      }
+    },
+
+    formatShortDate(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return utils.safeText(value, 40) || "—";
+      try {
+        return new Intl.DateTimeFormat("fr-FR", {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        }).format(date);
+      } catch {
+        return "—";
+      }
+    },
+
+    formatLastActivity(value) {
+      if (!value) return "—";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "—";
+
+      const now = new Date();
+      const diffMs = now.getTime() - date.getTime();
+      const diffDays = Math.floor(diffMs / 86400000);
+
+      if (diffDays <= 0) return "Aujourd’hui";
+      if (diffDays === 1) return "Hier";
+      if (diffDays < 7) return `Il y a ${diffDays} jours`;
+      return utils.formatShortDate(value);
+    },
+
+    formatDurationMinutes(minutes) {
+      const mins = Math.max(0, Math.floor(utils.toNumber(minutes, 0)));
+      if (!mins) return "—";
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      if (h && m) return `${h}h${String(m).padStart(2, "0")}`;
+      if (h) return `${h}h`;
+      return `${m} min`;
+    },
+
+    formatBiggestSession(value) {
+      const n = Math.max(0, Math.floor(utils.toNumber(value, 0)));
+      if (!n) return "—";
+      return `${n} pers.`;
+    },
+
+    formatRewardText(mission) {
+      const singcoins = Math.max(0, Math.floor(utils.toNumber(mission?.rewardSingcoins, 0)));
+      const xp = Math.max(0, Math.floor(utils.toNumber(mission?.rewardXp, 0)));
+      const parts = [];
+      if (singcoins > 0) parts.push(`+${singcoins} Singcoins`);
+      if (xp > 0) parts.push(`+${xp} XP`);
+      return parts.join(" • ") || "Récompense à venir";
+    },
+
+    normalizeBadgeKey(value) {
+      return utils.safeText(value, 120)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+    },
+
+    getBadgeLookupKeys(badge) {
+      const keys = new Set();
+      const raw = [
+        badge?.code,
+        badge?.id,
+        badge?.key,
+        badge?.slug,
+        badge?.title,
+        badge?.name
+      ];
+
+      raw.forEach((item) => {
+        const normalized = utils.normalizeBadgeKey(item);
+        if (normalized) keys.add(normalized);
+      });
+
+      return Array.from(keys);
+    },
+
+    deriveStatus(levelCurrent, sessionsCount) {
+      const level = Math.max(1, Math.floor(utils.toNumber(levelCurrent, 1)));
+      const sessions = Math.max(0, Math.floor(utils.toNumber(sessionsCount, 0)));
+
+      if (level >= 50 || sessions >= 30) return "Habitué confirmé";
+      if (level >= 20 || sessions >= 10) return "Voix qui monte";
+      return "Chanteur en progression";
     }
   };
 
@@ -965,40 +1096,252 @@
     return "Actif";
   }
 
-  function buildData(user = {}) {
-    const data = utils.deepClone(MOCK_GAMIFICATION);
+  function normalizeBadges(apiBadges, fallbackBadges) {
+    const sourceList = Array.isArray(apiBadges) ? apiBadges : [];
+    const unlockedMap = new Map();
 
+    sourceList.forEach((badge) => {
+      utils.getBadgeLookupKeys(badge).forEach((key) => {
+        if (!unlockedMap.has(key)) unlockedMap.set(key, badge);
+      });
+    });
+
+    const catalog = BADGE_DEFINITIONS.length
+      ? BADGE_DEFINITIONS
+      : (Array.isArray(fallbackBadges) ? fallbackBadges : []).map((badge) => ({
+          key: utils.normalizeBadgeKey(badge.title || badge.id || badge.code),
+          code: badge.code || badge.id || badge.title,
+          icon: badge.icon,
+          title: badge.title,
+          desc: badge.desc,
+          rarity: badge.rarity
+        }));
+
+    return catalog.map((definition, index) => {
+      const defKey = utils.normalizeBadgeKey(definition.key || definition.code || definition.title || `badge-${index}`);
+      const matched =
+        unlockedMap.get(defKey) ||
+        unlockedMap.get(utils.normalizeBadgeKey(definition.code)) ||
+        unlockedMap.get(utils.normalizeBadgeKey(definition.title));
+
+      return {
+        icon: definition.icon || "★",
+        title: definition.title || "Badge",
+        desc: definition.desc || "",
+        rarity: definition.rarity || "common",
+        unlocked: Boolean(matched),
+        date: matched?.unlockedAt ? utils.formatShortDate(matched.unlockedAt) : ""
+      };
+    });
+  }
+
+  function normalizeGamificationResponse(apiData, user = {}) {
+    const fallback = utils.deepClone(MOCK_GAMIFICATION);
     const email = utils.normalizeEmail(user?.email || "");
     const displayName = utils.getDisplayName(user);
-    const points = Number.isFinite(Number(user?.points)) ? Math.max(0, Math.floor(Number(user.points))) : 0;
 
-    data.identity.displayName = displayName;
-    data.identity.avatarText = utils.initialsFromText(displayName || email || "S");
+    const api = apiData && typeof apiData === "object" ? apiData : {};
+    const levelApi = api.level && typeof api.level === "object" ? api.level : {};
+    const streakApi = api.streak && typeof api.streak === "object" ? api.streak : {};
+    const singcoinsApi = api.singcoins && typeof api.singcoins === "object" ? api.singcoins : {};
+    const statsApi = api.stats && typeof api.stats === "object" ? api.stats : {};
+    const recordsApi = api.records && typeof api.records === "object" ? api.records : {};
 
-    data.singcoins.balance = points;
-    data.singcoins.earned = Math.max(points + Number(data.singcoins.used || 0), Number(data.singcoins.earned || 0));
+    const balance =
+      singcoinsApi.balance != null
+        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.balance, 0)))
+        : Math.max(0, Math.floor(utils.toNumber(user?.points, fallback.singcoins.balance)));
 
-    if (points >= state.config.loyaltyGoal) {
-      data.singcoins.nextReward = "Séance offerte débloquée";
-      data.identity.status = "Habitué confirmé";
-    } else if (points >= 50) {
-      data.identity.status = "Voix qui monte";
-    }
+    const earned =
+      singcoinsApi.earned != null
+        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.earned, 0)))
+        : Math.max(balance + Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, fallback.singcoins.used))), fallback.singcoins.earned);
 
-    const sessionsCount = Number.isFinite(Number(user?.sessionsCount))
-      ? Math.max(0, Math.floor(Number(user.sessionsCount)))
+    const used =
+      singcoinsApi.used != null
+        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, 0)))
+        : fallback.singcoins.used;
+
+    const totalSessions =
+      statsApi.totalSessions != null
+        ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSessions, 0)))
+        : (user?.sessionsCount != null
+            ? Math.max(0, Math.floor(utils.toNumber(user.sessionsCount, 0)))
+            : fallback.stats.totalSessions);
+
+    const levelCurrent = Math.max(
+      1,
+      Math.floor(
+        utils.toNumber(
+          levelApi.current,
+          fallback.level.current
+        )
+      )
+    );
+
+    const xpCurrent = Math.max(0, Math.floor(utils.toNumber(levelApi.xpCurrent, fallback.level.xpCurrent)));
+    const xpNextLevel = Math.max(1, Math.floor(utils.toNumber(levelApi.xpNextLevel, fallback.level.xpNextLevel)));
+    const xpTotal = Math.max(0, Math.floor(utils.toNumber(levelApi.xpTotal, xpCurrent)));
+
+    const streakCurrent = Math.max(0, Math.floor(utils.toNumber(streakApi.current, fallback.streak.current)));
+    const streakBest = Math.max(
+      streakCurrent,
+      Math.floor(utils.toNumber(streakApi.best, fallback.streak.best))
+    );
+
+    const lastValidatedAt = streakApi.lastValidatedAt || "";
+    const lastPeriodKey = utils.safeText(streakApi.lastPeriodKey || "", 60);
+
+    const streakStatus = streakCurrent > 0 ? "active" : "broken";
+    const deadlineText = lastPeriodKey
+      ? "Reviens avant la fin de la semaine pour conserver ton streak."
+      : fallback.streak.deadlineText;
+
+    const totalTime =
+      typeof statsApi.totalTime === "string" && utils.safeText(statsApi.totalTime)
+        ? utils.safeText(statsApi.totalTime, 40)
+        : (statsApi.totalTime != null
+            ? utils.formatDurationMinutes(statsApi.totalTime)
+            : fallback.stats.totalTime);
+
+    const totalSongs =
+      statsApi.totalSongs != null
+        ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSongs, 0)))
+        : fallback.stats.totalSongs;
+
+    const lastSession = statsApi.lastSession
+      ? utils.formatShortDate(statsApi.lastSession)
+      : fallback.stats.lastSession;
+
+    const biggestSession =
+      recordsApi.biggestSession != null
+        ? utils.formatBiggestSession(recordsApi.biggestSession)
+        : fallback.records.biggestSession;
+
+    const timePerSession =
+      recordsApi.longestSessionMinutes != null
+        ? utils.formatDurationMinutes(recordsApi.longestSessionMinutes)
+        : fallback.records.timePerSession;
+
+    const normalized = {
+      identity: {
+        displayName,
+        avatarText: utils.initialsFromText(displayName || email || "S"),
+        memberSince: utils.formatMonthYear(user?.created_at || user?.createdAt),
+        status: utils.deriveStatus(levelCurrent, totalSessions)
+      },
+
+      level: {
+        current: levelCurrent,
+        name: utils.safeText(levelApi.name || "", 60) || utils.getLevelName(levelCurrent),
+        xpCurrent,
+        xpNextLevel,
+        xpTotal
+      },
+
+      streak: {
+        current: streakCurrent,
+        best: streakBest,
+        deadlineText,
+        jokers: streakApi.jokers != null ? Math.max(0, Math.floor(utils.toNumber(streakApi.jokers, 0))) : 0,
+        status: streakStatus,
+        lastActivity: lastValidatedAt ? utils.formatLastActivity(lastValidatedAt) : "—",
+        rhythm: streakCurrent >= 8 ? "Très bon" : streakCurrent >= 4 ? "Bon rythme" : "À lancer"
+      },
+
+      singcoins: {
+        balance,
+        earned,
+        used,
+        nextReward: balance >= state.config.loyaltyGoal
+          ? "Séance offerte débloquée"
+          : "Séance offerte à 100 Singcoins"
+      },
+
+      stats: {
+        totalSessions,
+        totalTime,
+        totalSongs,
+        lastSession
+      },
+
+      records: {
+        bestStreak: recordsApi.bestStreak != null
+          ? Math.max(0, Math.floor(utils.toNumber(recordsApi.bestStreak, 0)))
+          : streakBest,
+        activeWeek: fallback.records.activeWeek || "—",
+        biggestSession,
+        timePerSession
+      },
+
+      missions: Array.isArray(api.missions)
+        ? api.missions.map((mission, index) => {
+            const targetValue = Math.max(0, utils.toNumber(mission?.targetValue, 0));
+            const progressValue = Math.max(0, utils.toNumber(mission?.progressValue, 0));
+            const isCompleted = Boolean(mission?.isCompleted);
+            return {
+              id: utils.safeText(mission?.code || `mission-${index}`, 80) || `mission-${index}`,
+              title: utils.safeText(mission?.title || `Mission ${index + 1}`, 140),
+              progress: isCompleted ? 100 : (targetValue > 0 ? utils.pct(progressValue, targetValue) : 0),
+              reward: utils.formatRewardText(mission),
+              done: isCompleted
+            };
+          })
+        : fallback.missions,
+
+      badges: normalizeBadges(api.badges, fallback.badges)
+    };
+
+    return normalized;
+  }
+
+  function buildData(user = {}) {
+    const fallback = utils.deepClone(MOCK_GAMIFICATION);
+    const gamificationApi = user?.gamification && typeof user.gamification === "object"
+      ? user.gamification
       : null;
 
-    if (sessionsCount !== null) {
-      data.stats.totalSessions = sessionsCount;
+    if (!gamificationApi) {
+      const email = utils.normalizeEmail(user?.email || "");
+      const displayName = utils.getDisplayName(user);
+      const points = Number.isFinite(Number(user?.points)) ? Math.max(0, Math.floor(Number(user.points))) : 0;
 
-      if (sessionsCount >= 100) data.level.current = 100;
-      else data.level.current = Math.max(1, Math.min(99, Math.floor(sessionsCount * 2.2) + 1));
+      fallback.identity.displayName = displayName;
+      fallback.identity.avatarText = utils.initialsFromText(displayName || email || "S");
+      fallback.identity.memberSince = utils.formatMonthYear(user?.created_at || user?.createdAt);
+      fallback.identity.status = utils.deriveStatus(fallback.level.current, user?.sessionsCount || fallback.stats.totalSessions);
 
-      data.level.name = utils.getLevelName(data.level.current);
+      fallback.singcoins.balance = points;
+      fallback.singcoins.earned = Math.max(points + Number(fallback.singcoins.used || 0), Number(fallback.singcoins.earned || 0));
+      fallback.singcoins.nextReward = points >= state.config.loyaltyGoal
+        ? "Séance offerte débloquée"
+        : "Séance offerte à 100 Singcoins";
+
+      const sessionsCount = Number.isFinite(Number(user?.sessionsCount))
+        ? Math.max(0, Math.floor(Number(user.sessionsCount)))
+        : null;
+
+      if (sessionsCount !== null) {
+        fallback.stats.totalSessions = sessionsCount;
+      }
+
+      return fallback;
     }
 
-    return data;
+    const normalized = normalizeGamificationResponse(gamificationApi, user);
+
+    return {
+      ...fallback,
+      ...normalized,
+      identity: { ...fallback.identity, ...normalized.identity },
+      level: { ...fallback.level, ...normalized.level },
+      streak: { ...fallback.streak, ...normalized.streak },
+      singcoins: { ...fallback.singcoins, ...normalized.singcoins },
+      stats: { ...fallback.stats, ...normalized.stats },
+      records: { ...fallback.records, ...normalized.records },
+      missions: Array.isArray(normalized.missions) && normalized.missions.length ? normalized.missions : fallback.missions,
+      badges: Array.isArray(normalized.badges) && normalized.badges.length ? normalized.badges : fallback.badges
+    };
   }
 
   function renderShell() {
@@ -1404,7 +1747,7 @@
 
   function renderLevel(data) {
     const currentXp = Number(data.level.xpCurrent || 0);
-    const nextXp = Number(data.level.xpNextLevel || 1);
+    const nextXp = Math.max(1, Number(data.level.xpNextLevel || 1));
     const progress = utils.pct(currentXp, nextXp);
     const remaining = Math.max(0, nextXp - currentXp);
 
@@ -1681,7 +2024,8 @@
   function renderLoggedOut() {
     state.user = {
       email: "",
-      points: 0
+      points: 0,
+      gamification: null
     };
 
     if (state.mounted) renderAll();
@@ -1695,6 +2039,7 @@
     mount,
     updateUser,
     renderLoggedOut,
-    refresh
+    refresh,
+    normalizeGamificationResponse
   };
 })();
