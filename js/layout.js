@@ -6,11 +6,14 @@
     footerTargetId: "site-footer",
     headerPath: "components/header.html",
     footerPath: "components/footer.html",
-    activeClassAttribute: "aria-current",
-    activeClassValue: "page",
+    activeAttr: "aria-current",
+    activeAttrValue: "page",
+    cartStorageKey: "panier",
     bodyReadyClass: "layout-ready",
     bodyLoadingClass: "layout-loading",
-    cartStorageKey: "panier",
+    supabaseUrl: "https://sfckofydfqbllkxhxwnt.supabase.co",
+    supabaseKey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw",
   };
 
   function normalizePath(path) {
@@ -28,6 +31,23 @@
     if (!path || path.endsWith("/")) return "index.html";
     const parts = path.split("/");
     return parts[parts.length - 1] || "index.html";
+  }
+
+  function getCurrentPageKey() {
+    const page = getCurrentPageFile();
+
+    const map = {
+      "index.html": "index",
+      "concept.html": "concept",
+      "box.html": "box",
+      "actualites.html": "actualites",
+      "contact.html": "contact",
+      "mon-compte.html": "mon-compte",
+      "reservation.html": "reservation",
+      "panier.html": "panier",
+    };
+
+    return map[page] || "";
   }
 
   async function fetchText(url) {
@@ -48,25 +68,20 @@
   }
 
   function clearExistingCurrentMarkers() {
-    document.querySelectorAll(`[${CONFIG.activeClassAttribute}]`).forEach((el) => {
-      el.removeAttribute(CONFIG.activeClassAttribute);
+    document.querySelectorAll(`[${CONFIG.activeAttr}]`).forEach((el) => {
+      el.removeAttribute(CONFIG.activeAttr);
     });
   }
 
   function setActiveNavLink() {
     clearExistingCurrentMarkers();
 
-    const currentPage = getCurrentPageFile();
+    const currentPageKey = getCurrentPageKey();
+    if (!currentPageKey) return;
 
-    const navLinks = document.querySelectorAll(
-      `.main-nav a[href], .mobile-nav a[href]`
-    );
-
-    navLinks.forEach((link) => {
-      const href = normalizePath(link.getAttribute("href"));
-      if (href === currentPage) {
-        link.setAttribute(CONFIG.activeClassAttribute, CONFIG.activeClassValue);
-      }
+    const matchingLinks = document.querySelectorAll(`[data-nav="${currentPageKey}"]`);
+    matchingLinks.forEach((link) => {
+      link.setAttribute(CONFIG.activeAttr, CONFIG.activeAttrValue);
     });
   }
 
@@ -146,19 +161,133 @@
     });
   }
 
-  function initNewsletterPlaceholder() {
+  function isValidEmail(email) {
+    if (typeof email !== "string") return false;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+  }
+
+  function createSupabaseClient() {
+    if (!window.supabase || typeof window.supabase.createClient !== "function") {
+      return null;
+    }
+
+    return window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
+  }
+
+  function isDuplicateNewsletterError(error) {
+    return Boolean(
+      error &&
+        (
+          error.code === "23505" ||
+          (typeof error.message === "string" &&
+            error.message.includes("duplicate key value"))
+        )
+    );
+  }
+
+  function setNewsletterMessage(messageBox, message, color) {
+    if (!messageBox) return;
+    messageBox.style.color = color;
+    messageBox.textContent = message;
+  }
+
+  function setNewsletterLoadingState(submitBtn, isLoading) {
+    if (!submitBtn) return;
+
+    if (!submitBtn.dataset.originalText) {
+      submitBtn.dataset.originalText = submitBtn.textContent || "S'abonner";
+    }
+
+    submitBtn.disabled = isLoading;
+    submitBtn.setAttribute("aria-busy", String(isLoading));
+    submitBtn.textContent = isLoading ? "Envoi..." : submitBtn.dataset.originalText;
+  }
+
+  function initNewsletter() {
     const form = document.getElementById("newsletter-form");
+    const emailInput = document.getElementById("newsletter-email");
+    const submitBtn = document.getElementById("newsletter-submit");
     const messageBox = document.getElementById("newsletter-message");
 
-    if (!form) return;
+    if (
+      !(form instanceof HTMLFormElement) ||
+      !(emailInput instanceof HTMLInputElement) ||
+      !(submitBtn instanceof HTMLElement) ||
+      !(messageBox instanceof HTMLElement)
+    ) {
+      return;
+    }
 
-    form.addEventListener("submit", (event) => {
+    const supabaseClient = createSupabaseClient();
+
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (messageBox) {
-        messageBox.textContent = "Newsletter bientôt disponible.";
-        messageBox.style.color = "#9ca3af";
+      const email = emailInput.value.trim();
+      emailInput.removeAttribute("aria-invalid");
+
+      if (!isValidEmail(email)) {
+        emailInput.setAttribute("aria-invalid", "true");
+        setNewsletterMessage(
+          messageBox,
+          "Veuillez entrer une adresse e-mail valide.",
+          "#ff6b6b"
+        );
+        return;
       }
+
+      if (!supabaseClient) {
+        setNewsletterMessage(
+          messageBox,
+          "Le service newsletter n'est pas disponible pour le moment.",
+          "#ff6b6b"
+        );
+        return;
+      }
+
+      setNewsletterLoadingState(submitBtn, true);
+      setNewsletterMessage(messageBox, "Envoi en cours...", "#e5e7eb");
+
+      try {
+        const { error } = await supabaseClient
+          .from("newsletter_subscriptions")
+          .insert([{ email }]);
+
+        if (error) {
+          console.error("Erreur newsletter :", error);
+
+          if (isDuplicateNewsletterError(error)) {
+            setNewsletterMessage(
+              messageBox,
+              "Vous êtes déjà inscrit à la newsletter 😉",
+              "#38bdf8"
+            );
+          } else {
+            setNewsletterMessage(
+              messageBox,
+              "Une erreur est survenue. Merci de réessayer dans quelques instants.",
+              "#ff6b6b"
+            );
+          }
+          return;
+        }
+
+        setNewsletterMessage(messageBox, "Merci ! Vous êtes inscrit 🎉", "#38bdf8");
+        form.reset();
+      } catch (error) {
+        console.error("Erreur newsletter :", error);
+        setNewsletterMessage(
+          messageBox,
+          "Erreur réseau, merci de réessayer.",
+          "#ff6b6b"
+        );
+      } finally {
+        setNewsletterLoadingState(submitBtn, false);
+      }
+    });
+
+    emailInput.addEventListener("input", () => {
+      emailInput.removeAttribute("aria-invalid");
     });
   }
 
@@ -200,7 +329,7 @@
       setActiveNavLink();
       initBurgerMenu();
       updateCartIcon();
-      initNewsletterPlaceholder();
+      initNewsletter();
       initChestWidgetIfAvailable();
       watchCartChanges();
     } catch (error) {
@@ -223,6 +352,7 @@
     refreshCart: updateCartIcon,
     refreshChest: initChestWidgetIfAvailable,
     getCurrentPageFile,
+    getCurrentPageKey,
   };
 
   boot();
