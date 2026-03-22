@@ -368,16 +368,6 @@
       text-decoration: none;
     }
 
-    .newsletter-honeypot {
-      position: absolute !important;
-      left: -9999px !important;
-      width: 1px !important;
-      height: 1px !important;
-      overflow: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
     @media (max-width: 900px) {
       .cart-item-card {
         flex-direction: column;
@@ -481,7 +471,6 @@
   <div id="site-footer"></div>
 
   <script src="js/layout.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const API_BASE =
       (globalThis.location.hostname === "localhost" || globalThis.location.hostname === "127.0.0.1")
@@ -489,10 +478,8 @@
         : "https://singbox-backend.onrender.com";
 
     const SLOT_DURATION_MINUTES = 90;
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJ9";
-
     const MIN_BILLABLE_PERSONS = 2;
+
     const WEEKDAY_MORNING_RATE = 4.99;
     const WEEKDAY_MIDDAY_RATE = 8.99;
     const WEEKDAY_EVENING_RATE = 10.99;
@@ -504,7 +491,7 @@
     const WEEKDAY_END_NIGHT_HOUR = 2;
     const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
 
-    let supabaseClient = null;
+    const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
 
     function getPanier() {
       try {
@@ -529,11 +516,6 @@
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
       el.setAttribute("aria-hidden", panier.length ? "false" : "true");
-    }
-
-    function isValidEmail(email) {
-      if (typeof email !== "string") return false;
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
     }
 
     function setServerMessage(text, type = "") {
@@ -812,6 +794,71 @@
       };
     }
 
+    function getChestCheckoutContext() {
+      try {
+        const raw = sessionStorage.getItem(CHEST_CONTEXT_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return parsed && typeof parsed === "object" ? parsed : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function saveChestCheckoutContext(context) {
+      if (!context || typeof context !== "object") return;
+      sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+    }
+
+    function readChestContextFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+
+      const promoCode = String(params.get("promoCode") || "").trim();
+      const rewardType = String(params.get("rewardType") || "").trim();
+      const rewardValue = String(params.get("rewardValue") || "").trim();
+      const chestReward = String(params.get("chestReward") || "").trim();
+
+      const hasContext = promoCode || rewardType || rewardValue || chestReward;
+      if (!hasContext) return null;
+
+      return {
+        promoCode: promoCode || null,
+        rewardType: rewardType || null,
+        rewardValue: rewardValue || null,
+        chestReward: chestReward || null,
+      };
+    }
+
+    function initChestCheckoutContext() {
+      const fromUrl = readChestContextFromUrl();
+      if (fromUrl) {
+        saveChestCheckoutContext(fromUrl);
+        return fromUrl;
+      }
+      return getChestCheckoutContext();
+    }
+
+    function buildChestMessage(context) {
+      if (!context) return "";
+
+      if (context.promoCode && context.rewardType === "free_session") {
+        return `Récompense coffre détectée : session offerte prête à être appliquée avec le code ${context.promoCode}.`;
+      }
+
+      if (context.promoCode && context.rewardType === "discount_percent" && context.rewardValue) {
+        return `Récompense coffre détectée : -${context.rewardValue}% prêt à être appliqué avec le code ${context.promoCode}.`;
+      }
+
+      if (context.rewardType === "points") {
+        return "Les Singcoins gagnés via le coffre ont déjà été crédités sur votre compte.";
+      }
+
+      if (context.promoCode) {
+        return `Récompense coffre détectée : code promo ${context.promoCode} prêt pour le paiement.`;
+      }
+
+      return "";
+    }
+
     function renderEmptyCart(container, summaryEl, actionsEl, policyEl) {
       summaryEl.style.display = "none";
       actionsEl.style.display = "none";
@@ -906,7 +953,13 @@
       if (hasMissingPrice) {
         setServerMessage("Le montant final sera confirmé avant le paiement sécurisé.", "info");
       } else {
-        setServerMessage("");
+        const chestContext = getChestCheckoutContext();
+        const chestMessage = buildChestMessage(chestContext);
+        if (chestMessage) {
+          setServerMessage(chestMessage, "info");
+        } else {
+          setServerMessage("");
+        }
       }
     }
 
@@ -969,6 +1022,7 @@
       clearBtn.addEventListener("click", () => {
         if (!confirm("Vider le panier ?")) return;
         savePanier([]);
+        sessionStorage.removeItem(CHEST_CONTEXT_STORAGE_KEY);
         setServerMessage("");
         renderPanier();
       });
@@ -1010,7 +1064,7 @@
       }
     }
 
-    async function verifyCartBeforePayment(panier) {
+    async function verifyCartBeforePayment(panier, chestContext = null) {
       return fetch(`${API_BASE}/api/verify-cart`, {
         method: "POST",
         headers: {
@@ -1018,7 +1072,11 @@
         },
         body: JSON.stringify({
           panier,
-          items: panier
+          items: panier,
+          promoCode: chestContext?.promoCode || null,
+          chestReward: chestContext?.chestReward || null,
+          rewardType: chestContext?.rewardType || null,
+          rewardValue: chestContext?.rewardValue || null
         })
       });
     }
@@ -1031,8 +1089,23 @@
       );
     }
 
-    function goToPaymentPage() {
-      globalThis.location.href = "paiement.html";
+    function goToPaymentPage(chestContext = null) {
+      const url = new URL("paiement.html", window.location.origin);
+
+      if (chestContext?.promoCode) {
+        url.searchParams.set("promoCode", chestContext.promoCode);
+      }
+      if (chestContext?.chestReward) {
+        url.searchParams.set("chestReward", chestContext.chestReward);
+      }
+      if (chestContext?.rewardType) {
+        url.searchParams.set("rewardType", chestContext.rewardType);
+      }
+      if (chestContext?.rewardValue) {
+        url.searchParams.set("rewardValue", chestContext.rewardValue);
+      }
+
+      globalThis.location.href = url.pathname + url.search;
     }
 
     function normalizeVerifiedItems(data, fallbackPanier) {
@@ -1069,6 +1142,7 @@
 
       confirmBtn.addEventListener("click", async () => {
         const panier = getPanier();
+        const chestContext = getChestCheckoutContext();
 
         if (panier.length === 0) {
           alert("Votre panier est vide.");
@@ -1079,10 +1153,15 @@
         const defaultText = confirmBtn.textContent;
         confirmBtn.textContent = "Vérification...";
 
-        setServerMessage("Vérification de vos créneaux en cours...", "info");
+        const chestMessage = buildChestMessage(chestContext);
+        if (chestMessage) {
+          setServerMessage(`${chestMessage} Vérification de vos créneaux en cours...`, "info");
+        } else {
+          setServerMessage("Vérification de vos créneaux en cours...", "info");
+        }
 
         try {
-          const response = await verifyCartBeforePayment(panier);
+          const response = await verifyCartBeforePayment(panier, chestContext);
           const data = await safeReadJson(response);
 
           if (!response.ok) {
@@ -1095,8 +1174,7 @@
           savePanier(normalizedItems);
           renderPanier();
 
-          setServerMessage("");
-          goToPaymentPage();
+          goToPaymentPage(chestContext);
         } catch (err) {
           console.error("Erreur vérification panier :", err);
           setServerMessage(
@@ -1108,86 +1186,6 @@
           confirmBtn.textContent = defaultText;
         }
       });
-    }
-
-    function initSupabaseClient() {
-      try {
-        if (globalThis.supabase && typeof globalThis.supabase.createClient === "function") {
-          supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        }
-      } catch (error) {
-        console.error("Erreur initialisation Supabase :", error);
-        supabaseClient = null;
-      }
-    }
-
-    function initNewsletter() {
-      const emailInput = document.getElementById("newsletter-email");
-      const submitBtn = document.getElementById("newsletter-submit");
-      const messageBox = document.getElementById("newsletter-message");
-      const honeypot = document.getElementById("newsletter-company");
-
-      if (!emailInput || !submitBtn || !messageBox) return;
-      if (submitBtn.dataset.bound === "true") return;
-
-      submitBtn.addEventListener("click", async () => {
-        const email = emailInput.value.trim();
-        const botValue = honeypot?.value || "";
-
-        messageBox.style.color = "#e5e7eb";
-        messageBox.textContent = "Envoi en cours...";
-
-        if (botValue) {
-          messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci !";
-          return;
-        }
-
-        if (!isValidEmail(email)) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Veuillez entrer une adresse e-mail valide.";
-          return;
-        }
-
-        if (!supabaseClient) {
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Service newsletter indisponible.";
-          return;
-        }
-
-        try {
-          const { error } = await supabaseClient
-            .from("newsletter_subscriptions")
-            .insert([{ email }]);
-
-          if (error) {
-            const isDuplicate =
-              error.code === "23505" ||
-              (error.message && error.message.includes("duplicate key value"));
-
-            if (isDuplicate) {
-              messageBox.style.color = "#38bdf8";
-              messageBox.textContent = "Vous êtes déjà inscrit à la newsletter 😉";
-              return;
-            }
-
-            messageBox.style.color = "#ff6b6b";
-            messageBox.textContent = "Erreur : " + error.message;
-            return;
-          }
-
-          messageBox.style.color = "#38bdf8";
-          messageBox.textContent = "Merci ! Vous êtes inscrit 🎉";
-          emailInput.value = "";
-          if (honeypot) honeypot.value = "";
-        } catch (error) {
-          console.error("Erreur Supabase newsletter :", error);
-          messageBox.style.color = "#ff6b6b";
-          messageBox.textContent = "Erreur réseau. Merci de réessayer.";
-        }
-      });
-
-      submitBtn.dataset.bound = "true";
     }
 
     function markLayoutReady() {
@@ -1226,7 +1224,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
-      initSupabaseClient();
+      initChestCheckoutContext();
       await waitForLayoutElements();
       markLayoutReady();
       initMobileMenu();
@@ -1235,7 +1233,6 @@
       initClearCart();
       initRemoveItem();
       initConfirmCart();
-      initNewsletter();
     });
   </script>
 </body>
