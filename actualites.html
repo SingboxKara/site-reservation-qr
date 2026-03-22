@@ -632,6 +632,16 @@
       pointer-events: none !important;
     }
 
+    body.layout-loading #site-header,
+    body.layout-loading #site-footer {
+      visibility: hidden;
+    }
+
+    body.layout-ready #site-header,
+    body.layout-ready #site-footer {
+      visibility: visible;
+    }
+
     /* ---------- RESPONSIVE PAGE ---------- */
     @media (max-width: 900px) {
       .news-grid,
@@ -677,56 +687,7 @@
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="brand">
-        <img src="logo.png" alt="Logo Singbox" class="brand-logo" />
-        <span class="brand-text">Singbox</span>
-      </a>
-
-      <nav class="main-nav" aria-label="Navigation principale">
-        <ul>
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="concept.html">Le concept</a></li>
-          <li><a href="box.html">Les box</a></li>
-          <li><a href="actualites.html" aria-current="page">Actualités</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="mon-compte.html">Mon compte</a></li>
-        </ul>
-      </nav>
-
-      <div class="header-actions">
-        <a href="reservation.html" class="nav-cta">Réserver</a>
-        <a href="panier.html" class="cart-icon" aria-label="Voir mon panier">
-          🛒<span id="cart-count"></span>
-        </a>
-        <button
-          class="burger-button"
-          id="burger-button"
-          type="button"
-          aria-label="Ouvrir le menu"
-          aria-controls="mobile-nav"
-          aria-expanded="false"
-        >
-          ☰
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MENU MOBILE -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Menu mobile">
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="concept.html">Le concept</a></li>
-      <li><a href="box.html">Les box</a></li>
-      <li><a href="actualites.html">Actualités</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="mon-compte.html">Mon compte</a></li>
-      <li><a href="reservation.html">Réserver</a></li>
-    </ul>
-  </nav>
+  <div id="site-header"></div>
 
   <!-- INTRO ACTUALITÉS -->
   <section id="news-intro">
@@ -801,7 +762,6 @@
         </div>
 
         <p id="news-empty" class="news-empty" style="display: none;"></p>
-
         <div id="news-empty-actions" class="news-empty-actions" style="display: none;"></div>
 
         <div id="news-grid" class="news-grid" style="display: none;">
@@ -850,97 +810,15 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="newsletter-container" id="newsletter-section">
-      <h3>Inscrivez-vous à notre newsletter</h3>
-      <p>Les meilleures offres, soirées à thème et nouveautés directement dans votre boîte mail.</p>
+  <div id="site-footer"></div>
 
-      <form class="newsletter-row" id="newsletter-form">
-        <label for="newsletter-email" class="newsletter-honeypot">Ne pas remplir ce champ</label>
-        <input
-          id="newsletter-company"
-          class="newsletter-honeypot"
-          type="text"
-          tabindex="-1"
-          autocomplete="off"
-          aria-hidden="true"
-        />
-
-        <input
-          type="email"
-          id="newsletter-email"
-          name="email"
-          placeholder="Entrez votre adresse e-mail"
-          required
-        />
-        <button type="submit" id="newsletter-submit">S'abonner</button>
-      </form>
-
-      <p id="newsletter-message" class="newsletter-message"></p>
-    </div>
-
-    <div class="footer-columns">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Logo Singbox" />
-        <div>
-          <p style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">Singbox</p>
-          <p style="margin: 0;">Karaoké Box à Toulouse</p>
-        </div>
-      </div>
-
-      <div>
-        <p><strong>Infos</strong></p>
-        <p><a href="mentions-legales.html">Mentions légales</a></p>
-        <p><a href="politique-confidentialite.html">Politique de confidentialité</a></p>
-        <p><a href="cgv.html">CGV</a></p>
-      </div>
-
-      <div>
-        <p><strong>Contact</strong></p>
-        <p>Adresse : 66 Rue de la République, 31300 Toulouse</p>
-        <p>Email : contactsingbox@gmail.com</p>
-        <p>Téléphone : 06 00 00 00 00</p>
-      </div>
-
-      <div>
-        <p><strong>Réseaux</strong></p>
-
-        <p style="display: flex; align-items: center; gap: 8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></rect>
-            <circle cx="12" cy="12" r="5" fill="none" stroke="#F9FAFB" stroke-width="1.6"></circle>
-            <circle cx="17" cy="7" r="1.2" fill="#F9FAFB"></circle>
-          </svg>
-          <a href="https://www.instagram.com/singboxtoulouse/" target="_blank" rel="noopener noreferrer">
-            Instagram
-          </a>
-        </p>
-
-        <p style="display: flex; align-items: center; gap: 8px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 5.5c.7.8 1.6 1.4 2.7 1.6v3a5.1 5.1 0 0 1-3-1v4.3a4.8 4.8 0 1 1-4.7-4.8c.3 0 .6 0 .9.1v3a1.9 1.9 0 1 0 1.4 1.8V4.5h2.7v1z" fill="#F9FAFB"></path>
-          </svg>
-          <a href="https://www.tiktok.com/@singbox.toulouse/" target="_blank" rel="noopener noreferrer">
-            TikTok
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      Réalisé avec ♥ pour Singbox
-    </div>
-  </footer>
-
-  <!-- Supabase JS -->
+  <!-- Scripts -->
   <script src="js/supabase-js-2.min.js"></script>
-
+  <script src="js/layout.js"></script>
   <script>
-    const supabaseUrl = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
-
-    const supabaseClient = globalThis.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const ACTU_SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
+    const ACTU_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const supabaseClient = globalThis.supabase.createClient(ACTU_SUPABASE_URL, ACTU_SUPABASE_KEY);
 
     const CATEGORY_LABELS = {
       "coulisses-travaux": "Coulisses & travaux",
@@ -968,10 +846,6 @@
       return String(value || "").replace(/<[^>]*>/g, " ");
     }
 
-    function normalizeEmail(email) {
-      return String(email || "").trim().toLowerCase();
-    }
-
     function isSafePublicImageUrl(value) {
       const input = String(value || "").trim();
       if (!input) return false;
@@ -986,22 +860,6 @@
       } catch {
         return false;
       }
-    }
-
-    function getPanier() {
-      try {
-        const parsed = JSON.parse(localStorage.getItem("panier"));
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function updateCartIcon() {
-      const el = getEl("cart-count");
-      if (!el) return;
-      const panier = getPanier();
-      el.textContent = panier.length ? String(panier.length) : "";
     }
 
     function formatDateFr(dateStr) {
@@ -1056,9 +914,7 @@
 
     function hideLoadingState() {
       const loadingEl = getEl("news-loading");
-      if (loadingEl) {
-        loadingEl.style.display = "none";
-      }
+      if (loadingEl) loadingEl.style.display = "none";
     }
 
     function showLoadingState() {
@@ -1069,10 +925,12 @@
 
       if (loadingEl) loadingEl.style.display = "grid";
       if (grid) grid.style.display = "none";
+
       if (emptyEl) {
         emptyEl.textContent = "";
         emptyEl.style.display = "none";
       }
+
       if (emptyActions) {
         emptyActions.innerHTML = "";
         emptyActions.style.display = "none";
@@ -1090,6 +948,7 @@
 
       if (mainCol) mainCol.innerHTML = "";
       if (sideCol) sideCol.innerHTML = "";
+
       if (grid) grid.style.display = "none";
 
       if (emptyEl) {
@@ -1156,6 +1015,7 @@
       if (articleImage) {
         const mediaLink = document.createElement(isClickable ? "a" : "div");
         mediaLink.className = "news-card-media-link";
+
         if (isClickable) {
           mediaLink.href = articleUrl;
           mediaLink.setAttribute("aria-label", "Ouvrir l’article : " + (article.titre || "Sans titre"));
@@ -1272,10 +1132,12 @@
 
       const emptyEl = getEl("news-empty");
       const emptyActions = getEl("news-empty-actions");
+
       if (emptyEl) {
         emptyEl.textContent = "";
         emptyEl.style.display = "none";
       }
+
       if (emptyActions) {
         emptyActions.innerHTML = "";
         emptyActions.style.display = "none";
@@ -1318,49 +1180,6 @@
       } catch (error) {
         handleArticlesLoadError(error);
       }
-    }
-
-    function closeMobileMenu() {
-      const burgerBtn = getEl("burger-button");
-      const mobileNav = getEl("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) return;
-
-      mobileNav.classList.remove("open");
-      burgerBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function initMobileMenu() {
-      const burgerBtn = getEl("burger-button");
-      const mobileNav = getEl("mobile-nav");
-
-      if (!burgerBtn || !mobileNav) return;
-
-      burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", String(isOpen));
-      });
-
-      mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
-          closeMobileMenu();
-        }
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeMobileMenu();
-        }
-      });
-
-      document.addEventListener("click", (e) => {
-        const target = e.target;
-        if (!(target instanceof Node)) return;
-        if (!mobileNav.classList.contains("open")) return;
-        if (mobileNav.contains(target) || burgerBtn.contains(target)) return;
-        closeMobileMenu();
-      });
     }
 
     function updateFilterButtons(activeCategory) {
@@ -1407,106 +1226,9 @@
       });
     }
 
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email);
-    }
-
-    function isDuplicateNewsletterError(error) {
-      return Boolean(
-        error &&
-        (
-          error.code === "23505" ||
-          (typeof error.message === "string" && error.message.includes("duplicate key value"))
-        )
-      );
-    }
-
-    function setNewsletterMessage(message, color) {
-      const messageEl = getEl("newsletter-message");
-      if (!messageEl) return;
-      messageEl.textContent = message;
-      messageEl.style.color = color;
-    }
-
-    function setNewsletterSubmitting(submitBtn, isSubmitting) {
-      if (!submitBtn) return;
-
-      if (isSubmitting) {
-        submitBtn.dataset.originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Envoi...";
-        return;
-      }
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitBtn.dataset.originalText || "S'abonner";
-    }
-
-    async function subscribeNewsletter(email) {
-      return supabaseClient
-        .from("newsletter_subscriptions")
-        .insert([{ email }]);
-    }
-
-    function initNewsletterForm() {
-      const newsletterForm = getEl("newsletter-form");
-      const emailInput = getEl("newsletter-email");
-      const submitBtn = getEl("newsletter-submit");
-      const honeypotInput = getEl("newsletter-company");
-
-      if (!newsletterForm || !emailInput || !submitBtn) return;
-
-      newsletterForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = normalizeEmail(emailInput.value);
-        const honeypotValue = sanitizeText(honeypotInput?.value || "", 100);
-
-        if (honeypotValue) {
-          setNewsletterMessage("Merci !", "#4ade80");
-          return;
-        }
-
-        if (!isValidEmail(email)) {
-          setNewsletterMessage("Merci d'entrer une adresse e-mail valide 🙂", "#f97373");
-          return;
-        }
-
-        setNewsletterSubmitting(submitBtn, true);
-        setNewsletterMessage("", "#9CA3AF");
-
-        try {
-          const { error } = await subscribeNewsletter(email);
-
-          if (error) {
-            console.error(error);
-
-            if (isDuplicateNewsletterError(error)) {
-              setNewsletterMessage("Tu es déjà inscrit à la newsletter 🎤", "#f97373");
-            } else {
-              setNewsletterMessage("Oups, une erreur est survenue. Réessaie dans quelques instants.", "#f97373");
-            }
-
-            return;
-          }
-
-          setNewsletterMessage("Merci ! Tu es bien inscrit à notre newsletter 🧡", "#4ade80");
-          newsletterForm.reset();
-        } catch (error) {
-          console.error(error);
-          setNewsletterMessage("Erreur réseau, vérifie ta connexion et réessaie.", "#f97373");
-        } finally {
-          setNewsletterSubmitting(submitBtn, false);
-        }
-      });
-    }
-
     function initActualitesPage() {
-      initMobileMenu();
-      updateCartIcon();
       initCategoryFilters();
       initNewsCta();
-      initNewsletterForm();
       loadArticles();
     }
 
