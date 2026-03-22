@@ -2,30 +2,37 @@
   position: fixed;
   z-index: 9999;
   bottom: 22px;
-  left: 22px;
-  font-family: Inter, Arial, sans-serif;
+  right: 22px;
+  font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .sb-chest-trigger {
   width: 68px;
   height: 68px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 999px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #111827, #1f2937);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  background:
+    radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.12), rgba(15, 23, 42, 0.86)),
+    linear-gradient(135deg, #111827, #1f2937);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(249, 250, 251, 0.08);
   color: #fff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(6px);
 }
 
 .sb-chest-trigger:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(249, 250, 251, 0.14);
 }
 
 .sb-chest-trigger.sb-available {
@@ -36,9 +43,35 @@
   opacity: 0.92;
 }
 
+.sb-chest-trigger.sb-opened {
+  background:
+    radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.12), rgba(15, 23, 42, 0.86)),
+    linear-gradient(135deg, #3f3f46, #18181b);
+}
+
+.sb-chest-trigger.sb-trigger-opening {
+  animation: sbTriggerOpening 0.85s ease-in-out infinite;
+  filter: brightness(1.08);
+}
+
 .sb-chest-icon {
-  font-size: 30px;
-  line-height: 1;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sb-chest-icon img {
+  width: 42px;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sb-chest-trigger.sb-available .sb-chest-icon img {
+  animation: chestFloat 2s infinite ease-in-out;
 }
 
 .sb-chest-badge {
@@ -48,7 +81,7 @@
   min-width: 22px;
   height: 22px;
   border-radius: 999px;
-  background: #facc15;
+  background: linear-gradient(135deg, #f59e0b, #facc15);
   color: #111827;
   font-size: 12px;
   font-weight: 800;
@@ -56,20 +89,21 @@
   align-items: center;
   justify-content: center;
   padding: 0 6px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
 }
 
 .sb-chest-tooltip {
   position: absolute;
   bottom: 78px;
-  left: 0;
-  background: rgba(17, 24, 39, 0.96);
+  right: 0;
+  background: rgba(2, 6, 23, 0.96);
   color: #fff;
   padding: 10px 12px;
   border-radius: 14px;
   font-size: 13px;
-  width: 220px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  width: 240px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.18);
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
@@ -84,12 +118,13 @@
 .sb-chest-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.62);
+  background: rgba(2, 6, 23, 0.78);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 10000;
   padding: 16px;
+  backdrop-filter: blur(6px);
 }
 
 .sb-chest-overlay.sb-open {
@@ -98,13 +133,39 @@
 
 .sb-chest-modal {
   width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 22px;
+  max-width: 450px;
+  background:
+    radial-gradient(circle at top left, rgba(201, 76, 53, 0.16), transparent 35%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(3, 7, 18, 0.98), rgba(2, 6, 23, 0.98));
+  border-radius: 24px;
   padding: 22px;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.22);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(148, 163, 184, 0.16);
   position: relative;
-  color: #111827;
+  color: #f8fafc;
+  overflow: hidden;
+}
+
+.sb-chest-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.34),
+    rgba(59, 130, 246, 0.24),
+    rgba(201, 76, 53, 0.34)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .sb-chest-close {
@@ -113,57 +174,86 @@
   right: 10px;
   width: 38px;
   height: 38px;
-  border: none;
+  border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 999px;
-  background: #f3f4f6;
-  color: #111827;
+  background: rgba(15, 23, 42, 0.82);
+  color: #f8fafc;
   cursor: pointer;
   font-size: 18px;
 }
 
 .sb-chest-title {
-  font-size: 22px;
+  font-family: "League Spartan", system-ui, sans-serif;
+  font-size: 26px;
   font-weight: 800;
   margin: 0 0 8px;
+  color: #f8fafc;
 }
 
 .sb-chest-subtitle {
   margin: 0 0 16px;
-  color: #4b5563;
+  color: #cbd5e1;
   font-size: 14px;
   line-height: 1.5;
 }
 
 .sb-chest-hero {
-  width: 92px;
-  height: 92px;
-  border-radius: 22px;
+  width: 110px;
+  min-height: 98px;
+  border-radius: 24px;
   margin: 0 auto 16px;
-  background: linear-gradient(135deg, #111827, #374151);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.12), transparent 35%),
+    linear-gradient(135deg, #111827, #1f2937);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 42px;
   color: #fff;
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(248, 250, 252, 0.08);
+  overflow: hidden;
+}
+
+.sb-chest-hero.sb-hero-opening {
+  animation: sbHeroOpening 0.85s ease-in-out infinite;
+}
+
+.sb-chest-hero img {
+  width: 90px;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.sb-chest-hero img.sb-spark {
+  width: 72px;
+}
+
+.sb-chest-hero img.sb-coin {
+  width: 72px;
 }
 
 .sb-chest-card {
-  background: #f8fafc;
-  border: 1px solid #e5e7eb;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.14);
   border-radius: 18px;
   padding: 14px;
   margin-bottom: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .sb-chest-card strong {
   display: block;
   margin-bottom: 6px;
   font-size: 15px;
+  color: #f8fafc;
 }
 
 .sb-chest-card p {
   margin: 0;
-  color: #4b5563;
+  color: #cbd5e1;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -174,7 +264,7 @@
 
 .sb-chest-progress-bar {
   height: 10px;
-  background: #e5e7eb;
+  background: rgba(51, 65, 85, 0.78);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -182,7 +272,7 @@
 .sb-chest-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #f59e0b, #facc15);
+  background: linear-gradient(90deg, #c94c35, #f97316);
   border-radius: 999px;
   transition: width 0.25s ease;
 }
@@ -190,7 +280,7 @@
 .sb-chest-progress-text {
   margin-top: 8px;
   font-size: 13px;
-  color: #6b7280;
+  color: #94a3b8;
 }
 
 .sb-chest-actions {
@@ -209,41 +299,52 @@
   cursor: pointer;
   font-weight: 700;
   font-size: 14px;
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
 }
 
 .sb-chest-btn:hover {
   transform: translateY(-1px);
 }
 
+.sb-chest-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .sb-chest-btn-primary {
   background: #111827;
   color: #fff;
+  border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .sb-chest-btn-secondary {
-  background: #f3f4f6;
-  color: #111827;
+  background: rgba(15, 23, 42, 0.88);
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .sb-chest-btn-gold {
-  background: linear-gradient(135deg, #d97706, #facc15);
-  color: #111827;
+  background: linear-gradient(135deg, #c94c35, #f97316);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(201, 76, 53, 0.24);
 }
 
 .sb-chest-reward {
   text-align: center;
   padding: 12px 10px 4px;
+  animation: sbRevealFadeIn 0.55s ease;
 }
 
 .sb-chest-reward-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 14px;
+  padding: 9px 15px;
   border-radius: 999px;
-  background: #fef3c7;
-  color: #92400e;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(201, 76, 53, 0.24));
+  color: #fdba74;
+  border: 1px solid rgba(249, 115, 22, 0.18);
   font-weight: 800;
   font-size: 14px;
   margin-bottom: 10px;
@@ -252,29 +353,185 @@
 .sb-chest-footnote {
   margin-top: 12px;
   font-size: 12px;
-  color: #9ca3af;
+  color: #94a3b8;
   line-height: 1.45;
+}
+
+.sb-chest-opening-stage {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.sb-chest-opening-ring {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(249, 115, 22, 0.14), rgba(249, 115, 22, 0.02) 55%, transparent 72%);
+}
+
+.sb-chest-opening-ring::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  border: 2px solid rgba(249, 115, 22, 0.20);
+  animation: sbRingPulse 1.2s ease-in-out infinite;
+}
+
+.sb-chest-opening-ring::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.14);
+  animation: sbRingPulse 1.2s ease-in-out infinite 0.25s;
+}
+
+.sb-chest-opening-text {
+  font-size: 14px;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.sb-chest-opening-dots::after {
+  content: "";
+  animation: sbDots 1.2s steps(4, end) infinite;
+}
+
+@keyframes chestFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes sbChestPulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(249, 250, 251, 0.08);
   }
   50% {
     transform: scale(1.06);
-    box-shadow: 0 18px 38px rgba(250, 204, 21, 0.35);
+    box-shadow:
+      0 18px 40px rgba(249, 115, 22, 0.38),
+      0 0 0 1px rgba(249, 250, 251, 0.16);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(249, 250, 251, 0.08);
+  }
+}
+
+@keyframes sbTriggerOpening {
+  0% {
+    transform: scale(1) rotate(0deg);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(249, 250, 251, 0.08);
+  }
+  25% {
+    transform: scale(1.06) rotate(-8deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(8deg);
+    box-shadow:
+      0 18px 44px rgba(249, 115, 22, 0.34),
+      0 0 0 1px rgba(249, 250, 251, 0.14);
+  }
+  75% {
+    transform: scale(1.06) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.34),
+      0 0 0 1px rgba(249, 250, 251, 0.08);
+  }
+}
+
+@keyframes sbHeroOpening {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  20% {
+    transform: scale(1.05) rotate(-7deg);
+  }
+  40% {
+    transform: scale(1.1) rotate(7deg);
+  }
+  60% {
+    transform: scale(1.06) rotate(-4deg);
+  }
+  80% {
+    transform: scale(1.08) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes sbRingPulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.14);
+    opacity: 0;
+  }
+}
+
+@keyframes sbRevealFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sbDots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
   }
 }
 
 @media (max-width: 640px) {
   .sb-chest-widget {
     bottom: 16px;
-    left: 16px;
+    right: 16px;
   }
 
   .sb-chest-trigger {
@@ -282,9 +539,14 @@
     height: 62px;
   }
 
+  .sb-chest-icon,
+  .sb-chest-icon img {
+    width: 38px;
+  }
+
   .sb-chest-modal {
     padding: 18px;
-    border-radius: 18px;
+    border-radius: 20px;
   }
 
   .sb-chest-tooltip {
