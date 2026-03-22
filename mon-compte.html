@@ -1074,7 +1074,9 @@
 
     const state = {
       supabaseClient: null,
-      reservations: []
+      reservations: [],
+      user: null,
+      gamification: null
     };
 
     const utils = {
@@ -1146,12 +1148,17 @@
 
     const api = {
       async fetchWithAuth(url, options = {}) {
+        const {
+          clearAuthOnError = true,
+          ...fetchOptions
+        } = options;
+
         const response = await fetch(url, {
-          ...options,
-          headers: { ...(options.headers || {}), ...utils.getAuthHeaders() }
+          ...fetchOptions,
+          headers: { ...(fetchOptions.headers || {}), ...utils.getAuthHeaders() }
         });
 
-        if ([401, 403].includes(response.status)) utils.clearStoredToken();
+        if (clearAuthOnError && [401, 403].includes(response.status)) utils.clearStoredToken();
         return response;
       },
 
@@ -1174,6 +1181,24 @@
       async register(email, password) {
         const { response, data } = await api.postJson(`${API_BASE}/api/register`, { email, password });
         return { ok: response.ok, error: data?.error };
+      },
+
+      async me() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/me`);
+        const data = await utils.safeJson(response);
+        return { response, data };
+      },
+
+      async gamification() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/account/gamification`, { clearAuthOnError: false });
+        const data = await utils.safeJson(response);
+        return { response, data };
+      },
+
+      async myReservations() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
+        const data = await utils.safeJson(response);
+        return { response, data };
       }
     };
 
@@ -1382,6 +1407,10 @@
       },
 
       showNotLoggedState(customMessage = "Connectez-vous pour accéder à votre espace client.") {
+        state.user = null;
+        state.gamification = null;
+        state.reservations = [];
+
         utils.setText(els.userEmail, "Non connecté");
         utils.setText(els.userPoints, "—");
         utils.setStatus(els.accountMessage, customMessage, "error");
@@ -1444,6 +1473,7 @@
         utils.setStatus(els.refundMessage, "", "");
 
         if (!utils.getStoredToken()) {
+          state.reservations = [];
           ui.setReservationsNotLogged();
           return;
         }
@@ -1459,7 +1489,8 @@
         }
 
         try {
-          const response = await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
+          const { response, data } = await api.myReservations();
+
           if ([401, 403].includes(response.status)) {
             ui.showNotLoggedState();
             return;
@@ -1467,7 +1498,6 @@
 
           if (!response.ok) throw new Error(`Erreur ${response.status}`);
 
-          const data = await utils.safeJson(response);
           state.reservations = Array.isArray(data) ? data : (data.reservations || []);
           ui.renderReservations(state.reservations);
         } catch (error) {
@@ -1485,7 +1515,9 @@
       },
 
       async load() {
-        if (!utils.getStoredToken()) {
+        const token = utils.getStoredToken();
+
+        if (!token) {
           ui.showNotLoggedState();
           return;
         }
@@ -1493,18 +1525,49 @@
         utils.setStatus(els.accountMessage, "Chargement de votre espace client...", "info");
 
         try {
-          const response = await api.fetchWithAuth(`${API_BASE}/api/me`);
-          if ([401, 403].includes(response.status)) {
+          const [meResult, gamificationResult] = await Promise.all([
+            api.me(),
+            api.gamification().catch((error) => {
+              console.error("Erreur /api/account/gamification :", error);
+              return {
+                response: { ok: false, status: 0 },
+                data: null
+              };
+            })
+          ]);
+
+          const { response: meResponse, data: meData } = meResult;
+          const { response: gamificationResponse, data: gamificationDataRaw } = gamificationResult || {};
+
+          if ([401, 403].includes(meResponse.status)) {
             ui.showNotLoggedState();
             return;
           }
 
-          if (!response.ok) throw new Error(`Erreur ${response.status}`);
+          if (!meResponse.ok) {
+            throw new Error(`Erreur ${meResponse.status}`);
+          }
 
-          const user = await utils.safeJson(response);
+          const user = meData && typeof meData === "object" ? meData : {};
           const points = typeof user.points === "number" && Number.isFinite(user.points)
             ? Math.max(0, Math.floor(user.points))
             : 0;
+
+          state.user = user;
+
+          let gamificationData = null;
+          if (gamificationResponse?.ok) {
+            gamificationData = gamificationDataRaw && typeof gamificationDataRaw === "object"
+              ? gamificationDataRaw
+              : null;
+          } else {
+            if (gamificationResponse && ![0, 401, 403].includes(gamificationResponse.status)) {
+              console.error("Réponse gamification non OK :", gamificationResponse.status, gamificationDataRaw);
+            }
+            gamificationData = null;
+          }
+
+          state.gamification = gamificationData;
 
           utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
           utils.setText(els.userPoints, String(points));
@@ -1521,13 +1584,17 @@
               prenom: user.prenom || "",
               firstName: user.firstName || "",
               firstname: user.firstname || "",
-              sessionsCount: user.sessionsCount
+              created_at: user.created_at || "",
+              sessionsCount: user.sessionsCount,
+              gamification: gamificationData || null
             });
           }
 
           await profile.loadReservations();
         } catch (error) {
           console.error("Erreur /api/me :", error);
+          state.user = null;
+          state.gamification = null;
           utils.setStatus(els.accountMessage, "Impossible de charger votre espace client pour le moment.", "error");
         }
       },
@@ -1555,6 +1622,9 @@
 
       logout() {
         utils.clearStoredToken();
+        state.user = null;
+        state.gamification = null;
+        state.reservations = [];
         utils.setStatus(els.accountMessage, "Vous avez été déconnecté.", "error");
         utils.setStatus(els.refundMessage, "", "");
         ui.showNotLoggedState("Connectez-vous pour accéder à votre espace client.");
