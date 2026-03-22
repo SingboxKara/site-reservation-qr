@@ -471,6 +471,7 @@
     .reservation-status-confirmed { border-color: rgba(52,211,153,.8); color: #6ee7b7; }
     .reservation-status-pending { border-color: rgba(251,191,36,.8); color: #facc15; }
     .reservation-status-annulee { border-color: rgba(248,113,113,.85); color: #fecaca; }
+    .reservation-status-completed { border-color: rgba(96,165,250,.85); color: #bfdbfe; }
 
     .reservation-action-btn,
     .reservation-refund-btn {
@@ -680,7 +681,6 @@
 
   <div id="site-footer"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script src="mon-compte-gamification.bundle.js"></script>
   <script src="js/layout.js"></script>
@@ -690,8 +690,6 @@
     const CHECK_ENDPOINT = `${API_BASE}/api/check`;
     const MODIFICATION_DEADLINE_HOURS = 6;
     const LOYALTY_GOAL = 100;
-    const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
 
     const byId = (id) => document.getElementById(id);
 
@@ -724,7 +722,6 @@
     };
 
     const state = {
-      supabaseClient: null,
       reservations: [],
       user: null,
       gamification: null
@@ -734,55 +731,70 @@
       sanitizeText(value, maxLen = 500) {
         return String(value || "").replace(/\u0000/g, "").trim().slice(0, maxLen);
       },
+
       normalizeEmail(email) {
         return utils.sanitizeText(email, 254).toLowerCase();
       },
+
       isValidEmail(email) {
         return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
       },
+
       safeJson: async (response) => {
-        try { return await response.json(); } catch { return {}; }
+        try { return await response.json(); }
+        catch { return {}; }
       },
+
       parseDate(dateStr) {
         if (!dateStr) return null;
         const date = new Date(dateStr);
         return Number.isNaN(date.getTime()) ? null : date;
       },
+
       formatTime(date) {
         if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
         return date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h");
       },
+
       formatReservationDate(dateStr) {
         const date = utils.parseDate(dateStr);
         if (!date) return utils.sanitizeText(dateStr || "Date à confirmer", 80);
         return date.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short", year: "numeric" });
       },
+
       getStoredToken() {
         const token = localStorage.getItem("token");
         return !token || token === "null" || token === "undefined" ? null : token;
       },
+
       clearStoredToken() {
         localStorage.removeItem("token");
       },
+
       getAuthHeaders() {
         const token = utils.getStoredToken();
         return token ? { Authorization: `Bearer ${token}` } : {};
       },
+
       setText(el, value) {
         if (el) el.textContent = value;
       },
+
       show(el, display = "block") {
         if (el) el.style.display = display;
       },
+
       hide(el) {
         if (el) el.style.display = "none";
       },
+
       setStatus(el, message = "", type = "error") {
         if (!el) return;
         el.textContent = message;
         el.className = el.id === "login-message" ? "login-message" : "account-message";
         if (type) el.classList.add(type);
       },
+
       create(tag, options = {}) {
         const el = document.createElement(tag);
         if (options.className) el.className = options.className;
@@ -794,6 +806,11 @@
           });
         }
         return el;
+      },
+
+      toNumber(value, fallback = 0) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : fallback;
       }
     };
 
@@ -864,6 +881,8 @@
       statusClass(statusRaw) {
         const normalized = String(statusRaw || "").toLowerCase();
 
+        if (normalized === "completed") return "reservation-status-completed";
+
         if (
           ["confirmed", "paid"].includes(normalized) ||
           normalized.includes("confirm") ||
@@ -872,7 +891,7 @@
         ) return "reservation-status-confirmed";
 
         if (normalized.includes("attente") || normalized === "pending") return "reservation-status-pending";
-        if (normalized.includes("annul") || ["cancelled", "canceled"].includes(normalized)) return "reservation-status-annulee";
+        if (normalized.includes("annul") || ["cancelled", "canceled", "refunded"].includes(normalized)) return "reservation-status-annulee";
 
         return "";
       },
@@ -1293,106 +1312,8 @@
     };
 
     const newsletter = {
-      isDuplicateError(error) {
-        return Boolean(
-          error &&
-          (
-            error.code === "23505" ||
-            (typeof error.message === "string" && error.message.includes("duplicate key value"))
-          )
-        );
-      },
-
-      setMessage(message, color) {
-        if (!els.newsletterMessage) return;
-        els.newsletterMessage.style.color = color;
-        els.newsletterMessage.textContent = message;
-      },
-
-      setLoading(isLoading) {
-        if (!els.newsletterSubmit) return;
-        if (!els.newsletterSubmit.dataset.defaultText) {
-          els.newsletterSubmit.dataset.defaultText = els.newsletterSubmit.textContent || "S'abonner aux actualités";
-        }
-
-        els.newsletterSubmit.disabled = isLoading;
-        els.newsletterSubmit.textContent = isLoading ? "Envoi..." : els.newsletterSubmit.dataset.defaultText;
-        els.newsletterSubmit.setAttribute("aria-busy", String(isLoading));
-      },
-
-      async submit() {
-        if (!(els.newsletterEmail instanceof HTMLInputElement) || !state.supabaseClient) {
-          newsletter.setMessage("Le service newsletter est momentanément indisponible.", "#ff6b6b");
-          return;
-        }
-
-        const email = utils.normalizeEmail(els.newsletterEmail.value);
-        const honeypotValue = utils.sanitizeText(els.newsletterCompany?.value || "", 100);
-        els.newsletterEmail.removeAttribute("aria-invalid");
-
-        if (honeypotValue) {
-          newsletter.setMessage("Merci !", "#38bdf8");
-          return;
-        }
-
-        if (!utils.isValidEmail(email)) {
-          els.newsletterEmail.setAttribute("aria-invalid", "true");
-          newsletter.setMessage("Veuillez entrer une adresse e-mail valide.", "#ff6b6b");
-          return;
-        }
-
-        newsletter.setLoading(true);
-        newsletter.setMessage("Envoi en cours...", "#e5e7eb");
-
-        try {
-          const { error } = await state.supabaseClient
-            .from("newsletter_subscriptions")
-            .insert([{ email }]);
-
-          if (error) {
-            console.error("Erreur newsletter :", error);
-            newsletter.setMessage(
-              newsletter.isDuplicateError(error)
-                ? "Vous êtes déjà inscrit à la newsletter."
-                : "Une erreur est survenue. Merci de réessayer dans quelques instants.",
-              newsletter.isDuplicateError(error) ? "#38bdf8" : "#ff6b6b"
-            );
-            return;
-          }
-
-          newsletter.setMessage("Merci ! Vous êtes inscrit.", "#38bdf8");
-          els.newsletterEmail.value = "";
-          if (els.newsletterCompany) els.newsletterCompany.value = "";
-        } catch (error) {
-          console.error("Erreur newsletter :", error);
-          newsletter.setMessage("Erreur réseau. Merci de réessayer.", "#ff6b6b");
-        } finally {
-          newsletter.setLoading(false);
-        }
-      },
-
       init() {
-        try {
-          if (globalThis.supabase) {
-            state.supabaseClient = globalThis.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-          }
-        } catch (error) {
-          console.error("Erreur initialisation Supabase :", error);
-          state.supabaseClient = null;
-        }
-
-        els.newsletterSubmit?.addEventListener("click", newsletter.submit);
-
-        els.newsletterEmail?.addEventListener("keydown", (event) => {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            newsletter.submit();
-          }
-        });
-
-        els.newsletterEmail?.addEventListener("input", () => {
-          els.newsletterEmail.removeAttribute("aria-invalid");
-        });
+        // volontairement neutre ici
       }
     };
 
@@ -1588,6 +1509,7 @@
               );
 
               await profile.loadReservations();
+              await profile.load();
             } catch (error) {
               console.error(error);
               refundBtn.disabled = false;
