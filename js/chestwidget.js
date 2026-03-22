@@ -1,35 +1,21 @@
 (() => {
   "use strict";
 
-  /*
-    ==========================================================
-    SINGBOX CHEST WIDGET — V1 FRONT ONLY
-    ----------------------------------------------------------
-    - Widget flottant bas gauche
-    - Etat connecté / non connecté
-    - Coffre de bienvenue
-    - 1 coffre tous les 5 passages
-    - Récompenses simulées en localStorage
-    - CSS injecté automatiquement
-    ==========================================================
-  */
-
   const CONFIG = {
-    position: "left", // "left" ou "right"
-    loginUrl: "/connexion.html",
-    signupUrl: "/mon-compte.html",
-    accountUrl: "/mon-compte.html",
+    position: "right",
+    loginUrl: "mon-compte.html",
+    signupUrl: "mon-compte.html",
+    accountUrl: "mon-compte.html",
+    reservationUrl: "reservation.html",
 
-    // Clés localStorage
     storageKey: "singbox_chest_widget_v1",
+    rewardSessionKey: "singbox_chest_active_reward_session",
     demoLoginKey: "singbox_demo_logged_in",
 
-    // Réglages
     sessionsPerChest: 5,
     maxActiveRewardCount: 1,
     enableTeaserWhenLoggedOut: true,
 
-    // Affichage
     brandName: "Singbox",
     widgetLabel: "Coffre cadeaux",
   };
@@ -37,8 +23,8 @@
   const DEFAULT_STATE = {
     welcomeChestOpened: false,
     completedSessions: 0,
-    openedMilestones: [], // ex: [5, 10, 15]
-    rewards: [], // historique et récompenses actives
+    openedMilestones: [],
+    rewardsHistory: [],
     lastReward: null,
   };
 
@@ -65,7 +51,7 @@
       id: "discount_5_eur",
       type: "discount_fixed",
       label: "5€ de réduction",
-      description: "5€ de réduction sur ta prochaine session.",
+      description: "5€ de réduction à appliquer si tu réserves maintenant.",
       weight: 15,
       value: 5,
       isEmpty: false,
@@ -74,7 +60,7 @@
       id: "discount_10_percent",
       type: "discount_percent",
       label: "-10%",
-      description: "-10% sur ta prochaine session.",
+      description: "-10% à appliquer si tu réserves maintenant.",
       weight: 10,
       value: 10,
       isEmpty: false,
@@ -90,6 +76,8 @@
     },
   ];
 
+  let supabaseClientCache = null;
+
   function injectStyles() {
     if (document.getElementById("sb-chest-widget-styles")) return;
 
@@ -100,30 +88,37 @@
         position: fixed;
         z-index: 9999;
         bottom: 22px;
-        ${CONFIG.position === "right" ? "right: 22px;" : "left: 22px;"}
-        font-family: Inter, Arial, sans-serif;
+        right: 22px;
+        font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       .sb-chest-trigger {
         width: 68px;
         height: 68px;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 999px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #111827, #1f2937);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.24);
+        background:
+          radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.12), rgba(15, 23, 42, 0.86)),
+          linear-gradient(135deg, #111827, #1f2937);
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.34),
+          0 0 0 1px rgba(249, 250, 251, 0.08);
         color: #fff;
         transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(6px);
       }
 
       .sb-chest-trigger:hover {
         transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 14px 36px rgba(0,0,0,0.30);
+        box-shadow:
+          0 14px 36px rgba(0, 0, 0, 0.42),
+          0 0 0 1px rgba(249, 250, 251, 0.14);
       }
 
       .sb-chest-trigger.sb-available {
@@ -132,6 +127,12 @@
 
       .sb-chest-trigger.sb-locked {
         opacity: 0.92;
+      }
+
+      .sb-chest-trigger.sb-opened {
+        background:
+          radial-gradient(circle at 30% 0%, rgba(248, 250, 252, 0.12), rgba(15, 23, 42, 0.86)),
+          linear-gradient(135deg, #3f3f46, #18181b);
       }
 
       .sb-chest-icon {
@@ -146,7 +147,7 @@
         min-width: 22px;
         height: 22px;
         border-radius: 999px;
-        background: #facc15;
+        background: linear-gradient(135deg, #f59e0b, #facc15);
         color: #111827;
         font-size: 12px;
         font-weight: 800;
@@ -154,20 +155,21 @@
         align-items: center;
         justify-content: center;
         padding: 0 6px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.22);
       }
 
       .sb-chest-tooltip {
         position: absolute;
         bottom: 78px;
-        ${CONFIG.position === "right" ? "right: 0;" : "left: 0;"}
-        background: rgba(17,24,39,0.96);
+        right: 0;
+        background: rgba(2, 6, 23, 0.96);
         color: #fff;
         padding: 10px 12px;
         border-radius: 14px;
         font-size: 13px;
-        width: 220px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+        width: 240px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        border: 1px solid rgba(148, 163, 184, 0.18);
         opacity: 0;
         pointer-events: none;
         transform: translateY(8px);
@@ -182,7 +184,7 @@
       .sb-chest-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(2, 6, 23, 0.62);
+        background: rgba(2, 6, 23, 0.72);
         display: none;
         align-items: center;
         justify-content: center;
@@ -196,11 +198,12 @@
 
       .sb-chest-modal {
         width: 100%;
-        max-width: 420px;
-        background: #ffffff;
+        max-width: 430px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
         border-radius: 22px;
         padding: 22px;
-        box-shadow: 0 28px 70px rgba(0,0,0,0.22);
+        box-shadow: 0 28px 70px rgba(0,0,0,0.28);
         position: relative;
         color: #111827;
       }
@@ -220,7 +223,8 @@
       }
 
       .sb-chest-title {
-        font-size: 22px;
+        font-family: "League Spartan", system-ui, sans-serif;
+        font-size: 24px;
         font-weight: 800;
         margin: 0 0 8px;
       }
@@ -243,6 +247,7 @@
         justify-content: center;
         font-size: 42px;
         color: #fff;
+        box-shadow: 0 14px 34px rgba(0,0,0,0.16);
       }
 
       .sb-chest-card {
@@ -280,7 +285,7 @@
       .sb-chest-progress-fill {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #f59e0b, #facc15);
+        background: linear-gradient(90deg, #c94c35, #f97316);
         border-radius: 999px;
         transition: width 0.25s ease;
       }
@@ -307,11 +312,17 @@
         cursor: pointer;
         font-weight: 700;
         font-size: 14px;
-        transition: transform 0.15s ease, opacity 0.15s ease;
+        transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
       }
 
       .sb-chest-btn:hover {
         transform: translateY(-1px);
+      }
+
+      .sb-chest-btn:disabled {
+        opacity: 0.72;
+        cursor: not-allowed;
+        transform: none;
       }
 
       .sb-chest-btn-primary {
@@ -325,8 +336,8 @@
       }
 
       .sb-chest-btn-gold {
-        background: linear-gradient(135deg, #d97706, #facc15);
-        color: #111827;
+        background: linear-gradient(135deg, #c94c35, #f97316);
+        color: #fff;
       }
 
       .sb-chest-reward {
@@ -340,8 +351,8 @@
         justify-content: center;
         padding: 8px 14px;
         border-radius: 999px;
-        background: #fef3c7;
-        color: #92400e;
+        background: #ffedd5;
+        color: #9a3412;
         font-weight: 800;
         font-size: 14px;
         margin-bottom: 10px;
@@ -350,20 +361,35 @@
       .sb-chest-footnote {
         margin-top: 12px;
         font-size: 12px;
-        color: #9ca3af;
+        color: #6b7280;
         line-height: 1.45;
       }
 
       @keyframes sbChestPulse {
-        0%   { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.24); }
-        50%  { transform: scale(1.06); box-shadow: 0 18px 38px rgba(250,204,21,0.35); }
-        100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.24); }
+        0% {
+          transform: scale(1);
+          box-shadow:
+            0 10px 30px rgba(0,0,0,0.34),
+            0 0 0 1px rgba(249,250,251,0.08);
+        }
+        50% {
+          transform: scale(1.06);
+          box-shadow:
+            0 18px 40px rgba(249, 115, 22, 0.38),
+            0 0 0 1px rgba(249,250,251,0.16);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow:
+            0 10px 30px rgba(0,0,0,0.34),
+            0 0 0 1px rgba(249,250,251,0.08);
+        }
       }
 
       @media (max-width: 640px) {
         .sb-chest-widget {
           bottom: 16px;
-          ${CONFIG.position === "right" ? "right: 16px;" : "left: 16px;"}
+          right: 16px;
         }
 
         .sb-chest-trigger {
@@ -387,7 +413,7 @@
   function safeParse(json, fallback) {
     try {
       return JSON.parse(json);
-    } catch (e) {
+    } catch {
       return fallback;
     }
   }
@@ -404,12 +430,45 @@
     localStorage.setItem(CONFIG.storageKey, JSON.stringify(nextState));
   }
 
+  function getSessionReward() {
+    const raw = sessionStorage.getItem(CONFIG.rewardSessionKey);
+    const parsed = raw ? safeParse(raw, null) : null;
+    return parsed && typeof parsed === "object" ? parsed : null;
+  }
+
+  function saveSessionReward(reward) {
+    if (!reward) return;
+    sessionStorage.setItem(CONFIG.rewardSessionKey, JSON.stringify(reward));
+  }
+
+  function clearSessionReward() {
+    sessionStorage.removeItem(CONFIG.rewardSessionKey);
+  }
+
   function isDemoLoggedIn() {
     return localStorage.getItem(CONFIG.demoLoginKey) === "1";
   }
 
+  function createSupabaseClient() {
+    if (supabaseClientCache) return supabaseClientCache;
+
+    if (!window.supabase || typeof window.supabase.createClient !== "function") {
+      return null;
+    }
+
+    try {
+      supabaseClientCache = window.supabase.createClient(
+        "https://sfckofydfqbllkxhxwnt.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
+      );
+      return supabaseClientCache;
+    } catch (error) {
+      console.error("Impossible d'initialiser Supabase pour le chest widget :", error);
+      return null;
+    }
+  }
+
   async function detectLoggedInUser() {
-    // 1) hook manuel si tu veux l’injecter depuis ton site
     if (window.__SINGBOX_USER__ && window.__SINGBOX_USER__.id) {
       return {
         loggedIn: true,
@@ -418,7 +477,6 @@
       };
     }
 
-    // 2) client Supabase custom global
     if (window.supabaseClient && window.supabaseClient.auth?.getSession) {
       try {
         const result = await window.supabaseClient.auth.getSession();
@@ -430,10 +488,9 @@
             source: "window.supabaseClient",
           };
         }
-      } catch (e) {}
+      } catch {}
     }
 
-    // 3) autre nom global possible
     if (window.sb && window.sb.auth?.getSession) {
       try {
         const result = await window.sb.auth.getSession();
@@ -445,10 +502,24 @@
             source: "window.sb",
           };
         }
-      } catch (e) {}
+      } catch {}
     }
 
-    // 4) fallback démo front-only
+    const client = createSupabaseClient();
+    if (client?.auth?.getSession) {
+      try {
+        const result = await client.auth.getSession();
+        const session = result?.data?.session || null;
+        if (session?.user) {
+          return {
+            loggedIn: true,
+            user: session.user,
+            source: "widget-supabase-client",
+          };
+        }
+      } catch {}
+    }
+
     if (isDemoLoggedIn()) {
       return {
         loggedIn: true,
@@ -472,8 +543,9 @@
     return pool[pool.length - 1];
   }
 
-  function getActiveRewards(state) {
-    return state.rewards.filter((reward) => reward.status === "active");
+  function getActiveReward() {
+    const reward = getSessionReward();
+    return reward && reward.status === "active" ? reward : null;
   }
 
   function getNextMilestone(state) {
@@ -498,18 +570,31 @@
   }
 
   function getChestAvailability(loggedIn, state) {
+    const activeReward = getActiveReward();
+
     if (!loggedIn) {
       return {
         isAvailable: false,
         availableCount: 0,
         type: "logged_out",
+        activeReward: null,
       };
     }
 
     const milestoneChests = getAvailableMilestoneChests(state);
     const welcomeAvailable = hasWelcomeChestAvailable(state);
-
     const count = (welcomeAvailable ? 1 : 0) + milestoneChests.length;
+
+    if (activeReward) {
+      return {
+        isAvailable: false,
+        availableCount: 0,
+        type: "opened",
+        milestoneChests,
+        welcomeAvailable,
+        activeReward,
+      };
+    }
 
     return {
       isAvailable: count > 0,
@@ -517,20 +602,20 @@
       type: count > 0 ? "available" : "locked",
       milestoneChests,
       welcomeAvailable,
+      activeReward: null,
     };
   }
 
   function createReward(state, triggerType, triggerValue) {
-    const activeRewards = getActiveRewards(state);
+    const activeReward = getActiveReward();
 
-    // Pour rester simple en V1 : une seule récompense active max
-    if (activeRewards.length >= CONFIG.maxActiveRewardCount) {
+    if (activeReward) {
       return {
         reward: {
           id: "blocked_active_reward",
           type: "none",
-          label: "Tu as déjà une récompense active",
-          description: "Utilise d’abord ta récompense en cours avant d’en débloquer une nouvelle.",
+          label: "Tu as déjà une offre active",
+          description: "Réserve maintenant pour utiliser ton gain avant qu’il ne disparaisse.",
           isEmpty: true,
           status: "blocked",
         },
@@ -555,9 +640,15 @@
 
     const nextState = {
       ...state,
-      rewards: [rewardRecord, ...state.rewards],
+      rewardsHistory: [rewardRecord, ...(state.rewardsHistory || [])],
       lastReward: rewardRecord,
     };
+
+    if (!picked.isEmpty) {
+      saveSessionReward(rewardRecord);
+    } else {
+      clearSessionReward();
+    }
 
     return { reward: rewardRecord, state: nextState };
   }
@@ -628,18 +719,29 @@
     if (content) content.innerHTML = html;
   }
 
+  function goToReservationWithReward() {
+    const activeReward = getActiveReward();
+    const url = new URL(CONFIG.reservationUrl, window.location.origin);
+
+    if (activeReward && !activeReward.isEmpty) {
+      url.searchParams.set("chestReward", activeReward.rewardId);
+    }
+
+    window.location.href = url.pathname + url.search;
+  }
+
   function renderLoggedOutModal() {
     setModalContent(`
       <div class="sb-chest-hero">🎁</div>
       <h2 class="sb-chest-title" id="sb-chest-modal-title">Débloque les coffres ${CONFIG.brandName}</h2>
       <p class="sb-chest-subtitle">
-        Crée ton compte pour accéder aux coffres cadeaux et tenter de gagner des réductions ou des points fidélité.
+        Connecte-toi pour accéder aux coffres cadeaux et tenter de gagner des récompenses Singbox.
       </p>
 
       <div class="sb-chest-card">
         <strong>Pourquoi créer un compte ?</strong>
         <p>
-          Tu pourras suivre tes réservations, débloquer un coffre de bienvenue, puis un nouveau coffre toutes les ${CONFIG.sessionsPerChest} sessions.
+          Tu pourras suivre tes réservations, voir ta progression et débloquer des coffres bonus.
         </p>
       </div>
 
@@ -666,7 +768,43 @@
       ? 100
       : Math.min(100, (progressInBlock / CONFIG.sessionsPerChest) * 100);
 
-    const activeReward = getActiveRewards(state)[0] || null;
+    if (availability.activeReward) {
+      const reward = availability.activeReward;
+
+      setModalContent(`
+        <div class="sb-chest-hero">✨</div>
+        <h2 class="sb-chest-title" id="sb-chest-modal-title">Offre active</h2>
+        <p class="sb-chest-subtitle">
+          Ton coffre a déjà été ouvert pendant cette visite. Réserve maintenant pour en profiter.
+        </p>
+
+        <div class="sb-chest-reward">
+          <div class="sb-chest-reward-badge">${reward.label}</div>
+        </div>
+
+        <div class="sb-chest-card">
+          <strong>Important</strong>
+          <p>Cette offre est temporaire. Si tu quittes le site, elle disparaît.</p>
+        </div>
+
+        <div class="sb-chest-actions">
+          <button class="sb-chest-btn sb-chest-btn-gold" id="sb-reward-book-now" type="button">
+            Réserver maintenant
+          </button>
+          <button class="sb-chest-btn sb-chest-btn-secondary" id="sb-reward-close" type="button">
+            Plus tard
+          </button>
+        </div>
+
+        <div class="sb-chest-footnote">
+          Version front V1 : l’offre reste active seulement pendant ta visite actuelle.
+        </div>
+      `);
+
+      document.getElementById("sb-reward-book-now")?.addEventListener("click", goToReservationWithReward);
+      document.getElementById("sb-reward-close")?.addEventListener("click", closeModal);
+      return;
+    }
 
     let chestMessage = "";
     let actionHtml = "";
@@ -710,24 +848,14 @@
       `;
     }
 
-    const activeRewardHtml = activeReward
-      ? `
-        <div class="sb-chest-card">
-          <strong>Récompense active</strong>
-          <p>${activeReward.label} — ${activeReward.description}</p>
-        </div>
-      `
-      : "";
-
     setModalContent(`
       <div class="sb-chest-hero">🎁</div>
       <h2 class="sb-chest-title" id="sb-chest-modal-title">Tes coffres ${CONFIG.brandName}</h2>
       <p class="sb-chest-subtitle">
-        Débloque un coffre à la création du compte, puis un nouveau coffre toutes les ${CONFIG.sessionsPerChest} sessions validées.
+        Ouvre un coffre quand il est disponible et découvre ta récompense instantanée.
       </p>
 
       ${chestMessage}
-      ${activeRewardHtml}
 
       <div class="sb-chest-progress">
         <div class="sb-chest-progress-bar">
@@ -745,7 +873,7 @@
       </div>
 
       <div class="sb-chest-footnote">
-        Version front temporaire : les récompenses sont simulées localement pour tester l’UX.
+        Version front temporaire : la vraie logique backend sera branchée après.
       </div>
     `);
 
@@ -754,6 +882,9 @@
     });
 
     document.getElementById("sb-open-welcome-chest")?.addEventListener("click", () => {
+      const btn = document.getElementById("sb-open-welcome-chest");
+      if (btn) btn.disabled = true;
+
       const current = getState();
       const result = openWelcomeChest(current);
       saveState(result.state);
@@ -762,6 +893,9 @@
     });
 
     document.getElementById("sb-open-session-chest")?.addEventListener("click", (e) => {
+      const btn = e.currentTarget;
+      if (btn) btn.disabled = true;
+
       const milestone = Number(e.currentTarget.getAttribute("data-milestone"));
       const current = getState();
       const result = openMilestoneChest(current, milestone);
@@ -791,18 +925,28 @@
       </div>
 
       <div class="sb-chest-actions">
-        <button class="sb-chest-btn sb-chest-btn-primary" id="sb-reward-ok" type="button">Super</button>
+        ${
+          isRealReward
+            ? `<button class="sb-chest-btn sb-chest-btn-gold" id="sb-reward-book-now" type="button">Réserver maintenant</button>`
+            : `<button class="sb-chest-btn sb-chest-btn-primary" id="sb-reward-ok" type="button">Super</button>`
+        }
         <button class="sb-chest-btn sb-chest-btn-secondary" id="sb-reward-account" type="button">Voir mon compte</button>
       </div>
 
       <div class="sb-chest-footnote">
-        Plus tard, cette récompense pourra être reliée à ton vrai compte et à tes vraies réservations.
+        ${
+          isRealReward
+            ? "Cette offre est temporaire et disparaît si tu quittes le site."
+            : "Retente ta chance au prochain coffre."
+        }
       </div>
     `);
 
     document.getElementById("sb-reward-ok")?.addEventListener("click", () => {
       closeModal();
     });
+
+    document.getElementById("sb-reward-book-now")?.addEventListener("click", goToReservationWithReward);
 
     document.getElementById("sb-reward-account")?.addEventListener("click", () => {
       window.location.href = CONFIG.accountUrl;
@@ -818,10 +962,11 @@
     const trigger = document.getElementById("sb-chest-trigger");
     const badge = document.getElementById("sb-chest-badge");
     const tooltip = document.getElementById("sb-chest-tooltip");
+    const icon = document.querySelector("#sb-chest-trigger .sb-chest-icon");
 
-    if (!trigger || !badge || !tooltip) return;
+    if (!trigger || !badge || !tooltip || !icon) return;
 
-    trigger.classList.remove("sb-available", "sb-locked");
+    trigger.classList.remove("sb-available", "sb-locked", "sb-opened");
 
     if (!loggedIn) {
       if (!CONFIG.enableTeaserWhenLoggedOut) {
@@ -832,9 +977,20 @@
 
       trigger.classList.add("sb-locked");
       badge.style.display = "none";
+      icon.textContent = "🎁";
       tooltip.textContent = "Crée ton compte pour débloquer les coffres cadeaux.";
       return;
     }
+
+    if (availability.activeReward) {
+      trigger.classList.add("sb-opened");
+      badge.style.display = "none";
+      icon.textContent = "✨";
+      tooltip.textContent = "Tu as une offre active. Réserve maintenant avant de quitter le site.";
+      return;
+    }
+
+    icon.textContent = "🎁";
 
     if (availability.isAvailable) {
       trigger.classList.add("sb-available");
@@ -847,7 +1003,8 @@
       trigger.classList.add("sb-locked");
       badge.style.display = "none";
       const progressInBlock = state.completedSessions % CONFIG.sessionsPerChest;
-      tooltip.textContent = `Encore ${CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest} session(s) avant le prochain coffre.`;
+      const remaining = CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
+      tooltip.textContent = `Encore ${remaining} session(s) avant le prochain coffre.`;
     }
   }
 
@@ -890,19 +1047,6 @@
     refreshWidget();
   }
 
-  /*
-    ==========================================================
-    OUTILS DE TEST — À GARDER POUR LA V1
-    ----------------------------------------------------------
-    Utilisation dans la console :
-    SingboxChestWidget.debugLogin(true)
-    SingboxChestWidget.debugLogin(false)
-    SingboxChestWidget.debugSetSessions(5)
-    SingboxChestWidget.debugAddSession()
-    SingboxChestWidget.debugReset()
-    SingboxChestWidget.refresh()
-    ==========================================================
-  */
   window.SingboxChestWidget = {
     refresh: refreshWidget,
 
@@ -928,11 +1072,21 @@
     debugReset() {
       localStorage.removeItem(CONFIG.storageKey);
       localStorage.removeItem(CONFIG.demoLoginKey);
+      sessionStorage.removeItem(CONFIG.rewardSessionKey);
+      refreshWidget();
+    },
+
+    debugClearReward() {
+      clearSessionReward();
       refreshWidget();
     },
 
     getState() {
       return getState();
+    },
+
+    getActiveReward() {
+      return getActiveReward();
     },
   };
 
