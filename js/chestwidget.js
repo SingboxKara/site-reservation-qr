@@ -13,7 +13,6 @@
     demoLoginKey: "singbox_demo_logged_in",
 
     sessionsPerChest: 5,
-    maxActiveRewardCount: 1,
     enableTeaserWhenLoggedOut: true,
 
     brandName: "Singbox",
@@ -30,53 +29,60 @@
 
   const REWARDS_POOL = [
     {
-      id: "coins_50",
+      id: "empty",
+      type: "none",
+      label: "Pas de gain cette fois",
+      description: "Le coffre était vide... mais le prochain sera peut-être le bon 🎤",
+      weight: 45,
+      value: 0,
+      isEmpty: true,
+    },
+    {
+      id: "coins_20",
       type: "points",
-      label: "+50 Singcoins",
-      description: "Tu gagnes 50 Singcoins.",
-      weight: 35,
-      value: 50,
+      label: "+20 Singcoins",
+      description: "Tu gagnes 20 Singcoins.",
+      weight: 25,
+      value: 20,
       isEmpty: false,
     },
     {
-      id: "coins_100",
+      id: "coins_30",
       type: "points",
-      label: "+100 Singcoins",
-      description: "Tu gagnes 100 Singcoins.",
-      weight: 20,
-      value: 100,
-      isEmpty: false,
-    },
-    {
-      id: "discount_5_eur",
-      type: "discount_fixed",
-      label: "5€ de réduction",
-      description: "5€ de réduction à appliquer si tu réserves maintenant.",
+      label: "+30 Singcoins",
+      description: "Tu gagnes 30 Singcoins.",
       weight: 15,
-      value: 5,
+      value: 30,
       isEmpty: false,
     },
     {
       id: "discount_10_percent",
       type: "discount_percent",
-      label: "-10%",
-      description: "-10% à appliquer si tu réserves maintenant.",
+      label: "-10% sur ta réservation",
+      description: "Réduction de 10% si tu réserves pendant cette visite.",
       weight: 10,
       value: 10,
       isEmpty: false,
     },
     {
-      id: "empty",
-      type: "none",
-      label: "Pas de gain cette fois",
-      description: "Pas de gain cette fois, mais retente ta chance au prochain coffre.",
-      weight: 20,
-      value: 0,
-      isEmpty: true,
+      id: "discount_20_percent",
+      type: "discount_percent",
+      label: "-20% sur ta réservation",
+      description: "Réduction de 20% si tu réserves pendant cette visite.",
+      weight: 4,
+      value: 20,
+      isEmpty: false,
+    },
+    {
+      id: "free_session",
+      type: "free_session",
+      label: "Session offerte",
+      description: "Incroyable : tu as gagné une session offerte si tu réserves pendant cette visite.",
+      weight: 1,
+      value: 1,
+      isEmpty: false,
     },
   ];
-
-  let supabaseClientCache = null;
 
   function injectStyles() {
     if (document.getElementById("sb-chest-widget-styles")) return;
@@ -95,7 +101,7 @@
       .sb-chest-trigger {
         width: 68px;
         height: 68px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.10);
         border-radius: 999px;
         cursor: pointer;
         display: flex;
@@ -199,8 +205,7 @@
       .sb-chest-modal {
         width: 100%;
         max-width: 430px;
-        background:
-          linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
+        background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98));
         border-radius: 22px;
         padding: 22px;
         box-shadow: 0 28px 70px rgba(0,0,0,0.28);
@@ -449,25 +454,6 @@
     return localStorage.getItem(CONFIG.demoLoginKey) === "1";
   }
 
-  function createSupabaseClient() {
-    if (supabaseClientCache) return supabaseClientCache;
-
-    if (!window.supabase || typeof window.supabase.createClient !== "function") {
-      return null;
-    }
-
-    try {
-      supabaseClientCache = window.supabase.createClient(
-        "https://sfckofydfqbllkxhxwnt.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw"
-      );
-      return supabaseClientCache;
-    } catch (error) {
-      console.error("Impossible d'initialiser Supabase pour le chest widget :", error);
-      return null;
-    }
-  }
-
   async function detectLoggedInUser() {
     if (window.__SINGBOX_USER__ && window.__SINGBOX_USER__.id) {
       return {
@@ -491,30 +477,15 @@
       } catch {}
     }
 
-    if (window.sb && window.sb.auth?.getSession) {
+    if (window.__SINGBOX_SUPABASE_CLIENT__?.auth?.getSession) {
       try {
-        const result = await window.sb.auth.getSession();
+        const result = await window.__SINGBOX_SUPABASE_CLIENT__.auth.getSession();
         const session = result?.data?.session || null;
         if (session?.user) {
           return {
             loggedIn: true,
             user: session.user,
-            source: "window.sb",
-          };
-        }
-      } catch {}
-    }
-
-    const client = createSupabaseClient();
-    if (client?.auth?.getSession) {
-      try {
-        const result = await client.auth.getSession();
-        const session = result?.data?.session || null;
-        if (session?.user) {
-          return {
-            loggedIn: true,
-            user: session.user,
-            source: "widget-supabase-client",
+            source: "window.__SINGBOX_SUPABASE_CLIENT__",
           };
         }
       } catch {}
@@ -725,6 +696,8 @@
 
     if (activeReward && !activeReward.isEmpty) {
       url.searchParams.set("chestReward", activeReward.rewardId);
+      url.searchParams.set("rewardType", activeReward.type);
+      url.searchParams.set("rewardValue", String(activeReward.value));
     }
 
     window.location.href = url.pathname + url.search;
