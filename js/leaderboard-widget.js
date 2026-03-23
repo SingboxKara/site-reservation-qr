@@ -2,13 +2,14 @@
   "use strict";
 
   const LeaderboardWidget = {
-    limit: 5,
+    limit: 25,
     rootSelector: "#sb-leaderboard-root",
 
     getApiBaseUrl() {
-      const configured = typeof window.SINGBOX_API_BASE_URL === "string"
-        ? window.SINGBOX_API_BASE_URL.trim()
-        : "";
+      const configured =
+        typeof window.SINGBOX_API_BASE_URL === "string"
+          ? window.SINGBOX_API_BASE_URL.trim()
+          : "";
 
       if (configured) {
         return configured.replace(/\/+$/, "");
@@ -164,25 +165,27 @@
         return;
       }
 
-      const html = items.map((item) => {
-        const formatted = formatter(item);
+      const html = items
+        .map((item) => {
+          const formatted = formatter(item);
 
-        return `
-          <article class="sb-leaderboard-item">
-            <div class="sb-leaderboard-rank">#${item.rank}</div>
+          return `
+            <article class="sb-leaderboard-item">
+              <div class="sb-leaderboard-rank">#${item.rank}</div>
 
-            <div class="sb-leaderboard-main">
-              <p class="sb-leaderboard-name">${this.escapeHtml(item.display_name || "Membre Singbox")}</p>
-              <p class="sb-leaderboard-meta">${this.escapeHtml(formatted.meta)}</p>
-            </div>
+              <div class="sb-leaderboard-main">
+                <p class="sb-leaderboard-name">${this.escapeHtml(item.display_name || "Membre Singbox")}</p>
+                <p class="sb-leaderboard-meta">${this.escapeHtml(formatted.meta)}</p>
+              </div>
 
-            <div class="sb-leaderboard-value">
-              <strong>${this.escapeHtml(String(formatted.value))}</strong>
-              <span>${this.escapeHtml(formatted.suffix)}</span>
-            </div>
-          </article>
-        `;
-      }).join("");
+              <div class="sb-leaderboard-value">
+                <strong>${this.escapeHtml(String(formatted.value))}</strong>
+                <span>${this.escapeHtml(formatted.suffix)}</span>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
 
       panel.innerHTML = `<div class="sb-leaderboard-list">${html}</div>`;
     },
