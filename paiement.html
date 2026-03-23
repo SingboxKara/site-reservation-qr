@@ -383,6 +383,8 @@
         </div>
 
         <div class="summary-column">
+          <div id="referral-note" class="chest-reward-note" style="display:none;" aria-live="polite" role="status"></div>
+
           <div class="order-card card">
             <h2>Votre commande</h2>
 
@@ -600,6 +602,7 @@
     const CHECKOUT_INFO_TTL_MS = 1000 * 60 * 60 * 24 * 30;
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
+    const REFERRAL_STORAGE_KEY = "singbox_referral_code";
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
@@ -783,6 +786,47 @@
       return getChestCheckoutContext();
     }
 
+    function normalizeReferralCode(code) {
+      return String(code || "").trim().toUpperCase();
+    }
+
+    function readReferralCodeFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return normalizeReferralCode(params.get("referralCode") || params.get("ref") || "");
+    }
+
+    function getStoredReferralCode() {
+      try {
+        return normalizeReferralCode(localStorage.getItem(REFERRAL_STORAGE_KEY) || "");
+      } catch {
+        return "";
+      }
+    }
+
+    function saveReferralCode(code) {
+      const safeCode = normalizeReferralCode(code);
+      if (!safeCode) return;
+
+      try {
+        localStorage.setItem(REFERRAL_STORAGE_KEY, safeCode);
+      } catch {}
+    }
+
+    function clearReferralCode() {
+      try {
+        localStorage.removeItem(REFERRAL_STORAGE_KEY);
+      } catch {}
+    }
+
+    function initReferralContext() {
+      const fromUrl = readReferralCodeFromUrl();
+      if (fromUrl) {
+        saveReferralCode(fromUrl);
+        return fromUrl;
+      }
+      return getStoredReferralCode();
+    }
+
     function getChestPromoCode() {
       const ctx = getChestCheckoutContext();
       return ctx?.promoCode ? String(ctx.promoCode).trim().toUpperCase() : "";
@@ -818,6 +862,25 @@
       }
 
       noteEl.innerHTML = message;
+      noteEl.style.display = "block";
+    }
+
+    function renderReferralNote() {
+      const noteEl = getEl("referral-note");
+      if (!noteEl) return;
+
+      const referralCode = getStoredReferralCode();
+
+      if (!referralCode) {
+        noteEl.style.display = "none";
+        noteEl.textContent = "";
+        return;
+      }
+
+      noteEl.innerHTML =
+        `Code de parrainage détecté : <strong>${referralCode}</strong>. ` +
+        `Il sera transmis avec votre réservation et comptera uniquement après une séance terminée et validée.`;
+
       noteEl.style.display = "block";
     }
 
@@ -2027,7 +2090,8 @@
           isFree: Boolean(isFree),
           chestReward: chestContext?.chestReward || null,
           rewardType: chestContext?.rewardType || null,
-          rewardValue: chestContext?.rewardValue || null
+          rewardValue: chestContext?.rewardValue || null,
+          referralCode: getStoredReferralCode() || null
         };
 
         if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
@@ -2333,7 +2397,8 @@
         loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
         chestReward: chestContext?.chestReward || null,
         rewardType: chestContext?.rewardType || null,
-        rewardValue: chestContext?.rewardValue || null
+        rewardValue: chestContext?.rewardValue || null,
+        referralCode: getStoredReferralCode() || null
       };
 
       if (lastPayWithSaved) {
@@ -2763,6 +2828,7 @@
 
     async function initPaymentPage() {
       initChestCheckoutContext();
+      initReferralContext();
 
       await waitForLayoutElements();
       markLayoutReady();
@@ -2772,6 +2838,7 @@
 
       updateCartIcon();
       updateOrderSummaryFromPanier();
+      renderReferralNote();
 
       isPrefilling = true;
       fillCheckoutForm(loadCheckoutInfoLocal());
