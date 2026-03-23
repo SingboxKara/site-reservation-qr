@@ -100,7 +100,7 @@
         "name": "Combien de personnes peuvent venir chanter dans une box ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Nos box karaoké à Toulouse accueillent de 1 à 6 personnes selon la box choisie. C’est idéal pour une sortie entre amis, en famille, un anniversaire, un EVJF, un EVG ou un afterwork."
+          "text": "Nos box karaoké à Toulouse accueillent de 1 à 6 personnes selon la box choisie. C’est idéal pour une sortie entre amis, un anniversaire, un EVJF, un EVG ou un afterwork."
         }
       },
       {
@@ -259,13 +259,6 @@
       </div>
     </section>
 
-    <!-- SECTION LEADERBOARD -->
-    <section class="sb-leaderboard-section" aria-labelledby="sb-leaderboard-title">
-      <div class="container">
-        <div id="sb-leaderboard-root"></div>
-      </div>
-    </section>
-
     <!-- SECTION OCCASIONS + CONTACT -->
     <section id="occasions" class="section-occasions" aria-labelledby="occasions-title">
       <div class="occasions-container">
@@ -379,6 +372,13 @@
       </div>
     </section>
 
+    <!-- SECTION LEADERBOARD -->
+    <section class="sb-leaderboard-section" aria-labelledby="sb-leaderboard-title">
+      <div class="occasions-container">
+        <div id="sb-leaderboard-root"></div>
+      </div>
+    </section>
+
     <!-- SECTION AVIS -->
     <section class="section-reviews" id="avis" aria-labelledby="reviews-title">
       <div class="occasions-container">
@@ -431,10 +431,16 @@
   <!-- Scripts -->
   <script src="js/supabase-js-2.min.js"></script>
   <script src="js/layout.js"></script>
+
+  <script>
+    window.SINGBOX_API_BASE_URL = "https://singbox-backend.onrender.com";
+  </script>
+
   <script src="js/leaderboard-widget.js"></script>
+
   <script>
     const HOME_SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const HOME_SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS"
+    const HOME_SUPABASE_KEY = "sb_publishable_FwGqOTDwJuwz5nDZ99HNgQ_mEYu5ceS";
     const homeSupabaseClient = globalThis.supabase.createClient(HOME_SUPABASE_URL, HOME_SUPABASE_KEY);
 
     function setResaMessage(message, color) {
