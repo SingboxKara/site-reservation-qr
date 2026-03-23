@@ -603,6 +603,7 @@
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
     const REFERRAL_STORAGE_KEY = "singbox_referral_code";
+    const FETCH_TIMEOUT_MS = 12000;
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
@@ -630,6 +631,8 @@
     let cartValid = true;
     let lastPayWithSaved = false;
     let isPrefilling = false;
+    let meDataCache = null;
+    let meDataPromise = null;
 
     let savedCardState = {
       enabled: false,
@@ -665,12 +668,23 @@
       return token ? { ...extra, Authorization: "Bearer " + token } : extra;
     }
 
+    function createFetchTimeoutSignal(timeoutMs = FETCH_TIMEOUT_MS) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+      return {
+        signal: controller.signal,
+        clear: () => clearTimeout(timeoutId)
+      };
+    }
+
     async function handleAuthResponse(res, ctx = "") {
       if (res.status !== 401 && res.status !== 403) {
         return true;
       }
 
       localStorage.removeItem("token");
+      meDataCache = null;
+      meDataPromise = null;
       console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
       return false;
     }
@@ -691,31 +705,49 @@
     }
 
     async function apiFetch(path, options = {}, config = {}) {
-      const { auth = false, json = true, ctx = "" } = config;
+      const { auth = false, json = true, ctx = "", timeoutMs = FETCH_TIMEOUT_MS } = config;
       const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
       const headers = options.headers || {};
       const finalHeaders = auth ? authHeaders(headers) : headers;
+      const timeout = createFetchTimeoutSignal(timeoutMs);
 
-      const res = await fetch(url, { ...options, headers: finalHeaders });
+      try {
+        const res = await fetch(url, {
+          ...options,
+          headers: finalHeaders,
+          signal: options.signal || timeout.signal
+        });
 
-      if (auth) {
-        const okAuth = await handleAuthResponse(res, ctx || path);
-        if (!okAuth) {
-          return { ok: false, status: res.status, data: null, res };
+        if (auth) {
+          const okAuth = await handleAuthResponse(res, ctx || path);
+          if (!okAuth) {
+            return { ok: false, status: res.status, data: null, res };
+          }
         }
+
+        if (!json) {
+          return { ok: res.ok, status: res.status, data: null, res };
+        }
+
+        const data = await parseResponseData(res);
+
+        if (!res.ok) {
+          console.warn(`[API] ${ctx || path} failed:`, res.status, data);
+        }
+
+        return { ok: res.ok, status: res.status, data, res };
+      } catch (error) {
+        const isAbort = error?.name === "AbortError";
+        console.warn(`[API] ${ctx || path} network error:`, isAbort ? "timeout" : error);
+        return {
+          ok: false,
+          status: 0,
+          data: { error: isAbort ? "Délai d’attente dépassé." : "Erreur réseau." },
+          res: null
+        };
+      } finally {
+        timeout.clear();
       }
-
-      if (!json) {
-        return { ok: res.ok, status: res.status, data: null, res };
-      }
-
-      const data = await parseResponseData(res);
-
-      if (!res.ok) {
-        console.warn(`[API] ${ctx || path} failed:`, res.status, data);
-      }
-
-      return { ok: res.ok, status: res.status, data, res };
     }
 
     function getPanier() {
@@ -931,7 +963,8 @@
     }
 
     function isPromoCurrentlyValid(promo) {
-      if (!promo || !promo.is_active) return false;
+      if (!promo) return false;
+      if (promo.is_active === false) return false;
 
       const today = getTodayISO();
 
@@ -948,7 +981,7 @@
     function computeDiscountFromPromo(promo, totalTTC) {
       if (!promo || totalTTC <= 0) return 0;
 
-      const value = promo.value || 0;
+      const value = Number(promo.value || 0);
 
       switch (promo.type) {
         case "percent":
@@ -1352,13 +1385,28 @@
       initSavedCardToggleBehavior();
     }
 
+    async function fetchMeData(force = false) {
+      if (!getToken()) return null;
+      if (!force && meDataCache) return meDataCache;
+      if (!force && meDataPromise) return meDataPromise;
+
+      meDataPromise = (async () => {
+        const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me", timeoutMs: 8000 });
+        if (!r.ok || !r.data) return null;
+        meDataCache = r.data;
+        return r.data;
+      })();
+
+      const data = await meDataPromise;
+      meDataPromise = null;
+      return data;
+    }
+
     async function loadSavedCardStateFromMe() {
-      if (!getToken()) return;
+      const data = await fetchMeData();
+      if (!data) return;
 
-      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (payment)" });
-      if (!r.ok || !r.data) return;
-
-      const payment = r.data.payment || {};
+      const payment = data.payment || {};
       savedCardState.card = payment.card || null;
       savedCardState.defaultPaymentMethodId = payment.default_payment_method_id || null;
     }
@@ -1366,7 +1414,7 @@
     async function refreshPaymentMethods() {
       if (!getToken()) return;
 
-      const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods" });
+      const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 8000 });
       if (!r.ok || !r.data) return;
 
       savedCardState.methods = Array.isArray(r.data.methods) ? r.data.methods : [];
@@ -1452,6 +1500,7 @@
 
     async function refreshSavedCardAfterSetup() {
       savedCardState.card = null;
+      meDataCache = null;
       await loadSavedCardStateFromMe();
       await refreshPaymentMethods();
       renderSavedCardUI();
@@ -1610,12 +1659,9 @@
     }
 
     async function prefillFromBackendIfLogged() {
-      if (!getToken()) return;
+      const data = await fetchMeData();
+      if (!data) return;
 
-      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (prefill)" });
-      if (!r.ok || !r.data) return;
-
-      const data = r.data;
       const profile = data.profile || {};
 
       isPrefilling = true;
@@ -1667,7 +1713,7 @@
             headers: { "Content-Type": "application/json" },
             body: payloadStr
           },
-          { auth: true, ctx: "POST /api/me (autosave)" }
+          { auth: true, ctx: "POST /api/me (autosave)", timeoutMs: 6000 }
         );
 
         if (r.ok) {
@@ -1680,7 +1726,7 @@
       function saveProfileToBackendDebounced() {
         if (isPrefilling || !getToken()) return;
         clearTimeout(saveDbTimer);
-        saveDbTimer = setTimeout(saveProfileToBackendNow, 900);
+        saveDbTimer = setTimeout(saveProfileToBackendNow, 1200);
       }
 
       [
@@ -1703,7 +1749,7 @@
       const r = await apiFetch(
         "/api/account/gamification",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/account/gamification (payment loyalty)" }
+        { auth: true, ctx: "GET /api/account/gamification (payment loyalty)", timeoutMs: 7000 }
       );
 
       if (!r.ok || !r.data) return null;
@@ -1731,7 +1777,7 @@
       if (points >= LOYALTY_POINTS_COST) {
         useLoyaltyBtn.style.display = "block";
         useLoyaltyBtn.disabled = false;
-        useLoyaltyBtn.textContent = "Utiliser 100 Singcoins";
+        useLoyaltyBtn.textContent = loyaltyUsed ? "Retirer la fidélité" : "Utiliser 100 Singcoins";
         loyaltyMsg.style.color = "#D1FAE5";
         loyaltyMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
       } else {
@@ -1893,40 +1939,34 @@
     }
 
     async function fetchPromoByCode(code) {
-      try {
-        const result = await apiFetch(
-          "/api/validate-promo",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              code,
-              panier: getPanier()
-            })
-          },
-          { auth: false, ctx: "POST /api/validate-promo" }
-        );
+      const result = await apiFetch(
+        "/api/validate-promo",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code,
+            panier: getPanier()
+          })
+        },
+        { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
+      );
 
-        if (!result.ok) {
-          return {
-            errorMessage: result.data?.error || "Erreur lors de la vérification du code."
-          };
-        }
-
-        if (!result.data?.valid || !result.data?.promo) {
-          return {
-            errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable."
-          };
-        }
-
+      if (!result.ok) {
         return {
-          promo: result.data.promo
-        };
-      } catch {
-        return {
-          errorMessage: "Erreur réseau lors de la vérification du code."
+          errorMessage: result.data?.error || "Erreur lors de la vérification du code."
         };
       }
+
+      if (!result.data?.valid || !result.data?.promo) {
+        return {
+          errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable."
+        };
+      }
+
+      return {
+        promo: result.data.promo
+      };
     }
 
     function clearPromo() {
@@ -2074,45 +2114,44 @@
       return payload;
     }
 
-    async function confirmReservation(isFree, paymentIntentId, errorEl) {
-      let reservationId = null;
+    async function confirmReservation(isFree, paymentIntentId) {
+      const chestContext = getChestCheckoutContext();
 
-      try {
-        const chestContext = getChestCheckoutContext();
+      const body = {
+        panier: getPanier(),
+        customer: getCustomerPayload(true),
+        promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+        loyaltyUsed,
+        loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
+        loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
+        isFree: Boolean(isFree),
+        chestReward: chestContext?.chestReward || null,
+        rewardType: chestContext?.rewardType || null,
+        rewardValue: chestContext?.rewardValue || null,
+        referralCode: getStoredReferralCode() || null
+      };
 
-        const body = {
-          panier: getPanier(),
-          customer: getCustomerPayload(true),
-          promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
-          loyaltyUsed,
-          loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
-          loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
-          isFree: Boolean(isFree),
-          chestReward: chestContext?.chestReward || null,
-          rewardType: chestContext?.rewardType || null,
-          rewardValue: chestContext?.rewardValue || null,
-          referralCode: getStoredReferralCode() || null
-        };
+      if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
 
-        if (!isFree && paymentIntentId) body.paymentIntentId = paymentIntentId;
-
-        const confirmRes = await fetch(`${API_BASE_URL}/api/confirm-reservation`, {
+      const confirmRes = await apiFetch(
+        "/api/confirm-reservation",
+        {
           method: "POST",
           headers: authHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify(body)
-        });
+        },
+        { auth: false, ctx: "POST /api/confirm-reservation", timeoutMs: 15000 }
+      );
 
-        const confirmJson = await confirmRes.json().catch(() => ({}));
+      if (!confirmRes.ok) {
+        throw new Error(confirmRes.data?.error || "Impossible de confirmer la réservation.");
+      }
 
-        if (confirmRes.ok && confirmJson && Array.isArray(confirmJson.reservations) && confirmJson.reservations.length > 0) {
-          reservationId = confirmJson.reservations[0].id;
-        } else if (errorEl) {
-          errorEl.textContent =
-            confirmJson.error ||
-            "Votre réservation a été créée, mais une erreur interne s’est produite. Contactez-nous si besoin.";
-        }
-      } catch (e) {
-        console.error("Erreur confirm-reservation :", e);
+      const reservations = Array.isArray(confirmRes.data?.reservations) ? confirmRes.data.reservations : [];
+      const reservationId = reservations[0]?.id || null;
+
+      if (!reservationId) {
+        throw new Error("Réservation créée mais identifiant introuvable.");
       }
 
       return reservationId;
@@ -2137,26 +2176,29 @@
     }
 
     async function createDepositIntentRequest(reservationId) {
-      return fetch(`${API_BASE_URL}/api/create-deposit-intent`, {
-        method: "POST",
-        headers: authHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify({
-          reservationId,
-          useSavedPaymentMethod: Boolean(lastPayWithSaved),
-          customer: {
-            prenom: getEl("prenom")?.value.trim() || "",
-            nom: getEl("nom")?.value.trim() || "",
-            email: getEl("email")?.value.trim() || ""
-          }
-        })
-      });
+      return apiFetch(
+        "/api/create-deposit-intent",
+        {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            reservationId,
+            useSavedPaymentMethod: Boolean(lastPayWithSaved),
+            customer: {
+              prenom: getEl("prenom")?.value.trim() || "",
+              nom: getEl("nom")?.value.trim() || "",
+              email: getEl("email")?.value.trim() || ""
+            }
+          })
+        },
+        { auth: false, ctx: "POST /api/create-deposit-intent", timeoutMs: 12000 }
+      );
     }
 
     async function parseDepositIntentResponse(reservationId, isFree, errorEl) {
       const depositRes = await createDepositIntentRequest(reservationId);
-      const depositJson = await depositRes.json().catch(() => ({}));
 
-      if (!depositRes.ok || !depositJson?.clientSecret) {
+      if (!depositRes.ok || !depositRes.data?.clientSecret) {
         setDepositErrorMessage(
           errorEl,
           `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com.`
@@ -2164,7 +2206,7 @@
         return null;
       }
 
-      return depositJson.clientSecret;
+      return depositRes.data.clientSecret;
     }
 
     function normalizeSavedCardPaymentMethod() {
@@ -2258,11 +2300,13 @@
       currentPromo = null;
       loyaltyUsed = false;
       clearChestCheckoutContext();
+      clearReferralCode();
       updateCartIcon();
     }
 
     async function processReservationAndDeposit({ isFree, paymentIntentId, errorEl }) {
-      const reservationId = await confirmReservation(isFree, paymentIntentId, errorEl);
+      const reservationId = await confirmReservation(isFree, paymentIntentId);
+
       await confirmDepositIntent(reservationId, isFree, errorEl);
       await saveNewsletterOptin();
 
@@ -2405,14 +2449,15 @@
         body.useSavedPaymentMethod = true;
       }
 
-      const res = await fetch(`${API_BASE_URL}/api/create-payment-intent`, {
-        method: "POST",
-        headers: authHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify(body)
-      });
-
-      const json = await res.json().catch(() => ({}));
-      return { res, json };
+      return apiFetch(
+        "/api/create-payment-intent",
+        {
+          method: "POST",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify(body)
+        },
+        { auth: false, ctx: "POST /api/create-payment-intent", timeoutMs: 15000 }
+      );
     }
 
     async function confirmSavedCardPayment(clientSecret, errorEl, successEl) {
@@ -2545,24 +2590,24 @@
       const originalLabel = prepareCheckoutSubmit(submitBtn);
 
       try {
-        const { res, json } = await createPaymentIntentRequest();
+        const { ok, data } = await createPaymentIntentRequest();
 
-        if (!res.ok) {
-          if (errorEl) errorEl.textContent = json.error || "Erreur lors de la création du paiement.";
+        if (!ok) {
+          if (errorEl) errorEl.textContent = data?.error || "Erreur lors de la création du paiement.";
           return;
         }
 
-        if (json.isFree || Number(currentTotals.finalTotalTTC || 0) <= 0) {
+        if (data?.isFree || Number(currentTotals.finalTotalTTC || 0) <= 0) {
           await handleFreeCheckout(successEl, errorEl);
           return;
         }
 
-        if (!json.clientSecret) {
+        if (!data?.clientSecret) {
           if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
           return;
         }
 
-        await handlePaidCheckout(json.clientSecret, errorEl, successEl);
+        await handlePaidCheckout(data.clientSecret, errorEl, successEl);
       } catch (err) {
         if (errorEl) errorEl.textContent = "Erreur inattendue : " + (err?.message || "inconnue");
       } finally {
@@ -2688,27 +2733,25 @@
         return;
       }
 
-      try {
-        const base = globalThis.API_BASE_URL || API_BASE_URL;
-        const res = await fetch(`${base}/api/login`, {
+      const res = await apiFetch(
+        "/api/login",
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
-        });
+        },
+        { auth: false, ctx: "POST /api/login", timeoutMs: 10000 }
+      );
 
-        const data = await res.json().catch(() => ({}));
-
-        if (!res.ok) {
-          if (msgEl) msgEl.textContent = data.error || "Erreur de connexion.";
-          return;
-        }
-
-        localStorage.setItem("token", data.token);
-        hideAuthModal();
-        globalThis.location.reload();
-      } catch {
-        if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+      if (!res.ok) {
+        if (msgEl) msgEl.textContent = res.data?.error || "Erreur de connexion.";
+        return;
       }
+
+      localStorage.setItem("token", res.data.token);
+      meDataCache = null;
+      hideAuthModal();
+      globalThis.location.reload();
     }
 
     async function handleAuthRegisterSubmit(e) {
@@ -2724,39 +2767,41 @@
         return;
       }
 
-      try {
-        const base = globalThis.API_BASE_URL || API_BASE_URL;
-
-        const res = await fetch(`${base}/api/register`, {
+      const registerRes = await apiFetch(
+        "/api/register",
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
-        });
+        },
+        { auth: false, ctx: "POST /api/register", timeoutMs: 10000 }
+      );
 
-        const data = await res.json().catch(() => ({}));
+      if (!registerRes.ok) {
+        if (msgEl) msgEl.textContent = registerRes.data?.error || "Erreur lors de la création du compte.";
+        return;
+      }
 
-        if (!res.ok) {
-          if (msgEl) msgEl.textContent = data.error || "Erreur lors de la création du compte.";
-          return;
-        }
-
-        const loginRes = await fetch(`${base}/api/login`, {
+      const loginRes = await apiFetch(
+        "/api/login",
+        {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
-        });
+        },
+        { auth: false, ctx: "POST /api/login after register", timeoutMs: 10000 }
+      );
 
-        const loginData = await loginRes.json().catch(() => ({}));
+      if (loginRes.ok && loginRes.data?.token) {
+        localStorage.setItem("token", loginRes.data.token);
+        meDataCache = null;
+        hideAuthModal();
+        globalThis.location.reload();
+        return;
+      }
 
-        if (loginRes.ok) {
-          localStorage.setItem("token", loginData.token);
-          hideAuthModal();
-          globalThis.location.reload();
-        } else if (msgEl) {
-          msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
-        }
-      } catch {
-        if (msgEl) msgEl.textContent = "Erreur réseau. Veuillez réessayer.";
+      if (msgEl) {
+        msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
       }
     }
 
@@ -2800,10 +2845,10 @@
       document.body.classList.add("layout-ready");
     }
 
-    function waitForLayoutElements(timeoutMs = 5000) {
+    function waitForLayoutElements(timeoutMs = 1200) {
       return new Promise((resolve) => {
         const hasElements = () =>
-          Boolean(getEl("site-header") && getEl("site-footer") && getEl("burger-button"));
+          Boolean(getEl("site-header") && getEl("site-footer"));
 
         if (hasElements()) {
           resolve();
@@ -2830,6 +2875,9 @@
       initChestCheckoutContext();
       initReferralContext();
 
+      initStripeCard();
+      initCheckoutSubmit();
+
       await waitForLayoutElements();
       markLayoutReady();
 
@@ -2844,21 +2892,24 @@
       fillCheckoutForm(loadCheckoutInfoLocal());
       isPrefilling = false;
 
-      await prefillFromBackendIfLogged();
-      await loadSavedCardStateFromMe();
-      await refreshPaymentMethods();
+      await Promise.allSettled([
+        prefillFromBackendIfLogged(),
+        loadSavedCardStateFromMe(),
+        refreshPaymentMethods(),
+        initLoyalty()
+      ]);
 
       renderSavedCardUI();
       bindAutosave();
-      await initLoyalty();
-      initStripeCard();
       initPromo();
-      initCheckoutSubmit();
 
       const saveCardBtn = getEl("save-card-btn");
-      if (saveCardBtn) {
+      if (saveCardBtn && saveCardBtn.dataset.bound !== "true") {
         saveCardBtn.addEventListener("click", handleSaveCard);
+        saveCardBtn.dataset.bound = "true";
       }
+
+      updateOrderSummaryFromPanier();
     }
 
     document.addEventListener("DOMContentLoaded", initPaymentPage);
