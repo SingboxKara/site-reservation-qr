@@ -26,541 +26,151 @@
 
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Mon compte Singbox",
-    "url": "https://www.singbox.fr/mon-compte.html",
-    "description": "Espace client Singbox : accès au compte, réservations, Singcoins et avantages.",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Singbox",
-      "url": "https://www.singbox.fr"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Singbox",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.singbox.fr/logo.png"
-      }
-    }
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Mon compte Singbox",
+    "url":"https://www.singbox.fr/mon-compte.html",
+    "description":"Espace client Singbox : accès au compte, réservations, Singcoins et avantages.",
+    "isPartOf":{"@type":"WebSite","name":"Singbox","url":"https://www.singbox.fr"},
+    "publisher":{"@type":"Organization","name":"Singbox","logo":{"@type":"ImageObject","url":"https://www.singbox.fr/logo.png"}}
   }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="css/global.css" />
 
   <style>
-    body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
+    :root{
+      --bg:#050814;--card:#050b18;--card2:rgba(10,16,30,.95);--text:#f9fafb;--muted:#d1d5db;
+      --red:#c94c35;--orange:#f97316;--blue:#2563eb;--border:rgba(255,255,255,.2);
+      --border-soft:rgba(255,255,255,.12);--container:1240px;--pill:999px;--rcard:24px;--rsoft:18px;
+      --shadow:0 24px 60px rgba(0,0,0,.9),0 0 0 1px rgba(148,163,184,.22);--t:.15s ease;
     }
-
-    body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
-
-    :root {
-      --sb-bg-main: #050814;
-      --sb-card: #050b18;
-      --sb-card-2: rgba(10, 16, 30, 0.95);
-      --sb-text-main: #f9fafb;
-      --sb-text-muted: #d1d5db;
-      --sb-red: #c94c35;
-      --sb-orange: #f97316;
-      --sb-blue: #2563eb;
-      --sb-green: #22c55e;
-      --sb-gold: #f59e0b;
-      --sb-purple: #7c3aed;
-      --sb-container-width: 1240px;
-      --sb-pill-bg: rgba(15, 23, 42, 0.92);
-      --sb-border: rgba(255, 255, 255, 0.2);
-      --sb-border-soft: rgba(255, 255, 255, 0.12);
-      --sb-shadow-card: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.22);
-      --radius-pill: 999px;
-      --radius-card: 24px;
-      --radius-soft: 18px;
-      --radius-item: 14px;
-      --transition-fast: .15s ease;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--sb-text-main);
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{
+      margin:0;font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
-        linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
+        radial-gradient(circle at 10% 0%,rgba(107,18,32,.65),transparent 55%),
+        radial-gradient(circle at 80% 10%,rgba(30,64,175,.7),transparent 60%),
+        linear-gradient(145deg,#020617 0,#020617 40%,var(--bg) 100%);
+      min-height:100vh;overflow-x:hidden
     }
-
-    a { text-decoration: none; color: inherit; }
-
-    h1, h2, h3, h4 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: .03em;
-      margin: 0;
+    body.layout-loading #site-header,body.layout-loading #site-footer{visibility:hidden}
+    body.layout-ready #site-header,body.layout-ready #site-footer{visibility:visible}
+    a{text-decoration:none;color:inherit}
+    h1,h2,h3,h4{font-family:"League Spartan",system-ui,sans-serif;letter-spacing:.03em;margin:0}
+    .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    .container{max-width:var(--container);margin:0 auto;padding:0 24px}
+    .card{
+      position:relative;overflow:hidden;padding:1.4rem;border-radius:var(--rcard);background:var(--card);
+      border:1px solid var(--border);box-shadow:var(--shadow)
     }
-
-    .sr-only {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0, 0, 0, 0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
+    .card::after{
+      content:"";position:absolute;inset:0;pointer-events:none;opacity:.6;mix-blend-mode:soft-light;
+      background:radial-gradient(circle at 0 0,rgba(148,163,184,.1),transparent 60%)
     }
-
-    .container {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .card {
-      background: var(--sb-card);
-      border-radius: var(--radius-card);
-      padding: 1.4rem;
-      box-shadow: var(--sb-shadow-card);
-      border: 1px solid var(--sb-border);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.1), transparent 60%);
-      opacity: .6;
-      mix-blend-mode: soft-light;
-    }
-
-    .card > * { position: relative; z-index: 1; }
-
-    #account {
-      position: relative;
-      padding: 10rem 0 64px;
+    .card>*{position:relative;z-index:1}
+    #account{
+      position:relative;overflow:hidden;padding:10rem 0 64px;
       background:
-        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
-        #050814;
-      overflow: hidden;
+        radial-gradient(circle at 25% 0%,rgba(201,76,53,.35),transparent 55%),
+        radial-gradient(circle at 80% 0%,rgba(37,99,235,.45),transparent 60%),
+        #050814
     }
-
-    #account::before,
-    #account::after {
-      position: absolute;
-      pointer-events: none;
-      color: rgba(148,163,184,.1);
+    #account::before,#account::after{position:absolute;pointer-events:none;color:rgba(148,163,184,.1)}
+    #account::before{content:"★";top:16%;left:8%;font-size:32px}
+    #account::after{content:"♪";right:8%;bottom:14%;font-size:30px;opacity:.8}
+    .account-header{max-width:720px;margin:0 auto 32px;text-align:center}
+    .account-header-eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:#9ca3af;margin-bottom:8px}
+    .account-header h1{font-size:30px;margin-bottom:8px}
+    .account-header p{margin:0;font-size:14px;color:rgba(249,250,251,.85)}
+    .account-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:1.2rem;align-items:start}
+    .account-main-card,#account-benefits-card{height:100%}
+    .account-main-card h2,.login-card-title,.modal-dialog h2,.section-title{font-size:18px;margin-bottom:8px}
+    .section-subtitle,.account-field-label,.login-field label,.account-subtext,.login-help,.reservation-meta,.modal-dialog p,.reservations-empty,.account-message,.login-message,.soft-text{
+      color:var(--muted);font-size:12px;line-height:1.55
     }
-
-    #account::before { content: "★"; top: 16%; left: 8%; font-size: 32px; }
-    #account::after { content: "♪"; right: 8%; bottom: 14%; font-size: 30px; opacity: .8; }
-
-    .account-header {
-      max-width: 720px;
-      margin: 0 auto 32px;
-      text-align: center;
+    .account-field-label{margin-bottom:2px;font-size:13px}
+    .account-field-value{font-size:15px;font-weight:600;margin-bottom:10px;word-break:break-word}
+    .account-message,.login-message{min-height:16px}
+    .ok{color:#bbf7d0}.info{color:#93c5fd}.error{color:#fca5a5}
+    .sub-card,.reservation-item,.account-benefit-item{background:var(--card2);border:1px solid var(--border-soft);border-radius:var(--rsoft)}
+    .sub-card,.account-benefit-item{padding:12px}
+    .login-description{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .login-field{margin-bottom:8px;font-size:13px}
+    .login-field input{
+      width:100%;padding:.55rem .85rem;border-radius:999px;font:inherit;font-size:13px;color:var(--text);background:#020617;
+      border:1px solid rgba(255,255,255,.22);outline:none;transition:border-color .16s ease,box-shadow .16s ease
     }
-
-    .account-header-eyebrow {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      color: #9ca3af;
-      margin-bottom: 8px;
+    .login-field input::placeholder{color:rgba(156,163,175,.9)}
+    .login-field input:focus{border-color:var(--orange);box-shadow:0 0 0 1px rgba(249,115,22,.8),0 0 22px rgba(249,115,22,.25)}
+    .login-field input[aria-invalid="true"]{outline:2px solid #ff6b6b;outline-offset:2px}
+    .header-actions,.login-actions,.modal-actions,.logout-row,.reservation-actions-row,.reservation-refund-row{
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap
     }
-
-    .account-header h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
+    .logout-row{justify-content:space-between}
+    .reservation-actions-row,.reservation-refund-row,.modal-actions{justify-content:flex-end}
+    .logout-btn,.login-submit-btn,.login-secondary-btn,.modal-btn,.reservation-action-btn,.reservation-refund-btn{
+      border:none;border-radius:var(--pill);cursor:pointer;white-space:nowrap;font-family:inherit;
+      transition:transform var(--t),box-shadow var(--t),filter var(--t),background var(--t)
     }
-
-    .account-header p {
-      margin: 0;
-      font-size: 14px;
-      color: rgba(249,250,251,.85);
+    .logout-btn:hover,.logout-btn:focus-visible,.login-submit-btn:hover,.login-submit-btn:focus-visible,.login-secondary-btn:hover,.login-secondary-btn:focus-visible,.reservation-action-btn:hover,.reservation-action-btn:focus-visible,.reservation-refund-btn:hover,.reservation-refund-btn:focus-visible{
+      transform:translateY(-1px);filter:brightness(1.03)
     }
-
-    .account-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 1.2rem;
-      align-items: start;
+    .login-submit-btn[disabled],.login-secondary-btn[disabled],.reservation-action-btn[disabled],.reservation-refund-btn[disabled]{opacity:.6;cursor:not-allowed;transform:none;filter:none}
+    .login-submit-btn,.reservation-refund-btn{
+      color:#f9fafb;background:linear-gradient(90deg,var(--red),var(--orange));
+      box-shadow:0 0 0 1px rgba(255,255,255,.18),0 16px 40px rgba(0,0,0,.9)
     }
-
-    .account-main-card,
-    #account-benefits-card {
-      height: 100%;
+    .logout-btn,.login-secondary-btn,.modal-btn-secondary{
+      color:#f9fafb;background:#111827;box-shadow:0 0 0 1px rgba(255,255,255,.25),0 10px 28px rgba(0,0,0,.8)
     }
-
-    .account-main-card h2,
-    .login-card-title,
-    .modal-dialog h2,
-    .section-title {
-      font-size: 18px;
-      margin-bottom: 8px;
+    .login-submit-btn,.login-secondary-btn{padding:.6rem 1rem;font-size:13px;flex:1 1 140px}
+    .logout-btn{padding:.55rem 1.2rem;font-size:13px}
+    .modal-btn{padding:.7rem 1rem;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+    .modal-btn-secondary{border:1px solid rgba(255,255,255,.35)}
+    dialog.modal-dialog{
+      width:calc(100% - 32px);max-width:420px;padding:1.2rem 1.25rem 1.1rem;border-radius:20px;
+      background:#020617;color:#f9fafb;border:1px solid rgba(255,255,255,.25);box-shadow:0 24px 70px rgba(0,0,0,.95)
     }
-
-    .section-subtitle,
-    .account-field-label,
-    .login-field label,
-    .account-subtext,
-    .login-help,
-    .reservation-meta,
-    .modal-dialog p,
-    .reservations-empty,
-    .account-message,
-    .login-message,
-    .soft-text {
-      color: var(--sb-text-muted);
-      font-size: 12px;
-      line-height: 1.55;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    dialog.modal-dialog::backdrop{background:rgba(15,23,42,.7);backdrop-filter:blur(4px)}
+    .qr-only-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0 4px}
+    #qr-canvas{
+      width:320px;height:320px;max-width:100%;max-height:calc(100vw - 80px);display:block;
+      background:#fff;border:2px solid #fff;border-radius:8px
     }
-
-    .account-field-label {
-      margin-bottom: 2px;
-      font-size: 13px;
+    .reservation-item{display:flex;flex-direction:column;gap:6px;padding:9px 11px}
+    .reservation-main-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+    .reservation-side{text-align:right;font-size:12px;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+    .reservation-status{padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.35);font-size:11px;text-transform:capitalize}
+    .reservation-status-confirmed{border-color:rgba(52,211,153,.8);color:#6ee7b7}
+    .reservation-status-pending{border-color:rgba(251,191,36,.8);color:#facc15}
+    .reservation-status-annulee{border-color:rgba(248,113,113,.85);color:#fecaca}
+    .reservation-status-completed{border-color:rgba(96,165,250,.85);color:#bfdbfe}
+    .reservation-action-btn,.reservation-refund-btn{
+      padding:6px 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+      box-shadow:0 0 0 1px rgba(255,255,255,.18),0 10px 28px rgba(0,0,0,.9)
     }
-
-    .account-field-value {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      word-break: break-word;
+    .reservation-qr-btn{background:linear-gradient(90deg,#1d4ed8,#4c1d95);color:#f9fafb}
+    .reservation-edit-btn{background:linear-gradient(90deg,#0f766e,#1d4ed8);color:#f9fafb}
+    .reservation-refund-row span{flex:1 1 220px;font-size:11px;line-height:1.45;color:var(--muted)}
+    .account-benefit-item{display:flex;gap:12px;align-items:flex-start}
+    .account-benefit-icon{
+      display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;
+      background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-size:12px;flex-shrink:0
     }
-
-    .account-message,
-    .login-message {
-      min-height: 16px;
-    }
-
-    .account-message.ok,
-    .login-message.ok { color: #bbf7d0; }
-    .account-message.info,
-    .login-message.info { color: #93c5fd; }
-    .account-message.error,
-    .login-message.error { color: #fca5a5; }
-
-    .sub-card,
-    .reservation-item,
-    .account-benefit-item {
-      background: var(--sb-card-2);
-      border: 1px solid var(--sb-border-soft);
-      border-radius: var(--radius-soft);
-    }
-
-    .sub-card,
-    .account-benefit-item {
-      padding: 12px;
-    }
-
-    .login-description {
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      margin-bottom: 10px;
-    }
-
-    .login-field {
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-
-    .login-field input {
-      width: 100%;
-      font-family: inherit;
-      color: #f9fafb;
-      background: #020617;
-      border: 1px solid rgba(255,255,255,.22);
-      outline: none;
-      transition: border-color .16s ease, box-shadow .16s ease;
-      border-radius: 999px;
-      padding: .55rem .85rem;
-      font-size: 13px;
-    }
-
-    .login-field input::placeholder {
-      color: rgba(156,163,175,.9);
-    }
-
-    .login-field input:focus {
-      border-color: var(--sb-orange);
-      box-shadow: 0 0 0 1px rgba(249,115,22,.8), 0 0 22px rgba(249,115,22,.25);
-    }
-
-    .login-field input[aria-invalid="true"] {
-      outline: 2px solid #ff6b6b;
-      outline-offset: 2px;
-    }
-
-    .header-actions,
-    .login-actions,
-    .modal-actions,
-    .logout-row,
-    .reservation-actions-row,
-    .reservation-refund-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .logout-row { justify-content: space-between; }
-    .reservation-actions-row,
-    .reservation-refund-row,
-    .modal-actions { justify-content: flex-end; }
-
-    .logout-btn,
-    .login-submit-btn,
-    .login-secondary-btn,
-    .modal-btn,
-    .reservation-action-btn,
-    .reservation-refund-btn {
-      border: none;
-      border-radius: var(--radius-pill);
-      cursor: pointer;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast), background var(--transition-fast);
-      white-space: nowrap;
-      font-family: inherit;
-    }
-
-    .logout-btn:hover,
-    .logout-btn:focus-visible,
-    .login-submit-btn:hover,
-    .login-submit-btn:focus-visible,
-    .login-secondary-btn:hover,
-    .login-secondary-btn:focus-visible,
-    .reservation-action-btn:hover,
-    .reservation-action-btn:focus-visible,
-    .reservation-refund-btn:hover,
-    .reservation-refund-btn:focus-visible {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-
-    .login-submit-btn[disabled],
-    .login-secondary-btn[disabled],
-    .reservation-action-btn[disabled],
-    .reservation-refund-btn[disabled] {
-      opacity: .6;
-      cursor: not-allowed;
-      transform: none;
-      filter: none;
-    }
-
-    .login-submit-btn,
-    .reservation-refund-btn {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 16px 40px rgba(0,0,0,.9);
-    }
-
-    .logout-btn,
-    .login-secondary-btn,
-    .modal-btn-secondary {
-      background: #111827;
-      color: #f9fafb;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 10px 28px rgba(0,0,0,.8);
-    }
-
-    .login-submit-btn,
-    .login-secondary-btn {
-      padding: .6rem 1rem;
-      font-size: 13px;
-      flex: 1 1 140px;
-    }
-
-    .logout-btn {
-      padding: .55rem 1.2rem;
-      font-size: 13px;
-    }
-
-    .modal-btn {
-      padding: .7rem 1rem;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    .modal-btn-secondary {
-      border: 1px solid rgba(255,255,255,.35);
-    }
-
-    dialog.modal-dialog {
-      background: #020617;
-      border-radius: 20px;
-      padding: 1.2rem 1.25rem 1.1rem;
-      max-width: 420px;
-      width: calc(100% - 32px);
-      box-shadow: 0 24px 70px rgba(0,0,0,.95);
-      border: 1px solid rgba(255,255,255,.25);
-      color: #f9fafb;
-    }
-
-    dialog.modal-dialog::backdrop {
-      background: rgba(15,23,42,.7);
-      backdrop-filter: blur(4px);
-    }
-
-    .qr-only-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px 0 4px;
-    }
-
-    #qr-canvas {
-      width: 320px;
-      height: 320px;
-      background: #fff;
-      border: 2px solid #fff;
-      border-radius: 8px;
-      display: block;
-      max-width: 100%;
-      max-height: calc(100vw - 80px);
-    }
-
-    .reservation-item {
-      padding: 9px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .reservation-main-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .reservation-side {
-      text-align: right;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 3px;
-    }
-
-    .reservation-status {
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.35);
-      font-size: 11px;
-      text-transform: capitalize;
-    }
-
-    .reservation-status-confirmed { border-color: rgba(52,211,153,.8); color: #6ee7b7; }
-    .reservation-status-pending { border-color: rgba(251,191,36,.8); color: #facc15; }
-    .reservation-status-annulee { border-color: rgba(248,113,113,.85); color: #fecaca; }
-    .reservation-status-completed { border-color: rgba(96,165,250,.85); color: #bfdbfe; }
-
-    .reservation-action-btn,
-    .reservation-refund-btn {
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 10px 28px rgba(0,0,0,.9);
-    }
-
-    .reservation-qr-btn { background: linear-gradient(90deg, #1d4ed8, #4c1d95); color: #f9fafb; }
-    .reservation-edit-btn { background: linear-gradient(90deg, #0f766e, #1d4ed8); color: #f9fafb; }
-
-    .reservation-refund-row span {
-      font-size: 11px;
-      line-height: 1.45;
-      color: var(--sb-text-muted);
-      flex: 1 1 220px;
-    }
-
-    .account-benefit-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .account-benefit-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--sb-red), var(--sb-orange));
-      color: #fff;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    #reservations-list {
-      display: grid;
-      gap: 10px;
-      max-height: 255px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    #reservations-list::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    #reservations-list::-webkit-scrollbar-track {
-      background: rgba(255,255,255,.05);
-      border-radius: 999px;
-    }
-
-    #reservations-list::-webkit-scrollbar-thumb {
-      background: rgba(249,115,22,.55);
-      border-radius: 999px;
-    }
-
-    #gamification-root {
-      min-height: 120px;
-    }
-
-    @media (max-width: 900px) {
-      #reservations-list {
-        max-height: none;
-      }
-    }
-
-    @media (max-width: 640px) {
-      #account { padding-top: 8.7rem; }
-      .container { padding: 0 16px; }
-      .card { padding: 1rem; }
-
-      .reservation-main-row,
-      .reservation-side,
-      .reservation-actions-row,
-      .reservation-refund-row,
-      .login-actions {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .reservation-side { text-align: left; }
-      .login-submit-btn,
-      .login-secondary-btn { width: 100%; }
+    #reservations-list{display:grid;gap:10px;max-height:255px;overflow-y:auto;padding-right:4px}
+    #reservations-list::-webkit-scrollbar{width:8px}
+    #reservations-list::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px}
+    #reservations-list::-webkit-scrollbar-thumb{background:rgba(249,115,22,.55);border-radius:999px}
+    #gamification-root{min-height:120px}
+    @media (max-width:900px){#reservations-list{max-height:none}}
+    @media (max-width:640px){
+      #account{padding-top:8.7rem}.container{padding:0 16px}.card{padding:1rem}
+      .reservation-main-row,.reservation-side,.reservation-actions-row,.reservation-refund-row,.login-actions{flex-direction:column;align-items:flex-start}
+      .reservation-side{text-align:left}.login-submit-btn,.login-secondary-btn{width:100%}
     }
   </style>
 </head>
@@ -686,950 +296,569 @@
   <script src="js/layout.js"></script>
 
   <script>
-    const API_BASE = "https://singbox-backend.onrender.com";
-    const CHECK_ENDPOINT = `${API_BASE}/api/check`;
-    const MODIFICATION_DEADLINE_HOURS = 6;
-    const LOYALTY_GOAL = 100;
+    const API_BASE="https://singbox-backend.onrender.com",
+      CHECK_ENDPOINT=`${API_BASE}/api/check`,
+      MODIFICATION_DEADLINE_HOURS=6,
+      LOYALTY_GOAL=100,
+      $=id=>document.getElementById(id);
 
-    const byId = (id) => document.getElementById(id);
-
-    const els = {
-      cartCount: null,
-      burgerButton: null,
-      mobileNav: null,
-      loginCard: byId("login-card"),
-      loginForm: byId("login-form"),
-      loginEmail: byId("login-email"),
-      loginPassword: byId("login-password"),
-      loginSubmitBtn: byId("login-submit-btn"),
-      createAccountBtn: byId("create-account-btn"),
-      loginMessage: byId("login-message"),
-      logoutBtn: byId("logout-btn"),
-      accountMessage: byId("account-message"),
-      refundMessage: byId("refund-message"),
-      notLoggedCta: byId("not-logged-cta"),
-      userEmail: byId("user-email"),
-      userPoints: byId("user-points"),
-      reservationsList: byId("reservations-list"),
-      qrModal: byId("qr-modal"),
-      qrCanvas: byId("qr-canvas"),
-      qrModalSubtitle: byId("qr-modal-subtitle"),
-      qrCloseBtn: byId("qr-close-btn"),
-      newsletterEmail: null,
-      newsletterCompany: null,
-      newsletterSubmit: null,
-      newsletterMessage: null
+    const els={
+      cartCount:null,burgerButton:null,mobileNav:null,
+      loginCard:$("login-card"),loginForm:$("login-form"),loginEmail:$("login-email"),loginPassword:$("login-password"),
+      loginSubmitBtn:$("login-submit-btn"),createAccountBtn:$("create-account-btn"),loginMessage:$("login-message"),
+      logoutBtn:$("logout-btn"),accountMessage:$("account-message"),refundMessage:$("refund-message"),notLoggedCta:$("not-logged-cta"),
+      userEmail:$("user-email"),userPoints:$("user-points"),reservationsList:$("reservations-list"),
+      qrModal:$("qr-modal"),qrCanvas:$("qr-canvas"),qrModalSubtitle:$("qr-modal-subtitle"),qrCloseBtn:$("qr-close-btn")
     };
 
-    const state = {
-      reservations: [],
-      user: null,
-      gamification: null
-    };
+    const state={reservations:[],user:null,gamification:null};
 
-    const utils = {
-      sanitizeText(value, maxLen = 500) {
-        return String(value || "").replace(/\u0000/g, "").trim().slice(0, maxLen);
+    const utils={
+      sanitize:(v,max=500)=>String(v||"").replace(/\u0000/g,"").trim().slice(0,max),
+      normalizeEmail:v=>utils.sanitize(v,254).toLowerCase(),
+      isValidEmail:v=>typeof v==="string"&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim()),
+      safeJson:async r=>{try{return await r.json()}catch{return {}}},
+      parseDate:v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.getTime())?null:d},
+      formatTime:d=>d instanceof Date&&!Number.isNaN(d.getTime())?d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":","h"):"",
+      formatReservationDate:v=>{
+        const d=utils.parseDate(v);
+        return d?d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}):utils.sanitize(v||"Date à confirmer",80)
       },
-
-      normalizeEmail(email) {
-        return utils.sanitizeText(email, 254).toLowerCase();
+      token:()=>{const t=localStorage.getItem("token");return !t||t==="null"||t==="undefined"?null:t},
+      clearToken:()=>localStorage.removeItem("token"),
+      authHeaders:()=>{const t=utils.token();return t?{Authorization:`Bearer ${t}`}:{}} ,
+      text:(el,v)=>el&&(el.textContent=v),
+      show:(el,d="block")=>el&&(el.style.display=d),
+      hide:el=>el&&(el.style.display="none"),
+      status:(el,msg="",type="error")=>{
+        if(!el)return;
+        el.textContent=msg;
+        el.className=el.id==="login-message"?"login-message":"account-message";
+        if(type)el.classList.add(type);
       },
-
-      isValidEmail(email) {
-        return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
-      },
-
-      safeJson: async (response) => {
-        try { return await response.json(); }
-        catch { return {}; }
-      },
-
-      parseDate(dateStr) {
-        if (!dateStr) return null;
-        const date = new Date(dateStr);
-        return Number.isNaN(date.getTime()) ? null : date;
-      },
-
-      formatTime(date) {
-        if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
-        return date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h");
-      },
-
-      formatReservationDate(dateStr) {
-        const date = utils.parseDate(dateStr);
-        if (!date) return utils.sanitizeText(dateStr || "Date à confirmer", 80);
-        return date.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short", year: "numeric" });
-      },
-
-      getStoredToken() {
-        const token = localStorage.getItem("token");
-        return !token || token === "null" || token === "undefined" ? null : token;
-      },
-
-      clearStoredToken() {
-        localStorage.removeItem("token");
-      },
-
-      getAuthHeaders() {
-        const token = utils.getStoredToken();
-        return token ? { Authorization: `Bearer ${token}` } : {};
-      },
-
-      setText(el, value) {
-        if (el) el.textContent = value;
-      },
-
-      show(el, display = "block") {
-        if (el) el.style.display = display;
-      },
-
-      hide(el) {
-        if (el) el.style.display = "none";
-      },
-
-      setStatus(el, message = "", type = "error") {
-        if (!el) return;
-        el.textContent = message;
-        el.className = el.id === "login-message" ? "login-message" : "account-message";
-        if (type) el.classList.add(type);
-      },
-
-      create(tag, options = {}) {
-        const el = document.createElement(tag);
-        if (options.className) el.className = options.className;
-        if (options.text) el.textContent = options.text;
-        if (options.html) el.innerHTML = options.html;
-        if (options.attrs) {
-          Object.entries(options.attrs).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) el.setAttribute(key, value);
-          });
-        }
+      create:(tag,{className,text,html,attrs}={})=>{
+        const el=document.createElement(tag);
+        if(className)el.className=className;
+        if(text)el.textContent=text;
+        if(html)el.innerHTML=html;
+        if(attrs)Object.entries(attrs).forEach(([k,v])=>v!=null&&v!==""&&el.setAttribute(k,v));
         return el;
-      },
-
-      toNumber(value, fallback = 0) {
-        const n = Number(value);
-        return Number.isFinite(n) ? n : fallback;
       }
     };
 
-    const api = {
-      async fetchWithAuth(url, options = {}) {
-        const {
-          clearAuthOnError = true,
-          ...fetchOptions
-        } = options;
-
-        const response = await fetch(url, {
-          ...fetchOptions,
-          headers: { ...(fetchOptions.headers || {}), ...utils.getAuthHeaders() }
-        });
-
-        if (clearAuthOnError && [401, 403].includes(response.status)) utils.clearStoredToken();
-        return response;
+    const api={
+      async fetchAuth(url,opt={}){
+        const {clearAuthOnError=true,...rest}=opt;
+        const r=await fetch(url,{...rest,headers:{...(rest.headers||{}),...utils.authHeaders()}});
+        if(clearAuthOnError&&[401,403].includes(r.status))utils.clearToken();
+        return r;
       },
-
-      async postJson(url, payload) {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await utils.safeJson(response);
-        return { response, data };
+      async postJson(url,payload){
+        const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+        return {response,data:await utils.safeJson(response)};
       },
-
-      async login(email, password) {
-        const { response, data } = await api.postJson(`${API_BASE}/api/login`, { email, password });
-        return { ok: response.ok && Boolean(data?.token), token: data?.token, error: data?.error };
+      async login(email,password){
+        const {response,data}=await api.postJson(`${API_BASE}/api/login`,{email,password});
+        return {ok:response.ok&&!!data?.token,token:data?.token,error:data?.error};
       },
-
-      async register(email, password) {
-        const { response, data } = await api.postJson(`${API_BASE}/api/register`, { email, password });
-        return { ok: response.ok, error: data?.error };
+      async register(email,password){
+        const {response,data}=await api.postJson(`${API_BASE}/api/register`,{email,password});
+        return {ok:response.ok,error:data?.error};
       },
-
-      async me() {
-        const response = await api.fetchWithAuth(`${API_BASE}/api/me`);
-        const data = await utils.safeJson(response);
-        return { response, data };
+      async me(){
+        const response=await api.fetchAuth(`${API_BASE}/api/me`);
+        return {response,data:await utils.safeJson(response)};
       },
-
-      async gamification() {
-        const response = await api.fetchWithAuth(`${API_BASE}/api/account/gamification`, { clearAuthOnError: false });
-        const data = await utils.safeJson(response);
-        return { response, data };
+      async gamification(){
+        const response=await api.fetchAuth(`${API_BASE}/api/account/gamification`,{clearAuthOnError:false});
+        return {response,data:await utils.safeJson(response)};
       },
-
-      async myReservations() {
-        const response = await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
-        const data = await utils.safeJson(response);
-        return { response, data };
+      async myReservations(){
+        const response=await api.fetchAuth(`${API_BASE}/api/my-reservations`);
+        return {response,data:await utils.safeJson(response)};
       }
     };
 
-    const reservationsService = {
-      formatHours(reservation) {
-        const start = utils.parseDate(reservation.start_time || reservation.datetime || null);
-        if (!start) return "";
-        const end = utils.parseDate(reservation.end_time) || new Date(start.getTime() + 90 * 60 * 1000);
-        return `${utils.formatTime(start)} - ${utils.formatTime(end)}`;
+    const reservationsService={
+      formatHours(r){
+        const s=utils.parseDate(r.start_time||r.datetime),e=utils.parseDate(r.end_time)||new Date(s?.getTime()+90*60*1000);
+        return s?`${utils.formatTime(s)} - ${utils.formatTime(e)}`:"";
       },
-
-      statusClass(statusRaw) {
-        const normalized = String(statusRaw || "").toLowerCase();
-
-        if (normalized === "completed") return "reservation-status-completed";
-
-        if (
-          ["confirmed", "paid"].includes(normalized) ||
-          normalized.includes("confirm") ||
-          normalized.includes("payé") ||
-          normalized.includes("paye")
-        ) return "reservation-status-confirmed";
-
-        if (normalized.includes("attente") || normalized === "pending") return "reservation-status-pending";
-        if (normalized.includes("annul") || ["cancelled", "canceled", "refunded"].includes(normalized)) return "reservation-status-annulee";
-
-        return "";
+      statusClass(raw){
+        const s=String(raw||"").toLowerCase();
+        if(s==="completed")return"reservation-status-completed";
+        if(["confirmed","paid"].includes(s)||s.includes("confirm")||s.includes("payé")||s.includes("paye"))return"reservation-status-confirmed";
+        if(s.includes("attente")||s==="pending")return"reservation-status-pending";
+        if(s.includes("annul")||["cancelled","canceled","refunded"].includes(s))return"reservation-status-annulee";
+        return"";
       },
-
-      isRefundPossible(startTimeIso) {
-        const start = utils.parseDate(startTimeIso);
-        if (!start) return false;
-        return (start.getTime() - Date.now()) / (1000 * 60 * 60) >= 24;
+      isRefundPossible:start=>{
+        const d=utils.parseDate(start);
+        return !!d&&(d.getTime()-Date.now())/(1000*60*60)>=24;
       },
-
-      isModificationPossible(startTimeIso, statusRaw) {
-        const start = utils.parseDate(startTimeIso);
-        if (!start) return false;
-
-        return reservationsService.statusClass(statusRaw) === "reservation-status-confirmed"
-          && (start.getTime() - Date.now()) / (1000 * 60 * 60) >= MODIFICATION_DEADLINE_HOURS;
+      isModificationPossible(start,status){
+        const d=utils.parseDate(start);
+        return !!d&&reservationsService.statusClass(status)==="reservation-status-confirmed"&&(d.getTime()-Date.now())/(1000*60*60)>=MODIFICATION_DEADLINE_HOURS;
       },
-
-      buildMeta(reservation) {
-        const timeRange = reservationsService.formatHours(reservation);
-        const rawBoxName = reservation.box_name || reservation.box || reservation.box_id || "";
-        const boxName = utils.sanitizeText(rawBoxName, 80);
-
-        return [timeRange, boxName ? (/^box/i.test(boxName) ? boxName : `Box ${boxName}`) : ""]
-          .filter(Boolean)
-          .join(" • ");
+      meta(r){
+        const t=reservationsService.formatHours(r),raw=r.box_name||r.box||r.box_id||"",b=utils.sanitize(raw,80);
+        return [t,b?(/^box/i.test(b)?b:`Box ${b}`):""].filter(Boolean).join(" • ");
       },
-
-      buildQrTitle(reservation, date, boxName) {
-        const parts = [];
-        if (boxName) parts.push(/^box/i.test(boxName) ? boxName : `Box ${boxName}`);
-        parts.push(date);
-
-        const hours = reservationsService.formatHours(reservation);
-        if (hours) parts.push(hours);
-
-        return parts.join(" • ");
+      qrTitle(r,date,box){
+        const out=[];
+        if(box)out.push(/^box/i.test(box)?box:`Box ${box}`);
+        out.push(date);
+        const h=reservationsService.formatHours(r);
+        if(h)out.push(h);
+        return out.join(" • ");
       },
-
-      createActionButton({ className, text, disabled = false, dataset = {} }) {
-        const btn = utils.create("button", { className, text, attrs: { type: "button" } });
-        btn.disabled = disabled;
-
-        Object.entries(dataset).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") btn.dataset[key] = String(value);
-        });
-
-        return btn;
+      btn({className,text,disabled=false,dataset={}}){
+        const b=utils.create("button",{className,text,attrs:{type:"button"}});
+        b.disabled=disabled;
+        Object.entries(dataset).forEach(([k,v])=>v!=null&&v!==""&&(b.dataset[k]=String(v)));
+        return b;
       },
+      renderItem(r){
+        const item=utils.create("div",{className:"reservation-item"}),
+          startIso=utils.sanitize(r.start_time||r.datetime||"",100),
+          date=utils.formatReservationDate(r.date||startIso),
+          meta=reservationsService.meta(r),
+          box=utils.sanitize(r.box_name||r.box||r.box_id||"",80),
+          montant=utils.sanitize(r.montant||r.total||r.total_price||"",40),
+          statut=utils.sanitize(String(r.statut||r.status||""),80),
+          statutClass=reservationsService.statusClass(statut),
+          id=r?.id||null,
+          checkUrl=id?`${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}`:null,
+          qrTitle=reservationsService.qrTitle(r,date,box),
+          parsedStart=utils.parseDate(startIso),
+          isFutureConfirmed=statutClass==="reservation-status-confirmed"&&parsedStart&&parsedStart.getTime()>Date.now(),
+          canRefund=reservationsService.isRefundPossible(startIso),
+          canEdit=reservationsService.isModificationPossible(startIso,statut);
 
-      renderItem(reservation) {
-        const item = utils.create("div", { className: "reservation-item" });
-        const startTimeIso = utils.sanitizeText(reservation.start_time || reservation.datetime || "", 100);
-        const date = utils.formatReservationDate(reservation.date || startTimeIso);
-        const metaText = reservationsService.buildMeta(reservation);
-        const boxName = utils.sanitizeText(reservation.box_name || reservation.box || reservation.box_id || "", 80);
-        const montant = utils.sanitizeText(reservation.montant || reservation.total || reservation.total_price || "", 40);
-        const statutRaw = utils.sanitizeText(String(reservation.statut || reservation.status || ""), 80);
-        const statutClass = reservationsService.statusClass(statutRaw);
-        const reservationId = reservation?.id || null;
-        const checkUrl = reservationId ? `${CHECK_ENDPOINT}?id=${encodeURIComponent(String(reservationId))}` : null;
-        const qrTitle = reservationsService.buildQrTitle(reservation, date, boxName);
-        const parsedStart = utils.parseDate(startTimeIso);
-        const isFutureConfirmed = statutClass === "reservation-status-confirmed" && parsedStart && parsedStart.getTime() > Date.now();
-        const canRefund = reservationsService.isRefundPossible(startTimeIso);
-        const canEdit = reservationsService.isModificationPossible(startTimeIso, statutRaw);
-
-        const mainRow = utils.create("div", { className: "reservation-main-row" });
-        const leftCol = utils.create("div");
-        leftCol.append(
-          utils.create("div", { className: "soft-text", text: date }),
-          utils.create("div", { className: "reservation-meta", text: metaText })
+        const main=utils.create("div",{className:"reservation-main-row"});
+        const left=utils.create("div");
+        left.append(
+          utils.create("div",{className:"soft-text",text:date}),
+          utils.create("div",{className:"reservation-meta",text:meta})
         );
 
-        const rightCol = utils.create("div", { className: "reservation-side" });
-        if (montant) rightCol.appendChild(utils.create("div", { className: "soft-text", text: `${montant} €` }));
+        const right=utils.create("div",{className:"reservation-side"});
+        if(montant)right.appendChild(utils.create("div",{className:"soft-text",text:`${montant} €`}));
+        if(statut)right.appendChild(utils.create("span",{className:`reservation-status ${statutClass}`.trim(),text:statut}));
 
-        if (statutRaw) {
-          rightCol.appendChild(utils.create("span", {
-            className: `reservation-status ${statutClass}`.trim(),
-            text: statutRaw
-          }));
-        }
+        main.append(left,right);
+        item.appendChild(main);
 
-        mainRow.append(leftCol, rightCol);
-        item.appendChild(mainRow);
-
-        const actionsRow = utils.create("div", { className: "reservation-actions-row" });
-        actionsRow.append(
-          reservationsService.createActionButton({
-            className: "reservation-action-btn reservation-edit-btn",
-            text: "Modifier",
-            disabled: !canEdit,
-            dataset: { editReservationId: canEdit && reservation?.id ? reservation.id : "" }
+        const actions=utils.create("div",{className:"reservation-actions-row"});
+        actions.append(
+          reservationsService.btn({
+            className:"reservation-action-btn reservation-edit-btn",
+            text:"Modifier",
+            disabled:!canEdit,
+            dataset:{editReservationId:canEdit&&r?.id?r.id:""}
           }),
-          reservationsService.createActionButton({
-            className: "reservation-action-btn reservation-qr-btn",
-            text: checkUrl ? "Afficher le QR" : "QR indisponible",
-            disabled: !checkUrl,
-            dataset: { qrUrl: checkUrl || "", qrTitle }
+          reservationsService.btn({
+            className:"reservation-action-btn reservation-qr-btn",
+            text:checkUrl?"Afficher le QR":"QR indisponible",
+            disabled:!checkUrl,
+            dataset:{qrUrl:checkUrl||"",qrTitle}
           })
         );
-        item.appendChild(actionsRow);
+        item.appendChild(actions);
 
-        if (isFutureConfirmed) {
-          const refundRow = utils.create("div", { className: "reservation-refund-row" });
-
-          refundRow.append(
-            utils.create("span", {
-              text: canRefund
-                ? "Remboursement possible jusqu'à 24h avant la séance."
-                : "Le remboursement n'est plus possible dans les 24h avant la séance."
-            }),
-            reservationsService.createActionButton({
-              className: "reservation-refund-btn",
-              text: "Demander un remboursement",
-              disabled: !(canRefund && reservation?.id),
-              dataset: { reservationId: reservation?.id || "", startTime: startTimeIso }
+        if(isFutureConfirmed){
+          const refund=utils.create("div",{className:"reservation-refund-row"});
+          refund.append(
+            utils.create("span",{text:canRefund?"Remboursement possible jusqu'à 24h avant la séance.":"Le remboursement n'est plus possible dans les 24h avant la séance."}),
+            reservationsService.btn({
+              className:"reservation-refund-btn",
+              text:"Demander un remboursement",
+              disabled:!(canRefund&&r?.id),
+              dataset:{reservationId:r?.id||"",startTime:startIso}
             })
           );
-
-          item.appendChild(refundRow);
+          item.appendChild(refund);
         }
-
         return item;
       }
     };
 
-    const ui = {
-      refreshLayoutRefs() {
-        els.cartCount = byId("cart-count");
-        els.burgerButton = byId("burger-button");
-        els.mobileNav = byId("mobile-nav");
-        els.newsletterEmail = byId("newsletter-email");
-        els.newsletterCompany = byId("newsletter-company");
-        els.newsletterSubmit = byId("newsletter-submit");
-        els.newsletterMessage = byId("newsletter-message");
+    const ui={
+      refreshLayoutRefs(){
+        els.cartCount=$("cart-count");
+        els.burgerButton=$("burger-button");
+        els.mobileNav=$("mobile-nav");
       },
-
-      updateCartIcon() {
-        const panier = (() => {
-          try {
-            const raw = localStorage.getItem("panier");
-            const parsed = raw ? JSON.parse(raw) : [];
-            return Array.isArray(parsed) ? parsed : [];
-          } catch {
-            return [];
-          }
-        })();
-
-        if (!els.cartCount) return;
-        els.cartCount.textContent = panier.length ? String(panier.length) : "";
-        els.cartCount.setAttribute("aria-hidden", panier.length ? "false" : "true");
+      updateCartIcon(){
+        let panier=[];
+        try{
+          const raw=localStorage.getItem("panier");
+          const parsed=raw?JSON.parse(raw):[];
+          panier=Array.isArray(parsed)?parsed:[];
+        }catch{}
+        if(!els.cartCount)return;
+        els.cartCount.textContent=panier.length?String(panier.length):"";
+        els.cartCount.setAttribute("aria-hidden",panier.length?"false":"true");
       },
-
-      closeMobileNav() {
-        if (!els.mobileNav || !els.burgerButton) return;
+      closeMobileNav(){
+        if(!els.mobileNav||!els.burgerButton)return;
         els.mobileNav.classList.remove("open");
-        els.burgerButton.setAttribute("aria-expanded", "false");
+        els.burgerButton.setAttribute("aria-expanded","false");
       },
-
-      openMobileNav() {
-        if (!els.mobileNav || !els.burgerButton) return;
+      openMobileNav(){
+        if(!els.mobileNav||!els.burgerButton)return;
         els.mobileNav.classList.add("open");
-        els.burgerButton.setAttribute("aria-expanded", "true");
+        els.burgerButton.setAttribute("aria-expanded","true");
       },
-
-      renderReservations(reservations = []) {
-        if (!els.reservationsList) return;
-        els.reservationsList.innerHTML = "";
-
-        if (!reservations.length) {
-          els.reservationsList.appendChild(
-            utils.create("p", { className: "reservations-empty", text: "Aucune réservation pour le moment." })
-          );
+      renderReservations(list=[]){
+        if(!els.reservationsList)return;
+        els.reservationsList.innerHTML="";
+        if(!list.length){
+          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Aucune réservation pour le moment."}));
           return;
         }
-
-        reservations.forEach((reservation) => {
-          els.reservationsList.appendChild(reservationsService.renderItem(reservation));
-        });
+        list.forEach(r=>els.reservationsList.appendChild(reservationsService.renderItem(r)));
       },
-
-      setReservationsNotLogged() {
-        if (!els.reservationsList) return;
-        els.reservationsList.innerHTML = "";
-        els.reservationsList.appendChild(
-          utils.create("p", {
-            className: "reservations-empty",
-            text: "Connectez-vous pour retrouver vos réservations passées et à venir."
-          })
-        );
+      setReservationsNotLogged(){
+        if(!els.reservationsList)return;
+        els.reservationsList.innerHTML="";
+        els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Connectez-vous pour retrouver vos réservations passées et à venir."}));
       },
-
-      showNotLoggedState(customMessage = "Connectez-vous pour accéder à votre espace client.") {
-        state.user = null;
-        state.gamification = null;
-        state.reservations = [];
-
-        utils.setText(els.userEmail, "Non connecté");
-        utils.setText(els.userPoints, "—");
-        utils.setStatus(els.accountMessage, customMessage, "error");
-        utils.setStatus(els.refundMessage, "", "");
+      showNotLoggedState(msg="Connectez-vous pour accéder à votre espace client."){
+        state.user=null;state.gamification=null;state.reservations=[];
+        utils.text(els.userEmail,"Non connecté");
+        utils.text(els.userPoints,"—");
+        utils.status(els.accountMessage,msg,"error");
+        utils.status(els.refundMessage,"","");
         utils.show(els.notLoggedCta);
         utils.show(els.loginCard);
         ui.setReservationsNotLogged();
-
-        if (window.SingboxGamification?.renderLoggedOut) {
-          window.SingboxGamification.renderLoggedOut();
-        }
+        window.SingboxGamification?.renderLoggedOut?.();
       },
-
-      setAuthButtonsLoading(isLoading) {
-        [els.loginSubmitBtn, els.createAccountBtn].forEach((btn) => {
-          if (!btn) return;
-          if (!btn.dataset.defaultText) btn.dataset.defaultText = btn.textContent;
-          btn.disabled = isLoading;
-          btn.textContent = isLoading ? "Chargement..." : btn.dataset.defaultText;
+      setAuthButtonsLoading(on){
+        [els.loginSubmitBtn,els.createAccountBtn].forEach(btn=>{
+          if(!btn)return;
+          if(!btn.dataset.defaultText)btn.dataset.defaultText=btn.textContent;
+          btn.disabled=on;
+          btn.textContent=on?"Chargement...":btn.dataset.defaultText;
         });
       },
-
-      clearLoginFieldErrors() {
+      clearLoginFieldErrors(){
         els.loginEmail?.removeAttribute("aria-invalid");
         els.loginPassword?.removeAttribute("aria-invalid");
       },
-
-      async drawQr(text) {
-        if (!els.qrCanvas || !globalThis.QRCode) return;
-
-        await globalThis.QRCode.toCanvas(els.qrCanvas, text, {
-          width: 320,
-          margin: 1,
-          color: { dark: "#000000", light: "#ffffff" }
-        });
+      async drawQr(text){
+        if(!els.qrCanvas||!globalThis.QRCode)return;
+        await globalThis.QRCode.toCanvas(els.qrCanvas,text,{width:320,margin:1,color:{dark:"#000000",light:"#ffffff"}});
       },
-
-      async openQrModal(url, subtitleText) {
-        if (!els.qrModal) return;
-        utils.setText(els.qrModalSubtitle, utils.sanitizeText(subtitleText || "Présentez ce QR code à l’entrée.", 200));
+      async openQrModal(url,subtitle){
+        if(!els.qrModal)return;
+        utils.text(els.qrModalSubtitle,utils.sanitize(subtitle||"Présentez ce QR code à l’entrée.",200));
         await ui.drawQr(url);
-
-        if (typeof els.qrModal.showModal === "function") els.qrModal.showModal();
-        else els.qrModal.setAttribute("open", "open");
+        typeof els.qrModal.showModal==="function"?els.qrModal.showModal():els.qrModal.setAttribute("open","open");
       },
-
-      closeQrModal() {
-        if (!els.qrModal) return;
-
-        if (typeof els.qrModal.close === "function" && els.qrModal.open) els.qrModal.close();
+      closeQrModal(){
+        if(!els.qrModal)return;
+        if(typeof els.qrModal.close==="function"&&els.qrModal.open)els.qrModal.close();
         else els.qrModal.removeAttribute("open");
-
-        const ctx = els.qrCanvas?.getContext("2d");
-        if (ctx && els.qrCanvas) ctx.clearRect(0, 0, els.qrCanvas.width, els.qrCanvas.height);
+        const ctx=els.qrCanvas?.getContext("2d");
+        if(ctx&&els.qrCanvas)ctx.clearRect(0,0,els.qrCanvas.width,els.qrCanvas.height);
       }
     };
 
-    const profile = {
-      async loadReservations() {
-        utils.setStatus(els.refundMessage, "", "");
+    const profile={
+      async loadReservations(){
+        utils.status(els.refundMessage,"","");
+        if(!utils.token()){state.reservations=[];ui.setReservationsNotLogged();return}
 
-        if (!utils.getStoredToken()) {
-          state.reservations = [];
-          ui.setReservationsNotLogged();
-          return;
+        if(els.reservationsList){
+          els.reservationsList.innerHTML="";
+          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Chargement de vos réservations..."}));
         }
 
-        if (els.reservationsList) {
-          els.reservationsList.innerHTML = "";
-          els.reservationsList.appendChild(
-            utils.create("p", {
-              className: "reservations-empty",
-              text: "Chargement de vos réservations..."
-            })
-          );
-        }
-
-        try {
-          const { response, data } = await api.myReservations();
-
-          if ([401, 403].includes(response.status)) {
-            ui.showNotLoggedState();
-            return;
-          }
-
-          if (!response.ok) throw new Error(`Erreur ${response.status}`);
-
-          state.reservations = Array.isArray(data) ? data : (data.reservations || []);
+        try{
+          const {response,data}=await api.myReservations();
+          if([401,403].includes(response.status)){ui.showNotLoggedState();return}
+          if(!response.ok)throw new Error(`Erreur ${response.status}`);
+          state.reservations=Array.isArray(data)?data:(data.reservations||[]);
           ui.renderReservations(state.reservations);
-        } catch (error) {
+        }catch(error){
           console.error(error);
-
-          if (!els.reservationsList) return;
-          els.reservationsList.innerHTML = "";
-          els.reservationsList.appendChild(
-            utils.create("p", {
-              className: "reservations-empty",
-              text: "Impossible de charger vos réservations pour le moment."
-            })
-          );
+          if(!els.reservationsList)return;
+          els.reservationsList.innerHTML="";
+          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Impossible de charger vos réservations pour le moment."}));
         }
       },
 
-      async load() {
-        const token = utils.getStoredToken();
+      async load(){
+        if(!utils.token()){ui.showNotLoggedState();return}
+        utils.status(els.accountMessage,"Chargement de votre espace client...","info");
 
-        if (!token) {
-          ui.showNotLoggedState();
-          return;
-        }
-
-        utils.setStatus(els.accountMessage, "Chargement de votre espace client...", "info");
-
-        try {
-          const [meResult, gamificationResult] = await Promise.all([
+        try{
+          const [meResult,gamifResult]=await Promise.all([
             api.me(),
-            api.gamification().catch((error) => {
-              console.error("Erreur /api/account/gamification :", error);
-              return {
-                response: { ok: false, status: 0 },
-                data: null
-              };
+            api.gamification().catch(error=>{
+              console.error("Erreur /api/account/gamification :",error);
+              return {response:{ok:false,status:0},data:null};
             })
           ]);
 
-          const { response: meResponse, data: meData } = meResult;
-          const { response: gamificationResponse, data: gamificationDataRaw } = gamificationResult || {};
+          const {response:meResponse,data:meData}=meResult;
+          const {response:gamifResponse,data:gamifDataRaw}=gamifResult||{};
 
-          if ([401, 403].includes(meResponse.status)) {
-            ui.showNotLoggedState();
-            return;
+          if([401,403].includes(meResponse.status)){ui.showNotLoggedState();return}
+          if(!meResponse.ok)throw new Error(`Erreur ${meResponse.status}`);
+
+          const user=meData&&typeof meData==="object"?meData:{};
+          const points=typeof user.points==="number"&&Number.isFinite(user.points)?Math.max(0,Math.floor(user.points)):0;
+
+          state.user=user;
+          state.gamification=gamifResponse?.ok && gamifDataRaw && typeof gamifDataRaw==="object" ? gamifDataRaw : null;
+
+          if(gamifResponse && !gamifResponse.ok && ![0,401,403].includes(gamifResponse.status)){
+            console.error("Réponse gamification non OK :",gamifResponse.status,gamifDataRaw);
           }
 
-          if (!meResponse.ok) {
-            throw new Error(`Erreur ${meResponse.status}`);
-          }
-
-          const user = meData && typeof meData === "object" ? meData : {};
-          const points = typeof user.points === "number" && Number.isFinite(user.points)
-            ? Math.max(0, Math.floor(user.points))
-            : 0;
-
-          state.user = user;
-
-          let gamificationData = null;
-          if (gamificationResponse?.ok) {
-            gamificationData = gamificationDataRaw && typeof gamificationDataRaw === "object"
-              ? gamificationDataRaw
-              : null;
-          } else {
-            if (gamificationResponse && ![0, 401, 403].includes(gamificationResponse.status)) {
-              console.error("Réponse gamification non OK :", gamificationResponse.status, gamificationDataRaw);
-            }
-            gamificationData = null;
-          }
-
-          state.gamification = gamificationData;
-
-          utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
-          utils.setText(els.userPoints, String(points));
-          utils.setStatus(els.accountMessage, "Bienvenue dans votre espace client.", "ok");
+          utils.text(els.userEmail,utils.sanitize(user.email||"—",254));
+          utils.text(els.userPoints,String(points));
+          utils.status(els.accountMessage,"Bienvenue dans votre espace client.","ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
-          if (window.SingboxGamification?.updateUser) {
-            window.SingboxGamification.updateUser({
-              email: user.email || "",
-              points,
-              pseudo: user.pseudo || "",
-              username: user.username || "",
-              prenom: user.prenom || "",
-              firstName: user.firstName || "",
-              firstname: user.firstname || "",
-              created_at: user.created_at || "",
-              sessionsCount: user.sessionsCount,
-              gamification: gamificationData || null
-            });
-          }
+          window.SingboxGamification?.updateUser?.({
+            email:user.email||"",
+            points,
+            pseudo:user.pseudo||"",
+            username:user.username||"",
+            prenom:user.prenom||"",
+            firstName:user.firstName||"",
+            firstname:user.firstname||"",
+            created_at:user.created_at||"",
+            sessionsCount:user.sessionsCount,
+            gamification:state.gamification
+          });
 
           await profile.loadReservations();
-        } catch (error) {
-          console.error("Erreur /api/me :", error);
-          state.user = null;
-          state.gamification = null;
-          utils.setStatus(els.accountMessage, "Impossible de charger votre espace client pour le moment.", "error");
+        }catch(error){
+          console.error("Erreur /api/me :",error);
+          state.user=null;
+          state.gamification=null;
+          utils.status(els.accountMessage,"Impossible de charger votre espace client pour le moment.","error");
         }
       },
 
-      getCredentials() {
+      getCredentials(){
         return {
-          email: utils.normalizeEmail(els.loginEmail?.value || ""),
-          password: els.loginPassword?.value || ""
+          email:utils.normalizeEmail(els.loginEmail?.value||""),
+          password:els.loginPassword?.value||""
         };
       },
 
-      async registerThenLogin(email, password) {
-        const registerResult = await api.register(email, password);
-        if (!registerResult.ok) {
-          return { ok: false, error: registerResult.error || "Erreur lors de la création du compte." };
-        }
-
-        const loginResult = await api.login(email, password);
-        if (!loginResult.ok) {
-          return { ok: false, error: "Compte créé, mais la connexion a échoué." };
-        }
-
-        return { ok: true, token: loginResult.token };
+      async registerThenLogin(email,password){
+        const reg=await api.register(email,password);
+        if(!reg.ok)return {ok:false,error:reg.error||"Erreur lors de la création du compte."};
+        const log=await api.login(email,password);
+        if(!log.ok)return {ok:false,error:"Compte créé, mais la connexion a échoué."};
+        return {ok:true,token:log.token};
       },
 
-      logout() {
-        utils.clearStoredToken();
-        state.user = null;
-        state.gamification = null;
-        state.reservations = [];
-        utils.setStatus(els.accountMessage, "Vous avez été déconnecté.", "error");
-        utils.setStatus(els.refundMessage, "", "");
+      logout(){
+        utils.clearToken();
+        state.user=null;state.gamification=null;state.reservations=[];
+        utils.status(els.accountMessage,"Vous avez été déconnecté.","error");
+        utils.status(els.refundMessage,"","");
         ui.showNotLoggedState("Connectez-vous pour accéder à votre espace client.");
       }
     };
 
-    const newsletter = {
-      init() {
-        // volontairement neutre ici
-      }
-    };
-
-    const events = {
-      initMobileMenu() {
-        if (!els.burgerButton || !els.mobileNav) return;
-
-        els.burgerButton.addEventListener("click", () => {
-          els.mobileNav.classList.contains("open") ? ui.closeMobileNav() : ui.openMobileNav();
+    const events={
+      initMobileMenu(){
+        if(!els.burgerButton||!els.mobileNav)return;
+        els.burgerButton.addEventListener("click",()=>els.mobileNav.classList.contains("open")?ui.closeMobileNav():ui.openMobileNav());
+        els.mobileNav.addEventListener("click",e=>e.target instanceof HTMLElement&&e.target.tagName==="A"&&ui.closeMobileNav());
+        document.addEventListener("click",e=>{
+          if(els.mobileNav?.classList.contains("open")&&e.target instanceof Node&&!els.mobileNav.contains(e.target)&&!els.burgerButton.contains(e.target))ui.closeMobileNav();
         });
-
-        els.mobileNav.addEventListener("click", (e) => {
-          if (e.target instanceof HTMLElement && e.target.tagName === "A") ui.closeMobileNav();
-        });
-
-        document.addEventListener("click", (e) => {
-          if (
-            els.mobileNav?.classList.contains("open") &&
-            e.target instanceof Node &&
-            !els.mobileNav.contains(e.target) &&
-            !els.burgerButton.contains(e.target)
-          ) {
-            ui.closeMobileNav();
-          }
-        });
-
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && els.mobileNav?.classList.contains("open")) ui.closeMobileNav();
-        });
+        document.addEventListener("keydown",e=>e.key==="Escape"&&els.mobileNav?.classList.contains("open")&&ui.closeMobileNav());
       },
 
-      initLoginForm() {
-        if (!els.loginForm) return;
+      initLoginForm(){
+        if(!els.loginForm)return;
 
-        els.loginForm.addEventListener("submit", async (e) => {
+        els.loginForm.addEventListener("submit",async e=>{
           e.preventDefault();
           ui.clearLoginFieldErrors();
-          utils.setStatus(els.loginMessage, "", "");
+          utils.status(els.loginMessage,"","");
 
-          const { email, password } = profile.getCredentials();
-
-          if (!utils.isValidEmail(email)) {
-            els.loginEmail?.setAttribute("aria-invalid", "true");
-            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
-            return;
-          }
-
-          if (!password) {
-            els.loginPassword?.setAttribute("aria-invalid", "true");
-            utils.setStatus(els.loginMessage, "Merci de renseigner votre mot de passe.", "error");
-            return;
-          }
+          const {email,password}=profile.getCredentials();
+          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
+          if(!password){els.loginPassword?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci de renseigner votre mot de passe.","error");return}
 
           ui.setAuthButtonsLoading(true);
-          utils.setStatus(els.loginMessage, "Connexion en cours...", "info");
+          utils.status(els.loginMessage,"Connexion en cours...","info");
 
-          try {
-            const result = await api.login(email, password);
-
-            if (!result.ok) {
-              utils.setStatus(
-                els.loginMessage,
-                result.error || "Erreur de connexion. Vérifiez vos identifiants.",
-                "error"
-              );
-              return;
-            }
-
-            localStorage.setItem("token", result.token);
-            utils.setStatus(els.loginMessage, "Connexion réussie.", "ok");
+          try{
+            const result=await api.login(email,password);
+            if(!result.ok){utils.status(els.loginMessage,result.error||"Erreur de connexion. Vérifiez vos identifiants.","error");return}
+            localStorage.setItem("token",result.token);
+            utils.status(els.loginMessage,"Connexion réussie.","ok");
             await profile.load();
-          } catch (error) {
+          }catch(error){
             console.error(error);
-            utils.setStatus(els.loginMessage, "Erreur réseau. Veuillez réessayer.", "error");
-          } finally {
+            utils.status(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
+          }finally{
             ui.setAuthButtonsLoading(false);
           }
         });
 
-        els.createAccountBtn?.addEventListener("click", async () => {
+        els.createAccountBtn?.addEventListener("click",async()=>{
           ui.clearLoginFieldErrors();
-          utils.setStatus(els.loginMessage, "", "");
+          utils.status(els.loginMessage,"","");
 
-          const { email, password } = profile.getCredentials();
-
-          if (!utils.isValidEmail(email)) {
-            els.loginEmail?.setAttribute("aria-invalid", "true");
-            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
-            return;
-          }
-
-          if (!password || password.length < 6) {
-            els.loginPassword?.setAttribute("aria-invalid", "true");
-            utils.setStatus(els.loginMessage, "Choisissez un mot de passe d’au moins 6 caractères.", "error");
-            return;
-          }
+          const {email,password}=profile.getCredentials();
+          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
+          if(!password||password.length<6){els.loginPassword?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Choisissez un mot de passe d’au moins 6 caractères.","error");return}
 
           ui.setAuthButtonsLoading(true);
-          utils.setStatus(els.loginMessage, "Création du compte en cours...", "info");
+          utils.status(els.loginMessage,"Création du compte en cours...","info");
 
-          try {
-            const result = await profile.registerThenLogin(email, password);
-
-            if (!result.ok) {
-              utils.setStatus(
-                els.loginMessage,
-                result.error || "Erreur lors de la création du compte.",
-                "error"
-              );
-              return;
-            }
-
-            localStorage.setItem("token", result.token);
-            utils.setStatus(els.loginMessage, "Compte créé et connecté.", "ok");
+          try{
+            const result=await profile.registerThenLogin(email,password);
+            if(!result.ok){utils.status(els.loginMessage,result.error||"Erreur lors de la création du compte.","error");return}
+            localStorage.setItem("token",result.token);
+            utils.status(els.loginMessage,"Compte créé et connecté.","ok");
             await profile.load();
-          } catch (error) {
+          }catch(error){
             console.error(error);
-            utils.setStatus(els.loginMessage, "Erreur réseau. Veuillez réessayer.", "error");
-          } finally {
+            utils.status(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
+          }finally{
             ui.setAuthButtonsLoading(false);
           }
         });
 
-        [els.loginEmail, els.loginPassword].forEach((input) => {
-          input?.addEventListener("input", () => input.removeAttribute("aria-invalid"));
-        });
+        [els.loginEmail,els.loginPassword].forEach(input=>input?.addEventListener("input",()=>input.removeAttribute("aria-invalid")));
       },
 
-      initLogout() {
-        els.logoutBtn?.addEventListener("click", profile.logout);
-      },
+      initLogout(){els.logoutBtn?.addEventListener("click",profile.logout)},
 
-      initReservationActions() {
-        els.reservationsList?.addEventListener("click", async (e) => {
-          const target = e.target instanceof Element ? e.target : null;
-          if (!target) return;
+      initReservationActions(){
+        els.reservationsList?.addEventListener("click",async e=>{
+          const target=e.target instanceof Element?e.target:null;
+          if(!target)return;
 
-          const refundBtn = target.closest(".reservation-refund-btn");
-          if (refundBtn) {
-            const reservationId = utils.sanitizeText(refundBtn.dataset.reservationId || "", 100);
-            const startTime = utils.sanitizeText(refundBtn.dataset.startTime || "", 100);
-            utils.setStatus(els.refundMessage, "", "");
+          const refundBtn=target.closest(".reservation-refund-btn");
+          if(refundBtn){
+            const reservationId=utils.sanitize(refundBtn.dataset.reservationId||"",100);
+            const startTime=utils.sanitize(refundBtn.dataset.startTime||"",100);
+            utils.status(els.refundMessage,"","");
 
-            if (!utils.getStoredToken()) {
-              utils.setStatus(els.refundMessage, "Vous devez être connecté pour demander un remboursement.", "error");
-              return;
-            }
+            if(!utils.token()){utils.status(els.refundMessage,"Vous devez être connecté pour demander un remboursement.","error");return}
+            if(!reservationId){utils.status(els.refundMessage,"Réservation introuvable.","error");return}
+            if(!reservationsService.isRefundPossible(startTime)){utils.status(els.refundMessage,"Le remboursement n'est plus possible dans les 24h avant la séance.","error");return}
 
-            if (!reservationId) {
-              utils.setStatus(els.refundMessage, "Réservation introuvable.", "error");
-              return;
-            }
+            refundBtn.disabled=true;
+            utils.status(els.refundMessage,"Demande de remboursement en cours...","info");
 
-            if (!reservationsService.isRefundPossible(startTime)) {
-              utils.setStatus(els.refundMessage, "Le remboursement n'est plus possible dans les 24h avant la séance.", "error");
-              return;
-            }
-
-            refundBtn.disabled = true;
-            utils.setStatus(els.refundMessage, "Demande de remboursement en cours...", "info");
-
-            try {
-              const response = await fetch(`${API_BASE}/api/refund-reservation`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  ...utils.getAuthHeaders()
-                },
-                body: JSON.stringify({ reservationId })
+            try{
+              const response=await fetch(`${API_BASE}/api/refund-reservation`,{
+                method:"POST",
+                headers:{"Content-Type":"application/json",...utils.authHeaders()},
+                body:JSON.stringify({reservationId})
               });
+              const data=await utils.safeJson(response);
 
-              const data = await utils.safeJson(response);
-
-              if ([401, 403].includes(response.status)) {
-                ui.showNotLoggedState();
+              if([401,403].includes(response.status)){ui.showNotLoggedState();return}
+              if(!response.ok||data.success!==true){
+                refundBtn.disabled=false;
+                utils.status(els.refundMessage,data.error||"Impossible de procéder au remboursement.","error");
                 return;
               }
 
-              if (!response.ok || data.success !== true) {
-                refundBtn.disabled = false;
-                utils.setStatus(
-                  els.refundMessage,
-                  data.error || "Impossible de procéder au remboursement.",
-                  "error"
-                );
-                return;
-              }
-
-              utils.setStatus(
-                els.refundMessage,
-                "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.",
-                "ok"
-              );
-
+              utils.status(els.refundMessage,"Remboursement effectué ou en cours de traitement. Votre réservation est annulée.","ok");
               await profile.loadReservations();
               await profile.load();
-            } catch (error) {
+            }catch(error){
               console.error(error);
-              refundBtn.disabled = false;
-              utils.setStatus(els.refundMessage, "Erreur réseau. Veuillez réessayer.", "error");
+              refundBtn.disabled=false;
+              utils.status(els.refundMessage,"Erreur réseau. Veuillez réessayer.","error");
             }
-
             return;
           }
 
-          const editBtn = target.closest(".reservation-edit-btn");
-          if (editBtn && !editBtn.disabled) {
-            const reservationId = utils.sanitizeText(editBtn.dataset.editReservationId || "", 100);
-            if (!reservationId || !utils.getStoredToken()) return;
+          const editBtn=target.closest(".reservation-edit-btn");
+          if(editBtn&&!editBtn.disabled){
+            const reservationId=utils.sanitize(editBtn.dataset.editReservationId||"",100);
+            if(!reservationId||!utils.token())return;
+            const reservation=state.reservations.find(item=>String(item.id)===reservationId);
+            if(!reservation)return;
 
-            const reservation = state.reservations.find((item) => String(item.id) === reservationId);
-            if (!reservation) return;
+            try{sessionStorage.setItem("reservation_to_edit",JSON.stringify(reservation))}
+            catch(error){console.error("Impossible de stocker reservation_to_edit :",error)}
 
-            try {
-              sessionStorage.setItem("reservation_to_edit", JSON.stringify(reservation));
-            } catch (error) {
-              console.error("Impossible de stocker reservation_to_edit :", error);
-            }
-
-            const targetUrl = reservation.id
+            window.location.href=reservation.id
               ? `modifier-reservation.html?reservationId=${encodeURIComponent(String(reservation.id))}`
               : "modifier-reservation.html";
-
-            window.location.href = targetUrl;
             return;
           }
 
-          const qrBtn = target.closest(".reservation-qr-btn");
-          if (qrBtn && !qrBtn.disabled) {
-            const qrUrl = utils.sanitizeText(qrBtn.dataset.qrUrl || "", 500);
-            const qrTitle = utils.sanitizeText(qrBtn.dataset.qrTitle || "", 200) || "Présentez ce QR code à l’entrée.";
-            if (qrUrl) await ui.openQrModal(qrUrl, qrTitle);
+          const qrBtn=target.closest(".reservation-qr-btn");
+          if(qrBtn&&!qrBtn.disabled){
+            const qrUrl=utils.sanitize(qrBtn.dataset.qrUrl||"",500);
+            const qrTitle=utils.sanitize(qrBtn.dataset.qrTitle||"",200)||"Présentez ce QR code à l’entrée.";
+            if(qrUrl)await ui.openQrModal(qrUrl,qrTitle);
           }
         });
       },
 
-      initQrModal() {
-        els.qrCloseBtn?.addEventListener("click", ui.closeQrModal);
+      initQrModal(){
+        els.qrCloseBtn?.addEventListener("click",ui.closeQrModal);
 
-        els.qrModal?.addEventListener("click", (e) => {
-          const rect = els.qrModal.getBoundingClientRect();
-          const isInDialog =
-            rect.top <= e.clientY &&
-            e.clientY <= rect.top + rect.height &&
-            rect.left <= e.clientX &&
-            e.clientX <= rect.left + rect.width;
-
-          if (!isInDialog) ui.closeQrModal();
+        els.qrModal?.addEventListener("click",e=>{
+          const rect=els.qrModal.getBoundingClientRect();
+          const inDialog=rect.top<=e.clientY&&e.clientY<=rect.top+rect.height&&rect.left<=e.clientX&&e.clientX<=rect.left+rect.width;
+          if(!inDialog)ui.closeQrModal();
         });
 
-        els.qrModal?.addEventListener("cancel", (e) => {
-          e.preventDefault();
-          ui.closeQrModal();
-        });
-
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && els.qrModal?.open) ui.closeQrModal();
-        });
+        els.qrModal?.addEventListener("cancel",e=>{e.preventDefault();ui.closeQrModal()});
+        document.addEventListener("keydown",e=>e.key==="Escape"&&els.qrModal?.open&&ui.closeQrModal());
       }
     };
 
-    function markLayoutReady() {
+    const markLayoutReady=()=>{
       document.body.classList.remove("layout-loading");
       document.body.classList.add("layout-ready");
-    }
+    };
 
-    function waitForLayoutElements(timeoutMs = 5000) {
-      return new Promise((resolve) => {
-        const hasElements = () =>
-          Boolean(byId("site-header") && byId("site-footer") && byId("burger-button"));
+    const waitForLayoutElements=(timeout=5000)=>new Promise(resolve=>{
+      const has=()=>!!($("site-header")&&$("site-footer")&&$("burger-button"));
+      if(has())return resolve();
 
-        if (hasElements()) {
-          resolve();
-          return;
-        }
-
-        const observer = new MutationObserver(() => {
-          if (hasElements()) {
-            observer.disconnect();
-            resolve();
-          }
-        });
-
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        setTimeout(() => {
-          observer.disconnect();
-          resolve();
-        }, timeoutMs);
+      const observer=new MutationObserver(()=>{
+        if(has()){observer.disconnect();resolve()}
       });
-    }
+      observer.observe(document.body,{childList:true,subtree:true});
+      setTimeout(()=>{observer.disconnect();resolve()},timeout);
+    });
 
-    async function initApp() {
-      if (window.SingboxGamification?.mount) {
-        window.SingboxGamification.mount({
-          mountSelector: "#gamification-root",
-          pseudoMaxLength: 20,
-          loyaltyGoal: LOYALTY_GOAL,
-          reservationUrl: "reservation.html",
-          reservationsCardSelector: "#account-reservations-card",
-          benefitsCardSelector: "#account-benefits-card",
-          selectors: {
-            reservationsSlot: "#gamif-reservations-slot",
-            benefitsSlot: "#gamif-benefits-slot"
-          },
-          anchors: {
-            reservations: "#gamif-reservations-anchor",
-            singcoins: "#gamif-singcoins-section",
-            level: "#gamif-xp-section",
-            missions: "#gamif-xp-section",
-            streak: "#gamif-streak-section",
-            badges: "#gamif-badges-section"
-          },
-          scrollOffset: 110
-        });
-      }
+    async function initApp(){
+      window.SingboxGamification?.mount?.({
+        mountSelector:"#gamification-root",
+        pseudoMaxLength:20,
+        loyaltyGoal:LOYALTY_GOAL,
+        reservationUrl:"reservation.html",
+        reservationsCardSelector:"#account-reservations-card",
+        benefitsCardSelector:"#account-benefits-card",
+        selectors:{reservationsSlot:"#gamif-reservations-slot",benefitsSlot:"#gamif-benefits-slot"},
+        anchors:{
+          reservations:"#gamif-reservations-anchor",
+          singcoins:"#gamif-singcoins-section",
+          level:"#gamif-xp-section",
+          missions:"#gamif-xp-section",
+          streak:"#gamif-streak-section",
+          badges:"#gamif-badges-section"
+        },
+        scrollOffset:110
+      });
 
       await waitForLayoutElements();
       ui.refreshLayoutRefs();
@@ -1641,16 +870,12 @@
       events.initLogout();
       events.initReservationActions();
       events.initQrModal();
-      newsletter.init();
 
-      if (window.SingboxGamification?.renderLoggedOut) {
-        window.SingboxGamification.renderLoggedOut();
-      }
-
+      window.SingboxGamification?.renderLoggedOut?.();
       await profile.load();
     }
 
-    document.addEventListener("DOMContentLoaded", initApp);
+    document.addEventListener("DOMContentLoaded",initApp);
   </script>
 </body>
 </html>
