@@ -11,6 +11,7 @@
     storageKey: "singbox_chest_widget_v1",
     rewardSessionKey: "singbox_chest_active_reward_session",
     demoLoginKey: "singbox_demo_logged_in",
+    authTokenStorageKey: "token",
 
     sessionsPerChest: 5,
     enableTeaserWhenLoggedOut: true,
@@ -84,7 +85,8 @@
       id: "free_session",
       type: "free_session",
       label: "Session offerte",
-      description: "Incroyable : tu as gagné une session offerte si tu réserves pendant cette visite.",
+      description:
+        "Incroyable : tu as gagné 2 personnes offertes sur ta première séance si tu réserves pendant cette visite.",
       weight: 1,
       value: 1,
       isEmpty: false,
@@ -92,6 +94,9 @@
   ];
 
   let isOpeningChest = false;
+  let cachedBackendSession = null;
+  let cachedBackendSessionAt = 0;
+  const BACKEND_SESSION_CACHE_MS = 10_000;
 
   function getApiBase() {
     const host = window.location.hostname;
@@ -99,6 +104,26 @@
       return "http://localhost:3000";
     }
     return "https://singbox-backend.onrender.com";
+  }
+
+  function getStoredAuthToken() {
+    try {
+      const token = localStorage.getItem(CONFIG.authTokenStorageKey);
+      if (!token || token === "null" || token === "undefined") return null;
+      return token;
+    } catch {
+      return null;
+    }
+  }
+
+  function getSharedSupabaseClient() {
+    if (window.__SINGBOX_SUPABASE_CLIENT__) {
+      return window.__SINGBOX_SUPABASE_CLIENT__;
+    }
+    if (window.supabaseClient) {
+      return window.supabaseClient;
+    }
+    return null;
   }
 
   function injectStyles() {
@@ -360,6 +385,14 @@
         color: #cbd5e1;
         font-size: 14px;
         line-height: 1.5;
+      }
+
+      .sb-chest-card code {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 8px;
+        background: rgba(2, 6, 23, 0.75);
+        color: #fdba74;
       }
 
       .sb-chest-progress {
@@ -644,6 +677,46 @@
     };
   }
 
+  function normalizeReward(reward) {
+    if (!reward || typeof reward !== "object") return null;
+
+    return {
+      rewardId:
+        reward.rewardId ||
+        reward.reward_id ||
+        reward.id ||
+        null,
+      id:
+        reward.id ||
+        reward.rewardId ||
+        reward.reward_id ||
+        null,
+      type: reward.type || reward.reward_type || "none",
+      label: reward.label || reward.reward_label || "Récompense",
+      description:
+        reward.description ||
+        reward.reward_description ||
+        "",
+      value:
+        reward.value ??
+        reward.reward_value ??
+        0,
+      isEmpty:
+        reward.isEmpty === true ||
+        reward.is_empty === true ||
+        reward.type === "none" ||
+        reward.reward_type === "none",
+      status: reward.status || "active",
+      promoCode: reward.promoCode || reward.promo_code || null,
+      createdAt: reward.createdAt || reward.created_at || null,
+      expiresAt: reward.expiresAt || reward.expires_at || null,
+      consumedAt: reward.consumedAt || reward.consumed_at || null,
+      triggerType: reward.triggerType || reward.trigger_type || null,
+      triggerValue: reward.triggerValue || reward.trigger_value || null,
+      reservationId: reward.reservationId || reward.reservation_id || null,
+    };
+  }
+
   function getState() {
     const raw = localStorage.getItem(CONFIG.storageKey);
     const parsed = raw ? safeParse(raw, null) : null;
@@ -659,12 +732,13 @@
   function getSessionReward() {
     const raw = sessionStorage.getItem(CONFIG.rewardSessionKey);
     const parsed = raw ? safeParse(raw, null) : null;
-    return parsed && typeof parsed === "object" ? parsed : null;
+    return parsed && typeof parsed === "object" ? normalizeReward(parsed) : null;
   }
 
   function saveSessionReward(reward) {
-    if (!reward) return;
-    sessionStorage.setItem(CONFIG.rewardSessionKey, JSON.stringify(reward));
+    const normalized = normalizeReward(reward);
+    if (!normalized) return;
+    sessionStorage.setItem(CONFIG.rewardSessionKey, JSON.stringify(normalized));
   }
 
   function clearSessionReward() {
@@ -675,41 +749,83 @@
     return localStorage.getItem(CONFIG.demoLoginKey) === "1";
   }
 
+  async function detectBackendUserFromToken(token) {
+    if (!token) return null;
+
+    const now = Date.now();
+    if (
+      cachedBackendSession &&
+      cachedBackendSession.token === token &&
+      now - cachedBackendSessionAt < BACKEND_SESSION_CACHE_MS
+    ) {
+      return cachedBackendSession.value;
+    }
+
+    try {
+      const response = await fetch(`${getApiBase()}/api/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        cachedBackendSession = { token, value: null };
+        cachedBackendSessionAt = now;
+        return null;
+      }
+
+      const json = await response.json().catch(() => null);
+      const result = json
+        ? {
+            loggedIn: true,
+            user: {
+              id: json.id || json.user_id || null,
+              email: json.email || null,
+              ...json,
+            },
+            accessToken: token,
+            source: "backend-token",
+          }
+        : null;
+
+      cachedBackendSession = { token, value: result };
+      cachedBackendSessionAt = now;
+      return result;
+    } catch {
+      cachedBackendSession = { token, value: null };
+      cachedBackendSessionAt = now;
+      return null;
+    }
+  }
+
   async function detectLoggedInUser() {
+    const backendToken = getStoredAuthToken();
+    const backendSession = await detectBackendUserFromToken(backendToken);
+    if (backendSession?.user?.id) {
+      return backendSession;
+    }
+
     if (window.__SINGBOX_USER__ && window.__SINGBOX_USER__.id) {
       return {
         loggedIn: true,
         user: window.__SINGBOX_USER__,
-        accessToken: null,
+        accessToken: backendToken,
         source: "window.__SINGBOX_USER__",
       };
     }
 
-    if (window.supabaseClient && window.supabaseClient.auth?.getSession) {
+    const sharedSupabase = getSharedSupabaseClient();
+    if (sharedSupabase && sharedSupabase.auth?.getSession) {
       try {
-        const result = await window.supabaseClient.auth.getSession();
+        const result = await sharedSupabase.auth.getSession();
         const session = result?.data?.session || null;
         if (session?.user) {
           return {
             loggedIn: true,
             user: session.user,
-            accessToken: session.access_token || null,
-            source: "window.supabaseClient",
-          };
-        }
-      } catch {}
-    }
-
-    if (window.__SINGBOX_SUPABASE_CLIENT__?.auth?.getSession) {
-      try {
-        const result = await window.__SINGBOX_SUPABASE_CLIENT__.auth.getSession();
-        const session = result?.data?.session || null;
-        if (session?.user) {
-          return {
-            loggedIn: true,
-            user: session.user,
-            accessToken: session.access_token || null,
-            source: "window.__SINGBOX_SUPABASE_CLIENT__",
+            accessToken: backendToken || session.access_token || null,
+            source: "shared-supabase",
           };
         }
       } catch {}
@@ -789,7 +905,7 @@
     );
 
     if (json?.reward) {
-      if (json.reward.status === "active") {
+      if (json.reward.status === "active" || json.reward.status === "credited") {
         saveSessionReward(json.reward);
       } else {
         clearSessionReward();
@@ -909,6 +1025,7 @@
       createdAt: new Date().toISOString(),
       triggerType,
       triggerValue,
+      promoCode: null,
     };
 
     const nextState = {
@@ -1073,10 +1190,14 @@
   }
 
   function renderRewardModal(reward) {
+    const normalizedReward = normalizeReward(reward) || reward;
     const isRealReward =
-      reward && !reward.isEmpty && reward.status !== "blocked" && reward.type !== "none";
-    const rewardVisual = getRewardVisual(reward);
-    const hasPromoCode = Boolean(reward?.promoCode);
+      normalizedReward &&
+      !normalizedReward.isEmpty &&
+      normalizedReward.status !== "blocked" &&
+      normalizedReward.type !== "none";
+    const rewardVisual = getRewardVisual(normalizedReward);
+    const hasPromoCode = Boolean(normalizedReward?.promoCode);
 
     setModalContent(`
       <div class="sb-chest-hero">
@@ -1088,12 +1209,12 @@
       </p>
 
       <div class="sb-chest-reward">
-        <div class="sb-chest-reward-badge">${escapeHtml(reward.label)}</div>
+        <div class="sb-chest-reward-badge">${escapeHtml(normalizedReward.label)}</div>
       </div>
 
       <div class="sb-chest-card">
         <strong>Détail</strong>
-        <p>${escapeHtml(reward.description || "")}</p>
+        <p>${escapeHtml(normalizedReward.description || "")}</p>
       </div>
 
       ${
@@ -1101,7 +1222,7 @@
           ? `
           <div class="sb-chest-card">
             <strong>Code associé</strong>
-            <p><code>${escapeHtml(reward.promoCode)}</code></p>
+            <p><code>${escapeHtml(normalizedReward.promoCode)}</code></p>
           </div>
         `
           : ""
@@ -1281,7 +1402,7 @@
   function renderLoggedInModalBackend(chestState) {
     const completedSessions = Number(chestState?.completedSessions || 0);
     const nextMilestone = Number(chestState?.nextMilestone || CONFIG.sessionsPerChest);
-    const activeReward = chestState?.activeReward || null;
+    const activeReward = normalizeReward(chestState?.activeReward || null);
     const availableCount = Number(chestState?.availableCount || 0);
     const welcomeAvailable = chestState?.welcomeAvailable === true;
     const milestoneChests = Array.isArray(chestState?.milestoneChests)
@@ -1521,14 +1642,16 @@
     }
 
     if (backendState) {
-      if (backendState.activeReward) {
+      const activeReward = normalizeReward(backendState.activeReward);
+
+      if (activeReward) {
         trigger.classList.add("sb-opened");
         badge.style.display = "none";
         widgetImg.src = CONFIG.assetOpen;
         widgetImg.alt = "Coffre ouvert";
-        tooltip.textContent = backendState.activeReward.promoCode
-          ? `Offre active : ${backendState.activeReward.label} (${backendState.activeReward.promoCode})`
-          : `Offre active : ${backendState.activeReward.label}`;
+        tooltip.textContent = activeReward.promoCode
+          ? `Offre active : ${activeReward.label} (${activeReward.promoCode})`
+          : `Offre active : ${activeReward.label}`;
         return;
       }
 
