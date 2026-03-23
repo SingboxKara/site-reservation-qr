@@ -20,7 +20,7 @@
   <meta property="og:locale" content="fr_FR" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mon compte Singbox | Espace client & fidélité karaoké" />
+  <meta name="twitter:title" content="Mon compte Singbox | Espace client & Singcoins" />
   <meta name="twitter:description" content="Retrouvez vos informations client, vos réservations et vos Singcoins." />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/mon-compte-preview.png" />
 
@@ -290,7 +290,7 @@
 
             <div data-account-singcoins-field>
               <div class="account-field-label">Singcoins</div>
-              <div class="account-field-value" id="user-points">–</div>
+              <div class="account-field-value" id="user-singcoins">–</div>
             </div>
 
             <div class="soft-text" style="margin-top:8px;" data-account-helper-text>
@@ -332,7 +332,7 @@
               <div class="account-benefit-item">
                 <span class="account-benefit-icon">★</span>
                 <div>
-                  <strong>Fidélité automatique</strong>
+                  <strong>Singcoins automatiques</strong>
                   <p class="soft-text">Chaque réservation alimente votre progression vers une séance offerte.</p>
                 </div>
               </div>
@@ -364,7 +364,7 @@
     const API_BASE="https://singbox-backend.onrender.com",
       CHECK_ENDPOINT=`${API_BASE}/api/check`,
       MODIFICATION_DEADLINE_HOURS=6,
-      LOYALTY_GOAL=100,
+      SINGCOINS_GOAL=100,
       $=id=>document.getElementById(id);
 
     const els={
@@ -372,7 +372,7 @@
       loginCard:$("login-card"),loginForm:$("login-form"),loginEmail:$("login-email"),loginPassword:$("login-password"),
       loginSubmitBtn:$("login-submit-btn"),createAccountBtn:$("create-account-btn"),loginMessage:$("login-message"),
       logoutBtn:$("logout-btn"),accountMessage:$("account-message"),refundMessage:$("refund-message"),notLoggedCta:$("not-logged-cta"),
-      userEmail:$("user-email"),userPoints:$("user-points"),reservationsList:$("reservations-list"),
+      userEmail:$("user-email"),userSingcoins:$("user-singcoins"),reservationsList:$("reservations-list"),
       qrModal:$("qr-modal"),qrCanvas:$("qr-canvas"),qrModalSubtitle:$("qr-modal-subtitle"),qrCloseBtn:$("qr-close-btn"),
       referralCard:$("account-referral-card"),
       referralMessage:$("referral-message"),
@@ -630,7 +630,7 @@
         referral.resetDisplay();
 
         utils.setText(els.userEmail,"Non connecté");
-        utils.setText(els.userPoints,"—");
+        utils.setText(els.userSingcoins,"—");
         utils.setStatus(els.accountMessage,msg,"error");
         utils.setStatus(els.refundMessage,"","");
         utils.show(els.notLoggedCta);
@@ -857,7 +857,7 @@
           if(!meResponse.ok)throw new Error(`Erreur ${meResponse.status}`);
 
           const user=meData&&typeof meData==="object"?meData:{};
-          const points=typeof user.points==="number"&&Number.isFinite(user.points)?Math.max(0,Math.floor(user.points)):0;
+          const singcoins=typeof user.singcoins==="number"&&Number.isFinite(user.singcoins)?Math.max(0,Math.floor(user.singcoins)):0;
 
           state.user=user;
           state.gamification=gamifResponse?.ok && gamifDataRaw && typeof gamifDataRaw==="object" ? gamifDataRaw : null;
@@ -867,14 +867,14 @@
           }
 
           utils.setText(els.userEmail,utils.sanitizeText(user.email||"—",254));
-          utils.setText(els.userPoints,String(points));
+          utils.setText(els.userSingcoins,String(singcoins));
           utils.setStatus(els.accountMessage,"Bienvenue dans votre espace client.","ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
           window.SingboxGamification?.updateUser?.({
             email:user.email||"",
-            points,
+            singcoins,
             pseudo:user.pseudo||"",
             username:user.username||"",
             prenom:user.prenom||"",
@@ -1109,7 +1109,7 @@
       window.SingboxGamification?.mount?.({
         mountSelector:"#gamification-root",
         pseudoMaxLength:20,
-        loyaltyGoal:LOYALTY_GOAL,
+        singcoinsGoal:SINGCOINS_GOAL,
         reservationUrl:"reservation.html",
         reservationsCardSelector:"#account-reservations-card",
         benefitsCardSelector:"#account-benefits-card",
