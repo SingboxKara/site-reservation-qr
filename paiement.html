@@ -151,7 +151,7 @@
   <div id="site-header"></div>
 
   <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title" aria-describedby="auth-modal-desc">
-    <div class="auth-modal-eyebrow">Programme fidélité</div>
+    <div class="auth-modal-eyebrow">Programme Singcoins</div>
     <h2 id="auth-modal-title">Connectez-vous avant de payer</h2>
     <p id="auth-modal-desc" class="auth-modal-subtext">
       Créez votre compte ou connectez-vous pour cumuler des Singcoins à chaque session et accélérer vos prochains paiements.
@@ -194,7 +194,7 @@
 
     <div class="auth-modal-footer">
       <button type="button" id="auth-modal-continue" class="auth-modal-skip">
-        Continuer sans compte (sans fidélité ni carte enregistrée)
+        Continuer sans compte (sans Singcoins ni carte enregistrée)
       </button>
       <span class="auth-modal-small">
         Vous pourrez toujours payer sans compte, mais les Singcoins et les options de paiement rapide nécessitent une connexion.
@@ -338,8 +338,8 @@
               </p>
             </div>
 
-            <div id="loyalty-block" class="billing-field" style="margin-top:18px; display:none;">
-              <div style="color:#F9FAFB; font-weight:600; margin-bottom:6px;">Programme fidélité ⭐</div>
+            <div id="singcoins-block" class="billing-field" style="margin-top:18px; display:none;">
+              <div style="color:#F9FAFB; font-weight:600; margin-bottom:6px;">Programme Singcoins ⭐</div>
 
               <div
                 style="
@@ -351,14 +351,14 @@
                 "
               >
                 <p style="margin:0; font-size:13px;">
-                  Singcoins disponibles : <b id="loyalty-points">0</b> ⭐
+                  Singcoins disponibles : <b id="singcoins-balance">0</b> ⭐
                 </p>
                 <p style="margin:4px 0 10px; font-size:12px; color:#CBD5E1;">
                   100 Singcoins = 2 participants offerts sur la première séance du panier
                 </p>
 
                 <button
-                  id="use-loyalty-btn"
+                  id="use-singcoins-btn"
                   type="button"
                   style="
                     display:none;
@@ -376,7 +376,7 @@
                   Utiliser 100 Singcoins
                 </button>
 
-                <p id="loyalty-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;" aria-live="polite" role="status"></p>
+                <p id="singcoins-msg" style="font-size:12px; margin-top:6px; color:#D1FAE5;" aria-live="polite" role="status"></p>
               </div>
             </div>
           </form>
@@ -408,9 +408,9 @@
                 <span id="order-promo-discount">-0€</span>
               </div>
 
-              <div class="order-row" id="order-loyalty-row" style="display:none;">
-                <span>Fidélité</span>
-                <span id="order-loyalty-discount">-0€</span>
+              <div class="order-row" id="order-singcoins-row" style="display:none;">
+                <span>Singcoins</span>
+                <span id="order-singcoins-discount">-0€</span>
               </div>
 
               <div class="order-row">
@@ -608,8 +608,8 @@
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
 
-    const LOYALTY_POINTS_COST = 100;
-    const LOYALTY_FREE_BILLABLE_PERSONS = 2;
+    const SINGCOINS_COST = 100;
+    const SINGCOINS_FREE_BILLABLE_PERSONS = 2;
     const MIN_BILLABLE_PERSONS = 2;
 
     const WEEKDAY_MORNING_RATE = 4.99;
@@ -627,7 +627,7 @@
     let stripe = null;
     let cardElement = null;
     let currentPromo = null;
-    let loyaltyUsed = false;
+    let singcoinsUsed = false;
     let cartValid = true;
     let lastPayWithSaved = false;
     let isPrefilling = false;
@@ -644,7 +644,7 @@
     let currentTotals = {
       totalTTCNoDiscount: 0,
       promoDiscount: 0,
-      loyaltyDiscount: 0,
+      singcoinsDiscount: 0,
       totalDiscount: 0,
       finalTotalTTC: 0
     };
@@ -1094,8 +1094,8 @@
       return Number.isNaN(d.getTime()) ? null : d;
     }
 
-    function computeLoyaltyDiscount(panier) {
-      if (!loyaltyUsed || !Array.isArray(panier) || panier.length === 0) return 0;
+    function computeSingcoinsDiscount(panier) {
+      if (!singcoinsUsed || !Array.isArray(panier) || panier.length === 0) return 0;
 
       const firstItem = panier[0];
       const slotDate = getItemDateObject(firstItem);
@@ -1104,7 +1104,7 @@
       const rate = getPerPersonRate(slotDate);
       const persons = getItemPersons(firstItem);
       const billablePersons = Math.max(persons, MIN_BILLABLE_PERSONS);
-      const coveredPersons = Math.min(LOYALTY_FREE_BILLABLE_PERSONS, billablePersons);
+      const coveredPersons = Math.min(SINGCOINS_FREE_BILLABLE_PERSONS, billablePersons);
 
       const rawDiscount = rate * coveredPersons;
       const itemPrice = Number(firstItem?.price ?? PRICE_FALLBACK) || 0;
@@ -1121,8 +1121,8 @@
         totalEl: getEl("order-total"),
         promoRow: getEl("order-promo-row"),
         promoEl: getEl("order-promo-discount"),
-        loyaltyRow: getEl("order-loyalty-row"),
-        loyaltyEl: getEl("order-loyalty-discount"),
+        singcoinsRow: getEl("order-singcoins-row"),
+        singcoinsEl: getEl("order-singcoins-discount"),
         emptyState: getEl("empty-cart-state"),
         checkoutLayout: document.querySelector(".checkout-layout"),
         paymentCard: document.querySelector(".payment-card"),
@@ -1140,7 +1140,7 @@
     }
 
     function renderEmptyOrderSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, loyaltyRow } = els;
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, singcoinsRow } = els;
 
       if (nameEl) nameEl.textContent = "Aucune réservation";
       if (metaEl) metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
@@ -1148,12 +1148,12 @@
       if (tvaEl) tvaEl.textContent = "0€";
       if (totalEl) totalEl.textContent = "0€";
       if (promoRow) promoRow.style.display = "none";
-      if (loyaltyRow) loyaltyRow.style.display = "none";
+      if (singcoinsRow) singcoinsRow.style.display = "none";
 
       currentTotals = {
         totalTTCNoDiscount: 0,
         promoDiscount: 0,
-        loyaltyDiscount: 0,
+        singcoinsDiscount: 0,
         totalDiscount: 0,
         finalTotalTTC: 0
       };
@@ -1162,7 +1162,7 @@
     }
 
     function renderInvalidCartSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, loyaltyRow, submitBtn } = els;
+      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, singcoinsRow, submitBtn } = els;
 
       if (nameEl) nameEl.textContent = "Erreur sur votre panier";
       if (metaEl) metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
@@ -1170,13 +1170,13 @@
       if (tvaEl) tvaEl.textContent = "—";
       if (totalEl) totalEl.textContent = "—";
       if (promoRow) promoRow.style.display = "none";
-      if (loyaltyRow) loyaltyRow.style.display = "none";
+      if (singcoinsRow) singcoinsRow.style.display = "none";
       if (submitBtn) submitBtn.disabled = true;
 
       currentTotals = {
         totalTTCNoDiscount: 0,
         promoDiscount: 0,
-        loyaltyDiscount: 0,
+        singcoinsDiscount: 0,
         totalDiscount: 0,
         finalTotalTTC: 0
       };
@@ -1218,7 +1218,7 @@
       const els = getCheckoutEls();
       const {
         nameEl, metaEl, subEl, tvaEl, totalEl,
-        promoRow, promoEl, loyaltyRow, loyaltyEl, submitBtn
+        promoRow, promoEl, singcoinsRow, singcoinsEl, submitBtn
       } = els;
 
       if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
@@ -1256,8 +1256,8 @@
       promoDiscount = Math.max(0, Math.min(promoDiscount, totalTTCNoDiscount));
 
       const totalAfterPromo = Math.max(0, totalTTCNoDiscount - promoDiscount);
-      const loyaltyDiscount = Math.max(0, Math.min(computeLoyaltyDiscount(panier), totalAfterPromo));
-      const totalDiscount = promoDiscount + loyaltyDiscount;
+      const singcoinsDiscount = Math.max(0, Math.min(computeSingcoinsDiscount(panier), totalAfterPromo));
+      const totalDiscount = promoDiscount + singcoinsDiscount;
       const finalTotalTTC = Math.max(0, totalTTCNoDiscount - totalDiscount);
 
       const totalHT = finalTotalTTC / 1.2;
@@ -1292,19 +1292,19 @@
         }
       }
 
-      if (loyaltyRow && loyaltyEl) {
-        if (loyaltyDiscount > 0) {
-          loyaltyRow.style.display = "flex";
-          loyaltyEl.textContent = "-" + formatMoney(loyaltyDiscount);
+      if (singcoinsRow && singcoinsEl) {
+        if (singcoinsDiscount > 0) {
+          singcoinsRow.style.display = "flex";
+          singcoinsEl.textContent = "-" + formatMoney(singcoinsDiscount);
         } else {
-          loyaltyRow.style.display = "none";
+          singcoinsRow.style.display = "none";
         }
       }
 
       currentTotals = {
         totalTTCNoDiscount,
         promoDiscount,
-        loyaltyDiscount,
+        singcoinsDiscount,
         totalDiscount,
         finalTotalTTC
       };
@@ -1749,7 +1749,7 @@
       const r = await apiFetch(
         "/api/account/gamification",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/account/gamification (payment loyalty)", timeoutMs: 7000 }
+        { auth: true, ctx: "GET /api/account/gamification (payment singcoins)", timeoutMs: 7000 }
       );
 
       if (!r.ok || !r.data) return null;
@@ -1757,37 +1757,37 @@
       return Number(r.data?.singcoins?.balance || 0);
     }
 
-    function renderLoyaltyLoggedOut(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
-      loyaltyPointsEl.textContent = "0";
-      loyaltyMsg.style.color = "#FECACA";
-      loyaltyMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
-      useLoyaltyBtn.style.display = "none";
+    function renderSingcoinsLoggedOut(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
+      singcoinsBalanceEl.textContent = "0";
+      singcoinsMsg.style.color = "#FECACA";
+      singcoinsMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
+      useSingcoinsBtn.style.display = "none";
     }
 
-    function renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
-      loyaltyPointsEl.textContent = "0";
-      useLoyaltyBtn.style.display = "none";
-      loyaltyMsg.style.color = "#FECACA";
-      loyaltyMsg.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
+    function renderSingcoinsUnavailable(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
+      singcoinsBalanceEl.textContent = "0";
+      useSingcoinsBtn.style.display = "none";
+      singcoinsMsg.style.color = "#FECACA";
+      singcoinsMsg.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
     }
 
-    function renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg) {
-      loyaltyPointsEl.textContent = String(points);
+    function renderSingcoinsReady(points, singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
+      singcoinsBalanceEl.textContent = String(points);
 
-      if (points >= LOYALTY_POINTS_COST) {
-        useLoyaltyBtn.style.display = "block";
-        useLoyaltyBtn.disabled = false;
-        useLoyaltyBtn.textContent = loyaltyUsed ? "Retirer la fidélité" : "Utiliser 100 Singcoins";
-        loyaltyMsg.style.color = "#D1FAE5";
-        loyaltyMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
+      if (points >= SINGCOINS_COST) {
+        useSingcoinsBtn.style.display = "block";
+        useSingcoinsBtn.disabled = false;
+        useSingcoinsBtn.textContent = singcoinsUsed ? "Retirer les Singcoins" : "Utiliser 100 Singcoins";
+        singcoinsMsg.style.color = "#D1FAE5";
+        singcoinsMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
       } else {
-        useLoyaltyBtn.style.display = "none";
-        loyaltyMsg.style.color = "#CBD5E1";
-        loyaltyMsg.textContent = `Il vous manque encore ${Math.max(0, LOYALTY_POINTS_COST - points)} Singcoins.`;
+        useSingcoinsBtn.style.display = "none";
+        singcoinsMsg.style.color = "#CBD5E1";
+        singcoinsMsg.textContent = `Il vous manque encore ${Math.max(0, SINGCOINS_COST - points)} Singcoins.`;
       }
     }
 
-    function disablePromoBecauseOfLoyalty() {
+    function disablePromoBecauseOfSingcoins() {
       const promoInput = getEl("promo-code");
       const promoMsg = getEl("promo-message");
       const promoBtn = getEl("apply-promo");
@@ -1810,7 +1810,7 @@
       }
     }
 
-    function enablePromoAfterLoyaltyRemoval() {
+    function enablePromoAfterSingcoinsRemoval() {
       const promoInput = getEl("promo-code");
       const promoMsg = getEl("promo-message");
       const promoBtn = getEl("apply-promo");
@@ -1827,71 +1827,71 @@
       if (promoMsg) promoMsg.textContent = "";
     }
 
-    function bindLoyaltyButton(useLoyaltyBtn, loyaltyPointsEl, loyaltyMsg) {
-      if (useLoyaltyBtn.dataset.bound === "true") return;
+    function bindSingcoinsButton(useSingcoinsBtn, singcoinsBalanceEl, singcoinsMsg) {
+      if (useSingcoinsBtn.dataset.bound === "true") return;
 
-      useLoyaltyBtn.addEventListener("click", () => {
-        loyaltyMsg.textContent = "";
+      useSingcoinsBtn.addEventListener("click", () => {
+        singcoinsMsg.textContent = "";
 
         if (!getToken()) {
-          loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Connectez-vous pour utiliser vos Singcoins.";
+          singcoinsMsg.style.color = "#FECACA";
+          singcoinsMsg.textContent = "Connectez-vous pour utiliser vos Singcoins.";
           return;
         }
 
-        const currentPoints = Number.parseInt(loyaltyPointsEl.textContent || "0", 10);
+        const currentPoints = Number.parseInt(singcoinsBalanceEl.textContent || "0", 10);
 
-        if (currentPoints < LOYALTY_POINTS_COST) {
-          loyaltyMsg.style.color = "#FECACA";
-          loyaltyMsg.textContent = "Vous n'avez pas encore assez de Singcoins.";
+        if (currentPoints < SINGCOINS_COST) {
+          singcoinsMsg.style.color = "#FECACA";
+          singcoinsMsg.textContent = "Vous n'avez pas encore assez de Singcoins.";
           return;
         }
 
-        loyaltyUsed = !loyaltyUsed;
+        singcoinsUsed = !singcoinsUsed;
 
-        if (loyaltyUsed) {
-          disablePromoBecauseOfLoyalty();
-          loyaltyMsg.style.color = "#D1FAE5";
-          loyaltyMsg.textContent =
-            "🎉 Fidélité activée : 2 participants seront offerts sur la première séance du panier.";
-          useLoyaltyBtn.textContent = "Retirer la fidélité";
+        if (singcoinsUsed) {
+          disablePromoBecauseOfSingcoins();
+          singcoinsMsg.style.color = "#D1FAE5";
+          singcoinsMsg.textContent =
+            "🎉 Singcoins activés : 2 participants seront offerts sur la première séance du panier.";
+          useSingcoinsBtn.textContent = "Retirer les Singcoins";
         } else {
-          enablePromoAfterLoyaltyRemoval();
-          loyaltyMsg.style.color = "#CBD5E1";
-          loyaltyMsg.textContent = "Utilisation des Singcoins retirée.";
-          useLoyaltyBtn.textContent = "Utiliser 100 Singcoins";
+          enablePromoAfterSingcoinsRemoval();
+          singcoinsMsg.style.color = "#CBD5E1";
+          singcoinsMsg.textContent = "Utilisation des Singcoins retirée.";
+          useSingcoinsBtn.textContent = "Utiliser 100 Singcoins";
         }
 
         updateOrderSummaryFromPanier();
       });
 
-      useLoyaltyBtn.dataset.bound = "true";
+      useSingcoinsBtn.dataset.bound = "true";
     }
 
-    async function initLoyalty() {
-      const loyaltyBlock = getEl("loyalty-block");
-      const loyaltyPointsEl = getEl("loyalty-points");
-      const useLoyaltyBtn = getEl("use-loyalty-btn");
-      const loyaltyMsg = getEl("loyalty-msg");
+    async function initSingcoins() {
+      const singcoinsBlock = getEl("singcoins-block");
+      const singcoinsBalanceEl = getEl("singcoins-balance");
+      const useSingcoinsBtn = getEl("use-singcoins-btn");
+      const singcoinsMsg = getEl("singcoins-msg");
 
-      if (!loyaltyBlock || !loyaltyPointsEl || !useLoyaltyBtn || !loyaltyMsg) return;
+      if (!singcoinsBlock || !singcoinsBalanceEl || !useSingcoinsBtn || !singcoinsMsg) return;
 
-      loyaltyBlock.style.display = "block";
+      singcoinsBlock.style.display = "block";
 
       if (!getToken()) {
-        renderLoyaltyLoggedOut(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
+        renderSingcoinsLoggedOut(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
         return;
       }
 
       const points = await fetchUserSingcoins();
 
       if (points === null) {
-        renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
+        renderSingcoinsUnavailable(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
         return;
       }
 
-      renderLoyaltyReady(points, loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
-      bindLoyaltyButton(useLoyaltyBtn, loyaltyPointsEl, loyaltyMsg);
+      renderSingcoinsReady(points, singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
+      bindSingcoinsButton(useSingcoinsBtn, singcoinsBalanceEl, singcoinsMsg);
     }
 
     function initStripeCard() {
@@ -1989,8 +1989,8 @@
       const promoInput = getEl("promo-code");
       if (!promoInput) return;
 
-      if (loyaltyUsed) {
-        setPromoMessage("Retirez d’abord la fidélité pour appliquer un code promo.", "error");
+      if (singcoinsUsed) {
+        setPromoMessage("Retirez d’abord les Singcoins pour appliquer un code promo.", "error");
         return;
       }
 
@@ -2106,7 +2106,8 @@
         cp: getEl("cp")?.value.trim() || "",
         ville: getEl("ville")?.value.trim() || "",
         naissance: getEl("naissance")?.value || "",
-        loyalty_points_spent: loyaltyUsed ? LOYALTY_POINTS_COST : 0
+        singcoins_points_spent: singcoinsUsed ? SINGCOINS_COST : 0,
+        loyalty_points_spent: singcoinsUsed ? SINGCOINS_COST : 0
       };
 
       if (includeSaveCheckoutInfo) payload.save_checkout_info = true;
@@ -2121,9 +2122,14 @@
         panier: getPanier(),
         customer: getCustomerPayload(true),
         promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
-        loyaltyUsed,
-        loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
-        loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
+        singcoinsUsed,
+        singcoinsPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+        singcoinsDiscountAmount: currentTotals.singcoinsDiscount || 0,
+
+        loyaltyUsed: singcoinsUsed,
+        loyaltyPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+        loyaltyDiscountAmount: currentTotals.singcoinsDiscount || 0,
+
         isFree: Boolean(isFree),
         chestReward: chestContext?.chestReward || null,
         rewardType: chestContext?.rewardType || null,
@@ -2298,7 +2304,7 @@
       savePanier([]);
       localStorage.removeItem("promoCode");
       currentPromo = null;
-      loyaltyUsed = false;
+      singcoinsUsed = false;
       clearChestCheckoutContext();
       clearReferralCode();
       updateCartIcon();
@@ -2436,9 +2442,14 @@
         panier,
         customer: getCustomerPayload(false),
         promoCode,
-        loyaltyUsed,
-        loyaltyPointsSpent: loyaltyUsed ? LOYALTY_POINTS_COST : 0,
-        loyaltyDiscountAmount: currentTotals.loyaltyDiscount || 0,
+        singcoinsUsed,
+        singcoinsPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+        singcoinsDiscountAmount: currentTotals.singcoinsDiscount || 0,
+
+        loyaltyUsed: singcoinsUsed,
+        loyaltyPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+        loyaltyDiscountAmount: currentTotals.singcoinsDiscount || 0,
+
         chestReward: chestContext?.chestReward || null,
         rewardType: chestContext?.rewardType || null,
         rewardValue: chestContext?.rewardValue || null,
@@ -2896,7 +2907,7 @@
         prefillFromBackendIfLogged(),
         loadSavedCardStateFromMe(),
         refreshPaymentMethods(),
-        initLoyalty()
+        initSingcoins()
       ]);
 
       renderSavedCardUI();
