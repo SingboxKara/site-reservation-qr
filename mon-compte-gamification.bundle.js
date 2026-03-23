@@ -7,7 +7,7 @@
   const DEFAULTS = {
     mountSelector: "#gamification-root",
     pseudoMaxLength: 20,
-    loyaltyGoal: 100,
+    singcoinsGoal: 100,
     reservationUrl: "reservation.html",
     reservationsCardSelector: "#account-reservations-card",
     benefitsCardSelector: "#account-benefits-card",
@@ -1300,7 +1300,7 @@
     const balance =
       singcoinsApi.balance != null
         ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.balance, 0)))
-        : Math.max(0, Math.floor(utils.toNumber(user?.points, fallback.singcoins.balance)));
+        : Math.max(0, Math.floor(utils.toNumber(user?.singcoins, fallback.singcoins.balance)));
 
     const earned =
       singcoinsApi.earned != null
@@ -1424,7 +1424,7 @@
         balance,
         earned,
         used,
-        nextReward: balance >= state.config.loyaltyGoal
+        nextReward: balance >= state.config.singcoinsGoal
           ? "Séance offerte débloquée"
           : "Séance offerte à 100 Singcoins"
       },
@@ -1465,16 +1465,16 @@
     if (!gamificationApi) {
       const email = utils.normalizeEmail(user?.email || "");
       const displayName = utils.getDisplayName(user);
-      const points = Number.isFinite(Number(user?.points)) ? Math.max(0, Math.floor(Number(user.points))) : 0;
+      const singcoins = Number.isFinite(Number(user?.singcoins)) ? Math.max(0, Math.floor(Number(user.singcoins))) : 0;
 
       fallback.identity.displayName = displayName;
       fallback.identity.avatarText = utils.initialsFromText(displayName || email || "S");
       fallback.identity.memberSince = utils.formatMonthYear(user?.created_at || user?.createdAt);
       fallback.identity.status = utils.deriveStatus(fallback.level.current, user?.sessionsCount || fallback.stats.totalSessions);
 
-      fallback.singcoins.balance = points;
-      fallback.singcoins.earned = Math.max(points + Number(fallback.singcoins.used || 0), Number(fallback.singcoins.earned || 0));
-      fallback.singcoins.nextReward = points >= state.config.loyaltyGoal
+      fallback.singcoins.balance = singcoins;
+      fallback.singcoins.earned = Math.max(singcoins + Number(fallback.singcoins.used || 0), Number(fallback.singcoins.earned || 0));
+      fallback.singcoins.nextReward = singcoins >= state.config.singcoinsGoal
         ? "Séance offerte débloquée"
         : "Séance offerte à 100 Singcoins";
 
@@ -1587,10 +1587,10 @@
           <div class="g-progress-wrap">
             <div class="g-progress-head">
               <span class="g-soft">Progression récompense</span>
-              <span class="g-soft" id="gamif-loyalty-value">0 / 100</span>
+              <span class="g-soft" id="gamif-singcoins-value">0 / 100</span>
             </div>
-            <div class="g-progress-bar"><div class="g-progress-fill" id="gamif-loyalty-fill" style="width:0%;"></div></div>
-            <div class="g-soft" id="gamif-loyalty-text">Connectez-vous pour voir votre progression.</div>
+            <div class="g-progress-bar"><div class="g-progress-fill" id="gamif-singcoins-fill" style="width:0%;"></div></div>
+            <div class="g-soft" id="gamif-singcoins-text">Connectez-vous pour voir votre progression.</div>
           </div>
 
           <div class="g-coin-highlight-row">
@@ -1600,15 +1600,15 @@
           <div class="g-coin-stats">
             <div class="g-coin-stat">
               <span class="g-coin-stat-label">Solde actuel</span>
-              <strong class="g-coin-stat-value" id="gamif-points-current">0</strong>
+              <strong class="g-coin-stat-value" id="gamif-singcoins-current">0</strong>
             </div>
             <div class="g-coin-stat">
               <span class="g-coin-stat-label">Total gagné</span>
-              <strong class="g-coin-stat-value" id="gamif-points-earned">0</strong>
+              <strong class="g-coin-stat-value" id="gamif-singcoins-earned">0</strong>
             </div>
             <div class="g-coin-stat">
               <span class="g-coin-stat-label">Total utilisé</span>
-              <strong class="g-coin-stat-value" id="gamif-points-used">0</strong>
+              <strong class="g-coin-stat-value" id="gamif-singcoins-used">0</strong>
             </div>
           </div>
         </section>
@@ -1880,25 +1880,25 @@
     const balance = Number(data.singcoins.balance || 0);
     const used = Number(data.singcoins.used || 0);
     const earned = Number(data.singcoins.earned || 0);
-    const progressValue = Math.min(balance, state.config.loyaltyGoal);
-    const progress = utils.pct(progressValue, state.config.loyaltyGoal);
-    const remaining = Math.max(0, state.config.loyaltyGoal - balance);
+    const progressValue = Math.min(balance, state.config.singcoinsGoal);
+    const progress = utils.pct(progressValue, state.config.singcoinsGoal);
+    const remaining = Math.max(0, state.config.singcoinsGoal - balance);
 
     const nextReward = document.getElementById("gamif-next-reward");
     const balanceEl = document.getElementById("gamif-singcoins-balance");
-    const loyaltyValue = document.getElementById("gamif-loyalty-value");
-    const loyaltyFill = document.getElementById("gamif-loyalty-fill");
-    const loyaltyText = document.getElementById("gamif-loyalty-text");
-    const current = document.getElementById("gamif-points-current");
-    const earnedEl = document.getElementById("gamif-points-earned");
-    const usedEl = document.getElementById("gamif-points-used");
+    const singcoinsValue = document.getElementById("gamif-singcoins-value");
+    const singcoinsFill = document.getElementById("gamif-singcoins-fill");
+    const singcoinsText = document.getElementById("gamif-singcoins-text");
+    const current = document.getElementById("gamif-singcoins-current");
+    const earnedEl = document.getElementById("gamif-singcoins-earned");
+    const usedEl = document.getElementById("gamif-singcoins-used");
 
     if (nextReward) nextReward.textContent = `Prochaine récompense : ${data.singcoins.nextReward}`;
     if (balanceEl) balanceEl.textContent = String(balance);
-    if (loyaltyValue) loyaltyValue.textContent = `${progressValue} / ${state.config.loyaltyGoal}`;
-    if (loyaltyFill) loyaltyFill.style.width = `${progress}%`;
-    if (loyaltyText) {
-      loyaltyText.textContent = balance >= state.config.loyaltyGoal
+    if (singcoinsValue) singcoinsValue.textContent = `${progressValue} / ${state.config.singcoinsGoal}`;
+    if (singcoinsFill) singcoinsFill.style.width = `${progress}%`;
+    if (singcoinsText) {
+      singcoinsText.textContent = balance >= state.config.singcoinsGoal
         ? "Bravo ! Votre palier principal est atteint."
         : `Plus que ${remaining} Singcoins avant votre séance offerte.`;
     }
@@ -2196,7 +2196,7 @@
   function renderLoggedOut() {
     state.user = {
       email: "",
-      points: 0,
+      singcoins: 0,
       gamification: null
     };
 
