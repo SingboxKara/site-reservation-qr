@@ -166,6 +166,8 @@
     #reservations-list::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px}
     #reservations-list::-webkit-scrollbar-thumb{background:rgba(249,115,22,.55);border-radius:999px}
     #gamification-root{min-height:120px}
+    #referral-link{font-size:13px;line-height:1.6;word-break:break-all}
+    #referral-progress-subtext{flex:1 1 260px}
     @media (max-width:900px){#reservations-list{max-height:none}}
     @media (max-width:640px){
       #account{padding-top:8.7rem}.container{padding:0 16px}.card{padding:1rem}
@@ -213,6 +215,69 @@
           </div>
 
           <div id="gamification-root"></div>
+
+          <div class="card" id="account-referral-card">
+            <h2>Mon parrainage</h2>
+            <p class="account-subtext">
+              Invitez vos amis avec votre lien personnel. Une fois leur séance terminée et validée,
+              votre progression avance jusqu’à débloquer une session offerte 2 personnes.
+            </p>
+
+            <p id="referral-message" class="account-message" aria-live="polite" role="status"></p>
+
+            <div class="sub-card" style="margin-top:10px;">
+              <div class="account-field-label">Mon code de parrainage</div>
+              <div class="account-field-value" id="referral-code">–</div>
+
+              <div class="account-field-label" style="margin-top:10px;">Mon lien de parrainage</div>
+              <div class="account-field-value" id="referral-link">–</div>
+
+              <div class="header-actions" style="margin-top:8px;">
+                <button id="copy-referral-link-btn" class="login-submit-btn" type="button">Copier mon lien</button>
+              </div>
+            </div>
+
+            <div class="sub-card" style="margin-top:12px;">
+              <div class="account-field-label">Progression vers la session offerte</div>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap;">
+                <div class="account-field-value" id="referral-progress-text" style="margin-bottom:0;">0 / 4</div>
+                <div class="soft-text" id="referral-progress-subtext">Plus que 4 parrainages validés pour débloquer votre récompense.</div>
+              </div>
+
+              <div
+                style="
+                  margin-top:12px;
+                  width:100%;
+                  height:14px;
+                  border-radius:999px;
+                  background:rgba(255,255,255,.08);
+                  border:1px solid rgba(255,255,255,.12);
+                  overflow:hidden;
+                "
+                aria-hidden="true"
+              >
+                <div
+                  id="referral-progress-bar"
+                  style="
+                    width:0%;
+                    height:100%;
+                    border-radius:999px;
+                    background:linear-gradient(90deg, var(--red), var(--orange));
+                    transition:width .25s ease;
+                  "
+                ></div>
+              </div>
+
+              <div style="margin-top:12px;">
+                <div class="account-field-label">Récompense actuelle</div>
+                <div class="account-field-value" id="referral-reward-status" style="margin-bottom:0;">Aucune récompense disponible</div>
+                <p class="soft-text" id="referral-reward-help" style="margin-top:6px;">
+                  À 4 parrainages validés, vous débloquez une session offerte pour 2 personnes.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div class="card account-main-card" id="account-reservations-card">
             <h2>Mes informations & réservations</h2>
@@ -308,51 +373,78 @@
       loginSubmitBtn:$("login-submit-btn"),createAccountBtn:$("create-account-btn"),loginMessage:$("login-message"),
       logoutBtn:$("logout-btn"),accountMessage:$("account-message"),refundMessage:$("refund-message"),notLoggedCta:$("not-logged-cta"),
       userEmail:$("user-email"),userPoints:$("user-points"),reservationsList:$("reservations-list"),
-      qrModal:$("qr-modal"),qrCanvas:$("qr-canvas"),qrModalSubtitle:$("qr-modal-subtitle"),qrCloseBtn:$("qr-close-btn")
+      qrModal:$("qr-modal"),qrCanvas:$("qr-canvas"),qrModalSubtitle:$("qr-modal-subtitle"),qrCloseBtn:$("qr-close-btn"),
+      referralCard:$("account-referral-card"),
+      referralMessage:$("referral-message"),
+      referralCode:$("referral-code"),
+      referralLink:$("referral-link"),
+      referralProgressText:$("referral-progress-text"),
+      referralProgressSubtext:$("referral-progress-subtext"),
+      referralProgressBar:$("referral-progress-bar"),
+      referralRewardStatus:$("referral-reward-status"),
+      referralRewardHelp:$("referral-reward-help"),
+      copyReferralLinkBtn:$("copy-referral-link-btn")
     };
 
-    const state={reservations:[],user:null,gamification:null};
+    const state={reservations:[],user:null,gamification:null,referral:null};
 
     const utils={
-      sanitize:(v,max=500)=>String(v||"").replace(/\u0000/g,"").trim().slice(0,max),
-      normalizeEmail:v=>utils.sanitize(v,254).toLowerCase(),
+      sanitizeText:(v,max=500)=>String(v||"").replace(/\u0000/g,"").trim().slice(0,max),
+      sanitize(v,max=500){ return utils.sanitizeText(v,max); },
+      normalizeEmail:v=>utils.sanitizeText(v,254).toLowerCase(),
       isValidEmail:v=>typeof v==="string"&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim()),
       safeJson:async r=>{try{return await r.json()}catch{return {}}},
       parseDate:v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.getTime())?null:d},
       formatTime:d=>d instanceof Date&&!Number.isNaN(d.getTime())?d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":","h"):"",
       formatReservationDate:v=>{
         const d=utils.parseDate(v);
-        return d?d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}):utils.sanitize(v||"Date à confirmer",80)
+        return d?d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}):utils.sanitizeText(v||"Date à confirmer",80)
       },
-      token:()=>{const t=localStorage.getItem("token");return !t||t==="null"||t==="undefined"?null:t},
-      clearToken:()=>localStorage.removeItem("token"),
-      authHeaders:()=>{const t=utils.token();return t?{Authorization:`Bearer ${t}`}:{}} ,
+      getStoredToken(){
+        const t=localStorage.getItem("token");
+        return !t||t==="null"||t==="undefined"?null:t;
+      },
+      token(){ return utils.getStoredToken(); },
+      clearStoredToken(){ localStorage.removeItem("token"); },
+      clearToken(){ utils.clearStoredToken(); },
+      getAuthHeaders(){
+        const t=utils.getStoredToken();
+        return t?{Authorization:`Bearer ${t}`}:{};
+      },
+      authHeaders(){ return utils.getAuthHeaders(); },
+      setText:(el,v)=>el&&(el.textContent=v),
       text:(el,v)=>el&&(el.textContent=v),
       show:(el,d="block")=>el&&(el.style.display=d),
       hide:el=>el&&(el.style.display="none"),
-      status:(el,msg="",type="error")=>{
+      setStatus(el,msg="",type="error"){
         if(!el)return;
         el.textContent=msg;
         el.className=el.id==="login-message"?"login-message":"account-message";
         if(type)el.classList.add(type);
       },
+      status(el,msg="",type="error"){ utils.setStatus(el,msg,type); },
       create:(tag,{className,text,html,attrs}={})=>{
         const el=document.createElement(tag);
         if(className)el.className=className;
-        if(text)el.textContent=text;
+        if(text!==undefined)el.textContent=text;
         if(html)el.innerHTML=html;
         if(attrs)Object.entries(attrs).forEach(([k,v])=>v!=null&&v!==""&&el.setAttribute(k,v));
         return el;
+      },
+      toNumber(value,fallback=0){
+        const n=Number(value);
+        return Number.isFinite(n)?n:fallback;
       }
     };
 
     const api={
       async fetchAuth(url,opt={}){
         const {clearAuthOnError=true,...rest}=opt;
-        const r=await fetch(url,{...rest,headers:{...(rest.headers||{}),...utils.authHeaders()}});
-        if(clearAuthOnError&&[401,403].includes(r.status))utils.clearToken();
+        const r=await fetch(url,{...rest,headers:{...(rest.headers||{}),...utils.getAuthHeaders()}});
+        if(clearAuthOnError&&[401,403].includes(r.status))utils.clearStoredToken();
         return r;
       },
+      async fetchWithAuth(url,opt={}){ return api.fetchAuth(url,opt); },
       async postJson(url,payload){
         const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
         return {response,data:await utils.safeJson(response)};
@@ -366,16 +458,21 @@
         return {ok:response.ok,error:data?.error};
       },
       async me(){
-        const response=await api.fetchAuth(`${API_BASE}/api/me`);
+        const response=await api.fetchWithAuth(`${API_BASE}/api/me`);
         return {response,data:await utils.safeJson(response)};
       },
       async gamification(){
-        const response=await api.fetchAuth(`${API_BASE}/api/account/gamification`,{clearAuthOnError:false});
+        const response=await api.fetchWithAuth(`${API_BASE}/api/account/gamification`,{clearAuthOnError:false});
         return {response,data:await utils.safeJson(response)};
       },
       async myReservations(){
-        const response=await api.fetchAuth(`${API_BASE}/api/my-reservations`);
+        const response=await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
         return {response,data:await utils.safeJson(response)};
+      },
+      async referralMe() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/referral/me`);
+        const data = await utils.safeJson(response);
+        return { response, data };
       }
     };
 
@@ -401,7 +498,7 @@
         return !!d&&reservationsService.statusClass(status)==="reservation-status-confirmed"&&(d.getTime()-Date.now())/(1000*60*60)>=MODIFICATION_DEADLINE_HOURS;
       },
       meta(r){
-        const t=reservationsService.formatHours(r),raw=r.box_name||r.box||r.box_id||"",b=utils.sanitize(raw,80);
+        const t=reservationsService.formatHours(r),raw=r.box_name||r.box||r.box_id||"",b=utils.sanitizeText(raw,80);
         return [t,b?(/^box/i.test(b)?b:`Box ${b}`):""].filter(Boolean).join(" • ");
       },
       qrTitle(r,date,box){
@@ -420,12 +517,12 @@
       },
       renderItem(r){
         const item=utils.create("div",{className:"reservation-item"}),
-          startIso=utils.sanitize(r.start_time||r.datetime||"",100),
+          startIso=utils.sanitizeText(r.start_time||r.datetime||"",100),
           date=utils.formatReservationDate(r.date||startIso),
           meta=reservationsService.meta(r),
-          box=utils.sanitize(r.box_name||r.box||r.box_id||"",80),
-          montant=utils.sanitize(r.montant||r.total||r.total_price||"",40),
-          statut=utils.sanitize(String(r.statut||r.status||""),80),
+          box=utils.sanitizeText(r.box_name||r.box||r.box_id||"",80),
+          montant=utils.sanitizeText(r.montant||r.total||r.total_price||"",40),
+          statut=utils.sanitizeText(String(r.statut||r.status||""),80),
           statutClass=reservationsService.statusClass(statut),
           id=r?.id||null,
           checkUrl=id?`${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}`:null,
@@ -525,11 +622,17 @@
         els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Connectez-vous pour retrouver vos réservations passées et à venir."}));
       },
       showNotLoggedState(msg="Connectez-vous pour accéder à votre espace client."){
-        state.user=null;state.gamification=null;state.reservations=[];
-        utils.text(els.userEmail,"Non connecté");
-        utils.text(els.userPoints,"—");
-        utils.status(els.accountMessage,msg,"error");
-        utils.status(els.refundMessage,"","");
+        state.user=null;
+        state.gamification=null;
+        state.reservations=[];
+        state.referral=null;
+        referral.hideCard();
+        referral.resetDisplay();
+
+        utils.setText(els.userEmail,"Non connecté");
+        utils.setText(els.userPoints,"—");
+        utils.setStatus(els.accountMessage,msg,"error");
+        utils.setStatus(els.refundMessage,"","");
         utils.show(els.notLoggedCta);
         utils.show(els.loginCard);
         ui.setReservationsNotLogged();
@@ -553,7 +656,7 @@
       },
       async openQrModal(url,subtitle){
         if(!els.qrModal)return;
-        utils.text(els.qrModalSubtitle,utils.sanitize(subtitle||"Présentez ce QR code à l’entrée.",200));
+        utils.setText(els.qrModalSubtitle,utils.sanitizeText(subtitle||"Présentez ce QR code à l’entrée.",200));
         await ui.drawQr(url);
         typeof els.qrModal.showModal==="function"?els.qrModal.showModal():els.qrModal.setAttribute("open","open");
       },
@@ -566,10 +669,154 @@
       }
     };
 
+    const referral = {
+      hideCard() {
+        utils.hide(els.referralCard);
+        state.referral = null;
+      },
+
+      showCard() {
+        utils.show(els.referralCard);
+      },
+
+      resetDisplay() {
+        utils.setText(els.referralCode, "–");
+        utils.setText(els.referralLink, "–");
+        utils.setText(els.referralProgressText, "0 / 4");
+        utils.setText(els.referralProgressSubtext, "Connectez-vous pour suivre votre progression de parrainage.");
+        utils.setText(els.referralRewardStatus, "Aucune récompense disponible");
+        utils.setText(els.referralRewardHelp, "À 4 parrainages validés, vous débloquez une session offerte pour 2 personnes.");
+        if (els.referralProgressBar) els.referralProgressBar.style.width = "0%";
+        utils.setStatus(els.referralMessage, "", "");
+      },
+
+      render(data) {
+        const referralData = data?.referral || null;
+        state.referral = referralData;
+
+        if (!referralData) {
+          referral.resetDisplay();
+          utils.setStatus(els.referralMessage, "Impossible de charger vos informations de parrainage.", "error");
+          return;
+        }
+
+        const code = utils.sanitizeText(referralData.code || "", 80);
+        const link = utils.sanitizeText(referralData.link || "", 500);
+        const current = Math.max(0, utils.toNumber(referralData.progressCurrent, 0));
+        const target = Math.max(1, utils.toNumber(referralData.progressTarget, 4));
+        const validatedCount = Math.max(0, utils.toNumber(referralData.validatedCount, current));
+        const rewardAvailable = Boolean(referralData.rewardAvailable);
+        const percentage = Math.max(0, Math.min(100, (current / target) * 100));
+
+        utils.setText(els.referralCode, code || "—");
+        utils.setText(els.referralLink, link || "—");
+        utils.setText(els.referralProgressText, `${current} / ${target}`);
+
+        if (els.referralProgressBar) {
+          els.referralProgressBar.style.width = `${percentage}%`;
+        }
+
+        if (rewardAvailable) {
+          utils.setText(els.referralRewardStatus, "Session offerte 2 personnes disponible ✅");
+          utils.setText(
+            els.referralRewardHelp,
+            "Votre récompense est débloquée. Vous pourrez l’utiliser pendant une prochaine réservation."
+          );
+          utils.setText(
+            els.referralProgressSubtext,
+            "Objectif atteint : votre session offerte 2 personnes est disponible."
+          );
+        } else {
+          const remaining = Math.max(0, target - current);
+
+          utils.setText(els.referralRewardStatus, "Aucune récompense disponible");
+          utils.setText(
+            els.referralRewardHelp,
+            "À 4 parrainages validés, vous débloquez une session offerte pour 2 personnes."
+          );
+
+          if (remaining > 0) {
+            utils.setText(
+              els.referralProgressSubtext,
+              remaining === 1
+                ? "Plus qu’1 parrainage validé pour débloquer votre récompense."
+                : `Plus que ${remaining} parrainages validés pour débloquer votre récompense.`
+            );
+          } else {
+            utils.setText(
+              els.referralProgressSubtext,
+              validatedCount > 0
+                ? "Votre progression est bien enregistrée."
+                : "Invitez vos amis pour commencer votre progression."
+            );
+          }
+        }
+
+        utils.setStatus(els.referralMessage, "Votre espace parrainage est à jour.", "ok");
+      },
+
+      async load() {
+        if (!utils.getStoredToken()) {
+          referral.hideCard();
+          referral.resetDisplay();
+          return;
+        }
+
+        referral.showCard();
+        utils.setStatus(els.referralMessage, "Chargement de votre parrainage...", "info");
+
+        try {
+          const { response, data } = await api.referralMe();
+
+          if ([401, 403].includes(response.status)) {
+            referral.hideCard();
+            referral.resetDisplay();
+            return;
+          }
+
+          if (!response.ok) {
+            throw new Error(`Erreur ${response.status}`);
+          }
+
+          referral.render(data);
+        } catch (error) {
+          console.error("Erreur /api/referral/me :", error);
+          referral.showCard();
+          referral.resetDisplay();
+          utils.setStatus(
+            els.referralMessage,
+            "Impossible de charger votre parrainage pour le moment.",
+            "error"
+          );
+        }
+      },
+
+      async copyLink() {
+        const link = state.referral?.link || "";
+        if (!link) {
+          utils.setStatus(els.referralMessage, "Aucun lien de parrainage à copier.", "error");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(link);
+          utils.setStatus(els.referralMessage, "Lien de parrainage copié ✔", "ok");
+        } catch (error) {
+          console.error("Erreur copie lien referral :", error);
+          utils.setStatus(els.referralMessage, "Impossible de copier le lien automatiquement.", "error");
+        }
+      }
+    };
+
     const profile={
       async loadReservations(){
-        utils.status(els.refundMessage,"","");
-        if(!utils.token()){state.reservations=[];ui.setReservationsNotLogged();return}
+        utils.setStatus(els.refundMessage,"","");
+
+        if(!utils.getStoredToken()){
+          state.reservations=[];
+          ui.setReservationsNotLogged();
+          return;
+        }
 
         if(els.reservationsList){
           els.reservationsList.innerHTML="";
@@ -591,8 +838,8 @@
       },
 
       async load(){
-        if(!utils.token()){ui.showNotLoggedState();return}
-        utils.status(els.accountMessage,"Chargement de votre espace client...","info");
+        if(!utils.getStoredToken()){ui.showNotLoggedState();return}
+        utils.setStatus(els.accountMessage,"Chargement de votre espace client...","info");
 
         try{
           const [meResult,gamifResult]=await Promise.all([
@@ -619,9 +866,9 @@
             console.error("Réponse gamification non OK :",gamifResponse.status,gamifDataRaw);
           }
 
-          utils.text(els.userEmail,utils.sanitize(user.email||"—",254));
-          utils.text(els.userPoints,String(points));
-          utils.status(els.accountMessage,"Bienvenue dans votre espace client.","ok");
+          utils.setText(els.userEmail,utils.sanitizeText(user.email||"—",254));
+          utils.setText(els.userPoints,String(points));
+          utils.setStatus(els.accountMessage,"Bienvenue dans votre espace client.","ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
@@ -638,12 +885,18 @@
             gamification:state.gamification
           });
 
-          await profile.loadReservations();
+          await Promise.all([
+            profile.loadReservations(),
+            referral.load()
+          ]);
         }catch(error){
           console.error("Erreur /api/me :",error);
           state.user=null;
           state.gamification=null;
-          utils.status(els.accountMessage,"Impossible de charger votre espace client pour le moment.","error");
+          state.referral=null;
+          referral.hideCard();
+          referral.resetDisplay();
+          utils.setStatus(els.accountMessage,"Impossible de charger votre espace client pour le moment.","error");
         }
       },
 
@@ -663,10 +916,16 @@
       },
 
       logout(){
-        utils.clearToken();
-        state.user=null;state.gamification=null;state.reservations=[];
-        utils.status(els.accountMessage,"Vous avez été déconnecté.","error");
-        utils.status(els.refundMessage,"","");
+        utils.clearStoredToken();
+        state.user=null;
+        state.gamification=null;
+        state.reservations=[];
+        state.referral=null;
+        referral.hideCard();
+        referral.resetDisplay();
+
+        utils.setStatus(els.accountMessage,"Vous avez été déconnecté.","error");
+        utils.setStatus(els.refundMessage,"","");
         ui.showNotLoggedState("Connectez-vous pour accéder à votre espace client.");
       }
     };
@@ -688,24 +947,24 @@
         els.loginForm.addEventListener("submit",async e=>{
           e.preventDefault();
           ui.clearLoginFieldErrors();
-          utils.status(els.loginMessage,"","");
+          utils.setStatus(els.loginMessage,"","");
 
           const {email,password}=profile.getCredentials();
-          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
-          if(!password){els.loginPassword?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci de renseigner votre mot de passe.","error");return}
+          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
+          if(!password){els.loginPassword?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci de renseigner votre mot de passe.","error");return}
 
           ui.setAuthButtonsLoading(true);
-          utils.status(els.loginMessage,"Connexion en cours...","info");
+          utils.setStatus(els.loginMessage,"Connexion en cours...","info");
 
           try{
             const result=await api.login(email,password);
-            if(!result.ok){utils.status(els.loginMessage,result.error||"Erreur de connexion. Vérifiez vos identifiants.","error");return}
+            if(!result.ok){utils.setStatus(els.loginMessage,result.error||"Erreur de connexion. Vérifiez vos identifiants.","error");return}
             localStorage.setItem("token",result.token);
-            utils.status(els.loginMessage,"Connexion réussie.","ok");
+            utils.setStatus(els.loginMessage,"Connexion réussie.","ok");
             await profile.load();
           }catch(error){
             console.error(error);
-            utils.status(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
+            utils.setStatus(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
           }finally{
             ui.setAuthButtonsLoading(false);
           }
@@ -713,24 +972,24 @@
 
         els.createAccountBtn?.addEventListener("click",async()=>{
           ui.clearLoginFieldErrors();
-          utils.status(els.loginMessage,"","");
+          utils.setStatus(els.loginMessage,"","");
 
           const {email,password}=profile.getCredentials();
-          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
-          if(!password||password.length<6){els.loginPassword?.setAttribute("aria-invalid","true");utils.status(els.loginMessage,"Choisissez un mot de passe d’au moins 6 caractères.","error");return}
+          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
+          if(!password||password.length<6){els.loginPassword?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Choisissez un mot de passe d’au moins 6 caractères.","error");return}
 
           ui.setAuthButtonsLoading(true);
-          utils.status(els.loginMessage,"Création du compte en cours...","info");
+          utils.setStatus(els.loginMessage,"Création du compte en cours...","info");
 
           try{
             const result=await profile.registerThenLogin(email,password);
-            if(!result.ok){utils.status(els.loginMessage,result.error||"Erreur lors de la création du compte.","error");return}
+            if(!result.ok){utils.setStatus(els.loginMessage,result.error||"Erreur lors de la création du compte.","error");return}
             localStorage.setItem("token",result.token);
-            utils.status(els.loginMessage,"Compte créé et connecté.","ok");
+            utils.setStatus(els.loginMessage,"Compte créé et connecté.","ok");
             await profile.load();
           }catch(error){
             console.error(error);
-            utils.status(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
+            utils.setStatus(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
           }finally{
             ui.setAuthButtonsLoading(false);
           }
@@ -748,21 +1007,21 @@
 
           const refundBtn=target.closest(".reservation-refund-btn");
           if(refundBtn){
-            const reservationId=utils.sanitize(refundBtn.dataset.reservationId||"",100);
-            const startTime=utils.sanitize(refundBtn.dataset.startTime||"",100);
-            utils.status(els.refundMessage,"","");
+            const reservationId=utils.sanitizeText(refundBtn.dataset.reservationId||"",100);
+            const startTime=utils.sanitizeText(refundBtn.dataset.startTime||"",100);
+            utils.setStatus(els.refundMessage,"","");
 
-            if(!utils.token()){utils.status(els.refundMessage,"Vous devez être connecté pour demander un remboursement.","error");return}
-            if(!reservationId){utils.status(els.refundMessage,"Réservation introuvable.","error");return}
-            if(!reservationsService.isRefundPossible(startTime)){utils.status(els.refundMessage,"Le remboursement n'est plus possible dans les 24h avant la séance.","error");return}
+            if(!utils.getStoredToken()){utils.setStatus(els.refundMessage,"Vous devez être connecté pour demander un remboursement.","error");return}
+            if(!reservationId){utils.setStatus(els.refundMessage,"Réservation introuvable.","error");return}
+            if(!reservationsService.isRefundPossible(startTime)){utils.setStatus(els.refundMessage,"Le remboursement n'est plus possible dans les 24h avant la séance.","error");return}
 
             refundBtn.disabled=true;
-            utils.status(els.refundMessage,"Demande de remboursement en cours...","info");
+            utils.setStatus(els.refundMessage,"Demande de remboursement en cours...","info");
 
             try{
               const response=await fetch(`${API_BASE}/api/refund-reservation`,{
                 method:"POST",
-                headers:{"Content-Type":"application/json",...utils.authHeaders()},
+                headers:{"Content-Type":"application/json",...utils.getAuthHeaders()},
                 body:JSON.stringify({reservationId})
               });
               const data=await utils.safeJson(response);
@@ -770,25 +1029,25 @@
               if([401,403].includes(response.status)){ui.showNotLoggedState();return}
               if(!response.ok||data.success!==true){
                 refundBtn.disabled=false;
-                utils.status(els.refundMessage,data.error||"Impossible de procéder au remboursement.","error");
+                utils.setStatus(els.refundMessage,data.error||"Impossible de procéder au remboursement.","error");
                 return;
               }
 
-              utils.status(els.refundMessage,"Remboursement effectué ou en cours de traitement. Votre réservation est annulée.","ok");
+              utils.setStatus(els.refundMessage,"Remboursement effectué ou en cours de traitement. Votre réservation est annulée.","ok");
               await profile.loadReservations();
               await profile.load();
             }catch(error){
               console.error(error);
               refundBtn.disabled=false;
-              utils.status(els.refundMessage,"Erreur réseau. Veuillez réessayer.","error");
+              utils.setStatus(els.refundMessage,"Erreur réseau. Veuillez réessayer.","error");
             }
             return;
           }
 
           const editBtn=target.closest(".reservation-edit-btn");
           if(editBtn&&!editBtn.disabled){
-            const reservationId=utils.sanitize(editBtn.dataset.editReservationId||"",100);
-            if(!reservationId||!utils.token())return;
+            const reservationId=utils.sanitizeText(editBtn.dataset.editReservationId||"",100);
+            if(!reservationId||!utils.getStoredToken())return;
             const reservation=state.reservations.find(item=>String(item.id)===reservationId);
             if(!reservation)return;
 
@@ -803,8 +1062,8 @@
 
           const qrBtn=target.closest(".reservation-qr-btn");
           if(qrBtn&&!qrBtn.disabled){
-            const qrUrl=utils.sanitize(qrBtn.dataset.qrUrl||"",500);
-            const qrTitle=utils.sanitize(qrBtn.dataset.qrTitle||"",200)||"Présentez ce QR code à l’entrée.";
+            const qrUrl=utils.sanitizeText(qrBtn.dataset.qrUrl||"",500);
+            const qrTitle=utils.sanitizeText(qrBtn.dataset.qrTitle||"",200)||"Présentez ce QR code à l’entrée.";
             if(qrUrl)await ui.openQrModal(qrUrl,qrTitle);
           }
         });
@@ -821,6 +1080,12 @@
 
         els.qrModal?.addEventListener("cancel",e=>{e.preventDefault();ui.closeQrModal()});
         document.addEventListener("keydown",e=>e.key==="Escape"&&els.qrModal?.open&&ui.closeQrModal());
+      },
+
+      initReferralActions() {
+        els.copyReferralLinkBtn?.addEventListener("click", () => {
+          referral.copyLink();
+        });
       }
     };
 
@@ -870,8 +1135,12 @@
       events.initLogout();
       events.initReservationActions();
       events.initQrModal();
+      events.initReferralActions();
 
       window.SingboxGamification?.renderLoggedOut?.();
+      referral.hideCard();
+      referral.resetDisplay();
+
       await profile.load();
     }
 
