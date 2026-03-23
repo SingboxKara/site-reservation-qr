@@ -82,76 +82,147 @@
     },
     missions: [
       { id: "book_once_week", title: "Une session cette semaine", progress: 0, reward: "+5 Singcoins • +10 XP", done: false },
-      { id: "come_with_3_people", title: "Venir en groupe", progress: 0, reward: "+8 Singcoins • +12 XP", done: false },
-      { id: "weekday_booking", title: "Créneau semaine", progress: 0, reward: "+6 Singcoins • +10 XP", done: false }
+      { id: "come_with_3_people", title: "Venir en groupe", progress: 0, reward: "+5 Singcoins • +10 XP", done: false },
+      { id: "weekday_booking", title: "Créneau semaine", progress: 0, reward: "+10 Singcoins • +10 XP", done: false }
     ],
     badges: []
   };
 
   const BADGE_DEFINITIONS = [
     {
-      key: "first-session",
+      key: "first_session",
       code: "first_session",
       icon: "🎤",
       title: "Première session",
       desc: "Faire une première session réalisée.",
-      rarity: "common"
+      rarity: "common",
+      rewardSingcoins: 5
     },
     {
-      key: "two-sessions",
+      key: "group_3_plus",
+      code: "group_3_plus",
+      icon: "👥",
+      title: "Session en groupe",
+      desc: "Faire une session à 3 personnes ou plus.",
+      rarity: "common",
+      rewardSingcoins: 5
+    },
+    {
+      key: "two_sessions",
       code: "two_sessions",
       icon: "🔁",
-      title: "Ça repart",
+      title: "2 sessions réalisées",
       desc: "Faire 2 sessions réalisées.",
-      rarity: "common"
+      rarity: "common",
+      rewardSingcoins: 5
     },
     {
-      key: "three-hours",
-      code: "three_hours",
-      icon: "⏱️",
-      title: "3h de chant",
-      desc: "Atteindre 3 heures cumulées.",
-      rarity: "common"
-    },
-    {
-      key: "weekday-regular",
-      code: "weekday_regular",
-      icon: "📅",
-      title: "Habitué de semaine",
-      desc: "Faire 3 sessions hors week-end.",
-      rarity: "rare"
-    },
-    {
-      key: "group-vibes",
-      code: "group_vibes",
-      icon: "🎉",
-      title: "Chef de bande",
-      desc: "Faire une session à 3 personnes ou plus.",
-      rarity: "rare"
-    },
-    {
-      key: "ten-sessions",
-      code: "ten_sessions",
-      icon: "🏆",
-      title: "Habitué confirmé",
-      desc: "Faire 10 sessions réalisées.",
-      rarity: "epic"
-    },
-    {
-      key: "four-week-streak",
-      code: "four_week_streak",
+      key: "three_week_streak",
+      code: "three_week_streak",
       icon: "🔥",
-      title: "Toujours là",
-      desc: "Tenir 4 semaines d’affilée.",
-      rarity: "epic"
+      title: "3 semaines d’affilée",
+      desc: "Atteindre un streak de 3 semaines.",
+      rarity: "rare",
+      rewardSingcoins: 10
     },
     {
-      key: "spent-singcoins-once",
-      code: "spent_singcoins_once",
-      icon: "💰",
-      title: "Premier échange",
-      desc: "Utiliser des Singcoins une fois.",
-      rarity: "rare"
+      key: "group_5_plus",
+      code: "group_5_plus",
+      icon: "👥",
+      title: "Groupe de 5+",
+      desc: "Faire une session à 5 personnes ou plus.",
+      rarity: "rare",
+      rewardSingcoins: 10
+    },
+    {
+      key: "five_sessions",
+      code: "five_sessions",
+      icon: "📅",
+      title: "5 sessions réalisées",
+      desc: "Faire 5 sessions réalisées.",
+      rarity: "rare",
+      rewardSingcoins: 10
+    },
+    {
+      key: "three_sessions_in_7_days",
+      code: "three_sessions_in_7_days",
+      icon: "🎶",
+      title: "3 sessions en 7 jours",
+      desc: "Faire 3 sessions réalisées sur 7 jours glissants.",
+      rarity: "rare",
+      rewardSingcoins: 10
+    },
+    {
+      key: "ten_sessions",
+      code: "ten_sessions",
+      icon: "🚀",
+      title: "10 sessions réalisées",
+      desc: "Faire 10 sessions réalisées.",
+      rarity: "epic",
+      rewardSingcoins: 15
+    },
+    {
+      key: "five_week_streak",
+      code: "five_week_streak",
+      icon: "🔥",
+      title: "Streak de 5 semaines",
+      desc: "Atteindre un streak de 5 semaines.",
+      rarity: "epic",
+      rewardSingcoins: 15
+    },
+    {
+      key: "group_8_plus",
+      code: "group_8_plus",
+      icon: "👥",
+      title: "Groupe de 8+",
+      desc: "Faire une session à 8 personnes ou plus.",
+      rarity: "epic",
+      rewardSingcoins: 15
+    },
+    {
+      key: "three_sessions_one_week",
+      code: "three_sessions_one_week",
+      icon: "🔁",
+      title: "3 sessions en 1 semaine",
+      desc: "Faire 3 sessions réalisées dans une même semaine.",
+      rarity: "epic",
+      rewardSingcoins: 15
+    },
+    {
+      key: "twenty_five_sessions",
+      code: "twenty_five_sessions",
+      icon: "🐐",
+      title: "25 sessions réalisées",
+      desc: "Faire 25 sessions réalisées.",
+      rarity: "legendary",
+      rewardSingcoins: 20
+    },
+    {
+      key: "ten_week_streak",
+      code: "ten_week_streak",
+      icon: "👑",
+      title: "Streak de 10 semaines",
+      desc: "Atteindre un streak de 10 semaines.",
+      rarity: "legendary",
+      rewardSingcoins: 20
+    },
+    {
+      key: "ten_group_sessions_5_plus",
+      code: "ten_group_sessions_5_plus",
+      icon: "🎉",
+      title: "10 sessions en groupe (5+)",
+      desc: "Faire 10 sessions à 5 personnes ou plus.",
+      rarity: "legendary",
+      rewardSingcoins: 20
+    },
+    {
+      key: "four_weeks_two_sessions_each",
+      code: "four_weeks_two_sessions_each",
+      icon: "🔥",
+      title: "4 semaines à 2 sessions",
+      desc: "Faire 4 semaines consécutives avec au moins 2 sessions par semaine.",
+      rarity: "legendary",
+      rewardSingcoins: 20
     }
   ];
 
@@ -369,6 +440,12 @@
       if (singcoins > 0) parts.push(`+${singcoins} Singcoins`);
       if (xp > 0) parts.push(`+${xp} XP`);
       return parts.join(" • ") || "Récompense à venir";
+    },
+
+    formatBadgeRewardText(badge) {
+      const singcoins = Math.max(0, Math.floor(utils.toNumber(badge?.rewardSingcoins, 0)));
+      if (singcoins <= 0) return "";
+      return `Récompense : +${singcoins} Singcoins`;
     },
 
     normalizeBadgeKey(value) {
@@ -1151,11 +1228,11 @@
 
   function normalizeBadges(apiBadges, fallbackBadges) {
     const sourceList = Array.isArray(apiBadges) ? apiBadges : [];
-    const unlockedMap = new Map();
+    const apiMap = new Map();
 
     sourceList.forEach((badge) => {
       utils.getBadgeLookupKeys(badge).forEach((key) => {
-        if (!unlockedMap.has(key)) unlockedMap.set(key, badge);
+        if (!apiMap.has(key)) apiMap.set(key, badge);
       });
     });
 
@@ -1167,22 +1244,42 @@
           icon: badge.icon,
           title: badge.title,
           desc: badge.desc,
-          rarity: badge.rarity
+          rarity: badge.rarity,
+          rewardSingcoins: badge.rewardSingcoins || 0
         }));
 
     return catalog.map((definition, index) => {
-      const defKey = utils.normalizeBadgeKey(definition.key || definition.code || definition.title || `badge-${index}`);
+      const defKey = utils.normalizeBadgeKey(
+        definition.key || definition.code || definition.title || `badge-${index}`
+      );
+
       const matched =
-        unlockedMap.get(defKey) ||
-        unlockedMap.get(utils.normalizeBadgeKey(definition.code)) ||
-        unlockedMap.get(utils.normalizeBadgeKey(definition.title));
+        apiMap.get(defKey) ||
+        apiMap.get(utils.normalizeBadgeKey(definition.code)) ||
+        apiMap.get(utils.normalizeBadgeKey(definition.title)) ||
+        null;
+
+      const isUnlocked =
+        typeof matched?.isUnlocked === "boolean"
+          ? matched.isUnlocked
+          : Boolean(matched?.unlocked || matched?.unlockedAt);
 
       return {
+        code: matched?.code || definition.code || defKey,
         icon: matched?.icon || definition.icon || "★",
         title: matched?.title || definition.title || "Badge",
         desc: matched?.description || matched?.desc || definition.desc || "",
         rarity: matched?.rarity || definition.rarity || "common",
-        unlocked: Boolean(matched),
+        rewardSingcoins: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              matched?.rewardSingcoins ?? definition.rewardSingcoins,
+              0
+            )
+          )
+        ),
+        unlocked: isUnlocked,
         date: matched?.unlockedAt ? utils.formatShortDate(matched.unlockedAt) : ""
       };
     });
@@ -1713,7 +1810,7 @@
       const items = [
         { icon: "🎟", title: "Session réalisée", text: "Chaque session validée rapporte des Singcoins." },
         { icon: "🏅", title: "Missions", text: "Les missions hebdomadaires peuvent donner un bonus de Singcoins." },
-        { icon: "✨", title: "Badges", text: "Débloquer certains badges peut vous offrir des Singcoins." },
+        { icon: "✨", title: "Badges", text: "Débloquer un badge vous rapporte aussi des Singcoins." },
         { icon: "🎁", title: "Récompenses", text: "Votre progression vous rapproche de la séance offerte." }
       ];
 
@@ -1735,7 +1832,7 @@
         { icon: "🎤", title: "Sessions réalisées", text: "Chaque session validée participe à votre progression XP." },
         { icon: "🔥", title: "Régularité", text: "Entretenir votre streak hebdomadaire valorise votre profil." },
         { icon: "✅", title: "Missions", text: "Les missions accomplies peuvent rapporter de l’XP." },
-        { icon: "🌟", title: "Badges", text: "Débloquer certains badges donne aussi un bonus d’XP." }
+        { icon: "🌟", title: "Progression", text: "Votre niveau augmente au fil de vos réservations et missions." }
       ];
 
       xpEl.innerHTML = items.map((item) => `
@@ -1926,17 +2023,22 @@
     const el = document.getElementById("gamif-badges-list");
     if (!el) return;
 
-    el.innerHTML = data.badges.map((badge) => `
-      <div class="g-item ${badge.unlocked ? "" : "g-locked"}">
-        <span class="g-badge-icon">${utils.safeHtml(badge.icon || "★")}</span>
-        <div class="g-item-content">
-          <strong style="color:#f9fafb;">${utils.safeHtml(badge.title)}</strong>
-          <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
-          <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
-          ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
+    el.innerHTML = data.badges.map((badge) => {
+      const rewardText = utils.formatBadgeRewardText(badge);
+
+      return `
+        <div class="g-item ${badge.unlocked ? "" : "g-locked"}">
+          <span class="g-badge-icon">${utils.safeHtml(badge.icon || "★")}</span>
+          <div class="g-item-content">
+            <strong style="color:#f9fafb;">${utils.safeHtml(badge.title)}</strong>
+            <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
+            ${rewardText ? `<div class="g-soft" style="margin-top:6px;">${utils.safeHtml(rewardText)}</div>` : ""}
+            <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
+            ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
+          </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   function setPseudoMessage(message, type = "") {
