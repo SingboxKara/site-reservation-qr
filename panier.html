@@ -132,6 +132,89 @@
       line-height: 1.6;
     }
 
+    .cart-referral-banner {
+      display: none;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 0 auto 1rem;
+      max-width: 760px;
+      padding: 0.95rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(249, 115, 22, 0.30);
+      background:
+        linear-gradient(135deg, rgba(201, 76, 53, 0.14), rgba(249, 115, 22, 0.07)),
+        rgba(2, 6, 23, 0.92);
+      color: #f9fafb;
+    }
+
+    .cart-referral-banner.is-visible {
+      display: flex;
+    }
+
+    .cart-referral-main {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .cart-referral-eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #fdba74;
+      font-weight: 700;
+    }
+
+    .cart-referral-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .cart-referral-text {
+      font-size: 12px;
+      color: rgba(229, 231, 235, 0.88);
+      line-height: 1.55;
+    }
+
+    .cart-referral-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      color: #f9fafb;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .cart-referral-remove {
+      border: 1px solid rgba(148, 163, 184, 0.38);
+      background: transparent;
+      color: #e5e7eb;
+      border-radius: 999px;
+      padding: 0.65rem 0.9rem;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .cart-referral-remove:hover,
+    .cart-referral-remove:focus-visible {
+      border-color: rgba(248, 250, 251, 0.55);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
     .cart-server-message {
       display: none;
       margin: 0 auto 1rem;
@@ -387,6 +470,14 @@
       .cart-actions {
         justify-content: flex-start;
       }
+
+      .cart-referral-banner {
+        flex-direction: column;
+      }
+
+      .cart-referral-remove {
+        width: 100%;
+      }
     }
 
     @media (max-width: 600px) {
@@ -447,6 +538,22 @@
         Votre panier regroupe les créneaux sélectionnés. Leur disponibilité et leur tarif sont revérifiés automatiquement avant le paiement.
       </p>
 
+      <div id="cart-referral-banner" class="cart-referral-banner" aria-live="polite">
+        <div class="cart-referral-main">
+          <span class="cart-referral-eyebrow">Parrainage actif</span>
+          <div class="cart-referral-title">Un code de parrainage est associé à cette réservation.</div>
+          <div class="cart-referral-text">
+            Il sera transmis lors de la finalisation de la réservation. Le parrain sera crédité uniquement après une séance terminée et validée.
+          </div>
+          <div class="cart-referral-code">
+            Code : <span id="cart-referral-code-value">—</span>
+          </div>
+        </div>
+        <button id="cart-referral-remove" class="cart-referral-remove" type="button">
+          Retirer le code
+        </button>
+      </div>
+
       <div id="cart-server-message" class="cart-server-message" aria-live="polite" role="status"></div>
 
       <div id="cart-items"></div>
@@ -492,6 +599,58 @@
     const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
 
     const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
+    const REFERRAL_STORAGE_KEY = "singbox_referral_code";
+
+    function normalizeReferralCode(code) {
+      return String(code || "").trim().toUpperCase();
+    }
+
+    function getStoredReferralCode() {
+      try {
+        return normalizeReferralCode(localStorage.getItem(REFERRAL_STORAGE_KEY) || "");
+      } catch (error) {
+        console.error("Erreur lecture referral code :", error);
+        return "";
+      }
+    }
+
+    function clearStoredReferralCode() {
+      try {
+        localStorage.removeItem(REFERRAL_STORAGE_KEY);
+      } catch (error) {
+        console.error("Erreur suppression referral code :", error);
+      }
+    }
+
+    function renderReferralBanner() {
+      const banner = document.getElementById("cart-referral-banner");
+      const codeEl = document.getElementById("cart-referral-code-value");
+      if (!banner || !codeEl) return;
+
+      const referralCode = getStoredReferralCode();
+
+      if (!referralCode) {
+        banner.classList.remove("is-visible");
+        codeEl.textContent = "—";
+        return;
+      }
+
+      banner.classList.add("is-visible");
+      codeEl.textContent = referralCode;
+    }
+
+    function initReferralBanner() {
+      renderReferralBanner();
+
+      const removeBtn = document.getElementById("cart-referral-remove");
+      if (!removeBtn) return;
+
+      removeBtn.addEventListener("click", () => {
+        clearStoredReferralCode();
+        renderReferralBanner();
+        setServerMessage("Le code de parrainage a été retiré de cette réservation.", "info");
+      });
+    }
 
     function getPanier() {
       try {
@@ -859,6 +1018,11 @@
       return "";
     }
 
+    function buildReferralMessage(referralCode) {
+      if (!referralCode) return "";
+      return `Code de parrainage actif : ${referralCode}.`;
+    }
+
     function renderEmptyCart(container, summaryEl, actionsEl, policyEl) {
       summaryEl.style.display = "none";
       actionsEl.style.display = "none";
@@ -928,6 +1092,8 @@
       const actionsEl = document.getElementById("cart-actions");
       const policyEl = document.getElementById("cart-policy");
       const panier = getPanier();
+      const chestContext = getChestCheckoutContext();
+      const referralCode = getStoredReferralCode();
 
       if (!container || !summaryEl || !totalEl || !actionsEl || !policyEl) return;
 
@@ -950,16 +1116,24 @@
       const { total, hasAtLeastOnePrice, hasMissingPrice } = computeCartTotal(panier);
       totalEl.textContent = hasAtLeastOnePrice ? formatMoney(total) : "Calcul au paiement";
 
+      const infoMessages = [];
+      const chestMessage = buildChestMessage(chestContext);
+      const referralMessage = buildReferralMessage(referralCode);
+
       if (hasMissingPrice) {
-        setServerMessage("Le montant final sera confirmé avant le paiement sécurisé.", "info");
+        infoMessages.push("Le montant final sera confirmé avant le paiement sécurisé.");
+      }
+      if (chestMessage) {
+        infoMessages.push(chestMessage);
+      }
+      if (referralMessage) {
+        infoMessages.push(referralMessage);
+      }
+
+      if (infoMessages.length > 0) {
+        setServerMessage(infoMessages.join(" "), "info");
       } else {
-        const chestContext = getChestCheckoutContext();
-        const chestMessage = buildChestMessage(chestContext);
-        if (chestMessage) {
-          setServerMessage(chestMessage, "info");
-        } else {
-          setServerMessage("");
-        }
+        setServerMessage("");
       }
     }
 
@@ -1064,7 +1238,7 @@
       }
     }
 
-    async function verifyCartBeforePayment(panier, chestContext = null) {
+    async function verifyCartBeforePayment(panier, chestContext = null, referralCode = null) {
       return fetch(`${API_BASE}/api/verify-cart`, {
         method: "POST",
         headers: {
@@ -1076,7 +1250,8 @@
           promoCode: chestContext?.promoCode || null,
           chestReward: chestContext?.chestReward || null,
           rewardType: chestContext?.rewardType || null,
-          rewardValue: chestContext?.rewardValue || null
+          rewardValue: chestContext?.rewardValue || null,
+          referralCode: referralCode || null
         })
       });
     }
@@ -1089,7 +1264,7 @@
       );
     }
 
-    function goToPaymentPage(chestContext = null) {
+    function goToPaymentPage(chestContext = null, referralCode = null) {
       const url = new URL("paiement.html", window.location.origin);
 
       if (chestContext?.promoCode) {
@@ -1103,6 +1278,9 @@
       }
       if (chestContext?.rewardValue) {
         url.searchParams.set("rewardValue", chestContext.rewardValue);
+      }
+      if (referralCode) {
+        url.searchParams.set("referralCode", referralCode);
       }
 
       globalThis.location.href = url.pathname + url.search;
@@ -1143,6 +1321,7 @@
       confirmBtn.addEventListener("click", async () => {
         const panier = getPanier();
         const chestContext = getChestCheckoutContext();
+        const referralCode = getStoredReferralCode();
 
         if (panier.length === 0) {
           alert("Votre panier est vide.");
@@ -1153,15 +1332,18 @@
         const defaultText = confirmBtn.textContent;
         confirmBtn.textContent = "Vérification...";
 
+        const infoMessages = [];
         const chestMessage = buildChestMessage(chestContext);
-        if (chestMessage) {
-          setServerMessage(`${chestMessage} Vérification de vos créneaux en cours...`, "info");
-        } else {
-          setServerMessage("Vérification de vos créneaux en cours...", "info");
-        }
+        const referralMessage = buildReferralMessage(referralCode);
+
+        if (chestMessage) infoMessages.push(chestMessage);
+        if (referralMessage) infoMessages.push(referralMessage);
+        infoMessages.push("Vérification de vos créneaux en cours...");
+
+        setServerMessage(infoMessages.join(" "), "info");
 
         try {
-          const response = await verifyCartBeforePayment(panier, chestContext);
+          const response = await verifyCartBeforePayment(panier, chestContext, referralCode);
           const data = await safeReadJson(response);
 
           if (!response.ok) {
@@ -1174,7 +1356,7 @@
           savePanier(normalizedItems);
           renderPanier();
 
-          goToPaymentPage(chestContext);
+          goToPaymentPage(chestContext, referralCode);
         } catch (err) {
           console.error("Erreur vérification panier :", err);
           setServerMessage(
@@ -1229,6 +1411,7 @@
       markLayoutReady();
       initMobileMenu();
       updateCartIcon();
+      initReferralBanner();
       renderPanier();
       initClearCart();
       initRemoveItem();
