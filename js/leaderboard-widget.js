@@ -2,8 +2,26 @@
   "use strict";
 
   const LeaderboardWidget = {
-    endpoint: "/api/leaderboards/home?limit=5",
+    limit: 5,
     rootSelector: "#sb-leaderboard-root",
+
+    getApiBaseUrl() {
+      const configured = typeof window.SINGBOX_API_BASE_URL === "string"
+        ? window.SINGBOX_API_BASE_URL.trim()
+        : "";
+
+      if (configured) {
+        return configured.replace(/\/+$/, "");
+      }
+
+      return "";
+    },
+
+    getEndpoint() {
+      const base = this.getApiBaseUrl();
+      const path = `/api/leaderboards/home?limit=${this.limit}`;
+      return base ? `${base}${path}` : path;
+    },
 
     init() {
       const root = document.querySelector(this.rootSelector);
@@ -12,7 +30,7 @@
       root.innerHTML = `
         <div class="sb-leaderboard-widget">
           <div class="sb-leaderboard-header">
-            <div>
+            <div class="sb-leaderboard-header-text">
               <div class="sb-leaderboard-badge">🎤 Communauté Singbox</div>
               <h2 id="sb-leaderboard-title">Le classement Singbox</h2>
               <p>
@@ -76,13 +94,15 @@
 
     async load(root) {
       try {
-        const response = await fetch(this.endpoint, {
+        const response = await fetch(this.getEndpoint(), {
           method: "GET",
-          headers: { Accept: "application/json" }
+          headers: {
+            Accept: "application/json"
+          }
         });
 
         if (!response.ok) {
-          throw new Error("Réponse serveur invalide");
+          throw new Error(`Réponse serveur invalide (${response.status})`);
         }
 
         const data = await response.json();
@@ -136,31 +156,33 @@
       if (!panel) return;
 
       if (!items.length) {
-        panel.innerHTML = `<div class="sb-leaderboard-empty">Le classement sera bientôt disponible.</div>`;
+        panel.innerHTML = `
+          <div class="sb-leaderboard-empty">
+            Le classement sera bientôt disponible.
+          </div>
+        `;
         return;
       }
 
-      const html = items
-        .map((item) => {
-          const formatted = formatter(item);
+      const html = items.map((item) => {
+        const formatted = formatter(item);
 
-          return `
-            <article class="sb-leaderboard-item">
-              <div class="sb-leaderboard-rank">#${item.rank}</div>
+        return `
+          <article class="sb-leaderboard-item">
+            <div class="sb-leaderboard-rank">#${item.rank}</div>
 
-              <div class="sb-leaderboard-main">
-                <p class="sb-leaderboard-name">${this.escapeHtml(item.display_name || "Membre Singbox")}</p>
-                <p class="sb-leaderboard-meta">${this.escapeHtml(formatted.meta)}</p>
-              </div>
+            <div class="sb-leaderboard-main">
+              <p class="sb-leaderboard-name">${this.escapeHtml(item.display_name || "Membre Singbox")}</p>
+              <p class="sb-leaderboard-meta">${this.escapeHtml(formatted.meta)}</p>
+            </div>
 
-              <div class="sb-leaderboard-value">
-                <strong>${this.escapeHtml(String(formatted.value))}</strong>
-                <span>${this.escapeHtml(formatted.suffix)}</span>
-              </div>
-            </article>
-          `;
-        })
-        .join("");
+            <div class="sb-leaderboard-value">
+              <strong>${this.escapeHtml(String(formatted.value))}</strong>
+              <span>${this.escapeHtml(formatted.suffix)}</span>
+            </div>
+          </article>
+        `;
+      }).join("");
 
       panel.innerHTML = `<div class="sb-leaderboard-list">${html}</div>`;
     },
