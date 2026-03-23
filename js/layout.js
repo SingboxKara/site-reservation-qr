@@ -14,7 +14,7 @@
     supabaseUrl: "https://sfckofydfqbllkxhxwnt.supabase.co",
     supabaseKey:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw",
-    chestScriptPath: "js/chest-widget.js",
+    chestScriptPath: "js/chestwidget.js",
     chestScriptId: "singbox-chest-widget-script",
   };
 
