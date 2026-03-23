@@ -1,61 +1,62 @@
 .sb-leaderboard-section {
-  padding: 72px 0;
+  padding: 10px 0 56px;
 }
 
 .sb-leaderboard-widget {
   position: relative;
-  overflow: hidden;
-  border-radius: 28px;
-  padding: 28px;
-  background:
-    radial-gradient(circle at top right, rgba(255, 122, 24, 0.14), transparent 28%),
-    linear-gradient(180deg, #0b1120 0%, #111827 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .sb-leaderboard-header {
+  margin-bottom: 18px;
+}
+
+.sb-leaderboard-header-text {
   display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 26px;
-  flex-wrap: wrap;
-}
-
-.sb-leaderboard-header h2 {
-  margin: 0;
-  font-family: "League Spartan", sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 0.95;
-  color: #ffffff;
-}
-
-.sb-leaderboard-header p {
-  margin: 8px 0 0;
-  color: #cbd5e1;
-  max-width: 700px;
-  font-size: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .sb-leaderboard-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  margin-bottom: 16px;
+  padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(249, 115, 22, 0.12);
-  color: #fdba74;
-  border: 1px solid rgba(249, 115, 22, 0.28);
-  font-size: 0.92rem;
+  background: rgba(201, 76, 53, 0.12);
+  color: #ffb199;
+  border: 1px solid rgba(201, 76, 53, 0.35);
+  font-size: 0.95rem;
   font-weight: 600;
+}
+
+.sb-leaderboard-header h2 {
+  margin: 0 0 10px;
+  font-family: "League Spartan", sans-serif;
+  font-size: clamp(2rem, 3vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.sb-leaderboard-header p {
+  margin: 0;
+  color: #d6d9e3;
+  font-size: 1rem;
+  line-height: 1.35;
+  white-space: nowrap;
 }
 
 .sb-leaderboard-tabs {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 
 .sb-leaderboard-tab {
@@ -64,19 +65,20 @@
   border-radius: 999px;
   padding: 11px 16px;
   background: rgba(255, 255, 255, 0.06);
-  color: #e5e7eb;
+  color: #f1f5f9;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .sb-leaderboard-tab:hover {
   background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
 }
 
 .sb-leaderboard-tab.is-active {
   background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-  color: white;
+  color: #fff;
 }
 
 .sb-leaderboard-panels {
@@ -93,31 +95,32 @@
 
 .sb-leaderboard-list {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .sb-leaderboard-item {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 54px 1fr auto;
   align-items: center;
   gap: 14px;
   padding: 16px 18px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.045);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(3px);
 }
 
 .sb-leaderboard-rank {
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   border-radius: 18px;
   display: grid;
   place-items: center;
   font-family: "League Spartan", sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #fff;
-  background: linear-gradient(135deg, rgba(249, 115, 22, 0.25), rgba(255, 255, 255, 0.08));
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(255, 255, 255, 0.08));
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -140,25 +143,27 @@
 .sb-leaderboard-name {
   margin: 0 0 6px;
   color: #fff;
+  font-size: 1.02rem;
   font-weight: 700;
-  font-size: 1.05rem;
 }
 
 .sb-leaderboard-meta {
   margin: 0;
   color: #cbd5e1;
-  font-size: 0.94rem;
+  font-size: 0.93rem;
+  line-height: 1.35;
 }
 
 .sb-leaderboard-value {
   text-align: right;
+  padding-left: 12px;
 }
 
 .sb-leaderboard-value strong {
   display: block;
   color: #fff;
   font-family: "League Spartan", sans-serif;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   line-height: 1;
 }
 
@@ -173,20 +178,40 @@
 .sb-leaderboard-empty,
 .sb-leaderboard-loading,
 .sb-leaderboard-error {
-  padding: 20px;
+  padding: 18px 20px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.04);
-  color: #cbd5e1;
+  color: #d6d9e3;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sb-leaderboard-error {
   color: #fecaca;
 }
 
+@media (max-width: 1100px) {
+  .sb-leaderboard-header p {
+    white-space: normal;
+  }
+}
+
 @media (max-width: 720px) {
-  .sb-leaderboard-widget {
-    padding: 20px;
-    border-radius: 22px;
+  .sb-leaderboard-section {
+    padding: 4px 0 44px;
+  }
+
+  .sb-leaderboard-badge {
+    margin-bottom: 14px;
+  }
+
+  .sb-leaderboard-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .sb-leaderboard-header p {
+    white-space: normal;
+    font-size: 0.98rem;
   }
 
   .sb-leaderboard-item {
