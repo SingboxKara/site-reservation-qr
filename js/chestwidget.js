@@ -93,10 +93,23 @@
     },
   ];
 
+  const BACKEND_SESSION_CACHE_MS = 30_000;
+  const BACKEND_CHEST_STATE_CACHE_MS = 15_000;
+  const BACKEND_RATE_LIMIT_BACKOFF_MS = 30_000;
+
   let isOpeningChest = false;
+
   let cachedBackendSession = null;
   let cachedBackendSessionAt = 0;
-  const BACKEND_SESSION_CACHE_MS = 10_000;
+  let backendSessionPromise = null;
+
+  let cachedChestState = null;
+  let cachedChestStateAt = 0;
+  let chestStatePromise = null;
+
+  let refreshWidgetPromise = null;
+
+  let backendRateLimitedUntil = 0;
 
   function getApiBase() {
     const host = window.location.hostname;
@@ -104,6 +117,35 @@
       return "http://localhost:3000";
     }
     return "https://singbox-backend.onrender.com";
+  }
+
+  function nowMs() {
+    return Date.now();
+  }
+
+  function isBackendBackoffActive() {
+    return nowMs() < backendRateLimitedUntil;
+  }
+
+  function activateBackendBackoff(ms = BACKEND_RATE_LIMIT_BACKOFF_MS) {
+    backendRateLimitedUntil = nowMs() + ms;
+  }
+
+  function clearBackendSessionCache() {
+    cachedBackendSession = null;
+    cachedBackendSessionAt = 0;
+    backendSessionPromise = null;
+  }
+
+  function clearChestStateCache() {
+    cachedChestState = null;
+    cachedChestStateAt = 0;
+    chestStatePromise = null;
+  }
+
+  function invalidateBackendCaches() {
+    clearBackendSessionCache();
+    clearChestStateCache();
   }
 
   function getStoredAuthToken() {
@@ -752,7 +794,8 @@
   async function detectBackendUserFromToken(token) {
     if (!token) return null;
 
-    const now = Date.now();
+    const now = nowMs();
+
     if (
       cachedBackendSession &&
       cachedBackendSession.token === token &&
@@ -761,42 +804,59 @@
       return cachedBackendSession.value;
     }
 
-    try {
-      const response = await fetch(`${getApiBase()}/api/me`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        cachedBackendSession = { token, value: null };
-        cachedBackendSessionAt = now;
-        return null;
-      }
-
-      const json = await response.json().catch(() => null);
-      const result = json
-        ? {
-            loggedIn: true,
-            user: {
-              id: json.id || json.user_id || null,
-              email: json.email || null,
-              ...json,
-            },
-            accessToken: token,
-            source: "backend-token",
-          }
-        : null;
-
-      cachedBackendSession = { token, value: result };
-      cachedBackendSessionAt = now;
-      return result;
-    } catch {
-      cachedBackendSession = { token, value: null };
-      cachedBackendSessionAt = now;
-      return null;
+    if (backendSessionPromise) {
+      return backendSessionPromise;
     }
+
+    if (isBackendBackoffActive()) {
+      return cachedBackendSession?.token === token ? cachedBackendSession.value : null;
+    }
+
+    backendSessionPromise = (async () => {
+      try {
+        const response = await fetch(`${getApiBase()}/api/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 429) {
+          activateBackendBackoff();
+          return cachedBackendSession?.token === token ? cachedBackendSession.value : null;
+        }
+
+        if (!response.ok) {
+          cachedBackendSession = { token, value: null };
+          cachedBackendSessionAt = nowMs();
+          return null;
+        }
+
+        const json = await response.json().catch(() => null);
+        const result = json
+          ? {
+              loggedIn: true,
+              user: {
+                id: json.id || json.user_id || null,
+                email: json.email || null,
+                ...json,
+              },
+              accessToken: token,
+              source: "backend-token",
+            }
+          : null;
+
+        cachedBackendSession = { token, value: result };
+        cachedBackendSessionAt = nowMs();
+        return result;
+      } catch {
+        return cachedBackendSession?.token === token ? cachedBackendSession.value : null;
+      } finally {
+        backendSessionPromise = null;
+      }
+    })();
+
+    return backendSessionPromise;
   }
 
   async function detectLoggedInUser() {
@@ -865,34 +925,69 @@
     }
 
     if (!response.ok) {
-      const message =
+      const error = new Error(
         json?.error ||
-        json?.message ||
-        `Erreur API coffre (${response.status})`;
-      throw new Error(message);
+          json?.message ||
+          `Erreur API coffre (${response.status})`
+      );
+      error.status = response.status;
+      error.payload = json;
+      throw error;
     }
 
     return json;
   }
 
-  async function fetchBackendChestState(sessionInfo) {
+  async function fetchBackendChestState(sessionInfo, options = {}) {
+    const { force = false } = options;
+
     if (!sessionInfo?.accessToken) return null;
 
-    try {
-      const json = await apiFetch("/api/chest/state", {}, sessionInfo.accessToken);
-      const state = json?.state || null;
+    const now = nowMs();
 
-      if (state?.activeReward) {
-        saveSessionReward(state.activeReward);
-      } else {
-        clearSessionReward();
-      }
-
-      return state;
-    } catch (error) {
-      console.warn("State coffre backend indisponible :", error);
-      return null;
+    if (
+      !force &&
+      cachedChestState &&
+      now - cachedChestStateAt < BACKEND_CHEST_STATE_CACHE_MS
+    ) {
+      return cachedChestState;
     }
+
+    if (!force && chestStatePromise) {
+      return chestStatePromise;
+    }
+
+    if (!force && isBackendBackoffActive()) {
+      return cachedChestState;
+    }
+
+    chestStatePromise = (async () => {
+      try {
+        const json = await apiFetch("/api/chest/state", {}, sessionInfo.accessToken);
+        const state = json?.state || null;
+
+        cachedChestState = state;
+        cachedChestStateAt = nowMs();
+
+        if (state?.activeReward) {
+          saveSessionReward(state.activeReward);
+        } else {
+          clearSessionReward();
+        }
+
+        return state;
+      } catch (error) {
+        if (error?.status === 429) {
+          activateBackendBackoff();
+        }
+        console.warn("State coffre backend indisponible :", error);
+        return cachedChestState;
+      } finally {
+        chestStatePromise = null;
+      }
+    })();
+
+    return chestStatePromise;
   }
 
   async function openBackendChest(sessionInfo) {
@@ -903,6 +998,8 @@
       { method: "POST", body: JSON.stringify({}) },
       sessionInfo.accessToken
     );
+
+    invalidateBackendCaches();
 
     if (json?.reward) {
       if (json.reward.status === "active" || json.reward.status === "credited") {
@@ -1569,7 +1666,7 @@
         const result = await openBackendChest(sessionInfo);
         if (result?.reward) {
           renderRewardModal(result.reward);
-          await refreshWidget();
+          await refreshWidget({ forceChestState: true });
           return;
         }
       }
@@ -1603,106 +1700,120 @@
         trigger.disabled = false;
       }
 
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     }
   }
 
-  async function refreshWidget() {
-    const sessionInfo = await detectLoggedInUser();
-    const loggedIn = sessionInfo.loggedIn;
-    const state = getState();
-    const availability = getChestAvailability(loggedIn, state);
-    const backendState =
-      loggedIn && sessionInfo.accessToken
-        ? await fetchBackendChestState(sessionInfo)
-        : null;
+  async function refreshWidget(options = {}) {
+    if (refreshWidgetPromise) {
+      return refreshWidgetPromise;
+    }
 
-    const trigger = document.getElementById("sb-chest-trigger");
-    const badge = document.getElementById("sb-chest-badge");
-    const tooltip = document.getElementById("sb-chest-tooltip");
-    const widgetImg = document.getElementById("sb-chest-widget-img");
+    const { forceChestState = false } = options;
 
-    if (!trigger || !badge || !tooltip || !widgetImg) return;
+    refreshWidgetPromise = (async () => {
+      const sessionInfo = await detectLoggedInUser();
+      const loggedIn = sessionInfo.loggedIn;
+      const state = getState();
+      const availability = getChestAvailability(loggedIn, state);
+      const backendState =
+        loggedIn && sessionInfo.accessToken
+          ? await fetchBackendChestState(sessionInfo, { force: forceChestState })
+          : null;
 
-    trigger.classList.remove("sb-available", "sb-locked", "sb-opened");
+      const trigger = document.getElementById("sb-chest-trigger");
+      const badge = document.getElementById("sb-chest-badge");
+      const tooltip = document.getElementById("sb-chest-tooltip");
+      const widgetImg = document.getElementById("sb-chest-widget-img");
 
-    if (!loggedIn) {
-      if (!CONFIG.enableTeaserWhenLoggedOut) {
-        const widget = document.getElementById("sb-chest-widget");
-        if (widget) widget.style.display = "none";
+      if (!trigger || !badge || !tooltip || !widgetImg) return;
+
+      trigger.classList.remove("sb-available", "sb-locked", "sb-opened");
+
+      if (!loggedIn) {
+        if (!CONFIG.enableTeaserWhenLoggedOut) {
+          const widget = document.getElementById("sb-chest-widget");
+          if (widget) widget.style.display = "none";
+          return;
+        }
+
+        trigger.classList.add("sb-locked");
+        badge.style.display = "none";
+        widgetImg.src = CONFIG.assetClosed;
+        widgetImg.alt = "Coffre verrouillé";
+        tooltip.textContent = "Crée ton compte pour débloquer les coffres cadeaux.";
         return;
       }
 
-      trigger.classList.add("sb-locked");
-      badge.style.display = "none";
-      widgetImg.src = CONFIG.assetClosed;
-      widgetImg.alt = "Coffre verrouillé";
-      tooltip.textContent = "Crée ton compte pour débloquer les coffres cadeaux.";
-      return;
-    }
+      if (backendState) {
+        const activeReward = normalizeReward(backendState.activeReward);
 
-    if (backendState) {
-      const activeReward = normalizeReward(backendState.activeReward);
+        if (activeReward) {
+          trigger.classList.add("sb-opened");
+          badge.style.display = "none";
+          widgetImg.src = CONFIG.assetOpen;
+          widgetImg.alt = "Coffre ouvert";
+          tooltip.textContent = activeReward.promoCode
+            ? `Offre active : ${activeReward.label} (${activeReward.promoCode})`
+            : `Offre active : ${activeReward.label}`;
+          return;
+        }
 
-      if (activeReward) {
+        widgetImg.src = CONFIG.assetClosed;
+        widgetImg.alt = "Coffre fermé";
+
+        if (Number(backendState.availableCount || 0) > 0) {
+          trigger.classList.add("sb-available");
+          badge.style.display = "flex";
+          badge.textContent = String(backendState.availableCount);
+          tooltip.textContent = backendState.welcomeAvailable
+            ? "Ton coffre de bienvenue est disponible."
+            : `Tu as ${backendState.availableCount} coffre${backendState.availableCount > 1 ? "s" : ""} à ouvrir.`;
+        } else {
+          trigger.classList.add("sb-locked");
+          badge.style.display = "none";
+          const progressInBlock =
+            Number(backendState.completedSessions || 0) % CONFIG.sessionsPerChest;
+          const remaining =
+            CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
+          tooltip.textContent = `Encore ${remaining} session(s) avant le prochain coffre.`;
+        }
+
+        return;
+      }
+
+      if (availability.activeReward) {
         trigger.classList.add("sb-opened");
         badge.style.display = "none";
         widgetImg.src = CONFIG.assetOpen;
         widgetImg.alt = "Coffre ouvert";
-        tooltip.textContent = activeReward.promoCode
-          ? `Offre active : ${activeReward.label} (${activeReward.promoCode})`
-          : `Offre active : ${activeReward.label}`;
+        tooltip.textContent = "Tu as une offre active. Réserve maintenant avant de quitter le site.";
         return;
       }
 
       widgetImg.src = CONFIG.assetClosed;
       widgetImg.alt = "Coffre fermé";
 
-      if (Number(backendState.availableCount || 0) > 0) {
+      if (availability.isAvailable) {
         trigger.classList.add("sb-available");
         badge.style.display = "flex";
-        badge.textContent = String(backendState.availableCount);
-        tooltip.textContent = backendState.welcomeAvailable
+        badge.textContent = String(availability.availableCount);
+        tooltip.textContent = availability.welcomeAvailable
           ? "Ton coffre de bienvenue est disponible."
-          : `Tu as ${backendState.availableCount} coffre${backendState.availableCount > 1 ? "s" : ""} à ouvrir.`;
+          : `Tu as ${availability.availableCount} coffre${availability.availableCount > 1 ? "s" : ""} à ouvrir.`;
       } else {
         trigger.classList.add("sb-locked");
         badge.style.display = "none";
-        const progressInBlock =
-          Number(backendState.completedSessions || 0) % CONFIG.sessionsPerChest;
-        const remaining =
-          CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
+        const progressInBlock = state.completedSessions % CONFIG.sessionsPerChest;
+        const remaining = CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
         tooltip.textContent = `Encore ${remaining} session(s) avant le prochain coffre.`;
       }
+    })();
 
-      return;
-    }
-
-    if (availability.activeReward) {
-      trigger.classList.add("sb-opened");
-      badge.style.display = "none";
-      widgetImg.src = CONFIG.assetOpen;
-      widgetImg.alt = "Coffre ouvert";
-      tooltip.textContent = "Tu as une offre active. Réserve maintenant avant de quitter le site.";
-      return;
-    }
-
-    widgetImg.src = CONFIG.assetClosed;
-    widgetImg.alt = "Coffre fermé";
-
-    if (availability.isAvailable) {
-      trigger.classList.add("sb-available");
-      badge.style.display = "flex";
-      badge.textContent = String(availability.availableCount);
-      tooltip.textContent = availability.welcomeAvailable
-        ? "Ton coffre de bienvenue est disponible."
-        : `Tu as ${availability.availableCount} coffre${availability.availableCount > 1 ? "s" : ""} à ouvrir.`;
-    } else {
-      trigger.classList.add("sb-locked");
-      badge.style.display = "none";
-      const progressInBlock = state.completedSessions % CONFIG.sessionsPerChest;
-      const remaining = CONFIG.sessionsPerChest - progressInBlock || CONFIG.sessionsPerChest;
-      tooltip.textContent = `Encore ${remaining} session(s) avant le prochain coffre.`;
+    try {
+      return await refreshWidgetPromise;
+    } finally {
+      refreshWidgetPromise = null;
     }
   }
 
@@ -1744,6 +1855,13 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeModal();
     });
+
+    window.addEventListener("storage", (e) => {
+      if (e.key === CONFIG.authTokenStorageKey) {
+        invalidateBackendCaches();
+        refreshWidget().catch(() => {});
+      }
+    });
   }
 
   function init() {
@@ -1753,29 +1871,31 @@
     createWidgetShell();
     createModalShell();
     bindEvents();
-    refreshWidget();
+    refreshWidget().catch(() => {});
   }
 
   window.SingboxChestWidget = {
-    refresh: refreshWidget,
+    refresh(options) {
+      return refreshWidget(options);
+    },
 
     async debugLogin(value) {
       localStorage.setItem(CONFIG.demoLoginKey, value ? "1" : "0");
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugSetSessions(count) {
       const state = getState();
       state.completedSessions = Math.max(0, Number(count) || 0);
       saveState(state);
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugAddSession() {
       const state = getState();
       state.completedSessions += 1;
       saveState(state);
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugReset() {
@@ -1783,12 +1903,14 @@
       localStorage.removeItem(CONFIG.demoLoginKey);
       sessionStorage.removeItem(CONFIG.rewardSessionKey);
       isOpeningChest = false;
-      await refreshWidget();
+      invalidateBackendCaches();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugClearReward() {
       clearSessionReward();
-      await refreshWidget();
+      clearChestStateCache();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugForceWelcomeChest() {
@@ -1796,7 +1918,7 @@
       state.welcomeChestOpened = false;
       saveState(state);
       clearSessionReward();
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     },
 
     async debugForceMilestoneChest(milestone = 5) {
@@ -1806,7 +1928,7 @@
       state.openedMilestones = state.openedMilestones.filter((m) => m !== target);
       saveState(state);
       clearSessionReward();
-      await refreshWidget();
+      await refreshWidget({ forceChestState: true });
     },
 
     getState() {
