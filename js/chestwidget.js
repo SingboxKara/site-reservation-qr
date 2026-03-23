@@ -47,7 +47,7 @@
     },
     {
       id: "coins_20",
-      type: "points",
+      type: "singcoins",
       label: "+20 Singcoins",
       description: "Tu gagnes 20 Singcoins.",
       weight: 25,
@@ -56,7 +56,7 @@
     },
     {
       id: "coins_30",
-      type: "points",
+      type: "singcoins",
       label: "+30 Singcoins",
       description: "Tu gagnes 30 Singcoins.",
       weight: 15,
@@ -704,7 +704,7 @@
       };
     }
 
-    if (reward.type === "points") {
+    if (reward.type === "singcoins") {
       return {
         src: CONFIG.assetCoin,
         className: "sb-coin",
@@ -722,6 +722,9 @@
   function normalizeReward(reward) {
     if (!reward || typeof reward !== "object") return null;
 
+    const rawType = reward.type || reward.reward_type || "none";
+    const normalizedType = rawType === "points" ? "singcoins" : rawType;
+
     return {
       rewardId:
         reward.rewardId ||
@@ -733,7 +736,7 @@
         reward.rewardId ||
         reward.reward_id ||
         null,
-      type: reward.type || reward.reward_type || "none",
+      type: normalizedType,
       label: reward.label || reward.reward_label || "Récompense",
       description:
         reward.description ||
@@ -746,8 +749,7 @@
       isEmpty:
         reward.isEmpty === true ||
         reward.is_empty === true ||
-        reward.type === "none" ||
-        reward.reward_type === "none",
+        normalizedType === "none",
       status: reward.status || "active",
       promoCode: reward.promoCode || reward.promo_code || null,
       createdAt: reward.createdAt || reward.created_at || null,
