@@ -603,6 +603,7 @@
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
     const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
     const REFERRAL_STORAGE_KEY = "singbox_referral_code";
+    const API_ME_CACHE_MS = 15000;
 
     const API_BASE_URL = globalThis.API_BASE_URL;
     const QR_CHECK_BASE_URL = globalThis.QR_CHECK_BASE_URL;
@@ -630,6 +631,11 @@
     let cartValid = true;
     let lastPayWithSaved = false;
     let isPrefilling = false;
+
+    let apiMePromise = null;
+    let apiMeCache = null;
+    let apiMeCacheAt = 0;
+    let paymentMethodsPromise = null;
 
     let savedCardState = {
       enabled: false,
@@ -660,6 +666,12 @@
       return (!token || token === "null" || token === "undefined") ? null : token;
     }
 
+    function clearApiMeCache() {
+      apiMePromise = null;
+      apiMeCache = null;
+      apiMeCacheAt = 0;
+    }
+
     function authHeaders(extra = {}) {
       const token = getToken();
       return token ? { ...extra, Authorization: "Bearer " + token } : extra;
@@ -671,6 +683,7 @@
       }
 
       localStorage.removeItem("token");
+      clearApiMeCache();
       console.warn(`[AUTH] Token supprimé suite à ${res.status} sur ${ctx || "API"}`);
       return false;
     }
@@ -716,6 +729,37 @@
       }
 
       return { ok: res.ok, status: res.status, data, res };
+    }
+
+    async function getMeData(options = {}) {
+      const { force = false } = options;
+      const token = getToken();
+      if (!token) return null;
+
+      const now = Date.now();
+
+      if (!force && apiMeCache && now - apiMeCacheAt < API_ME_CACHE_MS) {
+        return apiMeCache;
+      }
+
+      if (!force && apiMePromise) {
+        return apiMePromise;
+      }
+
+      apiMePromise = (async () => {
+        const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me" });
+        if (!r.ok || !r.data) {
+          apiMePromise = null;
+          return null;
+        }
+
+        apiMeCache = r.data;
+        apiMeCacheAt = Date.now();
+        apiMePromise = null;
+        return apiMeCache;
+      })();
+
+      return apiMePromise;
     }
 
     function getPanier() {
@@ -1352,13 +1396,13 @@
       initSavedCardToggleBehavior();
     }
 
-    async function loadSavedCardStateFromMe() {
+    async function loadSavedCardStateFromMe(meData = null) {
       if (!getToken()) return;
 
-      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (payment)" });
-      if (!r.ok || !r.data) return;
+      const data = meData || await getMeData();
+      if (!data) return;
 
-      const payment = r.data.payment || {};
+      const payment = data.payment || {};
       savedCardState.card = payment.card || null;
       savedCardState.defaultPaymentMethodId = payment.default_payment_method_id || null;
     }
@@ -1366,16 +1410,29 @@
     async function refreshPaymentMethods() {
       if (!getToken()) return;
 
-      const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods" });
-      if (!r.ok || !r.data) return;
-
-      savedCardState.methods = Array.isArray(r.data.methods) ? r.data.methods : [];
-      savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
-
-      if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
-        const found = savedCardState.methods.find((method) => method.id === savedCardState.defaultPaymentMethodId);
-        if (found) savedCardState.card = found;
+      if (paymentMethodsPromise) {
+        return paymentMethodsPromise;
       }
+
+      paymentMethodsPromise = (async () => {
+        const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods" });
+        if (!r.ok || !r.data) {
+          paymentMethodsPromise = null;
+          return;
+        }
+
+        savedCardState.methods = Array.isArray(r.data.methods) ? r.data.methods : [];
+        savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
+
+        if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
+          const found = savedCardState.methods.find((method) => method.id === savedCardState.defaultPaymentMethodId);
+          if (found) savedCardState.card = found;
+        }
+
+        paymentMethodsPromise = null;
+      })();
+
+      return paymentMethodsPromise;
     }
 
     function buildBillingDetails() {
@@ -1452,6 +1509,7 @@
 
     async function refreshSavedCardAfterSetup() {
       savedCardState.card = null;
+      clearApiMeCache();
       await loadSavedCardStateFromMe();
       await refreshPaymentMethods();
       renderSavedCardUI();
@@ -1609,13 +1667,12 @@
       } catch {}
     }
 
-    async function prefillFromBackendIfLogged() {
+    async function prefillFromBackendIfLogged(meData = null) {
       if (!getToken()) return;
 
-      const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me (prefill)" });
-      if (!r.ok || !r.data) return;
+      const data = meData || await getMeData();
+      if (!data) return;
 
-      const data = r.data;
       const profile = data.profile || {};
 
       isPrefilling = true;
@@ -1672,6 +1729,7 @@
 
         if (r.ok) {
           lastDbPayload = payloadStr;
+          clearApiMeCache();
         } else {
           console.warn("Autosave profil échoué:", r.status, r.data);
         }
@@ -1697,8 +1755,18 @@
       });
     }
 
-    async function fetchUserSingcoins() {
+    async function fetchUserSingcoins(meData = null) {
       if (!getToken()) return null;
+
+      if (meData && typeof meData === "object") {
+        const fromMe =
+          meData?.gamification?.singcoins?.balance ??
+          meData?.gamification?.balance;
+
+        if (Number.isFinite(Number(fromMe))) {
+          return Number(fromMe);
+        }
+      }
 
       const r = await apiFetch(
         "/api/account/gamification",
@@ -1822,7 +1890,7 @@
       useLoyaltyBtn.dataset.bound = "true";
     }
 
-    async function initLoyalty() {
+    async function initLoyalty(meData = null) {
       const loyaltyBlock = getEl("loyalty-block");
       const loyaltyPointsEl = getEl("loyalty-points");
       const useLoyaltyBtn = getEl("use-loyalty-btn");
@@ -1837,7 +1905,7 @@
         return;
       }
 
-      const points = await fetchUserSingcoins();
+      const points = await fetchUserSingcoins(meData);
 
       if (points === null) {
         renderLoyaltyUnavailable(loyaltyPointsEl, useLoyaltyBtn, loyaltyMsg);
@@ -2704,6 +2772,7 @@
         }
 
         localStorage.setItem("token", data.token);
+        clearApiMeCache();
         hideAuthModal();
         globalThis.location.reload();
       } catch {
@@ -2750,6 +2819,7 @@
 
         if (loginRes.ok) {
           localStorage.setItem("token", loginData.token);
+          clearApiMeCache();
           hideAuthModal();
           globalThis.location.reload();
         } else if (msgEl) {
@@ -2844,13 +2914,6 @@
       fillCheckoutForm(loadCheckoutInfoLocal());
       isPrefilling = false;
 
-      await prefillFromBackendIfLogged();
-      await loadSavedCardStateFromMe();
-      await refreshPaymentMethods();
-
-      renderSavedCardUI();
-      bindAutosave();
-      await initLoyalty();
       initStripeCard();
       initPromo();
       initCheckoutSubmit();
@@ -2859,6 +2922,22 @@
       if (saveCardBtn) {
         saveCardBtn.addEventListener("click", handleSaveCard);
       }
+
+      let meData = null;
+
+      if (getToken()) {
+        meData = await getMeData();
+      }
+
+      await Promise.allSettled([
+        prefillFromBackendIfLogged(meData),
+        loadSavedCardStateFromMe(meData),
+        refreshPaymentMethods(),
+        initLoyalty(meData)
+      ]);
+
+      renderSavedCardUI();
+      bindAutosave();
     }
 
     document.addEventListener("DOMContentLoaded", initPaymentPage);
