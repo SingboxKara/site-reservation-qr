@@ -179,6 +179,90 @@
       margin-bottom: 0.75rem;
     }
 
+    .referral-banner {
+      display: none;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 1.25rem;
+      padding: 1rem 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(249, 115, 22, 0.32);
+      background:
+        linear-gradient(135deg, rgba(201, 76, 53, 0.14), rgba(249, 115, 22, 0.08)),
+        rgba(2, 6, 23, 0.75);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .referral-banner.is-visible {
+      display: flex;
+    }
+
+    .referral-banner-main {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .referral-banner-eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #fdba74;
+      font-weight: 700;
+    }
+
+    .referral-banner-title {
+      font-size: 15px;
+      color: #f9fafb;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .referral-banner-text {
+      font-size: 12px;
+      color: rgba(229, 231, 235, 0.88);
+      line-height: 1.55;
+    }
+
+    .referral-banner-code {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      color: #f9fafb;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .referral-banner-remove {
+      border: 1px solid rgba(148, 163, 184, 0.38);
+      background: transparent;
+      color: #e5e7eb;
+      border-radius: 999px;
+      padding: 0.65rem 0.9rem;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .referral-banner-remove:hover,
+    .referral-banner-remove:focus-visible {
+      border-color: rgba(248, 250, 251, 0.55);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
     .resa-header {
       display: flex;
       flex-wrap: wrap;
@@ -302,6 +386,14 @@
       .resa-header button {
         width: 100%;
         text-align: center;
+      }
+
+      .referral-banner {
+        flex-direction: column;
+      }
+
+      .referral-banner-remove {
+        width: 100%;
       }
     }
 
@@ -792,6 +884,23 @@
   <main>
     <div class="container resa-wrapper">
       <section class="resa-card" aria-label="Planning de réservation des box Singbox">
+
+        <div id="referral-banner" class="referral-banner" aria-live="polite">
+          <div class="referral-banner-main">
+            <span class="referral-banner-eyebrow">Parrainage activé</span>
+            <div class="referral-banner-title">Un code de parrainage est bien appliqué à cette réservation.</div>
+            <div class="referral-banner-text">
+              Si tu finalises ta réservation avec ce lien, le parrain recevra sa progression une fois la séance terminée.
+            </div>
+            <div class="referral-banner-code">
+              Code : <span id="referral-code-value">—</span>
+            </div>
+          </div>
+          <button id="referral-remove-button" type="button" class="referral-banner-remove">
+            Retirer le code
+          </button>
+        </div>
+
         <h2>Choisissez votre date et votre session de 1h30</h2>
 
         <div class="resa-header">
@@ -937,6 +1046,8 @@
     const SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
 
+    const REFERRAL_STORAGE_KEY = "singbox_referral_code";
+
     let refreshPlanningGlobal = null;
     let currentDateIsWeekend = false;
     let currentDateDay = null;
@@ -960,6 +1071,97 @@
       const msgEl = getEl("message");
       if (!msgEl) return;
       msgEl.textContent = text || "";
+    }
+
+    function normalizeReferralCode(code) {
+      return String(code || "").trim().toUpperCase();
+    }
+
+    function isProbablyValidReferralCode(code) {
+      return /^[A-Z0-9]{6,20}$/.test(normalizeReferralCode(code));
+    }
+
+    function getStoredReferralCode() {
+      try {
+        return normalizeReferralCode(localStorage.getItem(REFERRAL_STORAGE_KEY) || "");
+      } catch (error) {
+        console.error("Erreur lecture referral code :", error);
+        return "";
+      }
+    }
+
+    function setStoredReferralCode(code) {
+      const safeCode = normalizeReferralCode(code);
+      if (!safeCode) return;
+
+      try {
+        localStorage.setItem(REFERRAL_STORAGE_KEY, safeCode);
+      } catch (error) {
+        console.error("Erreur sauvegarde referral code :", error);
+      }
+    }
+
+    function clearStoredReferralCode() {
+      try {
+        localStorage.removeItem(REFERRAL_STORAGE_KEY);
+      } catch (error) {
+        console.error("Erreur suppression referral code :", error);
+      }
+    }
+
+    function getReferralCodeFromUrl() {
+      const params = new URLSearchParams(globalThis.location.search);
+      return normalizeReferralCode(params.get("ref") || "");
+    }
+
+    function removeReferralParamFromUrl() {
+      try {
+        const url = new URL(globalThis.location.href);
+        if (!url.searchParams.has("ref")) return;
+        url.searchParams.delete("ref");
+        globalThis.history.replaceState({}, document.title, url.toString());
+      } catch (error) {
+        console.error("Erreur nettoyage URL referral :", error);
+      }
+    }
+
+    function renderReferralBanner() {
+      const banner = getEl("referral-banner");
+      const codeValue = getEl("referral-code-value");
+      if (!banner || !codeValue) return;
+
+      const code = getStoredReferralCode();
+
+      if (!code) {
+        banner.classList.remove("is-visible");
+        codeValue.textContent = "—";
+        return;
+      }
+
+      banner.classList.add("is-visible");
+      codeValue.textContent = code;
+    }
+
+    function initReferralFlow() {
+      const codeFromUrl = getReferralCodeFromUrl();
+
+      if (codeFromUrl && isProbablyValidReferralCode(codeFromUrl)) {
+        setStoredReferralCode(codeFromUrl);
+        removeReferralParamFromUrl();
+      }
+
+      renderReferralBanner();
+    }
+
+    function bindReferralBanner() {
+      const removeBtn = getEl("referral-remove-button");
+      if (!removeBtn) return;
+
+      removeBtn.addEventListener("click", () => {
+        clearStoredReferralCode();
+        renderReferralBanner();
+        setMessage("Le code de parrainage a été retiré.");
+      });
     }
 
     function toLocalYMD(dateObj) {
@@ -1094,8 +1296,10 @@
 
     function updateAddToCartMessage(boxName, startMinutes, price, persons) {
       const prixAffiche = Number(price).toFixed(2).replace(".", ",");
+      const referralCode = getStoredReferralCode();
+
       setMessage(
-        `Session ajoutée au panier : ${boxName} – ${formatSlotRange(startMinutes)} – ${prixAffiche}€ – ${persons} pers.`
+        `Session ajoutée au panier : ${boxName} – ${formatSlotRange(startMinutes)} – ${prixAffiche}€ – ${persons} pers.${referralCode ? `\nCode de parrainage actif : ${referralCode}` : ""}`
       );
     }
 
@@ -1962,6 +2166,9 @@
       initSupabaseClient();
       initNewsletter();
       updateCartIcon();
+
+      initReferralFlow();
+      bindReferralBanner();
 
       const dateInput = getEl("date-input");
       const personsSelect = getEl("persons-select");
