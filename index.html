@@ -50,6 +50,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/leaderboard-widget.css" />
 
   <!-- Schema.org -->
   <script type="application/ld+json">
@@ -258,6 +259,13 @@
       </div>
     </section>
 
+    <!-- SECTION LEADERBOARD -->
+    <section class="sb-leaderboard-section" aria-labelledby="sb-leaderboard-title">
+      <div class="container">
+        <div id="sb-leaderboard-root"></div>
+      </div>
+    </section>
+
     <!-- SECTION OCCASIONS + CONTACT -->
     <section id="occasions" class="section-occasions" aria-labelledby="occasions-title">
       <div class="occasions-container">
@@ -423,9 +431,10 @@
   <!-- Scripts -->
   <script src="js/supabase-js-2.min.js"></script>
   <script src="js/layout.js"></script>
+  <script src="js/leaderboard-widget.js"></script>
   <script>
     const HOME_SUPABASE_URL = "https://sfckofydfqbllkxhxwnt.supabase.co";
-    const HOME_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmY2tvZnlkZnFibGxreGh4d250Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxOTA4ODQsImV4cCI6MjA3OTc2Njg4NH0.2kg7GxQBU8nArCCbJPm0JSn208izXCeiDX266FUC1lw";
+    const HOME_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm2Y..."
     const homeSupabaseClient = globalThis.supabase.createClient(HOME_SUPABASE_URL, HOME_SUPABASE_KEY);
 
     function setResaMessage(message, color) {
