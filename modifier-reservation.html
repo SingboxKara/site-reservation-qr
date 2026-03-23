@@ -676,7 +676,7 @@
               <li>Annulation avec remboursement : jusqu’à <strong>24 heures avant</strong>.</li>
               <li>Capacité autorisée : <strong>1 à 8 personnes</strong>.</li>
               <li>Facturation minimale : <strong>2 personnes</strong>.</li>
-              <li>Si la réservation a été obtenue avec la fidélité, <strong>2 personnes restent offertes</strong>.</li>
+              <li>Si la réservation a été obtenue avec les <strong>Singcoins</strong>, <strong>2 personnes restent offertes</strong>.</li>
               <li>À partir de la 3e personne, seul le <strong>supplément</strong> est dû.</li>
             </ul>
           </div>
@@ -849,8 +849,8 @@
     const WEEKDAY_END_NIGHT_HOUR = 2;
     const WEEKEND_AFTERNOON_SWITCH_HOUR = 15;
 
-    const LOYALTY_POINTS_COST = 100;
-    const LOYALTY_FREE_BILLABLE_PERSONS = 2;
+    const SINGCOINS_REWARD_COST = 100;
+    const SINGCOINS_FREE_BILLABLE_PERSONS = 2;
 
     let currentReservation = null;
     let selectedSlot = null;
@@ -1011,17 +1011,17 @@
       return Math.max(p, MIN_BILLABLE_PERSONS);
     }
 
-    function computeCashAmountFromDate(date, persons, loyaltyUsed = false) {
+    function computeCashAmountFromDate(date, persons, singcoinsUsed = false) {
       if (!date) return 0;
 
       const billablePersons = getBillablePersons(persons);
       const perPerson = getPerPersonRate(date);
 
-      if (!loyaltyUsed) {
+      if (!singcoinsUsed) {
         return Number((perPerson * billablePersons).toFixed(2));
       }
 
-      const extraBillablePersons = Math.max(0, billablePersons - LOYALTY_FREE_BILLABLE_PERSONS);
+      const extraBillablePersons = Math.max(0, billablePersons - SINGCOINS_FREE_BILLABLE_PERSONS);
       return Number((perPerson * extraBillablePersons).toFixed(2));
     }
 
@@ -1068,82 +1068,75 @@
       return n;
     }
 
-    function getLoyaltyInfo(reservation) {
-      const pointsSpent = Number(
-        reservation.points_spent ??
-        reservation.loyalty_points_used ??
-        reservation.pointsUsed ??
-        reservation.used_points_count ??
+    function getSingcoinsInfo(reservation) {
+      const singcoinsSpent = Number(
+        reservation.singcoins_spent ??
+        reservation.singcoinsSpent ??
         0
       ) || 0;
 
-      const loyaltyUsed =
-        Boolean(
-          reservation.loyalty_used === true ||
-          reservation.loyaltyUsed === true ||
-          reservation.is_loyalty_booking === true ||
-          reservation.free_by_loyalty === true ||
-          reservation.paid_with_loyalty === true ||
-          reservation.used_loyalty_reward === true ||
-          reservation.loyalty_reward_used === true ||
-          pointsSpent >= LOYALTY_POINTS_COST ||
-          String(reservation.payment_mode || "").toLowerCase().includes("loyalty") ||
-          String(reservation.payment_mode || "").toLowerCase().includes("fidel")
-        );
+      const singcoinsUsed = Boolean(
+        reservation.singcoins_used === true ||
+        reservation.singcoinsUsed === true ||
+        singcoinsSpent >= SINGCOINS_REWARD_COST ||
+        String(reservation.payment_mode || "").toLowerCase().includes("singcoin")
+      );
 
       return {
-        loyaltyUsed,
-        pointsSpent
+        singcoinsUsed,
+        singcoinsSpent
       };
     }
 
     function normalizeReservation(raw) {
+      const source = raw?.reservation && typeof raw.reservation === "object" ? raw.reservation : raw;
+
       const startTime =
-        raw.start_time ||
-        raw.startTime ||
-        raw.datetime ||
-        raw.date ||
+        source.start_time ||
+        source.startTime ||
+        source.datetime ||
+        source.date ||
         null;
 
       const parsedStart = parseDateOrNull(startTime);
 
       const endTime =
-        raw.end_time ||
-        raw.endTime ||
+        source.end_time ||
+        source.endTime ||
         (parsedStart ? new Date(parsedStart.getTime() + SLOT_DURATION_MIN * 60 * 1000).toISOString() : null);
 
       const amountPaidRaw =
-        raw.amount_paid ??
-        raw.amountPaid ??
-        raw.montant ??
-        raw.total ??
-        raw.total_price ??
-        raw.paid_amount ??
-        raw.cash_amount_due ??
+        source.amount_paid ??
+        source.amountPaid ??
+        source.montant ??
+        source.total ??
+        source.total_price ??
+        source.paid_amount ??
+        source.cash_amount_due ??
         0;
 
       const personsRaw =
-        raw.persons ??
-        raw.nb_personnes ??
-        raw.participants ??
+        source.persons ??
+        source.nb_personnes ??
+        source.participants ??
         2;
 
       const normalized = {
-        id: raw.id || raw.reference || "—",
-        status: raw.status || raw.statut || "confirmed",
-        boxId: Number(raw.boxId || raw.box_id || 1),
-        boxName: raw.boxName || raw.box_name || raw.box || `Box ${raw.box_id || 1}`,
+        id: source.id || source.reference || "—",
+        status: source.status || source.statut || "confirmed",
+        boxId: Number(source.boxId || source.box_id || 1),
+        boxName: source.boxName || source.box_name || source.box || `Box ${source.box_id || 1}`,
         startTime,
         endTime,
         persons: clampPersons(personsRaw),
         amountPaid: Number(amountPaidRaw) || 0,
-        email: raw.email || null,
-        raw
+        email: source.email || null,
+        raw: source
       };
 
-      const loyaltyInfo = getLoyaltyInfo(raw);
-      normalized.loyaltyUsed = loyaltyInfo.loyaltyUsed;
-      normalized.pointsSpent = loyaltyInfo.pointsSpent;
+      const singcoinsInfo = getSingcoinsInfo(source);
+      normalized.singcoinsUsed = singcoinsInfo.singcoinsUsed;
+      normalized.singcoinsSpent = singcoinsInfo.singcoinsSpent;
 
       return normalized;
     }
@@ -1264,7 +1257,7 @@
 
       let response;
       try {
-        response = await fetch(`${API_BASE}/api/my-reservations/${encodeURIComponent(reservationId)}`, {
+        response = await fetch(`${API_BASE}/api/my-reservations`, {
           headers: getAuthHeaders()
         });
       } catch {
@@ -1277,11 +1270,14 @@
         throw new Error(data.error || "Impossible de charger votre réservation.");
       }
 
-      if (!data.reservation) {
+      const reservations = Array.isArray(data.reservations) ? data.reservations : [];
+      const reservation = reservations.find((item) => String(item?.id) === String(reservationId));
+
+      if (!reservation) {
         throw new Error("Réservation introuvable sur votre compte.");
       }
 
-      return normalizeReservation(data.reservation);
+      return normalizeReservation(reservation);
     }
 
     async function fetchReservationGuest() {
@@ -1292,7 +1288,7 @@
 
       let response;
       try {
-        response = await fetch(`${API_BASE}/api/guest-reservation?token=${encodeURIComponent(guestToken)}`);
+        response = await fetch(`${API_BASE}/api/guest-reservation/${encodeURIComponent(guestToken)}`);
       } catch {
         throw new Error("Impossible de contacter le serveur. Merci de réessayer.");
       }
@@ -1307,7 +1303,7 @@
         throw new Error("Réservation introuvable avec ce lien.");
       }
 
-      return normalizeReservation(data.reservation);
+      return normalizeReservation(data);
     }
 
     async function loadReservationData() {
@@ -1348,9 +1344,9 @@
         return;
       }
 
-      if (reservation.loyaltyUsed) {
+      if (reservation.singcoinsUsed) {
         banner.innerHTML =
-          "Votre réservation est <strong>modifiable</strong> et utilise la <strong>fidélité</strong>. Les <strong>2 premières personnes restent offertes</strong>, et seul un éventuel supplément au-delà est à payer.";
+          "Votre réservation est <strong>modifiable</strong> et utilise les <strong>Singcoins</strong>. Les <strong>2 premières personnes restent offertes</strong>, et seul un éventuel supplément au-delà est à payer.";
         return;
       }
 
@@ -1552,7 +1548,7 @@
         const estimatedPrice = computeCashAmountFromDate(
           start,
           selectedPersons,
-          currentReservation.loyaltyUsed
+          currentReservation.singcoinsUsed
         );
 
         const btn = document.createElement("button");
@@ -1583,7 +1579,7 @@
       return computeCashAmountFromDate(
         start,
         selectedPersons,
-        currentReservation.loyaltyUsed
+        currentReservation.singcoinsUsed
       );
     }
 
@@ -1699,8 +1695,8 @@
         newAmount,
         deltaAmount: Number((newAmount - oldAmount).toFixed(2)),
         boxId: currentReservation.boxId,
-        loyaltyUsed: currentReservation.loyaltyUsed,
-        pointsSpent: currentReservation.pointsSpent || 0
+        singcoinsUsed: currentReservation.singcoinsUsed,
+        singcoinsSpent: currentReservation.singcoinsSpent || 0
       };
 
       const guestToken = getGuestManageTokenFromUrl();
