@@ -43,14 +43,10 @@
 
   <style>
     body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
-    }
+    body.layout-loading #site-footer { visibility: hidden; }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
+    body.layout-ready #site-footer { visibility: visible; }
 
     .sr-only {
       position: absolute !important;
@@ -66,53 +62,69 @@
 
     #reservation-edit-page {
       position: relative;
+      overflow: hidden;
       padding: 10rem 0 72px;
+      color: var(--sb-text-main);
       background:
         radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
         radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
         #050814;
-      color: var(--sb-text-main);
-      overflow: hidden;
+    }
+
+    #reservation-edit-page::before,
+    #reservation-edit-page::after {
+      position: absolute;
+      pointer-events: none;
+      color: rgba(148, 163, 184, 0.1);
     }
 
     #reservation-edit-page::before {
       content: "♪";
-      position: absolute;
       top: 14%;
       left: 8%;
       font-size: 34px;
-      color: rgba(148, 163, 184, 0.1);
-      pointer-events: none;
     }
 
     #reservation-edit-page::after {
       content: "★";
-      position: absolute;
-      bottom: 16%;
       right: 8%;
+      bottom: 16%;
       font-size: 30px;
       color: rgba(148, 163, 184, 0.08);
-      pointer-events: none;
     }
+
+    .edit-header,
+    .edit-layout { padding: 0 24px; }
 
     .edit-header {
       max-width: 760px;
       margin: 0 auto 28px;
       text-align: center;
-      padding: 0 24px;
     }
 
     .edit-eyebrow {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--sb-text-muted);
       margin-bottom: 8px;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sb-text-muted);
     }
 
     .edit-header h1 {
-      font-size: 30px;
       margin-bottom: 10px;
+      font-size: 30px;
+    }
+
+    .edit-header p,
+    .edit-card-subtitle,
+    .field-help,
+    .rule-list,
+    .summary-note,
+    .payment-box-subtitle,
+    .payment-box-notice,
+    .page-message,
+    .no-slots-box {
+      line-height: 1.6;
     }
 
     .edit-header p {
@@ -123,31 +135,31 @@
     }
 
     .edit-layout {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 24px;
       display: grid;
       grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.95fr);
       gap: 1.5rem;
+      max-width: 1180px;
+      margin: 0 auto;
       align-items: start;
     }
 
-    @media (max-width: 980px) {
-      .edit-layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .edit-card,
+    .current-info-box,
+    .status-banner,
+    .no-slots-box,
+    .payment-box {
+      background: rgba(2, 6, 23, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.14);
     }
 
     .edit-card {
-      background: var(--sb-card);
-      border-radius: 24px;
-      padding: 1.7rem 1.8rem;
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.9),
-        0 0 0 1px rgba(148, 163, 184, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.16);
       position: relative;
       overflow: hidden;
+      padding: 1.7rem 1.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      background: var(--sb-card);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.25);
     }
 
     .edit-card > * {
@@ -159,83 +171,87 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.08), transparent 58%);
-      pointer-events: none;
       opacity: 0.8;
+      pointer-events: none;
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.08), transparent 58%);
     }
 
     .edit-card h2 {
-      font-size: 22px;
       margin-bottom: 6px;
+      font-size: 22px;
     }
 
     .edit-card-subtitle {
+      margin: 0 0 14px;
       font-size: 13px;
       color: var(--sb-text-muted);
-      margin: 0 0 14px;
-      line-height: 1.6;
     }
 
-    .status-banner {
+    .status-banner,
+    .current-info-box,
+    .no-slots-box {
       border-radius: 18px;
       padding: 12px 14px;
       font-size: 13px;
-      line-height: 1.6;
+    }
+
+    .status-banner {
       margin-bottom: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(2, 6, 23, 0.9);
       color: #f9fafb;
     }
 
     .status-banner.ok {
+      color: #d1fae5;
       border-color: rgba(52, 211, 153, 0.45);
       background: rgba(6, 95, 70, 0.22);
-      color: #d1fae5;
     }
 
     .status-banner.warn {
+      color: #fde68a;
       border-color: rgba(251, 191, 36, 0.45);
       background: rgba(120, 53, 15, 0.22);
-      color: #fde68a;
     }
 
     .status-banner.error {
+      color: #fecaca;
       border-color: rgba(248, 113, 113, 0.45);
       background: rgba(127, 29, 29, 0.25);
-      color: #fecaca;
+    }
+
+    .reservation-current-grid,
+    .dual-fields,
+    .slots-grid {
+      display: grid;
+      gap: 12px;
     }
 
     .reservation-current-grid {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
       margin-top: 8px;
     }
 
-    @media (max-width: 640px) {
-      .reservation-current-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .current-info-box {
-      border-radius: 18px;
-      padding: 12px 14px;
-      background: #020617;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+    .current-info-label,
+    .summary-label,
+    .slot-sub,
+    .field-help,
+    .current-info-label {
+      color: var(--sb-text-muted);
     }
 
     .current-info-label {
-      font-size: 12px;
-      color: var(--sb-text-muted);
       margin-bottom: 4px;
+      font-size: 12px;
     }
 
-    .current-info-value {
-      font-size: 14px;
+    .current-info-value,
+    .summary-value,
+    .slot-time,
+    .payment-box-title {
       font-weight: 600;
       color: #f9fafb;
     }
+
+    .current-info-value { font-size: 14px; }
 
     .rule-list {
       margin: 14px 0 0;
@@ -253,120 +269,108 @@
     }
 
     .dual-fields {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
-    }
-
-    @media (max-width: 700px) {
-      .dual-fields {
-        grid-template-columns: minmax(0, 1fr);
-      }
     }
 
     .field-block label {
       display: block;
       margin-bottom: 6px;
       font-size: 13px;
-      color: #e5e7eb;
       font-weight: 600;
+      color: #e5e7eb;
     }
 
     .field-help {
       margin-top: 6px;
       font-size: 12px;
-      color: var(--sb-text-muted);
       line-height: 1.55;
     }
 
     .field-block select,
-    .field-block input[type="date"] {
+    .field-block input[type="date"],
+    #card-element {
       width: 100%;
+      box-sizing: border-box;
+      outline: none;
       font-family: inherit;
       font-size: 14px;
       color: #f9fafb;
       background: #020617;
-      border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 0.7rem 0.95rem;
-      outline: none;
-      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .field-block select,
+    .field-block input[type="date"] {
+      padding: .7rem .95rem;
+      border-radius: 999px;
     }
 
     .field-block select:focus,
     .field-block input[type="date"]:focus {
       border-color: var(--sb-orange);
-      box-shadow:
-        0 0 0 1px rgba(249, 115, 22, 0.8),
-        0 0 18px rgba(249, 115, 22, 0.18);
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.8), 0 0 18px rgba(249, 115, 22, 0.18);
     }
 
     input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
       cursor: pointer;
+      filter: invert(1);
     }
 
     .slots-section-title {
-      font-size: 15px;
       margin: 2px 0 10px;
-      color: #f9fafb;
+      font-size: 15px;
       font-weight: 700;
+      color: #f9fafb;
     }
 
     .slots-grid {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }
 
-    @media (max-width: 640px) {
-      .slots-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .slot-option,
+    .btn-main,
+    .btn-secondary-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease, background .15s ease, border-color .14s ease;
     }
 
     .slot-option {
+      min-height: 88px;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
       border-radius: 18px;
       border: 1px solid rgba(255, 255, 255, 0.16);
       background: #020617;
       color: #f9fafb;
-      padding: 12px 14px;
-      cursor: pointer;
-      text-align: left;
-      transition:
-        transform 0.14s ease,
-        box-shadow 0.14s ease,
-        border-color 0.14s ease,
-        background 0.14s ease;
-      min-height: 88px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
     }
 
     .slot-option:hover,
     .slot-option:focus-visible {
+      outline: none;
       transform: translateY(-1px);
       border-color: rgba(249, 115, 22, 0.6);
-      box-shadow:
-        0 0 0 1px rgba(249, 115, 22, 0.35),
-        0 16px 36px rgba(0, 0, 0, 0.75);
-      outline: none;
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.35), 0 16px 36px rgba(0, 0, 0, 0.75);
     }
 
     .slot-option.selected {
       border-color: rgba(129, 140, 248, 0.75);
       background: linear-gradient(135deg, rgba(29, 78, 216, 0.45), rgba(76, 29, 149, 0.45));
-      box-shadow:
-        0 0 0 1px rgba(129, 140, 248, 0.55),
-        0 16px 38px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.55), 0 16px 38px rgba(0, 0, 0, 0.85);
     }
 
     .slot-time {
       font-size: 15px;
       font-weight: 700;
-      color: #f9fafb;
     }
 
     .slot-price {
@@ -376,18 +380,6 @@
 
     .slot-sub {
       font-size: 11px;
-      color: var(--sb-text-muted);
-    }
-
-    .no-slots-box {
-      margin-top: 8px;
-      border-radius: 18px;
-      padding: 12px 14px;
-      font-size: 13px;
-      color: var(--sb-text-muted);
-      background: #020617;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      line-height: 1.6;
     }
 
     .summary-card {
@@ -395,43 +387,26 @@
       top: 96px;
     }
 
-    @media (max-width: 980px) {
-      .summary-card {
-        position: static;
-      }
-    }
-
     .summary-row {
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
+      justify-content: space-between;
       gap: 12px;
       padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .summary-row:last-of-type {
       border-bottom: none;
     }
 
-    .summary-label {
-      color: var(--sb-text-muted);
-    }
-
     .summary-value {
       text-align: right;
-      color: #f9fafb;
-      font-weight: 600;
     }
 
-    .summary-value.positive {
-      color: #86efac;
-    }
-
-    .summary-value.negative {
-      color: #fdba74;
-    }
+    .summary-value.positive { color: #86efac; }
+    .summary-value.negative { color: #fdba74; }
 
     .summary-note {
       margin-top: 14px;
@@ -448,8 +423,7 @@
       margin-top: 18px;
       padding: 16px;
       border-radius: 18px;
-      background: rgba(2, 6, 23, 0.9);
-      border: 1px solid rgba(249, 115, 22, 0.22);
+      border-color: rgba(249, 115, 22, 0.22);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
     }
 
@@ -457,13 +431,11 @@
       margin: 0 0 6px;
       font-size: 14px;
       font-weight: 700;
-      color: #f9fafb;
     }
 
     .payment-box-subtitle {
       margin: 0 0 12px;
       font-size: 12px;
-      line-height: 1.6;
       color: var(--sb-text-muted);
     }
 
@@ -480,72 +452,57 @@
 
     #card-element {
       display: block;
-      width: 100%;
-      background: #020617;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 14px;
-      padding: 14px 16px;
       min-height: 52px;
-      box-sizing: border-box;
+      padding: 14px 16px;
+      border-radius: 14px;
     }
 
     #card-errors {
-      margin-top: 8px;
       min-height: 16px;
+      margin-top: 8px;
       font-size: 12px;
-      color: #fca5a5;
       line-height: 1.5;
+      color: #fca5a5;
     }
 
     .summary-actions {
-      margin-top: 18px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-top: 18px;
     }
 
     .btn-main,
     .btn-secondary-link {
+      width: 100%;
+      padding: .85rem 1.15rem;
       border: none;
       border-radius: 999px;
-      padding: 0.85rem 1.15rem;
       font-size: 13px;
       font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.04em;
+      letter-spacing: .04em;
       text-transform: uppercase;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease, background 0.15s ease;
+      cursor: pointer;
       text-align: center;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
     }
 
     .btn-main {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.16),
-        0 16px 40px rgba(0, 0, 0, 0.9);
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16), 0 16px 40px rgba(0, 0, 0, 0.9);
     }
 
     .btn-main:hover,
     .btn-main:focus-visible {
       transform: translateY(-1px);
       filter: brightness(1.03);
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.24),
-        0 22px 54px rgba(0, 0, 0, 1);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.24), 0 22px 54px rgba(0, 0, 0, 1);
     }
 
     .btn-secondary-link {
-      background: #111827;
       color: #f9fafb;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.2),
-        0 10px 28px rgba(0, 0, 0, 0.8);
+      background: #111827;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 10px 28px rgba(0, 0, 0, 0.8);
     }
 
     .btn-secondary-link:hover,
@@ -555,33 +512,46 @@
     }
 
     .btn-main[disabled] {
-      opacity: 0.55;
+      opacity: .55;
       cursor: not-allowed;
       transform: none;
       filter: none;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.12),
-        0 8px 18px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 8px 18px rgba(0, 0, 0, 0.45);
     }
 
     .page-message {
       min-height: 18px;
       margin-top: 12px;
       font-size: 12px;
-      color: #fca5a5;
       line-height: 1.55;
+      color: #fca5a5;
     }
 
-    .page-message.ok {
-      color: #bbf7d0;
+    .page-message.ok { color: #bbf7d0; }
+    .page-message.info { color: #93c5fd; }
+    .page-message.warn { color: #fde68a; }
+
+    @media (max-width: 980px) {
+      .edit-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .summary-card {
+        position: static;
+      }
     }
 
-    .page-message.info {
-      color: #93c5fd;
+    @media (max-width: 700px) {
+      .dual-fields {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
-    .page-message.warn {
-      color: #fde68a;
+    @media (max-width: 640px) {
+      .reservation-current-grid,
+      .slots-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     @media (max-width: 600px) {
@@ -589,16 +559,13 @@
         padding-top: 9rem;
       }
 
-      .edit-layout {
+      .edit-layout,
+      .edit-header {
         padding: 0 16px;
       }
 
       .edit-card {
         padding: 1.2rem 1rem;
-      }
-
-      .edit-header {
-        padding: 0 16px;
       }
     }
   </style>
@@ -828,7 +795,6 @@
         : "https://singbox-backend.onrender.com";
 
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
-
     const THANKYOU_STORAGE_KEY = "singbox_thankyou_data_v1";
 
     const MIN_ALLOWED_PERSONS = 1;
@@ -863,14 +829,11 @@
     let cardElement = null;
     let cardReady = false;
 
-    function getEl(id) {
-      return document.getElementById(id);
-    }
+    const $ = (id) => document.getElementById(id);
 
     function getStoredToken() {
       const token = localStorage.getItem("token");
-      if (!token || token === "null" || token === "undefined") return null;
-      return token;
+      return !token || token === "null" || token === "undefined" ? null : token;
     }
 
     function getAuthHeaders() {
@@ -882,23 +845,15 @@
       return new URLSearchParams(window.location.search);
     }
 
-    function getReservationIdFromUrl() {
-      return getUrlParams().get("reservationId");
-    }
+    const getReservationIdFromUrl = () => getUrlParams().get("reservationId");
 
     function getGuestManageTokenFromUrl() {
       const token = getUrlParams().get("token");
-      if (!token || token === "null" || token === "undefined") return null;
-      return token.trim();
+      return !token || token === "null" || token === "undefined" ? null : token.trim();
     }
 
-    function isGuestMode() {
-      return Boolean(getGuestManageTokenFromUrl());
-    }
-
-    function isLoggedMode() {
-      return Boolean(getReservationIdFromUrl() && getStoredToken());
-    }
+    const isGuestMode = () => Boolean(getGuestManageTokenFromUrl());
+    const isLoggedMode = () => Boolean(getReservationIdFromUrl() && getStoredToken());
 
     function getManageMode() {
       if (isGuestMode()) return "guest";
@@ -906,9 +861,7 @@
       return "none";
     }
 
-    function getBackLinkHref() {
-      return isGuestMode() ? "reservation.html" : "mon-compte.html";
-    }
+    const getBackLinkHref = () => (isGuestMode() ? "reservation.html" : "mon-compte.html");
 
     function parseDateOrNull(dateStr) {
       if (!dateStr) return null;
@@ -916,67 +869,44 @@
       return Number.isNaN(date.getTime()) ? null : date;
     }
 
-    function pad2(n) {
-      return String(n).padStart(2, "0");
-    }
-
-    function toLocalYMD(date) {
-      return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
-    }
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const toLocalYMD = (date) => `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 
     function formatDateFr(dateStr) {
       const date = parseDateOrNull(dateStr);
-      if (!date) return "Date à confirmer";
-
-      return date.toLocaleDateString("fr-FR", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      });
+      return date
+        ? date.toLocaleDateString("fr-FR", {
+            weekday: "long",
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+          })
+        : "Date à confirmer";
     }
 
     function formatShortDateFr(dateStr) {
       const date = parseDateOrNull(dateStr);
-      if (!date) return "-";
-
-      return date.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
+      return date
+        ? date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" })
+        : "-";
     }
 
     function formatHour(date) {
       if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
-      return date.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit"
-      }).replace(":", "h");
+      return date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h");
     }
 
     function formatRange(startIso, endIso) {
       const start = parseDateOrNull(startIso);
       let end = parseDateOrNull(endIso);
-
       if (!start) return "—";
-      if (!end) end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
-
+      if (!end) end = new Date(start.getTime() + SLOT_DURATION_MIN * 60000);
       return `${formatHour(start)} – ${formatHour(end)}`;
     }
 
-    function formatMoney(value) {
-      return Number(value || 0).toFixed(2).replace(".", ",") + " €";
-    }
-
-    function isWeekend(date) {
-      const day = date.getDay();
-      return day === 0 || day === 6;
-    }
-
-    function isFriday(date) {
-      return date.getDay() === 5;
-    }
+    const formatMoney = (value) => Number(value || 0).toFixed(2).replace(".", ",") + " €";
+    const isWeekend = (date) => [0, 6].includes(date.getDay());
+    const isFriday = (date) => date.getDay() === 5;
 
     function getPerPersonRate(date) {
       const hour = date.getHours();
@@ -984,31 +914,20 @@
       const weekend = isWeekend(date);
 
       if (friday || weekend) {
-        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-          return WEEKEND_AFTER_15_RATE;
-        }
-        return WEEKEND_BEFORE_15_RATE;
+        return (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR)
+          ? WEEKEND_AFTER_15_RATE
+          : WEEKEND_BEFORE_15_RATE;
       }
 
-      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
-        return WEEKDAY_MORNING_RATE;
-      }
-
-      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
-        return WEEKDAY_MIDDAY_RATE;
-      }
-
-      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-        return WEEKDAY_EVENING_RATE;
-      }
-
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) return WEEKDAY_MORNING_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) return WEEKDAY_MIDDAY_RATE;
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) return WEEKDAY_EVENING_RATE;
       return WEEKDAY_MORNING_RATE;
     }
 
     function getBillablePersons(persons) {
       const p = Number(persons);
-      if (!Number.isFinite(p)) return MIN_BILLABLE_PERSONS;
-      return Math.max(p, MIN_BILLABLE_PERSONS);
+      return Number.isFinite(p) ? Math.max(p, MIN_BILLABLE_PERSONS) : MIN_BILLABLE_PERSONS;
     }
 
     function computeCashAmountFromDate(date, persons, singcoinsUsed = false) {
@@ -1027,12 +946,11 @@
 
     function getHoursBeforeStart(startIso) {
       const start = parseDateOrNull(startIso);
-      if (!start) return null;
-      return (start.getTime() - Date.now()) / (1000 * 60 * 60);
+      return start ? (start.getTime() - Date.now()) / 3600000 : null;
     }
 
     function isConfirmedLike(statusRaw) {
-      const status = (statusRaw || "").toString().toLowerCase().trim();
+      const status = String(statusRaw || "").toLowerCase().trim();
       return (
         status === "confirmed" ||
         status === "paid" ||
@@ -1044,11 +962,8 @@
 
     function isModificationAllowed(startIso, statusRaw) {
       if (!isConfirmedLike(statusRaw)) return false;
-
       const diff = getHoursBeforeStart(startIso);
-      if (diff === null) return false;
-
-      return diff >= MODIFICATION_DEADLINE_HOURS;
+      return diff !== null && diff >= MODIFICATION_DEADLINE_HOURS;
     }
 
     function formatHoursRemaining(startIso) {
@@ -1061,20 +976,13 @@
 
     function clampPersons(value) {
       let n = Number.parseInt(value, 10);
-
       if (Number.isNaN(n) || n < MIN_ALLOWED_PERSONS) n = MIN_ALLOWED_PERSONS;
       if (n > MAX_ALLOWED_PERSONS) n = MAX_ALLOWED_PERSONS;
-
       return n;
     }
 
     function getSingcoinsInfo(reservation) {
-      const singcoinsSpent = Number(
-        reservation.singcoins_spent ??
-        reservation.singcoinsSpent ??
-        0
-      ) || 0;
-
+      const singcoinsSpent = Number(reservation.singcoins_spent ?? reservation.singcoinsSpent ?? 0) || 0;
       const singcoinsUsed = Boolean(
         reservation.singcoins_used === true ||
         reservation.singcoinsUsed === true ||
@@ -1082,28 +990,18 @@
         String(reservation.payment_mode || "").toLowerCase().includes("singcoin")
       );
 
-      return {
-        singcoinsUsed,
-        singcoinsSpent
-      };
+      return { singcoinsUsed, singcoinsSpent };
     }
 
     function normalizeReservation(raw) {
       const source = raw?.reservation && typeof raw.reservation === "object" ? raw.reservation : raw;
 
-      const startTime =
-        source.start_time ||
-        source.startTime ||
-        source.datetime ||
-        source.date ||
-        null;
-
+      const startTime = source.start_time || source.startTime || source.datetime || source.date || null;
       const parsedStart = parseDateOrNull(startTime);
-
       const endTime =
         source.end_time ||
         source.endTime ||
-        (parsedStart ? new Date(parsedStart.getTime() + SLOT_DURATION_MIN * 60 * 1000).toISOString() : null);
+        (parsedStart ? new Date(parsedStart.getTime() + SLOT_DURATION_MIN * 60000).toISOString() : null);
 
       const amountPaidRaw =
         source.amount_paid ??
@@ -1115,11 +1013,7 @@
         source.cash_amount_due ??
         0;
 
-      const personsRaw =
-        source.persons ??
-        source.nb_personnes ??
-        source.participants ??
-        2;
+      const personsRaw = source.persons ?? source.nb_personnes ?? source.participants ?? 2;
 
       const normalized = {
         id: source.id || source.reference || "—",
@@ -1134,10 +1028,7 @@
         raw: source
       };
 
-      const singcoinsInfo = getSingcoinsInfo(source);
-      normalized.singcoinsUsed = singcoinsInfo.singcoinsUsed;
-      normalized.singcoinsSpent = singcoinsInfo.singcoinsSpent;
-
+      Object.assign(normalized, getSingcoinsInfo(source));
       return normalized;
     }
 
@@ -1150,30 +1041,23 @@
     }
 
     function buildBillingDetailsForModification() {
-      return {
-        email: currentReservation?.email || undefined
-      };
+      return { email: currentReservation?.email || undefined };
     }
 
     function setPaymentNotice(message, type = "normal") {
-      const notice = getEl("payment-box-notice");
+      const notice = $("payment-box-notice");
       if (!notice) return;
 
-      if (type === "error") {
-        notice.style.color = "#fecaca";
-      } else if (type === "ok") {
-        notice.style.color = "#bbf7d0";
-      } else if (type === "info") {
-        notice.style.color = "#93c5fd";
-      } else {
-        notice.style.color = "#fde68a";
-      }
+      notice.style.color =
+        type === "error" ? "#fecaca" :
+        type === "ok" ? "#bbf7d0" :
+        type === "info" ? "#93c5fd" : "#fde68a";
 
       notice.textContent = message;
     }
 
     function initStripeCard() {
-      const cardMount = getEl("card-element");
+      const cardMount = $("card-element");
       if (!STRIPE_PUBLISHABLE_KEY || !globalThis.Stripe || !cardMount) {
         console.error("Stripe non disponible ou #card-element introuvable");
         setPaymentNotice("Le formulaire de carte ne peut pas être chargé pour le moment.", "error");
@@ -1206,9 +1090,7 @@
             fontSmoothing: "antialiased",
             "::placeholder": { color: "#CBD5E1" }
           },
-          invalid: {
-            color: "#FECACA"
-          }
+          invalid: { color: "#FECACA" }
         }
       });
 
@@ -1217,17 +1099,15 @@
       setPaymentNotice("Champ carte chargé. Vous pouvez saisir votre carte si un supplément est demandé.", "ok");
 
       cardElement.on("change", (event) => {
-        const displayError = getEl("card-errors");
-        if (displayError) {
-          displayError.textContent = event.error ? event.error.message : "";
-        }
+        const displayError = $("card-errors");
+        if (displayError) displayError.textContent = event.error ? event.error.message : "";
       });
     }
 
     function showFatalReservationError(message) {
-      const banner = getEl("edit-status-banner");
-      const editMsg = getEl("edit-page-message");
-      const confirmBtn = getEl("confirm-edit-btn");
+      const banner = $("edit-status-banner");
+      const editMsg = $("edit-page-message");
+      const confirmBtn = $("confirm-edit-btn");
 
       if (banner) {
         banner.className = "status-banner error";
@@ -1239,16 +1119,12 @@
         editMsg.className = "page-message";
       }
 
-      if (confirmBtn) {
-        confirmBtn.disabled = true;
-      }
+      if (confirmBtn) confirmBtn.disabled = true;
     }
 
     async function fetchReservationAuth() {
       const token = getStoredToken();
-      if (!token) {
-        throw new Error("Vous devez être connecté pour modifier une réservation.");
-      }
+      if (!token) throw new Error("Vous devez être connecté pour modifier une réservation.");
 
       const reservationId = getReservationIdFromUrl();
       if (!reservationId) {
@@ -1257,34 +1133,24 @@
 
       let response;
       try {
-        response = await fetch(`${API_BASE}/api/my-reservations`, {
-          headers: getAuthHeaders()
-        });
+        response = await fetch(`${API_BASE}/api/my-reservations`, { headers: getAuthHeaders() });
       } catch {
         throw new Error("Impossible de contacter le serveur. Merci de réessayer.");
       }
 
       const data = await safeJson(response);
-
-      if (!response.ok) {
-        throw new Error(data.error || "Impossible de charger votre réservation.");
-      }
+      if (!response.ok) throw new Error(data.error || "Impossible de charger votre réservation.");
 
       const reservations = Array.isArray(data.reservations) ? data.reservations : [];
       const reservation = reservations.find((item) => String(item?.id) === String(reservationId));
 
-      if (!reservation) {
-        throw new Error("Réservation introuvable sur votre compte.");
-      }
-
+      if (!reservation) throw new Error("Réservation introuvable sur votre compte.");
       return normalizeReservation(reservation);
     }
 
     async function fetchReservationGuest() {
       const guestToken = getGuestManageTokenFromUrl();
-      if (!guestToken) {
-        throw new Error("Lien invité invalide.");
-      }
+      if (!guestToken) throw new Error("Lien invité invalide.");
 
       let response;
       try {
@@ -1294,45 +1160,32 @@
       }
 
       const data = await safeJson(response);
-
-      if (!response.ok) {
-        throw new Error(data.error || "Impossible de charger la réservation avec ce lien.");
-      }
-
-      if (!data.reservation) {
-        throw new Error("Réservation introuvable avec ce lien.");
-      }
+      if (!response.ok) throw new Error(data.error || "Impossible de charger la réservation avec ce lien.");
+      if (!data.reservation) throw new Error("Réservation introuvable avec ce lien.");
 
       return normalizeReservation(data);
     }
 
-    async function loadReservationData() {
+    function loadReservationData() {
       const mode = getManageMode();
-
-      if (mode === "guest") {
-        return fetchReservationGuest();
-      }
-
-      if (mode === "auth") {
-        return fetchReservationAuth();
-      }
-
+      if (mode === "guest") return fetchReservationGuest();
+      if (mode === "auth") return fetchReservationAuth();
       throw new Error("Lien de gestion invalide. Utilisez votre lien reçu par email ou passez par votre compte.");
     }
 
     function renderCurrentReservation(reservation) {
-      getEl("current-reference").textContent = reservation.id || "—";
-      getEl("current-status").textContent = reservation.status || "—";
-      getEl("current-date").textContent = formatDateFr(reservation.startTime);
-      getEl("current-slot").textContent = formatRange(reservation.startTime, reservation.endTime);
-      getEl("current-box").textContent = reservation.boxName || "—";
-      getEl("current-persons").textContent = `${reservation.persons} personne${reservation.persons > 1 ? "s" : ""}`;
-      getEl("current-amount").textContent = formatMoney(reservation.amountPaid || 0);
-      getEl("current-deadline").textContent = formatHoursRemaining(reservation.startTime);
+      $("current-reference").textContent = reservation.id || "—";
+      $("current-status").textContent = reservation.status || "—";
+      $("current-date").textContent = formatDateFr(reservation.startTime);
+      $("current-slot").textContent = formatRange(reservation.startTime, reservation.endTime);
+      $("current-box").textContent = reservation.boxName || "—";
+      $("current-persons").textContent = `${reservation.persons} personne${reservation.persons > 1 ? "s" : ""}`;
+      $("current-amount").textContent = formatMoney(reservation.amountPaid || 0);
+      $("current-deadline").textContent = formatHoursRemaining(reservation.startTime);
     }
 
     function renderStatusBanner(reservation) {
-      const banner = getEl("edit-status-banner");
+      const banner = $("edit-status-banner");
       if (!banner) return;
 
       const canModify = isModificationAllowed(reservation.startTime, reservation.status);
@@ -1344,18 +1197,13 @@
         return;
       }
 
-      if (reservation.singcoinsUsed) {
-        banner.innerHTML =
-          "Votre réservation est <strong>modifiable</strong> et utilise les <strong>Singcoins</strong>. Les <strong>2 premières personnes restent offertes</strong>, et seul un éventuel supplément au-delà est à payer.";
-        return;
-      }
-
-      banner.innerHTML =
-        "Votre réservation est <strong>modifiable</strong>. Vous pouvez changer la date, l’horaire ou le nombre de personnes jusqu’à 6 heures avant le début de la séance.";
+      banner.innerHTML = reservation.singcoinsUsed
+        ? "Votre réservation est <strong>modifiable</strong> et utilise les <strong>Singcoins</strong>. Les <strong>2 premières personnes restent offertes</strong>, et seul un éventuel supplément au-delà est à payer."
+        : "Votre réservation est <strong>modifiable</strong>. Vous pouvez changer la date, l’horaire ou le nombre de personnes jusqu’à 6 heures avant le début de la séance.";
     }
 
     function renderPersonsSelect(reservation) {
-      const select = getEl("new-persons");
+      const select = $("new-persons");
       if (!select) return;
 
       selectedPersons = clampPersons(reservation.persons || 2);
@@ -1370,23 +1218,20 @@
     }
 
     function renderDateInput(reservation) {
-      const dateInput = getEl("new-date");
+      const dateInput = $("new-date");
       if (!dateInput) return;
 
       const start = parseDateOrNull(reservation.startTime);
       const today = new Date();
       const currentDateIso = start ? toLocalYMD(start) : toLocalYMD(today);
-      const minIso = toLocalYMD(today);
 
       selectedDateIso = currentDateIso;
-      dateInput.min = minIso;
+      dateInput.min = toLocalYMD(today);
       dateInput.value = currentDateIso;
 
       dateInput.addEventListener("change", async () => {
-        const picked = dateInput.value;
-        if (!picked) return;
-
-        selectedDateIso = picked;
+        if (!dateInput.value) return;
+        selectedDateIso = dateInput.value;
         selectedSlot = null;
         await loadAvailableSlotsForSelectedDate();
         renderSlots();
@@ -1396,10 +1241,9 @@
 
     function buildCurrentSlotLikeReservation() {
       if (!currentReservation) return null;
-      return {
-        dateIso: parseDateOrNull(currentReservation.startTime)
-          ? toLocalYMD(parseDateOrNull(currentReservation.startTime))
-          : null,
+      const start = parseDateOrNull(currentReservation.startTime);
+      return !start ? null : {
+        dateIso: toLocalYMD(start),
         startTime: currentReservation.startTime,
         endTime: currentReservation.endTime
       };
@@ -1407,27 +1251,20 @@
 
     function getEffectiveTargetSlot() {
       if (selectedSlot) return selectedSlot;
-
       if (!currentReservation) return null;
 
       const currentStart = parseDateOrNull(currentReservation.startTime);
       if (!currentStart) return null;
 
-      const currentDateIso = toLocalYMD(currentStart);
-
-      if (selectedDateIso && selectedDateIso !== currentDateIso) {
-        return null;
-      }
-
-      return buildCurrentSlotLikeReservation();
+      return selectedDateIso && selectedDateIso !== toLocalYMD(currentStart)
+        ? null
+        : buildCurrentSlotLikeReservation();
     }
 
     function getCurrentSlotKey() {
       if (!currentReservation) return null;
       const start = parseDateOrNull(currentReservation.startTime);
-      if (!start) return null;
-
-      return `${toLocalYMD(start)}|${formatHour(start)}`;
+      return start ? `${toLocalYMD(start)}|${formatHour(start)}` : null;
     }
 
     function buildSlotFromHourValue(dateIso, hourValue) {
@@ -1446,25 +1283,20 @@
       }
 
       const start = new Date(`${dateIso}T${pad2(hourNum)}:${pad2(minuteNum)}:00`);
-      const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60 * 1000);
+      const end = new Date(start.getTime() + SLOT_DURATION_MIN * 60000);
 
-      return {
-        dateIso,
-        startTime: start.toISOString(),
-        endTime: end.toISOString()
-      };
+      return { dateIso, startTime: start.toISOString(), endTime: end.toISOString() };
     }
 
     function slotKeyFromIso(startIso) {
       const start = parseDateOrNull(startIso);
-      if (!start) return "";
-      return `${toLocalYMD(start)}|${formatHour(start)}`;
+      return start ? `${toLocalYMD(start)}|${formatHour(start)}` : "";
     }
 
     async function loadAvailableSlotsForSelectedDate() {
       if (!currentReservation || !selectedDateIso) return;
 
-      const msg = getEl("edit-page-message");
+      const msg = $("edit-page-message");
       if (msg) {
         msg.textContent = "Chargement des créneaux disponibles...";
         msg.className = "page-message info";
@@ -1478,41 +1310,29 @@
       }
 
       const data = await safeJson(response);
-
-      if (!response.ok) {
-        throw new Error(data.error || "Impossible de charger les créneaux.");
-      }
+      if (!response.ok) throw new Error(data.error || "Impossible de charger les créneaux.");
 
       const reservations = Array.isArray(data.reservations) ? data.reservations : [];
       const sameBoxReservations = reservations.filter((r) => Number(r.box_id) === Number(currentReservation.boxId));
 
       const bookedKeys = new Set();
-      for (const reservation of sameBoxReservations) {
+      sameBoxReservations.forEach((reservation) => {
         const start = parseDateOrNull(reservation.start_time);
-        if (!start) continue;
-        bookedKeys.add(`${toLocalYMD(start)}|${formatHour(start)}`);
-      }
+        if (start) bookedKeys.add(`${toLocalYMD(start)}|${formatHour(start)}`);
+      });
 
       const baseHours = [0, 1.5, 3, 4.5, 6, 7.5, 9, 10.5, 12, 13.5, 15, 16.5, 18, 19.5, 21, 22.5];
       const now = new Date();
       const currentSlotKey = getCurrentSlotKey();
 
-      const slots = [];
-
-      for (const hourValue of baseHours) {
-        const slot = buildSlotFromHourValue(selectedDateIso, hourValue);
-        const start = parseDateOrNull(slot.startTime);
-        if (!start) continue;
-
-        const key = slotKeyFromIso(slot.startTime);
-
-        if (start.getTime() <= now.getTime()) continue;
-        if (bookedKeys.has(key) && key !== currentSlotKey) continue;
-
-        slots.push(slot);
-      }
-
-      availableSlots = slots;
+      availableSlots = baseHours
+        .map((hourValue) => buildSlotFromHourValue(selectedDateIso, hourValue))
+        .filter((slot) => {
+          const start = parseDateOrNull(slot.startTime);
+          if (!start || start.getTime() <= now.getTime()) return false;
+          const key = slotKeyFromIso(slot.startTime);
+          return !bookedKeys.has(key) || key === currentSlotKey;
+        });
 
       if (msg) {
         msg.textContent = "";
@@ -1521,8 +1341,8 @@
     }
 
     function renderSlots() {
-      const slotsGrid = getEl("slots-grid");
-      const noSlotsBox = getEl("no-slots-box");
+      const slotsGrid = $("slots-grid");
+      const noSlotsBox = $("no-slots-box");
       if (!slotsGrid || !noSlotsBox || !currentReservation) return;
 
       slotsGrid.innerHTML = "";
@@ -1537,19 +1357,14 @@
       const effectiveKey = effectiveSlot ? slotKeyFromIso(effectiveSlot.startTime) : "";
       const currentKey = getCurrentSlotKey();
 
-      for (const slot of availableSlots) {
+      availableSlots.forEach((slot) => {
         const start = parseDateOrNull(slot.startTime);
         const end = parseDateOrNull(slot.endTime);
-        if (!start || !end) continue;
+        if (!start || !end) return;
 
         const key = slotKeyFromIso(slot.startTime);
         const isSameAsCurrent = key === currentKey;
-
-        const estimatedPrice = computeCashAmountFromDate(
-          start,
-          selectedPersons,
-          currentReservation.singcoinsUsed
-        );
+        const estimatedPrice = computeCashAmountFromDate(start, selectedPersons, currentReservation.singcoinsUsed);
 
         const btn = document.createElement("button");
         btn.type = "button";
@@ -1567,33 +1382,23 @@
         });
 
         slotsGrid.appendChild(btn);
-      }
+      });
     }
 
     function getNewAmount() {
       if (!currentReservation) return 0;
-
       const effectiveSlot = getEffectiveTargetSlot();
       const start = effectiveSlot ? parseDateOrNull(effectiveSlot.startTime) : parseDateOrNull(currentReservation.startTime);
-
-      return computeCashAmountFromDate(
-        start,
-        selectedPersons,
-        currentReservation.singcoinsUsed
-      );
+      return computeCashAmountFromDate(start, selectedPersons, currentReservation.singcoinsUsed);
     }
 
-    function getDeltaAmount(oldAmount, newAmount) {
-      return Number((newAmount - oldAmount).toFixed(2));
-    }
+    const getDeltaAmount = (oldAmount, newAmount) => Number((newAmount - oldAmount).toFixed(2));
 
     function updateSummary() {
       if (!currentReservation) return;
 
       const oldStart = parseDateOrNull(currentReservation.startTime);
-      const oldEnd = parseDateOrNull(currentReservation.endTime) ||
-        new Date(oldStart.getTime() + SLOT_DURATION_MIN * 60 * 1000);
-
+      const oldEnd = parseDateOrNull(currentReservation.endTime) || new Date(oldStart.getTime() + SLOT_DURATION_MIN * 60000);
       const effectiveSlot = getEffectiveTargetSlot();
       const newStart = effectiveSlot ? parseDateOrNull(effectiveSlot.startTime) : null;
       const newEnd = effectiveSlot ? parseDateOrNull(effectiveSlot.endTime) : null;
@@ -1602,18 +1407,16 @@
       const newAmount = getNewAmount();
       const delta = getDeltaAmount(oldAmount, newAmount);
 
-      getEl("summary-old-date").textContent = formatDateFr(currentReservation.startTime);
-      getEl("summary-new-date").textContent = newStart ? formatDateFr(effectiveSlot.startTime) : "Non sélectionnée";
-      getEl("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
-      getEl("summary-new-slot").textContent = newStart && newEnd
-        ? `${formatHour(newStart)} – ${formatHour(newEnd)}`
-        : "Non sélectionné";
-      getEl("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
-      getEl("summary-new-persons").textContent = `${selectedPersons} personne${selectedPersons > 1 ? "s" : ""}`;
-      getEl("summary-old-amount").textContent = formatMoney(oldAmount);
-      getEl("summary-new-amount").textContent = formatMoney(newAmount);
+      $("summary-old-date").textContent = formatDateFr(currentReservation.startTime);
+      $("summary-new-date").textContent = newStart ? formatDateFr(effectiveSlot.startTime) : "Non sélectionnée";
+      $("summary-old-slot").textContent = `${formatHour(oldStart)} – ${formatHour(oldEnd)}`;
+      $("summary-new-slot").textContent = newStart && newEnd ? `${formatHour(newStart)} – ${formatHour(newEnd)}` : "Non sélectionné";
+      $("summary-old-persons").textContent = `${currentReservation.persons} personne${currentReservation.persons > 1 ? "s" : ""}`;
+      $("summary-new-persons").textContent = `${selectedPersons} personne${selectedPersons > 1 ? "s" : ""}`;
+      $("summary-old-amount").textContent = formatMoney(oldAmount);
+      $("summary-new-amount").textContent = formatMoney(newAmount);
 
-      const deltaEl = getEl("summary-delta");
+      const deltaEl = $("summary-delta");
       deltaEl.className = "summary-value";
 
       if (delta > 0) {
@@ -1634,10 +1437,9 @@
         ? isModificationAllowed(currentReservation.startTime, currentReservation.status)
         : false;
 
-      const pageMsg = getEl("edit-page-message");
-      const summaryMsg = getEl("summary-message");
-      const confirmBtn = getEl("confirm-edit-btn");
-
+      const pageMsg = $("edit-page-message");
+      const summaryMsg = $("summary-message");
+      const confirmBtn = $("confirm-edit-btn");
       if (!confirmBtn || !pageMsg || !summaryMsg) return;
 
       pageMsg.textContent = "";
@@ -1652,7 +1454,6 @@
       }
 
       const effectiveSlot = getEffectiveTargetSlot();
-
       if (!effectiveSlot) {
         confirmBtn.disabled = true;
         pageMsg.textContent = "Veuillez sélectionner un créneau disponible pour finaliser la modification.";
@@ -1661,8 +1462,7 @@
       }
 
       const samePersons = selectedPersons === currentReservation.persons;
-      const sameDateTime =
-        slotKeyFromIso(effectiveSlot.startTime) === slotKeyFromIso(currentReservation.startTime);
+      const sameDateTime = slotKeyFromIso(effectiveSlot.startTime) === slotKeyFromIso(currentReservation.startTime);
 
       if (samePersons && sameDateTime) {
         confirmBtn.disabled = true;
@@ -1676,7 +1476,6 @@
 
     function buildPayload() {
       if (!currentReservation) return null;
-
       const effectiveSlot = getEffectiveTargetSlot();
       if (!effectiveSlot) return null;
 
@@ -1700,16 +1499,12 @@
       };
 
       const guestToken = getGuestManageTokenFromUrl();
-      if (guestToken) {
-        payload.token = guestToken;
-      }
+      if (guestToken) payload.token = guestToken;
 
       return payload;
     }
 
-    function getQrUrlForReservationId(reservationId) {
-      return `${API_BASE}/api/check?id=${encodeURIComponent(reservationId)}`;
-    }
+    const getQrUrlForReservationId = (reservationId) => `${API_BASE}/api/check?id=${encodeURIComponent(reservationId)}`;
 
     function buildThankYouDataFromReservation(reservationLike) {
       const reservationId = reservationLike?.id || currentReservation?.id || "";
@@ -1719,8 +1514,7 @@
         reservationLike?.raw?.firstName ||
         (() => {
           const fullName = String(reservationLike?.raw?.name || "").trim();
-          if (!fullName) return "";
-          return fullName.split(/\s+/)[0] || "";
+          return fullName ? (fullName.split(/\s+/)[0] || "") : "";
         })();
 
       return {
@@ -1739,25 +1533,20 @@
       const effectiveSlot = getEffectiveTargetSlot();
       const targetStart = effectiveSlot?.startTime || currentReservation?.startTime || null;
       const targetEnd = effectiveSlot?.endTime || currentReservation?.endTime || null;
-      const targetDate = targetStart ? formatShortDateFr(targetStart) : "-";
-      const targetTime = formatRange(targetStart, targetEnd);
-      const targetAmount = getNewAmount();
-
       const prenom =
         currentReservation?.raw?.prenom ||
         (() => {
           const fullName = String(currentReservation?.raw?.name || "").trim();
-          if (!fullName) return "";
-          return fullName.split(/\s+/)[0] || "";
+          return fullName ? (fullName.split(/\s+/)[0] || "") : "";
         })();
 
       return {
         mode: "modification",
         prenom: prenom || "",
-        date: targetDate,
-        time: targetTime,
+        date: targetStart ? formatShortDateFr(targetStart) : "-",
+        time: formatRange(targetStart, targetEnd),
         box: currentReservation?.boxName || `Box ${currentReservation?.boxId || 1}`,
-        total: formatMoney(targetAmount),
+        total: formatMoney(getNewAmount()),
         reservationId: currentReservation?.id || "-",
         qrUrl: currentReservation?.id ? getQrUrlForReservationId(currentReservation.id) : ""
       };
@@ -1792,9 +1581,7 @@
       return hasActuallyChanged && newStartMatch && newEndMatch && newPersonsMatch;
     }
 
-    async function wait(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     async function waitForReservationUpdateAfterPayment(payload, maxAttempts = 6, delayMs = 1200) {
       for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
@@ -1802,7 +1589,6 @@
 
         try {
           const refreshed = await loadReservationData();
-
           if (hasReservationBeenUpdated(currentReservation, refreshed, payload)) {
             currentReservation = refreshed;
             return refreshed;
@@ -1815,11 +1601,9 @@
       return null;
     }
 
-    async function createPaymentMethodForModification() {
+    function createPaymentMethodForModification() {
       if (!stripe || !cardElement || !cardReady) {
-        return {
-          error: { message: "Le formulaire de carte n'est pas disponible." }
-        };
+        return Promise.resolve({ error: { message: "Le formulaire de carte n'est pas disponible." } });
       }
 
       return stripe.createPaymentMethod({
@@ -1830,13 +1614,11 @@
     }
 
     async function confirmModification() {
-      const summaryMsg = getEl("summary-message");
-      const btn = getEl("confirm-edit-btn");
-
+      const summaryMsg = $("summary-message");
+      const btn = $("confirm-edit-btn");
       if (!currentReservation || !summaryMsg || !btn) return;
 
-      const canModify = isModificationAllowed(currentReservation.startTime, currentReservation.status);
-      if (!canModify) {
+      if (!isModificationAllowed(currentReservation.startTime, currentReservation.status)) {
         summaryMsg.textContent = "Cette réservation ne peut plus être modifiée.";
         summaryMsg.className = "page-message";
         return;
@@ -1863,17 +1645,9 @@
       summaryMsg.className = "page-message info";
 
       try {
-        const endpoint = isGuest
-          ? `${API_BASE}/api/guest-modify-reservation`
-          : `${API_BASE}/api/modify-reservation`;
-
-        const headers = {
-          "Content-Type": "application/json"
-        };
-
-        if (!isGuest) {
-          Object.assign(headers, getAuthHeaders());
-        }
+        const endpoint = isGuest ? `${API_BASE}/api/guest-modify-reservation` : `${API_BASE}/api/modify-reservation`;
+        const headers = { "Content-Type": "application/json" };
+        if (!isGuest) Object.assign(headers, getAuthHeaders());
 
         const response = await fetch(endpoint, {
           method: "POST",
@@ -1886,8 +1660,7 @@
         if (!response.ok) {
           if (data.requiresAdditionalPayment) {
             const delta = data?.financial?.deltaAmount ?? payload.deltaAmount ?? 0;
-            summaryMsg.textContent =
-              `Un paiement complémentaire de ${formatMoney(delta)} est nécessaire pour finaliser cette modification.`;
+            summaryMsg.textContent = `Un paiement complémentaire de ${formatMoney(delta)} est nécessaire pour finaliser cette modification.`;
             summaryMsg.className = "page-message warn";
             btn.disabled = false;
             return;
@@ -1958,32 +1731,27 @@
           setPaymentNotice("Paiement accepté ✔️", "ok");
 
           const refreshedReservation = await waitForReservationUpdateAfterPayment(payload);
-          const thankYouData = refreshedReservation
-            ? buildThankYouDataFromReservation(refreshedReservation)
-            : buildThankYouDataFromSelection();
-
-          redirectToThankYou(thankYouData);
+          redirectToThankYou(
+            refreshedReservation
+              ? buildThankYouDataFromReservation(refreshedReservation)
+              : buildThankYouDataFromSelection()
+          );
           return;
         }
 
         if (data.success) {
-          const updatedReservation = data.reservation
-            ? normalizeReservation(data.reservation)
-            : null;
-
-          if (updatedReservation) {
-            currentReservation = updatedReservation;
-          }
+          const updatedReservation = data.reservation ? normalizeReservation(data.reservation) : null;
+          if (updatedReservation) currentReservation = updatedReservation;
 
           summaryMsg.textContent = "Réservation modifiée avec succès.";
           summaryMsg.className = "page-message ok";
           setPaymentNotice("Aucun supplément nécessaire pour cette modification.", "ok");
 
-          const thankYouData = updatedReservation
-            ? buildThankYouDataFromReservation(updatedReservation)
-            : buildThankYouDataFromSelection();
-
-          redirectToThankYou(thankYouData);
+          redirectToThankYou(
+            updatedReservation
+              ? buildThankYouDataFromReservation(updatedReservation)
+              : buildThankYouDataFromSelection()
+          );
           return;
         }
 
@@ -2002,23 +1770,19 @@
     async function initPage() {
       initStripeCard();
 
-      const backLink = getEl("back-link");
+      const backLink = $("back-link");
       if (backLink) {
         backLink.href = getBackLinkHref();
         backLink.textContent = isGuestMode() ? "Retour" : "Retour à mon compte";
       }
 
-      const confirmBtn = getEl("confirm-edit-btn");
-      if (confirmBtn) {
-        confirmBtn.addEventListener("click", confirmModification);
-      }
+      const confirmBtn = $("confirm-edit-btn");
+      if (confirmBtn) confirmBtn.addEventListener("click", confirmModification);
 
       const mode = getManageMode();
       if (mode === "none") {
         showFatalReservationError("Lien de gestion invalide. Utilisez votre lien reçu par email ou passez par votre compte.");
-        setTimeout(() => {
-          window.location.href = "reservation.html";
-        }, 1800);
+        setTimeout(() => { window.location.href = "reservation.html"; }, 1800);
         return;
       }
 
