@@ -649,13 +649,14 @@
       finalTotalTTC: 0
     };
 
+    const $ = (id) => document.getElementById(id);
+
     function getEl(id) {
-      return document.getElementById(id);
+      return $(id);
     }
 
     function isValidEmail(email) {
-      if (typeof email !== "string") return false;
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
+      return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email.trim());
     }
 
     function getToken() {
@@ -668,6 +669,22 @@
       return token ? { ...extra, Authorization: "Bearer " + token } : extra;
     }
 
+    function setText(el, value) {
+      if (el) el.textContent = value;
+    }
+
+    function setHtml(el, value) {
+      if (el) el.innerHTML = value;
+    }
+
+    function show(el, display = "block") {
+      if (el) el.style.display = display;
+    }
+
+    function hide(el) {
+      if (el) el.style.display = "none";
+    }
+
     function createFetchTimeoutSignal(timeoutMs = FETCH_TIMEOUT_MS) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -678,10 +695,7 @@
     }
 
     async function handleAuthResponse(res, ctx = "") {
-      if (res.status !== 401 && res.status !== 403) {
-        return true;
-      }
-
+      if (res.status !== 401 && res.status !== 403) return true;
       localStorage.removeItem("token");
       meDataCache = null;
       meDataPromise = null;
@@ -691,7 +705,6 @@
 
     async function parseResponseData(res) {
       const cloned = res.clone();
-
       try {
         return await res.json();
       } catch {
@@ -707,8 +720,7 @@
     async function apiFetch(path, options = {}, config = {}) {
       const { auth = false, json = true, ctx = "", timeoutMs = FETCH_TIMEOUT_MS } = config;
       const url = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
-      const headers = options.headers || {};
-      const finalHeaders = auth ? authHeaders(headers) : headers;
+      const finalHeaders = auth ? authHeaders(options.headers || {}) : (options.headers || {});
       const timeout = createFetchTimeoutSignal(timeoutMs);
 
       try {
@@ -720,21 +732,13 @@
 
         if (auth) {
           const okAuth = await handleAuthResponse(res, ctx || path);
-          if (!okAuth) {
-            return { ok: false, status: res.status, data: null, res };
-          }
+          if (!okAuth) return { ok: false, status: res.status, data: null, res };
         }
 
-        if (!json) {
-          return { ok: res.ok, status: res.status, data: null, res };
-        }
+        if (!json) return { ok: res.ok, status: res.status, data: null, res };
 
         const data = await parseResponseData(res);
-
-        if (!res.ok) {
-          console.warn(`[API] ${ctx || path} failed:`, res.status, data);
-        }
-
+        if (!res.ok) console.warn(`[API] ${ctx || path} failed:`, res.status, data);
         return { ok: res.ok, status: res.status, data, res };
       } catch (error) {
         const isAbort = error?.name === "AbortError";
@@ -782,8 +786,9 @@
     }
 
     function saveChestCheckoutContext(context) {
-      if (!context || typeof context !== "object") return;
-      sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+      if (context && typeof context === "object") {
+        sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+      }
     }
 
     function clearChestCheckoutContext() {
@@ -792,20 +797,17 @@
 
     function readChestContextFromUrl() {
       const params = new URLSearchParams(window.location.search);
-
       const promoCode = String(params.get("promoCode") || "").trim();
       const rewardType = String(params.get("rewardType") || "").trim();
       const rewardValue = String(params.get("rewardValue") || "").trim();
       const chestReward = String(params.get("chestReward") || "").trim();
-
-      const hasContext = promoCode || rewardType || rewardValue || chestReward;
-      if (!hasContext) return null;
+      if (!(promoCode || rewardType || rewardValue || chestReward)) return null;
 
       return {
         promoCode: promoCode || null,
         rewardType: rewardType || null,
         rewardValue: rewardValue || null,
-        chestReward: chestReward || null,
+        chestReward: chestReward || null
       };
     }
 
@@ -838,7 +840,6 @@
     function saveReferralCode(code) {
       const safeCode = normalizeReferralCode(code);
       if (!safeCode) return;
-
       try {
         localStorage.setItem(REFERRAL_STORAGE_KEY, safeCode);
       } catch {}
@@ -870,13 +871,12 @@
 
       const chest = getChestCheckoutContext();
       if (!chest) {
-        noteEl.style.display = "none";
+        hide(noteEl);
         noteEl.textContent = "";
         return;
       }
 
       let message = "";
-
       if (chest.promoCode && chest.rewardType === "free_session") {
         message = `Récompense coffre détectée : <strong>session offerte</strong> prête à être appliquée avec le code <strong>${chest.promoCode}</strong>.`;
       } else if (chest.promoCode && chest.rewardType === "discount_percent" && chest.rewardValue) {
@@ -888,13 +888,13 @@
       }
 
       if (!message) {
-        noteEl.style.display = "none";
+        hide(noteEl);
         noteEl.textContent = "";
         return;
       }
 
-      noteEl.innerHTML = message;
-      noteEl.style.display = "block";
+      setHtml(noteEl, message);
+      show(noteEl);
     }
 
     function renderReferralNote() {
@@ -902,34 +902,27 @@
       if (!noteEl) return;
 
       const referralCode = getStoredReferralCode();
-
       if (!referralCode) {
-        noteEl.style.display = "none";
+        hide(noteEl);
         noteEl.textContent = "";
         return;
       }
 
-      noteEl.innerHTML =
+      setHtml(
+        noteEl,
         `Code de parrainage détecté : <strong>${referralCode}</strong>. ` +
-        `Il sera transmis avec votre réservation et comptera uniquement après une séance terminée et validée.`;
-
-      noteEl.style.display = "block";
+        `Il sera transmis avec votre réservation et comptera uniquement après une séance terminée et validée.`
+      );
+      show(noteEl);
     }
 
     function computeTotal(panier) {
       let total = 0;
-
       for (const item of panier) {
-        const hasNumericPrice = item && typeof item.price === "number" && Number.isFinite(item.price);
-        const price = hasNumericPrice ? item.price : PRICE_FALLBACK;
-
-        if (!Number.isFinite(price) || price < 0) {
-          return null;
-        }
-
+        const price = item && typeof item.price === "number" && Number.isFinite(item.price) ? item.price : PRICE_FALLBACK;
+        if (!Number.isFinite(price) || price < 0) return null;
         total += price;
       }
-
       return total;
     }
 
@@ -939,7 +932,6 @@
 
     function formatDateFr(iso) {
       if (!iso) return "";
-
       try {
         const [y, m, d] = iso.split("-");
         const date = new Date(Number.parseInt(y, 10), Number.parseInt(m, 10) - 1, Number.parseInt(d, 10));
@@ -956,74 +948,48 @@
 
     function getTodayISO() {
       const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const d = String(now.getDate()).padStart(2, "0");
-      return `${y}-${m}-${d}`;
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
     }
 
     function isPromoCurrentlyValid(promo) {
-      if (!promo) return false;
-      if (promo.is_active === false) return false;
-
+      if (!promo || promo.is_active === false) return false;
       const today = getTodayISO();
-
       if (promo.valid_from && promo.valid_from > today) return false;
       if (promo.valid_to && promo.valid_to < today) return false;
-
-      const maxUses = promo.max_uses;
-      const used = promo.used_count || 0;
-      const hasMaxUses = maxUses !== null && maxUses !== undefined && typeof maxUses === "number";
-
-      return !(hasMaxUses && used >= maxUses);
+      const hasMaxUses = promo.max_uses !== null && promo.max_uses !== undefined && typeof promo.max_uses === "number";
+      return !(hasMaxUses && (promo.used_count || 0) >= promo.max_uses);
     }
 
     function computeDiscountFromPromo(promo, totalTTC) {
       if (!promo || totalTTC <= 0) return 0;
-
       const value = Number(promo.value || 0);
-
       switch (promo.type) {
-        case "percent":
-          return Math.min(totalTTC, totalTTC * (value / 100));
-        case "fixed":
-          return Math.min(totalTTC, value);
-        case "free":
-          return totalTTC;
-        default:
-          return 0;
+        case "percent": return Math.min(totalTTC, totalTTC * (value / 100));
+        case "fixed": return Math.min(totalTTC, value);
+        case "free": return totalTTC;
+        default: return 0;
       }
     }
 
     function calculateAgeFromBirthdate(isoDate) {
       if (!isoDate) return null;
-
       const parts = isoDate.split("-");
       if (parts.length !== 3) return null;
 
-      const year = Number.parseInt(parts[0], 10);
-      const month = Number.parseInt(parts[1], 10) - 1;
-      const day = Number.parseInt(parts[2], 10);
-      const birth = new Date(year, month, day);
-
+      const birth = new Date(Number.parseInt(parts[0], 10), Number.parseInt(parts[1], 10) - 1, Number.parseInt(parts[2], 10));
       if (Number.isNaN(birth.getTime())) return null;
 
       const today = new Date();
       let age = today.getFullYear() - birth.getFullYear();
       const monthDelta = today.getMonth() - birth.getMonth();
-
-      if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birth.getDate())) {
-        age--;
-      }
-
+      if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birth.getDate())) age--;
       return age;
     }
 
     function formatTimeFrFromIso(iso) {
       try {
         const d = new Date(iso);
-        if (Number.isNaN(d.getTime())) return "";
-        return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+        return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
       } catch {
         return "";
       }
@@ -1040,41 +1006,20 @@
 
     function getPerPersonRate(dateObj) {
       const hour = dateObj.getHours();
-      const friday = isFriday(dateObj);
-      const weekend = isWeekend(dateObj);
-
-      if (friday || weekend) {
-        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-          return WEEKEND_AFTER_15_RATE;
-        }
-        return WEEKEND_BEFORE_15_RATE;
+      if (isFriday(dateObj) || isWeekend(dateObj)) {
+        return (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR)
+          ? WEEKEND_AFTER_15_RATE
+          : WEEKEND_BEFORE_15_RATE;
       }
-
-      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
-        return WEEKDAY_MORNING_RATE;
-      }
-
-      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
-        return WEEKDAY_MIDDAY_RATE;
-      }
-
-      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-        return WEEKDAY_EVENING_RATE;
-      }
-
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) return WEEKDAY_MORNING_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) return WEEKDAY_MIDDAY_RATE;
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) return WEEKDAY_EVENING_RATE;
       return WEEKDAY_MORNING_RATE;
     }
 
     function getItemPersons(item) {
-      const persons = Number(
-        item?.persons ??
-        item?.nb_personnes ??
-        item?.participants ??
-        2
-      );
-
-      if (!Number.isFinite(persons)) return 2;
-      return Math.max(1, persons);
+      const persons = Number(item?.persons ?? item?.nb_personnes ?? item?.participants ?? 2);
+      return Number.isFinite(persons) ? Math.max(1, persons) : 2;
     }
 
     function getItemDateObject(item) {
@@ -1095,17 +1040,14 @@
     }
 
     function computeSingcoinsDiscount(panier) {
-      if (!singcoinsUsed || !Array.isArray(panier) || panier.length === 0) return 0;
-
+      if (!singcoinsUsed || !Array.isArray(panier) || !panier.length) return 0;
       const firstItem = panier[0];
       const slotDate = getItemDateObject(firstItem);
       if (!slotDate) return 0;
 
       const rate = getPerPersonRate(slotDate);
-      const persons = getItemPersons(firstItem);
-      const billablePersons = Math.max(persons, MIN_BILLABLE_PERSONS);
+      const billablePersons = Math.max(getItemPersons(firstItem), MIN_BILLABLE_PERSONS);
       const coveredPersons = Math.min(SINGCOINS_FREE_BILLABLE_PERSONS, billablePersons);
-
       const rawDiscount = rate * coveredPersons;
       const itemPrice = Number(firstItem?.price ?? PRICE_FALLBACK) || 0;
 
@@ -1124,32 +1066,20 @@
         singcoinsRow: getEl("order-singcoins-row"),
         singcoinsEl: getEl("order-singcoins-discount"),
         emptyState: getEl("empty-cart-state"),
-        checkoutLayout: document.querySelector(".checkout-layout"),
+        checkoutLayout: getEl("checkout-layout"),
         paymentCard: document.querySelector(".payment-card"),
         submitBtn: getEl("checkout-submit-btn")
       };
     }
 
     function toggleEmptyCartUI(isEmpty, els) {
-      const { emptyState, checkoutLayout, paymentCard, submitBtn } = els;
-
-      if (emptyState) emptyState.style.display = isEmpty ? "block" : "none";
-      if (checkoutLayout) checkoutLayout.style.display = isEmpty ? "none" : "grid";
-      if (paymentCard) paymentCard.style.display = isEmpty ? "none" : "";
-      if (submitBtn) submitBtn.disabled = isEmpty;
+      if (els.emptyState) els.emptyState.style.display = isEmpty ? "block" : "none";
+      if (els.checkoutLayout) els.checkoutLayout.style.display = isEmpty ? "none" : "grid";
+      if (els.paymentCard) els.paymentCard.style.display = isEmpty ? "none" : "";
+      if (els.submitBtn) els.submitBtn.disabled = isEmpty;
     }
 
-    function renderEmptyOrderSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, singcoinsRow } = els;
-
-      if (nameEl) nameEl.textContent = "Aucune réservation";
-      if (metaEl) metaEl.textContent = "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.";
-      if (subEl) subEl.textContent = "0€";
-      if (tvaEl) tvaEl.textContent = "0€";
-      if (totalEl) totalEl.textContent = "0€";
-      if (promoRow) promoRow.style.display = "none";
-      if (singcoinsRow) singcoinsRow.style.display = "none";
-
+    function resetTotals() {
       currentTotals = {
         totalTTCNoDiscount: 0,
         promoDiscount: 0,
@@ -1157,75 +1087,65 @@
         totalDiscount: 0,
         finalTotalTTC: 0
       };
+    }
 
+    function renderEmptyOrderSummary(els) {
+      setText(els.nameEl, "Aucune réservation");
+      setText(els.metaEl, "Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.");
+      setText(els.subEl, "0€");
+      setText(els.tvaEl, "0€");
+      setText(els.totalEl, "0€");
+      if (els.promoRow) els.promoRow.style.display = "none";
+      if (els.singcoinsRow) els.singcoinsRow.style.display = "none";
+      resetTotals();
       cartValid = false;
     }
 
     function renderInvalidCartSummary(els) {
-      const { nameEl, metaEl, subEl, tvaEl, totalEl, promoRow, singcoinsRow, submitBtn } = els;
-
-      if (nameEl) nameEl.textContent = "Erreur sur votre panier";
-      if (metaEl) metaEl.textContent = "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.";
-      if (subEl) subEl.textContent = "—";
-      if (tvaEl) tvaEl.textContent = "—";
-      if (totalEl) totalEl.textContent = "—";
-      if (promoRow) promoRow.style.display = "none";
-      if (singcoinsRow) singcoinsRow.style.display = "none";
-      if (submitBtn) submitBtn.disabled = true;
-
-      currentTotals = {
-        totalTTCNoDiscount: 0,
-        promoDiscount: 0,
-        singcoinsDiscount: 0,
-        totalDiscount: 0,
-        finalTotalTTC: 0
-      };
-
+      setText(els.nameEl, "Erreur sur votre panier");
+      setText(els.metaEl, "Une erreur s’est produite sur un des créneaux. Merci de revenir au panier et de recommencer votre sélection.");
+      setText(els.subEl, "—");
+      setText(els.tvaEl, "—");
+      setText(els.totalEl, "—");
+      if (els.promoRow) els.promoRow.style.display = "none";
+      if (els.singcoinsRow) els.singcoinsRow.style.display = "none";
+      if (els.submitBtn) els.submitBtn.disabled = true;
+      resetTotals();
       cartValid = false;
     }
 
     function buildOrderMeta(first) {
-      const dateLabel = first && first.date ? formatDateFr(first.date) : "";
+      const dateLabel = first?.date ? formatDateFr(first.date) : "";
       let hourText = "";
 
-      if (first && first.start_time && first.end_time) {
+      if (first?.start_time && first?.end_time) {
         const startTime = formatTimeFrFromIso(first.start_time);
         const endTime = formatTimeFrFromIso(first.end_time);
-        if (startTime && endTime) {
-          hourText = `${startTime} – ${endTime}`;
-        }
+        if (startTime && endTime) hourText = `${startTime} – ${endTime}`;
       } else if (first && typeof first.hour === "number") {
-        const start = first.hour;
-        const startH = Math.floor(start);
-        const startM = Math.round((start - startH) * 60);
+        const startH = Math.floor(first.hour);
+        const startM = Math.round((first.hour - startH) * 60);
         const endMinutes = startH * 60 + startM + 90;
         const endH = Math.floor((endMinutes % 1440) / 60);
         const endM = endMinutes % 60;
-        const startStr = String(startH).padStart(2, "0") + "h" + String(startM).padStart(2, "0");
-        const endStr = String(endH).padStart(2, "0") + "h" + String(endM).padStart(2, "0");
-        hourText = `${startStr} – ${endStr}`;
+        hourText =
+          `${String(startH).padStart(2, "0")}h${String(startM).padStart(2, "0")} – ` +
+          `${String(endH).padStart(2, "0")}h${String(endM).padStart(2, "0")}`;
       }
 
       return { dateLabel, hourText };
     }
 
     function getDisplayBoxName(first) {
-      if (!first) return "Box privée";
-      return first.boxName || first.box || first.boxId || "Box privée";
+      return first?.boxName || first?.box || first?.boxId || "Box privée";
     }
 
     function updateOrderSummaryFromPanier() {
       const els = getCheckoutEls();
-      const {
-        nameEl, metaEl, subEl, tvaEl, totalEl,
-        promoRow, promoEl, singcoinsRow, singcoinsEl, submitBtn
-      } = els;
-
-      if (!nameEl || !metaEl || !subEl || !tvaEl || !totalEl) return;
+      if (!els.nameEl || !els.metaEl || !els.subEl || !els.tvaEl || !els.totalEl) return;
 
       const panier = getPanier();
-
-      if (panier.length === 0) {
+      if (!panier.length) {
         renderEmptyOrderSummary(els);
         toggleEmptyCartUI(true, els);
         renderChestRewardNote();
@@ -1233,7 +1153,6 @@
       }
 
       const totalTTCNoDiscount = computeTotal(panier);
-
       if (totalTTCNoDiscount === null) {
         renderInvalidCartSummary(els);
         toggleEmptyCartUI(false, els);
@@ -1242,8 +1161,7 @@
       }
 
       cartValid = true;
-      if (submitBtn) submitBtn.disabled = false;
-
+      if (els.submitBtn) els.submitBtn.disabled = false;
       toggleEmptyCartUI(false, els);
 
       let promoDiscount = 0;
@@ -1254,7 +1172,6 @@
       }
 
       promoDiscount = Math.max(0, Math.min(promoDiscount, totalTTCNoDiscount));
-
       const totalAfterPromo = Math.max(0, totalTTCNoDiscount - promoDiscount);
       const singcoinsDiscount = Math.max(0, Math.min(computeSingcoinsDiscount(panier), totalAfterPromo));
       const totalDiscount = promoDiscount + singcoinsDiscount;
@@ -1264,58 +1181,43 @@
       const tva = finalTotalTTC - totalHT;
 
       const first = panier[0];
-      const boxName = getDisplayBoxName(first);
       const extraCount = panier.length - 1;
       const { dateLabel, hourText } = buildOrderMeta(first);
       const persons = getItemPersons(first);
 
-      nameEl.textContent = extraCount > 0
-        ? `Box ${boxName} + ${extraCount} autre(s) créneau(x)`
-        : `Box ${boxName}`;
+      setText(
+        els.nameEl,
+        extraCount > 0 ? `Box ${getDisplayBoxName(first)} + ${extraCount} autre(s) créneau(x)` : `Box ${getDisplayBoxName(first)}`
+      );
 
-      metaEl.innerHTML =
+      setHtml(
+        els.metaEl,
         (dateLabel ? `Date : ${dateLabel}<br>` : "") +
         (hourText ? `Créneau : ${hourText}<br>` : "") +
         `Participants : ${persons}<br>` +
-        `Nombre de créneaux : ${panier.length}`;
+        `Nombre de créneaux : ${panier.length}`
+      );
 
-      subEl.textContent = formatMoney(totalHT);
-      tvaEl.textContent = formatMoney(tva);
-      totalEl.textContent = formatMoney(finalTotalTTC);
+      setText(els.subEl, formatMoney(totalHT));
+      setText(els.tvaEl, formatMoney(tva));
+      setText(els.totalEl, formatMoney(finalTotalTTC));
 
-      if (promoRow && promoEl) {
-        if (promoDiscount > 0) {
-          promoRow.style.display = "flex";
-          promoEl.textContent = "-" + formatMoney(promoDiscount);
-        } else {
-          promoRow.style.display = "none";
-        }
+      if (els.promoRow && els.promoEl) {
+        els.promoRow.style.display = promoDiscount > 0 ? "flex" : "none";
+        if (promoDiscount > 0) setText(els.promoEl, "-" + formatMoney(promoDiscount));
       }
 
-      if (singcoinsRow && singcoinsEl) {
-        if (singcoinsDiscount > 0) {
-          singcoinsRow.style.display = "flex";
-          singcoinsEl.textContent = "-" + formatMoney(singcoinsDiscount);
-        } else {
-          singcoinsRow.style.display = "none";
-        }
+      if (els.singcoinsRow && els.singcoinsEl) {
+        els.singcoinsRow.style.display = singcoinsDiscount > 0 ? "flex" : "none";
+        if (singcoinsDiscount > 0) setText(els.singcoinsEl, "-" + formatMoney(singcoinsDiscount));
       }
 
-      currentTotals = {
-        totalTTCNoDiscount,
-        promoDiscount,
-        singcoinsDiscount,
-        totalDiscount,
-        finalTotalTTC
-      };
-
+      currentTotals = { totalTTCNoDiscount, promoDiscount, singcoinsDiscount, totalDiscount, finalTotalTTC };
       renderChestRewardNote();
     }
 
     function setCardElementHidden(hidden) {
-      const wrap = document.querySelector(".card-element-wrapper");
-      if (!wrap) return;
-      wrap.classList.toggle("is-hidden", Boolean(hidden));
+      document.querySelector(".card-element-wrapper")?.classList.toggle("is-hidden", Boolean(hidden));
     }
 
     function syncSavedCardToggleState() {
@@ -1323,28 +1225,24 @@
       if (!payToggle) return;
 
       const hasCard = Boolean(savedCardState.card && savedCardState.card.last4);
-      const wantsSavedCard = Boolean(payToggle.checked);
-
       if (!hasCard) {
         payToggle.checked = false;
         setCardElementHidden(false);
         return;
       }
 
-      setCardElementHidden(wantsSavedCard);
+      setCardElementHidden(Boolean(payToggle.checked));
     }
 
     function initSavedCardToggleBehavior() {
       const payToggle = getEl("pay-with-saved-card");
       if (!payToggle) return;
 
-      if (payToggle.dataset.bound === "true") {
-        syncSavedCardToggleState();
-        return;
+      if (payToggle.dataset.bound !== "true") {
+        payToggle.addEventListener("change", syncSavedCardToggleState);
+        payToggle.dataset.bound = "true";
       }
 
-      payToggle.addEventListener("change", syncSavedCardToggleState);
-      payToggle.dataset.bound = "true";
       syncSavedCardToggleState();
     }
 
@@ -1359,20 +1257,20 @@
       const logged = Boolean(getToken());
 
       if (!logged) {
-        block.style.display = "none";
+        hide(block);
         setCardElementHidden(false);
         return;
       }
 
-      block.style.display = "block";
-
+      show(block);
       const card = savedCardState.card;
 
-      if (summary) {
-        summary.textContent = (card && card.last4)
+      setText(
+        summary,
+        card?.last4
           ? `Carte enregistrée : ${card.brand || "carte"} •••• ${card.last4} (exp. ${card.exp_month}/${card.exp_year})`
-          : "Aucune carte enregistrée pour le moment.";
-      }
+          : "Aucune carte enregistrée pour le moment."
+      );
 
       if (payToggle) {
         payToggle.disabled = !(card && card.last4);
@@ -1405,7 +1303,6 @@
     async function loadSavedCardStateFromMe() {
       const data = await fetchMeData();
       if (!data) return;
-
       const payment = data.payment || {};
       savedCardState.card = payment.card || null;
       savedCardState.defaultPaymentMethodId = payment.default_payment_method_id || null;
@@ -1427,104 +1324,38 @@
     }
 
     function buildBillingDetails() {
-      const firstName = (getEl("prenom")?.value || "").trim();
-      const lastName = (getEl("nom")?.value || "").trim();
-      const email = (getEl("email")?.value || "").trim();
-
       return {
-        name: `${firstName} ${lastName}`.trim(),
-        email
-      };
-    }
-
-    function getSaveCardUi() {
-      return {
-        msg: getEl("save-card-msg"),
-        btn: getEl("save-card-btn"),
-        payToggle: getEl("pay-with-saved-card")
+        name: `${(getEl("prenom")?.value || "").trim()} ${(getEl("nom")?.value || "").trim()}`.trim(),
+        email: (getEl("email")?.value || "").trim()
       };
     }
 
     function setSaveCardMessage(msgEl, text) {
-      if (msgEl) msgEl.textContent = text;
-    }
-
-    function prepareSaveCardFlow(btn, payToggle) {
-      if (payToggle) payToggle.checked = false;
-      setCardElementHidden(false);
-      if (btn) btn.disabled = true;
-    }
-
-    function canStartSaveCard(msgEl) {
-      if (!getToken()) {
-        setSaveCardMessage(msgEl, "Connectez-vous pour enregistrer une carte.");
-        return false;
-      }
-
-      if (!stripe || !cardElement) {
-        setSaveCardMessage(msgEl, "Stripe n’est pas initialisé.");
-        return false;
-      }
-
-      return true;
-    }
-
-    async function requestSetupIntent() {
-      return apiFetch(
-        "/api/create-setup-intent",
-        { method: "POST" },
-        { auth: true, ctx: "POST /api/create-setup-intent" }
-      );
-    }
-
-    async function confirmCardSetupIntent(clientSecret) {
-      return stripe.confirmCardSetup(clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: buildBillingDetails()
-        }
-      });
-    }
-
-    async function setDefaultPaymentMethod(paymentMethodId) {
-      return apiFetch(
-        "/api/set-default-payment-method",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ paymentMethodId })
-        },
-        { auth: true, ctx: "POST /api/set-default-payment-method" }
-      );
-    }
-
-    async function refreshSavedCardAfterSetup() {
-      savedCardState.card = null;
-      meDataCache = null;
-      await loadSavedCardStateFromMe();
-      await refreshPaymentMethods();
-      renderSavedCardUI();
-    }
-
-    function finalizeSaveCardSuccess(msgEl, payToggle) {
-      setSaveCardMessage(msgEl, "Carte enregistrée ✔️");
-
-      if (payToggle && !payToggle.disabled) {
-        payToggle.checked = true;
-        syncSavedCardToggleState();
-      }
+      setText(msgEl, text);
     }
 
     async function handleSaveCard() {
-      const { msg, btn, payToggle } = getSaveCardUi();
+      const msg = getEl("save-card-msg");
+      const btn = getEl("save-card-btn");
+      const payToggle = getEl("pay-with-saved-card");
 
-      if (!canStartSaveCard(msg)) return;
+      if (!getToken()) {
+        setSaveCardMessage(msg, "Connectez-vous pour enregistrer une carte.");
+        return;
+      }
+
+      if (!stripe || !cardElement) {
+        setSaveCardMessage(msg, "Stripe n’est pas initialisé.");
+        return;
+      }
 
       try {
-        prepareSaveCardFlow(btn, payToggle);
+        if (payToggle) payToggle.checked = false;
+        setCardElementHidden(false);
+        if (btn) btn.disabled = true;
         setSaveCardMessage(msg, "Préparation de l’enregistrement…");
 
-        const si = await requestSetupIntent();
+        const si = await apiFetch("/api/create-setup-intent", { method: "POST" }, { auth: true, ctx: "POST /api/create-setup-intent" });
         const clientSecret = si?.data?.clientSecret;
 
         if (!si.ok || !clientSecret) {
@@ -1532,15 +1363,19 @@
           return;
         }
 
-        const setupRes = await confirmCardSetupIntent(clientSecret);
+        const setupRes = await stripe.confirmCardSetup(clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: buildBillingDetails()
+          }
+        });
 
         if (setupRes.error) {
           setSaveCardMessage(msg, setupRes.error.message || "Erreur lors de l’enregistrement de la carte.");
           return;
         }
 
-        const paymentMethodId = setupRes.setupIntent && setupRes.setupIntent.payment_method;
-
+        const paymentMethodId = setupRes.setupIntent?.payment_method;
         if (!paymentMethodId) {
           setSaveCardMessage(msg, "Enregistrement incomplet (payment_method manquant).");
           return;
@@ -1548,15 +1383,32 @@
 
         setSaveCardMessage(msg, "Finalisation…");
 
-        const sd = await setDefaultPaymentMethod(paymentMethodId);
+        const sd = await apiFetch(
+          "/api/set-default-payment-method",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ paymentMethodId })
+          },
+          { auth: true, ctx: "POST /api/set-default-payment-method" }
+        );
 
         if (!sd.ok) {
           setSaveCardMessage(msg, "Carte enregistrée, mais impossible de la définir par défaut.");
           return;
         }
 
-        await refreshSavedCardAfterSetup();
-        finalizeSaveCardSuccess(msg, payToggle);
+        savedCardState.card = null;
+        meDataCache = null;
+        await loadSavedCardStateFromMe();
+        await refreshPaymentMethods();
+        renderSavedCardUI();
+        setSaveCardMessage(msg, "Carte enregistrée ✔️");
+
+        if (payToggle && !payToggle.disabled) {
+          payToggle.checked = true;
+          syncSavedCardToggleState();
+        }
       } catch (e) {
         setSaveCardMessage(msg, "Erreur : " + (e?.message || "inconnue"));
       } finally {
@@ -1565,28 +1417,26 @@
     }
 
     function sanitizeTextValue(value, maxLen = 160) {
-      const safe = String(value || "").trim();
-      return safe.slice(0, maxLen);
+      return String(value || "").trim().slice(0, maxLen);
     }
 
     function getCheckoutInfoFromForm() {
       return {
-        prenom: sanitizeTextValue(getEl("prenom")?.value || "", 80),
-        nom: sanitizeTextValue(getEl("nom")?.value || "", 80),
+        prenom: sanitizeTextValue(getEl("prenom")?.value, 80),
+        nom: sanitizeTextValue(getEl("nom")?.value, 80),
         pays: sanitizeTextValue(getEl("pays")?.value || "FR", 20),
-        adresse: sanitizeTextValue(getEl("adresse")?.value || "", 160),
-        complement: sanitizeTextValue(getEl("complement")?.value || "", 160),
-        cp: sanitizeTextValue(getEl("cp")?.value || "", 20),
-        ville: sanitizeTextValue(getEl("ville")?.value || "", 80),
-        telephone: sanitizeTextValue(getEl("telephone")?.value || "", 40),
-        email: sanitizeTextValue(getEl("email")?.value || "", 160).toLowerCase(),
-        naissance: sanitizeTextValue(getEl("naissance")?.value || "", 20)
+        adresse: sanitizeTextValue(getEl("adresse")?.value, 160),
+        complement: sanitizeTextValue(getEl("complement")?.value, 160),
+        cp: sanitizeTextValue(getEl("cp")?.value, 20),
+        ville: sanitizeTextValue(getEl("ville")?.value, 80),
+        telephone: sanitizeTextValue(getEl("telephone")?.value, 40),
+        email: sanitizeTextValue(getEl("email")?.value, 160).toLowerCase(),
+        naissance: sanitizeTextValue(getEl("naissance")?.value, 20)
       };
     }
 
     function getCheckoutInfoForLocalStorage() {
       const info = getCheckoutInfoFromForm();
-
       return {
         prenom: info.prenom,
         nom: info.nom,
@@ -1602,11 +1452,9 @@
 
     function fillCheckoutForm(info) {
       if (!info) return;
-
       const set = (id, val) => {
         const el = getEl(id);
-        if (!el || val === undefined || val === null) return;
-        el.value = val;
+        if (el && val !== undefined && val !== null) el.value = val;
       };
 
       set("prenom", info.prenom);
@@ -1617,9 +1465,7 @@
       set("ville", info.ville);
       set("telephone", info.telephone);
       set("email", info.email);
-
-      const paysEl = getEl("pays");
-      if (paysEl && info.pays) paysEl.value = info.pays;
+      if (getEl("pays") && info.pays) getEl("pays").value = info.pays;
     }
 
     function loadCheckoutInfoLocal() {
@@ -1648,13 +1494,7 @@
 
     function saveCheckoutInfoLocal(info) {
       try {
-        localStorage.setItem(
-          CHECKOUT_INFO_KEY,
-          JSON.stringify({
-            savedAt: Date.now(),
-            data: info
-          })
-        );
+        localStorage.setItem(CHECKOUT_INFO_KEY, JSON.stringify({ savedAt: Date.now(), data: info }));
       } catch {}
     }
 
@@ -1663,9 +1503,7 @@
       if (!data) return;
 
       const profile = data.profile || {};
-
       isPrefilling = true;
-
       fillCheckoutForm({
         prenom: profile.prenom || "",
         nom: profile.nom || "",
@@ -1678,7 +1516,6 @@
         naissance: "",
         email: data.email || ""
       });
-
       isPrefilling = false;
       saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
     }
@@ -1690,20 +1527,14 @@
 
       function scheduleLocalSave() {
         if (isPrefilling) return;
-
         clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => {
-          saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
-        }, 400);
+        saveTimer = setTimeout(() => saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage()), 400);
       }
 
       async function saveProfileToBackendNow() {
-        const token = getToken();
-        if (!token) return;
+        if (!getToken()) return;
 
-        const payload = getCheckoutInfoFromForm();
-        const payloadStr = JSON.stringify(payload);
-
+        const payloadStr = JSON.stringify(getCheckoutInfoFromForm());
         if (payloadStr === lastDbPayload) return;
 
         const r = await apiFetch(
@@ -1716,11 +1547,8 @@
           { auth: true, ctx: "POST /api/me (autosave)", timeoutMs: 6000 }
         );
 
-        if (r.ok) {
-          lastDbPayload = payloadStr;
-        } else {
-          console.warn("Autosave profil échoué:", r.status, r.data);
-        }
+        if (r.ok) lastDbPayload = payloadStr;
+        else console.warn("Autosave profil échoué:", r.status, r.data);
       }
 
       function saveProfileToBackendDebounced() {
@@ -1729,16 +1557,13 @@
         saveDbTimer = setTimeout(saveProfileToBackendNow, 1200);
       }
 
-      [
-        "prenom", "nom", "pays", "adresse", "complement", "cp", "ville", "telephone", "email", "naissance"
-      ].forEach((id) => {
+      ["prenom", "nom", "pays", "adresse", "complement", "cp", "ville", "telephone", "email", "naissance"].forEach((id) => {
         const el = getEl(id);
         if (!el) return;
-
-        el.addEventListener("input", scheduleLocalSave);
-        el.addEventListener("change", scheduleLocalSave);
-        el.addEventListener("input", saveProfileToBackendDebounced);
-        el.addEventListener("change", saveProfileToBackendDebounced);
+        ["input", "change"].forEach((evt) => {
+          el.addEventListener(evt, scheduleLocalSave);
+          el.addEventListener(evt, saveProfileToBackendDebounced);
+        });
         el.addEventListener("blur", saveProfileToBackendDebounced);
       });
     }
@@ -1752,38 +1577,46 @@
         { auth: true, ctx: "GET /api/account/gamification (payment singcoins)", timeoutMs: 7000 }
       );
 
-      if (!r.ok || !r.data) return null;
-
-      return Number(r.data?.singcoins?.balance || 0);
+      return r.ok && r.data ? Number(r.data?.singcoins?.balance || 0) : null;
     }
 
-    function renderSingcoinsLoggedOut(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
-      singcoinsBalanceEl.textContent = "0";
-      singcoinsMsg.style.color = "#FECACA";
-      singcoinsMsg.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
-      useSingcoinsBtn.style.display = "none";
+    function renderSingcoinsLoggedOut(balanceEl, btn, msgEl) {
+      setText(balanceEl, "0");
+      if (msgEl) {
+        msgEl.style.color = "#FECACA";
+        msgEl.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
+      }
+      if (btn) btn.style.display = "none";
     }
 
-    function renderSingcoinsUnavailable(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
-      singcoinsBalanceEl.textContent = "0";
-      useSingcoinsBtn.style.display = "none";
-      singcoinsMsg.style.color = "#FECACA";
-      singcoinsMsg.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
+    function renderSingcoinsUnavailable(balanceEl, btn, msgEl) {
+      setText(balanceEl, "0");
+      if (btn) btn.style.display = "none";
+      if (msgEl) {
+        msgEl.style.color = "#FECACA";
+        msgEl.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
+      }
     }
 
-    function renderSingcoinsReady(points, singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg) {
-      singcoinsBalanceEl.textContent = String(points);
+    function renderSingcoinsReady(points, balanceEl, btn, msgEl) {
+      setText(balanceEl, String(points));
 
       if (points >= SINGCOINS_COST) {
-        useSingcoinsBtn.style.display = "block";
-        useSingcoinsBtn.disabled = false;
-        useSingcoinsBtn.textContent = singcoinsUsed ? "Retirer les Singcoins" : "Utiliser 100 Singcoins";
-        singcoinsMsg.style.color = "#D1FAE5";
-        singcoinsMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
+        if (btn) {
+          btn.style.display = "block";
+          btn.disabled = false;
+          btn.textContent = singcoinsUsed ? "Retirer les Singcoins" : "Utiliser 100 Singcoins";
+        }
+        if (msgEl) {
+          msgEl.style.color = "#D1FAE5";
+          msgEl.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
+        }
       } else {
-        useSingcoinsBtn.style.display = "none";
-        singcoinsMsg.style.color = "#CBD5E1";
-        singcoinsMsg.textContent = `Il vous manque encore ${Math.max(0, SINGCOINS_COST - points)} Singcoins.`;
+        if (btn) btn.style.display = "none";
+        if (msgEl) {
+          msgEl.style.color = "#CBD5E1";
+          msgEl.textContent = `Il vous manque encore ${Math.max(0, SINGCOINS_COST - points)} Singcoins.`;
+        }
       }
     }
 
@@ -1799,11 +1632,7 @@
         promoInput.value = "";
         promoInput.disabled = true;
       }
-
-      if (promoBtn) {
-        promoBtn.disabled = true;
-      }
-
+      if (promoBtn) promoBtn.disabled = true;
       if (promoMsg) {
         promoMsg.classList.remove("ok", "error");
         promoMsg.textContent = "Le code promo est désactivé pendant l’utilisation des Singcoins.";
@@ -1818,32 +1647,28 @@
 
       if (promoInput) {
         promoInput.disabled = false;
-        if (chestPromo && !promoInput.value.trim()) {
-          promoInput.value = chestPromo;
-        }
+        if (chestPromo && !promoInput.value.trim()) promoInput.value = chestPromo;
       }
-
       if (promoBtn) promoBtn.disabled = false;
       if (promoMsg) promoMsg.textContent = "";
     }
 
-    function bindSingcoinsButton(useSingcoinsBtn, singcoinsBalanceEl, singcoinsMsg) {
-      if (useSingcoinsBtn.dataset.bound === "true") return;
+    function bindSingcoinsButton(btn, balanceEl, msgEl) {
+      if (btn.dataset.bound === "true") return;
 
-      useSingcoinsBtn.addEventListener("click", () => {
-        singcoinsMsg.textContent = "";
+      btn.addEventListener("click", () => {
+        msgEl.textContent = "";
 
         if (!getToken()) {
-          singcoinsMsg.style.color = "#FECACA";
-          singcoinsMsg.textContent = "Connectez-vous pour utiliser vos Singcoins.";
+          msgEl.style.color = "#FECACA";
+          msgEl.textContent = "Connectez-vous pour utiliser vos Singcoins.";
           return;
         }
 
-        const currentPoints = Number.parseInt(singcoinsBalanceEl.textContent || "0", 10);
-
+        const currentPoints = Number.parseInt(balanceEl.textContent || "0", 10);
         if (currentPoints < SINGCOINS_COST) {
-          singcoinsMsg.style.color = "#FECACA";
-          singcoinsMsg.textContent = "Vous n'avez pas encore assez de Singcoins.";
+          msgEl.style.color = "#FECACA";
+          msgEl.textContent = "Vous n'avez pas encore assez de Singcoins.";
           return;
         }
 
@@ -1851,47 +1676,43 @@
 
         if (singcoinsUsed) {
           disablePromoBecauseOfSingcoins();
-          singcoinsMsg.style.color = "#D1FAE5";
-          singcoinsMsg.textContent =
-            "🎉 Singcoins activés : 2 participants seront offerts sur la première séance du panier.";
-          useSingcoinsBtn.textContent = "Retirer les Singcoins";
+          msgEl.style.color = "#D1FAE5";
+          msgEl.textContent = "🎉 Singcoins activés : 2 participants seront offerts sur la première séance du panier.";
+          btn.textContent = "Retirer les Singcoins";
         } else {
           enablePromoAfterSingcoinsRemoval();
-          singcoinsMsg.style.color = "#CBD5E1";
-          singcoinsMsg.textContent = "Utilisation des Singcoins retirée.";
-          useSingcoinsBtn.textContent = "Utiliser 100 Singcoins";
+          msgEl.style.color = "#CBD5E1";
+          msgEl.textContent = "Utilisation des Singcoins retirée.";
+          btn.textContent = "Utiliser 100 Singcoins";
         }
 
         updateOrderSummaryFromPanier();
       });
 
-      useSingcoinsBtn.dataset.bound = "true";
+      btn.dataset.bound = "true";
     }
 
     async function initSingcoins() {
-      const singcoinsBlock = getEl("singcoins-block");
-      const singcoinsBalanceEl = getEl("singcoins-balance");
-      const useSingcoinsBtn = getEl("use-singcoins-btn");
-      const singcoinsMsg = getEl("singcoins-msg");
+      const block = getEl("singcoins-block");
+      const balanceEl = getEl("singcoins-balance");
+      const btn = getEl("use-singcoins-btn");
+      const msgEl = getEl("singcoins-msg");
+      if (!block || !balanceEl || !btn || !msgEl) return;
 
-      if (!singcoinsBlock || !singcoinsBalanceEl || !useSingcoinsBtn || !singcoinsMsg) return;
-
-      singcoinsBlock.style.display = "block";
-
+      show(block);
       if (!getToken()) {
-        renderSingcoinsLoggedOut(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
+        renderSingcoinsLoggedOut(balanceEl, btn, msgEl);
         return;
       }
 
       const points = await fetchUserSingcoins();
-
       if (points === null) {
-        renderSingcoinsUnavailable(singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
+        renderSingcoinsUnavailable(balanceEl, btn, msgEl);
         return;
       }
 
-      renderSingcoinsReady(points, singcoinsBalanceEl, useSingcoinsBtn, singcoinsMsg);
-      bindSingcoinsButton(useSingcoinsBtn, singcoinsBalanceEl, singcoinsMsg);
+      renderSingcoinsReady(points, balanceEl, btn, msgEl);
+      bindSingcoinsButton(btn, balanceEl, msgEl);
     }
 
     function initStripeCard() {
@@ -1925,17 +1746,12 @@
             fontSmoothing: "antialiased",
             "::placeholder": { color: "#CBD5E1" }
           },
-          invalid: {
-            color: "#FECACA"
-          }
+          invalid: { color: "#FECACA" }
         }
       });
 
       cardElement.mount("#card-element");
-      cardElement.on("change", (event) => {
-        const displayError = getEl("card-errors");
-        if (displayError) displayError.textContent = event.error ? event.error.message : "";
-      });
+      cardElement.on("change", (event) => setText(getEl("card-errors"), event.error ? event.error.message : ""));
     }
 
     async function fetchPromoByCode(code) {
@@ -1944,29 +1760,19 @@
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            code,
-            panier: getPanier()
-          })
+          body: JSON.stringify({ code, panier: getPanier() })
         },
         { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
       );
 
       if (!result.ok) {
-        return {
-          errorMessage: result.data?.error || "Erreur lors de la vérification du code."
-        };
+        return { errorMessage: result.data?.error || "Erreur lors de la vérification du code." };
       }
-
       if (!result.data?.valid || !result.data?.promo) {
-        return {
-          errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable."
-        };
+        return { errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable." };
       }
 
-      return {
-        promo: result.data.promo
-      };
+      return { promo: result.data.promo };
     }
 
     function clearPromo() {
@@ -1978,10 +1784,8 @@
     function setPromoMessage(message, type = "") {
       const promoMsg = getEl("promo-message");
       if (!promoMsg) return;
-
       promoMsg.classList.remove("ok", "error");
       promoMsg.textContent = message;
-
       if (type) promoMsg.classList.add(type);
     }
 
@@ -1995,7 +1799,6 @@
       }
 
       const code = promoInput.value.trim().toUpperCase();
-
       if (!code) {
         clearPromo();
         setPromoMessage(silent ? "" : "Saisissez un code promo.", silent ? "" : "error");
@@ -2003,7 +1806,6 @@
       }
 
       setPromoMessage("Vérification du code...");
-
       const result = await fetchPromoByCode(code);
 
       if (result.errorMessage) {
@@ -2039,9 +1841,7 @@
         });
       }
 
-      if (promoBtn) {
-        promoBtn.addEventListener("click", () => applyPromoCode(false));
-      }
+      promoBtn?.addEventListener("click", () => applyPromoCode(false));
 
       if (promoInput) {
         promoInput.addEventListener("keydown", (e) => {
@@ -2051,9 +1851,7 @@
           }
         });
 
-        const stored = localStorage.getItem("promoCode");
-        const initialPromo = chestPromo || stored || "";
-
+        const initialPromo = chestPromo || localStorage.getItem("promoCode") || "";
         if (initialPromo) {
           promoInput.value = initialPromo;
           if (promoBody && !promoBody.classList.contains("open")) {
@@ -2067,13 +1865,13 @@
 
     function buildThankYouPayload(reservationId) {
       const panierBeforeClear = getPanier();
-      const firstItem = panierBeforeClear.length > 0 ? panierBeforeClear[0] : null;
+      const firstItem = panierBeforeClear[0] || null;
       const { hourText } = buildOrderMeta(firstItem);
 
       return {
         reservationId: reservationId || "",
         prenom: (getEl("prenom")?.value || "").trim(),
-        date: firstItem && firstItem.date ? formatDateFr(firstItem.date) : "-",
+        date: firstItem?.date ? formatDateFr(firstItem.date) : "-",
         time: hourText || "-",
         box: getDisplayBoxName(firstItem),
         total: formatMoney(currentTotals.finalTotalTTC || 0),
@@ -2096,22 +1894,21 @@
 
     function getCustomerPayload(includeSaveCheckoutInfo = false) {
       const payload = {
-        prenom: getEl("prenom")?.value.trim() || "",
-        nom: getEl("nom")?.value.trim() || "",
-        email: getEl("email")?.value.trim() || "",
-        telephone: getEl("telephone")?.value.trim() || "",
+        prenom: (getEl("prenom")?.value || "").trim(),
+        nom: (getEl("nom")?.value || "").trim(),
+        email: (getEl("email")?.value || "").trim(),
+        telephone: (getEl("telephone")?.value || "").trim(),
         pays: getEl("pays")?.value || "FR",
-        adresse: getEl("adresse")?.value.trim() || "",
-        complement: getEl("complement")?.value.trim() || "",
-        cp: getEl("cp")?.value.trim() || "",
-        ville: getEl("ville")?.value.trim() || "",
+        adresse: (getEl("adresse")?.value || "").trim(),
+        complement: (getEl("complement")?.value || "").trim(),
+        cp: (getEl("cp")?.value || "").trim(),
+        ville: (getEl("ville")?.value || "").trim(),
         naissance: getEl("naissance")?.value || "",
         singcoins_points_spent: singcoinsUsed ? SINGCOINS_COST : 0,
         loyalty_points_spent: singcoinsUsed ? SINGCOINS_COST : 0
       };
 
       if (includeSaveCheckoutInfo) payload.save_checkout_info = true;
-
       return payload;
     }
 
@@ -2125,11 +1922,9 @@
         singcoinsUsed,
         singcoinsPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
         singcoinsDiscountAmount: currentTotals.singcoinsDiscount || 0,
-
         loyaltyUsed: singcoinsUsed,
         loyaltyPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
         loyaltyDiscountAmount: currentTotals.singcoinsDiscount || 0,
-
         isFree: Boolean(isFree),
         chestReward: chestContext?.chestReward || null,
         rewardType: chestContext?.rewardType || null,
@@ -2149,153 +1944,95 @@
         { auth: false, ctx: "POST /api/confirm-reservation", timeoutMs: 15000 }
       );
 
-      if (!confirmRes.ok) {
-        throw new Error(confirmRes.data?.error || "Impossible de confirmer la réservation.");
-      }
+      if (!confirmRes.ok) throw new Error(confirmRes.data?.error || "Impossible de confirmer la réservation.");
 
       const reservations = Array.isArray(confirmRes.data?.reservations) ? confirmRes.data.reservations : [];
       const reservationId = reservations[0]?.id || null;
-
-      if (!reservationId) {
-        throw new Error("Réservation créée mais identifiant introuvable.");
-      }
+      if (!reservationId) throw new Error("Réservation créée mais identifiant introuvable.");
 
       return reservationId;
     }
 
     function getSavedPaymentMethodId() {
-      return savedCardState?.defaultPaymentMethodId ||
-        (savedCardState?.card && savedCardState.card.id) ||
-        null;
+      return savedCardState?.defaultPaymentMethodId || savedCardState?.card?.id || null;
     }
 
     function getDepositFailureMessagePrefix(isFree) {
-      return isFree
-        ? "Votre réservation est confirmée"
-        : "Votre séance est payée";
-    }
-
-    function setDepositErrorMessage(errorEl, text) {
-      if (errorEl) {
-        errorEl.textContent = text;
-      }
-    }
-
-    async function createDepositIntentRequest(reservationId) {
-      return apiFetch(
-        "/api/create-deposit-intent",
-        {
-          method: "POST",
-          headers: authHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({
-            reservationId,
-            useSavedPaymentMethod: Boolean(lastPayWithSaved),
-            customer: {
-              prenom: getEl("prenom")?.value.trim() || "",
-              nom: getEl("nom")?.value.trim() || "",
-              email: getEl("email")?.value.trim() || ""
-            }
-          })
-        },
-        { auth: false, ctx: "POST /api/create-deposit-intent", timeoutMs: 12000 }
-      );
-    }
-
-    async function parseDepositIntentResponse(reservationId, isFree, errorEl) {
-      const depositRes = await createDepositIntentRequest(reservationId);
-
-      if (!depositRes.ok || !depositRes.data?.clientSecret) {
-        setDepositErrorMessage(
-          errorEl,
-          `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com.`
-        );
-        return null;
-      }
-
-      return depositRes.data.clientSecret;
-    }
-
-    function normalizeSavedCardPaymentMethod() {
-      let paymentMethodId = getSavedPaymentMethodId();
-
-      if (lastPayWithSaved && !paymentMethodId) {
-        lastPayWithSaved = false;
-        const toggle = getEl("pay-with-saved-card");
-        if (toggle) toggle.checked = false;
-        setCardElementHidden(false);
-      }
-
-      return paymentMethodId;
-    }
-
-    async function confirmDepositWithSavedCard(clientSecret, paymentMethodId) {
-      return stripe.confirmCardPayment(clientSecret, {
-        payment_method: paymentMethodId
-      });
-    }
-
-    async function confirmDepositWithCardElement(clientSecret) {
-      return stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: buildBillingDetails()
-        }
-      });
-    }
-
-    async function confirmDepositPayment(clientSecret, paymentMethodId) {
-      if (lastPayWithSaved) {
-        return confirmDepositWithSavedCard(clientSecret, paymentMethodId);
-      }
-
-      return confirmDepositWithCardElement(clientSecret);
-    }
-
-    function handleDepositStripeError(depositResult, isFree, errorEl) {
-      if (!depositResult?.error) return;
-
-      setDepositErrorMessage(
-        errorEl,
-        `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être préautorisée : ${depositResult.error.message}. Merci de nous contacter à contactsingbox@gmail.com.`
-      );
-    }
-
-    function handleDepositUnexpectedError(isFree, errorEl) {
-      setDepositErrorMessage(
-        errorEl,
-        `${getDepositFailureMessagePrefix(isFree)}, mais une erreur est survenue lors de la création de la caution. Merci de nous contacter à contactsingbox@gmail.com.`
-      );
+      return isFree ? "Votre réservation est confirmée" : "Votre séance est payée";
     }
 
     async function confirmDepositIntent(reservationId, isFree, errorEl) {
       if (!reservationId || !stripe) return;
 
       try {
-        const clientSecret = await parseDepositIntentResponse(reservationId, isFree, errorEl);
-        if (!clientSecret) return;
+        const depositRes = await apiFetch(
+          "/api/create-deposit-intent",
+          {
+            method: "POST",
+            headers: authHeaders({ "Content-Type": "application/json" }),
+            body: JSON.stringify({
+              reservationId,
+              useSavedPaymentMethod: Boolean(lastPayWithSaved),
+              customer: {
+                prenom: (getEl("prenom")?.value || "").trim(),
+                nom: (getEl("nom")?.value || "").trim(),
+                email: (getEl("email")?.value || "").trim()
+              }
+            })
+          },
+          { auth: false, ctx: "POST /api/create-deposit-intent", timeoutMs: 12000 }
+        );
 
-        const paymentMethodId = normalizeSavedCardPaymentMethod();
-        const depositResult = await confirmDepositPayment(clientSecret, paymentMethodId);
+        if (!depositRes.ok || !depositRes.data?.clientSecret) {
+          setText(
+            errorEl,
+            `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être créée. Merci de nous contacter à contactsingbox@gmail.com.`
+          );
+          return;
+        }
 
-        handleDepositStripeError(depositResult, isFree, errorEl);
+        let paymentMethodId = getSavedPaymentMethodId();
+        if (lastPayWithSaved && !paymentMethodId) {
+          lastPayWithSaved = false;
+          const toggle = getEl("pay-with-saved-card");
+          if (toggle) toggle.checked = false;
+          setCardElementHidden(false);
+        }
+
+        const depositResult = await stripe.confirmCardPayment(
+          depositRes.data.clientSecret,
+          lastPayWithSaved
+            ? { payment_method: paymentMethodId }
+            : {
+                payment_method: {
+                  card: cardElement,
+                  billing_details: buildBillingDetails()
+                }
+              }
+        );
+
+        if (depositResult?.error) {
+          setText(
+            errorEl,
+            `${getDepositFailureMessagePrefix(isFree)}, mais la caution de 250€ n'a pas pu être préautorisée : ${depositResult.error.message}. Merci de nous contacter à contactsingbox@gmail.com.`
+          );
+        }
       } catch (error) {
         console.error("Erreur confirmDepositIntent :", error);
-        handleDepositUnexpectedError(isFree, errorEl);
+        setText(
+          errorEl,
+          `${getDepositFailureMessagePrefix(isFree)}, mais une erreur est survenue lors de la création de la caution. Merci de nous contacter à contactsingbox@gmail.com.`
+        );
       }
     }
 
     async function saveNewsletterOptin() {
       const newsletterCheckbox = getEl("newsletter-optin");
-      const email = getEl("email")?.value.trim() || "";
-
-      if (!newsletterCheckbox || !newsletterCheckbox.checked || !globalThis.__SINGBOX_SUPABASE_CLIENT__ || !email) {
-        return;
-      }
+      const email = (getEl("email")?.value || "").trim();
+      if (!newsletterCheckbox?.checked || !globalThis.__SINGBOX_SUPABASE_CLIENT__ || !email) return;
 
       try {
-        await globalThis.__SINGBOX_SUPABASE_CLIENT__
-          .from("newsletter_subscriptions")
-          .insert({ email });
+        await globalThis.__SINGBOX_SUPABASE_CLIENT__.from("newsletter_subscriptions").insert({ email });
       } catch {}
     }
 
@@ -2312,13 +2049,10 @@
 
     async function processReservationAndDeposit({ isFree, paymentIntentId, errorEl }) {
       const reservationId = await confirmReservation(isFree, paymentIntentId);
-
       await confirmDepositIntent(reservationId, isFree, errorEl);
       await saveNewsletterOptin();
 
-      const thankYouPayload = buildThankYouPayload(reservationId);
-      saveThankYouData(thankYouPayload);
-
+      saveThankYouData(buildThankYouPayload(reservationId));
       cleanupAfterReservation();
       redirectToThankYouPage();
     }
@@ -2330,142 +2064,97 @@
     function hasStripeReadyForPayment(payWithSavedChecked) {
       if (isFreeCheckoutFlow()) return true;
       if (!stripe) return false;
-      if (payWithSavedChecked) return true;
-      return Boolean(cardElement);
+      return payWithSavedChecked || Boolean(cardElement);
     }
 
     function setCheckoutError(message) {
-      const errorEl = getEl("checkout-error");
-      if (errorEl) errorEl.textContent = message;
+      setText(getEl("checkout-error"), message);
       return false;
     }
 
-    function validatePanierForCheckout(panier) {
-      if (!panier || panier.length === 0) {
-        return setCheckoutError("Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.");
-      }
+    function validateCheckoutBeforePayment() {
+      const panier = getPanier();
+      if (!panier.length) return setCheckoutError("Votre panier est vide. Ajoutez des créneaux depuis la page Réservation.");
+      if (!cartValid) return setCheckoutError("Erreur panier. Revenez au panier et recommencez.");
 
-      if (!cartValid) {
-        return setCheckoutError("Erreur panier. Revenez au panier et recommencez.");
-      }
-
-      return true;
-    }
-
-    function validateBillingFormPresenceAndFields() {
-      const billingForm = getEl("billing-form");
-      const requiredFields = ["prenom", "nom", "telephone", "email"];
-
-      if (!billingForm) return false;
-
-      for (const id of requiredFields) {
+      for (const id of ["prenom", "nom", "telephone", "email"]) {
         const field = getEl(id);
         if (!field || !field.value.trim()) {
-          if (field && typeof field.focus === "function") field.focus();
+          field?.focus();
           return setCheckoutError("Merci de compléter tous les champs obligatoires de facturation.");
         }
       }
 
-      const email = getEl("email")?.value.trim() || "";
+      const email = (getEl("email")?.value || "").trim();
       if (!isValidEmail(email)) {
         getEl("email")?.focus();
         return setCheckoutError("Merci de renseigner une adresse e-mail valide.");
       }
 
-      return true;
-    }
-
-    function validateRequiredConsent(id, message) {
-      const checkbox = getEl(id);
-      if (!checkbox || !checkbox.checked) {
-        return setCheckoutError(message);
+      if (!getEl("cgv-checkbox")?.checked) {
+        return setCheckoutError("Vous devez accepter les conditions générales de vente pour continuer.");
       }
-      return true;
-    }
 
-    function validateMajority() {
-      const majorityChecked = Boolean(getEl("majority-checkbox")?.checked);
-      if (!majorityChecked) {
+      if (!getEl("rules-checkbox")?.checked) {
+        return setCheckoutError("Merci de confirmer que vous respecterez les règles dans les box.");
+      }
+
+      if (!getEl("majority-checkbox")?.checked) {
         return setCheckoutError("Merci de certifier que vous êtes majeur(e) pour continuer.");
       }
 
       const birthdateValue = getEl("naissance")?.value || "";
-      if (!birthdateValue) return true;
-
-      const age = calculateAgeFromBirthdate(birthdateValue);
-      if (age !== null && age < 18) {
-        return setCheckoutError("La date de naissance renseignée indique une personne mineure. Merci de corriger ou de retirer ce champ.");
+      if (birthdateValue) {
+        const age = calculateAgeFromBirthdate(birthdateValue);
+        if (age !== null && age < 18) {
+          return setCheckoutError("La date de naissance renseignée indique une personne mineure. Merci de corriger ou de retirer ce champ.");
+        }
       }
-
-      return true;
-    }
-
-    function validateCheckoutBeforePayment() {
-      const panier = getPanier();
-
-      if (!validatePanierForCheckout(panier)) return false;
-      if (!validateBillingFormPresenceAndFields()) return false;
-      if (!validateRequiredConsent("cgv-checkbox", "Vous devez accepter les conditions générales de vente pour continuer.")) return false;
-      if (!validateRequiredConsent("rules-checkbox", "Merci de confirmer que vous respecterez les règles dans les box.")) return false;
-      if (!validateMajority()) return false;
 
       return true;
     }
 
     function resetFeedbackMessages() {
-      const errorEl = getEl("checkout-error");
-      const successEl = getEl("checkout-success");
-
-      if (errorEl) errorEl.textContent = "";
-      if (successEl) successEl.textContent = "";
+      setText(getEl("checkout-error"), "");
+      setText(getEl("checkout-success"), "");
     }
 
     function normalizeSavedCardChoice() {
       const toggle = getEl("pay-with-saved-card");
       const hasSavedCard = Boolean(savedCardState.card && savedCardState.card.last4);
-
       lastPayWithSaved = Boolean(toggle?.checked);
 
-      if (!lastPayWithSaved || hasSavedCard) return;
-
-      lastPayWithSaved = false;
-      if (toggle) toggle.checked = false;
-      setCardElementHidden(false);
+      if (lastPayWithSaved && !hasSavedCard) {
+        lastPayWithSaved = false;
+        if (toggle) toggle.checked = false;
+        setCardElementHidden(false);
+      }
     }
 
     async function createPaymentIntentRequest() {
-      const panier = getPanier();
-      const promoCode = currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null;
       const chestContext = getChestCheckoutContext();
-
-      const body = {
-        panier,
-        customer: getCustomerPayload(false),
-        promoCode,
-        singcoinsUsed,
-        singcoinsPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
-        singcoinsDiscountAmount: currentTotals.singcoinsDiscount || 0,
-
-        loyaltyUsed: singcoinsUsed,
-        loyaltyPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
-        loyaltyDiscountAmount: currentTotals.singcoinsDiscount || 0,
-
-        chestReward: chestContext?.chestReward || null,
-        rewardType: chestContext?.rewardType || null,
-        rewardValue: chestContext?.rewardValue || null,
-        referralCode: getStoredReferralCode() || null
-      };
-
-      if (lastPayWithSaved) {
-        body.useSavedPaymentMethod = true;
-      }
 
       return apiFetch(
         "/api/create-payment-intent",
         {
           method: "POST",
           headers: authHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify(body)
+          body: JSON.stringify({
+            panier: getPanier(),
+            customer: getCustomerPayload(false),
+            promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
+            singcoinsUsed,
+            singcoinsPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+            singcoinsDiscountAmount: currentTotals.singcoinsDiscount || 0,
+            loyaltyUsed: singcoinsUsed,
+            loyaltyPointsSpent: singcoinsUsed ? SINGCOINS_COST : 0,
+            loyaltyDiscountAmount: currentTotals.singcoinsDiscount || 0,
+            chestReward: chestContext?.chestReward || null,
+            rewardType: chestContext?.rewardType || null,
+            rewardValue: chestContext?.rewardValue || null,
+            referralCode: getStoredReferralCode() || null,
+            ...(lastPayWithSaved ? { useSavedPaymentMethod: true } : {})
+          })
         },
         { auth: false, ctx: "POST /api/create-payment-intent", timeoutMs: 15000 }
       );
@@ -2473,40 +2162,33 @@
 
     async function confirmSavedCardPayment(clientSecret, errorEl, successEl) {
       const pmId = getSavedPaymentMethodId();
-
       if (!pmId) {
         lastPayWithSaved = false;
         const toggle = getEl("pay-with-saved-card");
         if (toggle) toggle.checked = false;
         setCardElementHidden(false);
-
-        if (errorEl) {
-          errorEl.textContent = "Aucune carte enregistrée détectée. Merci de saisir votre carte.";
-        }
+        setText(errorEl, "Aucune carte enregistrée détectée. Merci de saisir votre carte.");
         return null;
       }
 
-      const actionRes = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: pmId
-      });
-
+      const actionRes = await stripe.confirmCardPayment(clientSecret, { payment_method: pmId });
       if (actionRes.error) {
-        if (errorEl) errorEl.textContent = actionRes.error.message;
+        setText(errorEl, actionRes.error.message);
         return null;
       }
 
-      if (actionRes.paymentIntent && actionRes.paymentIntent.status === "succeeded") {
-        if (successEl) successEl.textContent = "Paiement accepté ✔️";
+      if (actionRes.paymentIntent?.status === "succeeded") {
+        setText(successEl, "Paiement accepté ✔️");
         return actionRes.paymentIntent.id;
       }
 
-      if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+      setText(errorEl, "Paiement non finalisé. Merci de réessayer.");
       return null;
     }
 
     async function confirmStandardCardPayment(clientSecret, errorEl, successEl) {
       if (!cardElement) {
-        if (errorEl) errorEl.textContent = "Merci de saisir une carte (aucun champ carte détecté).";
+        setText(errorEl, "Merci de saisir une carte (aucun champ carte détecté).");
         return null;
       }
 
@@ -2518,118 +2200,81 @@
       });
 
       if (result.error) {
-        if (errorEl) errorEl.textContent = result.error.message;
+        setText(errorEl, result.error.message);
         return null;
       }
 
-      if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
-        if (successEl) successEl.textContent = "Paiement accepté ✔️";
+      if (result.paymentIntent?.status === "succeeded") {
+        setText(successEl, "Paiement accepté ✔️");
         return result.paymentIntent.id;
       }
 
-      if (errorEl) errorEl.textContent = "Paiement non finalisé. Merci de réessayer.";
+      setText(errorEl, "Paiement non finalisé. Merci de réessayer.");
       return null;
     }
 
-    function getCheckoutSubmitContext() {
-      return {
-        submitBtn: getEl("checkout-submit-btn"),
-        errorEl: getEl("checkout-error"),
-        successEl: getEl("checkout-success"),
-        payWithSavedChecked: Boolean(getEl("pay-with-saved-card")?.checked)
-      };
-    }
-
-    function prepareCheckoutSubmit(submitBtn) {
-      const originalLabel = submitBtn ? submitBtn.textContent : "Commander";
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Paiement en cours...";
-        submitBtn.setAttribute("aria-busy", "true");
-      }
-
-      return originalLabel;
-    }
-
-    function restoreCheckoutSubmit(submitBtn, originalLabel) {
-      if (!submitBtn) return;
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalLabel;
-      submitBtn.setAttribute("aria-busy", "false");
-    }
-
-    async function handleFreeCheckout(successEl, errorEl) {
-      if (successEl) successEl.textContent = "Réservation validée ✔️";
-      await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
-    }
-
-    async function handlePaidCheckout(clientSecret, errorEl, successEl) {
-      const paymentIntentId = lastPayWithSaved
-        ? await confirmSavedCardPayment(clientSecret, errorEl, successEl)
-        : await confirmStandardCardPayment(clientSecret, errorEl, successEl);
-
-      if (!paymentIntentId) return;
-
-      await processReservationAndDeposit({
-        isFree: false,
-        paymentIntentId,
-        errorEl
-      });
-    }
-
-    function ensureStripeReadyForSubmit(payWithSavedChecked, errorEl) {
-      if (hasStripeReadyForPayment(payWithSavedChecked)) return true;
-
-      if (errorEl) {
-        errorEl.textContent = "Erreur de paiement : Stripe n’est pas initialisé.";
-      }
-      return false;
-    }
-
     async function handleCheckoutSubmit() {
-      const { submitBtn, errorEl, successEl, payWithSavedChecked } = getCheckoutSubmitContext();
+      const submitBtn = getEl("checkout-submit-btn");
+      const errorEl = getEl("checkout-error");
+      const successEl = getEl("checkout-success");
+      const payWithSavedChecked = Boolean(getEl("pay-with-saved-card")?.checked);
 
       resetFeedbackMessages();
       updateOrderSummaryFromPanier();
       normalizeSavedCardChoice();
 
       if (!validateCheckoutBeforePayment()) return;
-      if (!ensureStripeReadyForSubmit(payWithSavedChecked, errorEl)) return;
+      if (!hasStripeReadyForPayment(payWithSavedChecked)) {
+        setText(errorEl, "Erreur de paiement : Stripe n’est pas initialisé.");
+        return;
+      }
 
-      const originalLabel = prepareCheckoutSubmit(submitBtn);
+      const originalLabel = submitBtn?.textContent || "Commander";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Paiement en cours...";
+        submitBtn.setAttribute("aria-busy", "true");
+      }
 
       try {
         const { ok, data } = await createPaymentIntentRequest();
 
         if (!ok) {
-          if (errorEl) errorEl.textContent = data?.error || "Erreur lors de la création du paiement.";
+          setText(errorEl, data?.error || "Erreur lors de la création du paiement.");
           return;
         }
 
         if (data?.isFree || Number(currentTotals.finalTotalTTC || 0) <= 0) {
-          await handleFreeCheckout(successEl, errorEl);
+          setText(successEl, "Réservation validée ✔️");
+          await processReservationAndDeposit({ isFree: true, paymentIntentId: null, errorEl });
           return;
         }
 
         if (!data?.clientSecret) {
-          if (errorEl) errorEl.textContent = "Réponse inattendue du serveur de paiement.";
+          setText(errorEl, "Réponse inattendue du serveur de paiement.");
           return;
         }
 
-        await handlePaidCheckout(data.clientSecret, errorEl, successEl);
+        const paymentIntentId = lastPayWithSaved
+          ? await confirmSavedCardPayment(data.clientSecret, errorEl, successEl)
+          : await confirmStandardCardPayment(data.clientSecret, errorEl, successEl);
+
+        if (!paymentIntentId) return;
+
+        await processReservationAndDeposit({ isFree: false, paymentIntentId, errorEl });
       } catch (err) {
-        if (errorEl) errorEl.textContent = "Erreur inattendue : " + (err?.message || "inconnue");
+        setText(errorEl, "Erreur inattendue : " + (err?.message || "inconnue"));
       } finally {
-        restoreCheckoutSubmit(submitBtn, originalLabel);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+          submitBtn.setAttribute("aria-busy", "false");
+        }
       }
     }
 
     function initCheckoutSubmit() {
-      const submitBtn = getEl("checkout-submit-btn");
-      if (!submitBtn) return;
-      submitBtn.addEventListener("click", handleCheckoutSubmit);
+      getEl("checkout-submit-btn")?.addEventListener("click", handleCheckoutSubmit);
     }
 
     function closeMobileNav(mobileNav, burgerBtn) {
@@ -2647,32 +2292,26 @@
     function initMobileMenu() {
       const burgerBtn = getEl("burger-button");
       const mobileNav = getEl("mobile-nav");
-
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.contains("open");
-        if (isOpen) {
-          closeMobileNav(mobileNav, burgerBtn);
-        } else {
-          openMobileNav(mobileNav, burgerBtn);
-        }
+        mobileNav.classList.contains("open")
+          ? closeMobileNav(mobileNav, burgerBtn)
+          : openMobileNav(mobileNav, burgerBtn);
       });
 
       mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
+        if (e.target instanceof HTMLElement && e.target.tagName === "A") {
           closeMobileNav(mobileNav, burgerBtn);
         }
       });
 
       document.addEventListener("click", (e) => {
-        const target = e.target;
         if (
           mobileNav.classList.contains("open") &&
-          target instanceof Node &&
-          !mobileNav.contains(target) &&
-          !burgerBtn.contains(target)
+          e.target instanceof Node &&
+          !mobileNav.contains(e.target) &&
+          !burgerBtn.contains(e.target)
         ) {
           closeMobileNav(mobileNav, burgerBtn);
         }
@@ -2688,28 +2327,19 @@
     function showAuthModal() {
       const modal = getEl("auth-modal");
       if (!modal) return;
-
-      if (typeof modal.showModal === "function" && !modal.open) {
-        modal.showModal();
-      } else {
-        modal.setAttribute("open", "open");
-      }
+      if (typeof modal.showModal === "function" && !modal.open) modal.showModal();
+      else modal.setAttribute("open", "open");
     }
 
     function hideAuthModal() {
       const modal = getEl("auth-modal");
       if (!modal) return;
-
-      if (typeof modal.close === "function" && modal.open) {
-        modal.close();
-      } else {
-        modal.removeAttribute("open");
-      }
+      if (typeof modal.close === "function" && modal.open) modal.close();
+      else modal.removeAttribute("open");
     }
 
     function clearAuthMessage() {
-      const msgEl = getEl("auth-modal-message");
-      if (msgEl) msgEl.textContent = "";
+      setText(getEl("auth-modal-message"), "");
     }
 
     function switchAuthTab(mode) {
@@ -2717,11 +2347,9 @@
       const btnRegisterTab = getEl("auth-btn-register");
       const loginForm = getEl("auth-login-form");
       const registerForm = getEl("auth-register-form");
-
       if (!btnLoginTab || !btnRegisterTab || !loginForm || !registerForm) return;
 
       const isLogin = mode === "login";
-
       btnLoginTab.classList.toggle("active", isLogin);
       btnRegisterTab.classList.toggle("active", !isLogin);
       btnLoginTab.setAttribute("aria-selected", isLogin ? "true" : "false");
@@ -2734,13 +2362,13 @@
     async function handleAuthLoginSubmit(e) {
       e.preventDefault();
       const msgEl = getEl("auth-modal-message");
-      const email = getEl("auth-login-email")?.value.trim() || "";
+      const email = (getEl("auth-login-email")?.value || "").trim();
       const password = getEl("auth-login-password")?.value || "";
 
       clearAuthMessage();
 
       if (!isValidEmail(email) || !password) {
-        if (msgEl) msgEl.textContent = "Merci de renseigner des identifiants valides.";
+        setText(msgEl, "Merci de renseigner des identifiants valides.");
         return;
       }
 
@@ -2755,7 +2383,7 @@
       );
 
       if (!res.ok) {
-        if (msgEl) msgEl.textContent = res.data?.error || "Erreur de connexion.";
+        setText(msgEl, res.data?.error || "Erreur de connexion.");
         return;
       }
 
@@ -2768,13 +2396,13 @@
     async function handleAuthRegisterSubmit(e) {
       e.preventDefault();
       const msgEl = getEl("auth-modal-message");
-      const email = getEl("auth-register-email")?.value.trim() || "";
+      const email = (getEl("auth-register-email")?.value || "").trim();
       const password = getEl("auth-register-password")?.value || "";
 
       clearAuthMessage();
 
       if (!isValidEmail(email) || !password || password.length < 8) {
-        if (msgEl) msgEl.textContent = "Merci de renseigner un email valide et un mot de passe d’au moins 8 caractères.";
+        setText(msgEl, "Merci de renseigner un email valide et un mot de passe d’au moins 8 caractères.");
         return;
       }
 
@@ -2789,7 +2417,7 @@
       );
 
       if (!registerRes.ok) {
-        if (msgEl) msgEl.textContent = registerRes.data?.error || "Erreur lors de la création du compte.";
+        setText(msgEl, registerRes.data?.error || "Erreur lors de la création du compte.");
         return;
       }
 
@@ -2811,9 +2439,7 @@
         return;
       }
 
-      if (msgEl) {
-        msgEl.textContent = "Compte créé, mais la connexion a échoué. Essayez via la connexion.";
-      }
+      setText(msgEl, "Compte créé, mais la connexion a échoué. Essayez via la connexion.");
     }
 
     function initAuthModal() {
@@ -2822,17 +2448,11 @@
 
       if (!getToken()) showAuthModal();
 
-      const btnLoginTab = getEl("auth-btn-login");
-      const btnRegisterTab = getEl("auth-btn-register");
-      const loginForm = getEl("auth-login-form");
-      const registerForm = getEl("auth-register-form");
-      const skipBtn = getEl("auth-modal-continue");
-
-      if (btnLoginTab) btnLoginTab.addEventListener("click", () => switchAuthTab("login"));
-      if (btnRegisterTab) btnRegisterTab.addEventListener("click", () => switchAuthTab("register"));
-      if (skipBtn) skipBtn.addEventListener("click", hideAuthModal);
-      if (loginForm) loginForm.addEventListener("submit", handleAuthLoginSubmit);
-      if (registerForm) registerForm.addEventListener("submit", handleAuthRegisterSubmit);
+      getEl("auth-btn-login")?.addEventListener("click", () => switchAuthTab("login"));
+      getEl("auth-btn-register")?.addEventListener("click", () => switchAuthTab("register"));
+      getEl("auth-modal-continue")?.addEventListener("click", hideAuthModal);
+      getEl("auth-login-form")?.addEventListener("submit", handleAuthLoginSubmit);
+      getEl("auth-register-form")?.addEventListener("submit", handleAuthRegisterSubmit);
 
       modal.addEventListener("cancel", (e) => {
         e.preventDefault();
@@ -2858,9 +2478,7 @@
 
     function waitForLayoutElements(timeoutMs = 1200) {
       return new Promise((resolve) => {
-        const hasElements = () =>
-          Boolean(getEl("site-header") && getEl("site-footer"));
-
+        const hasElements = () => Boolean(getEl("site-header") && getEl("site-footer"));
         if (hasElements()) {
           resolve();
           return;
@@ -2885,7 +2503,6 @@
     async function initPaymentPage() {
       initChestCheckoutContext();
       initReferralContext();
-
       initStripeCard();
       initCheckoutSubmit();
 
