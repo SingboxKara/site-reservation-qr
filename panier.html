@@ -63,14 +63,10 @@
 
   <style>
     body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
-    }
+    body.layout-loading #site-footer { visibility: hidden; }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
+    body.layout-ready #site-footer { visibility: visible; }
 
     .hero-panier {
       position: relative;
@@ -148,9 +144,7 @@
       color: #f9fafb;
     }
 
-    .cart-referral-banner.is-visible {
-      display: flex;
-    }
+    .cart-referral-banner.is-visible { display: flex; }
 
     .cart-referral-main {
       display: flex;
@@ -228,14 +222,15 @@
       color: #e5e7eb;
     }
 
+    .cart-server-message.is-error,
+    .cart-server-message.is-info { display: block; }
+
     .cart-server-message.is-error {
-      display: block;
       color: #fecaca;
       border-color: rgba(248, 113, 113, 0.35);
     }
 
     .cart-server-message.is-info {
-      display: block;
       color: #bfdbfe;
       border-color: rgba(96, 165, 250, 0.35);
     }
@@ -270,22 +265,10 @@
       font-size: 14px;
     }
 
-    .cart-date {
-      font-weight: 600;
-    }
-
-    .cart-box {
-      font-weight: 600;
-      color: #f97316;
-    }
-
-    .cart-dot {
-      opacity: 0.7;
-    }
-
-    .cart-slot-line {
-      color: #e5e7eb;
-    }
+    .cart-date { font-weight: 600; }
+    .cart-box { font-weight: 600; color: #f97316; }
+    .cart-dot { opacity: 0.7; }
+    .cart-slot-line { color: #e5e7eb; }
 
     .cart-extra {
       color: var(--sb-text-muted);
@@ -343,14 +326,8 @@
       color: #e5e7eb;
     }
 
-    .cart-summary-label {
-      font-weight: 500;
-    }
-
-    .cart-summary-value {
-      font-size: 18px;
-      font-weight: 700;
-    }
+    .cart-summary-label { font-weight: 500; }
+    .cart-summary-value { font-size: 18px; font-weight: 700; }
 
     .cart-policy {
       margin-top: 0.75rem;
@@ -452,27 +429,24 @@
     }
 
     @media (max-width: 900px) {
-      .cart-item-card {
+      .cart-item-card,
+      .cart-referral-banner {
         flex-direction: column;
         align-items: flex-start;
       }
 
-      .cart-item-right {
+      .cart-item-right,
+      .cart-summary-card {
         align-items: flex-start;
       }
 
       .cart-summary-card {
         flex-direction: column;
-        align-items: flex-start;
         gap: 0.35rem;
       }
 
       .cart-actions {
         justify-content: flex-start;
-      }
-
-      .cart-referral-banner {
-        flex-direction: column;
       }
 
       .cart-referral-remove {
@@ -481,20 +455,14 @@
     }
 
     @media (max-width: 600px) {
-      .hero-panier {
-        padding-top: 9rem;
-      }
+      .hero-panier { padding-top: 9rem; }
+      .hero-panier h1 { font-size: 26px; }
+      .cart-item-card,
+      .cart-summary-card { padding: 1rem; }
 
-      .hero-panier h1 {
-        font-size: 26px;
-      }
-
-      .cart-item-card {
-        padding: 1rem 1rem;
-      }
-
-      .cart-summary-card {
-        padding: 1rem;
+      .cart-actions,
+      .cart-item-right {
+        width: 100%;
       }
 
       .cart-actions {
@@ -508,10 +476,6 @@
         justify-content: center;
       }
 
-      .cart-item-right {
-        width: 100%;
-      }
-
       .cart-price-sub {
         text-align: left;
       }
@@ -519,7 +483,6 @@
   </style>
 </head>
 <body class="layout-loading">
-
   <div id="site-header"></div>
 
   <section class="hero-panier">
@@ -601,6 +564,8 @@
     const CHEST_CONTEXT_STORAGE_KEY = "singbox_chest_checkout_context";
     const REFERRAL_STORAGE_KEY = "singbox_referral_code";
 
+    const $ = (id) => document.getElementById(id);
+
     function normalizeReferralCode(code) {
       return String(code || "").trim().toUpperCase();
     }
@@ -623,29 +588,26 @@
     }
 
     function renderReferralBanner() {
-      const banner = document.getElementById("cart-referral-banner");
-      const codeEl = document.getElementById("cart-referral-code-value");
+      const banner = $("cart-referral-banner");
+      const codeEl = $("cart-referral-code-value");
       if (!banner || !codeEl) return;
 
       const referralCode = getStoredReferralCode();
+      banner.classList.toggle("is-visible", Boolean(referralCode));
+      codeEl.textContent = referralCode || "—";
+    }
 
-      if (!referralCode) {
-        banner.classList.remove("is-visible");
-        codeEl.textContent = "—";
-        return;
-      }
-
-      banner.classList.add("is-visible");
-      codeEl.textContent = referralCode;
+    function setServerMessage(text, type = "") {
+      const el = $("cart-server-message");
+      if (!el) return;
+      el.textContent = text || "";
+      el.className = "cart-server-message";
+      if (text) el.classList.add(type === "error" ? "is-error" : "is-info");
     }
 
     function initReferralBanner() {
       renderReferralBanner();
-
-      const removeBtn = document.getElementById("cart-referral-remove");
-      if (!removeBtn) return;
-
-      removeBtn.addEventListener("click", () => {
+      $("cart-referral-remove")?.addEventListener("click", () => {
         clearStoredReferralCode();
         renderReferralBanner();
         setServerMessage("Le code de parrainage a été retiré de cette réservation.", "info");
@@ -669,48 +631,27 @@
     }
 
     function updateCartIcon() {
-      const el = document.getElementById("cart-count");
+      const el = $("cart-count");
       if (!el) return;
-
       const panier = getPanier();
       el.textContent = panier.length ? String(panier.length) : "";
       el.setAttribute("aria-hidden", panier.length ? "false" : "true");
     }
 
-    function setServerMessage(text, type = "") {
-      const el = document.getElementById("cart-server-message");
-      if (!el) return;
-
-      el.textContent = text || "";
-      el.className = "cart-server-message";
-
-      if (text && type) {
-        el.classList.add(type === "error" ? "is-error" : "is-info");
-      }
-    }
-
     function formatDateFr(isoDate) {
       if (!isoDate) return "";
-
       try {
         const parts = isoDate.split("-");
         if (parts.length !== 3) return isoDate;
-
-        const year = Number(parts[0]);
-        const month = Number(parts[1]);
-        const day = Number(parts[2]);
-        const date = new Date(year, month - 1, day);
-
-        if (Number.isNaN(date.getTime())) {
-          return isoDate;
-        }
-
-        return date.toLocaleDateString("fr-FR", {
-          weekday: "long",
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric"
-        });
+        const date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return Number.isNaN(date.getTime())
+          ? isoDate
+          : date.toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric"
+            });
       } catch (error) {
         console.error("Erreur formatDateFr :", error);
         return isoDate;
@@ -722,9 +663,7 @@
     }
 
     function formatHourMinute(hour, minute) {
-      const hourString = String(hour).padStart(2, "0");
-      const minuteString = String(minute).padStart(2, "0");
-      return `${hourString}h${minuteString}`;
+      return `${String(hour).padStart(2, "0")}h${String(minute).padStart(2, "0")}`;
     }
 
     function parseValidDate(value) {
@@ -735,37 +674,20 @@
 
     function buildHourTextFromDate(startDate, endDate = null) {
       if (!startDate) return "?";
-      const realEnd = endDate || new Date(startDate.getTime() + SLOT_DURATION_MINUTES * 60000);
-      return `${formatHourMinute(startDate.getHours(), startDate.getMinutes())} – ${formatHourMinute(realEnd.getHours(), realEnd.getMinutes())}`;
+      const end = endDate || new Date(startDate.getTime() + SLOT_DURATION_MINUTES * 60000);
+      return `${formatHourMinute(startDate.getHours(), startDate.getMinutes())} – ${formatHourMinute(end.getHours(), end.getMinutes())}`;
     }
 
     function getHourText(item) {
       if (typeof item.hour === "number") {
         const startTotalMin = Math.round(item.hour * 60);
-        const startHour = Math.floor(startTotalMin / 60);
-        const startMin = startTotalMin % 60;
-
         const endTotalMin = startTotalMin + SLOT_DURATION_MINUTES;
-        const endHour = Math.floor((endTotalMin / 60) % 24);
-        const endMin = endTotalMin % 60;
-
-        return `${formatHourMinute(startHour, startMin)} – ${formatHourMinute(endHour, endMin)}`;
+        return `${formatHourMinute(Math.floor(startTotalMin / 60), startTotalMin % 60)} – ${formatHourMinute(Math.floor((endTotalMin / 60) % 24), endTotalMin % 60)}`;
       }
 
-      if (item.start_time || item.startTime) {
-        const start = parseValidDate(item.start_time || item.startTime);
-        const end = parseValidDate(item.end_time || item.endTime);
-        if (start) {
-          return buildHourTextFromDate(start, end);
-        }
-      }
-
-      if (item.datetime) {
-        const start = parseValidDate(item.datetime);
-        if (start) {
-          return buildHourTextFromDate(start);
-        }
-      }
+      const start = parseValidDate(item.start_time || item.startTime || item.datetime);
+      const end = parseValidDate(item.end_time || item.endTime);
+      if (start) return buildHourTextFromDate(start, end);
 
       if (item.heure && typeof item.heure === "string" && item.heure.trim()) {
         return item.heure.trim().replace(/\s*-\s*/g, " – ");
@@ -779,31 +701,15 @@
     }
 
     function getPersonsInfo(item) {
-      const personsRaw = Number(
-        item?.persons ??
-        item?.nb_personnes ??
-        item?.participants ??
-        2
-      );
-
-      const safePersons = Number.isFinite(personsRaw) ? Math.max(1, Math.min(personsRaw, 8)) : 2;
-      const personsFacturees = Math.max(safePersons, MIN_BILLABLE_PERSONS);
-
-      const personnesPrevuesText =
-        safePersons === 1
-          ? "1 personne prévue"
-          : `${safePersons} personnes prévues`;
-
-      const personnesFactureesText =
-        personsFacturees === 1
-          ? "1 personne facturée"
-          : `${personsFacturees} personnes facturées (minimum 2)`;
+      const personsRaw = Number(item?.persons ?? item?.nb_personnes ?? item?.participants ?? 2);
+      const rawPersons = Number.isFinite(personsRaw) ? Math.max(1, Math.min(personsRaw, 8)) : 2;
+      const personsFacturees = Math.max(rawPersons, MIN_BILLABLE_PERSONS);
 
       return {
-        rawPersons: safePersons,
+        rawPersons,
         personsFacturees,
-        personnesPrevuesText,
-        personnesFactureesText
+        personnesPrevuesText: rawPersons === 1 ? "1 personne prévue" : `${rawPersons} personnes prévues`,
+        personnesFactureesText: `${personsFacturees} personnes facturées${personsFacturees > 1 ? " (minimum 2)" : ""}`
       };
     }
 
@@ -818,55 +724,32 @@
 
     function getPerPersonRate(dateObj) {
       const hour = dateObj.getHours();
-      const friday = isFriday(dateObj);
-      const weekend = isWeekend(dateObj);
-
-      if (friday || weekend) {
-        if (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-          return WEEKEND_AFTER_15_RATE;
-        }
-        return WEEKEND_BEFORE_15_RATE;
+      if (isFriday(dateObj) || isWeekend(dateObj)) {
+        return (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR)
+          ? WEEKEND_AFTER_15_RATE
+          : WEEKEND_BEFORE_15_RATE;
       }
-
-      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) {
-        return WEEKDAY_MORNING_RATE;
-      }
-
-      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) {
-        return WEEKDAY_MIDDAY_RATE;
-      }
-
-      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) {
-        return WEEKDAY_EVENING_RATE;
-      }
-
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) return WEEKDAY_MORNING_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) return WEEKDAY_MIDDAY_RATE;
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) return WEEKDAY_EVENING_RATE;
       return WEEKDAY_MORNING_RATE;
     }
 
     function getItemStartDate(item) {
-      if (item.start_time || item.startTime) {
-        return parseValidDate(item.start_time || item.startTime);
-      }
-
-      if (item.datetime) {
-        return parseValidDate(item.datetime);
-      }
+      const direct = parseValidDate(item.start_time || item.startTime || item.datetime);
+      if (direct) return direct;
 
       if (item.date && typeof item.hour === "number") {
         const hour = Math.floor(item.hour);
         const minute = Math.round((item.hour - hour) * 60);
-        return parseValidDate(
-          `${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
-        );
+        return parseValidDate(`${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`);
       }
 
       if (item.date && item.heure && typeof item.heure === "string") {
         const match = item.heure.match(/(\d{1,2})[h:](\d{2})?/i);
         if (match) {
-          const hour = Number(match[1]);
-          const minute = Number(match[2] || 0);
           return parseValidDate(
-            `${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`
+            `${item.date}T${String(Number(match[1])).padStart(2, "0")}:${String(Number(match[2] || 0)).padStart(2, "0")}:00`
           );
         }
       }
@@ -876,54 +759,39 @@
 
     function getPriceInfo(item, personsFacturees) {
       const explicitPrice =
-        typeof item.price === "number" && Number.isFinite(item.price)
-          ? item.price
-          : (typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue)
-            ? item.cashAmountDue
-            : (typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount)
-              ? item.theoreticalFullAmount
-              : null));
+        typeof item.price === "number" && Number.isFinite(item.price) ? item.price :
+        typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue) ? item.cashAmountDue :
+        typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount) ? item.theoreticalFullAmount :
+        null;
 
       let computedPrice = null;
       const startDate = getItemStartDate(item);
-      if (startDate) {
-        const perPersonRate = getPerPersonRate(startDate);
-        computedPrice = Number((perPersonRate * personsFacturees).toFixed(2));
-      }
+      if (startDate) computedPrice = Number((getPerPersonRate(startDate) * personsFacturees).toFixed(2));
 
-      const finalPrice = explicitPrice ?? computedPrice;
-
-      let priceDisplay = "Calcul au paiement";
-      if (finalPrice !== null) {
-        priceDisplay = formatMoney(finalPrice);
-      }
-
-      let priceSubDetail = "Tarif définitif revérifié avant paiement";
-      if (finalPrice !== null && personsFacturees > 0) {
-        const perPerson = Number((finalPrice / personsFacturees).toFixed(2));
-        priceSubDetail = `${formatMoney(perPerson)}/pers × ${personsFacturees} pers facturées`;
-      }
+      const price = explicitPrice ?? computedPrice;
+      const hasPrice = price !== null;
 
       return {
-        hasPrice: finalPrice !== null,
-        price: finalPrice,
-        priceDisplay,
-        priceSubDetail
+        hasPrice,
+        price,
+        priceDisplay: hasPrice ? formatMoney(price) : "Calcul au paiement",
+        priceSubDetail: hasPrice
+          ? `${formatMoney(Number((price / personsFacturees).toFixed(2)))}/pers × ${personsFacturees} pers facturées`
+          : "Tarif définitif revérifié avant paiement"
       };
     }
 
     function getBoxName(item) {
-      const raw = item.boxName || item.box_name || item.box || item.boxId || item.box_id || "Box";
-      return String(raw).trim();
+      return String(item.boxName || item.box_name || item.box || item.boxId || item.box_id || "Box").trim();
     }
 
     function getSlotStableId(item, index) {
-      if (item && item.slotId) return String(item.slotId);
-      if (item && item.reservationId) return String(item.reservationId);
-      if (item && item.start_time && (item.boxId || item.box || item.boxName)) {
+      if (item?.slotId) return String(item.slotId);
+      if (item?.reservationId) return String(item.reservationId);
+      if (item?.start_time && (item.boxId || item.box || item.boxName)) {
         return `${item.start_time}__${item.boxId || item.box || item.boxName}`;
       }
-      if (item && item.date && item.hour !== undefined && (item.boxId || item.box || item.boxName)) {
+      if (item?.date && item?.hour !== undefined && (item.boxId || item.box || item.boxName)) {
         return `${item.date}__${String(item.hour)}__${item.boxId || item.box || item.boxName}`;
       }
       return `idx-${index}`;
@@ -935,10 +803,8 @@
       let hasMissingPrice = false;
 
       for (const item of panier) {
-        const { personsFacturees } = getPersonsInfo(item);
-        const priceInfo = getPriceInfo(item, personsFacturees);
-
-        if (priceInfo.hasPrice && typeof priceInfo.price === "number") {
+        const priceInfo = getPriceInfo(item, getPersonsInfo(item).personsFacturees);
+        if (priceInfo.hasPrice) {
           total += priceInfo.price;
           hasAtLeastOnePrice = true;
         } else {
@@ -946,11 +812,7 @@
         }
       }
 
-      return {
-        total: Number(total.toFixed(2)),
-        hasAtLeastOnePrice,
-        hasMissingPrice
-      };
+      return { total: Number(total.toFixed(2)), hasAtLeastOnePrice, hasMissingPrice };
     }
 
     function getChestCheckoutContext() {
@@ -964,26 +826,24 @@
     }
 
     function saveChestCheckoutContext(context) {
-      if (!context || typeof context !== "object") return;
-      sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+      if (context && typeof context === "object") {
+        sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+      }
     }
 
     function readChestContextFromUrl() {
       const params = new URLSearchParams(window.location.search);
-
       const promoCode = String(params.get("promoCode") || "").trim();
       const rewardType = String(params.get("rewardType") || "").trim();
       const rewardValue = String(params.get("rewardValue") || "").trim();
       const chestReward = String(params.get("chestReward") || "").trim();
 
-      const hasContext = promoCode || rewardType || rewardValue || chestReward;
-      if (!hasContext) return null;
-
+      if (!(promoCode || rewardType || rewardValue || chestReward)) return null;
       return {
         promoCode: promoCode || null,
         rewardType: rewardType || null,
         rewardValue: rewardValue || null,
-        chestReward: chestReward || null,
+        chestReward: chestReward || null
       };
     }
 
@@ -998,29 +858,23 @@
 
     function buildChestMessage(context) {
       if (!context) return "";
-
       if (context.promoCode && context.rewardType === "free_session") {
         return `Récompense coffre détectée : session offerte prête à être appliquée avec le code ${context.promoCode}.`;
       }
-
       if (context.promoCode && context.rewardType === "discount_percent" && context.rewardValue) {
         return `Récompense coffre détectée : -${context.rewardValue}% prêt à être appliqué avec le code ${context.promoCode}.`;
       }
-
       if (context.rewardType === "points") {
         return "Les Singcoins gagnés via le coffre ont déjà été crédités sur votre compte.";
       }
-
       if (context.promoCode) {
         return `Récompense coffre détectée : code promo ${context.promoCode} prêt pour le paiement.`;
       }
-
       return "";
     }
 
     function buildReferralMessage(referralCode) {
-      if (!referralCode) return "";
-      return `Code de parrainage actif : ${referralCode}.`;
+      return referralCode ? `Code de parrainage actif : ${referralCode}.` : "";
     }
 
     function renderEmptyCart(container, summaryEl, actionsEl, policyEl) {
@@ -1035,7 +889,6 @@
         <p>Ajoutez des créneaux depuis la page “Réserver une box” pour les retrouver ici avant le paiement.</p>
         <a href="reservation.html" class="btn-empty-primary">Voir les créneaux disponibles</a>
       `;
-
       container.appendChild(emptyDiv);
     }
 
@@ -1043,31 +896,17 @@
       const card = document.createElement("div");
       card.className = "cart-item-card";
 
-      const dateLabel = item.date ? formatDateFr(item.date) : (item.dateLabel || "Date à confirmer");
-      const boxName = getBoxName(item);
-      const hourText = getHourText(item);
-
-      const {
-        personsFacturees,
-        personnesPrevuesText,
-        personnesFactureesText
-      } = getPersonsInfo(item);
-
-      const {
-        priceDisplay,
-        priceSubDetail
-      } = getPriceInfo(item, personsFacturees);
+      const { personsFacturees, personnesPrevuesText, personnesFactureesText } = getPersonsInfo(item);
+      const { priceDisplay, priceSubDetail } = getPriceInfo(item, personsFacturees);
 
       card.innerHTML = `
         <div class="cart-item-info">
           <div class="cart-main-line">
-            <span class="cart-date">${dateLabel}</span>
+            <span class="cart-date">${item.date ? formatDateFr(item.date) : (item.dateLabel || "Date à confirmer")}</span>
             <span class="cart-dot">·</span>
-            <span class="cart-box">${boxName}</span>
+            <span class="cart-box">${getBoxName(item)}</span>
           </div>
-          <div class="cart-slot-line">
-            Créneau : ${hourText} (1h30)
-          </div>
+          <div class="cart-slot-line">Créneau : ${getHourText(item)} (1h30)</div>
           <div class="cart-extra">
             ${personnesPrevuesText} – ${personnesFactureesText}<br>
             1 à 8 personnes – facturation minimale 2 – consommations en supplément.
@@ -1081,25 +920,24 @@
           <button class="cart-remove" data-slot-id="${getSlotStableId(item, index)}" type="button">Supprimer</button>
         </div>
       `;
-
       return card;
     }
 
     function renderPanier() {
-      const container = document.getElementById("cart-items");
-      const summaryEl = document.getElementById("cart-summary");
-      const totalEl = document.getElementById("cart-total");
-      const actionsEl = document.getElementById("cart-actions");
-      const policyEl = document.getElementById("cart-policy");
+      const container = $("cart-items");
+      const summaryEl = $("cart-summary");
+      const totalEl = $("cart-total");
+      const actionsEl = $("cart-actions");
+      const policyEl = $("cart-policy");
+      if (!container || !summaryEl || !totalEl || !actionsEl || !policyEl) return;
+
       const panier = getPanier();
       const chestContext = getChestCheckoutContext();
       const referralCode = getStoredReferralCode();
 
-      if (!container || !summaryEl || !totalEl || !actionsEl || !policyEl) return;
-
       container.innerHTML = "";
 
-      if (panier.length === 0) {
+      if (!panier.length) {
         renderEmptyCart(container, summaryEl, actionsEl, policyEl);
         return;
       }
@@ -1108,33 +946,19 @@
       summaryEl.style.display = "flex";
       policyEl.style.display = "block";
 
-      panier.forEach((item, index) => {
-        const card = createCartItemCard(item, index);
-        container.appendChild(card);
-      });
+      panier.forEach((item, index) => container.appendChild(createCartItemCard(item, index)));
 
       const { total, hasAtLeastOnePrice, hasMissingPrice } = computeCartTotal(panier);
       totalEl.textContent = hasAtLeastOnePrice ? formatMoney(total) : "Calcul au paiement";
 
-      const infoMessages = [];
+      const messages = [];
+      if (hasMissingPrice) messages.push("Le montant final sera confirmé avant le paiement sécurisé.");
       const chestMessage = buildChestMessage(chestContext);
       const referralMessage = buildReferralMessage(referralCode);
+      if (chestMessage) messages.push(chestMessage);
+      if (referralMessage) messages.push(referralMessage);
 
-      if (hasMissingPrice) {
-        infoMessages.push("Le montant final sera confirmé avant le paiement sécurisé.");
-      }
-      if (chestMessage) {
-        infoMessages.push(chestMessage);
-      }
-      if (referralMessage) {
-        infoMessages.push(referralMessage);
-      }
-
-      if (infoMessages.length > 0) {
-        setServerMessage(infoMessages.join(" "), "info");
-      } else {
-        setServerMessage("");
-      }
+      setServerMessage(messages.join(" "), messages.length ? "info" : "");
     }
 
     function closeMobileNav(mobileNav, burgerBtn) {
@@ -1150,33 +974,28 @@
     }
 
     function initMobileMenu() {
-      const burgerBtn = document.getElementById("burger-button");
-      const mobileNav = document.getElementById("mobile-nav");
+      const burgerBtn = $("burger-button");
+      const mobileNav = $("mobile-nav");
       if (!burgerBtn || !mobileNav) return;
 
       burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.contains("open");
-        if (isOpen) {
-          closeMobileNav(mobileNav, burgerBtn);
-        } else {
-          openMobileNav(mobileNav, burgerBtn);
-        }
+        mobileNav.classList.contains("open")
+          ? closeMobileNav(mobileNav, burgerBtn)
+          : openMobileNav(mobileNav, burgerBtn);
       });
 
       mobileNav.addEventListener("click", (e) => {
-        const target = e.target;
-        if (target instanceof HTMLElement && target.tagName === "A") {
+        if (e.target instanceof HTMLElement && e.target.tagName === "A") {
           closeMobileNav(mobileNav, burgerBtn);
         }
       });
 
       document.addEventListener("click", (e) => {
-        const target = e.target;
         if (
           mobileNav.classList.contains("open") &&
-          target instanceof Node &&
-          !mobileNav.contains(target) &&
-          !burgerBtn.contains(target)
+          e.target instanceof Node &&
+          !mobileNav.contains(e.target) &&
+          !burgerBtn.contains(e.target)
         ) {
           closeMobileNav(mobileNav, burgerBtn);
         }
@@ -1190,10 +1009,7 @@
     }
 
     function initClearCart() {
-      const clearBtn = document.getElementById("clear-cart");
-      if (!clearBtn) return;
-
-      clearBtn.addEventListener("click", () => {
+      $("clear-cart")?.addEventListener("click", () => {
         if (!confirm("Vider le panier ?")) return;
         savePanier([]);
         sessionStorage.removeItem(CHEST_CONTEXT_STORAGE_KEY);
@@ -1203,18 +1019,12 @@
     }
 
     function initRemoveItem() {
-      const cartItems = document.getElementById("cart-items");
-      if (!cartItems) return;
-
-      cartItems.addEventListener("click", (e) => {
-        const target = e.target;
-        const removeBtn = target instanceof Element ? target.closest(".cart-remove") : null;
+      $("cart-items")?.addEventListener("click", (e) => {
+        const removeBtn = e.target instanceof Element ? e.target.closest(".cart-remove") : null;
         if (!removeBtn) return;
 
         const slotId = removeBtn.dataset.slotId;
-        const panier = getPanier();
-
-        const nextPanier = panier.filter((item, index) => getSlotStableId(item, index) !== slotId);
+        const nextPanier = getPanier().filter((item, index) => getSlotStableId(item, index) !== slotId);
         savePanier(nextPanier);
         renderPanier();
       });
@@ -1241,9 +1051,7 @@
     async function verifyCartBeforePayment(panier, chestContext = null, referralCode = null) {
       return fetch(`${API_BASE}/api/verify-cart`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           panier,
           items: panier,
@@ -1266,45 +1074,25 @@
 
     function goToPaymentPage(chestContext = null, referralCode = null) {
       const url = new URL("paiement.html", window.location.origin);
-
-      if (chestContext?.promoCode) {
-        url.searchParams.set("promoCode", chestContext.promoCode);
-      }
-      if (chestContext?.chestReward) {
-        url.searchParams.set("chestReward", chestContext.chestReward);
-      }
-      if (chestContext?.rewardType) {
-        url.searchParams.set("rewardType", chestContext.rewardType);
-      }
-      if (chestContext?.rewardValue) {
-        url.searchParams.set("rewardValue", chestContext.rewardValue);
-      }
-      if (referralCode) {
-        url.searchParams.set("referralCode", referralCode);
-      }
-
+      if (chestContext?.promoCode) url.searchParams.set("promoCode", chestContext.promoCode);
+      if (chestContext?.chestReward) url.searchParams.set("chestReward", chestContext.chestReward);
+      if (chestContext?.rewardType) url.searchParams.set("rewardType", chestContext.rewardType);
+      if (chestContext?.rewardValue) url.searchParams.set("rewardValue", chestContext.rewardValue);
+      if (referralCode) url.searchParams.set("referralCode", referralCode);
       globalThis.location.href = url.pathname + url.search;
     }
 
     function normalizeVerifiedItems(data, fallbackPanier) {
-      if (!data || !Array.isArray(data.items)) {
-        return fallbackPanier;
-      }
+      if (!data || !Array.isArray(data.items)) return fallbackPanier;
 
       return data.items.map((item) => {
         const normalizedPrice =
-          (typeof item.price === "number" && Number.isFinite(item.price))
-            ? item.price
-            : ((typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue))
-              ? item.cashAmountDue
-              : ((typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount))
-                ? item.theoreticalFullAmount
-                : undefined));
+          typeof item.price === "number" && Number.isFinite(item.price) ? item.price :
+          typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue) ? item.cashAmountDue :
+          typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount) ? item.theoreticalFullAmount :
+          undefined;
 
-        return {
-          ...item,
-          ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {})
-        };
+        return { ...item, ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {}) };
       });
     }
 
@@ -1315,7 +1103,7 @@
     }
 
     function initConfirmCart() {
-      const confirmBtn = document.getElementById("confirm-cart");
+      const confirmBtn = $("confirm-cart");
       if (!confirmBtn) return;
 
       confirmBtn.addEventListener("click", async () => {
@@ -1323,22 +1111,20 @@
         const chestContext = getChestCheckoutContext();
         const referralCode = getStoredReferralCode();
 
-        if (panier.length === 0) {
+        if (!panier.length) {
           alert("Votre panier est vide.");
           return;
         }
 
-        confirmBtn.disabled = true;
         const defaultText = confirmBtn.textContent;
+        confirmBtn.disabled = true;
         confirmBtn.textContent = "Vérification...";
 
-        const infoMessages = [];
-        const chestMessage = buildChestMessage(chestContext);
-        const referralMessage = buildReferralMessage(referralCode);
-
-        if (chestMessage) infoMessages.push(chestMessage);
-        if (referralMessage) infoMessages.push(referralMessage);
-        infoMessages.push("Vérification de vos créneaux en cours...");
+        const infoMessages = [
+          buildChestMessage(chestContext),
+          buildReferralMessage(referralCode),
+          "Vérification de vos créneaux en cours..."
+        ].filter(Boolean);
 
         setServerMessage(infoMessages.join(" "), "info");
 
@@ -1347,15 +1133,12 @@
           const data = await safeReadJson(response);
 
           if (!response.ok) {
-            const fallbackText = await safeReadText(response);
-            showCartVerificationError(extractVerifyErrorText(data, fallbackText));
+            showCartVerificationError(extractVerifyErrorText(data, await safeReadText(response)));
             return;
           }
 
-          const normalizedItems = normalizeVerifiedItems(data, panier);
-          savePanier(normalizedItems);
+          savePanier(normalizeVerifiedItems(data, panier));
           renderPanier();
-
           goToPaymentPage(chestContext, referralCode);
         } catch (err) {
           console.error("Erreur vérification panier :", err);
@@ -1377,17 +1160,8 @@
 
     function waitForLayoutElements(timeoutMs = 5000) {
       return new Promise((resolve) => {
-        const hasElements = () =>
-          Boolean(
-            document.getElementById("site-header") &&
-            document.getElementById("site-footer") &&
-            document.getElementById("burger-button")
-          );
-
-        if (hasElements()) {
-          resolve();
-          return;
-        }
+        const hasElements = () => Boolean($("site-header") && $("site-footer") && $("burger-button"));
+        if (hasElements()) return resolve();
 
         const observer = new MutationObserver(() => {
           if (hasElements()) {
@@ -1397,7 +1171,6 @@
         });
 
         observer.observe(document.body, { childList: true, subtree: true });
-
         setTimeout(() => {
           observer.disconnect();
           resolve();
