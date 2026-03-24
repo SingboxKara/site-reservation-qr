@@ -89,141 +89,21 @@
   };
 
   const BADGE_DEFINITIONS = [
-    {
-      key: "first_session",
-      code: "first_session",
-      icon: "🎤",
-      title: "Première session",
-      desc: "Faire une première session réalisée.",
-      rarity: "common",
-      rewardSingcoins: 5
-    },
-    {
-      key: "group_3_plus",
-      code: "group_3_plus",
-      icon: "👥",
-      title: "Session en groupe",
-      desc: "Faire une session à 3 personnes ou plus.",
-      rarity: "common",
-      rewardSingcoins: 5
-    },
-    {
-      key: "two_sessions",
-      code: "two_sessions",
-      icon: "🔁",
-      title: "2 sessions réalisées",
-      desc: "Faire 2 sessions réalisées.",
-      rarity: "common",
-      rewardSingcoins: 5
-    },
-    {
-      key: "three_week_streak",
-      code: "three_week_streak",
-      icon: "🔥",
-      title: "3 semaines d’affilée",
-      desc: "Atteindre un streak de 3 semaines.",
-      rarity: "rare",
-      rewardSingcoins: 10
-    },
-    {
-      key: "group_5_plus",
-      code: "group_5_plus",
-      icon: "👥",
-      title: "Groupe de 5+",
-      desc: "Faire une session à 5 personnes ou plus.",
-      rarity: "rare",
-      rewardSingcoins: 10
-    },
-    {
-      key: "five_sessions",
-      code: "five_sessions",
-      icon: "📅",
-      title: "5 sessions réalisées",
-      desc: "Faire 5 sessions réalisées.",
-      rarity: "rare",
-      rewardSingcoins: 10
-    },
-    {
-      key: "three_sessions_in_7_days",
-      code: "three_sessions_in_7_days",
-      icon: "🎶",
-      title: "3 sessions en 7 jours",
-      desc: "Faire 3 sessions réalisées sur 7 jours glissants.",
-      rarity: "rare",
-      rewardSingcoins: 10
-    },
-    {
-      key: "ten_sessions",
-      code: "ten_sessions",
-      icon: "🚀",
-      title: "10 sessions réalisées",
-      desc: "Faire 10 sessions réalisées.",
-      rarity: "epic",
-      rewardSingcoins: 15
-    },
-    {
-      key: "five_week_streak",
-      code: "five_week_streak",
-      icon: "🔥",
-      title: "Streak de 5 semaines",
-      desc: "Atteindre un streak de 5 semaines.",
-      rarity: "epic",
-      rewardSingcoins: 15
-    },
-    {
-      key: "group_8_plus",
-      code: "group_8_plus",
-      icon: "👥",
-      title: "Groupe de 8+",
-      desc: "Faire une session à 8 personnes ou plus.",
-      rarity: "epic",
-      rewardSingcoins: 15
-    },
-    {
-      key: "three_sessions_one_week",
-      code: "three_sessions_one_week",
-      icon: "🔁",
-      title: "3 sessions en 1 semaine",
-      desc: "Faire 3 sessions réalisées dans une même semaine.",
-      rarity: "epic",
-      rewardSingcoins: 15
-    },
-    {
-      key: "twenty_five_sessions",
-      code: "twenty_five_sessions",
-      icon: "🐐",
-      title: "25 sessions réalisées",
-      desc: "Faire 25 sessions réalisées.",
-      rarity: "legendary",
-      rewardSingcoins: 20
-    },
-    {
-      key: "ten_week_streak",
-      code: "ten_week_streak",
-      icon: "👑",
-      title: "Streak de 10 semaines",
-      desc: "Atteindre un streak de 10 semaines.",
-      rarity: "legendary",
-      rewardSingcoins: 20
-    },
-    {
-      key: "ten_group_sessions_5_plus",
-      code: "ten_group_sessions_5_plus",
-      icon: "🎉",
-      title: "10 sessions en groupe (5+)",
-      desc: "Faire 10 sessions à 5 personnes ou plus.",
-      rarity: "legendary",
-      rewardSingcoins: 20
-    },
-    {
-      key: "four_weeks_two_sessions_each",
-      code: "four_weeks_two_sessions_each",
-      icon: "🔥",
-      title: "4 semaines à 2 sessions",
-      desc: "Faire 4 semaines consécutives avec au moins 2 sessions par semaine.",
-      rarity: "legendary",
-      rewardSingcoins: 20
-    }
+    { key: "first_session", code: "first_session", icon: "🎤", title: "Première session", desc: "Faire une première session réalisée.", rarity: "common", rewardSingcoins: 5 },
+    { key: "group_3_plus", code: "group_3_plus", icon: "👥", title: "Session en groupe", desc: "Faire une session à 3 personnes ou plus.", rarity: "common", rewardSingcoins: 5 },
+    { key: "two_sessions", code: "two_sessions", icon: "🔁", title: "2 sessions réalisées", desc: "Faire 2 sessions réalisées.", rarity: "common", rewardSingcoins: 5 },
+    { key: "three_week_streak", code: "three_week_streak", icon: "🔥", title: "3 semaines d’affilée", desc: "Atteindre un streak de 3 semaines.", rarity: "rare", rewardSingcoins: 10 },
+    { key: "group_5_plus", code: "group_5_plus", icon: "👥", title: "Groupe de 5+", desc: "Faire une session à 5 personnes ou plus.", rarity: "rare", rewardSingcoins: 10 },
+    { key: "five_sessions", code: "five_sessions", icon: "📅", title: "5 sessions réalisées", desc: "Faire 5 sessions réalisées.", rarity: "rare", rewardSingcoins: 10 },
+    { key: "three_sessions_in_7_days", code: "three_sessions_in_7_days", icon: "🎶", title: "3 sessions en 7 jours", desc: "Faire 3 sessions réalisées sur 7 jours glissants.", rarity: "rare", rewardSingcoins: 10 },
+    { key: "ten_sessions", code: "ten_sessions", icon: "🚀", title: "10 sessions réalisées", desc: "Faire 10 sessions réalisées.", rarity: "epic", rewardSingcoins: 15 },
+    { key: "five_week_streak", code: "five_week_streak", icon: "🔥", title: "Streak de 5 semaines", desc: "Atteindre un streak de 5 semaines.", rarity: "epic", rewardSingcoins: 15 },
+    { key: "group_8_plus", code: "group_8_plus", icon: "👥", title: "Groupe de 8+", desc: "Faire une session à 8 personnes ou plus.", rarity: "epic", rewardSingcoins: 15 },
+    { key: "three_sessions_one_week", code: "three_sessions_one_week", icon: "🔁", title: "3 sessions en 1 semaine", desc: "Faire 3 sessions réalisées dans une même semaine.", rarity: "epic", rewardSingcoins: 15 },
+    { key: "twenty_five_sessions", code: "twenty_five_sessions", icon: "🐐", title: "25 sessions réalisées", desc: "Faire 25 sessions réalisées.", rarity: "legendary", rewardSingcoins: 20 },
+    { key: "ten_week_streak", code: "ten_week_streak", icon: "👑", title: "Streak de 10 semaines", desc: "Atteindre un streak de 10 semaines.", rarity: "legendary", rewardSingcoins: 20 },
+    { key: "ten_group_sessions_5_plus", code: "ten_group_sessions_5_plus", icon: "🎉", title: "10 sessions en groupe (5+)", desc: "Faire 10 sessions à 5 personnes ou plus.", rarity: "legendary", rewardSingcoins: 20 },
+    { key: "four_weeks_two_sessions_each", code: "four_weeks_two_sessions_each", icon: "🔥", title: "4 semaines à 2 sessions", desc: "Faire 4 semaines consécutives avec au moins 2 sessions par semaine.", rarity: "legendary", rewardSingcoins: 20 }
   ];
 
   const LEVEL_NAMES = [
@@ -265,16 +145,14 @@
 
     capitalizeWords(text) {
       const safe = utils.safeText(text, 120).toLowerCase();
-      if (!safe) return "";
-      return safe.replace(/\b\p{L}/gu, (m) => m.toUpperCase());
+      return safe ? safe.replace(/\b\p{L}/gu, (m) => m.toUpperCase()) : "";
     },
 
     initialsFromText(text) {
       const safe = utils.safeText(text, 120);
       if (!safe) return "S";
       const words = safe.split(/\s+/).filter(Boolean);
-      if (words.length >= 2) return `${words[0][0]}${words[1][0]}`.toUpperCase();
-      return safe.charAt(0).toUpperCase();
+      return (words.length >= 2 ? `${words[0][0]}${words[1][0]}` : safe.charAt(0)).toUpperCase();
     },
 
     clamp(value, min, max) {
@@ -282,8 +160,9 @@
     },
 
     pct(part, total) {
-      if (!Number.isFinite(part) || !Number.isFinite(total) || total <= 0) return 0;
-      return utils.clamp(Math.round((part / total) * 100), 0, 100);
+      return Number.isFinite(part) && Number.isFinite(total) && total > 0
+        ? utils.clamp(Math.round((part / total) * 100), 0, 100)
+        : 0;
     },
 
     deepClone(obj) {
@@ -319,10 +198,7 @@
     },
 
     sanitizePseudo(value) {
-      return String(value ?? "")
-        .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, state.config.pseudoMaxLength);
+      return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, state.config.pseudoMaxLength);
     },
 
     getDisplayName(user) {
@@ -330,36 +206,27 @@
       const localPseudo = utils.getStoredPseudo(email);
       if (localPseudo) return localPseudo;
 
-      const backendPseudo =
+      const direct =
         utils.safeText(user?.pseudo || "", state.config.pseudoMaxLength) ||
         utils.safeText(user?.username || "", state.config.pseudoMaxLength);
-
-      if (backendPseudo) return utils.sanitizePseudo(backendPseudo);
+      if (direct) return utils.sanitizePseudo(direct);
 
       const firstName =
         utils.safeText(user?.prenom || "", state.config.pseudoMaxLength) ||
         utils.safeText(user?.firstName || "", state.config.pseudoMaxLength) ||
         utils.safeText(user?.firstname || "", state.config.pseudoMaxLength);
-
       if (firstName) return utils.sanitizePseudo(firstName);
 
-      const localPart = utils.emailLocalPart(email).replace(/[._-]+/g, " ");
-      const fromEmail = utils.capitalizeWords(localPart);
-      if (fromEmail) return fromEmail.slice(0, state.config.pseudoMaxLength);
-
-      return "Singbox Player";
+      const fromEmail = utils.capitalizeWords(utils.emailLocalPart(email).replace(/[._-]+/g, " "));
+      return fromEmail ? fromEmail.slice(0, state.config.pseudoMaxLength) : "Singbox Player";
     },
 
     scrollTo(selector) {
       if (!selector) return;
       const el = document.querySelector(selector);
       if (!el) return;
-
       const top = window.scrollY + el.getBoundingClientRect().top - Number(state.config.scrollOffset || 110);
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     },
 
     getLevelName(level) {
@@ -378,10 +245,7 @@
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "janvier 2026";
       try {
-        return new Intl.DateTimeFormat("fr-FR", {
-          month: "long",
-          year: "numeric"
-        }).format(date);
+        return new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(date);
       } catch {
         return "janvier 2026";
       }
@@ -407,10 +271,7 @@
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "—";
 
-      const now = new Date();
-      const diffMs = now.getTime() - date.getTime();
-      const diffDays = Math.floor(diffMs / 86400000);
-
+      const diffDays = Math.floor((Date.now() - date.getTime()) / 86400000);
       if (diffDays <= 0) return "Aujourd’hui";
       if (diffDays === 1) return "Hier";
       if (diffDays < 7) return `Il y a ${diffDays} jours`;
@@ -429,8 +290,7 @@
 
     formatBiggestSession(value) {
       const n = Math.max(0, Math.floor(utils.toNumber(value, 0)));
-      if (!n) return "—";
-      return `${n} pers.`;
+      return n ? `${n} pers.` : "—";
     },
 
     formatRewardText(mission) {
@@ -444,8 +304,7 @@
 
     formatBadgeRewardText(badge) {
       const singcoins = Math.max(0, Math.floor(utils.toNumber(badge?.rewardSingcoins, 0)));
-      if (singcoins <= 0) return "";
-      return `Récompense : +${singcoins} Singcoins`;
+      return singcoins > 0 ? `Récompense : +${singcoins} Singcoins` : "";
     },
 
     normalizeBadgeKey(value) {
@@ -460,27 +319,16 @@
 
     getBadgeLookupKeys(badge) {
       const keys = new Set();
-      const raw = [
-        badge?.code,
-        badge?.id,
-        badge?.key,
-        badge?.slug,
-        badge?.title,
-        badge?.name
-      ];
-
-      raw.forEach((item) => {
+      [badge?.code, badge?.id, badge?.key, badge?.slug, badge?.title, badge?.name].forEach((item) => {
         const normalized = utils.normalizeBadgeKey(item);
         if (normalized) keys.add(normalized);
       });
-
       return Array.from(keys);
     },
 
     deriveStatus(levelCurrent, sessionsCount) {
       const level = Math.max(1, Math.floor(utils.toNumber(levelCurrent, 1)));
       const sessions = Math.max(0, Math.floor(utils.toNumber(sessionsCount, 0)));
-
       if (level >= 50 || sessions >= 30) return "Habitué confirmé";
       if (level >= 20 || sessions >= 10) return "Voix qui monte";
       return "Chanteur en progression";
@@ -501,7 +349,6 @@
     guessActiveWeek(stats) {
       const total30 = Math.max(0, Math.floor(utils.toNumber(stats?.sessions_last_30_days, 0)));
       const total7 = Math.max(0, Math.floor(utils.toNumber(stats?.sessions_last_7_days, 0)));
-
       if (total7 > 0) return `${total7} session${total7 > 1 ? "s" : ""}`;
       if (total30 > 0) return `${total30} sur 30 jours`;
       return "—";
@@ -514,27 +361,15 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
-      #${MODULE_ID} {
-        display: grid;
-        gap: 1.1rem;
-      }
-
-      #${MODULE_ID} * {
-        box-sizing: border-box;
-      }
-
-      #${MODULE_ID} .gamif-grid {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        gap: 1rem;
-      }
-
-      #${MODULE_ID} .g-span-12 { grid-column: span 12; }
-      #${MODULE_ID} .g-span-8 { grid-column: span 8; }
-      #${MODULE_ID} .g-span-7 { grid-column: span 7; }
-      #${MODULE_ID} .g-span-6 { grid-column: span 6; }
-      #${MODULE_ID} .g-span-5 { grid-column: span 5; }
-      #${MODULE_ID} .g-span-4 { grid-column: span 4; }
+      #${MODULE_ID}{display:grid;gap:1.1rem}
+      #${MODULE_ID} *{box-sizing:border-box}
+      #${MODULE_ID} .gamif-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:1rem}
+      #${MODULE_ID} .g-span-12{grid-column:span 12}
+      #${MODULE_ID} .g-span-8{grid-column:span 8}
+      #${MODULE_ID} .g-span-7{grid-column:span 7}
+      #${MODULE_ID} .g-span-6{grid-column:span 6}
+      #${MODULE_ID} .g-span-5{grid-column:span 5}
+      #${MODULE_ID} .g-span-4{grid-column:span 4}
 
       #${MODULE_ID} .g-card,
       #${MODULE_ID} .g-subcard,
@@ -545,271 +380,113 @@
       #${MODULE_ID} .g-source-card,
       #${MODULE_ID} .g-quick-btn,
       #${MODULE_ID} .g-slot-wrap,
-      #${MODULE_ID} .g-cta-inline {
-        border-radius: 22px;
-      }
+      #${MODULE_ID} .g-cta-inline{border-radius:22px}
 
-      #${MODULE_ID} .g-card {
-        background: #050b18;
-        border: 1px solid rgba(255,255,255,.16);
-        box-shadow: 0 24px 60px rgba(0,0,0,.9), 0 0 0 1px rgba(148,163,184,.12);
-        padding: 1.2rem;
-        position: relative;
-        overflow: hidden;
-        min-height: 100%;
+      #${MODULE_ID} .g-card{
+        background:#050b18;border:1px solid rgba(255,255,255,.16);box-shadow:0 24px 60px rgba(0,0,0,.9),0 0 0 1px rgba(148,163,184,.12);
+        padding:1.2rem;position:relative;overflow:hidden;min-height:100%
       }
-
-      #${MODULE_ID} .g-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: radial-gradient(circle at 0 0, rgba(148,163,184,.08), transparent 55%);
-        opacity: .7;
+      #${MODULE_ID} .g-card::after{
+        content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 0 0,rgba(148,163,184,.08),transparent 55%);opacity:.7
       }
+      #${MODULE_ID} .g-card>*{position:relative;z-index:1}
 
-      #${MODULE_ID} .g-card > * {
-        position: relative;
-        z-index: 1;
+      #${MODULE_ID} .g-title{
+        font-family:"League Spartan",system-ui,sans-serif;font-size:22px;letter-spacing:.03em;margin:0 0 6px;color:#f9fafb
       }
-
-      #${MODULE_ID} .g-title {
-        font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 22px;
-        letter-spacing: .03em;
-        margin: 0 0 6px;
-        color: #f9fafb;
-      }
-
       #${MODULE_ID} .g-subtitle,
       #${MODULE_ID} .g-soft,
-      #${MODULE_ID} .g-help {
-        color: #d1d5db;
-        font-size: 12px;
-        line-height: 1.55;
+      #${MODULE_ID} .g-help{color:#d1d5db;font-size:12px;line-height:1.55}
+
+      #${MODULE_ID} .g-section-head,
+      #${MODULE_ID} .g-progress-head,
+      #${MODULE_ID} .g-streak-main-top,
+      #${MODULE_ID} .g-level-top{
+        display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap
+      }
+      #${MODULE_ID} .g-section-head{margin-bottom:12px}
+      #${MODULE_ID} .g-level-top{margin-bottom:10px}
+
+      #${MODULE_ID} .g-actions-row{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:10px}
+
+      #${MODULE_ID} .g-quick-btn,
+      #${MODULE_ID} .g-cta-inline{
+        display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;text-align:center;text-decoration:none;
+        transition:transform .15s ease,filter .15s ease,background .15s ease
       }
 
-      #${MODULE_ID} .g-section-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 12px;
+      #${MODULE_ID} .g-quick-btn{
+        min-height:48px;padding:0 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border:none;cursor:pointer
       }
-
-      #${MODULE_ID} .g-actions-row {
-        display: grid;
-        grid-template-columns: 1.35fr 1fr 1fr 1fr;
-        gap: 10px;
-      }
-
-      #${MODULE_ID} .g-quick-btn {
-        min-height: 48px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        text-align: center;
-        padding: 0 12px;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .04em;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: transform .15s ease, filter .15s ease, background .15s ease;
-      }
-
       #${MODULE_ID} .g-quick-btn:hover,
       #${MODULE_ID} .g-quick-btn:focus-visible,
       #${MODULE_ID} .g-cta-inline:hover,
-      #${MODULE_ID} .g-cta-inline:focus-visible {
-        transform: translateY(-1px);
-        filter: brightness(1.04);
-      }
+      #${MODULE_ID} .g-cta-inline:focus-visible{transform:translateY(-1px);filter:brightness(1.04)}
 
       #${MODULE_ID} .g-quick-btn-primary,
-      #${MODULE_ID} .g-cta-inline {
-        background: linear-gradient(90deg, #c94c35, #f97316);
-        color: #f9fafb;
-        box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 12px 30px rgba(0,0,0,.8);
+      #${MODULE_ID} .g-cta-inline{
+        background:linear-gradient(90deg,#c94c35,#f97316);color:#f9fafb;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 12px 30px rgba(0,0,0,.8)
+      }
+      #${MODULE_ID} .g-quick-btn-secondary{
+        background:#111827;color:#f9fafb;box-shadow:0 0 0 1px rgba(255,255,255,.18),0 12px 30px rgba(0,0,0,.75)
+      }
+      #${MODULE_ID} .g-cta-inline{
+        min-height:36px;padding:0 12px;border:none;cursor:pointer;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;width:100%;margin-top:8px
       }
 
-      #${MODULE_ID} .g-quick-btn-secondary {
-        background: #111827;
-        color: #f9fafb;
-        box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 12px 30px rgba(0,0,0,.75);
+      #${MODULE_ID} .g-profile-hero{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(230px,280px);gap:16px;align-items:stretch}
+      #${MODULE_ID} .g-profile-main{display:grid;gap:8px;align-content:center}
+      #${MODULE_ID} .g-avatar{
+        width:76px;height:76px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
+        font-family:"League Spartan",system-ui,sans-serif;font-size:28px;font-weight:800;color:#fff;
+        background:linear-gradient(135deg,rgba(201,76,53,.95),rgba(124,58,237,.9));box-shadow:0 10px 30px rgba(0,0,0,.35)
       }
-
-      #${MODULE_ID} .g-cta-inline {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 36px;
-        padding: 0 12px;
-        border: none;
-        cursor: pointer;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .04em;
-        text-decoration: none;
-        white-space: nowrap;
-        width: 100%;
-        margin-top: 8px;
+      #${MODULE_ID} .g-profile-name{
+        margin:0;font-family:"League Spartan",system-ui,sans-serif;font-size:29px;line-height:1;color:#f9fafb
       }
-
-      #${MODULE_ID} .g-profile-hero {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr) minmax(230px, 280px);
-        gap: 16px;
-        align-items: stretch;
+      #${MODULE_ID} .g-profile-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:2px}
+      #${MODULE_ID} .g-inline-btn{
+        border:none;border-radius:999px;padding:8px 12px;background:#111827;color:#f9fafb;font-size:11px;font-weight:700;cursor:pointer;box-shadow:0 0 0 1px rgba(255,255,255,.16)
       }
-
-      #${MODULE_ID} .g-profile-main {
-        display: grid;
-        gap: 8px;
-        align-content: center;
+      #${MODULE_ID} .g-inline-btn-primary{background:linear-gradient(90deg,#c94c35,#f97316)}
+      #${MODULE_ID} .g-input{
+        width:100%;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:#020617;color:#f9fafb;padding:11px 14px;font-size:13px;outline:none
       }
+      #${MODULE_ID} .g-input:focus{border-color:#f97316;box-shadow:0 0 0 1px rgba(249,115,22,.7),0 0 18px rgba(249,115,22,.22)}
+      #${MODULE_ID} .g-pseudo-form{display:grid;gap:8px;margin-top:6px}
+      #${MODULE_ID} .g-pseudo-actions{display:flex;gap:8px;flex-wrap:wrap}
+      #${MODULE_ID} .g-message{min-height:16px;font-size:12px}
+      #${MODULE_ID} .g-message.ok{color:#bbf7d0}
+      #${MODULE_ID} .g-message.error{color:#fca5a5}
 
-      #${MODULE_ID} .g-avatar {
-        width: 76px;
-        height: 76px;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 28px;
-        font-weight: 800;
-        color: #fff;
-        background: linear-gradient(135deg, rgba(201,76,53,.95), rgba(124,58,237,.9));
-        box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      #${MODULE_ID} .g-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+      #${MODULE_ID} .g-pill,
+      #${MODULE_ID} .g-tag,
+      #${MODULE_ID} .g-rarity,
+      #${MODULE_ID} .g-streak-status{
+        display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;
+        border:1px solid rgba(255,255,255,.14);background:rgba(15,23,42,.85);color:#f9fafb
       }
-
-      #${MODULE_ID} .g-profile-name {
-        margin: 0;
-        font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 29px;
-        line-height: 1;
-        color: #f9fafb;
-      }
-
-      #${MODULE_ID} .g-profile-name-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 2px;
-      }
-
-      #${MODULE_ID} .g-inline-btn {
-        border: none;
-        border-radius: 999px;
-        padding: 8px 12px;
-        background: #111827;
-        color: #f9fafb;
-        font-size: 11px;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 0 0 1px rgba(255,255,255,.16);
-      }
-
-      #${MODULE_ID} .g-inline-btn-primary {
-        background: linear-gradient(90deg, #c94c35, #f97316);
-      }
-
-      #${MODULE_ID} .g-input {
-        width: 100%;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.22);
-        background: #020617;
-        color: #f9fafb;
-        padding: 11px 14px;
-        font-size: 13px;
-        outline: none;
-      }
-
-      #${MODULE_ID} .g-input:focus {
-        border-color: #f97316;
-        box-shadow: 0 0 0 1px rgba(249,115,22,.7), 0 0 18px rgba(249,115,22,.22);
-      }
-
-      #${MODULE_ID} .g-pseudo-form {
-        display: grid;
-        gap: 8px;
-        margin-top: 6px;
-      }
-
-      #${MODULE_ID} .g-pseudo-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      #${MODULE_ID} .g-message {
-        min-height: 16px;
-        font-size: 12px;
-      }
-
-      #${MODULE_ID} .g-message.ok { color: #bbf7d0; }
-      #${MODULE_ID} .g-message.error { color: #fca5a5; }
-
-      #${MODULE_ID} .g-pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 4px;
-      }
-
-      #${MODULE_ID} .g-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: rgba(15,23,42,.92);
-        border: 1px solid rgba(255,255,255,.18);
-        font-size: 12px;
-        color: #f9fafb;
-      }
+      #${MODULE_ID} .g-pill{font-size:12px;text-transform:none;letter-spacing:0;padding:7px 12px;background:rgba(15,23,42,.92);border-color:rgba(255,255,255,.18)}
 
       #${MODULE_ID} .g-mini-icon,
       #${MODULE_ID} .g-badge-icon,
-      #${MODULE_ID} .g-benefit-icon {
-        width: 24px;
-        height: 24px;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #c94c35, #f97316);
-        color: #fff;
-        font-size: 12px;
-        flex-shrink: 0;
+      #${MODULE_ID} .g-benefit-icon{
+        width:24px;height:24px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
+        background:linear-gradient(135deg,#c94c35,#f97316);color:#fff;font-size:12px;flex-shrink:0
       }
 
-      #${MODULE_ID} .g-status-card {
-        padding: 14px 16px;
-        border-radius: 18px;
-        background: rgba(34,197,94,.10);
-        border: 1px solid rgba(34,197,94,.28);
-        min-width: 0;
-        text-align: left;
-        display: grid;
-        align-content: center;
+      #${MODULE_ID} .g-status-card{
+        padding:14px 16px;border-radius:18px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.28);min-width:0;text-align:left;display:grid;align-content:center
       }
-
-      #${MODULE_ID} .g-soft-success {
-        color: #d1fae5;
-      }
+      #${MODULE_ID} .g-soft-success{color:#d1fae5}
 
       #${MODULE_ID} .g-source-list,
-      #${MODULE_ID} .g-vertical-list {
-        display: grid;
-        gap: 10px;
-      }
+      #${MODULE_ID} .g-vertical-list,
+      #${MODULE_ID} .g-progress-wrap,
+      #${MODULE_ID} .g-mission-progress{display:grid;gap:10px}
+      #${MODULE_ID} .g-progress-wrap{gap:8px;margin-top:12px}
+      #${MODULE_ID} .g-mission-progress{gap:6px;margin-top:8px}
 
       #${MODULE_ID} .g-item,
       #${MODULE_ID} .g-source-card,
@@ -817,404 +494,138 @@
       #${MODULE_ID} .g-recordbox,
       #${MODULE_ID} .g-streakbox,
       #${MODULE_ID} .g-subcard,
-      #${MODULE_ID} .g-slot-wrap {
-        background: rgba(10,16,30,.95);
-        border: 1px solid rgba(255,255,255,.10);
-        padding: 12px;
+      #${MODULE_ID} .g-slot-wrap{
+        background:rgba(10,16,30,.95);border:1px solid rgba(255,255,255,.10);padding:12px
       }
+      #${MODULE_ID} .g-slot-wrap{padding:0;background:transparent;border:none;height:100%}
+      #${MODULE_ID} .g-slot-wrap>*{margin:0 !important}
+      #${MODULE_ID} .g-slot-wrap>.card{height:100%}
 
-      #${MODULE_ID} .g-slot-wrap {
-        padding: 0;
-        background: transparent;
-        border: none;
-        height: 100%;
+      #${MODULE_ID} .g-item{display:flex;gap:12px;align-items:flex-start}
+      #${MODULE_ID} .g-item-content{flex:1;min-width:0}
+
+      #${MODULE_ID} .g-coin-highlight{
+        padding:10px 12px;border-radius:16px;background:linear-gradient(135deg,rgba(201,76,53,.17),rgba(249,115,22,.12));
+        border:1px solid rgba(249,115,22,.26);font-size:12px;color:#fff
       }
+      #${MODULE_ID} .g-coin-highlight-row{margin-top:12px}
 
-      #${MODULE_ID} .g-slot-wrap > * {
-        margin: 0 !important;
+      #${MODULE_ID} .g-bignumber{
+        font-family:"League Spartan",system-ui,sans-serif;font-size:30px;line-height:1;color:#f9fafb
       }
-
-      #${MODULE_ID} .g-slot-wrap > .card {
-        height: 100%;
-      }
-
-      #${MODULE_ID} .g-item {
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-      }
-
-      #${MODULE_ID} .g-item-content {
-        flex: 1;
-        min-width: 0;
-      }
-
-      #${MODULE_ID} .g-progress-head,
-      #${MODULE_ID} .g-streak-main-top,
-      #${MODULE_ID} .g-level-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      #${MODULE_ID} .g-level-top {
-        margin-bottom: 10px;
-      }
-
-      #${MODULE_ID} .g-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-        border: 1px solid rgba(255,255,255,.14);
-        background: rgba(15,23,42,.85);
-        color: #f9fafb;
-      }
-
-      #${MODULE_ID} .g-coin-highlight {
-        padding: 10px 12px;
-        border-radius: 16px;
-        background: linear-gradient(135deg, rgba(201,76,53,.17), rgba(249,115,22,.12));
-        border: 1px solid rgba(249,115,22,.26);
-        font-size: 12px;
-        color: #fff;
-      }
-
-      #${MODULE_ID} .g-coin-highlight-row {
-        margin-top: 12px;
-      }
-
-      #${MODULE_ID} .g-bignumber {
-        font-family: "League Spartan", system-ui, sans-serif;
-        font-size: 30px;
-        line-height: 1;
-        color: #f9fafb;
-      }
-
-      #${MODULE_ID} .g-progress-wrap {
-        display: grid;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
       #${MODULE_ID} .g-progress-bar,
-      #${MODULE_ID} .g-mini-progress {
-        width: 100%;
-        overflow: hidden;
-        background: rgba(255,255,255,.08);
-        border-radius: 999px;
-      }
-
-      #${MODULE_ID} .g-progress-bar {
-        height: 12px;
-      }
-
-      #${MODULE_ID} .g-mini-progress {
-        height: 8px;
-      }
-
+      #${MODULE_ID} .g-mini-progress{width:100%;overflow:hidden;background:rgba(255,255,255,.08);border-radius:999px}
+      #${MODULE_ID} .g-progress-bar{height:12px}
+      #${MODULE_ID} .g-mini-progress{height:8px}
       #${MODULE_ID} .g-progress-fill,
-      #${MODULE_ID} .g-mini-progress > span {
-        display: block;
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #c94c35, #f97316);
+      #${MODULE_ID} .g-mini-progress>span{
+        display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#c94c35,#f97316)
       }
+      #${MODULE_ID} .g-progress-fill-xp{background:linear-gradient(90deg,#2563eb,#7c3aed)}
 
-      #${MODULE_ID} .g-progress-fill-xp {
-        background: linear-gradient(90deg, #2563eb, #7c3aed);
-      }
-
-      #${MODULE_ID} .g-coin-stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 12px;
-      }
-
-      #${MODULE_ID} .g-coin-stat {
-        padding: 12px;
-        border-radius: 14px;
-        background: rgba(2,6,23,.95);
-        border: 1px solid rgba(255,255,255,.08);
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        min-height: 82px;
-      }
-
-      #${MODULE_ID} .g-coin-stat-label {
-        font-size: 11px;
-        color: #d1d5db;
-        white-space: nowrap;
-      }
-
-      #${MODULE_ID} .g-coin-stat-value {
-        font-size: 18px;
-        font-family: "League Spartan", system-ui, sans-serif;
-        color: #f9fafb;
-      }
-
+      #${MODULE_ID} .g-coin-stats,
       #${MODULE_ID} .g-level-grid,
       #${MODULE_ID} .g-stats-grid,
-      #${MODULE_ID} .g-records-grid {
-        display: grid;
-        gap: 10px;
+      #${MODULE_ID} .g-records-grid,
+      #${MODULE_ID} .g-streak-grid{
+        display:grid;gap:10px
       }
-
-      #${MODULE_ID} .g-level-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
+      #${MODULE_ID} .g-coin-stats{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:12px}
+      #${MODULE_ID} .g-level-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       #${MODULE_ID} .g-stats-grid,
-      #${MODULE_ID} .g-records-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      #${MODULE_ID} .g-records-grid,
+      #${MODULE_ID} .g-streak-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      #${MODULE_ID} .g-coin-stat{
+        padding:12px;border-radius:14px;background:rgba(2,6,23,.95);border:1px solid rgba(255,255,255,.08);
+        display:flex;flex-direction:column;gap:8px;min-height:82px
       }
-
+      #${MODULE_ID} .g-coin-stat-label{font-size:11px;color:#d1d5db;white-space:nowrap}
+      #${MODULE_ID} .g-coin-stat-value{font-size:18px;font-family:"League Spartan",system-ui,sans-serif;color:#f9fafb}
       #${MODULE_ID} .g-statbox,
-      #${MODULE_ID} .g-recordbox {
-        min-height: 60px;
-        padding: 10px 12px;
-      }
-
+      #${MODULE_ID} .g-recordbox{min-height:60px;padding:10px 12px}
       #${MODULE_ID} .g-statbox .g-bignumber,
-      #${MODULE_ID} .g-recordbox .g-bignumber {
-        font-size: 18px !important;
-        margin-top: 2px;
+      #${MODULE_ID} .g-recordbox .g-bignumber{font-size:18px !important;margin-top:2px}
+
+      #${MODULE_ID} .g-streak-hero{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+      #${MODULE_ID} .g-streak-main{
+        background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(201,76,53,.12));
+        border:1px solid rgba(245,158,11,.22);border-radius:18px;padding:14px
+      }
+      #${MODULE_ID} .g-streak-status{font-size:12px;background:rgba(2,6,23,.55)}
+      #${MODULE_ID} .g-streak-dot{
+        width:10px;height:10px;border-radius:999px;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.8)
+      }
+      #${MODULE_ID} .g-streak-status.warning .g-streak-dot{background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.8)}
+      #${MODULE_ID} .g-streak-status.broken .g-streak-dot{background:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.8)}
+
+      #${MODULE_ID} .g-rarity.common{color:#e5e7eb}
+      #${MODULE_ID} .g-rarity.rare{color:#93c5fd}
+      #${MODULE_ID} .g-rarity.epic{color:#c4b5fd}
+      #${MODULE_ID} .g-rarity.legendary{color:#fdba74}
+      #${MODULE_ID} .g-locked{opacity:.62;filter:grayscale(.15)}
+
+      #${MODULE_ID} .g-sr-only{
+        position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;
+        clip:rect(0,0,0,0) !important;white-space:nowrap !important;border:0 !important
       }
 
-      #${MODULE_ID} .g-streak-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-      }
+      #${MODULE_ID} .g-slot-wrap .section-title{margin-bottom:10px}
+      #${MODULE_ID} .g-slot-wrap .account-subtext{margin-top:12px}
+      #${MODULE_ID} .g-slot-wrap .logout-row{margin-top:14px}
 
-      #${MODULE_ID} .g-streak-main {
-        background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(201,76,53,.12));
-        border: 1px solid rgba(245,158,11,.22);
-        border-radius: 18px;
-        padding: 14px;
-      }
+      #${MODULE_ID} .g-scroll-area{overflow-y:auto;padding-right:4px}
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar,
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar{width:8px}
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-track,
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px}
+      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-thumb,
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-thumb{background:rgba(249,115,22,.55);border-radius:999px}
 
-      #${MODULE_ID} .g-streak-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,.15);
-        background: rgba(2,6,23,.55);
-      }
-
-      #${MODULE_ID} .g-streak-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: #22c55e;
-        box-shadow: 0 0 10px rgba(34,197,94,.8);
-      }
-
-      #${MODULE_ID} .g-streak-status.warning .g-streak-dot {
-        background: #f59e0b;
-        box-shadow: 0 0 10px rgba(245,158,11,.8);
-      }
-
-      #${MODULE_ID} .g-streak-status.broken .g-streak-dot {
-        background: #ef4444;
-        box-shadow: 0 0 10px rgba(239,68,68,.8);
-      }
-
-      #${MODULE_ID} .g-streak-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      #${MODULE_ID} .g-mission-progress {
-        display: grid;
-        gap: 6px;
-        margin-top: 8px;
-      }
-
-      #${MODULE_ID} .g-rarity {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 5px 8px;
-        border-radius: 999px;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-        border: 1px solid rgba(255,255,255,.12);
-        background: rgba(255,255,255,.04);
-        margin-top: 6px;
-      }
-
-      #${MODULE_ID} .g-rarity.common { color: #e5e7eb; }
-      #${MODULE_ID} .g-rarity.rare { color: #93c5fd; }
-      #${MODULE_ID} .g-rarity.epic { color: #c4b5fd; }
-      #${MODULE_ID} .g-rarity.legendary { color: #fdba74; }
-
-      #${MODULE_ID} .g-locked {
-        opacity: .62;
-        filter: grayscale(.15);
-      }
-
-      #${MODULE_ID} .g-sr-only {
-        position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
-        clip: rect(0,0,0,0) !important;
-        white-space: nowrap !important;
-        border: 0 !important;
-      }
-
-      #${MODULE_ID} .g-slot-wrap .section-title {
-        margin-bottom: 10px;
-      }
-
-      #${MODULE_ID} .g-slot-wrap .account-subtext {
-        margin-top: 12px;
-      }
-
-      #${MODULE_ID} .g-slot-wrap .logout-row {
-        margin-top: 14px;
-      }
-
-      #${MODULE_ID} .g-scroll-area {
-        overflow-y: auto;
-        padding-right: 4px;
-      }
-
-      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-track {
-        background: rgba(255,255,255,.05);
-        border-radius: 999px;
-      }
-
-      #${MODULE_ID} .g-scroll-area::-webkit-scrollbar-thumb {
-        background: rgba(249,115,22,.55);
-        border-radius: 999px;
-      }
-
-      #${MODULE_ID} .g-scroll-missions {
-        height: 184px;
-        min-height: 184px;
-        max-height: 184px;
-      }
-
-      #${MODULE_ID} .g-scroll-badges {
-        height: 276px;
-        min-height: 276px;
-        max-height: 276px;
-      }
+      #${MODULE_ID} .g-scroll-missions{height:184px;min-height:184px;max-height:184px}
+      #${MODULE_ID} .g-scroll-badges{height:276px;min-height:276px;max-height:276px}
 
       #${MODULE_ID} #gamif-reservations-anchor,
       #${MODULE_ID} #gamif-benefits-section,
       #${MODULE_ID} #gamif-streak-section,
       #${MODULE_ID} #gamif-badges-section,
       #${MODULE_ID} #gamif-stats-section,
-      #${MODULE_ID} #gamif-records-section {
-        align-self: stretch;
-      }
+      #${MODULE_ID} #gamif-records-section{align-self:stretch}
 
-      #${MODULE_ID} #gamif-reservations-slot > .card,
-      #${MODULE_ID} #gamif-benefits-slot > .card {
-        min-height: 100%;
-      }
+      #${MODULE_ID} #gamif-reservations-slot>.card,
+      #${MODULE_ID} #gamif-benefits-slot>.card{min-height:100%}
 
-      #${MODULE_ID} #gamif-reservations-slot #reservations-list {
-        max-height: 245px;
-        min-height: 245px;
-        overflow-y: auto;
-        padding-right: 4px;
-      }
+      #${MODULE_ID} #gamif-reservations-slot #reservations-list{max-height:245px;min-height:245px;overflow-y:auto;padding-right:4px}
 
-      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar {
-        width: 8px;
+      @media (max-width:1100px){
+        #${MODULE_ID} .g-actions-row{grid-template-columns:repeat(2,minmax(0,1fr))}
       }
-
-      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-track {
-        background: rgba(255,255,255,.05);
-        border-radius: 999px;
-      }
-
-      #${MODULE_ID} #gamif-reservations-slot #reservations-list::-webkit-scrollbar-thumb {
-        background: rgba(249,115,22,.55);
-        border-radius: 999px;
-      }
-
-      @media (max-width: 1100px) {
-        #${MODULE_ID} .g-actions-row {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      @media (max-width: 900px) {
+      @media (max-width:900px){
         #${MODULE_ID} .g-span-8,
         #${MODULE_ID} .g-span-7,
         #${MODULE_ID} .g-span-6,
         #${MODULE_ID} .g-span-5,
-        #${MODULE_ID} .g-span-4 {
-          grid-column: span 12;
-        }
-
-        #${MODULE_ID} .g-profile-hero {
-          grid-template-columns: 1fr;
-          align-items: start;
-        }
-
+        #${MODULE_ID} .g-span-4{grid-column:span 12}
+        #${MODULE_ID} .g-profile-hero{grid-template-columns:1fr;align-items:start}
         #${MODULE_ID} .g-level-grid,
         #${MODULE_ID} .g-coin-stats,
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
         #${MODULE_ID} .g-streak-grid,
-        #${MODULE_ID} .g-actions-row {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
+        #${MODULE_ID} .g-actions-row{grid-template-columns:repeat(2,minmax(0,1fr))}
         #${MODULE_ID} .g-scroll-missions,
         #${MODULE_ID} .g-scroll-badges,
-        #${MODULE_ID} #gamif-reservations-slot #reservations-list {
-          height: auto;
-          min-height: 0;
-          max-height: none;
-        }
+        #${MODULE_ID} #gamif-reservations-slot #reservations-list{height:auto;min-height:0;max-height:none}
       }
-
-      @media (max-width: 640px) {
+      @media (max-width:640px){
         #${MODULE_ID} .g-level-grid,
         #${MODULE_ID} .g-coin-stats,
         #${MODULE_ID} .g-stats-grid,
         #${MODULE_ID} .g-records-grid,
         #${MODULE_ID} .g-streak-grid,
-        #${MODULE_ID} .g-actions-row {
-          grid-template-columns: 1fr;
-        }
-
+        #${MODULE_ID} .g-actions-row{grid-template-columns:1fr}
         #${MODULE_ID} .g-coin-stat-label,
-        #${MODULE_ID} .g-coin-stat-value {
-          white-space: normal;
-        }
-
-        #${MODULE_ID} .g-quick-btn {
-          white-space: nowrap;
-          font-size: 11px;
-        }
+        #${MODULE_ID} .g-coin-stat-value{white-space:normal}
+        #${MODULE_ID} .g-quick-btn{white-space:nowrap;font-size:11px}
       }
     `;
     document.head.appendChild(style);
@@ -1227,10 +638,9 @@
   }
 
   function normalizeBadges(apiBadges, fallbackBadges) {
-    const sourceList = Array.isArray(apiBadges) ? apiBadges : [];
     const apiMap = new Map();
 
-    sourceList.forEach((badge) => {
+    (Array.isArray(apiBadges) ? apiBadges : []).forEach((badge) => {
       utils.getBadgeLookupKeys(badge).forEach((key) => {
         if (!apiMap.has(key)) apiMap.set(key, badge);
       });
@@ -1238,8 +648,8 @@
 
     const catalog = BADGE_DEFINITIONS.length
       ? BADGE_DEFINITIONS
-      : (Array.isArray(fallbackBadges) ? fallbackBadges : []).map((badge) => ({
-          key: utils.normalizeBadgeKey(badge.title || badge.id || badge.code),
+      : (Array.isArray(fallbackBadges) ? fallbackBadges : []).map((badge, index) => ({
+          key: utils.normalizeBadgeKey(badge.title || badge.id || badge.code || `badge-${index}`),
           code: badge.code || badge.id || badge.title,
           icon: badge.icon,
           title: badge.title,
@@ -1249,20 +659,16 @@
         }));
 
     return catalog.map((definition, index) => {
-      const defKey = utils.normalizeBadgeKey(
-        definition.key || definition.code || definition.title || `badge-${index}`
-      );
-
+      const defKey = utils.normalizeBadgeKey(definition.key || definition.code || definition.title || `badge-${index}`);
       const matched =
         apiMap.get(defKey) ||
         apiMap.get(utils.normalizeBadgeKey(definition.code)) ||
         apiMap.get(utils.normalizeBadgeKey(definition.title)) ||
         null;
 
-      const isUnlocked =
-        typeof matched?.isUnlocked === "boolean"
-          ? matched.isUnlocked
-          : Boolean(matched?.unlocked || matched?.unlockedAt);
+      const isUnlocked = typeof matched?.isUnlocked === "boolean"
+        ? matched.isUnlocked
+        : Boolean(matched?.unlocked || matched?.unlockedAt);
 
       return {
         code: matched?.code || definition.code || defKey,
@@ -1270,15 +676,7 @@
         title: matched?.title || definition.title || "Badge",
         desc: matched?.description || matched?.desc || definition.desc || "",
         rarity: matched?.rarity || definition.rarity || "common",
-        rewardSingcoins: Math.max(
-          0,
-          Math.floor(
-            utils.toNumber(
-              matched?.rewardSingcoins ?? definition.rewardSingcoins,
-              0
-            )
-          )
-        ),
+        rewardSingcoins: Math.max(0, Math.floor(utils.toNumber(matched?.rewardSingcoins ?? definition.rewardSingcoins, 0))),
         unlocked: isUnlocked,
         date: matched?.unlockedAt ? utils.formatShortDate(matched.unlockedAt) : ""
       };
@@ -1287,9 +685,6 @@
 
   function normalizeGamificationResponse(apiData, user = {}) {
     const fallback = utils.deepClone(MOCK_GAMIFICATION);
-    const email = utils.normalizeEmail(user?.email || "");
-    const displayName = utils.getDisplayName(user);
-
     const api = apiData && typeof apiData === "object" ? apiData : {};
     const levelApi = api.level && typeof api.level === "object" ? api.level : {};
     const streakApi = api.streak && typeof api.streak === "object" ? api.streak : {};
@@ -1297,129 +692,74 @@
     const statsApi = api.stats && typeof api.stats === "object" ? api.stats : {};
     const recordsApi = api.records && typeof api.records === "object" ? api.records : {};
 
-    const balance =
-      singcoinsApi.balance != null
-        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.balance, 0)))
-        : Math.max(0, Math.floor(utils.toNumber(user?.singcoins, fallback.singcoins.balance)));
+    const balance = singcoinsApi.balance != null
+      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.balance, 0)))
+      : Math.max(0, Math.floor(utils.toNumber(user?.singcoins, fallback.singcoins.balance)));
 
-    const earned =
-      singcoinsApi.earned != null
-        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.earned, 0)))
-        : Math.max(balance + Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, fallback.singcoins.used))), fallback.singcoins.earned);
+    const used = singcoinsApi.used != null
+      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, 0)))
+      : fallback.singcoins.used;
 
-    const used =
-      singcoinsApi.used != null
-        ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, 0)))
-        : fallback.singcoins.used;
+    const earned = singcoinsApi.earned != null
+      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.earned, 0)))
+      : Math.max(balance + used, fallback.singcoins.earned);
 
-    const totalSessions =
-      statsApi.totalSessions != null
-        ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSessions, 0)))
-        : (user?.sessionsCount != null
-            ? Math.max(0, Math.floor(utils.toNumber(user.sessionsCount, 0)))
-            : fallback.stats.totalSessions);
+    const totalSessions = statsApi.totalSessions != null
+      ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSessions, 0)))
+      : (user?.sessionsCount != null
+          ? Math.max(0, Math.floor(utils.toNumber(user.sessionsCount, 0)))
+          : fallback.stats.totalSessions);
 
-    const levelCurrent = Math.max(
-      1,
-      Math.floor(
-        utils.toNumber(
-          levelApi.current,
-          fallback.level.current
-        )
-      )
-    );
-
+    const levelCurrent = Math.max(1, Math.floor(utils.toNumber(levelApi.current, fallback.level.current)));
     const xpCurrent = Math.max(0, Math.floor(utils.toNumber(levelApi.xpCurrent, fallback.level.xpCurrent)));
     const xpNextLevel = Math.max(1, Math.floor(utils.toNumber(levelApi.xpNextLevel, fallback.level.xpNextLevel)));
-    const xpTotal = Math.max(0, Math.floor(utils.toNumber(levelApi.xpTotal, xpCurrent)));
-
     const streakCurrent = Math.max(0, Math.floor(utils.toNumber(streakApi.current, fallback.streak.current)));
-    const streakBest = Math.max(
-      streakCurrent,
-      Math.floor(utils.toNumber(streakApi.best, fallback.streak.best))
-    );
-
+    const streakBest = Math.max(streakCurrent, Math.floor(utils.toNumber(streakApi.best, fallback.streak.best)));
     const lastValidatedAt = streakApi.lastValidatedAt || "";
-    const lastPeriodKey = utils.safeText(streakApi.lastPeriodKey || "", 60);
-
-    let streakStatus = "broken";
-    if (streakCurrent > 0) streakStatus = "active";
-    if (streakCurrent > 0 && !lastValidatedAt) streakStatus = "warning";
-
-    const deadlineText = streakCurrent > 0
-      ? "Fais au moins une session validée cette semaine pour conserver ton streak."
-      : "Fais une session validée cette semaine pour lancer ton streak.";
-
-    const totalTime =
-      typeof statsApi.totalTime === "string" && utils.safeText(statsApi.totalTime)
-        ? utils.safeText(statsApi.totalTime, 40)
-        : (statsApi.totalTime != null
-            ? utils.formatDurationMinutes(statsApi.totalTime)
-            : fallback.stats.totalTime);
-
-    const totalSongs =
-      statsApi.totalSongs != null
-        ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSongs, 0)))
-        : fallback.stats.totalSongs;
-
-    const lastSession = statsApi.lastSession
-      ? utils.formatShortDate(statsApi.lastSession)
-      : fallback.stats.lastSession;
-
-    const biggestSession =
-      recordsApi.biggestSession != null
-        ? utils.formatBiggestSession(recordsApi.biggestSession)
-        : fallback.records.biggestSession;
-
-    const timePerSession =
-      recordsApi.longestSessionMinutes != null
-        ? utils.formatDurationMinutes(recordsApi.longestSessionMinutes)
-        : fallback.records.timePerSession;
 
     const normalizedMissions = Array.isArray(api.missions)
       ? api.missions.map((mission, index) => {
           const targetValue = Math.max(1, utils.toNumber(mission?.targetValue, 1));
           const progressValue = Math.max(0, utils.toNumber(mission?.progressValue, 0));
-          const isCompleted = Boolean(mission?.isCompleted);
+          const done = Boolean(mission?.isCompleted);
           return {
             id: utils.safeText(mission?.code || `mission-${index}`, 80) || `mission-${index}`,
             title: utils.safeText(mission?.title || `Mission ${index + 1}`, 140),
-            progress: isCompleted ? 100 : utils.pct(progressValue, targetValue),
+            progress: done ? 100 : utils.pct(progressValue, targetValue),
             progressValue,
             targetValue,
             reward: utils.formatRewardText(mission),
-            done: isCompleted
+            done
           };
         })
       : fallback.missions;
 
     const normalized = {
       identity: {
-        displayName,
-        avatarText: utils.initialsFromText(displayName || email || "S"),
+        displayName: utils.getDisplayName(user),
+        avatarText: utils.initialsFromText(utils.getDisplayName(user) || utils.normalizeEmail(user?.email || "") || "S"),
         memberSince: utils.formatMonthYear(user?.created_at || user?.createdAt),
         status: utils.deriveStatus(levelCurrent, totalSessions)
       },
-
       level: {
         current: levelCurrent,
         name: utils.safeText(levelApi.name || "", 60) || utils.getLevelName(levelCurrent),
         xpCurrent,
         xpNextLevel,
-        xpTotal
+        xpTotal: Math.max(0, Math.floor(utils.toNumber(levelApi.xpTotal, xpCurrent)))
       },
-
       streak: {
         current: streakCurrent,
         best: streakBest,
-        deadlineText,
+        deadlineText: streakCurrent > 0
+          ? "Fais au moins une session validée cette semaine pour conserver ton streak."
+          : "Fais une session validée cette semaine pour lancer ton streak.",
         jokers: streakApi.jokers != null ? Math.max(0, Math.floor(utils.toNumber(streakApi.jokers, 0))) : 0,
-        status: streakStatus,
+        status: streakCurrent > 0 ? (lastValidatedAt ? "active" : "warning") : "broken",
         lastActivity: lastValidatedAt ? utils.formatLastActivity(lastValidatedAt) : "—",
         rhythm: streakCurrent >= 8 ? "Très bon" : streakCurrent >= 4 ? "Bon rythme" : "À lancer",
-        lastPeriodKey
+        lastPeriodKey: utils.safeText(streakApi.lastPeriodKey || "", 60)
       },
-
       singcoins: {
         balance,
         earned,
@@ -1428,71 +768,65 @@
           ? "Séance offerte débloquée"
           : "Séance offerte à 100 Singcoins"
       },
-
       stats: {
         totalSessions,
-        totalTime,
-        totalSongs,
-        lastSession,
+        totalTime: typeof statsApi.totalTime === "string" && utils.safeText(statsApi.totalTime)
+          ? utils.safeText(statsApi.totalTime, 40)
+          : (statsApi.totalTime != null ? utils.formatDurationMinutes(statsApi.totalTime) : fallback.stats.totalTime),
+        totalSongs: statsApi.totalSongs != null
+          ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSongs, 0)))
+          : fallback.stats.totalSongs,
+        lastSession: statsApi.lastSession ? utils.formatShortDate(statsApi.lastSession) : fallback.stats.lastSession,
         sessions_last_7_days: Math.max(0, utils.toNumber(statsApi.sessionsLast7Days, 0)),
         sessions_last_30_days: Math.max(0, utils.toNumber(statsApi.sessionsLast30Days, 0))
       },
-
       records: {
         bestStreak: recordsApi.bestStreak != null
           ? Math.max(0, Math.floor(utils.toNumber(recordsApi.bestStreak, 0)))
           : streakBest,
         activeWeek: fallback.records.activeWeek || "—",
-        biggestSession,
-        timePerSession
+        biggestSession: recordsApi.biggestSession != null
+          ? utils.formatBiggestSession(recordsApi.biggestSession)
+          : fallback.records.biggestSession,
+        timePerSession: recordsApi.longestSessionMinutes != null
+          ? utils.formatDurationMinutes(recordsApi.longestSessionMinutes)
+          : fallback.records.timePerSession
       },
-
       missions: normalizedMissions,
       badges: normalizeBadges(api.badges, fallback.badges)
     };
 
     normalized.records.activeWeek = utils.guessActiveWeek(normalized.stats);
-
     return normalized;
   }
 
   function buildData(user = {}) {
     const fallback = utils.deepClone(MOCK_GAMIFICATION);
-    const gamificationApi = user?.gamification && typeof user.gamification === "object"
-      ? user.gamification
-      : null;
+    const gamificationApi = user?.gamification && typeof user.gamification === "object" ? user.gamification : null;
 
     if (!gamificationApi) {
       const email = utils.normalizeEmail(user?.email || "");
       const displayName = utils.getDisplayName(user);
       const singcoins = Number.isFinite(Number(user?.singcoins)) ? Math.max(0, Math.floor(Number(user.singcoins))) : 0;
+      const sessionsCount = Number.isFinite(Number(user?.sessionsCount))
+        ? Math.max(0, Math.floor(Number(user.sessionsCount)))
+        : null;
 
       fallback.identity.displayName = displayName;
       fallback.identity.avatarText = utils.initialsFromText(displayName || email || "S");
       fallback.identity.memberSince = utils.formatMonthYear(user?.created_at || user?.createdAt);
       fallback.identity.status = utils.deriveStatus(fallback.level.current, user?.sessionsCount || fallback.stats.totalSessions);
-
       fallback.singcoins.balance = singcoins;
       fallback.singcoins.earned = Math.max(singcoins + Number(fallback.singcoins.used || 0), Number(fallback.singcoins.earned || 0));
       fallback.singcoins.nextReward = singcoins >= state.config.singcoinsGoal
         ? "Séance offerte débloquée"
         : "Séance offerte à 100 Singcoins";
-
-      const sessionsCount = Number.isFinite(Number(user?.sessionsCount))
-        ? Math.max(0, Math.floor(Number(user.sessionsCount)))
-        : null;
-
-      if (sessionsCount !== null) {
-        fallback.stats.totalSessions = sessionsCount;
-      }
-
+      if (sessionsCount !== null) fallback.stats.totalSessions = sessionsCount;
       fallback.badges = normalizeBadges([], BADGE_DEFINITIONS);
-
       return fallback;
     }
 
     const normalized = normalizeGamificationResponse(gamificationApi, user);
-
     return {
       ...fallback,
       ...normalized,
@@ -1503,7 +837,9 @@
       stats: { ...fallback.stats, ...normalized.stats },
       records: { ...fallback.records, ...normalized.records },
       missions: Array.isArray(normalized.missions) && normalized.missions.length ? normalized.missions : fallback.missions,
-      badges: Array.isArray(normalized.badges) && normalized.badges.length ? normalized.badges : normalizeBadges([], BADGE_DEFINITIONS)
+      badges: Array.isArray(normalized.badges) && normalized.badges.length
+        ? normalized.badges
+        : normalizeBadges([], BADGE_DEFINITIONS)
     };
   }
 
@@ -1803,18 +1139,10 @@
   }
 
   function renderSourceCards() {
-    const singcoinsEl = document.getElementById("gamif-singcoins-sources");
-    const xpEl = document.getElementById("gamif-xp-sources");
-
-    if (singcoinsEl) {
-      const items = [
-        { icon: "🎟", title: "Session réalisée", text: "Chaque session validée rapporte des Singcoins." },
-        { icon: "🏅", title: "Missions", text: "Les missions hebdomadaires peuvent donner un bonus de Singcoins." },
-        { icon: "✨", title: "Badges", text: "Débloquer un badge vous rapporte aussi des Singcoins." },
-        { icon: "🎁", title: "Récompenses", text: "Votre progression vous rapproche de la séance offerte." }
-      ];
-
-      singcoinsEl.innerHTML = items.map((item) => `
+    const renderList = (containerId, items) => {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      el.innerHTML = items.map((item) => `
         <div class="g-source-card">
           <div class="g-item" style="padding:0;border:none;background:transparent;">
             <span class="g-badge-icon">${utils.safeHtml(item.icon)}</span>
@@ -1825,55 +1153,45 @@
           </div>
         </div>
       `).join("");
-    }
+    };
 
-    if (xpEl) {
-      const items = [
-        { icon: "🎤", title: "Sessions réalisées", text: "Chaque session validée participe à votre progression XP." },
-        { icon: "🔥", title: "Régularité", text: "Entretenir votre streak hebdomadaire valorise votre profil." },
-        { icon: "✅", title: "Missions", text: "Les missions accomplies peuvent rapporter de l’XP." },
-        { icon: "🌟", title: "Progression", text: "Votre niveau augmente au fil de vos réservations et missions." }
-      ];
+    renderList("gamif-singcoins-sources", [
+      { icon: "🎟", title: "Session réalisée", text: "Chaque session validée rapporte des Singcoins." },
+      { icon: "🏅", title: "Missions", text: "Les missions hebdomadaires peuvent donner un bonus de Singcoins." },
+      { icon: "✨", title: "Badges", text: "Débloquer un badge vous rapporte aussi des Singcoins." },
+      { icon: "🎁", title: "Récompenses", text: "Votre progression vous rapproche de la séance offerte." }
+    ]);
 
-      xpEl.innerHTML = items.map((item) => `
-        <div class="g-source-card">
-          <div class="g-item" style="padding:0;border:none;background:transparent;">
-            <span class="g-badge-icon">${utils.safeHtml(item.icon)}</span>
-            <div class="g-item-content">
-              <strong style="color:#f9fafb;">${utils.safeHtml(item.title)}</strong>
-              <div class="g-soft">${utils.safeHtml(item.text)}</div>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
+    renderList("gamif-xp-sources", [
+      { icon: "🎤", title: "Sessions réalisées", text: "Chaque session validée participe à votre progression XP." },
+      { icon: "🔥", title: "Régularité", text: "Entretenir votre streak hebdomadaire valorise votre profil." },
+      { icon: "✅", title: "Missions", text: "Les missions accomplies peuvent rapporter de l’XP." },
+      { icon: "🌟", title: "Progression", text: "Votre niveau augmente au fil de vos réservations et missions." }
+    ]);
   }
 
   function renderIdentity(data, user) {
     const email = utils.normalizeEmail(user?.email || "");
     const displayName = data.identity.displayName || "Singbox Player";
 
-    const avatar = document.getElementById("gamif-avatar");
-    const displayNameEl = document.getElementById("gamif-display-name");
-    const emailLine = document.getElementById("gamif-email-line");
-    const memberSince = document.getElementById("gamif-member-since");
-    const levelPill = document.getElementById("gamif-level-pill");
-    const streakPill = document.getElementById("gamif-streak-pill");
-    const statusText = document.getElementById("gamif-status-text");
-    const statusSubline = document.getElementById("gamif-status-subline");
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
 
-    if (avatar) avatar.textContent = data.identity.avatarText || "S";
-    if (displayNameEl) displayNameEl.textContent = displayName;
-    if (emailLine) emailLine.textContent = `Email : ${email || "—"}`;
-    if (memberSince) memberSince.textContent = `Membre depuis ${data.identity.memberSince}`;
-    if (levelPill) levelPill.textContent = `Niveau ${data.level.name}`;
-    if (streakPill) streakPill.textContent = `Streak : ${data.streak.current}`;
-    if (statusText) statusText.textContent = data.identity.status;
-    if (statusSubline) {
-      statusSubline.textContent = email
+    setText("gamif-avatar", data.identity.avatarText || "S");
+    setText("gamif-display-name", displayName);
+    setText("gamif-email-line", `Email : ${email || "—"}`);
+    setText("gamif-member-since", `Membre depuis ${data.identity.memberSince}`);
+    setText("gamif-level-pill", `Niveau ${data.level.name}`);
+    setText("gamif-streak-pill", `Streak : ${data.streak.current}`);
+    setText("gamif-status-text", data.identity.status);
+    setText(
+      "gamif-status-subline",
+      email
         ? "Votre profil se renforce à chaque session validée et récompense débloquée."
-        : "Connectez-vous pour personnaliser votre profil et suivre votre progression.";
-    }
+        : "Connectez-vous pour personnaliser votre profil et suivre votre progression."
+    );
   }
 
   function renderSingcoins(data) {
@@ -1884,27 +1202,26 @@
     const progress = utils.pct(progressValue, state.config.singcoinsGoal);
     const remaining = Math.max(0, state.config.singcoinsGoal - balance);
 
-    const nextReward = document.getElementById("gamif-next-reward");
-    const balanceEl = document.getElementById("gamif-singcoins-balance");
-    const singcoinsValue = document.getElementById("gamif-singcoins-value");
-    const singcoinsFill = document.getElementById("gamif-singcoins-fill");
-    const singcoinsText = document.getElementById("gamif-singcoins-text");
-    const current = document.getElementById("gamif-singcoins-current");
-    const earnedEl = document.getElementById("gamif-singcoins-earned");
-    const usedEl = document.getElementById("gamif-singcoins-used");
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
 
-    if (nextReward) nextReward.textContent = `Prochaine récompense : ${data.singcoins.nextReward}`;
-    if (balanceEl) balanceEl.textContent = String(balance);
-    if (singcoinsValue) singcoinsValue.textContent = `${progressValue} / ${state.config.singcoinsGoal}`;
-    if (singcoinsFill) singcoinsFill.style.width = `${progress}%`;
-    if (singcoinsText) {
-      singcoinsText.textContent = balance >= state.config.singcoinsGoal
+    setText("gamif-next-reward", `Prochaine récompense : ${data.singcoins.nextReward}`);
+    setText("gamif-singcoins-balance", String(balance));
+    setText("gamif-singcoins-value", `${progressValue} / ${state.config.singcoinsGoal}`);
+    setText(
+      "gamif-singcoins-text",
+      balance >= state.config.singcoinsGoal
         ? "Bravo ! Votre palier principal est atteint."
-        : `Plus que ${remaining} Singcoins avant votre séance offerte.`;
-    }
-    if (current) current.textContent = String(balance);
-    if (earnedEl) earnedEl.textContent = String(earned);
-    if (usedEl) usedEl.textContent = String(used);
+        : `Plus que ${remaining} Singcoins avant votre séance offerte.`
+    );
+    setText("gamif-singcoins-current", String(balance));
+    setText("gamif-singcoins-earned", String(earned));
+    setText("gamif-singcoins-used", String(used));
+
+    const fill = document.getElementById("gamif-singcoins-fill");
+    if (fill) fill.style.width = `${progress}%`;
   }
 
   function renderLevel(data) {
@@ -1913,39 +1230,36 @@
     const progress = utils.pct(currentXp, nextXp);
     const remaining = Math.max(0, nextXp - currentXp);
 
-    const levelCurrent = document.getElementById("gamif-level-current");
-    const levelName = document.getElementById("gamif-level-name");
-    const xpCurrent = document.getElementById("gamif-xp-current");
-    const xpNext = document.getElementById("gamif-xp-next");
-    const xpFill = document.getElementById("gamif-xp-fill");
-    const xpText = document.getElementById("gamif-xp-text");
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
 
-    if (levelCurrent) levelCurrent.textContent = String(data.level.current);
-    if (levelName) levelName.textContent = data.level.name;
-    if (xpCurrent) xpCurrent.textContent = String(currentXp);
-    if (xpNext) xpNext.textContent = `${nextXp} XP`;
-    if (xpFill) xpFill.style.width = `${progress}%`;
-    if (xpText) xpText.textContent = `Plus que ${remaining} XP pour atteindre le niveau suivant.`;
+    setText("gamif-level-current", String(data.level.current));
+    setText("gamif-level-name", data.level.name);
+    setText("gamif-xp-current", String(currentXp));
+    setText("gamif-xp-next", `${nextXp} XP`);
+    setText("gamif-xp-text", `Plus que ${remaining} XP pour atteindre le niveau suivant.`);
+
+    const fill = document.getElementById("gamif-xp-fill");
+    if (fill) fill.style.width = `${progress}%`;
   }
 
   function renderStreak(data) {
-    const currentValue = document.getElementById("gamif-streak-current-value");
+    const setText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+
+    setText("gamif-streak-current-value", utils.formatWeeks(data.streak.current));
+    setText("gamif-streak-deadline", data.streak.deadlineText);
+    setText("gamif-streak-jokers", String(data.streak.jokers));
+    setText("gamif-streak-best", String(data.streak.best));
+    setText("gamif-streak-last-activity", data.streak.lastActivity);
+    setText("gamif-streak-status-text", getStatusText(data.streak.status));
+    setText("gamif-streak-joker-help", "Protège une absence si activé plus tard.");
+
     const status = document.getElementById("gamif-streak-status");
-    const statusText = document.getElementById("gamif-streak-status-text");
-    const deadline = document.getElementById("gamif-streak-deadline");
-    const jokers = document.getElementById("gamif-streak-jokers");
-    const best = document.getElementById("gamif-streak-best");
-    const lastActivity = document.getElementById("gamif-streak-last-activity");
-    const jokerHelp = document.getElementById("gamif-streak-joker-help");
-
-    if (currentValue) currentValue.textContent = utils.formatWeeks(data.streak.current);
-    if (deadline) deadline.textContent = data.streak.deadlineText;
-    if (jokers) jokers.textContent = String(data.streak.jokers);
-    if (best) best.textContent = String(data.streak.best);
-    if (lastActivity) lastActivity.textContent = data.streak.lastActivity;
-    if (statusText) statusText.textContent = getStatusText(data.streak.status);
-    if (jokerHelp) jokerHelp.textContent = "Protège une absence si activé plus tard.";
-
     if (status) {
       status.className = "g-streak-status";
       if (data.streak.status === "warning") status.classList.add("warning");
@@ -1959,12 +1273,6 @@
 
     el.innerHTML = data.missions.map((mission) => {
       const progress = utils.clamp(Number(mission.progress || 0), 0, 100);
-      const progressLabel = utils.computeMissionProgressLabel(
-        mission.progressValue,
-        mission.targetValue,
-        mission.done
-      );
-
       return `
         <div class="g-item">
           <span class="g-badge-icon">${mission.done ? "✓" : "🎯"}</span>
@@ -1972,7 +1280,7 @@
             <strong style="color:#f9fafb;">${utils.safeHtml(mission.title)}</strong>
             <div class="g-soft">Récompense : ${utils.safeHtml(mission.reward)}</div>
             <div class="g-mission-progress">
-              <div class="g-soft">${utils.safeHtml(progressLabel)}</div>
+              <div class="g-soft">${utils.safeHtml(utils.computeMissionProgressLabel(mission.progressValue, mission.targetValue, mission.done))}</div>
               <div class="g-mini-progress"><span style="width:${progress}%;"></span></div>
             </div>
           </div>
@@ -2025,7 +1333,6 @@
 
     el.innerHTML = data.badges.map((badge) => {
       const rewardText = utils.formatBadgeRewardText(badge);
-
       return `
         <div class="g-item ${badge.unlocked ? "" : "g-locked"}">
           <span class="g-badge-icon">${utils.safeHtml(badge.icon || "★")}</span>
@@ -2034,7 +1341,9 @@
             <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
             ${rewardText ? `<div class="g-soft" style="margin-top:6px;">${utils.safeHtml(rewardText)}</div>` : ""}
             <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
-            ${badge.date ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>` : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
+            ${badge.date
+              ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>`
+              : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
           </div>
         </div>
       `;
@@ -2045,8 +1354,7 @@
     const el = document.getElementById("gamif-pseudo-message");
     if (!el) return;
     el.textContent = message;
-    el.className = "g-message";
-    if (type) el.classList.add(type);
+    el.className = `g-message${type ? ` ${type}` : ""}`;
   }
 
   function setPseudoEditMode(isEditing) {
@@ -2075,12 +1383,8 @@
       const actionBtn = target.closest("[data-gamif-action]");
       if (actionBtn) {
         const action = actionBtn.getAttribute("data-gamif-action");
-        if (action === "reservations") utils.scrollTo(state.config.anchors.reservations);
-        if (action === "singcoins") utils.scrollTo(state.config.anchors.singcoins);
-        if (action === "level") utils.scrollTo(state.config.anchors.level);
-        if (action === "missions") utils.scrollTo(state.config.anchors.missions);
-        if (action === "streak") utils.scrollTo(state.config.anchors.streak);
-        if (action === "badges") utils.scrollTo(state.config.anchors.badges);
+        const anchor = state.config.anchors[action];
+        if (anchor) utils.scrollTo(anchor);
         return;
       }
 
@@ -2104,7 +1408,6 @@
 
       const email = utils.normalizeEmail(state.user?.email || "");
       const input = document.getElementById("gamif-pseudo-input");
-
       if (!(input instanceof HTMLInputElement)) return;
 
       if (!email) {
@@ -2128,8 +1431,9 @@
 
     state.root.addEventListener("input", (event) => {
       const target = event.target instanceof HTMLInputElement ? event.target : null;
-      if (!target || target.id !== "gamif-pseudo-input") return;
-      target.value = utils.sanitizePseudo(target.value);
+      if (target && target.id === "gamif-pseudo-input") {
+        target.value = utils.sanitizePseudo(target.value);
+      }
     });
 
     state.eventsBound = true;
@@ -2185,21 +1489,12 @@
   }
 
   function updateUser(user = {}) {
-    state.user = {
-      ...(state.user || {}),
-      ...user
-    };
-
+    state.user = { ...(state.user || {}), ...user };
     if (state.mounted) renderAll();
   }
 
   function renderLoggedOut() {
-    state.user = {
-      email: "",
-      singcoins: 0,
-      gamification: null
-    };
-
+    state.user = { email: "", singcoins: 0, gamification: null };
     if (state.mounted) renderAll();
   }
 
