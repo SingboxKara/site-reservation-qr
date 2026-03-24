@@ -46,19 +46,17 @@
       --sb-danger: #fecaca;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      min-height: 100vh;
     }
 
     a {
@@ -67,9 +65,9 @@
     }
 
     h1, h2, h3 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.03em;
       margin: 0;
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: .03em;
     }
 
     .container {
@@ -81,64 +79,60 @@
     .hidden-honeypot {
       position: absolute !important;
       left: -9999px !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
       width: 1px !important;
       height: 1px !important;
       overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
-    }
+    body.layout-loading #site-footer { visibility: hidden; }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
+    body.layout-ready #site-footer { visibility: visible; }
 
-    main {
-      padding: 9rem 0 5rem;
-    }
+    main { padding: 9rem 0 5rem; }
 
     .breadcrumb {
       max-width: 760px;
       margin: 0 auto 18px;
       font-size: 13px;
-      color: rgba(229, 231, 235, 0.78);
+      color: rgba(229,231,235,.78);
     }
 
-    .breadcrumb a {
-      color: rgba(249, 250, 251, 0.88);
-    }
+    .breadcrumb a { color: rgba(249,250,251,.88); }
 
     .breadcrumb a:hover,
-    .breadcrumb a:focus-visible {
+    .breadcrumb a:focus-visible,
+    .review-submit:hover,
+    .review-submit:focus-visible,
+    .review-status-button:hover,
+    .review-status-button:focus-visible {
       text-decoration: underline;
     }
 
     .review-page-header {
-      text-align: center;
       margin-bottom: 2rem;
+      text-align: center;
     }
 
     .review-page-header p {
-      color: var(--sb-text-muted);
       max-width: 700px;
-      margin: 0.75rem auto 0;
+      margin: .75rem auto 0;
       line-height: 1.6;
+      color: var(--sb-text-muted);
     }
 
     .review-form-card,
     .review-status-card {
       max-width: 760px;
       margin: 0 auto;
-      background: var(--sb-card);
-      border-radius: 24px;
       padding: 1.8rem;
       border: 1px solid var(--sb-border-soft);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+      border-radius: 24px;
+      background: var(--sb-card);
+      box-shadow: 0 18px 45px rgba(0,0,0,.75);
     }
 
     .review-status-card {
@@ -147,69 +141,68 @@
     }
 
     .review-status-card h2 {
-      font-size: 28px;
       margin-bottom: 10px;
+      font-size: 28px;
     }
 
-    .review-status-card p {
+    .review-status-card p,
+    .review-session-badge,
+    .review-info-box,
+    .review-checkbox-row label,
+    .review-form-field label {
       color: var(--sb-text-soft);
-      margin: 0;
+    }
+
+    .review-status-card p { margin: 0; }
+
+    .review-status-card-actions,
+    .review-form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .review-status-card-actions {
-      margin-top: 18px;
-      display: flex;
       justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      margin-top: 18px;
     }
 
-    .review-status-button {
+    .review-status-button,
+    .review-submit {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      border: none;
       border-radius: 999px;
-      padding: 11px 20px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
       font-weight: 700;
-      font-size: 14px;
-      border: none;
       cursor: pointer;
+    }
+
+    .review-status-button {
+      padding: 11px 20px;
+      font-size: 14px;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
     }
 
     .review-status-button--secondary {
       background: #111827;
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(148,163,184,.25);
     }
 
-    .review-session-badge {
-      max-width: 760px;
-      margin: 0 auto 1rem;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 18px;
-      padding: 1rem 1.1rem;
-      color: var(--sb-text-soft);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .review-session-badge strong {
-      color: #f9fafb;
-    }
-
+    .review-session-badge,
     .review-info-box {
       max-width: 760px;
       margin: 0 auto 1rem;
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 18px;
       padding: 1rem 1.1rem;
-      color: var(--sb-text-soft);
+      border: 1px solid rgba(148,163,184,.2);
+      border-radius: 18px;
+      background: rgba(15,23,42,.75);
       font-size: 13px;
       line-height: 1.6;
     }
+
+    .review-session-badge strong { color: #f9fafb; }
 
     .review-form-grid {
       display: grid;
@@ -217,108 +210,108 @@
       gap: 1rem;
     }
 
-    .review-form-field {
-      margin-bottom: 1rem;
-    }
+    .review-form-field { margin-bottom: 1rem; }
 
     .review-form-field label {
       display: block;
       margin-bottom: 6px;
       font-size: 13px;
-      color: var(--sb-text-soft);
     }
 
     .review-form-field input,
     .review-form-field textarea {
       width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(148,163,184,.4);
       border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
       background: #020617;
       color: #f9fafb;
-      padding: 12px 14px;
+      font: inherit;
       font-size: 14px;
-      font-family: inherit;
       outline: none;
     }
 
     .review-form-field input[readonly] {
-      opacity: 0.82;
+      opacity: .82;
       cursor: default;
     }
 
     .review-form-field textarea {
-      resize: vertical;
       min-height: 140px;
+      resize: vertical;
       line-height: 1.5;
     }
 
     .review-form-field input:focus,
     .review-form-field textarea:focus {
       border-color: var(--sb-red);
-      box-shadow:
-        0 0 0 1px rgba(201, 76, 53, 0.8),
-        0 0 20px rgba(201, 76, 53, 0.25);
+      box-shadow: 0 0 0 1px rgba(201,76,53,.8), 0 0 20px rgba(201,76,53,.25);
+    }
+
+    .review-helper,
+    .review-rating-text,
+    .review-character-count,
+    .review-form-loading,
+    .review-message {
+      color: var(--sb-text-muted);
     }
 
     .review-helper {
       margin-top: -2px;
       margin-bottom: 12px;
       font-size: 12px;
-      color: var(--sb-text-muted);
       line-height: 1.55;
     }
 
     .review-stars {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
       margin-top: 4px;
     }
 
     .review-star {
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: #020617;
-      color: #9ca3af;
       width: 46px;
       height: 46px;
+      border: 1px solid rgba(148,163,184,.4);
       border-radius: 14px;
-      cursor: pointer;
+      background: #020617;
+      color: #9ca3af;
       font-size: 22px;
-      transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
     }
 
     .review-star:hover,
     .review-star:focus-visible {
       transform: translateY(-1px);
-      border-color: rgba(249, 115, 22, 0.75);
+      border-color: rgba(249,115,22,.75);
       color: #fed7aa;
-      box-shadow: 0 0 20px rgba(249, 115, 22, 0.18);
+      box-shadow: 0 0 20px rgba(249,115,22,.18);
     }
 
     .review-star.is-active {
       color: #fbbf24;
-      border-color: rgba(251, 191, 36, 0.8);
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.14);
+      border-color: rgba(251,191,36,.8);
+      box-shadow: 0 0 20px rgba(251,191,36,.14);
     }
 
     .review-star:disabled {
-      opacity: 0.65;
+      opacity: .65;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
     .review-rating-text {
+      min-height: 1.2em;
       margin-top: 10px;
       font-size: 13px;
-      color: var(--sb-text-muted);
-      min-height: 1.2em;
     }
 
     .review-character-count {
       margin-top: 8px;
       font-size: 12px;
-      color: var(--sb-text-muted);
       text-align: right;
     }
 
@@ -326,8 +319,7 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin: .5rem 0;
     }
 
     .review-checkbox-row input[type="checkbox"] {
@@ -337,17 +329,14 @@
 
     .review-checkbox-row label {
       font-size: 13px;
-      color: var(--sb-text-soft);
       line-height: 1.5;
     }
 
     .review-form-actions {
-      display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 0.8rem;
+      margin-top: .8rem;
     }
 
     .review-back-link {
@@ -356,14 +345,9 @@
     }
 
     .review-submit {
-      border: none;
-      border-radius: 999px;
       padding: 12px 20px;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
+      transition: transform .15s ease, filter .15s ease;
     }
 
     .review-submit:hover,
@@ -373,7 +357,7 @@
     }
 
     .review-submit:disabled {
-      opacity: 0.7;
+      opacity: .7;
       cursor: not-allowed;
       transform: none;
       filter: none;
@@ -383,7 +367,6 @@
       min-height: 1.4em;
       margin-top: 1rem;
       font-size: 14px;
-      color: var(--sb-text-muted);
       line-height: 1.5;
     }
 
@@ -391,19 +374,12 @@
       max-width: 760px;
       margin: 0 auto 1rem;
       text-align: center;
-      color: var(--sb-text-muted);
       font-size: 14px;
     }
 
     @media (max-width: 768px) {
-      .review-form-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .review-stars {
-        gap: 6px;
-      }
-
+      .review-form-grid { grid-template-columns: minmax(0, 1fr); }
+      .review-stars { gap: 6px; }
       .review-star {
         width: 42px;
         height: 42px;
@@ -536,14 +512,10 @@
     let validatedReviewRequest = null;
     let validatedReservation = null;
 
-    function getEl(id) {
-      return document.getElementById(id);
-    }
+    const $ = (id) => document.getElementById(id);
 
     function getTokenFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token");
-      return String(token || "").trim();
+      return String(new URLSearchParams(window.location.search).get("token") || "").trim();
     }
 
     function removeTokenFromUrl() {
@@ -578,7 +550,6 @@
 
     function isValidEmail(email) {
       if (typeof email !== "string") return false;
-
       const value = email.trim();
       if (!value || value.includes(" ")) return false;
 
@@ -597,28 +568,23 @@
 
     function isValidFirstName(name) {
       if (typeof name !== "string") return false;
-
       const value = name.trim();
-      if (value.length < 2 || value.length > 60) return false;
-
-      return /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value);
+      return value.length >= 2 && value.length <= 60 && /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value);
     }
 
     function setReviewMessage(message, color) {
-      const el = getEl("review-message");
+      const el = $("review-message");
       if (!el) return;
       el.textContent = message;
       el.style.color = color;
     }
 
     function setReviewSubmitting(isSubmitting) {
-      const btn = getEl("review-submit");
+      const btn = $("review-submit");
       if (!btn) return;
 
       if (isSubmitting) {
-        if (!btn.dataset.originalText) {
-          btn.dataset.originalText = btn.textContent;
-        }
+        if (!btn.dataset.originalText) btn.dataset.originalText = btn.textContent;
         btn.disabled = true;
         btn.textContent = "Envoi...";
         return;
@@ -628,11 +594,17 @@
       btn.textContent = btn.dataset.originalText || "Envoyer mon avis";
     }
 
+    function toggleHidden(ids, hidden) {
+      ids.forEach((id) => {
+        const el = $(id);
+        if (el) el.hidden = hidden;
+      });
+    }
+
     function initRatingSystem() {
       const stars = Array.from(document.querySelectorAll(".review-star"));
-      const ratingInput = getEl("review-rating");
-      const ratingText = getEl("review-rating-text");
-
+      const ratingInput = $("review-rating");
+      const ratingText = $("review-rating-text");
       if (!stars.length || !ratingInput || !ratingText) return;
 
       const ratingLabels = {
@@ -646,7 +618,7 @@
       function updateStars(value) {
         const numericValue = Number(value) || 0;
 
-        stars.forEach(function (star) {
+        stars.forEach((star) => {
           const starValue = Number(star.dataset.value);
           const isActive = starValue <= numericValue;
           star.classList.toggle("is-active", isActive);
@@ -657,17 +629,16 @@
         ratingText.textContent = numericValue ? ratingLabels[numericValue] : "Choisissez une note";
       }
 
-      stars.forEach(function (star) {
-        star.addEventListener("click", function () {
-          if (star.disabled) return;
-          updateStars(star.dataset.value);
-        });
+      stars.forEach((star) => {
+        const setValue = () => {
+          if (!star.disabled) updateStars(star.dataset.value);
+        };
 
-        star.addEventListener("keydown", function (event) {
-          if (star.disabled) return;
+        star.addEventListener("click", setValue);
+        star.addEventListener("keydown", (event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            updateStars(star.dataset.value);
+            setValue();
           }
         });
       });
@@ -676,15 +647,13 @@
     }
 
     function initCharacterCounter() {
-      const commentInput = getEl("review-comment");
-      const counter = getEl("review-character-count");
-
+      const commentInput = $("review-comment");
+      const counter = $("review-character-count");
       if (!commentInput || !counter) return;
 
-      function updateCounter() {
-        const currentLength = commentInput.value.length;
-        counter.textContent = currentLength + " / 600";
-      }
+      const updateCounter = () => {
+        counter.textContent = commentInput.value.length + " / 600";
+      };
 
       commentInput.addEventListener("input", updateCounter);
       updateCounter();
@@ -692,54 +661,31 @@
 
     function normalizeFirstName(name) {
       const trimmed = String(name || "").trim().replace(/\s+/g, " ");
-      if (!trimmed) return "";
-      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+      return trimmed ? trimmed.charAt(0).toUpperCase() + trimmed.slice(1) : "";
     }
 
     function showLoadingState() {
-      const loadingEl = getEl("review-loading");
-      const formCard = getEl("review-form-card");
-      const infoBox = getEl("review-info-box");
-      const sessionBadge = getEl("review-session-badge");
-      const statusCard = getEl("review-status-card");
-
-      if (loadingEl) loadingEl.hidden = false;
-      if (formCard) formCard.hidden = true;
-      if (infoBox) infoBox.hidden = true;
-      if (sessionBadge) sessionBadge.hidden = true;
-      if (statusCard) statusCard.hidden = true;
+      toggleHidden(["review-loading"], false);
+      toggleHidden(["review-form-card", "review-info-box", "review-session-badge", "review-status-card"], true);
     }
 
     function showStatusCard(title, text) {
-      const loadingEl = getEl("review-loading");
-      const formCard = getEl("review-form-card");
-      const infoBox = getEl("review-info-box");
-      const sessionBadge = getEl("review-session-badge");
-      const statusCard = getEl("review-status-card");
-      const statusTitle = getEl("review-status-title");
-      const statusText = getEl("review-status-text");
+      toggleHidden(["review-loading", "review-form-card", "review-info-box", "review-session-badge"], true);
+      toggleHidden(["review-status-card"], false);
 
-      if (loadingEl) loadingEl.hidden = true;
-      if (formCard) formCard.hidden = true;
-      if (infoBox) infoBox.hidden = true;
-      if (sessionBadge) sessionBadge.hidden = true;
-      if (statusCard) statusCard.hidden = false;
+      const statusTitle = $("review-status-title");
+      const statusText = $("review-status-text");
       if (statusTitle) statusTitle.textContent = title;
       if (statusText) statusText.textContent = text;
     }
 
     function showValidatedForm() {
-      const loadingEl = getEl("review-loading");
-      const formCard = getEl("review-form-card");
-      const infoBox = getEl("review-info-box");
-
-      if (loadingEl) loadingEl.hidden = true;
-      if (formCard) formCard.hidden = false;
-      if (infoBox) infoBox.hidden = false;
+      toggleHidden(["review-loading"], true);
+      toggleHidden(["review-form-card", "review-info-box"], false);
     }
 
     function renderSessionBadge() {
-      const badge = getEl("review-session-badge");
+      const badge = $("review-session-badge");
       if (!badge || !validatedReservation) return;
 
       const startText = formatDateFr(validatedReservation.start_time);
@@ -754,14 +700,12 @@
     }
 
     function fillValidatedUserFields() {
-      const nameInput = getEl("review-name");
-      const emailInput = getEl("review-email");
-      const tokenInput = getEl("review-token");
-      const requestEmailInput = getEl("review-request-email");
+      const nameInput = $("review-name");
+      const emailInput = $("review-email");
+      const tokenInput = $("review-token");
+      const requestEmailInput = $("review-request-email");
 
-      if (!nameInput || !emailInput || !tokenInput || !requestEmailInput || !validatedReviewRequest) {
-        return;
-      }
+      if (!nameInput || !emailInput || !tokenInput || !requestEmailInput || !validatedReviewRequest) return;
 
       const safeName =
         typeof validatedReviewRequest.name === "string" && validatedReviewRequest.name.trim()
@@ -799,15 +743,11 @@
           BACKEND_BASE_URL + "/api/review-request/validate?token=" + encodeURIComponent(token),
           {
             method: "GET",
-            headers: {
-              "Accept": "application/json"
-            }
+            headers: { Accept: "application/json" }
           }
         );
 
-        const data = await response.json().catch(function () {
-          return {};
-        });
+        const data = await response.json().catch(() => ({}));
 
         if (!response.ok || !data.valid) {
           showStatusCard(
@@ -840,14 +780,12 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          Accept: "application/json"
         },
         body: JSON.stringify(payload)
       });
 
-      const data = await response.json().catch(function () {
-        return {};
-      });
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(data && data.error ? data.error : "Impossible d'envoyer l'avis pour le moment.");
@@ -857,73 +795,56 @@
     }
 
     function resetStarsAndCounter() {
-      const stars = document.querySelectorAll(".review-star");
-      stars.forEach(function (star) {
+      document.querySelectorAll(".review-star").forEach((star) => {
         star.classList.remove("is-active");
         star.setAttribute("aria-checked", "false");
       });
 
-      const ratingInput = getEl("review-rating");
+      const ratingInput = $("review-rating");
+      const ratingText = $("review-rating-text");
+      const counter = $("review-character-count");
+
       if (ratingInput) ratingInput.value = "";
-
-      const ratingText = getEl("review-rating-text");
       if (ratingText) ratingText.textContent = "Choisissez une note";
-
-      const counter = getEl("review-character-count");
       if (counter) counter.textContent = "0 / 600";
     }
 
     function lockReviewFormAfterSuccess() {
-      const form = getEl("review-form");
-      const commentInput = getEl("review-comment");
-      const consentInput = getEl("review-consent");
-      const submitBtn = getEl("review-submit");
-      const stars = document.querySelectorAll(".review-star");
+      const form = $("review-form");
+      const commentInput = $("review-comment");
+      const consentInput = $("review-consent");
+      const submitBtn = $("review-submit");
 
       if (commentInput) commentInput.disabled = true;
       if (consentInput) consentInput.disabled = true;
       if (submitBtn) submitBtn.disabled = true;
 
-      stars.forEach(function (star) {
+      document.querySelectorAll(".review-star").forEach((star) => {
         star.disabled = true;
       });
 
-      if (form) {
-        form.dataset.submitted = "true";
-      }
+      if (form) form.dataset.submitted = "true";
     }
 
     function initReviewForm() {
-      const form = getEl("review-form");
-      const nameInput = getEl("review-name");
-      const emailInput = getEl("review-email");
-      const ratingInput = getEl("review-rating");
-      const commentInput = getEl("review-comment");
-      const consentInput = getEl("review-consent");
-      const honeypotInput = getEl("review-company");
-      const tokenInput = getEl("review-token");
-      const requestEmailInput = getEl("review-request-email");
+      const form = $("review-form");
+      const nameInput = $("review-name");
+      const emailInput = $("review-email");
+      const ratingInput = $("review-rating");
+      const commentInput = $("review-comment");
+      const consentInput = $("review-consent");
+      const honeypotInput = $("review-company");
+      const tokenInput = $("review-token");
+      const requestEmailInput = $("review-request-email");
 
       if (
-        !form ||
-        !nameInput ||
-        !emailInput ||
-        !ratingInput ||
-        !commentInput ||
-        !consentInput ||
-        !honeypotInput ||
-        !tokenInput ||
-        !requestEmailInput
-      ) {
-        return;
-      }
+        !form || !nameInput || !emailInput || !ratingInput || !commentInput ||
+        !consentInput || !honeypotInput || !tokenInput || !requestEmailInput
+      ) return;
 
-      form.addEventListener("submit", async function (event) {
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
-
-        if (form.dataset.submitted === "true") {
-          return;
-        }
+        if (form.dataset.submitted === "true") return;
 
         const token = tokenInput.value.trim();
         const name = normalizeFirstName(nameInput.value);
@@ -935,54 +856,31 @@
         const honeypotValue = honeypotInput.value.trim();
         const elapsedSeconds = (Date.now() - formStartTime) / 1000;
 
-        if (!token) {
-          setReviewMessage("Lien d’avis invalide.", "#fecaca");
-          return;
-        }
-
-        if (honeypotValue) {
-          setReviewMessage("Envoi refusé.", "#fecaca");
-          return;
-        }
-
+        if (!token) return setReviewMessage("Lien d’avis invalide.", "#fecaca");
+        if (honeypotValue) return setReviewMessage("Envoi refusé.", "#fecaca");
         if (elapsedSeconds < 3) {
-          setReviewMessage("Veuillez patienter quelques secondes avant d’envoyer votre avis.", "#fecaca");
-          return;
+          return setReviewMessage("Veuillez patienter quelques secondes avant d’envoyer votre avis.", "#fecaca");
         }
-
         if (!name || !email || !rating || !comment) {
-          setReviewMessage("Merci de remplir tous les champs.", "#fecaca");
-          return;
+          return setReviewMessage("Merci de remplir tous les champs.", "#fecaca");
         }
-
         if (!isValidFirstName(name)) {
-          setReviewMessage("Merci d’entrer un prénom valide.", "#fecaca");
-          return;
+          return setReviewMessage("Merci d’entrer un prénom valide.", "#fecaca");
         }
-
         if (!isValidEmail(email)) {
-          setReviewMessage("Merci d'entrer une adresse e-mail valide.", "#fecaca");
-          return;
+          return setReviewMessage("Merci d'entrer une adresse e-mail valide.", "#fecaca");
         }
-
         if (expectedEmail && email !== expectedEmail) {
-          setReviewMessage("Cette adresse e-mail ne correspond pas à la demande d’avis.", "#fecaca");
-          return;
+          return setReviewMessage("Cette adresse e-mail ne correspond pas à la demande d’avis.", "#fecaca");
         }
-
         if (comment.length < 10) {
-          setReviewMessage("Votre avis doit contenir au moins 10 caractères.", "#fecaca");
-          return;
+          return setReviewMessage("Votre avis doit contenir au moins 10 caractères.", "#fecaca");
         }
-
         if (rating < 1 || rating > 5) {
-          setReviewMessage("La note doit être comprise entre 1 et 5.", "#fecaca");
-          return;
+          return setReviewMessage("La note doit être comprise entre 1 et 5.", "#fecaca");
         }
-
         if (!consent) {
-          setReviewMessage("Merci d’accepter la publication de votre avis après modération.", "#fecaca");
-          return;
+          return setReviewMessage("Merci d’accepter la publication de votre avis après modération.", "#fecaca");
         }
 
         setReviewSubmitting(true);
@@ -990,11 +888,11 @@
 
         try {
           const result = await submitReviewToBackend({
-            token: token,
+            token,
             firstName: name,
-            email: email,
-            rating: rating,
-            comment: comment,
+            email,
+            rating,
+            comment,
             consentPublication: consent,
             website: honeypotValue
           });
@@ -1023,14 +921,12 @@
             "#fecaca"
           );
         } finally {
-          if (form.dataset.submitted !== "true") {
-            setReviewSubmitting(false);
-          }
+          if (form.dataset.submitted !== "true") setReviewSubmitting(false);
         }
       });
     }
 
-    document.addEventListener("DOMContentLoaded", async function () {
+    document.addEventListener("DOMContentLoaded", async () => {
       formStartTime = Date.now();
       initRatingSystem();
       initCharacterCounter();
