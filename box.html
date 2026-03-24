@@ -5,7 +5,6 @@
   <title>Box karaoké privatives à Toulouse | Singbox</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SEO -->
   <meta
     name="description"
     content="Découvrez les box karaoké privatives Singbox à Toulouse : Nuit étoilée et Ambiance Sunset. Salons de karaoké insonorisés jusqu’à 6 personnes, réservation en ligne, matériel premium, 4 micros et accès autonome par QR code."
@@ -13,14 +12,12 @@
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://www.singbox.fr/box.html" />
 
-  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#050814" />
 
-  <!-- Open Graph / Réseaux sociaux -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Box karaoké privatives à Toulouse | Singbox" />
   <meta
@@ -32,7 +29,6 @@
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:url" content="https://www.singbox.fr/box.html" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Box karaoké privatives à Toulouse | Singbox" />
   <meta
@@ -41,7 +37,6 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-boxes.jpg" />
 
-  <!-- Schema.org : liste de box karaoké -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -94,7 +89,6 @@
   }
   </script>
 
-  <!-- Données structurées LocalBusiness -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -133,7 +127,6 @@
   }
   </script>
 
-  <!-- Données structurées WebPage -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -150,7 +143,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -158,133 +150,212 @@
     rel="stylesheet"
   />
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="css/global.css" />
 
-  <!-- CSS SPÉCIFIQUE À LA PAGE -->
   <style>
-    /* ================== HERO / INTRO LES BOX ================== */
+    #concept-intro,
+    .boxes-section,
+    .how-it-works,
+    .boxes-info,
+    .boxes-extra {
+      background: #030712;
+    }
 
     #concept-intro {
       position: relative;
+      overflow: hidden;
       padding: 12rem 0 80px;
       text-align: center;
       background:
-        radial-gradient(circle at 30% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(30, 64, 175, 0.5), transparent 55%),
-        rgba(5, 8, 20, 0.92);
-      overflow: hidden;
+        radial-gradient(circle at 30% 0%, rgba(201,76,53,.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(30,64,175,.5), transparent 55%),
+        rgba(5,8,20,.92);
+    }
+
+    #concept-intro::before,
+    #concept-intro::after {
+      position: absolute;
+      pointer-events: none;
+      color: rgba(148,163,184,.1);
     }
 
     #concept-intro::before {
       content: "♫";
-      position: absolute;
       top: 14%;
       left: 12%;
       font-size: 32px;
-      color: rgba(148, 163, 184, 0.12);
-      pointer-events: none;
+      color: rgba(148,163,184,.12);
     }
 
     #concept-intro::after {
       content: "✦";
-      position: absolute;
-      bottom: 12%;
       right: 10%;
+      bottom: 12%;
       font-size: 30px;
-      color: rgba(148, 163, 184, 0.1);
-      pointer-events: none;
     }
 
-    .concept-intro-inner {
-      max-width: 760px;
+    .concept-intro-inner,
+    .how-it-works-inner,
+    .boxes-info-inner,
+    .boxes-extra-inner {
+      max-width: var(--sb-container-width);
       margin: 0 auto;
       padding: 0 24px;
     }
 
+    .concept-intro-inner,
+    .section-intro {
+      max-width: 760px;
+    }
+
+    .concept-intro-inner {
+      margin: 0 auto;
+    }
+
     .concept-eyebrow {
+      margin-bottom: 10px;
       font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: .18em;
       color: #9ca3af;
-      margin-bottom: 10px;
     }
 
     .concept-title {
-      font-size: 32px;
       margin-bottom: 14px;
+      font-size: 32px;
+    }
+
+    .concept-intro-text,
+    .section-intro p,
+    .step-card p,
+    .box-card-description,
+    .boxes-extra-inner p,
+    .boxes-faq p,
+    .info-card li {
+      line-height: 1.6;
+      color: var(--sb-text-muted);
     }
 
     .concept-intro-text {
-      font-size: 15px;
-      color: rgba(249, 250, 251, 0.85);
-      line-height: 1.7;
       margin-bottom: 24px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(249,250,251,.85);
+    }
+
+    .concept-intro-cta-row,
+    .boxes-bottom-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .concept-intro-cta-row {
-      display: flex;
       justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
 
     .hero-cta,
-    .hero-secondary-cta {
+    .hero-secondary-cta,
+    .bottom-cta-primary,
+    .bottom-cta-secondary,
+    .box-card-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 46px;
-      padding: 0.85rem 1.5rem;
+      min-height: 44px;
       border-radius: 999px;
       text-decoration: none;
       font-weight: 600;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
     }
 
-    .hero-cta {
+    .hero-cta,
+    .bottom-cta-primary,
+    .box-card-button {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #f9fafb;
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+    }
+
+    .hero-cta,
+    .bottom-cta-primary {
+      min-height: 46px;
+      padding: .85rem 1.5rem;
+    }
+
+    .hero-secondary-cta,
+    .bottom-cta-secondary {
+      min-height: 46px;
+      padding: .85rem 1.45rem;
+      color: #f9fafb;
+      border: 1px solid rgba(148,163,184,.28);
     }
 
     .hero-secondary-cta {
-      background: rgba(15, 23, 42, 0.75);
-      color: #f9fafb;
-      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15,23,42,.75);
+      border-color: rgba(148,163,184,.3);
+    }
+
+    .bottom-cta-secondary {
+      background: transparent;
     }
 
     .hero-cta:hover,
     .hero-cta:focus-visible,
     .hero-secondary-cta:hover,
-    .hero-secondary-cta:focus-visible {
+    .hero-secondary-cta:focus-visible,
+    .bottom-cta-primary:hover,
+    .bottom-cta-primary:focus-visible,
+    .bottom-cta-secondary:hover,
+    .bottom-cta-secondary:focus-visible,
+    .box-card-button:hover,
+    .box-card-button:focus-visible {
       transform: translateY(-1px);
-      filter: brightness(1.04);
+      filter: brightness(1.05);
     }
 
-    /* ----------- SECTION BOX (cartes) ----------- */
     .boxes-section {
-      padding: 5rem 0 5rem;
+      padding: 5rem 0;
       background:
-        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.12), transparent 55%),
-        radial-gradient(circle at 100% 0%, rgba(201, 76, 53, 0.22), transparent 55%),
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,.12), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(201,76,53,.22), transparent 55%),
         #030712;
     }
 
-    .boxes-grid {
+    .boxes-grid,
+    .steps-grid,
+    .info-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .boxes-grid {
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 2rem;
     }
 
+    .steps-grid {
+      grid-template-columns: repeat(4, minmax(0,1fr));
+    }
+
+    .info-grid {
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+
+    .box-card,
+    .step-card,
+    .info-card {
+      border-radius: 20px;
+      border: 1px solid rgba(148,163,184,.2);
+    }
+
     .box-card {
-      background: var(--sb-card);
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.85);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      border-radius: 24px;
+      border-color: rgba(148,163,184,.25);
+      background: var(--sb-card);
+      box-shadow: 0 20px 55px rgba(0,0,0,.85);
     }
 
     .box-card-media {
@@ -294,10 +365,10 @@
     }
 
     .box-card-media img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
       transform: scale(1.02);
     }
 
@@ -305,60 +376,69 @@
       position: absolute;
       top: 14px;
       left: 14px;
-      background: rgba(2, 6, 23, 0.88);
-      border-radius: 999px;
       padding: 6px 12px;
-      border: 1px solid rgba(249, 250, 251, 0.16);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(249,250,251,.16);
+      border-radius: 999px;
+      background: rgba(2,6,23,.88);
+      box-shadow: 0 12px 30px rgba(0,0,0,.9);
     }
 
     .box-badge-capacity {
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: #f9fafb;
     }
 
     .box-card-body {
-      padding: 1.4rem 1.6rem 1.6rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
       height: 100%;
+      padding: 1.4rem 1.6rem 1.6rem;
     }
 
     .box-card-title {
       margin: 0;
       font-family: "League Spartan", system-ui, sans-serif;
       font-size: 20px;
-      letter-spacing: 0.06em;
+      letter-spacing: .06em;
+    }
+
+    .box-card-features,
+    .box-card-extra {
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .box-card-features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem 1.5rem;
+      gap: .75rem 1.5rem;
       font-size: 13px;
+    }
+
+    .box-card-extra {
+      gap: 8px;
+      margin-top: 2px;
     }
 
     .box-feature {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: .35rem;
       color: #e5e7eb;
     }
 
     .box-feature-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.18);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
       flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.18);
+      font-size: 12px;
     }
 
     .box-feature-icon[aria-hidden="true"] {
@@ -372,157 +452,113 @@
     .box-card-description {
       margin: 0;
       font-size: 13px;
-      color: var(--sb-text-muted);
       line-height: 1.6;
-    }
-
-    .box-card-extra {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 2px;
     }
 
     .box-tag {
       display: inline-flex;
       align-items: center;
       min-height: 30px;
-      padding: 0.4rem 0.85rem;
+      padding: .4rem .85rem;
+      border: 1px solid rgba(148,163,184,.16);
       border-radius: 999px;
+      background: rgba(148,163,184,.12);
+      color: #f9fafb;
       font-size: 12px;
       font-weight: 600;
-      color: #f9fafb;
-      background: rgba(148, 163, 184, 0.12);
-      border: 1px solid rgba(148, 163, 184, 0.16);
     }
 
     .box-card-button {
       align-self: flex-start;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      margin-top: auto;
       min-height: 44px;
-      text-decoration: none;
+      padding: .7rem 1.8rem;
       border: none;
-      border-radius: 999px;
-      padding: 0.7rem 1.8rem;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
-      font-weight: 600;
       font-size: 14px;
       cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.15),
-        0 18px 42px rgba(0, 0, 0, 0.95);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      margin-top: auto;
+      box-shadow: 0 0 0 1px rgba(248,250,251,.15), 0 18px 42px rgba(0,0,0,.95);
     }
 
     .box-card-button:hover,
     .box-card-button:focus-visible {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.22),
-        0 24px 60px rgba(0, 0, 0, 1);
+      box-shadow: 0 0 0 1px rgba(248,250,251,.22), 0 24px 60px rgba(0,0,0,1);
     }
 
-    /* ----------- COMMENT ÇA MARCHE ----------- */
     .how-it-works {
       padding: 0 0 5rem;
-      background: #030712;
-    }
-
-    .how-it-works-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
     }
 
     .section-intro {
-      max-width: 760px;
       margin-bottom: 26px;
+    }
+
+    .section-intro h2,
+    .boxes-extra-inner h2 {
+      margin-bottom: 10px;
     }
 
     .section-intro h2 {
       font-size: 28px;
-      margin-bottom: 10px;
     }
 
-    .section-intro p {
+    .section-intro p,
+    .boxes-extra-inner p,
+    .boxes-faq p {
+      margin: 0;
       font-size: 14px;
       line-height: 1.7;
-      color: var(--sb-text-muted);
-      margin: 0;
     }
 
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1rem;
+    .step-card,
+    .info-card {
+      padding: 1.35rem;
+      background: rgba(15,23,42,.82);
     }
 
     .step-card {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 20px;
-      padding: 1.35rem;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      background: rgba(15,23,42,.85);
+      box-shadow: 0 18px 40px rgba(0,0,0,.35);
     }
 
     .step-number {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 14px;
+      border-radius: 999px;
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       color: #fff;
       font-weight: 700;
-      margin-bottom: 14px;
+    }
+
+    .step-card h3,
+    .info-card h3,
+    .boxes-faq h3 {
+      margin: 0 0 8px;
     }
 
     .step-card h3 {
       font-size: 16px;
-      margin: 0 0 8px;
     }
 
     .step-card p {
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      line-height: 1.6;
       margin: 0;
+      font-size: 14px;
     }
 
-    /* ----------- INFOS PRATIQUES ----------- */
     .boxes-info {
       padding: 0 0 4.5rem;
-      background: #030712;
-    }
-
-    .boxes-info-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
     }
 
     .info-card {
-      background: rgba(15, 23, 42, 0.82);
       border-radius: 20px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      padding: 1.35rem;
     }
 
     .info-card h3 {
+      margin-bottom: 12px;
       font-size: 17px;
-      margin: 0 0 12px;
     }
 
     .info-card ul {
@@ -533,70 +569,16 @@
 
     .info-card li {
       margin-bottom: 10px;
-      line-height: 1.6;
       font-size: 14px;
-    }
-
-    /* ----------- CTA BAS DE PAGE ----------- */
-    .boxes-bottom-cta {
-      margin-top: 28px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .bottom-cta-primary,
-    .bottom-cta-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0.85rem 1.45rem;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: transform 0.15s ease, filter 0.15s ease;
-    }
-
-    .bottom-cta-primary {
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #fff;
-    }
-
-    .bottom-cta-secondary {
-      background: transparent;
-      color: #f9fafb;
-      border: 1px solid rgba(148, 163, 184, 0.28);
-    }
-
-    .bottom-cta-primary:hover,
-    .bottom-cta-primary:focus-visible,
-    .bottom-cta-secondary:hover,
-    .bottom-cta-secondary:focus-visible {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
+      line-height: 1.6;
     }
 
     .boxes-extra {
       padding: 3rem 0 4rem;
-      background: #030712;
-    }
-
-    .boxes-extra-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
     }
 
     .boxes-extra-inner h2 {
       font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .boxes-extra-inner p {
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      line-height: 1.7;
     }
 
     .boxes-faq {
@@ -604,15 +586,12 @@
     }
 
     .boxes-faq h3 {
-      font-size: 15px;
       margin: 14px 0 4px;
+      font-size: 15px;
     }
 
-    .boxes-faq p {
-      font-size: 14px;
-      margin: 0;
-      color: var(--sb-text-muted);
-      line-height: 1.7;
+    .boxes-bottom-cta {
+      margin-top: 28px;
     }
 
     .newsletter-row input[aria-invalid="true"] {
@@ -621,9 +600,9 @@
     }
 
     #newsletter-submit[disabled] {
-      opacity: 0.65;
+      opacity: .65;
       cursor: not-allowed;
-      filter: grayscale(0.1);
+      filter: grayscale(.1);
     }
 
     #newsletter-submit.is-loading {
@@ -640,10 +619,9 @@
       visibility: visible;
     }
 
-    /* ---------- RESPONSIVE BLOCS ---------- */
     @media (max-width: 1100px) {
       .steps-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0,1fr));
       }
 
       .info-grid {
@@ -657,7 +635,7 @@
       }
 
       .boxes-grid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: minmax(0,1fr);
       }
     }
 
@@ -685,7 +663,6 @@
 <body>
   <div id="site-header"></div>
 
-  <!-- ---------- HERO / INTRO LES BOX ---------- -->
   <section id="concept-intro">
     <div class="concept-intro-inner">
       <p class="concept-eyebrow">Box karaoké privatives à Toulouse</p>
@@ -703,11 +680,9 @@
     </div>
   </section>
 
-  <!-- ---------- SECTION LISTE DES BOX (cartes) ---------- -->
   <section class="boxes-section">
     <div class="container">
       <div class="boxes-grid">
-        <!-- Box 1 : Nuit étoilée -->
         <article class="box-card">
           <div class="box-card-media">
             <img
@@ -768,7 +743,6 @@
           </div>
         </article>
 
-        <!-- Box 2 : Ambiance Sunset -->
         <article class="box-card">
           <div class="box-card-media">
             <img
@@ -832,7 +806,6 @@
     </div>
   </section>
 
-  <!-- ---------- COMMENT ÇA MARCHE ---------- -->
   <section class="how-it-works" id="comment-ca-marche">
     <div class="how-it-works-inner">
       <div class="section-intro">
@@ -880,7 +853,6 @@
     </div>
   </section>
 
-  <!-- ---------- INFOS PRATIQUES ---------- -->
   <section class="boxes-info">
     <div class="boxes-info-inner">
       <div class="section-intro">
@@ -925,7 +897,6 @@
     </div>
   </section>
 
-  <!-- ---------- TEXTE SEO & FAQ ---------- -->
   <section class="boxes-extra">
     <div class="boxes-extra-inner">
       <h2>Quelle box karaoké choisir pour votre soirée à Toulouse ?</h2>
@@ -982,7 +953,6 @@
 
   <div id="site-footer"></div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/layout.js"></script>
 </body>
