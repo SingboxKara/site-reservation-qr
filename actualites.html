@@ -5,25 +5,17 @@
   <title>Singbox - Actualités & nouveautés | Karaoké box privatif à Toulouse</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- META DESCRIPTION (SEO) -->
   <meta
     name="description"
     content="Découvrez toutes les actualités Singbox : nouveautés, coulisses, travaux, playlists, promos et idées de soirées autour du premier karaoké box privatif automatique de Toulouse et de France. Suivez l’aventure et préparez vos prochaines soirées karaoké."
   />
-
-  <!-- KEYWORDS -->
   <meta
     name="keywords"
     content="karaoké box Toulouse, actualités Singbox, nouveautés karaoké, playlist karaoké, soirées karaoké Toulouse, karaoké privatif, EVJF Toulouse, EVG Toulouse, activités Toulouse"
   />
-
-  <!-- CANONICAL -->
   <link rel="canonical" href="https://www.singbox.fr/actualites" />
-
-  <!-- FAVICON -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- OPEN GRAPH -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Actualités Singbox – Nouveautés & coulisses du karaoké box à Toulouse" />
   <meta
@@ -34,7 +26,6 @@
   <meta property="og:url" content="https://www.singbox.fr/actualites" />
   <meta property="og:site_name" content="Singbox" />
 
-  <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Actualités Singbox – Nouveautés & coulisses à Toulouse" />
   <meta
@@ -43,7 +34,6 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/actualites-preview.png" />
 
-  <!-- STRUCTURED DATA : BLOG -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -62,7 +52,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -70,556 +59,381 @@
     rel="stylesheet"
   />
 
-  <!-- CSS GLOBAL -->
   <link rel="stylesheet" href="css/global.css" />
 
-  <!-- CSS PAGE ACTUALITÉS -->
   <style>
-    /* ---------- INTRO ---------- */
+    #news-intro,
+    #news-list,
+    #news-cta { position: relative; overflow: hidden; background: #050814; }
+
     #news-intro {
-      position: relative;
       padding: 12rem 0 40px;
       background:
-        radial-gradient(circle at 25% 0%, rgba(201, 76, 53, 0.35), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.45), transparent 60%),
+        radial-gradient(circle at 25% 0%, rgba(201,76,53,.35), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(37,99,235,.45), transparent 60%),
         #050814;
-      overflow: hidden;
     }
 
-    #news-intro::before {
-      content: "♪";
+    #news-list {
+      padding: 24px 0 80px;
+      margin-top: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(201,76,53,.25), transparent 60%),
+        #050814;
+    }
+
+    #news-cta {
+      padding: 40px 0 72px;
+      border-top: 1px solid rgba(15,23,42,.9);
+      background:
+        radial-gradient(circle at 50% -20%, rgba(37,99,235,.28), transparent 60%),
+        #050814;
+    }
+
+    #news-intro::before,
+    #news-intro::after,
+    #news-list::before,
+    #news-list::after,
+    .news-card::after {
       position: absolute;
-      top: 20%;
-      left: 10%;
-      font-size: 32px;
-      color: rgba(148, 163, 184, 0.1);
       pointer-events: none;
+      color: rgba(148,163,184,.08);
     }
 
-    #news-intro::after {
-      content: "✦";
-      position: absolute;
-      bottom: 16%;
-      right: 12%;
-      font-size: 30px;
-      color: rgba(148, 163, 184, 0.08);
-      pointer-events: none;
-    }
+    #news-intro::before { content: "♪"; top: 20%; left: 10%; font-size: 32px; color: rgba(148,163,184,.1); }
+    #news-intro::after { content: "✦"; bottom: 16%; right: 12%; font-size: 30px; color: rgba(148,163,184,.08); }
+    #news-list::before { content: "♫"; top: 18%; left: 8%; font-size: 30px; }
+    #news-list::after { content: "✺"; bottom: 10%; right: 10%; font-size: 42px; color: rgba(148,163,184,.07); }
+    .news-card::after { content: "♪"; right: 18px; bottom: 12px; font-size: 24px; color: rgba(148,163,184,.09); }
 
-    .news-intro-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px;
-      text-align: center;
-    }
+    .news-intro-inner,
+    .news-cta-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; text-align: center; }
+
+    .breadcrumb,
+    .news-section-header,
+    .news-seo-inner,
+    .news-filters-inner { padding: 0 24px; }
 
     .breadcrumb {
       max-width: 720px;
       margin: 0 auto 18px;
-      padding: 0 24px;
       font-size: 13px;
-      color: rgba(229, 231, 235, 0.72);
+      color: rgba(229,231,235,.72);
       text-align: left;
     }
 
-    .breadcrumb a {
-      color: rgba(249, 250, 251, 0.85);
-      text-decoration: none;
-    }
+    .breadcrumb a,
+    .news-card-media-link,
+    .news-title-link,
+    .news-link,
+    .news-secondary-link,
+    .news-cta-button { text-decoration: none; color: inherit; }
 
-    .breadcrumb a:hover {
-      text-decoration: underline;
-    }
+    .breadcrumb a { color: rgba(249,250,251,.85); }
+    .breadcrumb a:hover,
+    .news-title-link:hover .news-title,
+    .news-title-link:focus-visible .news-title { text-decoration: underline; }
 
     .news-eyebrow {
+      margin-bottom: 10px;
       font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.18em;
+      letter-spacing: .18em;
       color: #9ca3af;
-      margin-bottom: 10px;
     }
 
-    .news-title-main {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
-
+    .news-title-main { font-size: 32px; margin-bottom: 12px; }
     .news-intro-text {
       font-size: 15px;
-      color: rgba(249, 250, 251, 0.85);
       line-height: 1.7;
+      color: rgba(249,250,251,.85);
     }
 
-    /* ---------- FILTRES ---------- */
     #news-filters {
       padding: 40px 0 24px;
       background: #050814;
-      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      border-top: 1px solid rgba(15,23,42,.9);
     }
 
-    .news-filters-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+    .news-filters-inner,
+    .news-section-header,
+    .news-seo-inner { max-width: var(--sb-container-width); margin: 0 auto; }
 
-    .news-filters-inner h2 {
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .news-filters-inner p {
+    .news-filters-inner h2 { font-size: 18px; margin-bottom: 6px; }
+    .news-filters-inner p,
+    .news-section-header p,
+    .news-cta-inner p,
+    .news-empty {
       font-size: 13px;
       color: var(--sb-text-muted);
-      margin-bottom: 14px;
     }
 
-    .filters-row {
+    .news-filters-inner p { margin-bottom: 14px; }
+    .filters-row,
+    .news-empty-actions,
+    .news-cta-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+    }
+
+    .filters-row { gap: 8px; }
+    .news-empty-actions { justify-content: center; gap: 10px; margin-top: 16px; }
+    .news-cta-actions { justify-content: center; gap: 12px; }
+
+    .filter-pill,
+    .news-empty-button,
+    .news-retry-button,
+    .news-secondary-link,
+    .news-cta-button {
+      border: none;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease, background .2s ease, border-color .2s ease, color .15s ease, text-shadow .15s ease;
     }
 
     .filter-pill {
       padding: 7px 12px;
-      border-radius: 999px;
-      background: #0f1628;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      font-size: 12px;
-      color: #e5e7eb;
-      cursor: pointer;
-      transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
-      display: inline-flex;
-      align-items: center;
       gap: 4px;
-      font-family: inherit;
+      font-size: 12px;
+      background: #0f1628;
+      color: #e5e7eb;
+      border: 1px solid rgba(255,255,255,.12);
     }
 
     .filter-pill:hover {
       background: #111827;
-      border-color: rgba(248, 250, 251, 0.5);
-      box-shadow: 0 0 18px rgba(201, 76, 53, 0.35);
+      border-color: rgba(248,250,251,.5);
+      box-shadow: 0 0 18px rgba(201,76,53,.35);
       transform: translateY(-1px);
     }
 
-    .filter-pill:focus-visible {
-      outline: 2px solid rgba(255, 255, 255, 0.9);
-      outline-offset: 2px;
+    .filter-pill:focus-visible,
+    .news-card:focus-visible {
+      outline: 2px solid rgba(255,255,255,.95);
+      outline-offset: 3px;
     }
 
     .filter-pill.active {
       background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       border-color: transparent;
       color: #f9fafb;
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.18),
-        0 18px 45px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 0 1px rgba(248,250,251,.18), 0 18px 45px rgba(0,0,0,.9);
     }
 
-    /* ---------- LISTE ARTICLES ---------- */
-    #news-list {
-      position: relative;
-      padding: 24px 0 80px;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(201, 76, 53, 0.25), transparent 60%),
-        #050814;
-      overflow: hidden;
-      margin-top: 0;
-    }
+    .news-section-header { margin: 0 auto 18px; }
+    .news-section-header h2 { font-size: 24px; margin-bottom: 6px; }
+    .news-section-header p { font-size: 14px; margin: 0; }
 
-    #news-list::before {
-      content: "♫";
-      position: absolute;
-      top: 18%;
-      left: 8%;
-      font-size: 30px;
-      color: rgba(148, 163, 184, 0.08);
-      pointer-events: none;
-    }
-
-    #news-list::after {
-      content: "✺";
-      position: absolute;
-      bottom: 10%;
-      right: 10%;
-      font-size: 42px;
-      color: rgba(148, 163, 184, 0.07);
-      pointer-events: none;
-    }
-
-    .news-section-header {
-      max-width: var(--sb-container-width);
-      margin: 0 auto 18px;
-      padding: 0 24px;
-    }
-
-    .news-section-header h2 {
-      font-size: 24px;
-      margin-bottom: 6px;
-    }
-
-    .news-section-header p {
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      margin: 0;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 24px;
-      margin-top: -12px;
-    }
-
-    .news-main-column,
-    .news-side-column {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .news-card {
-      background: var(--sb-card);
-      border-radius: 20px;
-      padding: 1.5rem 1.75rem;
-      color: #f9fafb;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
-      overflow: hidden;
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        opacity 0.2s ease,
-        filter 0.2s ease;
-    }
-
-    .news-card::after {
-      content: "♪";
-      position: absolute;
-      right: 18px;
-      bottom: 12px;
-      font-size: 24px;
-      color: rgba(148, 163, 184, 0.09);
-      pointer-events: none;
-    }
-
-    .news-card:hover {
-      transform: translateY(-4px);
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.12),
-        0 22px 55px rgba(0, 0, 0, 0.95),
-        0 0 40px rgba(255, 80, 80, 0.25);
-      border-color: rgba(255, 80, 80, 0.3);
-    }
-
-    .news-card--featured {
-      padding: 1.75rem 1.9rem;
-    }
-
-    .news-card.is-clickable {
-      cursor: pointer;
-    }
-
-    .news-card:focus-visible {
-      outline: 2px solid rgba(255, 255, 255, 0.95);
-      outline-offset: 3px;
-    }
-
-    .news-card-media-link,
-    .news-title-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .news-card-media {
-      margin: -0.25rem -0.25rem 1rem;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #0b1020;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      aspect-ratio: 16 / 9;
-    }
-
-    .news-card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .news-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
-      margin-bottom: 10px;
-      box-shadow: 0 0 18px rgba(201, 76, 53, 0.6);
-    }
-
-    .news-title {
-      font-size: 20px;
-      margin: 4px 0 6px;
-    }
-
-    .news-title-link:hover .news-title,
-    .news-title-link:focus-visible .news-title {
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .news-meta {
-      font-size: 12px;
-      color: var(--sb-text-muted);
-      margin-bottom: 10px;
-    }
-
-    .news-excerpt {
-      font-size: 14px;
-      color: rgba(229, 231, 235, 0.85);
-      line-height: 1.6;
-      margin-bottom: 14px;
-    }
-
-    .news-link {
-      font-size: 13px;
-      font-weight: 600;
-      color: #fed7aa;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      transition: color 0.15s ease, text-shadow 0.15s ease;
-      text-decoration: none;
-    }
-
-    .news-link:hover {
-      color: #ffe4c4;
-      text-shadow: 0 0 12px rgba(248, 250, 252, 0.6);
-    }
-
-    .news-link[aria-disabled="true"] {
-      pointer-events: none;
-      opacity: 0.65;
-      cursor: default;
-    }
-
-    .news-empty {
-      text-align: center;
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      margin-top: 12px;
-    }
-
-    .news-empty-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-
-    .news-empty-button,
-    .news-retry-button,
-    .news-secondary-link {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      background: #111827;
-      color: #f9fafb;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
-    }
-
-    .news-empty-button:hover,
-    .news-retry-button:hover,
-    .news-secondary-link:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-    }
-
+    .news-grid,
     .news-skeleton-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0,1.4fr) minmax(0,1fr);
       gap: 24px;
     }
 
+    .news-grid { margin-top: -12px; }
+
+    .news-main-column,
+    .news-side-column,
     .news-skeleton-column {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .news-skeleton-card {
-      background: rgba(17, 24, 39, 0.9);
+    .news-card,
+    .news-skeleton-card,
+    .news-seo-card {
+      position: relative;
+      overflow: hidden;
       border-radius: 20px;
       padding: 1.5rem 1.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255,255,255,.05);
+      box-shadow: 0 18px 45px rgba(0,0,0,.55);
     }
 
+    .news-card {
+      background: var(--sb-card);
+      color: #f9fafb;
+      box-shadow: 0 18px 45px rgba(0,0,0,.75);
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease, filter .2s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,80,80,.3);
+      box-shadow:
+        0 0 0 1px rgba(248,250,251,.12),
+        0 22px 55px rgba(0,0,0,.95),
+        0 0 40px rgba(255,80,80,.25);
+    }
+
+    .news-card--featured { padding: 1.75rem 1.9rem; }
+    .news-card.is-clickable { cursor: pointer; }
+
+    .news-card-media-link { display: block; }
+    .news-card-media {
+      margin: -.25rem -.25rem 1rem;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #0b1020;
+      border: 1px solid rgba(255,255,255,.05);
+      aspect-ratio: 16 / 9;
+    }
+
+    .news-card-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .news-badge {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: #f9fafb;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      box-shadow: 0 0 18px rgba(201,76,53,.6);
+    }
+
+    .news-title { font-size: 20px; margin: 4px 0 6px; }
+    .news-title-link { display: block; }
+
+    .news-meta {
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--sb-text-muted);
+    }
+
+    .news-excerpt,
+    .news-seo-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(229,231,235,.85);
+    }
+
+    .news-excerpt { margin-bottom: 14px; }
+    .news-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fed7aa;
+    }
+
+    .news-link:hover {
+      color: #ffe4c4;
+      text-shadow: 0 0 12px rgba(248,250,252,.6);
+    }
+
+    .news-link[aria-disabled="true"] {
+      pointer-events: none;
+      opacity: .65;
+      cursor: default;
+    }
+
+    .news-empty {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .news-empty-button,
+    .news-retry-button,
+    .news-secondary-link {
+      padding: 10px 18px;
+      font-size: 13px;
+      color: #f9fafb;
+      background: #111827;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+    }
+
+    .news-empty-button:hover,
+    .news-retry-button:hover,
+    .news-secondary-link:hover,
+    .news-cta-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    .news-skeleton-card { background: rgba(17,24,39,.9); }
     .news-skeleton-media,
     .news-skeleton-line {
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.06) 25%,
-        rgba(255, 255, 255, 0.12) 50%,
-        rgba(255, 255, 255, 0.06) 75%
-      );
-      background-size: 200% 100%;
-      animation: shimmer 1.35s infinite linear;
       border-radius: 12px;
+      background: linear-gradient(90deg, rgba(255,255,255,.06) 25%, rgba(255,255,255,.12) 50%, rgba(255,255,255,.06) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.35s linear infinite;
     }
 
     .news-skeleton-media {
       width: 100%;
-      aspect-ratio: 16 / 9;
       margin-bottom: 14px;
+      aspect-ratio: 16 / 9;
     }
 
-    .news-skeleton-line {
-      height: 12px;
-      margin-bottom: 10px;
-    }
-
-    .news-skeleton-line.short {
-      width: 34%;
-    }
-
-    .news-skeleton-line.medium {
-      width: 62%;
-    }
-
-    .news-skeleton-line.long {
-      width: 92%;
-    }
+    .news-skeleton-line { height: 12px; margin-bottom: 10px; }
+    .news-skeleton-line.short { width: 34%; }
+    .news-skeleton-line.medium { width: 62%; }
+    .news-skeleton-line.long { width: 92%; }
 
     @keyframes shimmer {
-      0% {
-        background-position: 200% 0;
-      }
-      100% {
-        background-position: -200% 0;
-      }
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
-    /* ---------- BLOC SEO ---------- */
     #news-seo-block {
       padding: 8px 0 44px;
       background: #050814;
     }
 
-    .news-seo-inner {
-      max-width: var(--sb-container-width);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
     .news-seo-card {
-      background: rgba(15, 22, 40, 0.94);
       border-radius: 22px;
       padding: 1.5rem 1.6rem;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+      background: rgba(15,22,40,.94);
+      border: 1px solid rgba(255,255,255,.06);
     }
 
-    .news-seo-card h2 {
-      font-size: 22px;
-      margin-bottom: 12px;
-    }
+    .news-seo-card h2,
+    .news-cta-inner h2 { font-size: 22px; }
 
+    .news-seo-card h2 { margin-bottom: 12px; }
     .news-seo-card p {
-      font-size: 14px;
-      line-height: 1.75;
-      color: rgba(229, 231, 235, 0.88);
       margin: 0 0 12px;
+      line-height: 1.75;
+      color: rgba(229,231,235,.88);
     }
 
-    .news-seo-card p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* ---------- CTA FINAL ---------- */
-    #news-cta {
-      padding: 40px 0 72px;
-      background:
-        radial-gradient(circle at 50% -20%, rgba(37, 99, 235, 0.28), transparent 60%),
-        #050814;
-      border-top: 1px solid rgba(15, 23, 42, 0.9);
-    }
-
-    .news-cta-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px;
-      text-align: center;
-    }
-
-    .news-cta-inner h2 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .news-cta-inner p {
-      font-size: 14px;
-      color: var(--sb-text-muted);
-      margin-bottom: 18px;
-    }
-
-    .news-cta-actions {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .news-seo-card p:last-child { margin-bottom: 0; }
+    .news-cta-inner h2 { margin-bottom: 10px; }
+    .news-cta-inner p { font-size: 14px; margin-bottom: 18px; }
 
     .news-cta-button {
-      border: none;
-      border-radius: 999px;
       padding: 11px 26px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
-      font-weight: 600;
       font-size: 14px;
-      cursor: pointer;
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.12),
-        0 18px 40px rgba(0, 0, 0, 0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      color: #f9fafb;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      box-shadow: 0 0 0 1px rgba(248,250,251,.12), 0 18px 40px rgba(0,0,0,.9);
     }
 
     .news-cta-button:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow:
-        0 0 0 1px rgba(248, 250, 251, 0.18),
-        0 24px 60px rgba(0, 0, 0, 1);
+      box-shadow: 0 0 0 1px rgba(248,250,251,.18), 0 24px 60px rgba(0,0,0,1);
     }
 
     .news-cta-button--secondary {
       background: #111827;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 18px 40px rgba(0,0,0,.55);
     }
 
     .newsletter-honeypot {
@@ -633,55 +447,37 @@
     }
 
     body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
-    }
+    body.layout-loading #site-footer { visibility: hidden; }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
+    body.layout-ready #site-footer { visibility: visible; }
 
-    /* ---------- RESPONSIVE PAGE ---------- */
     @media (max-width: 900px) {
       .news-grid,
       .news-skeleton-grid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: minmax(0,1fr);
         margin-top: -4px;
       }
 
-      #news-intro {
-        padding: 9rem 0 32px;
-      }
-
-      #news-list {
-        padding: 24px 0 72px;
-      }
+      #news-intro { padding: 9rem 0 32px; }
+      #news-list { padding: 24px 0 72px; }
     }
 
     @media (max-width: 800px) {
-      .news-title-main {
-        font-size: 26px;
-      }
+      .news-title-main { font-size: 26px; }
     }
 
     @media (max-width: 560px) {
       .news-card,
       .news-card--featured,
       .news-skeleton-card,
-      .news-seo-card {
-        padding: 1.2rem 1.15rem;
-      }
+      .news-seo-card { padding: 1.2rem 1.15rem; }
 
       .news-section-header h2,
       .news-seo-card h2,
-      .news-cta-inner h2 {
-        font-size: 20px;
-      }
+      .news-cta-inner h2 { font-size: 20px; }
 
-      .breadcrumb {
-        font-size: 12px;
-      }
+      .breadcrumb { font-size: 12px; }
     }
   </style>
 </head>
@@ -689,7 +485,6 @@
 <body>
   <div id="site-header"></div>
 
-  <!-- INTRO ACTUALITÉS -->
   <section id="news-intro">
     <nav class="breadcrumb" aria-label="Fil d'Ariane">
       <a href="index.html">Accueil</a> <span aria-hidden="true">›</span> <span>Actualités</span>
@@ -706,7 +501,6 @@
   </section>
 
   <main>
-    <!-- FILTRES -->
     <section id="news-filters">
       <div class="news-filters-inner">
         <h2>Catégories</h2>
@@ -722,7 +516,6 @@
       </div>
     </section>
 
-    <!-- LISTE DES ARTICLES -->
     <section id="news-list">
       <div class="news-section-header">
         <h2>Dernières actualités</h2>
@@ -761,17 +554,16 @@
           </div>
         </div>
 
-        <p id="news-empty" class="news-empty" style="display: none;"></p>
-        <div id="news-empty-actions" class="news-empty-actions" style="display: none;"></div>
+        <p id="news-empty" class="news-empty" style="display:none;"></p>
+        <div id="news-empty-actions" class="news-empty-actions" style="display:none;"></div>
 
-        <div id="news-grid" class="news-grid" style="display: none;">
+        <div id="news-grid" class="news-grid" style="display:none;">
           <div class="news-main-column" id="news-main-column"></div>
           <div class="news-side-column" id="news-side-column"></div>
         </div>
       </div>
     </section>
 
-    <!-- BLOC TEXTE SEO -->
     <section id="news-seo-block">
       <div class="news-seo-inner">
         <div class="news-seo-card">
@@ -790,21 +582,14 @@
       </div>
     </section>
 
-    <!-- CTA FINAL -->
     <section id="news-cta">
       <div class="news-cta-inner">
         <h2>Tu veux suivre toute l’aventure ?</h2>
-        <p>
-          Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.
-        </p>
+        <p>Des playlists, des infos exclusives, des photos d’ambiance… Tout arrive bientôt.</p>
 
         <div class="news-cta-actions">
-          <button class="news-cta-button" id="news-cta-button">
-            S’abonner aux actualités
-          </button>
-          <a href="reservation.html" class="news-cta-button news-cta-button--secondary">
-            Réserver une box
-          </a>
+          <button class="news-cta-button" id="news-cta-button">S’abonner aux actualités</button>
+          <a href="reservation.html" class="news-cta-button news-cta-button--secondary">Réserver une box</a>
         </div>
       </div>
     </section>
@@ -812,7 +597,6 @@
 
   <div id="site-footer"></div>
 
-  <!-- Scripts -->
   <script src="js/supabase-js-2.min.js"></script>
   <script src="js/layout.js"></script>
   <script>
@@ -825,21 +609,18 @@
       "nouvelles-chansons": "Nouvelles chansons",
       "vie-lieu": "Vie du lieu",
       "idees-soirees": "Idées de soirées",
-      "promo": "Promo"
+      promo: "Promo"
     };
+
+    const $ = (id) => document.getElementById(id);
+    const setDisplay = (el, value) => { if (el) el.style.display = value; };
+    const clearEl = (el) => { if (el) el.innerHTML = ""; };
 
     let allArticles = [];
     let currentCategory = "all";
 
-    function getEl(id) {
-      return document.getElementById(id);
-    }
-
     function sanitizeText(value, maxLen = 10000) {
-      return String(value || "")
-        .replace(/\u0000/g, "")
-        .trim()
-        .slice(0, maxLen);
+      return String(value || "").replace(/\u0000/g, "").trim().slice(0, maxLen);
     }
 
     function stripHtmlTags(value) {
@@ -849,14 +630,10 @@
     function isSafePublicImageUrl(value) {
       const input = String(value || "").trim();
       if (!input) return false;
-
-      if (input.startsWith("/")) return true;
-      if (input.startsWith("./")) return true;
-      if (input.startsWith("../")) return true;
-
+      if (/^(\/|\.\/|\.\.\/)/.test(input)) return true;
       try {
-        const parsed = new URL(input, window.location.origin);
-        return parsed.protocol === "https:" || parsed.protocol === "http:";
+        const url = new URL(input, window.location.origin);
+        return url.protocol === "https:" || url.protocol === "http:";
       } catch {
         return false;
       }
@@ -864,29 +641,19 @@
 
     function formatDateFr(dateStr) {
       if (!dateStr) return "";
-
       const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return dateStr;
-
-      return d.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
+      return Number.isNaN(d.getTime())
+        ? dateStr
+        : d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
     }
 
     function buildExcerpt(article) {
-      const baseText = sanitizeText(
-        stripHtmlTags(article.chapeau || article.contenu || ""),
-        3000
-      ).replace(/\s+/g, " ");
-
-      return baseText.length > 260 ? baseText.slice(0, 260) + "…" : baseText;
+      const text = sanitizeText(stripHtmlTags(article.chapeau || article.contenu || ""), 3000).replace(/\s+/g, " ");
+      return text.length > 260 ? text.slice(0, 260) + "…" : text;
     }
 
     function getArticleSlug(article) {
-      const slug = typeof article.slug === "string" ? article.slug.trim() : "";
-      return slug;
+      return typeof article.slug === "string" ? article.slug.trim() : "";
     }
 
     function getArticleUrl(article) {
@@ -895,7 +662,7 @@
     }
 
     function getArticleImage(article) {
-      const candidates = [
+      const found = [
         article.image_url,
         article.image,
         article.image_couverture,
@@ -903,129 +670,119 @@
         article.thumbnail,
         article.visuel,
         article.photo
-      ];
+      ].find((v) => typeof v === "string" && v.trim());
 
-      const found = candidates.find((value) => typeof value === "string" && value.trim() !== "");
-      if (!found) return "";
-
-      const cleaned = found.trim();
-      return isSafePublicImageUrl(cleaned) ? cleaned : "";
+      return found && isSafePublicImageUrl(found.trim()) ? found.trim() : "";
     }
 
     function hideLoadingState() {
-      const loadingEl = getEl("news-loading");
-      if (loadingEl) loadingEl.style.display = "none";
+      setDisplay($("news-loading"), "none");
     }
 
     function showLoadingState() {
-      const loadingEl = getEl("news-loading");
-      const grid = getEl("news-grid");
-      const emptyEl = getEl("news-empty");
-      const emptyActions = getEl("news-empty-actions");
+      const loading = $("news-loading");
+      const grid = $("news-grid");
+      const empty = $("news-empty");
+      const actions = $("news-empty-actions");
 
-      if (loadingEl) loadingEl.style.display = "grid";
-      if (grid) grid.style.display = "none";
+      setDisplay(loading, "grid");
+      setDisplay(grid, "none");
 
-      if (emptyEl) {
-        emptyEl.textContent = "";
-        emptyEl.style.display = "none";
+      if (empty) {
+        empty.textContent = "";
+        setDisplay(empty, "none");
       }
 
-      if (emptyActions) {
-        emptyActions.innerHTML = "";
-        emptyActions.style.display = "none";
+      if (actions) {
+        actions.innerHTML = "";
+        setDisplay(actions, "none");
       }
     }
 
-    function setEmptyState(message, options = {}) {
-      const grid = getEl("news-grid");
-      const emptyEl = getEl("news-empty");
-      const emptyActions = getEl("news-empty-actions");
-      const mainCol = getEl("news-main-column");
-      const sideCol = getEl("news-side-column");
+    function setEmptyState(message, { showResetFilter = false, showRetry = false } = {}) {
+      const grid = $("news-grid");
+      const empty = $("news-empty");
+      const actions = $("news-empty-actions");
 
       hideLoadingState();
+      clearEl($("news-main-column"));
+      clearEl($("news-side-column"));
+      setDisplay(grid, "none");
 
-      if (mainCol) mainCol.innerHTML = "";
-      if (sideCol) sideCol.innerHTML = "";
-
-      if (grid) grid.style.display = "none";
-
-      if (emptyEl) {
-        emptyEl.textContent = message;
-        emptyEl.style.display = "block";
+      if (empty) {
+        empty.textContent = message;
+        setDisplay(empty, "block");
       }
 
-      if (emptyActions) {
-        emptyActions.innerHTML = "";
+      if (!actions) return;
+      actions.innerHTML = "";
 
-        if (options.showResetFilter) {
-          const resetBtn = document.createElement("button");
-          resetBtn.type = "button";
-          resetBtn.className = "news-empty-button";
-          resetBtn.textContent = "Voir toutes les actualités";
-          resetBtn.addEventListener("click", resetCategoryFilter);
-          emptyActions.appendChild(resetBtn);
-        }
-
-        if (options.showRetry) {
-          const retryBtn = document.createElement("button");
-          retryBtn.type = "button";
-          retryBtn.className = "news-retry-button";
-          retryBtn.textContent = "Réessayer";
-          retryBtn.addEventListener("click", loadArticles);
-          emptyActions.appendChild(retryBtn);
-        }
-
-        emptyActions.style.display = emptyActions.children.length ? "flex" : "none";
+      if (showResetFilter) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "news-empty-button";
+        btn.textContent = "Voir toutes les actualités";
+        btn.addEventListener("click", resetCategoryFilter);
+        actions.appendChild(btn);
       }
+
+      if (showRetry) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "news-retry-button";
+        btn.textContent = "Réessayer";
+        btn.addEventListener("click", loadArticles);
+        actions.appendChild(btn);
+      }
+
+      setDisplay(actions, actions.children.length ? "flex" : "none");
     }
 
     function createArticleCard(article, isFeatured) {
       const card = document.createElement("article");
-      card.className = "news-card" + (isFeatured ? " news-card--featured" : "");
-
       const catSlug = article.categorie || "autre";
+      const title = sanitizeText(article.titre || "Sans titre", 200);
+      const url = getArticleUrl(article);
+      const image = getArticleImage(article);
+      const clickable = !!url;
+
+      card.className = "news-card" + (isFeatured ? " news-card--featured" : "");
       card.dataset.category = catSlug;
 
-      const articleUrl = getArticleUrl(article);
-      const articleImage = getArticleImage(article);
-      const isClickable = Boolean(articleUrl);
-
-      if (isClickable) {
+      if (clickable) {
         card.classList.add("is-clickable");
         card.tabIndex = 0;
         card.setAttribute("role", "link");
-        card.setAttribute("aria-label", "Lire l’article : " + (article.titre || "Sans titre"));
+        card.setAttribute("aria-label", "Lire l’article : " + title);
 
-        card.addEventListener("click", (event) => {
-          const target = event.target;
-          if (target instanceof HTMLElement && target.closest("a")) return;
-          window.location.href = articleUrl;
+        const go = () => { window.location.href = url; };
+
+        card.addEventListener("click", (e) => {
+          if (e.target instanceof HTMLElement && e.target.closest("a")) return;
+          go();
         });
 
-        card.addEventListener("keydown", (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            window.location.href = articleUrl;
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
           }
         });
       }
 
-      if (articleImage) {
-        const mediaLink = document.createElement(isClickable ? "a" : "div");
+      if (image) {
+        const mediaLink = document.createElement(clickable ? "a" : "div");
         mediaLink.className = "news-card-media-link";
-
-        if (isClickable) {
-          mediaLink.href = articleUrl;
-          mediaLink.setAttribute("aria-label", "Ouvrir l’article : " + (article.titre || "Sans titre"));
+        if (clickable) {
+          mediaLink.href = url;
+          mediaLink.setAttribute("aria-label", "Ouvrir l’article : " + title);
         }
 
         const media = document.createElement("div");
         media.className = "news-card-media";
 
         const img = document.createElement("img");
-        img.src = articleImage;
+        img.src = image;
         img.alt = article.titre ? "Illustration de l’article " + article.titre : "Illustration d’actualité Singbox";
         img.loading = "lazy";
         img.decoding = "async";
@@ -1041,41 +798,34 @@
       badge.textContent = CATEGORY_LABELS[catSlug] || "Actualité";
       card.appendChild(badge);
 
-      const titleTag = isFeatured ? "h2" : "h3";
-      const titleContainer = document.createElement(titleTag);
+      const titleContainer = document.createElement(isFeatured ? "h2" : "h3");
       titleContainer.className = "news-title";
 
-      if (isClickable) {
+      if (clickable) {
         const titleLink = document.createElement("a");
         titleLink.className = "news-title-link";
-        titleLink.href = articleUrl;
-        titleLink.textContent = sanitizeText(article.titre || "Sans titre", 200);
+        titleLink.href = url;
+        titleLink.textContent = title;
         titleContainer.appendChild(titleLink);
       } else {
-        titleContainer.textContent = sanitizeText(article.titre || "Sans titre", 200);
+        titleContainer.textContent = title;
       }
-
-      card.appendChild(titleContainer);
 
       const meta = document.createElement("p");
       meta.className = "news-meta";
       const dateTxt = article.date_publication ? formatDateFr(article.date_publication) : "";
       const catLabel = CATEGORY_LABELS[catSlug] || "";
-      meta.textContent =
-        (dateTxt ? "Publié le " + dateTxt : "") +
-        (catLabel ? " • Catégorie : " + catLabel : "");
-      card.appendChild(meta);
+      meta.textContent = (dateTxt ? "Publié le " + dateTxt : "") + (catLabel ? " • Catégorie : " + catLabel : "");
 
       const excerpt = document.createElement("p");
       excerpt.className = "news-excerpt";
       excerpt.textContent = buildExcerpt(article);
-      card.appendChild(excerpt);
 
       const link = document.createElement("a");
       link.className = "news-link";
 
-      if (isClickable) {
-        link.href = articleUrl;
+      if (clickable) {
+        link.href = url;
         link.textContent = "Lire l’article complet →";
       } else {
         link.href = "#";
@@ -1084,67 +834,54 @@
         link.addEventListener("click", (e) => e.preventDefault());
       }
 
-      card.appendChild(link);
-
+      card.append(titleContainer, meta, excerpt, link);
       return card;
     }
 
     function getFilteredArticles() {
-      if (currentCategory === "all") {
-        return allArticles.slice();
-      }
-
-      return allArticles.filter((article) => (article.categorie || "autre") === currentCategory);
+      return currentCategory === "all"
+        ? allArticles.slice()
+        : allArticles.filter((a) => (a.categorie || "autre") === currentCategory);
     }
 
     function renderArticles() {
-      const grid = getEl("news-grid");
-      const mainCol = getEl("news-main-column");
-      const sideCol = getEl("news-side-column");
+      const grid = $("news-grid");
+      const mainCol = $("news-main-column");
+      const sideCol = $("news-side-column");
+      const empty = $("news-empty");
+      const actions = $("news-empty-actions");
 
       if (!grid || !mainCol || !sideCol) return;
 
       const articles = getFilteredArticles();
-
       hideLoadingState();
       mainCol.innerHTML = "";
       sideCol.innerHTML = "";
 
       if (!articles.length) {
-        setEmptyState(
-          "Aucune actualité dans cette catégorie pour le moment.",
-          { showResetFilter: currentCategory !== "all" }
-        );
+        setEmptyState("Aucune actualité dans cette catégorie pour le moment.", {
+          showResetFilter: currentCategory !== "all"
+        });
         return;
       }
 
-      grid.style.display = "grid";
+      setDisplay(grid, "grid");
 
       const [featured, ...others] = articles;
+      if (featured) mainCol.appendChild(createArticleCard(featured, true));
+      others.forEach((article) => sideCol.appendChild(createArticleCard(article, false)));
 
-      if (featured) {
-        mainCol.appendChild(createArticleCard(featured, true));
+      if (empty) {
+        empty.textContent = "";
+        setDisplay(empty, "none");
       }
-
-      others.forEach((article) => {
-        sideCol.appendChild(createArticleCard(article, false));
-      });
-
-      const emptyEl = getEl("news-empty");
-      const emptyActions = getEl("news-empty-actions");
-
-      if (emptyEl) {
-        emptyEl.textContent = "";
-        emptyEl.style.display = "none";
-      }
-
-      if (emptyActions) {
-        emptyActions.innerHTML = "";
-        emptyActions.style.display = "none";
+      if (actions) {
+        actions.innerHTML = "";
+        setDisplay(actions, "none");
       }
     }
 
-    async function fetchPublishedArticles() {
+    function fetchPublishedArticles() {
       return supabaseClient
         .from("actualites")
         .select("id, titre, slug, categorie, chapeau, contenu, image_url, date_publication, publie")
@@ -1183,12 +920,10 @@
     }
 
     function updateFilterButtons(activeCategory) {
-      const filterPills = document.querySelectorAll(".filter-pill");
-
-      filterPills.forEach((pill) => {
-        const isActive = (pill.dataset.category || "all") === activeCategory;
-        pill.classList.toggle("active", isActive);
-        pill.setAttribute("aria-pressed", String(isActive));
+      document.querySelectorAll(".filter-pill").forEach((pill) => {
+        const active = (pill.dataset.category || "all") === activeCategory;
+        pill.classList.toggle("active", active);
+        pill.setAttribute("aria-pressed", String(active));
       });
     }
 
@@ -1199,9 +934,7 @@
     }
 
     function initCategoryFilters() {
-      const filterPills = document.querySelectorAll(".filter-pill");
-
-      filterPills.forEach((pill) => {
+      document.querySelectorAll(".filter-pill").forEach((pill) => {
         pill.addEventListener("click", () => {
           currentCategory = pill.dataset.category || "all";
           updateFilterButtons(currentCategory);
@@ -1211,18 +944,15 @@
     }
 
     function initNewsCta() {
-      const ctaBtn = getEl("news-cta-button");
-      const newsletterSection = getEl("newsletter-section");
-      const newsletterEmail = getEl("newsletter-email");
+      const ctaBtn = $("news-cta-button");
+      const newsletterSection = $("newsletter-section");
+      const newsletterEmail = $("newsletter-email");
 
       if (!ctaBtn || !newsletterSection) return;
 
       ctaBtn.addEventListener("click", () => {
         newsletterSection.scrollIntoView({ behavior: "smooth" });
-
-        if (newsletterEmail) {
-          setTimeout(() => newsletterEmail.focus(), 600);
-        }
+        if (newsletterEmail) setTimeout(() => newsletterEmail.focus(), 600);
       });
     }
 
