@@ -13,7 +13,6 @@
   <link rel="canonical" href="https://www.singbox.fr/article" />
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="article" />
   <meta property="og:title" content="Article Singbox" />
   <meta
@@ -24,7 +23,6 @@
   <meta property="og:url" content="https://www.singbox.fr/article" />
   <meta property="og:site_name" content="Singbox" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Article Singbox" />
   <meta
@@ -33,7 +31,6 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/assets/actualites-preview.png" />
 
-  <!-- JSON-LD dynamique -->
   <script id="article-jsonld" type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -55,7 +52,6 @@
   }
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -66,36 +62,27 @@
   <link rel="stylesheet" href="css/global.css" />
 
   <style>
-    :root {
-      --sb-container-width: 900px;
-    }
+    :root { --sb-container-width: 900px; }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--sb-text-main);
       background:
-        radial-gradient(circle at 10% 0%, rgba(107, 18, 32, 0.65), transparent 55%),
-        radial-gradient(circle at 80% 10%, rgba(30, 64, 175, 0.7), transparent 60%),
+        radial-gradient(circle at 10% 0%, rgba(107,18,32,.65), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(30,64,175,.7), transparent 60%),
         linear-gradient(145deg, #020617 0, #020617 40%, var(--sb-bg-main) 100%);
-      min-height: 100vh;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    h1,
-    h2,
-    h3 {
-      font-family: "League Spartan", system-ui, sans-serif;
-      letter-spacing: 0.03em;
+    h1, h2, h3 {
       margin: 0;
+      font-family: "League Spartan", system-ui, sans-serif;
+      letter-spacing: .03em;
     }
 
     .container {
@@ -117,16 +104,10 @@
     }
 
     body.layout-loading #site-header,
-    body.layout-loading #site-footer {
-      visibility: hidden;
-    }
+    body.layout-loading #site-footer { visibility: hidden; }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer {
-      visibility: visible;
-    }
-
-    /* =============== CONTENU ARTICLE =============== */
+    body.layout-ready #site-footer { visibility: visible; }
 
     main {
       padding-top: 180px;
@@ -136,89 +117,95 @@
     .breadcrumb {
       margin: 0 auto 18px;
       font-size: 13px;
-      color: rgba(229, 231, 235, 0.78);
+      color: rgba(229,231,235,.78);
     }
 
-    .breadcrumb a {
-      color: rgba(249, 250, 251, 0.88);
-    }
+    .breadcrumb a { color: rgba(249,250,251,.88); }
 
     .breadcrumb a:hover,
-    .breadcrumb a:focus-visible {
+    .breadcrumb a:focus-visible,
+    .article-back:hover,
+    .article-back:focus-visible {
       text-decoration: underline;
     }
 
-    #article-wrapper {
-      margin-top: 20px;
+    #article-wrapper,
+    .article-skeleton { margin-top: 20px; }
+
+    .article-card,
+    .article-skeleton {
+      border-radius: 22px;
+      padding: 2.2rem 2.4rem;
+      border: 1px solid rgba(255,255,255,.08);
+      background: var(--sb-card);
+      box-shadow: 0 24px 60px rgba(0,0,0,.6);
     }
 
     .article-card {
-      background: var(--sb-card);
-      border-radius: 22px;
-      padding: 2.2rem 2.4rem;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0,0,0,.9);
+    }
+
+    .article-badge,
+    .related-news-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
+      color: #f9fafb;
     }
 
     .article-badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
-      color: #f9fafb;
       margin-bottom: 10px;
-      box-shadow: 0 0 18px rgba(201, 76, 53, 0.6);
+      padding: 4px 12px;
+      font-size: 11px;
+      letter-spacing: .16em;
+      box-shadow: 0 0 18px rgba(201,76,53,.6);
     }
 
     .article-title {
-      font-size: 30px;
       margin-bottom: 8px;
+      font-size: 30px;
       line-height: 1.05;
     }
 
-    .article-meta {
-      font-size: 13px;
+    .article-meta,
+    .related-news-meta {
       color: var(--sb-text-muted);
+    }
+
+    .article-meta {
       margin-bottom: 14px;
+      font-size: 13px;
     }
 
     .article-image {
+      display: block;
       width: 100%;
       max-height: 360px;
-      object-fit: cover;
-      border-radius: 16px;
       margin: 16px 0 18px;
-      border: 1px solid rgba(15, 23, 42, 0.8);
-      display: block;
+      border: 1px solid rgba(15,23,42,.8);
+      border-radius: 16px;
+      object-fit: cover;
     }
 
     .article-chapeau {
-      font-size: 15px;
-      color: rgba(249, 250, 251, 0.9);
       margin-bottom: 18px;
+      font-size: 15px;
       line-height: 1.7;
+      color: rgba(249,250,251,.9);
     }
 
     .article-content {
       font-size: 14px;
       line-height: 1.8;
-      color: rgba(229, 231, 235, 0.9);
+      color: rgba(229,231,235,.9);
     }
 
-    .article-content p {
-      margin: 0 0 1em;
-    }
-
-    .article-content strong {
-      font-weight: 600;
-      color: #f9fafb;
-    }
+    .article-content p { margin: 0 0 1em; }
+    .article-content strong { font-weight: 600; color: #f9fafb; }
 
     .article-content a {
       color: #fed7aa;
@@ -228,19 +215,14 @@
 
     .article-content h2,
     .article-content h3 {
-      margin: 1.2em 0 0.6em;
+      margin: 1.2em 0 .6em;
       font-family: "League Spartan", system-ui, sans-serif;
-      color: #f9fafb;
       line-height: 1.15;
+      color: #f9fafb;
     }
 
-    .article-content h2 {
-      font-size: 24px;
-    }
-
-    .article-content h3 {
-      font-size: 20px;
-    }
+    .article-content h2 { font-size: 24px; }
+    .article-content h3 { font-size: 20px; }
 
     .article-content ul,
     .article-content ol {
@@ -248,79 +230,72 @@
       padding: 0;
     }
 
-    .article-content li {
-      margin-bottom: 0.45em;
-    }
+    .article-content li { margin-bottom: .45em; }
 
     .article-content blockquote {
       margin: 1.2em 0;
       padding: 1rem 1.1rem;
       border-left: 4px solid var(--sb-orange);
-      background: rgba(255, 255, 255, 0.03);
       border-radius: 0 14px 14px 0;
-      color: rgba(249, 250, 251, 0.92);
+      background: rgba(255,255,255,.03);
+      color: rgba(249,250,251,.92);
     }
 
     .article-content img {
+      display: block;
       max-width: 100%;
       height: auto;
-      border-radius: 14px;
-      display: block;
       margin: 1rem 0;
+      border-radius: 14px;
     }
 
     .article-content hr {
-      border: none;
-      border-top: 1px solid rgba(148, 163, 184, 0.2);
       margin: 1.5rem 0;
+      border: none;
+      border-top: 1px solid rgba(148,163,184,.2);
     }
 
     .article-back {
-      margin-top: 24px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      margin-top: 24px;
       font-size: 13px;
       color: #fbbf77;
       cursor: pointer;
     }
 
-    .article-back:hover,
-    .article-back:focus-visible {
-      text-decoration: underline;
-    }
-
     .article-message {
+      margin-top: 24px;
       text-align: center;
       font-size: 14px;
       color: var(--sb-text-muted);
-      margin-top: 24px;
     }
 
     .article-message-actions {
       display: flex;
       justify-content: center;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
       margin-top: 16px;
     }
 
     .article-message-button,
     .article-cta-button {
-      border: none;
-      border-radius: 999px;
-      padding: 11px 20px;
-      background: #111827;
-      color: #f9fafb;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-      transition: transform 0.15s ease, filter 0.15s ease;
+      padding: 11px 20px;
+      border: none;
+      border-radius: 999px;
+      background: #111827;
+      color: #f9fafb;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 12px 32px rgba(0,0,0,.35);
+      transition: transform .15s ease, filter .15s ease;
     }
 
     .article-message-button:hover,
@@ -332,31 +307,25 @@
     .article-cta {
       margin-top: 28px;
       padding: 1.2rem 1.25rem;
+      border: 1px solid rgba(249,115,22,.18);
       border-radius: 18px;
-      background: linear-gradient(145deg, rgba(201, 76, 53, 0.16), rgba(249, 115, 22, 0.08));
-      border: 1px solid rgba(249, 115, 22, 0.18);
+      background: linear-gradient(145deg, rgba(201,76,53,.16), rgba(249,115,22,.08));
     }
 
     .article-cta h2 {
-      font-size: 22px;
       margin-bottom: 8px;
+      font-size: 22px;
     }
 
     .article-cta p {
       margin: 0 0 14px;
       font-size: 14px;
-      color: rgba(229, 231, 235, 0.9);
       line-height: 1.7;
+      color: rgba(229,231,235,.9);
     }
 
-    .related-news {
-      margin-top: 32px;
-    }
-
-    .related-news h2 {
-      font-size: 24px;
-      margin-bottom: 14px;
-    }
+    .related-news { margin-top: 32px; }
+    .related-news h2 { margin-bottom: 14px; font-size: 24px; }
 
     .related-news-grid {
       display: grid;
@@ -365,92 +334,74 @@
     }
 
     .related-news-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
-      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 16px 40px rgba(0,0,0,.32);
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
 
     .related-news-card:hover {
       transform: translateY(-3px);
-      border-color: rgba(255, 120, 80, 0.28);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255,120,80,.28);
+      box-shadow: 0 20px 48px rgba(0,0,0,.4);
     }
 
     .related-news-image {
+      overflow: hidden;
       aspect-ratio: 16 / 9;
       background: #0b1020;
-      overflow: hidden;
     }
 
     .related-news-image img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
     }
 
-    .related-news-body {
-      padding: 1rem;
-    }
+    .related-news-body { padding: 1rem; }
 
     .related-news-badge {
-      display: inline-flex;
-      font-size: 10px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--sb-red), var(--sb-orange));
       margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      font-size: 10px;
+      letter-spacing: .12em;
     }
 
     .related-news-title {
+      margin-bottom: 8px;
       font-size: 19px;
       line-height: 1.1;
-      margin-bottom: 8px;
     }
 
     .related-news-meta {
-      font-size: 12px;
-      color: var(--sb-text-muted);
       margin-bottom: 8px;
+      font-size: 12px;
     }
 
     .related-news-excerpt {
+      margin: 0;
       font-size: 13px;
       line-height: 1.65;
-      color: rgba(229, 231, 235, 0.86);
-      margin: 0;
+      color: rgba(229,231,235,.86);
     }
 
-    .article-skeleton {
-      display: none;
-      background: var(--sb-card);
-      border-radius: 22px;
-      padding: 2.2rem 2.4rem;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-top: 20px;
-    }
-
-    .article-skeleton.visible {
-      display: block;
-    }
+    .article-skeleton { display: none; }
+    .article-skeleton.visible { display: block; }
 
     .skeleton-line,
     .skeleton-media {
+      border-radius: 12px;
       background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.05) 25%,
-        rgba(255, 255, 255, 0.12) 50%,
-        rgba(255, 255, 255, 0.05) 75%
+        rgba(255,255,255,.05) 25%,
+        rgba(255,255,255,.12) 50%,
+        rgba(255,255,255,.05) 75%
       );
       background-size: 200% 100%;
       animation: shimmer 1.3s linear infinite;
-      border-radius: 12px;
     }
 
     .skeleton-line {
@@ -464,8 +415,8 @@
 
     .skeleton-media {
       width: 100%;
-      aspect-ratio: 16 / 9;
       margin: 16px 0;
+      aspect-ratio: 16 / 9;
     }
 
     @keyframes shimmer {
@@ -540,9 +491,7 @@
           <div id="related-news-grid" class="related-news-grid"></div>
         </section>
 
-        <a href="actualites.html" class="article-back">
-          ← Retour aux actualités
-        </a>
+        <a href="actualites.html" class="article-back">← Retour aux actualités</a>
       </article>
 
       <div id="article-message-wrapper" hidden>
@@ -554,7 +503,6 @@
 
   <div id="site-footer"></div>
 
-  <!-- Supabase -->
   <script src="js/supabase-js-2.min.js"></script>
   <script src="js/layout.js"></script>
   <script>
@@ -567,7 +515,7 @@
       "nouvelles-chansons": "Nouvelles chansons",
       "vie-lieu": "Vie du lieu",
       "idees-soirees": "Idées de soirées",
-      "promo": "Promo"
+      promo: "Promo"
     };
 
     const SAFE_ALLOWED_TAGS = new Set([
@@ -576,27 +524,19 @@
       "H2", "H3", "BLOCKQUOTE", "HR"
     ]);
 
-    function getEl(id) {
-      return document.getElementById(id);
-    }
+    const $ = (id) => document.getElementById(id);
 
     function getSlugFromUrl() {
-      const params = new URLSearchParams(globalThis.location.search);
-      const slug = params.get("slug");
+      const slug = new URLSearchParams(globalThis.location.search).get("slug");
       return typeof slug === "string" ? slug.trim() : "";
     }
 
     function formatDateFr(dateStr) {
       if (!dateStr) return "";
-
       const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return dateStr;
-
-      return d.toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-      });
+      return Number.isNaN(d.getTime())
+        ? dateStr
+        : d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
     }
 
     function buildArticleUrl(slug) {
@@ -604,7 +544,7 @@
     }
 
     function getArticleImage(data) {
-      const candidates = [
+      const found = [
         data.image_url,
         data.image,
         data.image_couverture,
@@ -612,23 +552,20 @@
         data.thumbnail,
         data.visuel,
         data.photo
-      ];
-
-      const found = candidates.find((value) => typeof value === "string" && value.trim() !== "");
+      ].find((v) => typeof v === "string" && v.trim());
       return found ? found.trim() : "";
     }
 
     function getArticleDescription(data) {
-      const base = (typeof data.chapeau === "string" && data.chapeau.trim()) ||
+      const base =
+        (typeof data.chapeau === "string" && data.chapeau.trim()) ||
         "Article d’actualités Singbox : promos, coulisses, nouveautés et idées de soirées autour du karaoké box privatif à Toulouse.";
-
       return base.length > 160 ? base.slice(0, 157) + "..." : base;
     }
 
     function setMetaAttribute(selector, attr, value) {
       const el = document.querySelector(selector);
-      if (!el || !value) return;
-      el.setAttribute(attr, value);
+      if (el && value) el.setAttribute(attr, value);
     }
 
     function setArticleSeo(data) {
@@ -652,101 +589,76 @@
       setMetaAttribute('meta[name="twitter:description"]', "content", description);
       setMetaAttribute('meta[name="twitter:image"]', "content", image);
 
-      const jsonLdEl = getEl("article-jsonld");
-      if (jsonLdEl) {
-        const jsonLd = {
-          "@context": "https://schema.org",
-          "@type": "NewsArticle",
-          "headline": data.titre || "Article Singbox",
-          "description": description,
-          "image": image ? [image] : undefined,
-          "datePublished": data.date_publication || undefined,
-          "dateModified": data.date_modification || data.updated_at || data.date_publication || undefined,
-          "author": {
-            "@type": "Organization",
-            "name": "Singbox"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "Singbox",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.singbox.fr/logo.png"
-            }
-          },
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": articleUrl
-          }
-        };
+      const jsonLdEl = $("article-jsonld");
+      if (!jsonLdEl) return;
 
-        jsonLdEl.textContent = JSON.stringify(jsonLd, null, 2);
-      }
+      jsonLdEl.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        headline: data.titre || "Article Singbox",
+        description,
+        image: image ? [image] : undefined,
+        datePublished: data.date_publication || undefined,
+        dateModified: data.date_modification || data.updated_at || data.date_publication || undefined,
+        author: {
+          "@type": "Organization",
+          name: "Singbox"
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Singbox",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.singbox.fr/logo.png"
+          }
+        },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": articleUrl
+        }
+      }, null, 2);
     }
 
     function setArticleLoadingState(isLoading) {
-      const wrapper = getEl("article-wrapper");
-      if (!wrapper) return;
-      wrapper.setAttribute("aria-busy", isLoading ? "true" : "false");
+      const wrapper = $("article-wrapper");
+      if (wrapper) wrapper.setAttribute("aria-busy", isLoading ? "true" : "false");
     }
 
-    function showArticleWrapper() {
-      const wrapper = getEl("article-wrapper");
-      if (wrapper) wrapper.hidden = false;
-    }
-
-    function hideArticleWrapper() {
-      const wrapper = getEl("article-wrapper");
-      if (wrapper) wrapper.hidden = true;
-    }
-
-    function showSkeleton() {
-      const skeleton = getEl("article-skeleton");
-      if (skeleton) skeleton.classList.add("visible");
-    }
-
-    function hideSkeleton() {
-      const skeleton = getEl("article-skeleton");
-      if (skeleton) skeleton.classList.remove("visible");
+    function toggleVisibility(el, visible, useHidden = false) {
+      if (!el) return;
+      if (useHidden) el.hidden = !visible;
+      else el.classList.toggle("visible", visible);
     }
 
     function showArticleMessage(message, actions = []) {
-      const wrapper = getEl("article-message-wrapper");
-      const msgEl = getEl("article-message");
-      const actionsEl = getEl("article-message-actions");
-
+      const wrapper = $("article-message-wrapper");
+      const msgEl = $("article-message");
+      const actionsEl = $("article-message-actions");
       if (!wrapper || !msgEl || !actionsEl) return;
 
       msgEl.textContent = message;
       actionsEl.innerHTML = "";
 
       actions.forEach((action) => {
+        const el = document.createElement(action.type === "link" ? "a" : "button");
         if (action.type === "link") {
-          const link = document.createElement("a");
-          link.href = action.href;
-          link.className = "article-message-button";
-          link.textContent = action.label;
-          actionsEl.appendChild(link);
-          return;
+          el.href = action.href;
+        } else {
+          el.type = "button";
+          el.addEventListener("click", action.onClick);
         }
-
-        if (action.type === "button") {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "article-message-button";
-          button.textContent = action.label;
-          button.addEventListener("click", action.onClick);
-          actionsEl.appendChild(button);
-        }
+        el.className = "article-message-button";
+        el.textContent = action.label;
+        actionsEl.appendChild(el);
       });
 
       wrapper.hidden = false;
     }
 
     function hideArticleMessage() {
-      const wrapper = getEl("article-message-wrapper");
-      const msgEl = getEl("article-message");
-      const actionsEl = getEl("article-message-actions");
+      const wrapper = $("article-message-wrapper");
+      const msgEl = $("article-message");
+      const actionsEl = $("article-message-actions");
 
       if (msgEl) msgEl.textContent = "";
       if (actionsEl) actionsEl.innerHTML = "";
@@ -755,28 +667,26 @@
 
     function renderArticleImage(imgEl, data) {
       if (!imgEl) return;
-
       const image = getArticleImage(data);
 
-      if (image) {
-        imgEl.src = image;
-        imgEl.alt = data.titre || "Illustration de l’article";
-        imgEl.hidden = false;
+      if (!image) {
+        imgEl.removeAttribute("src");
+        imgEl.alt = "";
+        imgEl.hidden = true;
         return;
       }
 
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.hidden = true;
+      imgEl.src = image;
+      imgEl.alt = data.titre || "Illustration de l’article";
+      imgEl.hidden = false;
     }
 
     function renderArticleMeta(metaEl, data, catSlug) {
       if (!metaEl) return;
 
       const dateTxt = data.date_publication ? formatDateFr(data.date_publication) : "";
-      const updatedTxt = data.date_modification || data.updated_at
-        ? formatDateFr(data.date_modification || data.updated_at)
-        : "";
+      const updatedRaw = data.date_modification || data.updated_at;
+      const updatedTxt = updatedRaw ? formatDateFr(updatedRaw) : "";
       const catLabel = CATEGORY_LABELS[catSlug] || "";
 
       const parts = [];
@@ -806,9 +716,7 @@
 
         if (!SAFE_ALLOWED_TAGS.has(tagName)) {
           const fragment = document.createDocumentFragment();
-          Array.from(node.childNodes).forEach((child) => {
-            fragment.appendChild(cleanNode(child));
-          });
+          Array.from(node.childNodes).forEach((child) => fragment.appendChild(cleanNode(child)));
           return fragment;
         }
 
@@ -816,58 +724,46 @@
 
         if (tagName === "A") {
           const href = node.getAttribute("href") || "";
-          const isSafeHref =
+          const safeHref =
             href.startsWith("http://") ||
             href.startsWith("https://") ||
             href.startsWith("/") ||
             href.startsWith("#");
 
-          if (isSafeHref) {
-            cleanEl.setAttribute("href", href);
-            if (href.startsWith("http://") || href.startsWith("https://")) {
-              cleanEl.setAttribute("target", "_blank");
-              cleanEl.setAttribute("rel", "noopener noreferrer");
-            }
-          } else {
-            cleanEl.setAttribute("href", "#");
+          cleanEl.setAttribute("href", safeHref ? href : "#");
+
+          if (href.startsWith("http://") || href.startsWith("https://")) {
+            cleanEl.setAttribute("target", "_blank");
+            cleanEl.setAttribute("rel", "noopener noreferrer");
           }
         }
 
-        Array.from(node.childNodes).forEach((child) => {
-          cleanEl.appendChild(cleanNode(child));
-        });
-
+        Array.from(node.childNodes).forEach((child) => cleanEl.appendChild(cleanNode(child)));
         return cleanEl;
       }
 
       const wrapper = document.createElement("div");
-      Array.from(doc.body.childNodes).forEach((node) => {
-        wrapper.appendChild(cleanNode(node));
-      });
-
+      Array.from(doc.body.childNodes).forEach((node) => wrapper.appendChild(cleanNode(node)));
       return wrapper.innerHTML;
     }
 
     function buildExcerpt(text, maxLength = 120) {
       const value = typeof text === "string" ? text.trim() : "";
-      if (!value) return "";
-      return value.length > maxLength ? value.slice(0, maxLength) + "…" : value;
+      return !value ? "" : value.length > maxLength ? value.slice(0, maxLength) + "…" : value;
     }
 
     function updateBreadcrumb(title) {
-      const breadcrumbCurrent = getEl("breadcrumb-current");
-      if (breadcrumbCurrent) {
-        breadcrumbCurrent.textContent = title || "Article";
-      }
+      const current = $("breadcrumb-current");
+      if (current) current.textContent = title || "Article";
     }
 
     function renderArticle(data) {
-      const badge = getEl("article-badge");
-      const titleEl = getEl("article-title");
-      const metaEl = getEl("article-meta");
-      const imgEl = getEl("article-image");
-      const chapEl = getEl("article-chapeau");
-      const contentEl = getEl("article-content");
+      const badge = $("article-badge");
+      const titleEl = $("article-title");
+      const metaEl = $("article-meta");
+      const imgEl = $("article-image");
+      const chapEl = $("article-chapeau");
+      const contentEl = $("article-content");
 
       if (!badge || !titleEl || !metaEl || !imgEl || !chapEl || !contentEl) return;
 
@@ -888,11 +784,10 @@
       }
 
       contentEl.innerHTML = sanitizeHtml(data.contenu || "");
-
       updateBreadcrumb(data.titre || "Article");
       hideArticleMessage();
-      showArticleWrapper();
-      hideSkeleton();
+      toggleVisibility($("article-wrapper"), true, true);
+      toggleVisibility($("article-skeleton"), false);
       setArticleLoadingState(false);
     }
 
@@ -910,14 +805,13 @@
       link.href = articleUrl;
       link.className = "related-news-card";
 
-      let imageHtml = "";
-      if (image) {
-        imageHtml = `
+      const imageHtml = image
+        ? `
           <div class="related-news-image">
             <img src="${image}" alt="${article.titre ? "Illustration de l’article " + article.titre : "Illustration d’actualité Singbox"}" loading="lazy" decoding="async" />
           </div>
-        `;
-      }
+        `
+        : "";
 
       link.innerHTML = `
         ${imageHtml}
@@ -933,9 +827,8 @@
     }
 
     function renderRelatedArticles(currentArticle, relatedArticles) {
-      const section = getEl("related-news");
-      const grid = getEl("related-news-grid");
-
+      const section = $("related-news");
+      const grid = $("related-news-grid");
       if (!section || !grid) return;
 
       grid.innerHTML = "";
@@ -945,11 +838,6 @@
         ? relatedArticles.filter((item) => item.slug && item.slug !== currentSlug).slice(0, 3)
         : [];
 
-      if (!filtered.length) {
-        section.hidden = true;
-        return;
-      }
-
       filtered.forEach((article) => {
         const card = createRelatedCard(article);
         if (card) grid.appendChild(card);
@@ -958,7 +846,7 @@
       section.hidden = grid.children.length === 0;
     }
 
-    async function fetchArticleBySlug(slug) {
+    function fetchArticleBySlug(slug) {
       return supabaseClient
         .from("actualites")
         .select("*")
@@ -967,7 +855,7 @@
         .maybeSingle();
     }
 
-    async function fetchRelatedArticles(category, currentSlug) {
+    function fetchRelatedArticles(category, currentSlug) {
       let query = supabaseClient
         .from("actualites")
         .select("*")
@@ -975,13 +863,8 @@
         .order("date_publication", { ascending: false })
         .limit(4);
 
-      if (category) {
-        query = query.eq("categorie", category);
-      }
-
-      if (currentSlug) {
-        query = query.neq("slug", currentSlug);
-      }
+      if (category) query = query.eq("categorie", category);
+      if (currentSlug) query = query.neq("slug", currentSlug);
 
       return query;
     }
@@ -1007,13 +890,13 @@
     async function loadArticle() {
       const slug = getSlugFromUrl();
 
-      showSkeleton();
-      hideArticleWrapper();
+      toggleVisibility($("article-skeleton"), true);
+      toggleVisibility($("article-wrapper"), false, true);
       hideArticleMessage();
       setArticleLoadingState(true);
 
       if (!slug) {
-        hideSkeleton();
+        toggleVisibility($("article-skeleton"), false);
         setArticleLoadingState(false);
         showArticleMessage("Aucun article spécifié.", [
           { type: "link", href: "actualites.html", label: "Retour aux actualités" }
@@ -1026,7 +909,7 @@
 
         if (error) {
           console.error("Erreur chargement article :", error);
-          hideSkeleton();
+          toggleVisibility($("article-skeleton"), false);
           setArticleLoadingState(false);
           showArticleMessage("Erreur lors du chargement de l’article.", [
             { type: "button", label: "Réessayer", onClick: loadArticle },
@@ -1036,7 +919,7 @@
         }
 
         if (!data) {
-          hideSkeleton();
+          toggleVisibility($("article-skeleton"), false);
           setArticleLoadingState(false);
           showArticleMessage("Article introuvable ou non publié.", [
             { type: "link", href: "actualites.html", label: "Retour aux actualités" }
@@ -1049,7 +932,7 @@
         loadRelatedArticles(data);
       } catch (error) {
         console.error("Erreur réseau chargement article :", error);
-        hideSkeleton();
+        toggleVisibility($("article-skeleton"), false);
         setArticleLoadingState(false);
         showArticleMessage("Erreur réseau lors du chargement de l’article.", [
           { type: "button", label: "Réessayer", onClick: loadArticle },
@@ -1058,11 +941,7 @@
       }
     }
 
-    function initArticlePage() {
-      loadArticle();
-    }
-
-    document.addEventListener("DOMContentLoaded", initArticlePage);
+    document.addEventListener("DOMContentLoaded", loadArticle);
   </script>
 </body>
 </html>
