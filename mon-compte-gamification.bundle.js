@@ -81,9 +81,33 @@
       timePerSession: "—"
     },
     missions: [
-      { id: "book_once_week", title: "Une session cette semaine", progress: 0, reward: "+5 Singcoins • +10 XP", done: false },
-      { id: "come_with_3_people", title: "Venir en groupe", progress: 0, reward: "+5 Singcoins • +10 XP", done: false },
-      { id: "weekday_booking", title: "Créneau semaine", progress: 0, reward: "+10 Singcoins • +10 XP", done: false }
+      {
+        id: "book_once_week",
+        title: "Une session cette semaine",
+        progress: 0,
+        reward: "+5 Singcoins • +10 XP",
+        done: false,
+        progressValue: 0,
+        targetValue: 1
+      },
+      {
+        id: "come_with_3_people",
+        title: "Venir en groupe",
+        progress: 0,
+        reward: "+5 Singcoins • +10 XP",
+        done: false,
+        progressValue: 0,
+        targetValue: 1
+      },
+      {
+        id: "weekday_booking",
+        title: "Créneau semaine",
+        progress: 0,
+        reward: "+10 Singcoins • +10 XP",
+        done: false,
+        progressValue: 0,
+        targetValue: 1
+      }
     ],
     badges: []
   };
@@ -238,6 +262,13 @@
     toNumber(value, fallback = 0) {
       const n = Number(value);
       return Number.isFinite(n) ? n : fallback;
+    },
+
+    pickFirst(...values) {
+      for (const value of values) {
+        if (value !== undefined && value !== null && value !== "") return value;
+      }
+      return null;
     },
 
     formatMonthYear(value) {
@@ -666,19 +697,38 @@
         apiMap.get(utils.normalizeBadgeKey(definition.title)) ||
         null;
 
-      const isUnlocked = typeof matched?.isUnlocked === "boolean"
-        ? matched.isUnlocked
-        : Boolean(matched?.unlocked || matched?.unlockedAt);
+      const isUnlocked =
+        typeof matched?.isUnlocked === "boolean"
+          ? matched.isUnlocked
+          : typeof matched?.is_unlocked === "boolean"
+            ? matched.is_unlocked
+            : Boolean(matched?.unlocked || matched?.unlockedAt || matched?.unlocked_at);
 
       return {
         code: matched?.code || definition.code || defKey,
         icon: matched?.icon || definition.icon || "★",
-        title: matched?.title || definition.title || "Badge",
+        title: matched?.title || matched?.name || definition.title || "Badge",
         desc: matched?.description || matched?.desc || definition.desc || "",
         rarity: matched?.rarity || definition.rarity || "common",
-        rewardSingcoins: Math.max(0, Math.floor(utils.toNumber(matched?.rewardSingcoins ?? definition.rewardSingcoins, 0))),
+        rewardSingcoins: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              utils.pickFirst(
+                matched?.rewardSingcoins,
+                matched?.reward_singcoins,
+                definition.rewardSingcoins
+              ),
+              0
+            )
+          )
+        ),
         unlocked: isUnlocked,
-        date: matched?.unlockedAt ? utils.formatShortDate(matched.unlockedAt) : ""
+        date: matched?.unlockedAt
+          ? utils.formatShortDate(matched.unlockedAt)
+          : matched?.unlocked_at
+            ? utils.formatShortDate(matched.unlocked_at)
+            : ""
       };
     });
   }
@@ -686,49 +736,256 @@
   function normalizeGamificationResponse(apiData, user = {}) {
     const fallback = utils.deepClone(MOCK_GAMIFICATION);
     const api = apiData && typeof apiData === "object" ? apiData : {};
-    const levelApi = api.level && typeof api.level === "object" ? api.level : {};
-    const streakApi = api.streak && typeof api.streak === "object" ? api.streak : {};
-    const singcoinsApi = api.singcoins && typeof api.singcoins === "object" ? api.singcoins : {};
-    const statsApi = api.stats && typeof api.stats === "object" ? api.stats : {};
-    const recordsApi = api.records && typeof api.records === "object" ? api.records : {};
 
-    const balance = singcoinsApi.balance != null
-      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.balance, 0)))
-      : Math.max(0, Math.floor(utils.toNumber(user?.singcoins, fallback.singcoins.balance)));
+    const levelApi = api.level || api.level_info || api.progression || api.xp || {};
+    const streakApi = api.streak || api.weekly_streak || api.streak_info || {};
+    const singcoinsApi = api.singcoins || api.wallet || api.balance || {};
+    const statsApi = api.stats || api.user_stats || api.statistics || {};
+    const recordsApi = api.records || api.user_records || api.highlights || {};
 
-    const used = singcoinsApi.used != null
-      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.used, 0)))
-      : fallback.singcoins.used;
+    const missionsApi = Array.isArray(api.missions)
+      ? api.missions
+      : Array.isArray(api.weekly_missions)
+        ? api.weekly_missions
+        : Array.isArray(api.missionList)
+          ? api.missionList
+          : Array.isArray(api.tasks)
+            ? api.tasks
+            : [];
 
-    const earned = singcoinsApi.earned != null
-      ? Math.max(0, Math.floor(utils.toNumber(singcoinsApi.earned, 0)))
-      : Math.max(balance + used, fallback.singcoins.earned);
+    const badgesApi = Array.isArray(api.badges)
+      ? api.badges
+      : Array.isArray(api.achievements)
+        ? api.achievements
+        : Array.isArray(api.successes)
+          ? api.successes
+          : [];
 
-    const totalSessions = statsApi.totalSessions != null
-      ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSessions, 0)))
-      : (user?.sessionsCount != null
-          ? Math.max(0, Math.floor(utils.toNumber(user.sessionsCount, 0)))
-          : fallback.stats.totalSessions);
+    const balance = Math.max(
+      0,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            singcoinsApi.balance,
+            singcoinsApi.current_balance,
+            singcoinsApi.available,
+            singcoinsApi.amount,
+            user?.singcoins,
+            0
+          ),
+          0
+        )
+      )
+    );
 
-    const levelCurrent = Math.max(1, Math.floor(utils.toNumber(levelApi.current, fallback.level.current)));
-    const xpCurrent = Math.max(0, Math.floor(utils.toNumber(levelApi.xpCurrent, fallback.level.xpCurrent)));
-    const xpNextLevel = Math.max(1, Math.floor(utils.toNumber(levelApi.xpNextLevel, fallback.level.xpNextLevel)));
-    const streakCurrent = Math.max(0, Math.floor(utils.toNumber(streakApi.current, fallback.streak.current)));
-    const streakBest = Math.max(streakCurrent, Math.floor(utils.toNumber(streakApi.best, fallback.streak.best)));
-    const lastValidatedAt = streakApi.lastValidatedAt || "";
+    const used = Math.max(
+      0,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            singcoinsApi.used,
+            singcoinsApi.used_total,
+            singcoinsApi.spent,
+            0
+          ),
+          0
+        )
+      )
+    );
 
-    const normalizedMissions = Array.isArray(api.missions)
-      ? api.missions.map((mission, index) => {
-          const targetValue = Math.max(1, utils.toNumber(mission?.targetValue, 1));
-          const progressValue = Math.max(0, utils.toNumber(mission?.progressValue, 0));
-          const done = Boolean(mission?.isCompleted);
+    const earned = Math.max(
+      balance + used,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            singcoinsApi.earned,
+            singcoinsApi.earned_total,
+            singcoinsApi.total_earned,
+            balance + used
+          ),
+          balance + used
+        )
+      )
+    );
+
+    const totalSessions = Math.max(
+      0,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            statsApi.totalSessions,
+            statsApi.total_sessions,
+            statsApi.sessions_count,
+            user?.sessionsCount,
+            0
+          ),
+          0
+        )
+      )
+    );
+
+    const levelCurrent = Math.max(
+      1,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            levelApi.current,
+            levelApi.current_level,
+            levelApi.level,
+            fallback.level.current
+          ),
+          fallback.level.current
+        )
+      )
+    );
+
+    const xpCurrent = Math.max(
+      0,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            levelApi.xpCurrent,
+            levelApi.xp_current,
+            levelApi.current_xp,
+            levelApi.xp,
+            fallback.level.xpCurrent
+          ),
+          fallback.level.xpCurrent
+        )
+      )
+    );
+
+    const xpNextLevel = Math.max(
+      1,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            levelApi.xpNextLevel,
+            levelApi.xp_next_level,
+            levelApi.next_level_xp,
+            levelApi.nextXp,
+            fallback.level.xpNextLevel
+          ),
+          fallback.level.xpNextLevel
+        )
+      )
+    );
+
+    const streakCurrent = Math.max(
+      0,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            streakApi.current,
+            streakApi.current_streak,
+            streakApi.weeks,
+            0
+          ),
+          0
+        )
+      )
+    );
+
+    const streakBest = Math.max(
+      streakCurrent,
+      Math.floor(
+        utils.toNumber(
+          utils.pickFirst(
+            streakApi.best,
+            streakApi.best_streak,
+            streakApi.max,
+            0
+          ),
+          0
+        )
+      )
+    );
+
+    const lastValidatedAt = utils.pickFirst(
+      streakApi.lastValidatedAt,
+      streakApi.last_validated_at,
+      streakApi.lastActivity,
+      streakApi.last_activity,
+      ""
+    );
+
+    const normalizedMissions = missionsApi.length
+      ? missionsApi.map((mission, index) => {
+          const targetValue = Math.max(
+            1,
+            utils.toNumber(
+              utils.pickFirst(
+                mission?.targetValue,
+                mission?.target_value,
+                mission?.goal,
+                mission?.target,
+                1
+              ),
+              1
+            )
+          );
+
+          const progressValue = Math.max(
+            0,
+            utils.toNumber(
+              utils.pickFirst(
+                mission?.progressValue,
+                mission?.progress_value,
+                mission?.current,
+                mission?.count,
+                0
+              ),
+              0
+            )
+          );
+
+          const done = Boolean(
+            utils.pickFirst(
+              mission?.isCompleted,
+              mission?.is_completed,
+              mission?.done,
+              mission?.completed,
+              false
+            )
+          );
+
           return {
-            id: utils.safeText(mission?.code || `mission-${index}`, 80) || `mission-${index}`,
-            title: utils.safeText(mission?.title || `Mission ${index + 1}`, 140),
+            id:
+              utils.safeText(
+                utils.pickFirst(
+                  mission?.code,
+                  mission?.id,
+                  mission?.key,
+                  `mission-${index}`
+                ),
+                80
+              ) || `mission-${index}`,
+            title: utils.safeText(
+              utils.pickFirst(
+                mission?.title,
+                mission?.name,
+                mission?.label,
+                `Mission ${index + 1}`
+              ),
+              140
+            ),
             progress: done ? 100 : utils.pct(progressValue, targetValue),
             progressValue,
             targetValue,
-            reward: utils.formatRewardText(mission),
+            reward: utils.formatRewardText({
+              rewardSingcoins: utils.pickFirst(
+                mission?.rewardSingcoins,
+                mission?.reward_singcoins,
+                mission?.singcoinsReward,
+                0
+              ),
+              rewardXp: utils.pickFirst(
+                mission?.rewardXp,
+                mission?.reward_xp,
+                mission?.xpReward,
+                0
+              )
+            }),
             done
           };
         })
@@ -737,63 +994,141 @@
     const normalized = {
       identity: {
         displayName: utils.getDisplayName(user),
-        avatarText: utils.initialsFromText(utils.getDisplayName(user) || utils.normalizeEmail(user?.email || "") || "S"),
+        avatarText: utils.initialsFromText(
+          utils.getDisplayName(user) || utils.normalizeEmail(user?.email || "") || "S"
+        ),
         memberSince: utils.formatMonthYear(user?.created_at || user?.createdAt),
         status: utils.deriveStatus(levelCurrent, totalSessions)
       },
       level: {
         current: levelCurrent,
-        name: utils.safeText(levelApi.name || "", 60) || utils.getLevelName(levelCurrent),
+        name:
+          utils.safeText(
+            utils.pickFirst(
+              levelApi.name,
+              levelApi.level_name,
+              utils.getLevelName(levelCurrent)
+            ),
+            60
+          ) || utils.getLevelName(levelCurrent),
         xpCurrent,
         xpNextLevel,
-        xpTotal: Math.max(0, Math.floor(utils.toNumber(levelApi.xpTotal, xpCurrent)))
+        xpTotal: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              utils.pickFirst(levelApi.xpTotal, levelApi.xp_total, xpCurrent),
+              xpCurrent
+            )
+          )
+        )
       },
       streak: {
         current: streakCurrent,
         best: streakBest,
-        deadlineText: streakCurrent > 0
-          ? "Fais au moins une session validée cette semaine pour conserver ton streak."
-          : "Fais une session validée cette semaine pour lancer ton streak.",
-        jokers: streakApi.jokers != null ? Math.max(0, Math.floor(utils.toNumber(streakApi.jokers, 0))) : 0,
+        deadlineText:
+          streakCurrent > 0
+            ? "Fais au moins une session validée cette semaine pour conserver ton streak."
+            : "Fais une session validée cette semaine pour lancer ton streak.",
+        jokers: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              utils.pickFirst(streakApi.jokers, streakApi.joker_count, 0),
+              0
+            )
+          )
+        ),
         status: streakCurrent > 0 ? (lastValidatedAt ? "active" : "warning") : "broken",
         lastActivity: lastValidatedAt ? utils.formatLastActivity(lastValidatedAt) : "—",
         rhythm: streakCurrent >= 8 ? "Très bon" : streakCurrent >= 4 ? "Bon rythme" : "À lancer",
-        lastPeriodKey: utils.safeText(streakApi.lastPeriodKey || "", 60)
+        lastPeriodKey: utils.safeText(
+          utils.pickFirst(streakApi.lastPeriodKey, streakApi.last_period_key, ""),
+          60
+        )
       },
       singcoins: {
         balance,
         earned,
         used,
-        nextReward: balance >= state.config.singcoinsGoal
-          ? "Séance offerte débloquée"
-          : "Séance offerte à 100 Singcoins"
+        nextReward:
+          balance >= state.config.singcoinsGoal
+            ? "Séance offerte débloquée"
+            : "Séance offerte à 100 Singcoins"
       },
       stats: {
         totalSessions,
-        totalTime: typeof statsApi.totalTime === "string" && utils.safeText(statsApi.totalTime)
-          ? utils.safeText(statsApi.totalTime, 40)
-          : (statsApi.totalTime != null ? utils.formatDurationMinutes(statsApi.totalTime) : fallback.stats.totalTime),
-        totalSongs: statsApi.totalSongs != null
-          ? Math.max(0, Math.floor(utils.toNumber(statsApi.totalSongs, 0)))
-          : fallback.stats.totalSongs,
-        lastSession: statsApi.lastSession ? utils.formatShortDate(statsApi.lastSession) : fallback.stats.lastSession,
-        sessions_last_7_days: Math.max(0, utils.toNumber(statsApi.sessionsLast7Days, 0)),
-        sessions_last_30_days: Math.max(0, utils.toNumber(statsApi.sessionsLast30Days, 0))
+        totalTime:
+          typeof utils.pickFirst(statsApi.totalTime, statsApi.total_time) === "string"
+            ? utils.safeText(utils.pickFirst(statsApi.totalTime, statsApi.total_time), 40)
+            : utils.formatDurationMinutes(
+                utils.pickFirst(statsApi.totalTime, statsApi.total_time, 0)
+              ),
+        totalSongs: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              utils.pickFirst(statsApi.totalSongs, statsApi.total_songs, 0),
+              0
+            )
+          )
+        ),
+        lastSession: utils.pickFirst(statsApi.lastSession, statsApi.last_session)
+          ? utils.formatShortDate(utils.pickFirst(statsApi.lastSession, statsApi.last_session))
+          : "—",
+        sessions_last_7_days: Math.max(
+          0,
+          utils.toNumber(
+            utils.pickFirst(statsApi.sessionsLast7Days, statsApi.sessions_last_7_days, 0),
+            0
+          )
+        ),
+        sessions_last_30_days: Math.max(
+          0,
+          utils.toNumber(
+            utils.pickFirst(statsApi.sessionsLast30Days, statsApi.sessions_last_30_days, 0),
+            0
+          )
+        )
       },
       records: {
-        bestStreak: recordsApi.bestStreak != null
-          ? Math.max(0, Math.floor(utils.toNumber(recordsApi.bestStreak, 0)))
-          : streakBest,
-        activeWeek: fallback.records.activeWeek || "—",
-        biggestSession: recordsApi.biggestSession != null
-          ? utils.formatBiggestSession(recordsApi.biggestSession)
-          : fallback.records.biggestSession,
-        timePerSession: recordsApi.longestSessionMinutes != null
-          ? utils.formatDurationMinutes(recordsApi.longestSessionMinutes)
-          : fallback.records.timePerSession
+        bestStreak: Math.max(
+          0,
+          Math.floor(
+            utils.toNumber(
+              utils.pickFirst(recordsApi.bestStreak, recordsApi.best_streak, streakBest),
+              streakBest
+            )
+          )
+        ),
+        activeWeek: "—",
+        biggestSession: utils.formatBiggestSession(
+          utils.pickFirst(recordsApi.biggestSession, recordsApi.biggest_session, 0)
+        ),
+        timePerSession: utils.formatDurationMinutes(
+          utils.pickFirst(recordsApi.longestSessionMinutes, recordsApi.longest_session_minutes, 0)
+        )
       },
       missions: normalizedMissions,
-      badges: normalizeBadges(api.badges, fallback.badges)
+      badges: normalizeBadges(
+        badgesApi.map((badge) => ({
+          ...badge,
+          isUnlocked: utils.pickFirst(
+            badge?.isUnlocked,
+            badge?.is_unlocked,
+            badge?.unlocked,
+            false
+          ),
+          unlockedAt: utils.pickFirst(
+            badge?.unlockedAt,
+            badge?.unlocked_at,
+            badge?.obtained_at,
+            badge?.date,
+            ""
+          )
+        })),
+        fallback.badges
+      )
     };
 
     normalized.records.activeWeek = utils.guessActiveWeek(normalized.stats);
@@ -1313,7 +1648,10 @@
     if (!el) return;
 
     const items = [
-      { label: "Meilleur streak", value: utils.formatWeeks(data.records.bestStreak).replace(" semaines", "").replace(" semaine", "") || "0" },
+      {
+        label: "Meilleur streak",
+        value: String(Math.max(0, Number(data.records.bestStreak || 0)))
+      },
       { label: "Semaine la plus active", value: data.records.activeWeek },
       { label: "Plus grosse session", value: data.records.biggestSession },
       { label: "Record temps", value: data.records.timePerSession }
@@ -1341,9 +1679,11 @@
             <div class="g-soft">${utils.safeHtml(badge.desc)}</div>
             ${rewardText ? `<div class="g-soft" style="margin-top:6px;">${utils.safeHtml(rewardText)}</div>` : ""}
             <span class="g-rarity ${utils.safeHtml(badge.rarity || "common")}">${utils.safeHtml(badge.rarity || "common")}</span>
-            ${badge.date
-              ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>`
-              : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`}
+            ${
+              badge.date
+                ? `<div class="g-soft" style="margin-top:6px;">Obtenu le ${utils.safeHtml(badge.date)}</div>`
+                : `<div class="g-soft" style="margin-top:6px;">À débloquer</div>`
+            }
           </div>
         </div>
       `;
