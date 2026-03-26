@@ -463,8 +463,219 @@
       toNumber(value, fallback = 0) {
         const n = Number(value);
         return Number.isFinite(n) ? n : fallback;
+      },
+      normalizeObject(value) {
+        return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+      },
+      pickFirst(...values) {
+        for (const value of values) {
+          if (value !== undefined && value !== null && value !== "") return value;
+        }
+        return null;
       }
     };
+
+    function extractUserFromMePayload(payload) {
+      const data = utils.normalizeObject(payload);
+      const profile = utils.normalizeObject(data.profile);
+      const payment = utils.normalizeObject(data.payment);
+      const stats = utils.normalizeObject(data.stats);
+      const wallet = utils.normalizeObject(data.wallet);
+      const gamification = utils.normalizeObject(data.gamification);
+      const nestedUser = utils.normalizeObject(data.user);
+
+      const mergedRoot = { ...data, ...nestedUser };
+
+      return {
+        id: utils.pickFirst(mergedRoot.id, mergedRoot.userId, mergedRoot.user_id, null),
+        email: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.email,
+            profile.email,
+            mergedRoot.user_email,
+            ""
+          ),
+          254
+        ),
+        singcoins: Math.max(
+          0,
+          utils.toNumber(
+            utils.pickFirst(
+              mergedRoot.singcoins,
+              mergedRoot.singcoins_balance,
+              mergedRoot.singcoinBalance,
+              wallet.singcoins,
+              wallet.balance,
+              gamification.singcoins,
+              gamification.balance,
+              0
+            ),
+            0
+          )
+        ),
+        pseudo: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.pseudo,
+            mergedRoot.username,
+            profile.pseudo,
+            profile.username,
+            ""
+          ),
+          40
+        ),
+        username: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.username,
+            profile.username,
+            mergedRoot.pseudo,
+            profile.pseudo,
+            ""
+          ),
+          40
+        ),
+        prenom: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.prenom,
+            mergedRoot.firstName,
+            mergedRoot.firstname,
+            mergedRoot.first_name,
+            profile.prenom,
+            profile.firstName,
+            profile.firstname,
+            profile.first_name,
+            ""
+          ),
+          80
+        ),
+        firstName: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.firstName,
+            mergedRoot.firstname,
+            mergedRoot.first_name,
+            mergedRoot.prenom,
+            profile.firstName,
+            profile.firstname,
+            profile.first_name,
+            profile.prenom,
+            ""
+          ),
+          80
+        ),
+        firstname: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.firstname,
+            mergedRoot.firstName,
+            mergedRoot.first_name,
+            mergedRoot.prenom,
+            profile.firstname,
+            profile.firstName,
+            profile.first_name,
+            profile.prenom,
+            ""
+          ),
+          80
+        ),
+        created_at: utils.sanitizeText(
+          utils.pickFirst(
+            mergedRoot.created_at,
+            mergedRoot.createdAt,
+            profile.created_at,
+            profile.createdAt,
+            ""
+          ),
+          80
+        ),
+        sessionsCount: Math.max(
+          0,
+          utils.toNumber(
+            utils.pickFirst(
+              mergedRoot.sessionsCount,
+              mergedRoot.sessions_count,
+              stats.totalSessions,
+              stats.total_sessions,
+              0
+            ),
+            0
+          )
+        ),
+        profile,
+        payment,
+        raw: data
+      };
+    }
+
+    function extractGamificationPayload(payload) {
+      const data = utils.normalizeObject(payload);
+      const snapshot = utils.pickFirst(data.snapshot, data.gamification, data.data, data);
+      return utils.normalizeObject(snapshot);
+    }
+
+    function extractReferralPayload(payload) {
+      const data = utils.normalizeObject(payload);
+
+      if (data.referral && typeof data.referral === "object") {
+        return data.referral;
+      }
+
+      const summary = utils.normalizeObject(data.summary);
+      const code = utils.sanitizeText(
+        utils.pickFirst(data.referralCode, data.code, summary.code, ""),
+        80
+      );
+
+      const validatedCount = Math.max(
+        0,
+        utils.toNumber(
+          utils.pickFirst(
+            summary.validatedCount,
+            summary.validCount,
+            summary.current,
+            data.validatedCount,
+            data.validCount,
+            0
+          ),
+          0
+        )
+      );
+
+      const progressTarget = Math.max(
+        1,
+        utils.toNumber(
+          utils.pickFirst(
+            summary.progressTarget,
+            summary.target,
+            summary.goal,
+            data.progressTarget,
+            4
+          ),
+          4
+        )
+      );
+
+      const rewardAvailable = Boolean(
+        utils.pickFirst(
+          summary.rewardAvailable,
+          summary.availableReward,
+          summary.hasReward,
+          data.rewardAvailable,
+          false
+        )
+      );
+
+      const origin =
+        window.location?.origin && /^https?:/i.test(window.location.origin)
+          ? window.location.origin.replace(/\/$/, "")
+          : "https://www.singbox.fr";
+
+      return {
+        code,
+        link: code ? `${origin}/?ref=${encodeURIComponent(code)}` : "",
+        progressCurrent: validatedCount,
+        progressTarget,
+        validatedCount,
+        rewardAvailable
+      };
+    }
 
     const api = {
       async fetchAuth(url, opt = {}) {
@@ -499,12 +710,20 @@
 
       async login(email, password) {
         const { response, data } = await api.postJson(`${API_BASE}/api/login`, { email, password });
-        return { ok: response.ok && !!data?.token, token: data?.token, error: data?.error };
+        return {
+          ok: response.ok && !!(data?.token || data?.user?.token),
+          token: data?.token || data?.user?.token || null,
+          error: data?.error
+        };
       },
 
       async register(email, password) {
         const { response, data } = await api.postJson(`${API_BASE}/api/register`, { email, password });
-        return { ok: response.ok, error: data?.error };
+        return {
+          ok: response.ok,
+          error: data?.error,
+          token: data?.token || null
+        };
       },
 
       async me() {
@@ -525,7 +744,9 @@
       },
 
       async referralMe() {
-        const response = await api.fetchWithAuth(`${API_BASE}/api/referral/me`);
+        const response = await api.fetchWithAuth(`${API_BASE}/api/referral/me`, {
+          clearAuthOnError: false
+        });
         const data = await utils.safeJson(response);
         return { response, data };
       }
@@ -787,12 +1008,16 @@
       },
 
       render(data) {
-        const referralData = data?.referral || null;
+        const referralData = extractReferralPayload(data);
         state.referral = referralData;
 
-        if (!referralData) {
+        if (!referralData || !referralData.code) {
           referral.resetDisplay();
-          utils.setStatus(els.referralMessage, "Impossible de charger vos informations de parrainage.", "error");
+          utils.setStatus(
+            els.referralMessage,
+            "Impossible de charger vos informations de parrainage.",
+            "error"
+          );
           return;
         }
 
@@ -979,15 +1204,12 @@
             throw new Error(`Erreur ${meResponse.status}${backendError}`);
           }
 
-          const user = meData && typeof meData === "object" ? meData : {};
-          const singcoins = typeof user.singcoins === "number" && Number.isFinite(user.singcoins)
-            ? Math.max(0, Math.floor(user.singcoins))
-            : 0;
+          const user = extractUserFromMePayload(meData);
 
           state.user = user;
           state.gamification =
-            gamifResponse?.ok && gamifDataRaw && typeof gamifDataRaw === "object"
-              ? (gamifDataRaw.snapshot || gamifDataRaw)
+            gamifResponse?.ok && gamifDataRaw
+              ? extractGamificationPayload(gamifDataRaw)
               : null;
 
           if (gamifResponse && !gamifResponse.ok && ![0, 401, 403, 404].includes(gamifResponse.status)) {
@@ -995,21 +1217,21 @@
           }
 
           utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
-          utils.setText(els.userSingcoins, String(singcoins));
+          utils.setText(els.userSingcoins, String(user.singcoins || 0));
           utils.setStatus(els.accountMessage, "Bienvenue dans votre espace client.", "ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
           window.SingboxGamification?.updateUser?.({
             email: user.email || "",
-            singcoins,
+            singcoins: user.singcoins || 0,
             pseudo: user.pseudo || "",
             username: user.username || "",
             prenom: user.prenom || "",
             firstName: user.firstName || "",
             firstname: user.firstname || "",
             created_at: user.created_at || "",
-            sessionsCount: user.sessionsCount,
+            sessionsCount: user.sessionsCount || 0,
             gamification: state.gamification
           });
 
@@ -1042,6 +1264,10 @@
       async registerThenLogin(email, password) {
         const reg = await api.register(email, password);
         if (!reg.ok) return { ok: false, error: reg.error || "Erreur lors de la création du compte." };
+
+        if (reg.token) {
+          return { ok: true, token: reg.token };
+        }
 
         const log = await api.login(email, password);
         if (!log.ok) return { ok: false, error: "Compte créé, mais la connexion a échoué." };
