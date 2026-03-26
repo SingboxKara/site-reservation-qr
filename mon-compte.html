@@ -361,114 +361,169 @@
   <script src="js/layout.js"></script>
 
   <script>
-    const API_BASE="https://singbox-backend.onrender.com",
-      CHECK_ENDPOINT=`${API_BASE}/api/check`,
-      MODIFICATION_DEADLINE_HOURS=6,
-      SINGCOINS_GOAL=100,
-      $=id=>document.getElementById(id);
+    const API_BASE = "https://singbox-backend.onrender.com";
+    const CHECK_ENDPOINT = `${API_BASE}/api/check`;
+    const MODIFICATION_DEADLINE_HOURS = 6;
+    const SINGCOINS_GOAL = 100;
+    const PASSWORD_MIN_LENGTH = 8;
+    const $ = id => document.getElementById(id);
 
-    const els={
-      cartCount:null,burgerButton:null,mobileNav:null,
-      loginCard:$("login-card"),loginForm:$("login-form"),loginEmail:$("login-email"),loginPassword:$("login-password"),
-      loginSubmitBtn:$("login-submit-btn"),createAccountBtn:$("create-account-btn"),loginMessage:$("login-message"),
-      logoutBtn:$("logout-btn"),accountMessage:$("account-message"),refundMessage:$("refund-message"),notLoggedCta:$("not-logged-cta"),
-      userEmail:$("user-email"),userSingcoins:$("user-singcoins"),reservationsList:$("reservations-list"),
-      qrModal:$("qr-modal"),qrCanvas:$("qr-canvas"),qrModalSubtitle:$("qr-modal-subtitle"),qrCloseBtn:$("qr-close-btn"),
-      referralCard:$("account-referral-card"),
-      referralMessage:$("referral-message"),
-      referralCode:$("referral-code"),
-      referralLink:$("referral-link"),
-      referralProgressText:$("referral-progress-text"),
-      referralProgressSubtext:$("referral-progress-subtext"),
-      referralProgressBar:$("referral-progress-bar"),
-      referralRewardStatus:$("referral-reward-status"),
-      referralRewardHelp:$("referral-reward-help"),
-      copyReferralLinkBtn:$("copy-referral-link-btn")
+    const els = {
+      cartCount: null,
+      burgerButton: null,
+      mobileNav: null,
+      loginCard: $("login-card"),
+      loginForm: $("login-form"),
+      loginEmail: $("login-email"),
+      loginPassword: $("login-password"),
+      loginSubmitBtn: $("login-submit-btn"),
+      createAccountBtn: $("create-account-btn"),
+      loginMessage: $("login-message"),
+      logoutBtn: $("logout-btn"),
+      accountMessage: $("account-message"),
+      refundMessage: $("refund-message"),
+      notLoggedCta: $("not-logged-cta"),
+      userEmail: $("user-email"),
+      userSingcoins: $("user-singcoins"),
+      reservationsList: $("reservations-list"),
+      qrModal: $("qr-modal"),
+      qrCanvas: $("qr-canvas"),
+      qrModalSubtitle: $("qr-modal-subtitle"),
+      qrCloseBtn: $("qr-close-btn"),
+      referralCard: $("account-referral-card"),
+      referralMessage: $("referral-message"),
+      referralCode: $("referral-code"),
+      referralLink: $("referral-link"),
+      referralProgressText: $("referral-progress-text"),
+      referralProgressSubtext: $("referral-progress-subtext"),
+      referralProgressBar: $("referral-progress-bar"),
+      referralRewardStatus: $("referral-reward-status"),
+      referralRewardHelp: $("referral-reward-help"),
+      copyReferralLinkBtn: $("copy-referral-link-btn")
     };
 
-    const state={reservations:[],user:null,gamification:null,referral:null};
+    const state = {
+      reservations: [],
+      user: null,
+      gamification: null,
+      referral: null
+    };
 
-    const utils={
-      sanitizeText:(v,max=500)=>String(v||"").replace(/\u0000/g,"").trim().slice(0,max),
-      sanitize(v,max=500){ return utils.sanitizeText(v,max); },
-      normalizeEmail:v=>utils.sanitizeText(v,254).toLowerCase(),
-      isValidEmail:v=>typeof v==="string"&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim()),
-      safeJson:async r=>{try{return await r.json()}catch{return {}}},
-      parseDate:v=>{if(!v)return null;const d=new Date(v);return Number.isNaN(d.getTime())?null:d},
-      formatTime:d=>d instanceof Date&&!Number.isNaN(d.getTime())?d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}).replace(":","h"):"",
-      formatReservationDate:v=>{
-        const d=utils.parseDate(v);
-        return d?d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}):utils.sanitizeText(v||"Date à confirmer",80)
+    const utils = {
+      sanitizeText: (v, max = 500) => String(v || "").replace(/\u0000/g, "").trim().slice(0, max),
+      sanitize(v, max = 500) { return utils.sanitizeText(v, max); },
+      normalizeEmail: v => utils.sanitizeText(v, 254).toLowerCase(),
+      isValidEmail: v => typeof v === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(v.trim()),
+      safeJson: async r => { try { return await r.json(); } catch { return {}; } },
+      parseDate: v => {
+        if (!v) return null;
+        const d = new Date(v);
+        return Number.isNaN(d.getTime()) ? null : d;
       },
-      getStoredToken(){
-        const t=localStorage.getItem("token");
-        return !t||t==="null"||t==="undefined"?null:t;
+      formatTime: d => d instanceof Date && !Number.isNaN(d.getTime())
+        ? d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", "h")
+        : "",
+      formatReservationDate: v => {
+        const d = utils.parseDate(v);
+        return d
+          ? d.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short", year: "numeric" })
+          : utils.sanitizeText(v || "Date à confirmer", 80);
       },
-      token(){ return utils.getStoredToken(); },
-      clearStoredToken(){ localStorage.removeItem("token"); },
-      clearToken(){ utils.clearStoredToken(); },
-      getAuthHeaders(){
-        const t=utils.getStoredToken();
-        return t?{Authorization:`Bearer ${t}`}:{};
+      getStoredToken() {
+        const t = localStorage.getItem("token");
+        return !t || t === "null" || t === "undefined" ? null : t;
       },
-      authHeaders(){ return utils.getAuthHeaders(); },
-      setText:(el,v)=>el&&(el.textContent=v),
-      text:(el,v)=>el&&(el.textContent=v),
-      show:(el,d="block")=>el&&(el.style.display=d),
-      hide:el=>el&&(el.style.display="none"),
-      setStatus(el,msg="",type="error"){
-        if(!el)return;
-        el.textContent=msg;
-        el.className=el.id==="login-message"?"login-message":"account-message";
-        if(type)el.classList.add(type);
+      token() { return utils.getStoredToken(); },
+      clearStoredToken() { localStorage.removeItem("token"); },
+      clearToken() { utils.clearStoredToken(); },
+      getAuthHeaders() {
+        const t = utils.getStoredToken();
+        return t ? { Authorization: `Bearer ${t}` } : {};
       },
-      status(el,msg="",type="error"){ utils.setStatus(el,msg,type); },
-      create:(tag,{className,text,html,attrs}={})=>{
-        const el=document.createElement(tag);
-        if(className)el.className=className;
-        if(text!==undefined)el.textContent=text;
-        if(html)el.innerHTML=html;
-        if(attrs)Object.entries(attrs).forEach(([k,v])=>v!=null&&v!==""&&el.setAttribute(k,v));
+      authHeaders() { return utils.getAuthHeaders(); },
+      setText: (el, v) => el && (el.textContent = v),
+      text: (el, v) => el && (el.textContent = v),
+      show: (el, d = "block") => el && (el.style.display = d),
+      hide: el => el && (el.style.display = "none"),
+      setStatus(el, msg = "", type = "") {
+        if (!el) return;
+        el.textContent = msg;
+        el.className = el.id === "login-message" ? "login-message" : "account-message";
+        if (type) el.classList.add(type);
+      },
+      status(el, msg = "", type = "") { utils.setStatus(el, msg, type); },
+      create: (tag, { className, text, html, attrs } = {}) => {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        if (text !== undefined) el.textContent = text;
+        if (html) el.innerHTML = html;
+        if (attrs) Object.entries(attrs).forEach(([k, v]) => v != null && v !== "" && el.setAttribute(k, v));
         return el;
       },
-      toNumber(value,fallback=0){
-        const n=Number(value);
-        return Number.isFinite(n)?n:fallback;
+      toNumber(value, fallback = 0) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : fallback;
       }
     };
 
-    const api={
-      async fetchAuth(url,opt={}){
-        const {clearAuthOnError=true,...rest}=opt;
-        const r=await fetch(url,{...rest,headers:{...(rest.headers||{}),...utils.getAuthHeaders()}});
-        if(clearAuthOnError&&[401,403].includes(r.status))utils.clearStoredToken();
+    const api = {
+      async fetchAuth(url, opt = {}) {
+        const { clearAuthOnError = true, ...rest } = opt;
+        const r = await fetch(url, {
+          ...rest,
+          headers: {
+            ...(rest.headers || {}),
+            ...utils.getAuthHeaders()
+          }
+        });
+
+        if (clearAuthOnError && [401, 403].includes(r.status)) {
+          utils.clearStoredToken();
+        }
+
         return r;
       },
-      async fetchWithAuth(url,opt={}){ return api.fetchAuth(url,opt); },
-      async postJson(url,payload){
-        const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-        return {response,data:await utils.safeJson(response)};
+
+      async fetchWithAuth(url, opt = {}) {
+        return api.fetchAuth(url, opt);
       },
-      async login(email,password){
-        const {response,data}=await api.postJson(`${API_BASE}/api/login`,{email,password});
-        return {ok:response.ok&&!!data?.token,token:data?.token,error:data?.error};
+
+      async postJson(url, payload) {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        return { response, data: await utils.safeJson(response) };
       },
-      async register(email,password){
-        const {response,data}=await api.postJson(`${API_BASE}/api/register`,{email,password});
-        return {ok:response.ok,error:data?.error};
+
+      async login(email, password) {
+        const { response, data } = await api.postJson(`${API_BASE}/api/login`, { email, password });
+        return { ok: response.ok && !!data?.token, token: data?.token, error: data?.error };
       },
-      async me(){
-        const response=await api.fetchWithAuth(`${API_BASE}/api/me`);
-        return {response,data:await utils.safeJson(response)};
+
+      async register(email, password) {
+        const { response, data } = await api.postJson(`${API_BASE}/api/register`, { email, password });
+        return { ok: response.ok, error: data?.error };
       },
-      async gamification(){
-        const response=await api.fetchWithAuth(`${API_BASE}/api/account/gamification`,{clearAuthOnError:false});
-        return {response,data:await utils.safeJson(response)};
+
+      async me() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/me`);
+        return { response, data: await utils.safeJson(response) };
       },
-      async myReservations(){
-        const response=await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
-        return {response,data:await utils.safeJson(response)};
+
+      async gamification() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/gamification/me`, {
+          clearAuthOnError: false
+        });
+        return { response, data: await utils.safeJson(response) };
       },
+
+      async myReservations() {
+        const response = await api.fetchWithAuth(`${API_BASE}/api/my-reservations`);
+        return { response, data: await utils.safeJson(response) };
+      },
+
       async referralMe() {
         const response = await api.fetchWithAuth(`${API_BASE}/api/referral/me`);
         const data = await utils.safeJson(response);
@@ -476,196 +531,237 @@
       }
     };
 
-    const reservationsService={
-      formatHours(r){
-        const s=utils.parseDate(r.start_time||r.datetime),e=utils.parseDate(r.end_time)||new Date(s?.getTime()+90*60*1000);
-        return s?`${utils.formatTime(s)} - ${utils.formatTime(e)}`:"";
+    const reservationsService = {
+      formatHours(r) {
+        const s = utils.parseDate(r.start_time || r.datetime);
+        const e = utils.parseDate(r.end_time) || new Date(s?.getTime() + 90 * 60 * 1000);
+        return s ? `${utils.formatTime(s)} - ${utils.formatTime(e)}` : "";
       },
-      statusClass(raw){
-        const s=String(raw||"").toLowerCase();
-        if(s==="completed")return"reservation-status-completed";
-        if(["confirmed","paid"].includes(s)||s.includes("confirm")||s.includes("payé")||s.includes("paye"))return"reservation-status-confirmed";
-        if(s.includes("attente")||s==="pending")return"reservation-status-pending";
-        if(s.includes("annul")||["cancelled","canceled","refunded"].includes(s))return"reservation-status-annulee";
-        return"";
+
+      statusClass(raw) {
+        const s = String(raw || "").toLowerCase();
+        if (s === "completed") return "reservation-status-completed";
+        if (["confirmed", "paid"].includes(s) || s.includes("confirm") || s.includes("payé") || s.includes("paye")) return "reservation-status-confirmed";
+        if (s.includes("attente") || s === "pending") return "reservation-status-pending";
+        if (s.includes("annul") || ["cancelled", "canceled", "refunded"].includes(s)) return "reservation-status-annulee";
+        return "";
       },
-      isRefundPossible:start=>{
-        const d=utils.parseDate(start);
-        return !!d&&(d.getTime()-Date.now())/(1000*60*60)>=24;
+
+      isRefundPossible(start) {
+        const d = utils.parseDate(start);
+        return !!d && (d.getTime() - Date.now()) / (1000 * 60 * 60) >= 24;
       },
-      isModificationPossible(start,status){
-        const d=utils.parseDate(start);
-        return !!d&&reservationsService.statusClass(status)==="reservation-status-confirmed"&&(d.getTime()-Date.now())/(1000*60*60)>=MODIFICATION_DEADLINE_HOURS;
+
+      isModificationPossible(start, status) {
+        const d = utils.parseDate(start);
+        return !!d
+          && reservationsService.statusClass(status) === "reservation-status-confirmed"
+          && (d.getTime() - Date.now()) / (1000 * 60 * 60) >= MODIFICATION_DEADLINE_HOURS;
       },
-      meta(r){
-        const t=reservationsService.formatHours(r),raw=r.box_name||r.box||r.box_id||"",b=utils.sanitizeText(raw,80);
-        return [t,b?(/^box/i.test(b)?b:`Box ${b}`):""].filter(Boolean).join(" • ");
+
+      meta(r) {
+        const t = reservationsService.formatHours(r);
+        const raw = r.box_name || r.box || r.box_id || "";
+        const b = utils.sanitizeText(raw, 80);
+        return [t, b ? (/^box/i.test(b) ? b : `Box ${b}`) : ""].filter(Boolean).join(" • ");
       },
-      qrTitle(r,date,box){
-        const out=[];
-        if(box)out.push(/^box/i.test(box)?box:`Box ${box}`);
+
+      qrTitle(r, date, box) {
+        const out = [];
+        if (box) out.push(/^box/i.test(box) ? box : `Box ${box}`);
         out.push(date);
-        const h=reservationsService.formatHours(r);
-        if(h)out.push(h);
+        const h = reservationsService.formatHours(r);
+        if (h) out.push(h);
         return out.join(" • ");
       },
-      btn({className,text,disabled=false,dataset={}}){
-        const b=utils.create("button",{className,text,attrs:{type:"button"}});
-        b.disabled=disabled;
-        Object.entries(dataset).forEach(([k,v])=>v!=null&&v!==""&&(b.dataset[k]=String(v)));
+
+      btn({ className, text, disabled = false, dataset = {} }) {
+        const b = utils.create("button", { className, text, attrs: { type: "button" } });
+        b.disabled = disabled;
+        Object.entries(dataset).forEach(([k, v]) => v != null && v !== "" && (b.dataset[k] = String(v)));
         return b;
       },
-      renderItem(r){
-        const item=utils.create("div",{className:"reservation-item"}),
-          startIso=utils.sanitizeText(r.start_time||r.datetime||"",100),
-          date=utils.formatReservationDate(r.date||startIso),
-          meta=reservationsService.meta(r),
-          box=utils.sanitizeText(r.box_name||r.box||r.box_id||"",80),
-          montant=utils.sanitizeText(r.montant||r.total||r.total_price||"",40),
-          statut=utils.sanitizeText(String(r.statut||r.status||""),80),
-          statutClass=reservationsService.statusClass(statut),
-          id=r?.id||null,
-          checkUrl=id?`${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}`:null,
-          qrTitle=reservationsService.qrTitle(r,date,box),
-          parsedStart=utils.parseDate(startIso),
-          isFutureConfirmed=statutClass==="reservation-status-confirmed"&&parsedStart&&parsedStart.getTime()>Date.now(),
-          canRefund=reservationsService.isRefundPossible(startIso),
-          canEdit=reservationsService.isModificationPossible(startIso,statut);
 
-        const main=utils.create("div",{className:"reservation-main-row"});
-        const left=utils.create("div");
+      renderItem(r) {
+        const item = utils.create("div", { className: "reservation-item" });
+        const startIso = utils.sanitizeText(r.start_time || r.datetime || "", 100);
+        const date = utils.formatReservationDate(r.date || startIso);
+        const meta = reservationsService.meta(r);
+        const box = utils.sanitizeText(r.box_name || r.box || r.box_id || "", 80);
+        const montant = utils.sanitizeText(r.montant || r.total || r.total_price || "", 40);
+        const statut = utils.sanitizeText(String(r.statut || r.status || ""), 80);
+        const statutClass = reservationsService.statusClass(statut);
+        const id = r?.id || null;
+        const checkUrl = id ? `${CHECK_ENDPOINT}?id=${encodeURIComponent(String(id))}` : null;
+        const qrTitle = reservationsService.qrTitle(r, date, box);
+        const parsedStart = utils.parseDate(startIso);
+        const isFutureConfirmed = statutClass === "reservation-status-confirmed" && parsedStart && parsedStart.getTime() > Date.now();
+        const canRefund = reservationsService.isRefundPossible(startIso);
+        const canEdit = reservationsService.isModificationPossible(startIso, statut);
+
+        const main = utils.create("div", { className: "reservation-main-row" });
+        const left = utils.create("div");
         left.append(
-          utils.create("div",{className:"soft-text",text:date}),
-          utils.create("div",{className:"reservation-meta",text:meta})
+          utils.create("div", { className: "soft-text", text: date }),
+          utils.create("div", { className: "reservation-meta", text: meta })
         );
 
-        const right=utils.create("div",{className:"reservation-side"});
-        if(montant)right.appendChild(utils.create("div",{className:"soft-text",text:`${montant} €`}));
-        if(statut)right.appendChild(utils.create("span",{className:`reservation-status ${statutClass}`.trim(),text:statut}));
+        const right = utils.create("div", { className: "reservation-side" });
+        if (montant) right.appendChild(utils.create("div", { className: "soft-text", text: `${montant} €` }));
+        if (statut) right.appendChild(utils.create("span", { className: `reservation-status ${statutClass}`.trim(), text: statut }));
 
-        main.append(left,right);
+        main.append(left, right);
         item.appendChild(main);
 
-        const actions=utils.create("div",{className:"reservation-actions-row"});
+        const actions = utils.create("div", { className: "reservation-actions-row" });
         actions.append(
           reservationsService.btn({
-            className:"reservation-action-btn reservation-edit-btn",
-            text:"Modifier",
-            disabled:!canEdit,
-            dataset:{editReservationId:canEdit&&r?.id?r.id:""}
+            className: "reservation-action-btn reservation-edit-btn",
+            text: "Modifier",
+            disabled: !canEdit,
+            dataset: { editReservationId: canEdit && r?.id ? r.id : "" }
           }),
           reservationsService.btn({
-            className:"reservation-action-btn reservation-qr-btn",
-            text:checkUrl?"Afficher le QR":"QR indisponible",
-            disabled:!checkUrl,
-            dataset:{qrUrl:checkUrl||"",qrTitle}
+            className: "reservation-action-btn reservation-qr-btn",
+            text: checkUrl ? "Afficher le QR" : "QR indisponible",
+            disabled: !checkUrl,
+            dataset: { qrUrl: checkUrl || "", qrTitle }
           })
         );
         item.appendChild(actions);
 
-        if(isFutureConfirmed){
-          const refund=utils.create("div",{className:"reservation-refund-row"});
+        if (isFutureConfirmed) {
+          const refund = utils.create("div", { className: "reservation-refund-row" });
           refund.append(
-            utils.create("span",{text:canRefund?"Remboursement possible jusqu'à 24h avant la séance.":"Le remboursement n'est plus possible dans les 24h avant la séance."}),
+            utils.create("span", {
+              text: canRefund
+                ? "Remboursement possible jusqu'à 24h avant la séance."
+                : "Le remboursement n'est plus possible dans les 24h avant la séance."
+            }),
             reservationsService.btn({
-              className:"reservation-refund-btn",
-              text:"Demander un remboursement",
-              disabled:!(canRefund&&r?.id),
-              dataset:{reservationId:r?.id||"",startTime:startIso}
+              className: "reservation-refund-btn",
+              text: "Demander un remboursement",
+              disabled: !(canRefund && r?.id),
+              dataset: { reservationId: r?.id || "", startTime: startIso }
             })
           );
           item.appendChild(refund);
         }
+
         return item;
       }
     };
 
-    const ui={
-      refreshLayoutRefs(){
-        els.cartCount=$("cart-count");
-        els.burgerButton=$("burger-button");
-        els.mobileNav=$("mobile-nav");
+    const ui = {
+      refreshLayoutRefs() {
+        els.cartCount = $("cart-count");
+        els.burgerButton = $("burger-button");
+        els.mobileNav = $("mobile-nav");
       },
-      updateCartIcon(){
-        let panier=[];
-        try{
-          const raw=localStorage.getItem("panier");
-          const parsed=raw?JSON.parse(raw):[];
-          panier=Array.isArray(parsed)?parsed:[];
-        }catch{}
-        if(!els.cartCount)return;
-        els.cartCount.textContent=panier.length?String(panier.length):"";
-        els.cartCount.setAttribute("aria-hidden",panier.length?"false":"true");
+
+      updateCartIcon() {
+        let panier = [];
+        try {
+          const raw = localStorage.getItem("panier");
+          const parsed = raw ? JSON.parse(raw) : [];
+          panier = Array.isArray(parsed) ? parsed : [];
+        } catch {}
+
+        if (!els.cartCount) return;
+        els.cartCount.textContent = panier.length ? String(panier.length) : "";
+        els.cartCount.setAttribute("aria-hidden", panier.length ? "false" : "true");
       },
-      closeMobileNav(){
-        if(!els.mobileNav||!els.burgerButton)return;
+
+      closeMobileNav() {
+        if (!els.mobileNav || !els.burgerButton) return;
         els.mobileNav.classList.remove("open");
-        els.burgerButton.setAttribute("aria-expanded","false");
+        els.burgerButton.setAttribute("aria-expanded", "false");
       },
-      openMobileNav(){
-        if(!els.mobileNav||!els.burgerButton)return;
+
+      openMobileNav() {
+        if (!els.mobileNav || !els.burgerButton) return;
         els.mobileNav.classList.add("open");
-        els.burgerButton.setAttribute("aria-expanded","true");
+        els.burgerButton.setAttribute("aria-expanded", "true");
       },
-      renderReservations(list=[]){
-        if(!els.reservationsList)return;
-        els.reservationsList.innerHTML="";
-        if(!list.length){
-          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Aucune réservation pour le moment."}));
+
+      renderReservations(list = []) {
+        if (!els.reservationsList) return;
+        els.reservationsList.innerHTML = "";
+        if (!list.length) {
+          els.reservationsList.appendChild(
+            utils.create("p", { className: "reservations-empty", text: "Aucune réservation pour le moment." })
+          );
           return;
         }
-        list.forEach(r=>els.reservationsList.appendChild(reservationsService.renderItem(r)));
+        list.forEach(r => els.reservationsList.appendChild(reservationsService.renderItem(r)));
       },
-      setReservationsNotLogged(){
-        if(!els.reservationsList)return;
-        els.reservationsList.innerHTML="";
-        els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Connectez-vous pour retrouver vos réservations passées et à venir."}));
+
+      setReservationsNotLogged() {
+        if (!els.reservationsList) return;
+        els.reservationsList.innerHTML = "";
+        els.reservationsList.appendChild(
+          utils.create("p", {
+            className: "reservations-empty",
+            text: "Connectez-vous pour retrouver vos réservations passées et à venir."
+          })
+        );
       },
-      showNotLoggedState(msg="Connectez-vous pour accéder à votre espace client."){
-        state.user=null;
-        state.gamification=null;
-        state.reservations=[];
-        state.referral=null;
+
+      showNotLoggedState(msg = "Connectez-vous pour accéder à votre espace client.") {
+        state.user = null;
+        state.gamification = null;
+        state.reservations = [];
+        state.referral = null;
         referral.hideCard();
         referral.resetDisplay();
 
-        utils.setText(els.userEmail,"Non connecté");
-        utils.setText(els.userSingcoins,"—");
-        utils.setStatus(els.accountMessage,msg,"error");
-        utils.setStatus(els.refundMessage,"","");
+        utils.setText(els.userEmail, "Non connecté");
+        utils.setText(els.userSingcoins, "—");
+        utils.setStatus(els.accountMessage, msg, "error");
+        utils.setStatus(els.refundMessage, "", "");
         utils.show(els.notLoggedCta);
         utils.show(els.loginCard);
         ui.setReservationsNotLogged();
         window.SingboxGamification?.renderLoggedOut?.();
       },
-      setAuthButtonsLoading(on){
-        [els.loginSubmitBtn,els.createAccountBtn].forEach(btn=>{
-          if(!btn)return;
-          if(!btn.dataset.defaultText)btn.dataset.defaultText=btn.textContent;
-          btn.disabled=on;
-          btn.textContent=on?"Chargement...":btn.dataset.defaultText;
+
+      setAuthButtonsLoading(on) {
+        [els.loginSubmitBtn, els.createAccountBtn].forEach(btn => {
+          if (!btn) return;
+          if (!btn.dataset.defaultText) btn.dataset.defaultText = btn.textContent;
+          btn.disabled = on;
+          btn.textContent = on ? "Chargement..." : btn.dataset.defaultText;
         });
       },
-      clearLoginFieldErrors(){
+
+      clearLoginFieldErrors() {
         els.loginEmail?.removeAttribute("aria-invalid");
         els.loginPassword?.removeAttribute("aria-invalid");
       },
-      async drawQr(text){
-        if(!els.qrCanvas||!globalThis.QRCode)return;
-        await globalThis.QRCode.toCanvas(els.qrCanvas,text,{width:320,margin:1,color:{dark:"#000000",light:"#ffffff"}});
+
+      async drawQr(text) {
+        if (!els.qrCanvas || !globalThis.QRCode) return;
+        await globalThis.QRCode.toCanvas(els.qrCanvas, text, {
+          width: 320,
+          margin: 1,
+          color: { dark: "#000000", light: "#ffffff" }
+        });
       },
-      async openQrModal(url,subtitle){
-        if(!els.qrModal)return;
-        utils.setText(els.qrModalSubtitle,utils.sanitizeText(subtitle||"Présentez ce QR code à l’entrée.",200));
+
+      async openQrModal(url, subtitle) {
+        if (!els.qrModal) return;
+        utils.setText(els.qrModalSubtitle, utils.sanitizeText(subtitle || "Présentez ce QR code à l’entrée.", 200));
         await ui.drawQr(url);
-        typeof els.qrModal.showModal==="function"?els.qrModal.showModal():els.qrModal.setAttribute("open","open");
+        if (typeof els.qrModal.showModal === "function") els.qrModal.showModal();
+        else els.qrModal.setAttribute("open", "open");
       },
-      closeQrModal(){
-        if(!els.qrModal)return;
-        if(typeof els.qrModal.close==="function"&&els.qrModal.open)els.qrModal.close();
+
+      closeQrModal() {
+        if (!els.qrModal) return;
+        if (typeof els.qrModal.close === "function" && els.qrModal.open) els.qrModal.close();
         else els.qrModal.removeAttribute("open");
-        const ctx=els.qrCanvas?.getContext("2d");
-        if(ctx&&els.qrCanvas)ctx.clearRect(0,0,els.qrCanvas.width,els.qrCanvas.height);
+        const ctx = els.qrCanvas?.getContext("2d");
+        if (ctx && els.qrCanvas) ctx.clearRect(0, 0, els.qrCanvas.width, els.qrCanvas.height);
       }
     };
 
@@ -808,278 +904,419 @@
       }
     };
 
-    const profile={
-      async loadReservations(){
-        utils.setStatus(els.refundMessage,"","");
+    const profile = {
+      async loadReservations() {
+        utils.setStatus(els.refundMessage, "", "");
 
-        if(!utils.getStoredToken()){
-          state.reservations=[];
+        if (!utils.getStoredToken()) {
+          state.reservations = [];
           ui.setReservationsNotLogged();
           return;
         }
 
-        if(els.reservationsList){
-          els.reservationsList.innerHTML="";
-          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Chargement de vos réservations..."}));
+        if (els.reservationsList) {
+          els.reservationsList.innerHTML = "";
+          els.reservationsList.appendChild(
+            utils.create("p", { className: "reservations-empty", text: "Chargement de vos réservations..." })
+          );
         }
 
-        try{
-          const {response,data}=await api.myReservations();
-          if([401,403].includes(response.status)){ui.showNotLoggedState();return}
-          if(!response.ok)throw new Error(`Erreur ${response.status}`);
-          state.reservations=Array.isArray(data)?data:(data.reservations||[]);
+        try {
+          const { response, data } = await api.myReservations();
+
+          if ([401, 403].includes(response.status)) {
+            ui.showNotLoggedState();
+            return;
+          }
+
+          if (!response.ok) throw new Error(`Erreur ${response.status}`);
+
+          state.reservations = Array.isArray(data)
+            ? data
+            : (Array.isArray(data?.reservations) ? data.reservations : []);
+
           ui.renderReservations(state.reservations);
-        }catch(error){
+        } catch (error) {
           console.error(error);
-          if(!els.reservationsList)return;
-          els.reservationsList.innerHTML="";
-          els.reservationsList.appendChild(utils.create("p",{className:"reservations-empty",text:"Impossible de charger vos réservations pour le moment."}));
+          if (!els.reservationsList) return;
+          els.reservationsList.innerHTML = "";
+          els.reservationsList.appendChild(
+            utils.create("p", {
+              className: "reservations-empty",
+              text: "Impossible de charger vos réservations pour le moment."
+            })
+          );
         }
       },
 
-      async load(){
-        if(!utils.getStoredToken()){ui.showNotLoggedState();return}
-        utils.setStatus(els.accountMessage,"Chargement de votre espace client...","info");
+      async load() {
+        if (!utils.getStoredToken()) {
+          ui.showNotLoggedState();
+          return;
+        }
 
-        try{
-          const [meResult,gamifResult]=await Promise.all([
+        utils.setStatus(els.accountMessage, "Chargement de votre espace client...", "info");
+
+        try {
+          const [meResult, gamifResult] = await Promise.all([
             api.me(),
-            api.gamification().catch(error=>{
-              console.error("Erreur /api/account/gamification :",error);
-              return {response:{ok:false,status:0},data:null};
+            api.gamification().catch(error => {
+              console.error("Erreur /api/gamification/me :", error);
+              return { response: { ok: false, status: 0 }, data: null };
             })
           ]);
 
-          const {response:meResponse,data:meData}=meResult;
-          const {response:gamifResponse,data:gamifDataRaw}=gamifResult||{};
+          const { response: meResponse, data: meData } = meResult;
+          const { response: gamifResponse, data: gamifDataRaw } = gamifResult || {};
 
-          if([401,403].includes(meResponse.status)){ui.showNotLoggedState();return}
-          if(!meResponse.ok)throw new Error(`Erreur ${meResponse.status}`);
-
-          const user=meData&&typeof meData==="object"?meData:{};
-          const singcoins=typeof user.singcoins==="number"&&Number.isFinite(user.singcoins)?Math.max(0,Math.floor(user.singcoins)):0;
-
-          state.user=user;
-          state.gamification=gamifResponse?.ok && gamifDataRaw && typeof gamifDataRaw==="object" ? gamifDataRaw : null;
-
-          if(gamifResponse && !gamifResponse.ok && ![0,401,403].includes(gamifResponse.status)){
-            console.error("Réponse gamification non OK :",gamifResponse.status,gamifDataRaw);
+          if ([401, 403].includes(meResponse.status)) {
+            ui.showNotLoggedState();
+            return;
           }
 
-          utils.setText(els.userEmail,utils.sanitizeText(user.email||"—",254));
-          utils.setText(els.userSingcoins,String(singcoins));
-          utils.setStatus(els.accountMessage,"Bienvenue dans votre espace client.","ok");
+          if (!meResponse.ok) {
+            const backendError = meData?.error ? ` (${meData.error})` : "";
+            throw new Error(`Erreur ${meResponse.status}${backendError}`);
+          }
+
+          const user = meData && typeof meData === "object" ? meData : {};
+          const singcoins = typeof user.singcoins === "number" && Number.isFinite(user.singcoins)
+            ? Math.max(0, Math.floor(user.singcoins))
+            : 0;
+
+          state.user = user;
+          state.gamification =
+            gamifResponse?.ok && gamifDataRaw && typeof gamifDataRaw === "object"
+              ? (gamifDataRaw.snapshot || gamifDataRaw)
+              : null;
+
+          if (gamifResponse && !gamifResponse.ok && ![0, 401, 403, 404].includes(gamifResponse.status)) {
+            console.error("Réponse gamification non OK :", gamifResponse.status, gamifDataRaw);
+          }
+
+          utils.setText(els.userEmail, utils.sanitizeText(user.email || "—", 254));
+          utils.setText(els.userSingcoins, String(singcoins));
+          utils.setStatus(els.accountMessage, "Bienvenue dans votre espace client.", "ok");
           utils.hide(els.loginCard);
           utils.hide(els.notLoggedCta);
 
           window.SingboxGamification?.updateUser?.({
-            email:user.email||"",
+            email: user.email || "",
             singcoins,
-            pseudo:user.pseudo||"",
-            username:user.username||"",
-            prenom:user.prenom||"",
-            firstName:user.firstName||"",
-            firstname:user.firstname||"",
-            created_at:user.created_at||"",
-            sessionsCount:user.sessionsCount,
-            gamification:state.gamification
+            pseudo: user.pseudo || "",
+            username: user.username || "",
+            prenom: user.prenom || "",
+            firstName: user.firstName || "",
+            firstname: user.firstname || "",
+            created_at: user.created_at || "",
+            sessionsCount: user.sessionsCount,
+            gamification: state.gamification
           });
 
           await Promise.all([
             profile.loadReservations(),
             referral.load()
           ]);
-        }catch(error){
-          console.error("Erreur /api/me :",error);
-          state.user=null;
-          state.gamification=null;
-          state.referral=null;
+        } catch (error) {
+          console.error("Erreur /api/me :", error);
+          state.user = null;
+          state.gamification = null;
+          state.referral = null;
           referral.hideCard();
           referral.resetDisplay();
-          utils.setStatus(els.accountMessage,"Impossible de charger votre espace client pour le moment.","error");
+          utils.setStatus(
+            els.accountMessage,
+            "Impossible de charger votre espace client pour le moment.",
+            "error"
+          );
         }
       },
 
-      getCredentials(){
+      getCredentials() {
         return {
-          email:utils.normalizeEmail(els.loginEmail?.value||""),
-          password:els.loginPassword?.value||""
+          email: utils.normalizeEmail(els.loginEmail?.value || ""),
+          password: els.loginPassword?.value || ""
         };
       },
 
-      async registerThenLogin(email,password){
-        const reg=await api.register(email,password);
-        if(!reg.ok)return {ok:false,error:reg.error||"Erreur lors de la création du compte."};
-        const log=await api.login(email,password);
-        if(!log.ok)return {ok:false,error:"Compte créé, mais la connexion a échoué."};
-        return {ok:true,token:log.token};
+      async registerThenLogin(email, password) {
+        const reg = await api.register(email, password);
+        if (!reg.ok) return { ok: false, error: reg.error || "Erreur lors de la création du compte." };
+
+        const log = await api.login(email, password);
+        if (!log.ok) return { ok: false, error: "Compte créé, mais la connexion a échoué." };
+
+        return { ok: true, token: log.token };
       },
 
-      logout(){
+      logout() {
         utils.clearStoredToken();
-        state.user=null;
-        state.gamification=null;
-        state.reservations=[];
-        state.referral=null;
+        state.user = null;
+        state.gamification = null;
+        state.reservations = [];
+        state.referral = null;
         referral.hideCard();
         referral.resetDisplay();
 
-        utils.setStatus(els.accountMessage,"Vous avez été déconnecté.","error");
-        utils.setStatus(els.refundMessage,"","");
+        utils.setStatus(els.accountMessage, "Vous avez été déconnecté.", "error");
+        utils.setStatus(els.refundMessage, "", "");
         ui.showNotLoggedState("Connectez-vous pour accéder à votre espace client.");
       }
     };
 
-    const events={
-      initMobileMenu(){
-        if(!els.burgerButton||!els.mobileNav)return;
-        els.burgerButton.addEventListener("click",()=>els.mobileNav.classList.contains("open")?ui.closeMobileNav():ui.openMobileNav());
-        els.mobileNav.addEventListener("click",e=>e.target instanceof HTMLElement&&e.target.tagName==="A"&&ui.closeMobileNav());
-        document.addEventListener("click",e=>{
-          if(els.mobileNav?.classList.contains("open")&&e.target instanceof Node&&!els.mobileNav.contains(e.target)&&!els.burgerButton.contains(e.target))ui.closeMobileNav();
+    const events = {
+      initMobileMenu() {
+        if (!els.burgerButton || !els.mobileNav) return;
+
+        els.burgerButton.addEventListener("click", () =>
+          els.mobileNav.classList.contains("open") ? ui.closeMobileNav() : ui.openMobileNav()
+        );
+
+        els.mobileNav.addEventListener("click", e => {
+          if (e.target instanceof HTMLElement && e.target.tagName === "A") ui.closeMobileNav();
         });
-        document.addEventListener("keydown",e=>e.key==="Escape"&&els.mobileNav?.classList.contains("open")&&ui.closeMobileNav());
+
+        document.addEventListener("click", e => {
+          if (
+            els.mobileNav?.classList.contains("open")
+            && e.target instanceof Node
+            && !els.mobileNav.contains(e.target)
+            && !els.burgerButton.contains(e.target)
+          ) {
+            ui.closeMobileNav();
+          }
+        });
+
+        document.addEventListener("keydown", e => {
+          if (e.key === "Escape" && els.mobileNav?.classList.contains("open")) ui.closeMobileNav();
+        });
       },
 
-      initLoginForm(){
-        if(!els.loginForm)return;
+      initLoginForm() {
+        if (!els.loginForm) return;
 
-        els.loginForm.addEventListener("submit",async e=>{
+        els.loginForm.addEventListener("submit", async e => {
           e.preventDefault();
           ui.clearLoginFieldErrors();
-          utils.setStatus(els.loginMessage,"","");
+          utils.setStatus(els.loginMessage, "", "");
 
-          const {email,password}=profile.getCredentials();
-          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
-          if(!password){els.loginPassword?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci de renseigner votre mot de passe.","error");return}
+          const { email, password } = profile.getCredentials();
+
+          if (!utils.isValidEmail(email)) {
+            els.loginEmail?.setAttribute("aria-invalid", "true");
+            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            return;
+          }
+
+          if (!password) {
+            els.loginPassword?.setAttribute("aria-invalid", "true");
+            utils.setStatus(els.loginMessage, "Merci de renseigner votre mot de passe.", "error");
+            return;
+          }
 
           ui.setAuthButtonsLoading(true);
-          utils.setStatus(els.loginMessage,"Connexion en cours...","info");
+          utils.setStatus(els.loginMessage, "Connexion en cours...", "info");
 
-          try{
-            const result=await api.login(email,password);
-            if(!result.ok){utils.setStatus(els.loginMessage,result.error||"Erreur de connexion. Vérifiez vos identifiants.","error");return}
-            localStorage.setItem("token",result.token);
-            utils.setStatus(els.loginMessage,"Connexion réussie.","ok");
+          try {
+            const result = await api.login(email, password);
+
+            if (!result.ok) {
+              utils.setStatus(
+                els.loginMessage,
+                result.error || "Erreur de connexion. Vérifiez vos identifiants.",
+                "error"
+              );
+              return;
+            }
+
+            localStorage.setItem("token", result.token);
+            utils.setStatus(els.loginMessage, "Connexion réussie.", "ok");
             await profile.load();
-          }catch(error){
+          } catch (error) {
             console.error(error);
-            utils.setStatus(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
-          }finally{
+            utils.setStatus(els.loginMessage, "Erreur réseau. Veuillez réessayer.", "error");
+          } finally {
             ui.setAuthButtonsLoading(false);
           }
         });
 
-        els.createAccountBtn?.addEventListener("click",async()=>{
+        els.createAccountBtn?.addEventListener("click", async () => {
           ui.clearLoginFieldErrors();
-          utils.setStatus(els.loginMessage,"","");
+          utils.setStatus(els.loginMessage, "", "");
 
-          const {email,password}=profile.getCredentials();
-          if(!utils.isValidEmail(email)){els.loginEmail?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Merci d’entrer une adresse e-mail valide.","error");return}
-          if(!password||password.length<6){els.loginPassword?.setAttribute("aria-invalid","true");utils.setStatus(els.loginMessage,"Choisissez un mot de passe d’au moins 6 caractères.","error");return}
+          const { email, password } = profile.getCredentials();
+
+          if (!utils.isValidEmail(email)) {
+            els.loginEmail?.setAttribute("aria-invalid", "true");
+            utils.setStatus(els.loginMessage, "Merci d’entrer une adresse e-mail valide.", "error");
+            return;
+          }
+
+          if (!password || password.length < PASSWORD_MIN_LENGTH) {
+            els.loginPassword?.setAttribute("aria-invalid", "true");
+            utils.setStatus(
+              els.loginMessage,
+              `Choisissez un mot de passe d’au moins ${PASSWORD_MIN_LENGTH} caractères.`,
+              "error"
+            );
+            return;
+          }
 
           ui.setAuthButtonsLoading(true);
-          utils.setStatus(els.loginMessage,"Création du compte en cours...","info");
+          utils.setStatus(els.loginMessage, "Création du compte en cours...", "info");
 
-          try{
-            const result=await profile.registerThenLogin(email,password);
-            if(!result.ok){utils.setStatus(els.loginMessage,result.error||"Erreur lors de la création du compte.","error");return}
-            localStorage.setItem("token",result.token);
-            utils.setStatus(els.loginMessage,"Compte créé et connecté.","ok");
+          try {
+            const result = await profile.registerThenLogin(email, password);
+
+            if (!result.ok) {
+              utils.setStatus(
+                els.loginMessage,
+                result.error || "Erreur lors de la création du compte.",
+                "error"
+              );
+              return;
+            }
+
+            localStorage.setItem("token", result.token);
+            utils.setStatus(els.loginMessage, "Compte créé et connecté.", "ok");
             await profile.load();
-          }catch(error){
+          } catch (error) {
             console.error(error);
-            utils.setStatus(els.loginMessage,"Erreur réseau. Veuillez réessayer.","error");
-          }finally{
+            utils.setStatus(els.loginMessage, "Erreur réseau. Veuillez réessayer.", "error");
+          } finally {
             ui.setAuthButtonsLoading(false);
           }
         });
 
-        [els.loginEmail,els.loginPassword].forEach(input=>input?.addEventListener("input",()=>input.removeAttribute("aria-invalid")));
+        [els.loginEmail, els.loginPassword].forEach(input =>
+          input?.addEventListener("input", () => input.removeAttribute("aria-invalid"))
+        );
       },
 
-      initLogout(){els.logoutBtn?.addEventListener("click",profile.logout)},
+      initLogout() {
+        els.logoutBtn?.addEventListener("click", profile.logout);
+      },
 
-      initReservationActions(){
-        els.reservationsList?.addEventListener("click",async e=>{
-          const target=e.target instanceof Element?e.target:null;
-          if(!target)return;
+      initReservationActions() {
+        els.reservationsList?.addEventListener("click", async e => {
+          const target = e.target instanceof Element ? e.target : null;
+          if (!target) return;
 
-          const refundBtn=target.closest(".reservation-refund-btn");
-          if(refundBtn){
-            const reservationId=utils.sanitizeText(refundBtn.dataset.reservationId||"",100);
-            const startTime=utils.sanitizeText(refundBtn.dataset.startTime||"",100);
-            utils.setStatus(els.refundMessage,"","");
+          const refundBtn = target.closest(".reservation-refund-btn");
+          if (refundBtn) {
+            const reservationId = utils.sanitizeText(refundBtn.dataset.reservationId || "", 100);
+            const startTime = utils.sanitizeText(refundBtn.dataset.startTime || "", 100);
+            utils.setStatus(els.refundMessage, "", "");
 
-            if(!utils.getStoredToken()){utils.setStatus(els.refundMessage,"Vous devez être connecté pour demander un remboursement.","error");return}
-            if(!reservationId){utils.setStatus(els.refundMessage,"Réservation introuvable.","error");return}
-            if(!reservationsService.isRefundPossible(startTime)){utils.setStatus(els.refundMessage,"Le remboursement n'est plus possible dans les 24h avant la séance.","error");return}
+            if (!utils.getStoredToken()) {
+              utils.setStatus(els.refundMessage, "Vous devez être connecté pour demander un remboursement.", "error");
+              return;
+            }
 
-            refundBtn.disabled=true;
-            utils.setStatus(els.refundMessage,"Demande de remboursement en cours...","info");
+            if (!reservationId) {
+              utils.setStatus(els.refundMessage, "Réservation introuvable.", "error");
+              return;
+            }
 
-            try{
-              const response=await fetch(`${API_BASE}/api/refund-reservation`,{
-                method:"POST",
-                headers:{"Content-Type":"application/json",...utils.getAuthHeaders()},
-                body:JSON.stringify({reservationId})
+            if (!reservationsService.isRefundPossible(startTime)) {
+              utils.setStatus(els.refundMessage, "Le remboursement n'est plus possible dans les 24h avant la séance.", "error");
+              return;
+            }
+
+            refundBtn.disabled = true;
+            utils.setStatus(els.refundMessage, "Demande de remboursement en cours...", "info");
+
+            try {
+              const response = await fetch(`${API_BASE}/api/refund-reservation`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  ...utils.getAuthHeaders()
+                },
+                body: JSON.stringify({ reservationId })
               });
-              const data=await utils.safeJson(response);
+              const data = await utils.safeJson(response);
 
-              if([401,403].includes(response.status)){ui.showNotLoggedState();return}
-              if(!response.ok||data.success!==true){
-                refundBtn.disabled=false;
-                utils.setStatus(els.refundMessage,data.error||"Impossible de procéder au remboursement.","error");
+              if ([401, 403].includes(response.status)) {
+                ui.showNotLoggedState();
                 return;
               }
 
-              utils.setStatus(els.refundMessage,"Remboursement effectué ou en cours de traitement. Votre réservation est annulée.","ok");
+              if (!response.ok || data.success !== true) {
+                refundBtn.disabled = false;
+                utils.setStatus(
+                  els.refundMessage,
+                  data.error || "Impossible de procéder au remboursement.",
+                  "error"
+                );
+                return;
+              }
+
+              utils.setStatus(
+                els.refundMessage,
+                "Remboursement effectué ou en cours de traitement. Votre réservation est annulée.",
+                "ok"
+              );
               await profile.loadReservations();
               await profile.load();
-            }catch(error){
+            } catch (error) {
               console.error(error);
-              refundBtn.disabled=false;
-              utils.setStatus(els.refundMessage,"Erreur réseau. Veuillez réessayer.","error");
+              refundBtn.disabled = false;
+              utils.setStatus(els.refundMessage, "Erreur réseau. Veuillez réessayer.", "error");
             }
             return;
           }
 
-          const editBtn=target.closest(".reservation-edit-btn");
-          if(editBtn&&!editBtn.disabled){
-            const reservationId=utils.sanitizeText(editBtn.dataset.editReservationId||"",100);
-            if(!reservationId||!utils.getStoredToken())return;
-            const reservation=state.reservations.find(item=>String(item.id)===reservationId);
-            if(!reservation)return;
+          const editBtn = target.closest(".reservation-edit-btn");
+          if (editBtn && !editBtn.disabled) {
+            const reservationId = utils.sanitizeText(editBtn.dataset.editReservationId || "", 100);
+            if (!reservationId || !utils.getStoredToken()) return;
+            const reservation = state.reservations.find(item => String(item.id) === reservationId);
+            if (!reservation) return;
 
-            try{sessionStorage.setItem("reservation_to_edit",JSON.stringify(reservation))}
-            catch(error){console.error("Impossible de stocker reservation_to_edit :",error)}
+            try {
+              sessionStorage.setItem("reservation_to_edit", JSON.stringify(reservation));
+            } catch (error) {
+              console.error("Impossible de stocker reservation_to_edit :", error);
+            }
 
-            window.location.href=reservation.id
+            window.location.href = reservation.id
               ? `modifier-reservation.html?reservationId=${encodeURIComponent(String(reservation.id))}`
               : "modifier-reservation.html";
             return;
           }
 
-          const qrBtn=target.closest(".reservation-qr-btn");
-          if(qrBtn&&!qrBtn.disabled){
-            const qrUrl=utils.sanitizeText(qrBtn.dataset.qrUrl||"",500);
-            const qrTitle=utils.sanitizeText(qrBtn.dataset.qrTitle||"",200)||"Présentez ce QR code à l’entrée.";
-            if(qrUrl)await ui.openQrModal(qrUrl,qrTitle);
+          const qrBtn = target.closest(".reservation-qr-btn");
+          if (qrBtn && !qrBtn.disabled) {
+            const qrUrl = utils.sanitizeText(qrBtn.dataset.qrUrl || "", 500);
+            const qrTitle = utils.sanitizeText(qrBtn.dataset.qrTitle || "", 200) || "Présentez ce QR code à l’entrée.";
+            if (qrUrl) await ui.openQrModal(qrUrl, qrTitle);
           }
         });
       },
 
-      initQrModal(){
-        els.qrCloseBtn?.addEventListener("click",ui.closeQrModal);
+      initQrModal() {
+        els.qrCloseBtn?.addEventListener("click", ui.closeQrModal);
 
-        els.qrModal?.addEventListener("click",e=>{
-          const rect=els.qrModal.getBoundingClientRect();
-          const inDialog=rect.top<=e.clientY&&e.clientY<=rect.top+rect.height&&rect.left<=e.clientX&&e.clientX<=rect.left+rect.width;
-          if(!inDialog)ui.closeQrModal();
+        els.qrModal?.addEventListener("click", e => {
+          const rect = els.qrModal.getBoundingClientRect();
+          const inDialog =
+            rect.top <= e.clientY &&
+            e.clientY <= rect.top + rect.height &&
+            rect.left <= e.clientX &&
+            e.clientX <= rect.left + rect.width;
+
+          if (!inDialog) ui.closeQrModal();
         });
 
-        els.qrModal?.addEventListener("cancel",e=>{e.preventDefault();ui.closeQrModal()});
-        document.addEventListener("keydown",e=>e.key==="Escape"&&els.qrModal?.open&&ui.closeQrModal());
+        els.qrModal?.addEventListener("cancel", e => {
+          e.preventDefault();
+          ui.closeQrModal();
+        });
+
+        document.addEventListener("keydown", e => {
+          if (e.key === "Escape" && els.qrModal?.open) ui.closeQrModal();
+        });
       },
 
       initReferralActions() {
@@ -1089,40 +1326,50 @@
       }
     };
 
-    const markLayoutReady=()=>{
+    const markLayoutReady = () => {
       document.body.classList.remove("layout-loading");
       document.body.classList.add("layout-ready");
     };
 
-    const waitForLayoutElements=(timeout=5000)=>new Promise(resolve=>{
-      const has=()=>!!($("site-header")&&$("site-footer")&&$("burger-button"));
-      if(has())return resolve();
+    const waitForLayoutElements = (timeout = 5000) => new Promise(resolve => {
+      const has = () => !!($("site-header") && $("site-footer") && $("burger-button"));
+      if (has()) return resolve();
 
-      const observer=new MutationObserver(()=>{
-        if(has()){observer.disconnect();resolve()}
+      const observer = new MutationObserver(() => {
+        if (has()) {
+          observer.disconnect();
+          resolve();
+        }
       });
-      observer.observe(document.body,{childList:true,subtree:true});
-      setTimeout(()=>{observer.disconnect();resolve()},timeout);
+
+      observer.observe(document.body, { childList: true, subtree: true });
+      setTimeout(() => {
+        observer.disconnect();
+        resolve();
+      }, timeout);
     });
 
-    async function initApp(){
+    async function initApp() {
       window.SingboxGamification?.mount?.({
-        mountSelector:"#gamification-root",
-        pseudoMaxLength:20,
-        singcoinsGoal:SINGCOINS_GOAL,
-        reservationUrl:"reservation.html",
-        reservationsCardSelector:"#account-reservations-card",
-        benefitsCardSelector:"#account-benefits-card",
-        selectors:{reservationsSlot:"#gamif-reservations-slot",benefitsSlot:"#gamif-benefits-slot"},
-        anchors:{
-          reservations:"#gamif-reservations-anchor",
-          singcoins:"#gamif-singcoins-section",
-          level:"#gamif-xp-section",
-          missions:"#gamif-xp-section",
-          streak:"#gamif-streak-section",
-          badges:"#gamif-badges-section"
+        mountSelector: "#gamification-root",
+        pseudoMaxLength: 20,
+        singcoinsGoal: SINGCOINS_GOAL,
+        reservationUrl: "reservation.html",
+        reservationsCardSelector: "#account-reservations-card",
+        benefitsCardSelector: "#account-benefits-card",
+        selectors: {
+          reservationsSlot: "#gamif-reservations-slot",
+          benefitsSlot: "#gamif-benefits-slot"
         },
-        scrollOffset:110
+        anchors: {
+          reservations: "#gamif-reservations-anchor",
+          singcoins: "#gamif-singcoins-section",
+          level: "#gamif-xp-section",
+          missions: "#gamif-xp-section",
+          streak: "#gamif-streak-section",
+          badges: "#gamif-badges-section"
+        },
+        scrollOffset: 110
       });
 
       await waitForLayoutElements();
@@ -1144,7 +1391,7 @@
       await profile.load();
     }
 
-    document.addEventListener("DOMContentLoaded",initApp);
+    document.addEventListener("DOMContentLoaded", initApp);
   </script>
 </body>
 </html>
