@@ -132,27 +132,26 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       margin: 0 auto 1rem;
       max-width: 760px;
-      padding: 1rem 1.1rem;
-      border-radius: 18px;
-      border: 1px solid rgba(249, 115, 22, 0.24);
+      padding: 0.95rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(249, 115, 22, 0.28);
       background:
-        linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(201, 76, 53, 0.06)),
+        linear-gradient(135deg, rgba(201, 76, 53, 0.14), rgba(249, 115, 22, 0.08)),
         rgba(2, 6, 23, 0.92);
       color: #f9fafb;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
 
-    .cart-pass-banner-main {
+    .cart-pass-main {
       display: flex;
       flex-direction: column;
       gap: 6px;
       min-width: 0;
     }
 
-    .cart-pass-banner-eyebrow {
+    .cart-pass-eyebrow {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
@@ -160,27 +159,19 @@
       font-weight: 700;
     }
 
-    .cart-pass-banner-title {
+    .cart-pass-title {
       font-size: 14px;
       font-weight: 700;
       line-height: 1.4;
     }
 
-    .cart-pass-banner-text {
+    .cart-pass-text {
       font-size: 12px;
       color: rgba(229, 231, 235, 0.88);
       line-height: 1.55;
     }
 
-    .cart-pass-banner-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      flex-shrink: 0;
-    }
-
-    .cart-pass-banner-link {
+    .cart-pass-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -192,17 +183,15 @@
       font-size: 12px;
       font-weight: 700;
       text-decoration: none;
+      white-space: nowrap;
       box-shadow:
         0 0 0 1px rgba(248, 250, 251, 0.10),
         0 12px 30px rgba(0, 0, 0, 0.75);
     }
 
-    .cart-pass-banner-note {
-      font-size: 11px;
-      color: #cbd5e1;
-      line-height: 1.5;
-      max-width: 190px;
-      text-align: right;
+    .cart-pass-link:hover,
+    .cart-pass-link:focus-visible {
+      filter: brightness(1.05);
     }
 
     .cart-referral-banner {
@@ -531,9 +520,8 @@
         width: 100%;
       }
 
-      .cart-pass-banner-note {
-        max-width: none;
-        text-align: left;
+      .cart-pass-link {
+        width: 100%;
       }
     }
 
@@ -563,14 +551,6 @@
       .cart-price-sub {
         text-align: left;
       }
-
-      .cart-pass-banner-actions {
-        width: 100%;
-      }
-
-      .cart-pass-banner-link {
-        width: 100%;
-      }
     }
   </style>
 </head>
@@ -594,19 +574,14 @@
       </p>
 
       <div class="cart-pass-banner" aria-label="Information cartes Singbox">
-        <div class="cart-pass-banner-main">
-          <span class="cart-pass-banner-eyebrow">Cartes Singbox</span>
-          <div class="cart-pass-banner-title">Vous avez déjà une carte ou vous voulez en acheter une&nbsp;?</div>
-          <div class="cart-pass-banner-text">
-            Les cartes Singbox s’utilisent au moment du paiement si votre panier est compatible avec leurs conditions.
+        <div class="cart-pass-main">
+          <span class="cart-pass-eyebrow">Cartes Singbox</span>
+          <div class="cart-pass-title">Vous avez déjà une carte Singbox ?</div>
+          <div class="cart-pass-text">
+            Les cartes s’utilisent directement à l’étape paiement si votre panier respecte leurs conditions d’usage. Vous pouvez aussi découvrir nos offres avant 15h et après 15h en semaine.
           </div>
         </div>
-        <div class="cart-pass-banner-actions">
-          <a href="singbox-passes.html" class="cart-pass-banner-link">Voir les cartes</a>
-          <div class="cart-pass-banner-note">
-            Avant 15h ou après 15h en semaine selon la carte choisie.
-          </div>
-        </div>
+        <a href="singbox-passes.html" class="cart-pass-link">Voir les cartes</a>
       </div>
 
       <div id="cart-referral-banner" class="cart-referral-banner" aria-live="polite">
@@ -635,7 +610,7 @@
       </div>
 
       <p id="cart-policy" class="cart-policy" style="display:none;">
-        Les réservations sont modifiables et annulables jusqu’à 24h avant selon nos CGV. La disponibilité et le tarif final sont confirmés au moment du paiement. Si vous utilisez une carte Singbox, son éligibilité sera vérifiée automatiquement à l’étape suivante.
+        Les réservations sont modifiables et annulables jusqu’à 24h avant selon nos CGV. La disponibilité et le tarif final sont confirmés au moment du paiement. Si vous utilisez une carte Singbox, sa compatibilité sera vérifiée automatiquement à l’étape suivante.
       </p>
 
       <div class="cart-actions" id="cart-actions" style="display:none;">
@@ -718,4 +693,26 @@
       $("cart-referral-remove")?.addEventListener("click", () => {
         clearStoredReferralCode();
         renderReferralBanner();
-        setServerMessage("Le code de parrainage a été reti
+        setServerMessage("Le code de parrainage a été retiré de cette réservation.", "info");
+      });
+    }
+
+    function getPanier() {
+      try {
+        const raw = localStorage.getItem("panier");
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.error("Erreur lecture panier depuis localStorage :", error);
+        return [];
+      }
+    }
+
+    function savePanier(panier) {
+      localStorage.setItem("panier", JSON.stringify(Array.isArray(panier) ? panier : []));
+      updateCartIcon();
+    }
+
+    function updateCartIcon() {
+      const el = $("cart-count");
+   
