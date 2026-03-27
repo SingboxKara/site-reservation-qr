@@ -139,10 +139,27 @@
       color: #fff7ed;
     }
 
+    .billing-side-stack {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .summary-column {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
     @media (max-width: 640px) {
       .checkout-info-note,
       .chest-reward-note {
         font-size: 11px;
+      }
+
+      .billing-side-stack {
+        gap: 14px;
+        margin-top: 14px;
       }
     }
   </style>
@@ -380,6 +397,72 @@
               </div>
             </div>
           </form>
+
+          <div class="billing-side-stack">
+            <div class="promo-card card">
+              <div class="promo-header">
+                <span>Code promo</span>
+                <button type="button" class="promo-toggle" id="promo-toggle" aria-expanded="false" aria-controls="promo-body">
+                  Vous avez un code promo ?
+                </button>
+              </div>
+
+              <div class="promo-body" id="promo-body">
+                <div class="promo-input-group">
+                  <input
+                    type="text"
+                    id="promo-code"
+                    placeholder="SINGBOX10, NOEL..."
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                  />
+                  <button type="button" id="apply-promo">Appliquer</button>
+                </div>
+                <p id="promo-message" class="promo-message" aria-live="polite" role="status"></p>
+              </div>
+            </div>
+
+            <div class="promo-card card" id="pass-card-block">
+              <div class="promo-header">
+                <span>Carte Singbox</span>
+                <button
+                  type="button"
+                  class="promo-toggle"
+                  id="pass-toggle"
+                  aria-expanded="false"
+                  aria-controls="pass-body"
+                >
+                  Utiliser une carte achetée
+                </button>
+              </div>
+
+              <div class="promo-body" id="pass-body">
+                <div style="display:grid; gap:10px;">
+                  <select id="pass-select" style="width:100%; min-height:46px; border-radius:14px; padding:0 14px; background:#020617; color:#F9FAFB; border:1px solid rgba(255,255,255,0.16);">
+                    <option value="">Choisir une carte</option>
+                  </select>
+
+                  <div id="pass-preview-box" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(2,6,23,0.78); border:1px solid rgba(255,255,255,0.10);">
+                    <p style="margin:0 0 6px; font-size:13px; color:#F9FAFB;">
+                      <strong id="pass-preview-name">Carte</strong>
+                    </p>
+                    <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
+                      Places nécessaires pour ce panier : <strong id="pass-preview-required">0</strong>
+                    </p>
+                    <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
+                      Places restantes après réservation : <strong id="pass-preview-remaining">0</strong>
+                    </p>
+                    <p style="margin:0; font-size:12px; color:#CBD5E1;">
+                      Montant couvert par la carte : <strong id="pass-preview-covered">0€</strong>
+                    </p>
+                  </div>
+
+                  <p id="pass-message" class="promo-message" aria-live="polite" role="status"></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="summary-column">
@@ -425,70 +508,6 @@
 
               <p class="order-note">Paiement en une fois, toutes taxes comprises.</p>
               <div id="chest-reward-note" class="chest-reward-note" aria-live="polite" role="status"></div>
-            </div>
-          </div>
-
-          <div class="promo-card card">
-            <div class="promo-header">
-              <span>Code promo</span>
-              <button type="button" class="promo-toggle" id="promo-toggle" aria-expanded="false" aria-controls="promo-body">
-                Vous avez un code promo ?
-              </button>
-            </div>
-
-            <div class="promo-body" id="promo-body">
-              <div class="promo-input-group">
-                <input
-                  type="text"
-                  id="promo-code"
-                  placeholder="SINGBOX10, NOEL..."
-                  autocomplete="off"
-                  autocapitalize="characters"
-                  spellcheck="false"
-                />
-                <button type="button" id="apply-promo">Appliquer</button>
-              </div>
-              <p id="promo-message" class="promo-message" aria-live="polite" role="status"></p>
-            </div>
-          </div>
-
-          <div class="promo-card card" id="pass-card-block">
-            <div class="promo-header">
-              <span>Carte Singbox</span>
-              <button
-                type="button"
-                class="promo-toggle"
-                id="pass-toggle"
-                aria-expanded="false"
-                aria-controls="pass-body"
-              >
-                Utiliser une carte achetée
-              </button>
-            </div>
-
-            <div class="promo-body" id="pass-body">
-              <div style="display:grid; gap:10px;">
-                <select id="pass-select" style="width:100%; min-height:46px; border-radius:14px; padding:0 14px; background:#020617; color:#F9FAFB; border:1px solid rgba(255,255,255,0.16);">
-                  <option value="">Choisir une carte</option>
-                </select>
-
-                <div id="pass-preview-box" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(2,6,23,0.78); border:1px solid rgba(255,255,255,0.10);">
-                  <p style="margin:0 0 6px; font-size:13px; color:#F9FAFB;">
-                    <strong id="pass-preview-name">Carte</strong>
-                  </p>
-                  <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
-                    Places nécessaires pour ce panier : <strong id="pass-preview-required">0</strong>
-                  </p>
-                  <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
-                    Places restantes après réservation : <strong id="pass-preview-remaining">0</strong>
-                  </p>
-                  <p style="margin:0; font-size:12px; color:#CBD5E1;">
-                    Montant couvert par la carte : <strong id="pass-preview-covered">0€</strong>
-                  </p>
-                </div>
-
-                <p id="pass-message" class="promo-message" aria-live="polite" role="status"></p>
-              </div>
             </div>
           </div>
 
@@ -1823,7 +1842,8 @@
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, panier: getPanier() })
+          body: JSON.stringify({ cart: getPanier() })
+            .replace('{"cart"', '{"code":"' + code + '","cart"')
         },
         { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
       );
@@ -1874,16 +1894,27 @@
       }
 
       setPromoMessage("Vérification du code...");
-      const result = await fetchPromoByCode(code);
+      const result = await apiFetch(
+        "/api/validate-promo",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code,
+            cart: getPanier()
+          })
+        },
+        { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
+      );
 
-      if (result.errorMessage) {
+      if (!result.ok || !result.data?.valid || !result.data?.promo) {
         clearPromo();
-        setPromoMessage(result.errorMessage, "error");
+        setPromoMessage(result.data?.error || "Ce code n’existe pas ou n’est plus valable.", "error");
         return;
       }
 
-      currentPromo = result.promo;
-      localStorage.setItem("promoCode", result.promo.code);
+      currentPromo = result.data.promo;
+      localStorage.setItem("promoCode", result.data.promo.code);
       updateOrderSummaryFromPanier();
 
       const discountNow = currentTotals.promoDiscount || 0;
@@ -2205,7 +2236,7 @@
       const chestContext = getChestCheckoutContext();
 
       const body = {
-        panier: getPanier(),
+        cart: getPanier(),
         customer: getCustomerPayload(true),
         promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
         singcoinsUsed,
@@ -2432,7 +2463,7 @@
           method: "POST",
           headers: authHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify({
-            panier: getPanier(),
+            cart: getPanier(),
             customer: getCustomerPayload(false),
             promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
             singcoinsUsed,
