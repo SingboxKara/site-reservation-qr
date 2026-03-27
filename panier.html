@@ -1161,9 +1161,10 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          panier,
-          items: panier,
+          cart: panier,
           promoCode: chestContext?.promoCode || null,
+          singcoinsUsed: false,
+          customer: null,
           chestReward: chestContext?.chestReward || null,
           rewardType: chestContext?.rewardType || null,
           rewardValue: chestContext?.rewardValue || null,
@@ -1191,16 +1192,26 @@
     }
 
     function normalizeVerifiedItems(data, fallbackPanier) {
-      if (!data || !Array.isArray(data.items)) return fallbackPanier;
+      const pricing = data?.pricing || null;
+      const items = Array.isArray(pricing?.normalizedItems)
+        ? pricing.normalizedItems
+        : Array.isArray(pricing?.items)
+          ? pricing.items
+          : null;
 
-      return data.items.map((item) => {
+      if (!items) return fallbackPanier;
+
+      return items.map((item) => {
         const normalizedPrice =
           typeof item.price === "number" && Number.isFinite(item.price) ? item.price :
           typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue) ? item.cashAmountDue :
           typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount) ? item.theoreticalFullAmount :
           undefined;
 
-        return { ...item, ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {}) };
+        return {
+          ...item,
+          ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {})
+        };
       });
     }
 
@@ -1241,7 +1252,7 @@
           const data = await safeReadJson(response);
 
           if (!response.ok) {
-            showCartVerificationError(extractVerifyErrorText(data, await safeReadText(response)));
+            showCartVerificationError(extractVerifyErrorText(data, ""));
             return;
           }
 
