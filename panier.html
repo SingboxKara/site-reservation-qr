@@ -63,10 +63,14 @@
 
   <style>
     body.layout-loading #site-header,
-    body.layout-loading #site-footer { visibility: hidden; }
+    body.layout-loading #site-footer {
+      visibility: hidden;
+    }
 
     body.layout-ready #site-header,
-    body.layout-ready #site-footer { visibility: visible; }
+    body.layout-ready #site-footer {
+      visibility: visible;
+    }
 
     .hero-panier {
       position: relative;
@@ -210,7 +214,9 @@
       color: #f9fafb;
     }
 
-    .cart-referral-banner.is-visible { display: flex; }
+    .cart-referral-banner.is-visible {
+      display: flex;
+    }
 
     .cart-referral-main {
       display: flex;
@@ -289,7 +295,9 @@
     }
 
     .cart-server-message.is-error,
-    .cart-server-message.is-info { display: block; }
+    .cart-server-message.is-info {
+      display: block;
+    }
 
     .cart-server-message.is-error {
       color: #fecaca;
@@ -331,10 +339,22 @@
       font-size: 14px;
     }
 
-    .cart-date { font-weight: 600; }
-    .cart-box { font-weight: 600; color: #f97316; }
-    .cart-dot { opacity: 0.7; }
-    .cart-slot-line { color: #e5e7eb; }
+    .cart-date {
+      font-weight: 600;
+    }
+
+    .cart-box {
+      font-weight: 600;
+      color: #f97316;
+    }
+
+    .cart-dot {
+      opacity: 0.7;
+    }
+
+    .cart-slot-line {
+      color: #e5e7eb;
+    }
 
     .cart-extra {
       color: var(--sb-text-muted);
@@ -392,8 +412,14 @@
       color: #e5e7eb;
     }
 
-    .cart-summary-label { font-weight: 500; }
-    .cart-summary-value { font-size: 18px; font-weight: 700; }
+    .cart-summary-label {
+      font-weight: 500;
+    }
+
+    .cart-summary-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
 
     .cart-policy {
       margin-top: 0.75rem;
@@ -526,11 +552,19 @@
     }
 
     @media (max-width: 600px) {
-      .hero-panier { padding-top: 9rem; }
-      .hero-panier h1 { font-size: 26px; }
+      .hero-panier {
+        padding-top: 9rem;
+      }
+
+      .hero-panier h1 {
+        font-size: 26px;
+      }
+
       .cart-item-card,
       .cart-summary-card,
-      .cart-pass-banner { padding: 1rem; }
+      .cart-pass-banner {
+        padding: 1rem;
+      }
 
       .cart-actions,
       .cart-item-right {
@@ -578,7 +612,8 @@
           <span class="cart-pass-eyebrow">Cartes Singbox</span>
           <div class="cart-pass-title">Vous avez déjà une carte Singbox ?</div>
           <div class="cart-pass-text">
-            Les cartes s’utilisent directement à l’étape paiement si votre panier respecte leurs conditions d’usage. Vous pouvez aussi découvrir nos offres avant 15h et après 15h en semaine.
+            Les cartes s’utilisent directement à l’étape paiement si votre panier respecte leurs conditions d’usage.
+            Vous pouvez aussi découvrir nos offres avant 15h et après 15h en semaine.
           </div>
         </div>
         <a href="singbox-passes.html" class="cart-pass-link">Voir les cartes</a>
@@ -709,10 +744,4 @@
     }
 
     function savePanier(panier) {
-      localStorage.setItem("panier", JSON.stringify(Array.isArray(panier) ? panier : []));
-      updateCartIcon();
-    }
-
-    function updateCartIcon() {
-      const el = $("cart-count");
-   
+      localStorage.
