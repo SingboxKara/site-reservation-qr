@@ -1624,18 +1624,18 @@
     }
 
     async function fetchUserSingcoins() {
-  if (!getToken()) return null;
+      if (!getToken()) return null;
 
-  const r = await apiFetch(
-    "/api/gamification/me",
-    { method: "GET" },
-    { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 7000 }
-  );
+      const r = await apiFetch(
+        "/api/gamification/me",
+        { method: "GET" },
+        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 7000 }
+      );
 
-  return r.ok && r.data
-    ? Number(r.data?.snapshot?.singcoins?.balance || 0)
-    : null;
-}
+      return r.ok && r.data
+        ? Number(r.data?.snapshot?.singcoins?.balance || 0)
+        : null;
+    }
 
     function renderSingcoinsLoggedOut(balanceEl, btn, msgEl) {
       setText(balanceEl, "0");
