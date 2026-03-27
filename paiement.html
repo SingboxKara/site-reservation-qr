@@ -1622,7 +1622,6 @@
         );
 
         if (r.ok) lastDbPayload = payloadStr;
-        else console.warn("Autosave profil échoué:", r.status, r.data);
       }
 
       function saveProfileToBackendDebounced() {
@@ -1643,35 +1642,66 @@
     }
 
     async function fetchUserSingcoins() {
-      if (!getToken()) return null;
+      if (!getToken()) {
+        return { ok: false, reason: "not_logged_in", balance: null };
+      }
 
       const r = await apiFetch(
         "/api/gamification/me",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 7000 }
+        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 12000 }
       );
 
-      return r.ok && r.data
-        ? Number(r.data?.snapshot?.singcoins?.balance || 0)
-        : null;
+      if (!r.ok) {
+        const reason =
+          r.status === 0
+            ? "timeout_or_network"
+            : r.status === 401 || r.status === 403
+              ? "unauthorized"
+              : "api_error";
+
+        return {
+          ok: false,
+          reason,
+          balance: null,
+          error: r.data?.error || null
+        };
+      }
+
+      return {
+        ok: true,
+        reason: null,
+        balance: Number(r.data?.snapshot?.singcoins?.balance || 0)
+      };
     }
 
     function renderSingcoinsLoggedOut(balanceEl, btn, msgEl) {
       setText(balanceEl, "0");
       if (msgEl) {
-        msgEl.style.color = "#FECACA";
-        msgEl.textContent = "Connectez-vous à votre compte pour cumuler et utiliser vos Singcoins.";
+        msgEl.style.color = "#CBD5E1";
+        msgEl.textContent = "Connectez-vous pour cumuler et utiliser vos Singcoins.";
       }
       if (btn) btn.style.display = "none";
     }
 
-    function renderSingcoinsUnavailable(balanceEl, btn, msgEl) {
+    function renderSingcoinsUnavailable(balanceEl, btn, msgEl, reason = "api_error") {
       setText(balanceEl, "0");
       if (btn) btn.style.display = "none";
-      if (msgEl) {
-        msgEl.style.color = "#FECACA";
-        msgEl.textContent = "Impossible de récupérer vos Singcoins pour le moment.";
+      if (!msgEl) return;
+
+      msgEl.style.color = "#CBD5E1";
+
+      if (reason === "timeout_or_network") {
+        msgEl.textContent = "Le solde Singcoins est temporairement indisponible. Vous pouvez continuer votre réservation.";
+        return;
       }
+
+      if (reason === "unauthorized") {
+        msgEl.textContent = "Connectez-vous à votre compte pour voir et utiliser vos Singcoins.";
+        return;
+      }
+
+      msgEl.textContent = "Le solde Singcoins est indisponible pour le moment.";
     }
 
     function renderSingcoinsReady(points, balanceEl, btn, msgEl) {
@@ -1782,18 +1812,20 @@
       if (!block || !balanceEl || !btn || !msgEl) return;
 
       show(block);
+
       if (!getToken()) {
         renderSingcoinsLoggedOut(balanceEl, btn, msgEl);
         return;
       }
 
-      const points = await fetchUserSingcoins();
-      if (points === null) {
-        renderSingcoinsUnavailable(balanceEl, btn, msgEl);
+      const result = await fetchUserSingcoins();
+
+      if (!result.ok) {
+        renderSingcoinsUnavailable(balanceEl, btn, msgEl, result.reason);
         return;
       }
 
-      renderSingcoinsReady(points, balanceEl, btn, msgEl);
+      renderSingcoinsReady(result.balance, balanceEl, btn, msgEl);
       bindSingcoinsButton(btn, balanceEl, msgEl);
     }
 
@@ -1836,28 +1868,6 @@
       cardElement.on("change", (event) => setText(getEl("card-errors"), event.error ? event.error.message : ""));
     }
 
-    async function fetchPromoByCode(code) {
-      const result = await apiFetch(
-        "/api/validate-promo",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cart: getPanier() })
-            .replace('{"cart"', '{"code":"' + code + '","cart"')
-        },
-        { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
-      );
-
-      if (!result.ok) {
-        return { errorMessage: result.data?.error || "Erreur lors de la vérification du code." };
-      }
-      if (!result.data?.valid || !result.data?.promo) {
-        return { errorMessage: result.data?.error || "Ce code n’existe pas ou n’est plus valable." };
-      }
-
-      return { promo: result.data.promo };
-    }
-
     function clearPromo() {
       currentPromo = null;
       localStorage.removeItem("promoCode");
@@ -1894,6 +1904,7 @@
       }
 
       setPromoMessage("Vérification du code...");
+
       const result = await apiFetch(
         "/api/validate-promo",
         {
@@ -1901,7 +1912,9 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             code,
-            cart: getPanier()
+            cart: getPanier(),
+            customer: getCustomerPayload(false),
+            singcoinsUsed: false
           })
         },
         { auth: false, ctx: "POST /api/validate-promo", timeoutMs: 7000 }
