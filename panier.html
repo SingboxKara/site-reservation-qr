@@ -744,4 +744,570 @@
     }
 
     function savePanier(panier) {
-      localStorage.
+      localStorage.setItem("panier", JSON.stringify(Array.isArray(panier) ? panier : []));
+      updateCartIcon();
+    }
+
+    function updateCartIcon() {
+      const el = $("cart-count");
+      if (!el) return;
+      const panier = getPanier();
+      el.textContent = panier.length ? String(panier.length) : "";
+      el.setAttribute("aria-hidden", panier.length ? "false" : "true");
+    }
+
+    function formatDateFr(isoDate) {
+      if (!isoDate) return "";
+      try {
+        const parts = isoDate.split("-");
+        if (parts.length !== 3) return isoDate;
+        const date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return Number.isNaN(date.getTime())
+          ? isoDate
+          : date.toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric"
+            });
+      } catch (error) {
+        console.error("Erreur formatDateFr :", error);
+        return isoDate;
+      }
+    }
+
+    function formatMoney(value) {
+      return `${Number(value).toFixed(2).replace(".", ",")} €`;
+    }
+
+    function formatHourMinute(hour, minute) {
+      return `${String(hour).padStart(2, "0")}h${String(minute).padStart(2, "0")}`;
+    }
+
+    function parseValidDate(value) {
+      if (!value) return null;
+      const d = new Date(value);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function buildHourTextFromDate(startDate, endDate = null) {
+      if (!startDate) return "?";
+      const end = endDate || new Date(startDate.getTime() + SLOT_DURATION_MINUTES * 60000);
+      return `${formatHourMinute(startDate.getHours(), startDate.getMinutes())} – ${formatHourMinute(end.getHours(), end.getMinutes())}`;
+    }
+
+    function getHourText(item) {
+      if (typeof item.hour === "number") {
+        const startTotalMin = Math.round(item.hour * 60);
+        const endTotalMin = startTotalMin + SLOT_DURATION_MINUTES;
+        return `${formatHourMinute(Math.floor(startTotalMin / 60), startTotalMin % 60)} – ${formatHourMinute(Math.floor((endTotalMin / 60) % 24), endTotalMin % 60)}`;
+      }
+
+      const start = parseValidDate(item.start_time || item.startTime || item.datetime);
+      const end = parseValidDate(item.end_time || item.endTime);
+      if (start) return buildHourTextFromDate(start, end);
+
+      if (item.heure && typeof item.heure === "string" && item.heure.trim()) {
+        return item.heure.trim().replace(/\s*-\s*/g, " – ");
+      }
+
+      if (item.hourLabel && typeof item.hourLabel === "string" && item.hourLabel.trim()) {
+        return item.hourLabel.trim();
+      }
+
+      return "?";
+    }
+
+    function getPersonsInfo(item) {
+      const personsRaw = Number(item?.persons ?? item?.nb_personnes ?? item?.participants ?? 2);
+      const rawPersons = Number.isFinite(personsRaw) ? Math.max(1, Math.min(personsRaw, 8)) : 2;
+      const personsFacturees = Math.max(rawPersons, MIN_BILLABLE_PERSONS);
+
+      return {
+        rawPersons,
+        personsFacturees,
+        personnesPrevuesText: rawPersons === 1 ? "1 personne prévue" : `${rawPersons} personnes prévues`,
+        personnesFactureesText: `${personsFacturees} personnes facturées${personsFacturees > 1 ? " (minimum 2)" : ""}`
+      };
+    }
+
+    function isWeekend(dateObj) {
+      const day = dateObj.getDay();
+      return day === 0 || day === 6;
+    }
+
+    function isFriday(dateObj) {
+      return dateObj.getDay() === 5;
+    }
+
+    function getPerPersonRate(dateObj) {
+      const hour = dateObj.getHours();
+      if (isFriday(dateObj) || isWeekend(dateObj)) {
+        return (hour >= WEEKEND_AFTERNOON_SWITCH_HOUR || hour < WEEKDAY_END_NIGHT_HOUR)
+          ? WEEKEND_AFTER_15_RATE
+          : WEEKEND_BEFORE_15_RATE;
+      }
+      if (hour >= WEEKDAY_MORNING_START_HOUR && hour < WEEKDAY_MIDDAY_START_HOUR) return WEEKDAY_MORNING_RATE;
+      if (hour >= WEEKDAY_MIDDAY_START_HOUR && hour < WEEKDAY_EVENING_START_HOUR) return WEEKDAY_MIDDAY_RATE;
+      if (hour >= WEEKDAY_EVENING_START_HOUR || hour < WEEKDAY_END_NIGHT_HOUR) return WEEKDAY_EVENING_RATE;
+      return WEEKDAY_MORNING_RATE;
+    }
+
+    function getItemStartDate(item) {
+      const direct = parseValidDate(item.start_time || item.startTime || item.datetime);
+      if (direct) return direct;
+
+      if (item.date && typeof item.hour === "number") {
+        const hour = Math.floor(item.hour);
+        const minute = Math.round((item.hour - hour) * 60);
+        return parseValidDate(`${item.date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00`);
+      }
+
+      if (item.date && item.heure && typeof item.heure === "string") {
+        const match = item.heure.match(/(\d{1,2})[h:](\d{2})?/i);
+        if (match) {
+          return parseValidDate(
+            `${item.date}T${String(Number(match[1])).padStart(2, "0")}:${String(Number(match[2] || 0)).padStart(2, "0")}:00`
+          );
+        }
+      }
+
+      return null;
+    }
+
+    function getPriceInfo(item, personsFacturees) {
+      const explicitPrice =
+        typeof item.price === "number" && Number.isFinite(item.price) ? item.price :
+        typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue) ? item.cashAmountDue :
+        typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount) ? item.theoreticalFullAmount :
+        null;
+
+      let computedPrice = null;
+      const startDate = getItemStartDate(item);
+      if (startDate) computedPrice = Number((getPerPersonRate(startDate) * personsFacturees).toFixed(2));
+
+      const price = explicitPrice ?? computedPrice;
+      const hasPrice = price !== null;
+
+      return {
+        hasPrice,
+        price,
+        priceDisplay: hasPrice ? formatMoney(price) : "Calcul au paiement",
+        priceSubDetail: hasPrice
+          ? `${formatMoney(Number((price / personsFacturees).toFixed(2)))}/pers × ${personsFacturees} pers facturées`
+          : "Tarif définitif revérifié avant paiement"
+      };
+    }
+
+    function getBoxName(item) {
+      return String(item.boxName || item.box_name || item.box || item.boxId || item.box_id || "Box").trim();
+    }
+
+    function getSlotStableId(item, index) {
+      if (item?.slotId) return String(item.slotId);
+      if (item?.reservationId) return String(item.reservationId);
+      if (item?.start_time && (item.boxId || item.box || item.boxName)) {
+        return `${item.start_time}__${item.boxId || item.box || item.boxName}`;
+      }
+      if (item?.date && item?.hour !== undefined && (item.boxId || item.box || item.boxName)) {
+        return `${item.date}__${String(item.hour)}__${item.boxId || item.box || item.boxName}`;
+      }
+      return `idx-${index}`;
+    }
+
+    function computeCartTotal(panier) {
+      let total = 0;
+      let hasAtLeastOnePrice = false;
+      let hasMissingPrice = false;
+
+      for (const item of panier) {
+        const priceInfo = getPriceInfo(item, getPersonsInfo(item).personsFacturees);
+        if (priceInfo.hasPrice) {
+          total += priceInfo.price;
+          hasAtLeastOnePrice = true;
+        } else {
+          hasMissingPrice = true;
+        }
+      }
+
+      return { total: Number(total.toFixed(2)), hasAtLeastOnePrice, hasMissingPrice };
+    }
+
+    function getChestCheckoutContext() {
+      try {
+        const raw = sessionStorage.getItem(CHEST_CONTEXT_STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return parsed && typeof parsed === "object" ? parsed : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function saveChestCheckoutContext(context) {
+      if (context && typeof context === "object") {
+        sessionStorage.setItem(CHEST_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+      }
+    }
+
+    function readChestContextFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const promoCode = String(params.get("promoCode") || "").trim();
+      const rewardType = String(params.get("rewardType") || "").trim();
+      const rewardValue = String(params.get("rewardValue") || "").trim();
+      const chestReward = String(params.get("chestReward") || "").trim();
+
+      if (!(promoCode || rewardType || rewardValue || chestReward)) return null;
+      return {
+        promoCode: promoCode || null,
+        rewardType: rewardType || null,
+        rewardValue: rewardValue || null,
+        chestReward: chestReward || null
+      };
+    }
+
+    function initChestCheckoutContext() {
+      const fromUrl = readChestContextFromUrl();
+      if (fromUrl) {
+        saveChestCheckoutContext(fromUrl);
+        return fromUrl;
+      }
+      return getChestCheckoutContext();
+    }
+
+    function buildChestMessage(context) {
+      if (!context) return "";
+      if (context.promoCode && context.rewardType === "free_session") {
+        return `Récompense coffre détectée : session offerte prête à être appliquée avec le code ${context.promoCode}.`;
+      }
+      if (context.promoCode && context.rewardType === "discount_percent" && context.rewardValue) {
+        return `Récompense coffre détectée : -${context.rewardValue}% prêt à être appliqué avec le code ${context.promoCode}.`;
+      }
+      if (context.rewardType === "points") {
+        return "Les Singcoins gagnés via le coffre ont déjà été crédités sur votre compte.";
+      }
+      if (context.promoCode) {
+        return `Récompense coffre détectée : code promo ${context.promoCode} prêt pour le paiement.`;
+      }
+      return "";
+    }
+
+    function buildReferralMessage(referralCode) {
+      return referralCode ? `Code de parrainage actif : ${referralCode}.` : "";
+    }
+
+    function renderEmptyCart(container, summaryEl, actionsEl, policyEl) {
+      summaryEl.style.display = "none";
+      actionsEl.style.display = "none";
+      policyEl.style.display = "none";
+
+      const emptyDiv = document.createElement("div");
+      emptyDiv.className = "cart-empty";
+      emptyDiv.innerHTML = `
+        <h2>Votre panier de karaoké est vide</h2>
+        <p>Ajoutez des créneaux depuis la page “Réserver une box” pour les retrouver ici avant le paiement.</p>
+        <a href="reservation.html" class="btn-empty-primary">Voir les créneaux disponibles</a>
+      `;
+      container.appendChild(emptyDiv);
+    }
+
+    function createCartItemCard(item, index) {
+      const card = document.createElement("div");
+      card.className = "cart-item-card";
+
+      const { personsFacturees, personnesPrevuesText, personnesFactureesText } = getPersonsInfo(item);
+      const { priceDisplay, priceSubDetail } = getPriceInfo(item, personsFacturees);
+
+card.innerHTML = `
+        <div class="cart-item-info">
+          <div class="cart-main-line">
+            <span class="cart-date">${item.date ? formatDateFr(item.date) : (item.dateLabel || "Date à confirmer")}</span>
+            <span class="cart-dot">·</span>
+            <span class="cart-box">${getBoxName(item)}</span>
+          </div>
+          <div class="cart-slot-line">Créneau : ${getHourText(item)} (1h30)</div>
+          <div class="cart-extra">
+            ${personnesPrevuesText} – ${personnesFactureesText}<br>
+            1 à 8 personnes – facturation minimale 2 – consommations en supplément.
+          </div>
+        </div>
+        <div class="cart-item-right">
+          <div>
+            <div class="cart-price-amount">${priceDisplay}</div>
+            <div class="cart-price-sub">${priceSubDetail}</div>
+          </div>
+          <button class="cart-remove" data-slot-id="${getSlotStableId(item, index)}" type="button">Supprimer</button>
+        </div>
+      `;
+      return card;
+    }
+
+    function renderPanier() {
+      const container = $("cart-items");
+      const summaryEl = $("cart-summary");
+      const totalEl = $("cart-total");
+      const actionsEl = $("cart-actions");
+      const policyEl = $("cart-policy");
+      if (!container || !summaryEl || !totalEl || !actionsEl || !policyEl) return;
+
+      const panier = getPanier();
+      const chestContext = getChestCheckoutContext();
+      const referralCode = getStoredReferralCode();
+
+      container.innerHTML = "";
+
+      if (!panier.length) {
+        renderEmptyCart(container, summaryEl, actionsEl, policyEl);
+        return;
+      }
+
+      actionsEl.style.display = "flex";
+      summaryEl.style.display = "flex";
+      policyEl.style.display = "block";
+
+      panier.forEach((item, index) => container.appendChild(createCartItemCard(item, index)));
+
+      const { total, hasAtLeastOnePrice, hasMissingPrice } = computeCartTotal(panier);
+      totalEl.textContent = hasAtLeastOnePrice ? formatMoney(total) : "Calcul au paiement";
+
+      const messages = [];
+      if (hasMissingPrice) messages.push("Le montant final sera confirmé avant le paiement sécurisé.");
+      const chestMessage = buildChestMessage(chestContext);
+      const referralMessage = buildReferralMessage(referralCode);
+      if (chestMessage) messages.push(chestMessage);
+      if (referralMessage) messages.push(referralMessage);
+
+      setServerMessage(messages.join(" "), messages.length ? "info" : "");
+    }
+
+    function closeMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav(mobileNav, burgerBtn) {
+      if (!mobileNav || !burgerBtn) return;
+      mobileNav.classList.add("open");
+      burgerBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function initMobileMenu() {
+      const burgerBtn = $("burger-button");
+      const mobileNav = $("mobile-nav");
+      if (!burgerBtn || !mobileNav) return;
+
+      burgerBtn.addEventListener("click", () => {
+        mobileNav.classList.contains("open")
+          ? closeMobileNav(mobileNav, burgerBtn)
+          : openMobileNav(mobileNav, burgerBtn);
+      });
+
+      mobileNav.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.tagName === "A") {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (
+          mobileNav.classList.contains("open") &&
+          e.target instanceof Node &&
+          !mobileNav.contains(e.target) &&
+          !burgerBtn.contains(e.target)
+        ) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileNav.classList.contains("open")) {
+          closeMobileNav(mobileNav, burgerBtn);
+        }
+      });
+    }
+
+    function initClearCart() {
+      $("clear-cart")?.addEventListener("click", () => {
+        if (!confirm("Vider le panier ?")) return;
+        savePanier([]);
+        sessionStorage.removeItem(CHEST_CONTEXT_STORAGE_KEY);
+        setServerMessage("");
+        renderPanier();
+      });
+    }
+
+    function initRemoveItem() {
+      $("cart-items")?.addEventListener("click", (e) => {
+        const removeBtn = e.target instanceof Element ? e.target.closest(".cart-remove") : null;
+        if (!removeBtn) return;
+
+        const slotId = removeBtn.dataset.slotId;
+        const nextPanier = getPanier().filter((item, index) => getSlotStableId(item, index) !== slotId);
+        savePanier(nextPanier);
+        renderPanier();
+      });
+    }
+
+    async function safeReadText(response) {
+      try {
+        return await response.text();
+      } catch (error) {
+        console.error("Impossible de lire response.text() :", error);
+        return "";
+      }
+    }
+
+    async function safeReadJson(response) {
+      try {
+        return await response.json();
+      } catch (error) {
+        console.error("Impossible de lire response.json() :", error);
+        return null;
+      }
+    }
+
+    async function verifyCartBeforePayment(panier, chestContext = null, referralCode = null) {
+      return fetch(`${API_BASE}/api/verify-cart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          panier,
+          items: panier,
+          promoCode: chestContext?.promoCode || null,
+          chestReward: chestContext?.chestReward || null,
+          rewardType: chestContext?.rewardType || null,
+          rewardValue: chestContext?.rewardValue || null,
+          referralCode: referralCode || null
+        })
+      });
+    }
+
+    function showCartVerificationError(errorText) {
+      setServerMessage(
+        "Un ou plusieurs créneaux ne sont plus disponibles ou le prix a changé. Merci de revenir à la réservation pour mettre à jour votre panier." +
+        (errorText ? ` ${errorText}` : ""),
+        "error"
+      );
+    }
+
+    function goToPaymentPage(chestContext = null, referralCode = null) {
+      const url = new URL("paiement.html", window.location.origin);
+      if (chestContext?.promoCode) url.searchParams.set("promoCode", chestContext.promoCode);
+      if (chestContext?.chestReward) url.searchParams.set("chestReward", chestContext.chestReward);
+      if (chestContext?.rewardType) url.searchParams.set("rewardType", chestContext.rewardType);
+      if (chestContext?.rewardValue) url.searchParams.set("rewardValue", chestContext.rewardValue);
+      if (referralCode) url.searchParams.set("referralCode", referralCode);
+      globalThis.location.href = url.pathname + url.search;
+    }
+
+    function normalizeVerifiedItems(data, fallbackPanier) {
+      if (!data || !Array.isArray(data.items)) return fallbackPanier;
+
+      return data.items.map((item) => {
+        const normalizedPrice =
+          typeof item.price === "number" && Number.isFinite(item.price) ? item.price :
+          typeof item.cashAmountDue === "number" && Number.isFinite(item.cashAmountDue) ? item.cashAmountDue :
+          typeof item.theoreticalFullAmount === "number" && Number.isFinite(item.theoreticalFullAmount) ? item.theoreticalFullAmount :
+          undefined;
+
+        return { ...item, ...(normalizedPrice !== undefined ? { price: normalizedPrice } : {}) };
+      });
+    }
+
+    function extractVerifyErrorText(data, fallbackText) {
+      if (typeof data?.error === "string" && data.error.trim()) return data.error.trim();
+      if (typeof data?.message === "string" && data.message.trim()) return data.message.trim();
+      return fallbackText || "";
+    }
+
+    function initConfirmCart() {
+      const confirmBtn = $("confirm-cart");
+      if (!confirmBtn) return;
+
+      confirmBtn.addEventListener("click", async () => {
+        const panier = getPanier();
+        const chestContext = getChestCheckoutContext();
+        const referralCode = getStoredReferralCode();
+
+        if (!panier.length) {
+          alert("Votre panier est vide.");
+          return;
+        }
+
+        const defaultText = confirmBtn.textContent;
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = "Vérification...";
+
+        const infoMessages = [
+          buildChestMessage(chestContext),
+          buildReferralMessage(referralCode),
+          "Vérification de vos créneaux en cours..."
+        ].filter(Boolean);
+
+        setServerMessage(infoMessages.join(" "), "info");
+
+        try {
+          const response = await verifyCartBeforePayment(panier, chestContext, referralCode);
+          const data = await safeReadJson(response);
+
+          if (!response.ok) {
+            showCartVerificationError(extractVerifyErrorText(data, await safeReadText(response)));
+            return;
+          }
+
+          savePanier(normalizeVerifiedItems(data, panier));
+          renderPanier();
+          goToPaymentPage(chestContext, referralCode);
+        } catch (err) {
+          console.error("Erreur vérification panier :", err);
+          setServerMessage(
+            "Nous n’avons pas pu vérifier vos créneaux auprès du serveur. Merci de réessayer dans quelques instants avant de continuer vers le paiement.",
+            "error"
+          );
+        } finally {
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = defaultText;
+        }
+      });
+    }
+
+    function markLayoutReady() {
+      document.body.classList.remove("layout-loading");
+      document.body.classList.add("layout-ready");
+    }
+
+    function waitForLayoutElements(timeoutMs = 5000) {
+      return new Promise((resolve) => {
+        const hasElements = () => Boolean($("site-header") && $("site-footer") && $("burger-button"));
+        if (hasElements()) return resolve();
+
+        const observer = new MutationObserver(() => {
+          if (hasElements()) {
+            observer.disconnect();
+            resolve();
+          }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => {
+          observer.disconnect();
+          resolve();
+        }, timeoutMs);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      initChestCheckoutContext();
+      await waitForLayoutElements();
+      markLayoutReady();
+      initMobileMenu();
+      updateCartIcon();
+      initReferralBanner();
+      renderPanier();
+      initClearCart();
+      initRemoveItem();
+      initConfirmCart();
+    });
+  </script>
+</body>
+</html>
