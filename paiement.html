@@ -452,6 +452,46 @@
             </div>
           </div>
 
+          <div class="promo-card card" id="pass-card-block">
+            <div class="promo-header">
+              <span>Carte Singbox</span>
+              <button
+                type="button"
+                class="promo-toggle"
+                id="pass-toggle"
+                aria-expanded="false"
+                aria-controls="pass-body"
+              >
+                Utiliser une carte achetée
+              </button>
+            </div>
+
+            <div class="promo-body" id="pass-body">
+              <div style="display:grid; gap:10px;">
+                <select id="pass-select" style="width:100%; min-height:46px; border-radius:14px; padding:0 14px; background:#020617; color:#F9FAFB; border:1px solid rgba(255,255,255,0.16);">
+                  <option value="">Choisir une carte</option>
+                </select>
+
+                <div id="pass-preview-box" style="display:none; padding:12px 14px; border-radius:14px; background:rgba(2,6,23,0.78); border:1px solid rgba(255,255,255,0.10);">
+                  <p style="margin:0 0 6px; font-size:13px; color:#F9FAFB;">
+                    <strong id="pass-preview-name">Carte</strong>
+                  </p>
+                  <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
+                    Places nécessaires pour ce panier : <strong id="pass-preview-required">0</strong>
+                  </p>
+                  <p style="margin:0 0 4px; font-size:12px; color:#CBD5E1;">
+                    Places restantes après réservation : <strong id="pass-preview-remaining">0</strong>
+                  </p>
+                  <p style="margin:0; font-size:12px; color:#CBD5E1;">
+                    Montant couvert par la carte : <strong id="pass-preview-covered">0€</strong>
+                  </p>
+                </div>
+
+                <p id="pass-message" class="promo-message" aria-live="polite" role="status"></p>
+              </div>
+            </div>
+          </div>
+
           <div class="payment-card card">
             <h3>💳 Paiement sécurisé</h3>
 
@@ -594,6 +634,7 @@
   <script src="https://js.stripe.com/v3"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/layout.js"></script>
+  <script src="js/passes-front.js"></script>
 
   <script>
     const STRIPE_PUBLISHABLE_KEY = "pk_test_51SYUBK44gpoNdGNgYqQMcppFvT0kViCVEFyDzOQMDz0DR0L71Ob9Kvlh3MO4BFxeRR2bM9VUID7pvrxBoC5GbGSC00Dt8htb3X";
@@ -627,6 +668,8 @@
     let stripe = null;
     let cardElement = null;
     let currentPromo = null;
+    let selectedPass = null;
+    let myPasses = [];
     let singcoinsUsed = false;
     let cartValid = true;
     let lastPayWithSaved = false;
@@ -1165,17 +1208,25 @@
       toggleEmptyCartUI(false, els);
 
       let promoDiscount = 0;
-      if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
-        promoDiscount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
+      let singcoinsDiscount = 0;
+
+      if (selectedPass) {
+        promoDiscount = 0;
+        singcoinsDiscount = 0;
       } else {
-        currentPromo = null;
+        if (currentPromo && isPromoCurrentlyValid(currentPromo)) {
+          promoDiscount = computeDiscountFromPromo(currentPromo, totalTTCNoDiscount);
+        } else {
+          currentPromo = null;
+        }
+
+        promoDiscount = Math.max(0, Math.min(promoDiscount, totalTTCNoDiscount));
+        const totalAfterPromo = Math.max(0, totalTTCNoDiscount - promoDiscount);
+        singcoinsDiscount = Math.max(0, Math.min(computeSingcoinsDiscount(panier), totalAfterPromo));
       }
 
-      promoDiscount = Math.max(0, Math.min(promoDiscount, totalTTCNoDiscount));
-      const totalAfterPromo = Math.max(0, totalTTCNoDiscount - promoDiscount);
-      const singcoinsDiscount = Math.max(0, Math.min(computeSingcoinsDiscount(panier), totalAfterPromo));
       const totalDiscount = promoDiscount + singcoinsDiscount;
-      const finalTotalTTC = Math.max(0, totalTTCNoDiscount - totalDiscount);
+      const finalTotalTTC = selectedPass ? 0 : Math.max(0, totalTTCNoDiscount - totalDiscount);
 
       const totalHT = finalTotalTTC / 1.2;
       const tva = finalTotalTTC - totalHT;
@@ -1190,13 +1241,17 @@
         extraCount > 0 ? `Box ${getDisplayBoxName(first)} + ${extraCount} autre(s) créneau(x)` : `Box ${getDisplayBoxName(first)}`
       );
 
-      setHtml(
-        els.metaEl,
+      let metaHtml =
         (dateLabel ? `Date : ${dateLabel}<br>` : "") +
         (hourText ? `Créneau : ${hourText}<br>` : "") +
         `Participants : ${persons}<br>` +
-        `Nombre de créneaux : ${panier.length}`
-      );
+        `Nombre de créneaux : ${panier.length}`;
+
+      if (selectedPass) {
+        metaHtml += `<br>Carte utilisée : ${selectedPass.label || "Carte Singbox"}`;
+      }
+
+      setHtml(els.metaEl, metaHtml);
 
       setText(els.subEl, formatMoney(totalHT));
       setText(els.tvaEl, formatMoney(tva));
@@ -1665,6 +1720,12 @@
           return;
         }
 
+        if (selectedPass) {
+          msgEl.style.color = "#FECACA";
+          msgEl.textContent = "Retirez d’abord la carte sélectionnée pour utiliser les Singcoins.";
+          return;
+        }
+
         const currentPoints = Number.parseInt(balanceEl.textContent || "0", 10);
         if (currentPoints < SINGCOINS_COST) {
           msgEl.style.color = "#FECACA";
@@ -1793,6 +1854,11 @@
       const promoInput = getEl("promo-code");
       if (!promoInput) return;
 
+      if (selectedPass) {
+        setPromoMessage("Retirez d’abord la carte sélectionnée pour appliquer un code promo.", "error");
+        return;
+      }
+
       if (singcoinsUsed) {
         setPromoMessage("Retirez d’abord les Singcoins pour appliquer un code promo.", "error");
         return;
@@ -1860,6 +1926,227 @@
           }
           applyPromoCode(true);
         }
+      }
+    }
+
+    function getPassSelectEls() {
+      return {
+        passToggle: getEl("pass-toggle"),
+        passBody: getEl("pass-body"),
+        passSelect: getEl("pass-select"),
+        passMessage: getEl("pass-message"),
+        previewBox: getEl("pass-preview-box"),
+        previewName: getEl("pass-preview-name"),
+        previewRequired: getEl("pass-preview-required"),
+        previewRemaining: getEl("pass-preview-remaining"),
+        previewCovered: getEl("pass-preview-covered")
+      };
+    }
+
+    function setPassMessage(message, type = "") {
+      const { passMessage } = getPassSelectEls();
+      if (!passMessage) return;
+      passMessage.classList.remove("ok", "error");
+      passMessage.textContent = message || "";
+      if (type) passMessage.classList.add(type);
+    }
+
+    function getPassLabel(passItem) {
+      if (!passItem) return "Carte Singbox";
+      if (passItem.pass_type === "before_15") return "Carte 10 places avant 15h";
+      if (passItem.pass_type === "after_15_weekday") return "Carte 10 places après 15h";
+      return "Carte Singbox";
+    }
+
+    function enablePromoAfterPassRemoval() {
+      const promoInput = getEl("promo-code");
+      const promoBtn = getEl("apply-promo");
+      const promoMsg = getEl("promo-message");
+      const chestPromo = getChestPromoCode();
+
+      if (promoInput) {
+        promoInput.disabled = false;
+        if (chestPromo && !promoInput.value.trim()) promoInput.value = chestPromo;
+      }
+      if (promoBtn) promoBtn.disabled = false;
+      if (promoMsg) promoMsg.textContent = "";
+    }
+
+    function disablePromoBecauseOfPass() {
+      const promoInput = getEl("promo-code");
+      const promoBtn = getEl("apply-promo");
+
+      currentPromo = null;
+      localStorage.removeItem("promoCode");
+
+      if (promoInput) {
+        promoInput.value = "";
+        promoInput.disabled = true;
+      }
+      if (promoBtn) promoBtn.disabled = true;
+
+      setPromoMessage("Le code promo est désactivé pendant l’utilisation d’une carte.", "error");
+    }
+
+    function disableSingcoinsBecauseOfPass() {
+      singcoinsUsed = false;
+      const singcoinsBtn = getEl("use-singcoins-btn");
+      const singcoinsMsg = getEl("singcoins-msg");
+
+      if (singcoinsBtn) {
+        singcoinsBtn.disabled = true;
+        if (singcoinsBtn.style.display !== "none") {
+          singcoinsBtn.textContent = "Utiliser 100 Singcoins";
+        }
+      }
+
+      if (singcoinsMsg) {
+        singcoinsMsg.style.color = "#FECACA";
+        singcoinsMsg.textContent = "Les Singcoins sont désactivés pendant l’utilisation d’une carte.";
+      }
+    }
+
+    function enableSingcoinsAfterPassRemoval() {
+      const singcoinsBtn = getEl("use-singcoins-btn");
+      const singcoinsBalance = getEl("singcoins-balance");
+      const singcoinsMsg = getEl("singcoins-msg");
+
+      if (!singcoinsBtn || !singcoinsBalance || !singcoinsMsg) return;
+
+      const points = Number.parseInt(singcoinsBalance.textContent || "0", 10);
+      singcoinsBtn.disabled = false;
+
+      if (points >= SINGCOINS_COST) {
+        singcoinsBtn.style.display = "block";
+        singcoinsBtn.textContent = singcoinsUsed ? "Retirer les Singcoins" : "Utiliser 100 Singcoins";
+        singcoinsMsg.style.color = "#D1FAE5";
+        singcoinsMsg.textContent = "Vous pouvez offrir 2 participants sur la première séance du panier.";
+      } else {
+        singcoinsBtn.style.display = "none";
+        singcoinsMsg.style.color = "#CBD5E1";
+        singcoinsMsg.textContent = `Il vous manque encore ${Math.max(0, SINGCOINS_COST - points)} Singcoins.`;
+      }
+    }
+
+    function resetPassSelection(clearSelect = true) {
+      selectedPass = null;
+
+      const {
+        passSelect,
+        previewBox,
+        previewName,
+        previewRequired,
+        previewRemaining,
+        previewCovered
+      } = getPassSelectEls();
+
+      if (clearSelect && passSelect) passSelect.value = "";
+      if (previewBox) previewBox.style.display = "none";
+      if (previewName) previewName.textContent = "Carte";
+      if (previewRequired) previewRequired.textContent = "0";
+      if (previewRemaining) previewRemaining.textContent = "0";
+      if (previewCovered) previewCovered.textContent = "0€";
+
+      enablePromoAfterPassRemoval();
+      enableSingcoinsAfterPassRemoval();
+      updateOrderSummaryFromPanier();
+    }
+
+    async function loadMyPassesIntoPayment() {
+      const { passSelect } = getPassSelectEls();
+      if (!passSelect) return;
+
+      passSelect.innerHTML = `<option value="">Choisir une carte</option>`;
+      myPasses = [];
+
+      if (!globalThis.SingboxPasses || !globalThis.SingboxPasses.getToken()) {
+        return;
+      }
+
+      const res = await globalThis.SingboxPasses.getMyPasses();
+      if (!res.ok || !Array.isArray(res.data?.passes)) {
+        return;
+      }
+
+      myPasses = res.data.passes.filter((item) => item.status === "active" && Number(item.remaining_places || 0) > 0);
+
+      myPasses.forEach((passItem) => {
+        const option = document.createElement("option");
+        option.value = String(passItem.id);
+        option.textContent = `${getPassLabel(passItem)} — ${passItem.remaining_places} place(s) restante(s)`;
+        passSelect.appendChild(option);
+      });
+    }
+
+    async function previewSelectedPass() {
+      const { passSelect, previewBox, previewName, previewRequired, previewRemaining, previewCovered } = getPassSelectEls();
+      const panier = getPanier();
+
+      if (!passSelect || !passSelect.value) {
+        resetPassSelection(false);
+        setPassMessage("", "");
+        return;
+      }
+
+      if (!panier.length) {
+        resetPassSelection(false);
+        setPassMessage("Votre panier est vide.", "error");
+        return;
+      }
+
+      const passItem = myPasses.find((item) => String(item.id) === String(passSelect.value));
+      if (!passItem) {
+        resetPassSelection(false);
+        setPassMessage("Carte introuvable.", "error");
+        return;
+      }
+
+      setPassMessage("Vérification de la carte...", "");
+
+      const previewRes = await globalThis.SingboxPasses.previewUsage(passItem.id, panier);
+
+      if (!previewRes.ok || !previewRes.data?.success) {
+        selectedPass = null;
+        if (previewBox) previewBox.style.display = "none";
+        setPassMessage(previewRes.data?.error || "Cette carte ne peut pas être utilisée pour ce panier.", "error");
+        enablePromoAfterPassRemoval();
+        enableSingcoinsAfterPassRemoval();
+        updateOrderSummaryFromPanier();
+        return;
+      }
+
+      selectedPass = {
+        id: passItem.id,
+        pass_type: passItem.pass_type,
+        label: getPassLabel(passItem),
+        preview: previewRes.data
+      };
+
+      if (previewName) previewName.textContent = selectedPass.label;
+      if (previewRequired) previewRequired.textContent = String(previewRes.data.requiredPlaces || 0);
+      if (previewRemaining) previewRemaining.textContent = String(previewRes.data.remainingPlacesAfterUse || 0);
+      if (previewCovered) previewCovered.textContent = formatMoney(previewRes.data.theoreticalCartAmount || 0);
+      if (previewBox) previewBox.style.display = "block";
+
+      disablePromoBecauseOfPass();
+      disableSingcoinsBecauseOfPass();
+      setPassMessage("Carte valide pour ce panier ✔", "ok");
+      updateOrderSummaryFromPanier();
+    }
+
+    function initPassSelector() {
+      const { passToggle, passBody, passSelect } = getPassSelectEls();
+
+      if (passToggle && passBody) {
+        passToggle.addEventListener("click", () => {
+          passBody.classList.toggle("open");
+          passToggle.setAttribute("aria-expanded", passBody.classList.contains("open") ? "true" : "false");
+        });
+      }
+
+      if (passSelect && passSelect.dataset.bound !== "true") {
+        passSelect.addEventListener("change", previewSelectedPass);
+        passSelect.dataset.bound = "true";
       }
     }
 
@@ -2041,6 +2328,8 @@
       savePanier([]);
       localStorage.removeItem("promoCode");
       currentPromo = null;
+      selectedPass = null;
+      myPasses = [];
       singcoinsUsed = false;
       clearChestCheckoutContext();
       clearReferralCode();
@@ -2062,6 +2351,7 @@
     }
 
     function hasStripeReadyForPayment(payWithSavedChecked) {
+      if (selectedPass) return true;
       if (isFreeCheckoutFlow()) return true;
       if (!stripe) return false;
       return payWithSavedChecked || Boolean(cardElement);
@@ -2222,6 +2512,76 @@
       resetFeedbackMessages();
       updateOrderSummaryFromPanier();
       normalizeSavedCardChoice();
+
+      if (selectedPass) {
+        const customer = getCustomerPayload(true);
+
+        const requiredFieldsOk =
+          customer.prenom &&
+          customer.nom &&
+          customer.email &&
+          customer.telephone &&
+          isValidEmail(customer.email);
+
+        if (!requiredFieldsOk) {
+          setText(errorEl, "Merci de compléter les informations de facturation avant d’utiliser une carte.");
+          return;
+        }
+
+        if (!getEl("cgv-checkbox")?.checked) {
+          setText(errorEl, "Vous devez accepter les conditions générales de vente pour continuer.");
+          return;
+        }
+
+        if (!getEl("rules-checkbox")?.checked) {
+          setText(errorEl, "Merci de confirmer que vous respecterez les règles dans les box.");
+          return;
+        }
+
+        if (!getEl("majority-checkbox")?.checked) {
+          setText(errorEl, "Merci de certifier que vous êtes majeur(e) pour continuer.");
+          return;
+        }
+
+        const originalLabel = submitBtn?.textContent || "Commander";
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Validation de la carte...";
+          submitBtn.setAttribute("aria-busy", "true");
+        }
+
+        try {
+          const passRes = await globalThis.SingboxPasses.confirmReservationWithPass(
+            selectedPass.id,
+            getPanier(),
+            customer
+          );
+
+          if (!passRes.ok || !passRes.data?.success) {
+            setText(errorEl, passRes.data?.error || "Impossible de réserver avec cette carte.");
+            return;
+          }
+
+          const reservations = Array.isArray(passRes.data?.reservations) ? passRes.data.reservations : [];
+          const reservationId = reservations[0]?.id || null;
+
+          setText(successEl, "Réservation confirmée avec votre carte ✔");
+
+          saveThankYouData(buildThankYouPayload(reservationId));
+          cleanupAfterReservation();
+          redirectToThankYouPage();
+          return;
+        } catch (error) {
+          setText(errorEl, "Erreur inattendue : " + (error?.message || "inconnue"));
+          return;
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalLabel;
+            submitBtn.setAttribute("aria-busy", "false");
+          }
+        }
+      }
 
       if (!validateCheckoutBeforePayment()) return;
       if (!hasStripeReadyForPayment(payWithSavedChecked)) {
@@ -2530,6 +2890,8 @@
       renderSavedCardUI();
       bindAutosave();
       initPromo();
+      initPassSelector();
+      await loadMyPassesIntoPayment();
 
       const saveCardBtn = getEl("save-card-btn");
       if (saveCardBtn && saveCardBtn.dataset.bound !== "true") {
