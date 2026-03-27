@@ -2603,10 +2603,15 @@
             customer
           );
 
-          if (!passRes.ok || !passRes.data?.success) {
-            setText(errorEl, passRes.data?.error || "Impossible de réserver avec cette carte.");
-            return;
-          }
+if (!passRes.ok || !passRes.data?.success) {
+  const serverMessage =
+    passRes.data?.details ||
+    passRes.data?.error ||
+    "Impossible de réserver avec cette carte.";
+  setText(errorEl, serverMessage);
+  console.error("PASS confirm-reservation error:", passRes.data);
+  return;
+}
 
           const reservations = Array.isArray(passRes.data?.reservations) ? passRes.data.reservations : [];
           const reservationId = reservations[0]?.id || null;
