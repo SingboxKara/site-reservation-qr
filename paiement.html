@@ -33,6 +33,30 @@
   />
   <meta name="twitter:image" content="https://www.singbox.fr/images/singbox-social.jpg" />
 
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdn.jsdelivr.net;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
+      img-src 'self' data: blob: https:;
+      font-src 'self' data: https://fonts.gstatic.com;
+      connect-src 'self'
+        https://www.singbox.fr
+        https://singbox.fr
+        https://singbox-backend.onrender.com
+        https://api.stripe.com
+        https://js.stripe.com
+        https://cdn.jsdelivr.net
+        https://*.supabase.co
+        wss://*.supabase.co;
+      frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    "
+  />
+
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -789,6 +813,7 @@
         const res = await fetch(url, {
           ...options,
           headers: finalHeaders,
+          credentials: "include",
           signal: options.signal || timeout.signal
         });
 
@@ -1377,9 +1402,25 @@
     async function loadSavedCardStateFromMe() {
       const data = await fetchMeData();
       if (!data) return;
-      const payment = data.payment || {};
-      savedCardState.card = payment.card || null;
-      savedCardState.defaultPaymentMethodId = payment.default_payment_method_id || null;
+
+      const payment =
+        data.payment ||
+        data.user?.payment ||
+        data.profile?.payment ||
+        {};
+
+      savedCardState.card =
+        payment.card ||
+        data.card ||
+        data.user?.card ||
+        null;
+
+      savedCardState.defaultPaymentMethodId =
+        payment.default_payment_method_id ||
+        payment.defaultPaymentMethodId ||
+        data.default_payment_method_id ||
+        data.defaultPaymentMethodId ||
+        savedCardState.defaultPaymentMethodId;
     }
 
     async function refreshPaymentMethods() {
@@ -1388,12 +1429,23 @@
       const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 8000 });
       if (!r.ok || !r.data) return;
 
-      savedCardState.methods = Array.isArray(r.data.methods) ? r.data.methods : [];
-      savedCardState.defaultPaymentMethodId = r.data.defaultPaymentMethodId || savedCardState.defaultPaymentMethodId;
+      savedCardState.methods =
+        Array.isArray(r.data.methods) ? r.data.methods :
+        Array.isArray(r.data.paymentMethods) ? r.data.paymentMethods :
+        [];
+
+      savedCardState.defaultPaymentMethodId =
+        r.data.defaultPaymentMethodId ||
+        r.data.default_payment_method_id ||
+        savedCardState.defaultPaymentMethodId;
 
       if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
         const found = savedCardState.methods.find((method) => method.id === savedCardState.defaultPaymentMethodId);
         if (found) savedCardState.card = found;
+      }
+
+      if (!savedCardState.card && savedCardState.methods.length) {
+        savedCardState.card = savedCardState.methods[0];
       }
     }
 
@@ -1539,6 +1591,7 @@
       set("ville", info.ville);
       set("telephone", info.telephone);
       set("email", info.email);
+      set("naissance", info.naissance);
       if (getEl("pays") && info.pays) getEl("pays").value = info.pays;
     }
 
@@ -1576,19 +1629,30 @@
       const data = await fetchMeData();
       if (!data) return;
 
-      const profile = data.profile || {};
+      const profile =
+        data.profile ||
+        data.user?.profile ||
+        data.user ||
+        data;
+
+      const email =
+        data.email ||
+        data.user?.email ||
+        profile?.email ||
+        "";
+
       isPrefilling = true;
       fillCheckoutForm({
-        prenom: profile.prenom || "",
-        nom: profile.nom || "",
-        telephone: profile.telephone || "",
-        pays: profile.pays || "FR",
-        adresse: profile.adresse || "",
-        complement: profile.complement || "",
-        cp: profile.cp || "",
-        ville: profile.ville || "",
-        naissance: "",
-        email: data.email || ""
+        prenom: profile?.prenom || profile?.first_name || "",
+        nom: profile?.nom || profile?.last_name || "",
+        telephone: profile?.telephone || profile?.phone || "",
+        pays: profile?.pays || profile?.country || "FR",
+        adresse: profile?.adresse || profile?.address || "",
+        complement: profile?.complement || profile?.address2 || "",
+        cp: profile?.cp || profile?.postal_code || profile?.zipCode || "",
+        ville: profile?.ville || profile?.city || "",
+        naissance: profile?.naissance || profile?.birthdate || "",
+        email
       });
       isPrefilling = false;
       saveCheckoutInfoLocal(getCheckoutInfoForLocalStorage());
@@ -1668,10 +1732,18 @@
         };
       }
 
+      const balance =
+        Number(
+          r.data?.snapshot?.singcoins?.balance ??
+          r.data?.user_gamification?.singcoins_balance ??
+          r.data?.singcoins_balance ??
+          0
+        ) || 0;
+
       return {
         ok: true,
         reason: null,
-        balance: Number(r.data?.snapshot?.singcoins?.balance || 0)
+        balance
       };
     }
 
@@ -1905,6 +1977,9 @@
 
       setPromoMessage("Vérification du code...");
 
+      const customerPayload = getCustomerPayload(false);
+      const panier = getPanier();
+
       const result = await apiFetch(
         "/api/validate-promo",
         {
@@ -1912,8 +1987,9 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             code,
-            cart: getPanier(),
-            customer: getCustomerPayload(false),
+            cart: panier,
+            panier,
+            customer: customerPayload,
             singcoinsUsed: false
           })
         },
@@ -2247,9 +2323,11 @@
 
     async function confirmReservation(isFree, paymentIntentId) {
       const chestContext = getChestCheckoutContext();
+      const panier = getPanier();
 
       const body = {
-        cart: getPanier(),
+        cart: panier,
+        panier,
         customer: getCustomerPayload(true),
         promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
         singcoinsUsed,
@@ -2469,6 +2547,7 @@
 
     async function createPaymentIntentRequest() {
       const chestContext = getChestCheckoutContext();
+      const panier = getPanier();
 
       return apiFetch(
         "/api/create-payment-intent",
@@ -2476,7 +2555,8 @@
           method: "POST",
           headers: authHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify({
-            cart: getPanier(),
+            cart: panier,
+            panier,
             customer: getCustomerPayload(false),
             promoCode: currentPromo && isPromoCurrentlyValid(currentPromo) ? currentPromo.code : null,
             singcoinsUsed,
@@ -2603,15 +2683,15 @@
             customer
           );
 
-if (!passRes.ok || !passRes.data?.success) {
-  const serverMessage =
-    passRes.data?.details ||
-    passRes.data?.error ||
-    "Impossible de réserver avec cette carte.";
-  setText(errorEl, serverMessage);
-  console.error("PASS confirm-reservation error:", passRes.data);
-  return;
-}
+          if (!passRes.ok || !passRes.data?.success) {
+            const serverMessage =
+              passRes.data?.details ||
+              passRes.data?.error ||
+              "Impossible de réserver avec cette carte.";
+            setText(errorEl, serverMessage);
+            console.error("PASS confirm-reservation error:", passRes.data);
+            return;
+          }
 
           const reservations = Array.isArray(passRes.data?.reservations) ? passRes.data.reservations : [];
           const reservationId = reservations[0]?.id || null;
