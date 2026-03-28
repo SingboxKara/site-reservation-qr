@@ -49,8 +49,20 @@
         https://js.stripe.com
         https://cdn.jsdelivr.net
         https://*.supabase.co
-        wss://*.supabase.co;
-      frame-src 'self' https://js.stripe.com https://hooks.stripe.com;
+        wss://*.supabase.co
+        https://api.web3forms.com
+        https://hcaptcha.com
+        https://*.hcaptcha.com
+        https://www.google.com
+        https://maps.googleapis.com
+        https://maps.google.com
+        https://www.gstatic.com;
+      frame-src 'self'
+        https://js.stripe.com
+        https://hooks.stripe.com
+        https://hcaptcha.com
+        https://*.hcaptcha.com
+        https://www.google.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
@@ -841,6 +853,20 @@
       }
     }
 
+    async function apiFetchOptional(path, options = {}, config = {}) {
+      const result = await apiFetch(path, options, config);
+
+      if (!result.ok) {
+        console.warn(
+          `[API optional] ${config.ctx || path} ignored`,
+          result.status,
+          result.data
+        );
+      }
+
+      return result;
+    }
+
     function getPanier() {
       try {
         const panier = JSON.parse(localStorage.getItem("panier"));
@@ -1388,8 +1414,14 @@
       if (!force && meDataPromise) return meDataPromise;
 
       meDataPromise = (async () => {
-        const r = await apiFetch("/api/me", { method: "GET" }, { auth: true, ctx: "GET /api/me", timeoutMs: 8000 });
+        const r = await apiFetchOptional(
+          "/api/me",
+          { method: "GET" },
+          { auth: true, ctx: "GET /api/me", timeoutMs: 15000 }
+        );
+
         if (!r.ok || !r.data) return null;
+
         meDataCache = r.data;
         return r.data;
       })();
@@ -1426,13 +1458,20 @@
     async function refreshPaymentMethods() {
       if (!getToken()) return;
 
-      const r = await apiFetch("/api/payment-methods", { method: "GET" }, { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 8000 });
+      const r = await apiFetchOptional(
+        "/api/payment-methods",
+        { method: "GET" },
+        { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 15000 }
+      );
+
       if (!r.ok || !r.data) return;
 
       savedCardState.methods =
-        Array.isArray(r.data.methods) ? r.data.methods :
-        Array.isArray(r.data.paymentMethods) ? r.data.paymentMethods :
-        [];
+        Array.isArray(r.data.methods)
+          ? r.data.methods
+          : Array.isArray(r.data.paymentMethods)
+            ? r.data.paymentMethods
+            : [];
 
       savedCardState.defaultPaymentMethodId =
         r.data.defaultPaymentMethodId ||
@@ -1440,7 +1479,9 @@
         savedCardState.defaultPaymentMethodId;
 
       if (!savedCardState.card && savedCardState.defaultPaymentMethodId) {
-        const found = savedCardState.methods.find((method) => method.id === savedCardState.defaultPaymentMethodId);
+        const found = savedCardState.methods.find(
+          (method) => method.id === savedCardState.defaultPaymentMethodId
+        );
         if (found) savedCardState.card = found;
       }
 
@@ -1710,10 +1751,10 @@
         return { ok: false, reason: "not_logged_in", balance: null };
       }
 
-      const r = await apiFetch(
+      const r = await apiFetchOptional(
         "/api/gamification/me",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 12000 }
+        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 15000 }
       );
 
       if (!r.ok) {
