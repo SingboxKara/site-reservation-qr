@@ -866,6 +866,14 @@
           && (d.getTime() - Date.now()) / (1000 * 60 * 60) >= MODIFICATION_DEADLINE_HOURS;
       },
 
+      isPassReservation(r) {
+        return (
+          r?.paid_with_pass === true ||
+          !!r?.user_pass_id ||
+          Number(r?.pass_places_used || 0) > 0
+        );
+      },
+
       meta(r) {
         const t = reservationsService.formatHours(r);
         const raw = r.box_name || r.box || r.box_id || "";
@@ -903,7 +911,8 @@
         const qrTitle = reservationsService.qrTitle(r, date, box);
         const parsedStart = utils.parseDate(startIso);
         const isFutureConfirmed = statutClass === "reservation-status-confirmed" && parsedStart && parsedStart.getTime() > Date.now();
-        const canRefund = reservationsService.isRefundPossible(startIso);
+        const isPassReservation = reservationsService.isPassReservation(r);
+        const canRefund = !isPassReservation && reservationsService.isRefundPossible(startIso);
         const canEdit = reservationsService.isModificationPossible(startIso, statut);
 
         const main = utils.create("div", { className: "reservation-main-row" });
@@ -939,19 +948,29 @@
 
         if (isFutureConfirmed) {
           const refund = utils.create("div", { className: "reservation-refund-row" });
-          refund.append(
-            utils.create("span", {
-              text: canRefund
-                ? "Remboursement possible jusqu'à 24h avant la séance."
-                : "Le remboursement n'est plus possible dans les 24h avant la séance."
-            }),
-            reservationsService.btn({
-              className: "reservation-refund-btn",
-              text: "Demander un remboursement",
-              disabled: !(canRefund && r?.id),
-              dataset: { reservationId: r?.id || "", startTime: startIso }
-            })
-          );
+
+          if (isPassReservation) {
+            refund.append(
+              utils.create("span", {
+                text: "Réservation effectuée avec un pass Singbox : aucun remboursement en ligne."
+              })
+            );
+          } else {
+            refund.append(
+              utils.create("span", {
+                text: canRefund
+                  ? "Remboursement possible jusqu'à 24h avant la séance."
+                  : "Le remboursement n'est plus possible dans les 24h avant la séance."
+              }),
+              reservationsService.btn({
+                className: "reservation-refund-btn",
+                text: "Demander un remboursement",
+                disabled: !(canRefund && r?.id),
+                dataset: { reservationId: r?.id || "", startTime: startIso }
+              })
+            );
+          }
+
           item.appendChild(refund);
         }
 
@@ -1681,6 +1700,16 @@
 
             if (!reservationId) {
               utils.setStatus(els.refundMessage, "Réservation introuvable.", "error");
+              return;
+            }
+
+            const reservation = state.reservations.find(item => String(item?.id) === reservationId);
+            if (reservation && reservationsService.isPassReservation(reservation)) {
+              utils.setStatus(
+                els.refundMessage,
+                "Cette réservation a été effectuée avec un pass Singbox et n'est pas remboursable.",
+                "error"
+              );
               return;
             }
 
