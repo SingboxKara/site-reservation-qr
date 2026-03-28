@@ -2741,6 +2741,9 @@
 
           setText(successEl, "Réservation confirmée avec votre carte ✔");
 
+          // Caution obligatoire : même flux que le paiement classique
+          await confirmDepositIntent(reservationId, false, errorEl);
+
           saveThankYouData(buildThankYouPayload(reservationId));
           cleanupAfterReservation();
           redirectToThankYouPage();
