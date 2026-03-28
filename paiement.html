@@ -1750,10 +1750,11 @@
         return { ok: false, reason: "not_logged_in", balance: null };
       }
 
+      // Endpoint léger dédié au solde Singcoins (évite le timeout du snapshot complet)
       const r = await apiFetchOptional(
-        "/api/gamification/me",
+        "/api/singcoins/balance",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 4000 }
+        { auth: true, ctx: "GET /api/singcoins/balance", timeoutMs: 8000 }
       );
 
       if (!r.ok) {
@@ -1772,13 +1773,7 @@
         };
       }
 
-      const balance =
-        Number(
-          r.data?.snapshot?.singcoins?.balance ??
-          r.data?.user_gamification?.singcoins_balance ??
-          r.data?.singcoins_balance ??
-          0
-        ) || 0;
+      const balance = Number(r.data?.balance ?? 0) || 0;
 
       return {
         ok: true,
