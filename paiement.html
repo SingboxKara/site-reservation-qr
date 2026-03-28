@@ -857,10 +857,9 @@
       const result = await apiFetch(path, options, config);
 
       if (!result.ok) {
-        console.warn(
+        console.info(
           `[API optional] ${config.ctx || path} ignored`,
-          result.status,
-          result.data
+          result.status
         );
       }
 
@@ -1417,7 +1416,7 @@
         const r = await apiFetchOptional(
           "/api/me",
           { method: "GET" },
-          { auth: true, ctx: "GET /api/me", timeoutMs: 15000 }
+          { auth: true, ctx: "GET /api/me", timeoutMs: 4000 }
         );
 
         if (!r.ok || !r.data) return null;
@@ -1461,7 +1460,7 @@
       const r = await apiFetchOptional(
         "/api/payment-methods",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 15000 }
+        { auth: true, ctx: "GET /api/payment-methods", timeoutMs: 4000 }
       );
 
       if (!r.ok || !r.data) return;
@@ -1754,7 +1753,7 @@
       const r = await apiFetchOptional(
         "/api/gamification/me",
         { method: "GET" },
-        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 15000 }
+        { auth: true, ctx: "GET /api/gamification/me", timeoutMs: 4000 }
       );
 
       if (!r.ok) {
@@ -1969,7 +1968,6 @@
             color: "#F9FAFB",
             fontFamily: "Montserrat, system-ui, sans-serif",
             fontSize: "14px",
-            lineHeight: "24px",
             fontSmoothing: "antialiased",
             "::placeholder": { color: "#CBD5E1" }
           },
@@ -2343,7 +2341,7 @@
     }
 
     function getCustomerPayload(includeSaveCheckoutInfo = false) {
-      const payload = {
+      return {
         prenom: (getEl("prenom")?.value || "").trim(),
         nom: (getEl("nom")?.value || "").trim(),
         email: (getEl("email")?.value || "").trim(),
@@ -2355,11 +2353,9 @@
         ville: (getEl("ville")?.value || "").trim(),
         naissance: getEl("naissance")?.value || "",
         singcoins_points_spent: singcoinsUsed ? SINGCOINS_COST : 0,
-        loyalty_points_spent: singcoinsUsed ? SINGCOINS_COST : 0
+        loyalty_points_spent: singcoinsUsed ? SINGCOINS_COST : 0,
+        ...(includeSaveCheckoutInfo ? { save_checkout_info: true } : {})
       };
-
-      if (includeSaveCheckoutInfo) payload.save_checkout_info = true;
-      return payload;
     }
 
     async function confirmReservation(isFree, paymentIntentId) {
@@ -2725,10 +2721,16 @@
           );
 
           if (!passRes.ok || !passRes.data?.success) {
+            const rawDetails = passRes.data?.details;
+            const rawError = passRes.data?.error;
+
             const serverMessage =
-              passRes.data?.details ||
-              passRes.data?.error ||
-              "Impossible de réserver avec cette carte.";
+              typeof rawDetails === "string" && rawDetails.trim()
+                ? rawDetails
+                : typeof rawError === "string" && rawError.trim()
+                  ? rawError
+                  : "Impossible de réserver avec cette carte.";
+
             setText(errorEl, serverMessage);
             console.error("PASS confirm-reservation error:", passRes.data);
             return;
@@ -2744,7 +2746,12 @@
           redirectToThankYouPage();
           return;
         } catch (error) {
-          setText(errorEl, "Erreur inattendue : " + (error?.message || "inconnue"));
+          const safeMessage =
+            typeof error?.message === "string" && error.message.trim()
+              ? error.message
+              : "inconnue";
+
+          setText(errorEl, "Erreur inattendue : " + safeMessage);
           return;
         } finally {
           if (submitBtn) {
@@ -2895,7 +2902,7 @@
       e.preventDefault();
       const msgEl = getEl("auth-modal-message");
       const email = (getEl("auth-login-email")?.value || "").trim();
-      const password = getEl("auth-login-password")?.value || "";
+      const password = (getEl("auth-login-password")?.value || "").trim();
 
       clearAuthMessage();
 
@@ -3052,18 +3059,29 @@
       fillCheckoutForm(loadCheckoutInfoLocal());
       isPrefilling = false;
 
-      await Promise.allSettled([
-        prefillFromBackendIfLogged(),
-        loadSavedCardStateFromMe(),
-        refreshPaymentMethods(),
-        initSingcoins()
-      ]);
-
       renderSavedCardUI();
       bindAutosave();
       initPromo();
       initPassSelector();
       await loadMyPassesIntoPayment();
+
+      // Chargements confort en arrière-plan
+      setTimeout(() => {
+        prefillFromBackendIfLogged()
+          .catch((e) => console.warn("prefillFromBackendIfLogged failed", e))
+          .finally(() => updateOrderSummaryFromPanier());
+
+        loadSavedCardStateFromMe()
+          .then(() => renderSavedCardUI())
+          .catch((e) => console.warn("loadSavedCardStateFromMe failed", e));
+
+        refreshPaymentMethods()
+          .then(() => renderSavedCardUI())
+          .catch((e) => console.warn("refreshPaymentMethods failed", e));
+
+        initSingcoins()
+          .catch((e) => console.warn("initSingcoins failed", e));
+      }, 0);
 
       const saveCardBtn = getEl("save-card-btn");
       if (saveCardBtn && saveCardBtn.dataset.bound !== "true") {
